@@ -41,6 +41,7 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
     protected String                   name            = null;
     protected String                   description     = null;
     protected String                   descriptionGUID = null;
+    protected String                   descriptionWiki = null;
 
 
     /**
@@ -104,6 +105,7 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
             this.name = template.getName();
             this.description = template.getDescription();
             this.descriptionGUID = template.getDescriptionGUID();
+            this.descriptionWiki = template.getDescriptionWiki();
         }
     }
 
@@ -264,6 +266,28 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
 
 
     /**
+     * Return the URL to the wiki page that gives more information for this type.
+     *
+     * @return url string
+     */
+    public String getDescriptionWiki()
+    {
+        return descriptionWiki;
+    }
+
+
+    /**
+     * Set up the URL to the wiki page that gives more information for this type.
+     *
+     * @param descriptionWiki url string
+     */
+    public void setDescriptionWiki(String descriptionWiki)
+    {
+        this.descriptionWiki = descriptionWiki;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -279,6 +303,7 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", descriptionGUID='" + descriptionGUID + '\'' +
+                ", descriptionWiki='" + descriptionWiki + '\'' +
                 '}';
     }
 
@@ -307,7 +332,8 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
                        Objects.equals(guid, that.guid) &&
                        Objects.equals(name, that.name) &&
                        Objects.equals(description, that.description) &&
-                       Objects.equals(descriptionGUID, that.descriptionGUID);
+                       Objects.equals(descriptionGUID, that.descriptionGUID) &&
+                       Objects.equals(descriptionWiki, that.descriptionWiki);
     }
 
 
@@ -319,7 +345,7 @@ public abstract class AttributeTypeDef extends TypeDefElementHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(version, versionName, category, guid, name, description, descriptionGUID);
+        return Objects.hash(version, versionName, category, guid, name, description, descriptionGUID, descriptionWiki);
     }
 }
 

@@ -123,7 +123,7 @@ public class AssetCatalogHandlerTest {
         String methodName = "getEntityDetails";
         mockEntityDetails(FIRST_GUID);
 
-        doThrow(new org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(SERVER_NAME), this.getClass().getName(), "", ""))
+        doThrow(new InvalidParameterException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(SERVER_NAME), this.getClass().getName(), "", ""))
                 .when(invalidParameterHandler).validateUserId(USER, methodName);
 
         assertThrows(InvalidParameterException.class, () -> assetCatalogHandler.getEntityDetails(USER, FIRST_GUID, ASSET_TYPE));
@@ -153,7 +153,7 @@ public class AssetCatalogHandlerTest {
     }
 
     @Test
-    public void getRelationshipsByEntityGUID_throwsInvalidParameterException() throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+    public void getRelationshipsByEntityGUID_throwsInvalidParameterException() throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 
         String methodName = "getRelationshipsByEntityGUID";
 
@@ -166,11 +166,11 @@ public class AssetCatalogHandlerTest {
                 RELATIONSHIP_TYPE,
                 methodName)).thenReturn(relationshipsByType);
 
-        doThrow(new org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(SERVER_NAME),
+        doThrow(new InvalidParameterException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(SERVER_NAME),
                 this.getClass().getName(), "", ""))
                 .when(invalidParameterHandler).validateUserId(USER, methodName);
 
-        assertThrows(org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException.class,
+        assertThrows(InvalidParameterException.class,
                 () -> assetCatalogHandler.getRelationshipsByEntityGUID(USER, FIRST_GUID, ASSET_TYPE));
 
     }
@@ -209,7 +209,7 @@ public class AssetCatalogHandlerTest {
 
         mockEntityDetails(FIRST_GUID);
 
-        doThrow(new org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(SERVER_NAME),
+        doThrow(new InvalidParameterException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(SERVER_NAME),
                 this.getClass().getName(), "", ""))
                 .when(invalidParameterHandler).validateUserId(USER, methodName);
 
@@ -241,11 +241,11 @@ public class AssetCatalogHandlerTest {
 
         mockPagedRelationships(methodName);
 
-        doThrow(new org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(SERVER_NAME),
+        doThrow(new InvalidParameterException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(SERVER_NAME),
                 this.getClass().getName(), "", ""))
                 .when(invalidParameterHandler).validateUserId(USER, methodName);
 
-        assertThrows(org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException.class,
+        assertThrows(InvalidParameterException.class,
                 () -> assetCatalogHandler.getRelationships(USER, FIRST_GUID, ASSET_TYPE, RELATIONSHIP_TYPE, FROM, PAGE_SIZE));
 
     }
@@ -317,7 +317,7 @@ public class AssetCatalogHandlerTest {
     }
 
     @Test
-    public void getEntitiesFromNeighborhood_throwsInvalidParameterException() throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException {
+    public void getEntitiesFromNeighborhood_throwsInvalidParameterException() throws InvalidParameterException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException {
         String methodName = "getEntitiesFromNeighborhood";
 
         OMRSMetadataCollection metadataCollection = mockMetadataCollection();
@@ -333,11 +333,11 @@ public class AssetCatalogHandlerTest {
 
         SearchParameters searchParams = mockSearchParams();
 
-        doThrow(new org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(SERVER_NAME),
+        doThrow(new InvalidParameterException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(SERVER_NAME),
                 this.getClass().getName(), "", ""))
                 .when(invalidParameterHandler).validateUserId(USER, methodName);
 
-        assertThrows(org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException.class,
+        assertThrows(InvalidParameterException.class,
                 () -> assetCatalogHandler.getEntitiesFromNeighborhood(USER, FIRST_GUID, searchParams, SERVER_NAME));
     }
 
@@ -478,11 +478,11 @@ public class AssetCatalogHandlerTest {
         String methodName = "searchByType";
         SearchParameters searchParams = mockSearchParams();
 
-        doThrow(new org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(),
+        doThrow(new InvalidParameterException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(),
                 this.getClass().getName(), "", ""))
                 .when(invalidParameterHandler).validateUserId(USER, methodName);
 
-        assertThrows(org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException.class,
+        assertThrows(InvalidParameterException.class,
                 () -> assetCatalogHandler.searchByType(USER, SEARCH_CRITERIA, searchParams));
 
     }
@@ -508,7 +508,7 @@ public class AssetCatalogHandlerTest {
         mockEntityDetails(FIRST_GUID);
         mockTypeDef(ASSET_TYPE, ASSET_TYPE_GUID);
 
-        doThrow(new org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(SERVER_NAME),
+        doThrow(new InvalidParameterException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getMessageDefinition(SERVER_NAME),
                 this.getClass().getName(), "", ""))
                 .when(invalidParameterHandler).validateUserId(USER, methodName);
 

@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -31,8 +33,8 @@ public class SearchKeywordBuilder extends OpenMetadataAPIGenericBuilder
                          String               serviceName,
                          String               serverName)
     {
-        super(OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_GUID,
-              OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
+        super(OpenMetadataType.SEARCH_KEYWORD.typeGUID,
+              OpenMetadataType.SEARCH_KEYWORD.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -56,13 +58,13 @@ public class SearchKeywordBuilder extends OpenMetadataAPIGenericBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.KEYWORD_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.KEYWORD.name,
                                                                   keyword,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.KEYWORD_DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 

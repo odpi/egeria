@@ -23,7 +23,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.APIOperationHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.APIParameterListHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -94,7 +95,7 @@ public class APIManagerRESTServices
 
             if (requestBody != null)
             {
-                String typeName = OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME;
+                String typeName = OpenMetadataType.DEPLOYED_API_TYPE_NAME;
 
                 if (requestBody.getTypeName() != null)
                 {
@@ -150,14 +151,14 @@ public class APIManagerRESTServices
                                                      handler.getExternalSourceID(apiManagerIsHome, requestBody.getExternalSourceName()),
                                                      apiGUID,
                                                      apiGUIDParameterName,
-                                                     OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                     OpenMetadataType.DEPLOYED_API_TYPE_NAME,
                                                      endpointGUID,
                                                      endpointGUIDParameterName,
-                                                     OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                     OpenMetadataType.ENDPOINT_TYPE_NAME,
                                                      false,
                                                      false,
-                                                     OpenMetadataAPIMapper.API_ENDPOINT_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.API_ENDPOINT_TYPE_NAME,
+                                                     OpenMetadataType.API_ENDPOINT_TYPE_GUID,
+                                                     OpenMetadataType.API_ENDPOINT_TYPE_NAME,
                                                      (InstanceProperties) null,
                                                      null,
                                                      null,
@@ -231,8 +232,8 @@ public class APIManagerRESTServices
                                                               handler.getExternalSourceID(apiManagerIsHome, requestBody.getExternalSourceName()),
                                                               templateGUID,
                                                               templateGUIDParameterName,
-                                                              OpenMetadataAPIMapper.DEPLOYED_API_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                              OpenMetadataType.DEPLOYED_API_TYPE_GUID,
+                                                              OpenMetadataType.DEPLOYED_API_TYPE_NAME,
                                                               requestBody.getQualifiedName(),
                                                               qualifiedNameParameterName,
                                                               requestBody.getDisplayName(),
@@ -266,14 +267,14 @@ public class APIManagerRESTServices
                                                  handler.getExternalSourceID(apiManagerIsHome, requestBody.getExternalSourceName()),
                                                  apiGUID,
                                                  apiGUIDParameterName,
-                                                 OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                 OpenMetadataType.DEPLOYED_API_TYPE_NAME,
                                                  endpointGUID,
                                                  endpointGUIDParameterName,
-                                                 OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                 OpenMetadataType.ENDPOINT_TYPE_NAME,
                                                  false,
                                                  false,
-                                                 OpenMetadataAPIMapper.API_ENDPOINT_TYPE_GUID,
-                                                 OpenMetadataAPIMapper.API_ENDPOINT_TYPE_NAME,
+                                                 OpenMetadataType.API_ENDPOINT_TYPE_GUID,
+                                                 OpenMetadataType.API_ENDPOINT_TYPE_NAME,
                                                  (InstanceProperties)null,
                                                  null,
                                                  null,
@@ -335,7 +336,7 @@ public class APIManagerRESTServices
 
             if (requestBody != null)
             {
-                String typeName = OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME;
+                String typeName = OpenMetadataType.DEPLOYED_API_TYPE_NAME;
 
                 if (requestBody.getTypeName() != null)
                 {
@@ -538,9 +539,9 @@ public class APIManagerRESTServices
                                                requestBody.getExternalSourceName(),
                                                apiGUID,
                                                apiGUIDParameterName,
-                                               OpenMetadataAPIMapper.DEPLOYED_API_TYPE_GUID,
-                                               OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
-                                               OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                               OpenMetadataType.DEPLOYED_API_TYPE_GUID,
+                                               OpenMetadataType.DEPLOYED_API_TYPE_NAME,
+                                               OpenMetadataProperty.QUALIFIED_NAME.name,
                                                qualifiedName,
                                                false,
                                                false,
@@ -601,8 +602,8 @@ public class APIManagerRESTServices
                 AssetHandler<APIElement> handler = instanceHandler.getAPIHandler(userId, serverName, methodName);
 
                 List<APIElement> apiElements = handler.findAssets(userId,
-                                                                  OpenMetadataAPIMapper.DEPLOYED_API_TYPE_GUID,
-                                                                  OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                                  OpenMetadataType.DEPLOYED_API_TYPE_GUID,
+                                                                  OpenMetadataType.DEPLOYED_API_TYPE_NAME,
                                                                   requestBody.getSearchString(),
                                                                   searchStringParameterName,
                                                                   startFrom,
@@ -673,8 +674,8 @@ public class APIManagerRESTServices
                 AssetHandler<APIElement> handler = instanceHandler.getAPIHandler(userId, serverName, methodName);
 
                 List<APIElement> apiElements = handler.getAssetsByName(userId,
-                                                                       OpenMetadataAPIMapper.DEPLOYED_API_TYPE_GUID,
-                                                                       OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                                       OpenMetadataType.DEPLOYED_API_TYPE_GUID,
+                                                                       OpenMetadataType.DEPLOYED_API_TYPE_NAME,
                                                                        requestBody.getName(),
                                                                        nameParameterName,
                                                                        startFrom,
@@ -745,10 +746,10 @@ public class APIManagerRESTServices
             List<APIElement> apiElements = handler.getAttachedElements(userId,
                                                                        apiManagerGUID,
                                                                        apiManagerGUIDParameterName,
-                                                                       OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
-                                                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                                       OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                                       OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                       OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
+                                                                       OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
+                                                                       OpenMetadataType.DEPLOYED_API_TYPE_NAME,
                                                                        null,
                                                                        null,
                                                                        0,
@@ -812,10 +813,10 @@ public class APIManagerRESTServices
             List<APIElement> apiElements = handler.getAttachedElements(userId,
                                                                        endpointGUID,
                                                                        guidParameterName,
-                                                                       OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
-                                                                       OpenMetadataAPIMapper.API_ENDPOINT_TYPE_GUID,
-                                                                       OpenMetadataAPIMapper.API_ENDPOINT_TYPE_NAME,
-                                                                       OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                                       OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                                                       OpenMetadataType.API_ENDPOINT_TYPE_GUID,
+                                                                       OpenMetadataType.API_ENDPOINT_TYPE_NAME,
+                                                                       OpenMetadataType.DEPLOYED_API_TYPE_NAME,
                                                                        null,
                                                                        null,
                                                                        0,
@@ -875,7 +876,7 @@ public class APIManagerRESTServices
             APIElement apiElement = handler.getBeanFromRepository(userId,
                                                                   guid,
                                                                   guidParameterName,
-                                                                  OpenMetadataAPIMapper.DEPLOYED_API_TYPE_NAME,
+                                                                  OpenMetadataType.DEPLOYED_API_TYPE_NAME,
                                                                   false,
                                                                   false,
                                                                   new Date(),
@@ -1549,15 +1550,15 @@ public class APIManagerRESTServices
      */
     private String getRelationshipType(APIParameterListType parameterListType)
     {
-        String relationshipTypeName = OpenMetadataAPIMapper.API_HEADER_RELATIONSHIP_TYPE_NAME;
+        String relationshipTypeName = OpenMetadataType.API_HEADER_RELATIONSHIP_TYPE_NAME;
 
         if (APIParameterListType.REQUEST.equals(parameterListType))
         {
-            relationshipTypeName = OpenMetadataAPIMapper.API_REQUEST_RELATIONSHIP_TYPE_NAME;
+            relationshipTypeName = OpenMetadataType.API_REQUEST_RELATIONSHIP_TYPE_NAME;
         }
         else if (APIParameterListType.RESPONSE.equals(parameterListType))
         {
-            relationshipTypeName = OpenMetadataAPIMapper.API_RESPONSE_RELATIONSHIP_TYPE_NAME;
+            relationshipTypeName = OpenMetadataType.API_RESPONSE_RELATIONSHIP_TYPE_NAME;
         }
 
         return relationshipTypeName;

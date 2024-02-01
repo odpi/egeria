@@ -75,7 +75,7 @@ public abstract class MessageDefinition
     /**
      * Return the array of values that apply to this message instance.
      *
-     * @return list of string message inserts for the message template
+     * @return array of string message inserts for the message template
      */
     public String[] getMessageParams() { return params; }
 

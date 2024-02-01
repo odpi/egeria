@@ -1,0 +1,33 @@
+# Egeria-repository-services-metadata-highway
+
+###
+# @name Get cohort details
+# Get the details of cohorts that this server is connecting to.
+GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{adminUserId}}/metadata-highway/cohort-descriptions
+
+###
+# @name Get local registration
+# Get the details of the registration information that this server is sending to the cohorts it is registering with.
+GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{adminUserId}}/metadata-highway/local-registration
+
+###
+# @name Get local registration with a specific cohort
+# Get the details of the registration information that this server sent out to a specific cohort including the time stamp for this registration.  This determines how long this server has been exchanging metadata with this cohort.
+GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{adminUserId}}/metadata-highway/cohorts/{{cohort}}/local-registration
+
+###
+# @name Get remote registrations
+# Get the details of the registration information that this server has received from remote members of a cohort. This determines the size of the cohort.
+GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{adminUserId}}/metadata-highway/cohorts/{{cohort}}/remote-members
+
+###
+# @name Connect to cohort
+GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{adminUserId}}/metadata-highway/cohorts/{{cohort}}/connect
+
+###
+# @name Disconnect From Cohort
+GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{adminUserId}}/metadata-highway/cohorts/{{cohort}}/disconnect
+
+###
+# @name Unregister from cohort
+GET {{baseURL}}/servers/{{server}}/open-metadata/repository-services/users/{{adminUserId}}/metadata-highway/cohorts/{{cohort}}/unregister

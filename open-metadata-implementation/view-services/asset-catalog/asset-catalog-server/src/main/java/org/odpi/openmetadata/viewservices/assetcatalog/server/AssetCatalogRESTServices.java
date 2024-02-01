@@ -10,13 +10,14 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.assetcatalog.beans.AssetCatalogBean;
@@ -337,6 +338,7 @@ public class AssetCatalogRESTServices extends TokenController
     /**
      * Gets available entities types from lineage repository.
      *
+     * @param serverName name of the server to route the request to
      * @return the available entities types or
      *  InvalidParameterException from the underlying service,
      *  PropertyServerException from the underlying service or
@@ -434,7 +436,7 @@ public class AssetCatalogRESTServices extends TokenController
             result.setGuid(openMetadataElement.getElementGUID());
             result.setType(this.getType(openMetadataElement.getType()));
             result.setName(propertyHelper.getStringProperty(instanceHandler.getServiceName(),
-                                                            OpenMetadataTypesMapper.NAME_PROPERTY_NAME,
+                                                            OpenMetadataProperty.NAME.name,
                                                             openMetadataElement.getElementProperties(),
                                                             methodName));
 
@@ -477,14 +479,14 @@ public class AssetCatalogRESTServices extends TokenController
                 ElementProperties elementProperties = new ElementProperties((openMetadataElement.getElementProperties()));
 
                 assetCatalogBean.setName(propertyHelper.removeStringProperty(sourceName,
-                                                                             OpenMetadataTypesMapper.NAME_PROPERTY_NAME,
+                                                                             OpenMetadataProperty.NAME.name,
                                                                              elementProperties,
                                                                              methodName));
 
                 if (assetCatalogBean.getName() == null)
                 {
                     assetCatalogBean.setName(propertyHelper.removeStringProperty(sourceName,
-                                                                                 OpenMetadataTypesMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                                 OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                  elementProperties,
                                                                                  methodName));
                 }
@@ -492,13 +494,13 @@ public class AssetCatalogRESTServices extends TokenController
                 if (assetCatalogBean.getName() == null)
                 {
                     assetCatalogBean.setName(propertyHelper.removeStringProperty(sourceName,
-                                                                                 OpenMetadataTypesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                  elementProperties,
                                                                                  methodName));
                 }
 
                 assetCatalogBean.setAdditionalProperties(propertyHelper.removeStringMapFromProperty(sourceName,
-                                                                                                    OpenMetadataTypesMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
+                                                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
                                                                                                     elementProperties,
                                                                                                     methodName));
 

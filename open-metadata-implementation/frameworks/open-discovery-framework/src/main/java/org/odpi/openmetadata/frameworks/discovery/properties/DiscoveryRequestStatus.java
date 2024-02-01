@@ -19,12 +19,39 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum DiscoveryRequestStatus implements Serializable
 {
+    /**
+     * Discovery service is waiting to execute in the discovery engine.
+     */
     WAITING         (0,  0,  "Waiting",    "Discovery service is waiting to execute in the discovery engine"),
+
+    /**
+     * Discovery service is being initialized in the discovery engine.
+     */
     ACTIVATING      (1,  1,  "Activating", "Discovery service is being initialized in the discovery engine"),
+
+    /**
+     * Discovery service is executing.
+     */
     IN_PROGRESS     (2,  2,  "In Progress","Discovery service is executing"),
+
+    /**
+     * Discovery service has failed.
+     */
     FAILED          (3,  3,  "Failed",     "Discovery service has failed"),
+
+    /**
+     * Discovery service has completed successfully.
+     */
     COMPLETED       (4,  4,  "Completed",  "Discovery service has completed successfully"),
+
+    /**
+     * Discovery service has a status that is not covered by this enum.
+     */
     OTHER           (5,  5,  "Other",      "Discovery service has a status that is not covered by this enum"),
+
+    /**
+     * Discovery service status is unknown.
+     */
     UNKNOWN_STATUS  (99, 99, "Unknown",    "Discovery service status is unknown");
 
     private static final long     serialVersionUID = 1L;
@@ -32,11 +59,11 @@ public enum DiscoveryRequestStatus implements Serializable
     private static final String ENUM_TYPE_GUID  = "b2fdeddd-24eb-4e9c-a2a4-2693828d4a69";
     private static final String ENUM_TYPE_NAME  = "DiscoveryServiceRequestStatus";
 
-    private String statusName;
-    private String statusDescription;
-    private int    statusCode;
+    private final String statusName;
+    private final String statusDescription;
+    private final int    statusCode;
 
-    private int openTypeOrdinal;
+    private final int openTypeOrdinal;
 
     /**
      * Typical Constructor

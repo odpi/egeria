@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.samples.archiveutilities.businesssystems;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
@@ -64,8 +66,8 @@ public class CocoBusinessSystemsArchiveWriter extends CocoBaseArchiveWriter
 
             Map<String, String> additionalProperties = new HashMap<>();
 
-            additionalProperties.put("operatingSystem", hostDefinition.getOperatingSystem());
-            additionalProperties.put("patchLevel", hostDefinition.getPatchLevel());
+            additionalProperties.put(OpenMetadataType.OPERATING_SYSTEM_PROPERTY_NAME, hostDefinition.getOperatingSystem());
+            additionalProperties.put(OpenMetadataType.PATCH_LEVEL_PROPERTY_NAME, hostDefinition.getPatchLevel());
 
             archiveHelper.addAsset(hostDefinition.getHostType().getOpenMetadataTypeName(),
                                    hostDefinition.getQualifiedName(),
@@ -91,11 +93,11 @@ public class CocoBusinessSystemsArchiveWriter extends CocoBaseArchiveWriter
         {
             Map<String, Object> extendedProperties = new HashMap<>();
 
-            extendedProperties.put("deployedImplementationType", systemDefinition.getSystemType().getPreferredValue());
-            extendedProperties.put("userId", systemDefinition.getUserId());
+            extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, systemDefinition.getSystemType().getPreferredValue());
+            extendedProperties.put(OpenMetadataType.USER_ID_PROPERTY_NAME, systemDefinition.getUserId());
 
 
-            String serverGUID = archiveHelper.addAsset("SoftwareServer",
+            String serverGUID = archiveHelper.addAsset(OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME,
                                                        systemDefinition.getQualifiedName(),
                                                        systemDefinition.getSystemId(),
                                                        systemDefinition.getVersionIdentifier(),

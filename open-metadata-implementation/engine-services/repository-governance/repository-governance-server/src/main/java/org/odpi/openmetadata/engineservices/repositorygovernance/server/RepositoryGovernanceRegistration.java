@@ -5,6 +5,7 @@ package org.odpi.openmetadata.engineservices.repositorygovernance.server;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceRegistrationEntry;
 import org.odpi.openmetadata.engineservices.repositorygovernance.admin.RepositoryGovernanceAdmin;
+import org.odpi.openmetadata.engineservices.repositorygovernance.handlers.RepositoryGovernanceHandlerFactory;
 import org.odpi.openmetadata.governanceservers.enginehostservices.registration.OMAGEngineServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
@@ -27,6 +28,6 @@ class RepositoryGovernanceRegistration
         EngineServiceRegistrationEntry myRegistration = new EngineServiceRegistrationEntry(myDescription,
                                                                                            ServiceOperationalStatus.ENABLED,
                                                                                            RepositoryGovernanceAdmin.class.getName());
-        OMAGEngineServiceRegistration.registerEngineService(myRegistration);
+        OMAGEngineServiceRegistration.registerEngineService(myRegistration, new RepositoryGovernanceHandlerFactory());
     }
 }

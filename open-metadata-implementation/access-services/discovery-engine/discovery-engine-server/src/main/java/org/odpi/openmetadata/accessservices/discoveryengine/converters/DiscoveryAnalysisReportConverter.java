@@ -2,15 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.converters;
 
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +43,7 @@ public class DiscoveryAnalysisReportConverter<B> extends DiscoveryEngineOMASConv
     /**
      * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
      * a connection bean which made up of 3 entities (Connection, ConnectorType and Endpoint) plus the
-     * relationships between them.  The relationships may be omitted if they do not have an properties.
+     * relationships between them.  The relationships may be omitted if they do not have any properties.
      *
      * @param beanClass name of the class to create
      * @param primaryEntity entity that is the root of the collection of entities that make up the
@@ -64,10 +68,8 @@ public class DiscoveryAnalysisReportConverter<B> extends DiscoveryEngineOMASConv
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof DiscoveryAnalysisReport)
+            if (returnBean instanceof DiscoveryAnalysisReport bean)
             {
-                DiscoveryAnalysisReport bean = (DiscoveryAnalysisReport) returnBean;
-
                 /*
                  * Check that the entity is of the correct type.
                  */
@@ -101,7 +103,7 @@ public class DiscoveryAnalysisReportConverter<B> extends DiscoveryEngineOMASConv
                     {
                         if ((relationship != null) && (relationship.getType() != null) && (relationship.getType().getTypeDefName() != null))
                         {
-                            if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.REPORT_TO_ASSET_TYPE_NAME))
+                            if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.REPORT_TO_ASSET_TYPE_NAME))
                             {
                                 EntityProxy endOne = relationship.getEntityOneProxy();
 
@@ -110,7 +112,7 @@ public class DiscoveryAnalysisReportConverter<B> extends DiscoveryEngineOMASConv
                                     bean.setAssetGUID(endOne.getGUID());
                                 }
                             }
-                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.REPORT_TO_ENGINE_TYPE_NAME))
+                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.REPORT_TO_ENGINE_TYPE_NAME))
                             {
                                 EntityProxy endOne = relationship.getEntityOneProxy();
 
@@ -119,7 +121,7 @@ public class DiscoveryAnalysisReportConverter<B> extends DiscoveryEngineOMASConv
                                     bean.setDiscoveryEngineGUID(endOne.getGUID());
                                 }
                             }
-                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.REPORT_TO_SERVICE_TYPE_NAME))
+                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.REPORT_TO_SERVICE_TYPE_NAME))
                             {
                                 EntityProxy endOne = relationship.getEntityOneProxy();
 
@@ -158,44 +160,22 @@ public class DiscoveryAnalysisReportConverter<B> extends DiscoveryEngineOMASConv
         {
             Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
 
-            InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataAPIMapper.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME);
+            InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataType.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME);
 
-            if (instancePropertyValue instanceof EnumPropertyValue)
+            if (instancePropertyValue instanceof EnumPropertyValue enumPropertyValue)
             {
-                EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
+                requestStatus = switch (enumPropertyValue.getOrdinal())
+                                        {
+                                            case 0 -> DiscoveryRequestStatus.WAITING;
+                                            case 1 -> DiscoveryRequestStatus.ACTIVATING;
+                                            case 2 -> DiscoveryRequestStatus.IN_PROGRESS;
+                                            case 3 -> DiscoveryRequestStatus.FAILED;
+                                            case 4 -> DiscoveryRequestStatus.COMPLETED;
+                                            case 5 -> DiscoveryRequestStatus.OTHER;
+                                            default -> DiscoveryRequestStatus.UNKNOWN_STATUS;
+                                        };
 
-                switch (enumPropertyValue.getOrdinal())
-                {
-                    case 0:
-                        requestStatus = DiscoveryRequestStatus.WAITING;
-                        break;
-
-                    case 1:
-                        requestStatus = DiscoveryRequestStatus.ACTIVATING;
-                        break;
-
-                    case 2:
-                        requestStatus = DiscoveryRequestStatus.IN_PROGRESS;
-                        break;
-
-                    case 3:
-                        requestStatus = DiscoveryRequestStatus.FAILED;
-                        break;
-
-                    case 4:
-                        requestStatus = DiscoveryRequestStatus.COMPLETED;
-                        break;
-
-                    case 5:
-                        requestStatus = DiscoveryRequestStatus.OTHER;
-                        break;
-
-                    default:
-                        requestStatus = DiscoveryRequestStatus.UNKNOWN_STATUS;
-                        break;
-                }
-
-                instancePropertiesMap.remove(OpenMetadataAPIMapper.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME);
+                instancePropertiesMap.remove(OpenMetadataType.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME);
 
                 properties.setInstanceProperties(instancePropertiesMap);
             }

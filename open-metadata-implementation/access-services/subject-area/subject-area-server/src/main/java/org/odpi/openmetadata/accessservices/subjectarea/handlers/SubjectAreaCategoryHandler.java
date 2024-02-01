@@ -24,6 +24,8 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDef
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 
@@ -113,13 +115,13 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                                               genericHandler.getServerName());
 
                 builder.setEffectivityDates(effectiveFrom, effectiveTo);
-                builder.setAnchors(userId, glossaryGuid, OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME, methodName);
+                builder.setAnchors(userId, glossaryGuid, OpenMetadataType.GLOSSARY_TYPE_NAME, methodName);
 
                 createdCategoryGuid = genericHandler.createBeanInRepository(userId,
                                                                             null,
                                                                             null,
-                                                                            OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
-                                                                            OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                            OpenMetadataType.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                                            OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
                                                                             builder,
                                                                             null,
                                                                             methodName);
@@ -141,9 +143,9 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                                          null,
                                                                          createdCategoryGuid,
                                                                          "guid",
-                                                                         OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-                                                                         OpenMetadataAPIMapper.SUBJECT_AREA_CLASSIFICATION_TYPE_GUID,
-                                                                         OpenMetadataAPIMapper.SUBJECT_AREA_CLASSIFICATION_TYPE_NAME,
+                                                                         OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                         OpenMetadataType.SUBJECT_AREA_CLASSIFICATION_TYPE_GUID,
+                                                                         OpenMetadataType.SUBJECT_AREA_CLASSIFICATION_TYPE_NAME,
                                                                          null,
                                                                          null,
                                                                          false,
@@ -209,7 +211,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
             EntityDetail entityDetail = genericHandler.getEntityFromRepository(userId,
                                                                                guid,
                                                                                "guid",
-                                                                               OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                               OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
                                                                                null,
                                                                                null,
                                                                                false,
@@ -247,7 +249,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
-            List<Category> foundCategories = findNodes(userId, OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME, OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID, findRequest, exactValue, ignoreCase, CategoryMapper.class, methodName);
+            List<Category> foundCategories = findNodes(userId, OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME, OpenMetadataType.GLOSSARY_CATEGORY_TYPE_GUID, findRequest, exactValue, ignoreCase, CategoryMapper.class, methodName);
 
             if (foundCategories != null) {
                 for (Category category : foundCategories) {
@@ -273,10 +275,10 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                         userId,
                                                         guid,
                                                         new FindRequest(),
-                                                        OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-                                                        OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_GUID ,
-                                                        OpenMetadataAPIMapper.CATEGORY_ANCHOR_TYPE_NAME,
-                                                        OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME
+                                                        OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                        OpenMetadataType.CATEGORY_ANCHOR_TYPE_GUID ,
+                                                        OpenMetadataType.CATEGORY_ANCHOR_TYPE_NAME,
+                                                        OpenMetadataType.GLOSSARY_TYPE_NAME
                                                        );
 
         if (CollectionUtils.isNotEmpty(relationships)) {
@@ -300,9 +302,9 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         List<EntityDetail> foundEntities = genericHandler.getAttachedFilteredEntities(userId,
                                                                                       currentCategoryGuid,
                                                                                       "guid",
-                                                                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-                                                                                      OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME,
-                                                                                      OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_GUID,
+                                                                                      OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                                      OpenMetadataType.CATEGORY_HIERARCHY_TYPE_NAME,
+                                                                                      OpenMetadataType.CATEGORY_HIERARCHY_TYPE_GUID,
                                                                                       1,      // get only the parent
                                                                                       null,
                                                                                       null,
@@ -320,10 +322,10 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                         userId,
                                                         entityGUID,
                                                         new FindRequest(),
-                                                        OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-                                                        OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_GUID,
-                                                        OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME,
-                                                        OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME
+                                                        OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                        OpenMetadataType.CATEGORY_HIERARCHY_TYPE_GUID,
+                                                        OpenMetadataType.CATEGORY_HIERARCHY_TYPE_NAME,
+                                                        OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME
                                                        );
                 for (Relationship relationship : relationships) {
                     String parentGuid = relationship.getEnd1().getNodeGuid();
@@ -356,7 +358,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      */
     public SubjectAreaOMASAPIResponse<Relationship> getCategoryRelationships(String userId, String guid, FindRequest findRequest) {
         String restAPIName = "getCategoryRelationships";
-        return getAllRelationshipsForEntity(restAPIName, userId, guid, findRequest, OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME );
+        return getAllRelationshipsForEntity(restAPIName, userId, guid, findRequest, OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME );
     }
 
     /**
@@ -408,8 +410,8 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                   null,
                                                   guid,
                                                   "guid",
-                                                  OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
-                                                  OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                  OpenMetadataType.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                  OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
                                                   false,
                                                   false,
                                                   builder.getInstanceProperties(methodName),
@@ -493,8 +495,8 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                       null,
                                                       guid,
                                                       "guid",
-                                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_GUID,
-                                                      OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                      OpenMetadataType.GLOSSARY_CATEGORY_TYPE_GUID,
+                                                      OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
                                                       null,
                                                       null,
                                                       false,
@@ -577,16 +579,16 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 Set<String> specificMatchPropertyNames = new HashSet();
 
                 // specify the names of string attributes for this type that we want to match against
-                specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
-                specificMatchPropertyNames.add(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
-                specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
+                specificMatchPropertyNames.add(OpenMetadataProperty.DESCRIPTION.name);
+                specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
 
                 List<EntityDetail> entities = genericHandler.getAttachedFilteredEntities(userId,
                                                                                          guid,
                                                                                          "guid",
-                                                                                         OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-                                                                                         OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_NAME,
-                                                                                         OpenMetadataAPIMapper.TERM_CATEGORIZATION_TYPE_GUID,
+                                                                                         OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                                         OpenMetadataType.TERM_CATEGORIZATION_TYPE_NAME,
+                                                                                         OpenMetadataType.TERM_CATEGORIZATION_TYPE_GUID,
                                                                                          2,      // get only the children
                                                                                          specificMatchPropertyNames,
                                                                                          searchCriteria,
@@ -654,16 +656,16 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 Set<String> specificMatchPropertyNames = new HashSet();
 
                 // specify the names of string attributes for this type that we want to match against
-                specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
-                specificMatchPropertyNames.add(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
-                specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
+                specificMatchPropertyNames.add(OpenMetadataProperty.DESCRIPTION.name);
+                specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
 
                 List<EntityDetail> entities = genericHandler.getAttachedFilteredEntities(userId,
                                                                                          guid,
                                                                                          "guid",
-                                                                                         OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME,
-                                                                                         OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_NAME,
-                                                                                         OpenMetadataAPIMapper.CATEGORY_HIERARCHY_TYPE_GUID,
+                                                                                         OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                                         OpenMetadataType.CATEGORY_HIERARCHY_TYPE_NAME,
+                                                                                         OpenMetadataType.CATEGORY_HIERARCHY_TYPE_GUID,
                                                                                          2,      // get only the children
                                                                                          specificMatchPropertyNames,
                                                                                          searchCriteria,

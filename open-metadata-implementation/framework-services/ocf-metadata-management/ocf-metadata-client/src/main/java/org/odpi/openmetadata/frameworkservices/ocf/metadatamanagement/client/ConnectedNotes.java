@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Note;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,10 +25,12 @@ public class ConnectedNotes extends Notes
     private String                 serviceName;
     private String                 serverName;
     private String                 userId;
-    private String                 omasServerURL;
+    private String                 platformURLRoot;
     private String                 noteLogGUID;
     private OCFRESTClient          restClient;
 
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Typical constructor creates an iterator with the supplied list of elements.
@@ -35,7 +38,7 @@ public class ConnectedNotes extends Notes
      * @param serviceName calling service
      * @param serverName  name of the server.
      * @param userId user id to use on server calls.
-     * @param omasServerURL url root of the server to use.
+     * @param platformURLRoot url root of the server to use.
      * @param noteLogGUID unique identifier of the asset.
      * @param totalElementCount the total number of elements to process.  A negative value is converted to 0.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
@@ -45,7 +48,7 @@ public class ConnectedNotes extends Notes
     ConnectedNotes(String                 serviceName,
                    String                 serverName,
                    String                 userId,
-                   String                 omasServerURL,
+                   String                 platformURLRoot,
                    String                 noteLogGUID,
                    int                    totalElementCount,
                    int                    maxCacheSize,
@@ -56,7 +59,7 @@ public class ConnectedNotes extends Notes
         this.serviceName     = serviceName;
         this.serverName      = serverName;
         this.userId          = userId;
-        this.omasServerURL   = omasServerURL;
+        this.platformURLRoot   = platformURLRoot;
         this.noteLogGUID     = noteLogGUID;
         this.restClient      = restClient;
     }
@@ -76,7 +79,7 @@ public class ConnectedNotes extends Notes
             this.serviceName    = template.serviceName;
             this.serverName     = template.serverName;
             this.userId         = template.userId;
-            this.omasServerURL  = template.omasServerURL;
+            this.platformURLRoot  = template.platformURLRoot;
             this.noteLogGUID    = template.noteLogGUID;
             this.restClient     = template.restClient;
         }
@@ -115,7 +118,7 @@ public class ConnectedNotes extends Notes
         try
         {
             NotesResponse restResult = restClient.callOCFNotesGetRESTCall(methodName,
-                                                                          omasServerURL + urlTemplate,
+                                                                          platformURLRoot + urlTemplate,
                                                                           serverName,
                                                                           serviceName,
                                                                           userId,
@@ -149,7 +152,7 @@ public class ConnectedNotes extends Notes
         }
         catch (Exception  error)
         {
-            restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
+            restExceptionHandler.handleUnexpectedException(error, methodName, serverName, platformURLRoot);
         }
 
         return null;

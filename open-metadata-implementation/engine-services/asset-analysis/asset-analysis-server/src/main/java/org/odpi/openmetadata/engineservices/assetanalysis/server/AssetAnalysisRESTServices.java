@@ -43,7 +43,6 @@ public class AssetAnalysisRESTServices
      * @param connectorProviderClassName name of a specific connector or null for all connectors
      *
      * @return connector type or
-     *
      *  InvalidParameterException the connector provider class name is not a valid connector fo this service
      *  UserNotAuthorizedException user not authorized to issue this request
      *  PropertyServerException there was a problem detected by the integration service
@@ -94,7 +93,6 @@ public class AssetAnalysisRESTServices
      * @param requestBody containing analysisParameters and annotationTypes
      *
      * @return unique id for the discovery request or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
@@ -154,7 +152,6 @@ public class AssetAnalysisRESTServices
      * @param requestBody containing analysisParameters and annotationTypes
      *
      * @return void or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  DiscoveryEngineException there was a problem detected by the discovery engine.

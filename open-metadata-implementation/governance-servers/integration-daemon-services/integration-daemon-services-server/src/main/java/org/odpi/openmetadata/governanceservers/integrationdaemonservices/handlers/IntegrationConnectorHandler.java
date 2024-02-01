@@ -733,6 +733,10 @@ public class IntegrationConnectorHandler
             if ((integrationConnectorStatus == IntegrationConnectorStatus.RUNNING) ||
                 (integrationConnectorStatus == IntegrationConnectorStatus.FAILED))
             {
+                if (integrationContext != null)
+                {
+                    integrationContext.disconnect();
+                }
                 integrationConnector.disconnect();
                 updateStatus(IntegrationConnectorStatus.STOPPED);
             }

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
@@ -11,7 +12,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicProvider;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreProviderBase;
 import org.slf4j.Logger;
@@ -62,7 +62,7 @@ public class ConnectorConfigurationFactory
     private static final String XTDB_OMRS_REPOSITORY_CONNECTOR_PROVIDER                    = "org.odpi.openmetadata.adapters.repositoryservices.xtdb.repositoryconnector.XTDBOMRSRepositoryConnectorProvider";
     private static final String IN_MEMORY_OMRS_REPOSITORY_CONNECTOR_PROVIDER               = "org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider";
     private static final String READ_ONLY_OMRS_REPOSITORY_CONNECTOR_PROVIDER               = "org.odpi.openmetadata.adapters.repositoryservices.readonly.repositoryconnector.ReadOnlyOMRSRepositoryConnectorProvider";
-    private static final String OMRSREST_REPOSITORY_CONNECTOR_PROVIDER                     = "org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider";
+    private static final String OMRS_REST_REPOSITORY_CONNECTOR_PROVIDER                    = "org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider";
     private static final String OMRS_TOPIC_PROVIDER                                        = "org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicProvider";
 
     private static final Logger log = LoggerFactory.getLogger(ConnectorConfigurationFactory.class);
@@ -118,14 +118,16 @@ public class ConnectorConfigurationFactory
      */
     public Connection getDefaultAuditLogConnection()
     {
-        List<OMRSAuditLogRecordSeverity> supportedSeverityDefinitions = Arrays.asList(OMRSAuditLogRecordSeverity.values());
-        List<String>                     supportedSeverities = new ArrayList<>();
+        List<AuditLogRecordSeverityLevel> supportedSeverityDefinitions = Arrays.asList(AuditLogRecordSeverityLevel.values());
+        List<String>                      supportedSeverities = new ArrayList<>();
 
-        for (OMRSAuditLogRecordSeverity severityDefinition : supportedSeverityDefinitions)
+        for (AuditLogRecordSeverityLevel severityDefinition : supportedSeverityDefinitions)
         {
-            if ((! OMRSAuditLogRecordSeverity.TRACE.equals(severityDefinition)) &&
-                (! OMRSAuditLogRecordSeverity.ACTIVITY.equals(severityDefinition)) &&
-                (! OMRSAuditLogRecordSeverity.PERFMON.equals(severityDefinition)))
+            if ((! AuditLogRecordSeverityLevel.TRACE.equals(severityDefinition)) &&
+                (! AuditLogRecordSeverityLevel.ACTIVITY.equals(severityDefinition)) &&
+                (! AuditLogRecordSeverityLevel.TYPES.equals(severityDefinition)) &&
+                (! AuditLogRecordSeverityLevel.EVENT.equals(severityDefinition)) &&
+                (! AuditLogRecordSeverityLevel.PERFMON.equals(severityDefinition)))
             {
                 supportedSeverities.add(severityDefinition.getName());
             }
@@ -372,7 +374,7 @@ public class ConnectorConfigurationFactory
 
         connection.setDisplayName("Local Repository Remote Connection");
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(OMRSREST_REPOSITORY_CONNECTOR_PROVIDER));
+        connection.setConnectorType(getConnectorType(OMRS_REST_REPOSITORY_CONNECTOR_PROVIDER));
 
         return connection;
     }
@@ -420,7 +422,7 @@ public class ConnectorConfigurationFactory
     /**
      * Return the local XTDB repository's connection.  This is using the XTDBOMRSRepositoryConnector.
      * Note there is no endpoint defined.
-     *
+     * <br>
      * "configurationProperties": {
      *     "xtdbConfig": {
      *         "xtdb.lucene/lucene-store": { "db-dir": "data/servers/" + serverName + "/xtdb/lucene" },
@@ -433,18 +435,21 @@ public class ConnectorConfigurationFactory
      *     }
      *   }
      *
+     * @param serverName associated server name
      * @return Connection object
      */
     public Connection getXTDBKVLocalRepositoryLocalConnection(String serverName)
     {
+        final String repositoryDirectory = "data/servers/" + serverName + "/repository/xtdb-kv";
+
         Map<String, Object> luceneProperties = new HashMap<>();
 
-        luceneProperties.put("db-dir", "data/servers/" + serverName + "/xtdb/lucene");
+        luceneProperties.put("db-dir", repositoryDirectory + "/lucene");
 
         Map<String, Object> indexStoreKVProperties = new HashMap<>();
 
         indexStoreKVProperties.put("xtdb/module", "xtdb.rocksdb/->kv-store");
-        indexStoreKVProperties.put("db-dir", "data/servers/" + serverName + "/xtdb/rdb-index");
+        indexStoreKVProperties.put("db-dir", repositoryDirectory + "/rdb-index");
 
         Map<String, Object> indexStoreProperties = new HashMap<>();
 
@@ -453,7 +458,7 @@ public class ConnectorConfigurationFactory
         Map<String, Object> documentStoreKVProperties = new HashMap<>();
 
         documentStoreKVProperties.put("xtdb/module", "xtdb.rocksdb/->kv-store");
-        documentStoreKVProperties.put("db-dir", "data/servers/" + serverName + "/xtdb/rdb-docs");
+        documentStoreKVProperties.put("db-dir", repositoryDirectory + "/rdb-docs");
 
         Map<String, Object> documentStoreProperties = new HashMap<>();
 
@@ -462,7 +467,7 @@ public class ConnectorConfigurationFactory
         Map<String, Object> txLogKVProperties = new HashMap<>();
 
         txLogKVProperties.put("xtdb/module", "xtdb.rocksdb/->kv-store");
-        txLogKVProperties.put("db-dir", "data/servers/" + serverName + "/xtdb/rdb-tx");
+        txLogKVProperties.put("db-dir", repositoryDirectory + "/rdb-tx");
 
         Map<String, Object> txLogProperties = new HashMap<>();
 
@@ -989,7 +994,7 @@ public class ConnectorConfigurationFactory
         catch (Exception classException)
         {
             log.error("Bad connectorProviderClassName: " + classException.getMessage());
-            throw new OCFRuntimeException(ConnectorConfigurationFactoryErrorCode.INVALID_CONNECTOR_PROVIDER.getMessageDefinition(connectorProviderClassName,
+            throw new OCFRuntimeException(ConnectorConfigurationFactoryErrorCode.UNKNOWN_CONNECTOR_PROVIDER.getMessageDefinition(connectorProviderClassName,
                                                                                                                                  classException.getClass().getName(),
                                                                                                                                  classException.getMessage()),
                                           this.getClass().getName(),
@@ -1016,23 +1021,27 @@ public class ConnectorConfigurationFactory
                                                                                             NoSuchMethodException,
                                                                                             InvocationTargetException
     {
+        final String methodName = "getDynamicConnectorType";
+
         ConnectorType  connectorType = null;
 
         if (connectorProviderClassName != null)
         {
-                Class<?>   connectorProviderClass = Class.forName(connectorProviderClassName);
-                Object     potentialConnectorProvider = connectorProviderClass.getDeclaredConstructor().newInstance();
+            Class<?>   connectorProviderClass = Class.forName(connectorProviderClassName);
+            Object     potentialConnectorProvider = connectorProviderClass.getDeclaredConstructor().newInstance();
 
-                ConnectorProvider  connectorProvider = (ConnectorProvider)potentialConnectorProvider;
+            if (potentialConnectorProvider instanceof ConnectorProvider)
+            {
+                connectorType = new ConnectorType();
 
-                connectorType = connectorProvider.getConnectorType();
-
-                if (connectorType == null)
-                {
-                    connectorType = new ConnectorType();
-
-                    connectorType.setConnectorProviderClassName(connectorProviderClassName);
-                }
+                connectorType.setConnectorProviderClassName(connectorProviderClassName);
+            }
+            else
+            {
+                throw new OCFRuntimeException(ConnectorConfigurationFactoryErrorCode.INVALID_CONNECTOR_PROVIDER.getMessageDefinition(connectorProviderClassName),
+                                              this.getClass().getName(),
+                                              methodName);
+            }
         }
 
         return connectorType;

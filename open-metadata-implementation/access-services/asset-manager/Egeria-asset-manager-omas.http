@@ -1,0 +1,859 @@
+# Egeria-asset-manager-omas
+
+###
+# group: Asset Managers
+# @name Create an element to describe the Asset Manager
+# Create a SoftwareServerCapability entity to represent the Asset Manager.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/asset-managers
+Content-Type: application/json
+
+{
+	"class" : "AssetManagerProperties",
+	"qualifiedName" : "{{externalSourceName}}"
+}
+
+###
+# group: Asset Managers
+# @name Retrieve the GUID for the Asset Manager based on its name
+# This call retrieves the asset manager's GUID.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/asset-managers/by-name/{{externalSourceName}}
+
+###
+# group: External Identifiers
+# @name Add an external identifier to an element
+# Create an association between an existing open metadata element and an external identifier that comes from a specific asset manager
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/asset-managers/elements/{{typeName}}/{{guid}}/external-identifiers/add
+Content-Type: application/json
+
+{	
+    "class" : "MetadataCorrelationProperties",
+    "assetManagerGUID" : "{{externalSourceGUID}}",
+    "assetManagerName" : "{{externalSourceName}}",
+    "synchronizationDirection" : "BOTH_DIRECTIONS",
+    "synchronizationDescription" : "Description of ",
+    "externalIdentifier" : "Unique key for element from external asset manager",
+    "externalIdentifierName" : "Name used to describe the unique key in external asset manager",
+    "externalIdentifierUsage" : "How should the external identifier be used?",
+    "externalIdentifierSource" : "{{externalSourceName}}",
+    "keyPattern" : "LOCAL_KEY",
+    "mappingProperties" : {
+        "mappingPropertyName1" : "propertyValue1",
+        "mappingPropertyName2" : "propertyValue2"
+    }
+}
+
+###
+# group: External Identifiers
+# @name Update an external identifier attached to an element
+# Update the properties for an external identifier that comes from a specific asset manager.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/asset-managers/elements/{{typeName}}/{{guid}}/external-identifiers/update
+Content-Type: application/json
+
+{	
+	"class" : "MetadataCorrelationProperties",
+    "assetManagerGUID" : "{{externalSourceGUID}}",
+    "assetManagerName" : "{{externalSourceName}}",
+    "synchronizationDirection" : "BOTH_DIRECTIONS",
+    "synchronizationDescription" : "Description of ",
+    "externalIdentifier" : "Unique key for element from external asset manager",
+    "externalIdentifierName" : "Name used to describe the unique key in external asset manager",
+    "externalIdentifierUsage" : "How should the external identifier be used?",
+    "externalIdentifierSource" : "{{externalSourceName}}",
+    "keyPattern" : "LOCAL_KEY",
+    "mappingProperties" : {
+        "mappingPropertyName1" : "propertyValue1",
+        "mappingPropertyName2" : "propertyValue2"
+    }
+}
+
+###
+# group: External Identifiers
+# @name Remove an external identifier attached to an element
+# Remove an external identifier that comes from a specific asset manager.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/asset-managers/elements/{{typeName}}/{{guid}}/external-identifiers/remove
+Content-Type: application/json
+
+{	
+	"class" : "MetadataCorrelationProperties",
+    "assetManagerGUID" : "{{externalSourceGUID}}",
+    "assetManagerName" : "{{externalSourceName}}",
+    "synchronizationDirection" : "BOTH_DIRECTIONS",
+    "synchronizationDescription" : "Description of ",
+    "externalIdentifier" : "Unique key for element from external asset manager",
+    "externalIdentifierName" : "Name used to describe the unique key in external asset manager",
+    "externalIdentifierUsage" : "How should the external identifier be used?",
+    "externalIdentifierSource" : "{{externalSourceName}}",
+    "keyPattern" : "LOCAL_KEY",
+    "mappingProperties" : {
+        "mappingPropertyName1" : "propertyValue1",
+        "mappingPropertyName2" : "propertyValue2"
+    }
+}
+
+###
+# group: External Identifiers
+# @name Get metadata elements linked to an external identifier
+# Retrieve all of the metadata elements associated with an external identifier that comes from a specific asset manager.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/asset-managers/external-identifiers/open-metadata-elements?
+    startFrom=0&
+    pageSize=100
+Content-Type: application/json
+
+{	
+	"class" : "MetadataCorrelationProperties",
+    "assetManagerGUID" : "{{externalSourceGUID}}",
+    "assetManagerName" : "{{externalSourceName}}",
+    "externalIdentifier" : "Unique key for element from external asset manager"
+}
+
+###
+# group: Data Assets
+# @name Create a Data Set
+# Create a data asset. This could be a data set (such as a database schema or information view) or an API.
+# Save the guid returned into the dataAssetGUID variable.
+# Link to asset types: [https://egeria-project.org/concepts/asset/#open-metadata-types](https://egeria-project.org/concepts/asset/#open-metadata-types)
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/data-assets?
+    assetManagerIsHome=false
+Content-Type: application/json
+
+{
+    "class" : "DataAssetRequestBody",
+    "elementProperties" : 
+    {
+        "class" : "DataAssetProperties",
+        "typeName" : "DataSet",
+        "qualifiedName" : "unique name of the asset from an open metadata perspective - required field",
+        "technicalName" : "name used by technology",
+        "technicalDescription" : "description extracted from technology",
+        "displayName" : "display name for business users",
+        "summary" : "short description for business users",
+        "description" : "full description for business users",
+        "abbreviation" : "abbreviation used by the business",
+        "usage" : "use of this asset by the org",
+        "isReferenceAsset" : false,
+        "additionalProperties" : {
+            "propertyName1" : "propertyValue1",
+            "propertyName2" : "propertyValue2"
+        }
+    }
+}
+
+###
+# group: Data Assets
+# @name Create an External Data Asset
+# Create a data asset. This could be a data set (such as a database schema or information view) or an API.  There is an additional variation for data stores that allows a number of additional properties.
+# If assetManagerIsHome is true, the assetManagerGUID must be set in the request body.
+# Link to asset types: [https://egeria-project.org/concepts/asset/#open-metadata-types](https://egeria-project.org/concepts/asset/#open-metadata-types)
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/data-assets?
+    assetManagerIsHome={{useExternalSourceProvenance}}
+Content-Type: application/json
+
+{
+    "class" : "DataAssetRequestBody",
+	"metadataCorrelationProperties" : {
+        "class" : "MetadataCorrelationProperties",
+        "assetManagerGUID" : "{{externalSourceGUID}}",
+        "assetManagerName" : "{{externalSourceName}}",
+        "synchronizationDirection" : "BOTH_DIRECTIONS",
+        "synchronizationDescription" : "Description of ",
+        "externalIdentifier" : "Unique key for element from external asset manager",
+        "externalIdentifierName" : "Name used to describe the unique key in external asset manager",
+        "externalIdentifierUsage" : "How should the external identifier be used?",
+        "externalIdentifierSource" : "{{externalSourceName}}",
+        "keyPattern" : "LOCAL_KEY",
+        "mappingProperties" : {
+            "mappingPropertyName1" : "propertyValue1",
+            "mappingPropertyName2" : "propertyValue2"
+        }
+    },
+    "elementProperties" : 
+    {
+        "class" : "DataAssetProperties",
+        "typeName" : "asset type name goes here - (default is Asset)",
+        "qualifiedName" : "unique name of the asset from an open metadata perspective - required field",
+        "technicalName" : "name used by technology",
+        "technicalDescription" : "description extracted from technology",
+        "displayName" : "display name for business users",
+        "summary" : "short description for business users",
+        "description" : "full description for business users",
+        "abbreviation" : "abbreviation used by the business",
+        "usage" : "use of this asset by the org",
+        "isReferenceAsset" : false,
+        "additionalProperties" : {
+            "propertyName1" : "propertyValue1",
+            "propertyName2" : "propertyValue2"
+        }
+    }
+}
+
+###
+# group: Data Assets
+# @name Create an external Data Store
+# Create a data store asset.  This is a specialization of the data asset and includes some additional properties about the physical storage it uses.
+# If assetManagerIsHome is true, the assetManagerGUID must be set in the request body.
+# Link to asset types: https://egeria-project.org/concepts/asset/#open-metadata-types
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/data-assets?
+    assetManagerIsHome={{useExternalSourceProvenance}}
+Content-Type: application/json
+
+{
+    "class" : "DataAssetRequestBody",
+	"metadataCorrelationProperties" : {
+        "class" : "MetadataCorrelationProperties",
+        "assetManagerGUID" : "{{externalSourceGUID}}",
+        "assetManagerName" : "{{externalSourceName}}",
+        "synchronizationDirection" : "BOTH_DIRECTIONS",
+        "synchronizationDescription" : "Description of ",
+        "externalIdentifier" : "Unique key for element from external asset manager",
+        "externalIdentifierName" : "Name used to describe the unique key in external asset manager",
+        "externalIdentifierUsage" : "How should the external identifier be used?",
+        "externalIdentifierSource" : "{{externalSourceName}}",
+        "keyPattern" : "LOCAL_KEY",
+        "mappingProperties" : {
+            "mappingPropertyName1" : "propertyValue1",
+            "mappingPropertyName2" : "propertyValue2"
+        }
+    },
+    "elementProperties" : 
+    {
+        "class" : "DataStoreProperties",
+        "typeName" : "asset type name goes here - (default is Asset)",
+        "qualifiedName" : "unique name of the asset from an open metadata perspective - required field",
+        "technicalName" : "name used by technology",
+        "technicalDescription" : "description extracted from technology",
+        "displayName" : "display name for business users",
+        "summary" : "short description for business users",
+        "description" : "full description for business users",
+        "abbreviation" : "abbreviation used by the business",
+        "usage" : "use of this asset by the org",
+        "isReferenceAsset" : false,
+        "pathName" : "path to store",
+        "createTime" : "date/time",
+        "modifiedTime" : "date/time",
+        "encodingType" : "Details of encoding used in store",
+        "encodingLanguage" : "Natural language used for text strings",
+        "encodingDescription" : "Description of anything a user needs to know about the encoding",
+        "encodingProperties" : {
+            "encodingProperty1" : "propertyValue1",
+            "encodingProperty2" : "propertyValue2"
+        },
+        "additionalProperties" : {
+            "propertyName1" : "propertyValue1",
+            "propertyName2" : "propertyValue2"
+        }
+    }
+}
+
+###
+# group: Schema
+# @name Create a Schema Type
+# Create a schema type. This is typically the root of the schema that is attached to an Data Asset, Port or Process.
+# The typeName for this root schema type should be compatible to the type of asset it belongs to.
+# If assetManagerIsHome is true, the assetManagerGUID must be set in the request body.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/schema-types?
+    assetManagerIsHome={{useExternalSourceProvenance}}
+Content-Type: application/json
+
+{
+    "class" : "SchemaTypeRequestBody",
+	"metadataCorrelationProperties" : {
+        "class" : "MetadataCorrelationProperties",
+        "assetManagerGUID" : "{{externalSourceGUID}}",
+        "assetManagerName" : "{{externalSourceName}}",
+        "synchronizationDirection" : "BOTH_DIRECTIONS",
+        "synchronizationDescription" : "Description of ",
+        "externalIdentifier" : "Unique key for element from external asset manager",
+        "externalIdentifierName" : "Name used to describe the unique key in external asset manager",
+        "externalIdentifierUsage" : "How should the external identifier be used?",
+        "externalIdentifierSource" : "{{externalSourceName}}",
+        "keyPattern" : "LOCAL_KEY",
+        "mappingProperties" : {
+            "mappingPropertyName1" : "propertyValue1",
+            "mappingPropertyName2" : "propertyValue2"
+        }
+    },
+    "elementProperties" : 
+    {
+        "class" : "SchemaTypeProperties",
+        "typeName" : "schema type name goes here - (default is SchemaType)",
+        "qualifiedName" : "unique name of the schema type from an open metadata perspective - required field",
+        "technicalName" : "name used by technology",
+        "technicalDescription" : "description extracted from technology",
+        "displayName" : "display name for business users",
+        "summary" : "short description for business users",
+        "description" : "full description for business users",
+        "abbreviation" : "abbreviation used by the business",
+        "usage" : "use of this asset by the org",
+        "isDeprecated" : false,
+        "versionNumber" : "name of the version eg 3.1",
+        "author" : "name",
+        "encodingStandard" : "special encoding used for the data structured by this schema element",
+        "namespace" : "namespace name",
+        "formula" : "formula if derived",
+        "queries" : [{
+            "class" : "QueryTargetProperties",
+            "queryId" : "identifier used in the formula",
+            "query" : "query to retrieve values from source",
+            "queryTargetGUID" : "unique identifier of the asset called by for the query"
+        }],
+        "additionalProperties" : {
+            "propertyName1" : "propertyValue1",
+            "propertyName2" : "propertyValue2"
+        }
+    }
+}
+
+###
+# group: Schema
+# @name Link Schema Type to Data Asset, Port or Process
+# Link a schema type to an Data Asset, Port or Process.
+# The typeName for this root schema type should be compatible to the type of asset it belongs to.
+# If assetManagerIsHome is true, the assetManagerGUID must be set in the request body.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/parents/{{parentElementGUID}}/{{parentElementTypeName}}/schema-types/{{guid}}?
+    assetManagerIsHome={{useExternalSourceProvenance}}
+Content-Type: application/json
+
+{
+	"class" : "AssetManagerIdentifiersRequestBody",
+	 "assetManagerGUID" : "{{externalSourceGUID}}",
+	 "assetManagerName" : "{{externalSourceName}}"
+}
+
+###
+# group: Schema
+# @name Remove Schema Type from Data Asset, Port or Process
+# Link a schema type to an Data Asset, Port or Process.
+# The typeName for this root schema type should be compatible to the type of asset it belongs to.
+# If assetManagerIsHome is true, the assetManagerGUID must be set in the request body.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/parents/{{parentElementGUID}}/{{parentElementTypeName}}/schema-types/{{guid}}/remove?
+    assetManagerIsHome={{useExternalSourceProvenance}}
+Content-Type: application/json
+
+{
+	"class" : "AssetManagerIdentifiersRequestBody",
+	 "assetManagerGUID" : "{{externalSourceGUID}}",
+	 "assetManagerName" : "{{externalSourceName}}"
+}
+
+###
+# group: Schema
+# @name Create a Schema Attribute
+# Create a schema attribute and link it to a parent schema element. This is typically the root of the schema that is attached to a Data Asset, Port or Process or a parent schema attribute.
+# If assetManagerIsHome is true, the assetManagerGUID must be set in the request body.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/schema-elements/{{parentSchemaElementGUID}}/schema-attributes?
+    assetManagerIsHome={{useExternalSourceProvenance}}
+Content-Type: application/json
+
+{
+    "class" : "SchemaAttributeRequestBody",
+	"metadataCorrelationProperties" : {
+        "class" : "MetadataCorrelationProperties",
+        "assetManagerGUID" : "{{externalSourceGUID}}",
+        "assetManagerName" : "{{externalSourceName}}",
+        "synchronizationDirection" : "BOTH_DIRECTIONS",
+        "synchronizationDescription" : "Description of ",
+        "externalIdentifier" : "Unique key for element from external asset manager",
+        "externalIdentifierName" : "Name used to describe the unique key in external asset manager",
+        "externalIdentifierUsage" : "How should the external identifier be used?",
+        "externalIdentifierSource" : "{{externalSourceName}}",
+        "keyPattern" : "LOCAL_KEY",
+        "mappingProperties" : {
+            "mappingPropertyName1" : "propertyValue1",
+            "mappingPropertyName2" : "propertyValue2"
+        }
+    },
+    "elementProperties" : 
+    {
+        "class" : "SchemaAttributeProperties",
+        "typeName" : "schema attribute name goes here - (default is SchemaType)",
+        "qualifiedName" : "unique name of the schema attribute from an open metadata perspective - required field",
+        "technicalName" : "name used by technology",
+        "technicalDescription" : "description extracted from technology",
+        "displayName" : "display name for business users",
+        "summary" : "short description for business users",
+        "description" : "full description for business users",
+        "abbreviation" : "abbreviation used by the business",
+        "usage" : "use of this asset by the org",
+        "isDeprecated" : false,
+        "elementPosition" : 0,
+        "minCardinality" : 0,
+        "maxCardinality" : 0,
+        "allowsDuplicateValues" : false,
+        "orderedValues" : false,
+        "defaultValueOverride" : "",
+        "sortOrder" : "UNSORTED",
+        "minimumLength" : 0,
+        "length" : 0,
+        "precision" : 0,
+        "isNullable" : false,
+        "nativeJavaClass" : "classname",
+        "aliases" : [ "alias1" , "alias2"],
+        "schemaType" : {
+            "class" : "SchemaTypeProperties",
+            "typeName" : "schema type name goes here - (default is SchemaType)",
+            "qualifiedName" : "unique name of the schema type from an open metadata perspective - required field",
+            "technicalName" : "name used by technology",
+            "technicalDescription" : "description extracted from technology",
+            "displayName" : "display name for business users",
+            "summary" : "short description for business users",
+            "description" : "full description for business users",
+            "abbreviation" : "abbreviation used by the business",
+            "usage" : "use of this asset by the org",
+            "isDeprecated" : false,
+            "versionNumber" : "name of the version eg 3.1",
+            "author" : "name",
+            "encodingStandard" : "special encoding used for the data structured by this schema element",
+            "namespace" : "namespace name",
+            "dataType" : "data type used in the data source",
+            "defaultValue" : "default value of the data",
+            "formula" : "formula if derived",
+            "queries" : [{
+                "class" : "QueryTargetProperties",
+                "queryId" : "identifier used in the formula",
+                "query" : "query to retrieve values from source",
+                "queryTargetGUID" : "unique identifier of the asset called by for the query"
+            }],
+            "additionalProperties" : {
+                "propertyName1" : "propertyValue1",
+                "propertyName2" : "propertyValue2"
+        }},
+        "additionalProperties" : {
+            "propertyName1" : "propertyValue1",
+            "propertyName2" : "propertyValue2"
+        }
+    }
+}
+
+###
+# group: Linking Data Assets to Glossary Terms
+# @name Link a data asset to a glossary term
+# This links the term to the data asset.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/elements/{{assetGUID}}/semantic-assignment/terms/{{glossaryTermGUID}}
+Content-Type: application/json
+
+{
+    "class" : "RelationshipRequestBody",
+    "properties" : {
+        "class" : "SemanticAssignmentProperties",
+        "status" : "VALIDATED"
+    }
+}
+
+###
+# group: Linking Data Assets to Glossary Terms
+# @name Retrieve the data assets associated with a glossary term
+# This retrieves all of the data assets linked to the glossary term.
+GET {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-consumer/users/{{user}}/assets/by-meaning/{{glossaryTermGUID}}?
+    startFrom=0&
+    pageSize=0
+
+###
+# group: Glossaries
+# @name Create a glossary
+# Create a SoftwareServerCapability entity to represent the Asset Manager.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries
+Content-Type: application/json
+
+{
+	"class" : "ReferenceableRequestBody",
+	"elementProperties" : 
+		{
+			"class" : "GlossaryProperties",
+			"qualifiedName" : "MyGlossary",
+			"displayName" : "My Glossary",
+			"description" : "This is an example glossary"
+		}
+}
+
+###
+# group: Glossaries
+# @name Retrieve a glossary by GUID
+# This call retrieves the asset manager's GUID.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/{{glossaryGUID}}/retrieve
+Content-Type: application/json
+
+{
+	"class" : "AssetManagerIdentifiersRequestBody",
+	 "assetManagerGUID" : "{{externalSourceGUID}}",
+	 "assetManagerName" : "{{externalSourceName}}"
+}
+
+###
+# group: Glossaries
+# @name Retrieve a glossary By Name
+# This call retrieves the details of the Abu Dhabi glossary and checks the adGlossaryGUID is set up properly.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/by-name
+Content-Type: application/json
+
+{
+    "class" : "NameRequestBody",
+    "name" : "Glossary: Abu Dhabi Glossary"
+}
+
+###
+# group: Glossaries
+# @name Find all glossaries
+# This call retrieves the details of the Abu Dhabi glossary and checks the adGlossaryGUID is set up properly.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/by-search-string?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+{
+	"class" : "SearchStringRequestBody",
+	 "searchString" : ".*"
+}
+
+###
+# group: Glossaries
+# @name Delete a glossary
+# Remove a glossary from the repository.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/{{glossaryGUID}}/remove
+Content-Type: application/json
+
+{	
+	"class" : "MetadataCorrelationProperties",
+	"assetManagerGUID" : "{{assetManagerGUID}}",
+	"assetManagerName" : "{{assetManagerName}}",
+	"externalIdentifier" : "extGlossary",
+	"keyPattern" : "LOCAL_KEY"
+}
+
+###
+# group: Glossaries
+# @name Create a category
+# Save the returned guid in the domain1GUID variable.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/{{glossaryGUID}}/categories
+Content-Type: application/json
+
+{
+	"class" : "ReferenceableRequestBody",
+	"elementProperties" : 
+		{
+			"class" : "GlossaryCategoryProperties",
+			"qualifiedName" : "GlossaryCategory: myCategory1",
+			"displayName" : "MyCategory 1",
+			"description" : "This is category 1 for my glossary."
+		}
+}
+
+###
+# group: Glossaries
+# @name Retrieve ALL the categories for my glossary
+# This call retrieves the details of the Abu Dhabi glossary and checks the adGlossaryGUID is set up properly.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/{{glossaryGUID}}/categories/retrieve?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+###
+# group: Glossaries
+# @name Create a controlled glossary term in a glossary
+# Add the returned guid as orgGlossaryTerm1GUID variable.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/{{glossaryGUID}}/terms/new-controlled
+Content-Type: application/json
+
+{
+	"class" : "ReferenceableRequestBody",
+	"elementProperties" : 
+		{
+			"class" : "GlossaryTermProperties",
+			"qualifiedName" : "GlossaryTerm: term name : {{$isoTimestamp}}",
+			"displayName" : "term name",
+            "summary" : "This is the short description.",
+			"description" : "This is the long description of the term.",
+            "abbreviation" : "GT",
+            "examples" : "Add examples and descriptions here.",
+            "usage" : "This is how the concept described by the glossary term is used.",
+            "publishVersionIdentifier" : "V1.0",
+            "additionalProperties" :
+            {
+               "propertyName1" : "xxxx",
+               "propertyName2" : "xxxx" 
+            }
+		},
+    "initialStatus" : "DRAFT"
+}
+
+###
+# group: Glossaries
+# @name Create a copy of a glossary term
+# Add the returned guid as adGlossaryTerm1GUID variable.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/{{glossaryGUID}}/terms/from-template/{{glossaryTermGUID}}
+Content-Type: application/json
+
+{
+	"class" : "GlossaryTemplateRequestBody",
+	"elementProperties" : 
+		{
+			"class" : "TemplateProperties",
+			"qualifiedName" : "GlossaryTerm: term name : {{$isoTimestamp}}",
+			"displayName" : "term name",
+            "versionIdentifier" : "V1.0"
+		},
+    "glossaryTermStatus" : "PROPOSED"
+}
+
+###
+# group: Glossaries
+# @name Add the data field values classification to the glossary term
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/terms/{{glossaryTermGUID}}/is-data-field
+Content-Type: application/json
+
+{
+	"class" : "ClassificationRequestBody",
+	"properties" : 
+		{
+			"class" : "DataFieldValuesProperties",
+			"defaultValue" : "Add default value here",
+            "sampleValues" : [ "Sample Value 1", "Sample Value 2"],
+            "dataPattern" : ["add data pattern here"],
+            "namePattern" : ["add column pattern here"]
+		}
+}
+
+###
+# group: Glossaries
+# @name Add the confidentiality classification to the glossary term
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/elements/{{glossaryTermGUID}}/confidentiality
+Content-Type: application/json
+
+{
+	"class" : "ClassificationRequestBody",
+	"properties" : 
+		{
+			"class" : "GovernanceClassificationProperties",
+			"levelIdentifier" : 1
+		}
+}
+
+###
+# group: Glossaries
+# @name Add the subject area classification to the glossary term
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/elements/{{glossaryTermGUID}}/subject-area-member
+Content-Type: application/json
+
+{
+	"class" : "ClassificationRequestBody",
+	"properties" : 
+		{
+			"class" : "SubjectAreaMemberProperties",
+			"subjectAreaName" : "Healthcare"
+		}
+}
+
+###
+# group: Glossaries
+# @name Update a glossary term in a glossary
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/terms/{{glossaryTermGUID}}/update?
+    isMergeUpdate=true
+Content-Type: application/json
+
+{
+	"class" : "ReferenceableRequestBody",
+	"elementProperties" : 
+		{
+			"class" : "GlossaryTermProperties",
+			"description" : "This is the long description of the term. And this is some more text."
+		},
+        "updateDescription" : "Final updates based on in-house review comments."
+}
+
+###
+# group: Glossaries
+# @name Update a glossary term's version identfier
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/terms/{{glossaryTermGUID}}/update?
+    isMergeUpdate=true
+Content-Type: application/json
+
+{
+	"class" : "ReferenceableRequestBody",
+	"elementProperties" : 
+		{
+			"class" : "GlossaryTermProperties",
+            "publishVersionIdentifier" : "V1.1"
+		}
+}
+
+###
+# group: Glossaries
+# @name Add a glossary term to a cateogry
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/categories/{{glossaryCategoryGUID}}/terms/{{glossaryTermGUID}}
+Content-Type: application/json
+
+{
+    "class" : "RelationshipRequestBody",
+    "properties" : {
+        "class" : "GlossaryTermCategorization"
+     }
+}
+
+###
+# group: Glossaries
+# @name Remove a glossary term from a category
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/categories/{{glossaryCategoryGUID}}/terms/{{glossaryTermGUID}}/remove
+Content-Type: application/json
+
+###
+# group: Glossaries
+# @name Change the status of a glossary term in a glossary
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/terms/{{glossaryTermGUID}}/status
+Content-Type: application/json
+
+{
+	"class" : "GlossaryTermStatusRequestBody",
+    "glossaryTermStatus" : "ACTIVE"
+}
+
+###
+# group: Glossaries
+# @name Undo an update to the glossary term
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/terms/{{glossaryTermGUID}}/undo
+Content-Type: application/json
+
+###
+# group: Glossaries
+# @name Retrieve ALL the glossary terms in a glossary
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/{{glossaryGUID}}/terms/retrieve?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+###
+# group: Glossaries
+# @name Retrieve ALL the glossary terms in a category
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/categories/{{glossaryCategoryGUID}}/terms/retrieve?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+###
+# group: Glossaries
+# @name Retrieve a glossary term 's relationships
+# This call retrieves details of the glossary terms linked to this glossary term.  Notice the original org 1 glossary term is linked via the "SourcedFrom" relationship..
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/terms/{{glossaryTermGUID}}/related-terms?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+###
+# group: Glossaries
+# @name Retrieve the DRAFT glossary terms from a glossary
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/terms/by-search-string?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+{
+    "class" : "GlossarySearchStringRequestBody",
+    "searchString" : ".*",
+    "glossaryGUID" : "{{glossaryGUID}}",
+    "limitResultsByStatus" : ["DRAFT"]
+}
+
+###
+# group: Glossaries
+# @name Retrieve the ACTIVE and PREPARED glossary terms from a glossary
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/terms/by-search-string?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+{
+    "class" : "GlossarySearchStringRequestBody",
+    "searchString" : ".*",
+    "glossaryGUID" : "{{glossaryGUID}}",
+    "limitResultsByStatus" : ["ACTIVE", "PREPARED"]
+}
+
+###
+# group: Glossaries
+# @name Retrieve a glossary term by GUID
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/terms/{{glossaryTermGUID}}/retrieve
+Content-Type: application/json
+
+###
+# group: Glossaries
+# @name Retrieve the versions of the glossary term
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/terms/{{glossaryTermGUID}}/history?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+###
+# group: Glossaries
+# @name Retrieve the revision log for a glossary term
+# Add the returned guid as orgGlossaryTerm1_RevisionLogGUID variable.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/elements/{{glossaryTermGUID}}/note-logs/retrieve?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+###
+# group: Glossaries
+# @name Retrieve the revision history for a glossary term
+# This revision history is created automatically.  The text is supplied on the update request.  If no text is supplied, the value "None" is show.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/note-logs/{{glossaryTermRevisionLogGUID}}/notes/retrieve?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+###
+# group: Glossaries
+# @name Search for term by version identifier
+POST {{baseURL}}/servers/{{server}}/open-metadata/framework-services/asset-manager/open-metadata-store/users/{{user}}/metadata-elements/by-search-specification?
+    startFrom=0&
+    pageSize=0&
+    forLineage=false&
+    forDuplicateProcessing=false&
+    effectiveTime=0
+Content-Type: application/json
+
+{
+    "class" : "FindRequestBody",
+    "metadataElementTypeName" : "GlossaryTerm",
+    "searchProperties" : {
+        "class" : "SearchProperties",
+        "conditions" : [{
+            "class" : "PropertyCondition",
+            "property" : "publishVersionIdentifier",
+            "operator" : "EQ",
+            "value" : {
+                "class" : "PrimitiveTypePropertyValue",
+                "primitiveTypeCategory" : "OM_PRIMITIVE_TYPE_STRING",
+                "primitiveValue" : "V1.0",
+                "typeName" : "string"
+                }
+        }],
+        "matchCriteria" : "ALL"
+    }
+}
+
+###
+# group: Glossaries
+# @name Delete a. glossary term
+# This call retrieves the details of the Abu Dhabi glossary and checks the adGlossaryGUID is set up properly.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/terms/{{glossaryTermGUID}}/remove
+Content-Type: application/json
+
+###
+# group: Processes
+# @name Create Process
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/processes?
+    assetManagerIsHome={{useExternalSourceProvenance}}&
+    initialStatus=ACTIVE
+Content-Type: application/json
+
+{
+    "class" : "ProcessRequestBody",
+    "elementProperties" : 
+    {
+        "class" : "ProcessProperties",
+        "qualifiedName" : "fred"
+    }
+}
+
+###
+# group: Connector Types
+# @name Update a connector type
+GET

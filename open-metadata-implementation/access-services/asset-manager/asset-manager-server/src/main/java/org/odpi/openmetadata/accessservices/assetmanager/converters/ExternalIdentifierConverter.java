@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetmanager.converters;
 
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataCorrelationHeader;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -140,7 +140,7 @@ public class ExternalIdentifierConverter<B> extends AssetManagerOMASConverter<B>
                             {
                                 if (repositoryHelper.isTypeOf(serviceName,
                                                               relationship.getType().getTypeDefName(),
-                                                              OpenMetadataAPIMapper.EXTERNAL_ID_SCOPE_TYPE_NAME))
+                                                              OpenMetadataType.EXTERNAL_ID_SCOPE_TYPE_NAME))
                                 {
                                     instanceProperties = new InstanceProperties(relationship.getProperties());
 
@@ -155,7 +155,7 @@ public class ExternalIdentifierConverter<B> extends AssetManagerOMASConverter<B>
                                 }
                                 else if (repositoryHelper.isTypeOf(serviceName,
                                                                    relationship.getType().getTypeDefName(),
-                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME))
+                                                                   OpenMetadataType.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME))
                                 {
                                     instanceProperties = new InstanceProperties(relationship.getProperties());
 

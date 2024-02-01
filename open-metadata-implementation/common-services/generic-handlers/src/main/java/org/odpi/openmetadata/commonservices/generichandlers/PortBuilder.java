@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -72,7 +74,7 @@ public class PortBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
                                                                   displayName,
                                                                   methodName);
 
@@ -81,15 +83,15 @@ public class PortBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataAPIMapper.PORT_TYPE_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.PORT_TYPE_ENUM_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.PORT_TYPE_ENUM_TYPE_NAME,
+                                                                    OpenMetadataType.PORT_TYPE_PROPERTY_NAME,
+                                                                    OpenMetadataType.PORT_TYPE_ENUM_TYPE_GUID,
+                                                                    OpenMetadataType.PORT_TYPE_ENUM_TYPE_NAME,
                                                                     portType,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.PORT_TYPE_ENUM_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.PORT_TYPE_ENUM_TYPE_NAME);
         }
 
         return properties;

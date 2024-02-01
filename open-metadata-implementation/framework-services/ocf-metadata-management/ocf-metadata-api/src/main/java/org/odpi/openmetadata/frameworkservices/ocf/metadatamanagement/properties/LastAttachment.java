@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 
+import java.io.Serial;
 import java.util.Date;
 import java.util.Objects;
 
@@ -29,6 +30,8 @@ public class LastAttachment extends ElementBase
     private String description     = null;
     private Date   updateTime      = null;
 
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Default constructor

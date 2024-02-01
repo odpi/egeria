@@ -204,18 +204,15 @@ public class ServerAuthorViewAdmin extends ViewServiceAdmin {
                                                     parameterName);
 
             } else {
-
-                @SuppressWarnings("unchecked")
-                List<ResourceEndpointConfig> endpointList = (List<ResourceEndpointConfig>) resourceEndpoints;
-                auditLog.logMessage(methodName, OMAGAdminAuditCode.RESOURCE_ENDPOINTS.getMessageDefinition(viewServiceFullName, endpointList.toString()));
-                return endpointList;
+                auditLog.logMessage(methodName, OMAGAdminAuditCode.RESOURCE_ENDPOINTS.getMessageDefinition(viewServiceFullName, resourceEndpoints.toString()));
+                return resourceEndpoints;
             }
 
-        } catch (Throwable error) {
+        } catch (Exception error) {
 
             logBadConfigProperties(viewServiceFullName,
                                    resourceEndpointsPropertyName,
-                                   resourceEndpoints.toString(),
+                                   "null",
                                    auditLog,
                                    methodName,
                                    error);

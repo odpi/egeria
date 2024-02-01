@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.frameworks.integration.context;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -12,9 +14,14 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface;
+import org.odpi.openmetadata.frameworks.integration.filelistener.FileListenerInterface;
+import org.odpi.openmetadata.frameworks.integration.filelistener.FilesListenerManager;
 import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.reports.IntegrationReportWriter;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +49,8 @@ public class IntegrationContext
 
     protected final int maxPageSize;
 
+    private final FilesListenerManager listenerManager;
+
     private boolean isRefreshInProgress = false;
 
     /**
@@ -58,6 +67,7 @@ public class IntegrationContext
      * @param externalSourceGUID unique identifier of the software server capability for the source of metadata
      * @param externalSourceName unique name of the software server capability for the source of metadata
      * @param integrationConnectorGUID unique identifier of the integration connector entity (maybe null)
+     * @param auditLog logging destination
      * @param maxPageSize max number of elements that can be returned on a query
      */
     public IntegrationContext(String                       connectorId,
@@ -71,6 +81,7 @@ public class IntegrationContext
                               String                       externalSourceGUID,
                               String                       externalSourceName,
                               String                       integrationConnectorGUID,
+                              AuditLog                     auditLog,
                               int                          maxPageSize)
     {
         this.openIntegrationClient        = openIntegrationClient;
@@ -82,6 +93,8 @@ public class IntegrationContext
         this.externalSourceName           = externalSourceName;
         this.integrationConnectorGUID     = integrationConnectorGUID;
         this.maxPageSize                  = maxPageSize;
+
+        this.listenerManager = new FilesListenerManager(auditLog, connectorName);
 
         if (generateIntegrationReport)
         {
@@ -107,7 +120,7 @@ public class IntegrationContext
 
 
     /**
-     * Return a new  integrationGovernanceContext for a specific connector.
+     * Return a new integrationGovernanceContext for a specific connector.
      *
      * @param openMetadataStore client implementation
      * @param userId calling user
@@ -130,15 +143,14 @@ public class IntegrationContext
                                                                                      externalSourceName,
                                                                                      integrationReportWriter);
             MultiLanguageManagement multiLanguageManagement = new MultiLanguageManagement(openMetadataStore, userId);
-            StewardshipAction       stewardshipAction       = new StewardshipAction(openMetadataStore, userId);
-            ValidMetadataValues     validMetadataValues     = new ValidMetadataValues(openMetadataStore, userId);
+            StewardshipAction          stewardshipAction          = new StewardshipAction(openMetadataStore, userId);
+            ValidMetadataValuesContext validMetadataValuesContext = new ValidMetadataValuesContext(openMetadataStore, userId);
 
-            return new IntegrationGovernanceContext(openMetadataAccess, multiLanguageManagement, stewardshipAction, validMetadataValues);
+            return new IntegrationGovernanceContext(openMetadataAccess, multiLanguageManagement, stewardshipAction, validMetadataValuesContext);
         }
 
         return null;
     }
-
 
 
     /**
@@ -166,7 +178,6 @@ public class IntegrationContext
 
         return null;
     }
-
 
 
     /**
@@ -408,6 +419,108 @@ public class IntegrationContext
     }
 
 
+
+    /* ========================================================
+     * Register/unregister for inbound events from the file system
+     */
+
+
+    /**
+     * Register a listener object that will be called each time a specific file is created, changed or deleted.
+     *
+     * @param listener      listener object
+     * @param fileToMonitor name of the file to monitor
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+    public void registerFileListener(FileListenerInterface listener,
+                                     File                  fileToMonitor) throws InvalidParameterException
+    {
+        listenerManager.registerFileListener(listener, fileToMonitor);
+    }
+
+
+    /**
+     * Unregister a listener object that will be called each time a specific file is created, changed or deleted.
+     *
+     * @param listener      listener object
+     * @param fileToMonitor name of the file to unregister
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+    public void unregisterFileListener(FileListenerInterface listener,
+                                       File                  fileToMonitor) throws InvalidParameterException
+    {
+        listenerManager.unregisterFileListener(listener, fileToMonitor);
+    }
+
+
+    /**
+     * Register a listener object that will be called each time a file is created, changed or deleted in a specific root directory.
+     * The file filter lets you request that only certain types of files are returned.
+     *
+     * @param listener           listener object
+     * @param directoryToMonitor details of the file directory to monitor
+     * @param fileFilter         a file filter implementation that restricts the files/directories that will be returned to the listener
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+    public void registerDirectoryListener(FileDirectoryListenerInterface listener,
+                                          File                           directoryToMonitor,
+                                          FileFilter                     fileFilter) throws InvalidParameterException
+    {
+        listenerManager.registerDirectoryListener(listener, directoryToMonitor, fileFilter);
+    }
+
+
+    /**
+     * Unregister a listener object for the directory.
+     *
+     * @param listener           listener object
+     * @param directoryToMonitor details of the file directory unregister
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+    public void unregisterDirectoryListener(FileDirectoryListenerInterface listener,
+                                            File                           directoryToMonitor) throws InvalidParameterException
+    {
+        listenerManager.unregisterDirectoryListener(listener, directoryToMonitor);
+    }
+
+
+    /**
+     * Register a listener object that will be called each time a file is created, changed or deleted in a specific root directory
+     * and any of its subdirectories.  The file filter lets you request that only certain types of files and/or directories are returned.
+     *
+     * @param listener           listener object
+     * @param directoryToMonitor details of the root file directory to monitor from
+     * @param fileFilter         a file filter implementation that restricts the files/directories that will be returned to the listener
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+    public void registerDirectoryTreeListener(FileDirectoryListenerInterface listener,
+                                              File                           directoryToMonitor,
+                                              FileFilter                     fileFilter) throws InvalidParameterException
+    {
+        listenerManager.registerDirectoryTreeListener(listener, directoryToMonitor, fileFilter);
+    }
+
+
+    /**
+     * Unregister a listener object for the directory.
+     *
+     * @param listener           listener object
+     * @param directoryToMonitor details of the root file directory to unregister
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+    public void unregisterDirectoryTreeListener(FileDirectoryListenerInterface listener,
+                                                File                           directoryToMonitor) throws InvalidParameterException
+    {
+        listenerManager.unregisterDirectoryTreeListener(listener, directoryToMonitor);
+    }
+
+
     /* ==============================================================
      * Controlling paging
      */
@@ -470,5 +583,19 @@ public class IntegrationContext
         }
 
         return false;
+    }
+
+
+    /**
+     * Disconnect the file listener.
+     *
+     * @throws ConnectorCheckedException exception disconnecting
+     */
+    public void disconnect() throws ConnectorCheckedException
+    {
+        if (listenerManager != null)
+        {
+            listenerManager.disconnect();
+        }
     }
 }

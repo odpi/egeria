@@ -10,6 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+/**
+ * Structure of an instance event.
+ */
 public class OMRSInstanceEvent extends OMRSEvent
 {
     /*

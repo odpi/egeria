@@ -8,7 +8,6 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 /**
  * The DataEngineProxyErrorCode is used to define first failure data capture (FFDC) for errors that occur when working
  * with the Data Engine Proxy.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -52,28 +51,29 @@ public enum DataEngineProxyErrorCode implements ExceptionMessageSet {
             "Check your OMAS configuration and server logs to troubleshoot."),
     ;
 
-    private ExceptionMessageDefinition messageDefinition;
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
+
 
     /**
-     * The constructor for DataEngineProxyErrorCode expects to be passed one of the enumeration rows defined in
-     * DataEngineProxyErrorCode above.   For example:
-     *
-     *     DataEngineProxyErrorCode   errorCode = RepositoryHandlerErrorCode.NO_CONFIG_DOC;
-     *
-     * This will expand out to the 5 parameters shown below.
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
      */
-    DataEngineProxyErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction) {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                errorMessageId,
-                errorMessage,
-                systemAction,
-                userAction);
+    DataEngineProxyErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    {
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -83,8 +83,13 @@ public enum DataEngineProxyErrorCode implements ExceptionMessageSet {
      * @return message definition object.
      */
     @Override
-    public ExceptionMessageDefinition getMessageDefinition() {
-        return messageDefinition;
+    public ExceptionMessageDefinition getMessageDefinition()
+    {
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -95,7 +100,14 @@ public enum DataEngineProxyErrorCode implements ExceptionMessageSet {
      * @return message definition object.
      */
     @Override
-    public ExceptionMessageDefinition getMessageDefinition(String... params) {
+    public ExceptionMessageDefinition getMessageDefinition(String... params)
+    {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -108,10 +120,14 @@ public enum DataEngineProxyErrorCode implements ExceptionMessageSet {
      * @return string of property names and values for this enum
      */
     @Override
-    public String toString() {
-        return "DataEngineProxyErrorCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
+    public String toString()
+    {
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
-
 }

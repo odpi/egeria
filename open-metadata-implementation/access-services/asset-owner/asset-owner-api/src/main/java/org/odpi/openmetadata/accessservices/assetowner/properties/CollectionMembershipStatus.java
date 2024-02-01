@@ -17,13 +17,44 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum CollectionMembershipStatus
 {
+    /**
+     * The membership origin is unknown.
+     */
     UNKNOWN     (0, 0,  "Unknown", "The membership origin is unknown."),
+
+    /**
+     * The membership was discovered by an automated process.
+     */
     DISCOVERED  (1, 1,  "Discovered", "The membership was discovered by an automated process."),
+
+    /**
+     * The membership was proposed by an expert curator.
+     */
     ASSIGNED    (2, 2,  "Assigned", "The membership was proposed by an expert curator."),
+
+    /**
+     * The membership was imported from another metadata system.
+     */
     IMPORTED    (3, 3,  "Imported", "The membership was imported from another metadata system."),
+
+    /**
+     * The membership created by an automated process has been validated and approved by an expert curator.
+     */
     VALIDATED   (4, 4,  "Validated", "The membership created by an automated process has been validated and approved by an expert curator."),
+
+    /**
+     * The membership should no longer be used.
+     */
     DEPRECATED  (5, 5,  "Deprecated", "The membership should no longer be used."),
+
+    /**
+     * The membership must no longer be used.
+     */
     OBSOLETE    (6, 6,  "Obsolete", "The membership must no longer be used."),
+
+    /**
+     * Another membership status. See userDefinedStatus.
+     */
     OTHER       (7, 99, "Other", "Another membership status. See userDefinedStatus.");
 
     private final int            ordinal;

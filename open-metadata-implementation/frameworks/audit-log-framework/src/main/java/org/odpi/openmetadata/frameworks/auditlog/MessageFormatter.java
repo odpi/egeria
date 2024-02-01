@@ -65,7 +65,6 @@ public class MessageFormatter
      * contains the unique message identifier, the default message template and the
      * parameters to insert into it.  The Audit Log controls whether to use the default
      * message template or substitute it for a version in a different language.
-     *
      * The method is public to allow external components to format messages - for example,
      * from exceptions.
      *
@@ -84,7 +83,6 @@ public class MessageFormatter
      * contains the unique message identifier, the default message template and the
      * parameters to insert into it.  The Audit Log controls whether to use the default
      * message template or substitute it for a version in a different language.
-     *
      * The method is public to allow external components to format messages - for example,
      * from exceptions.
      *

@@ -104,7 +104,6 @@ public enum DataEngineAuditCode {
      *
      * @return message definition object
      */
-    @Getter
     private final AuditLogMessageDefinition messageDefinition;
 
     /**
@@ -113,7 +112,7 @@ public enum DataEngineAuditCode {
      * <p>
      * DataEngineAuditCode   auditCode = DataEngineAuditCode.SERVICE_INITIALIZING;
      * <p>
-     * This will expand out to the 4 parameters shown below.
+     * This will expand out to the 5 parameters shown below.
      *
      * @param messageId    - unique identifier for the message
      * @param severity     - severity of the message

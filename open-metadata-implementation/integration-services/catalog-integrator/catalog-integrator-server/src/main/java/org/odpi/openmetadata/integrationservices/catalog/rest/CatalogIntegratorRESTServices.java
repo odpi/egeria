@@ -8,11 +8,10 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorReportResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonInstanceHandler;
 
-import org.odpi.openmetadata.integrationservices.catalog.api.CatalogIntegratorAPI;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorConnector;
 import org.odpi.openmetadata.integrationservices.catalog.connector.CatalogIntegratorOMISConnector;
 import org.odpi.openmetadata.integrationservices.catalog.contextmanager.CatalogIntegratorContextManager;

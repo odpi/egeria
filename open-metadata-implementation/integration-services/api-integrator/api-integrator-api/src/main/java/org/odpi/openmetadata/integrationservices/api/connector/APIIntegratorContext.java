@@ -10,10 +10,11 @@ import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventC
 import org.odpi.openmetadata.accessservices.datamanager.client.ValidValueManagement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
@@ -45,11 +46,13 @@ public class APIIntegratorContext extends IntegrationContext
      * @param connectionManagerClient client to manage connections in the metadata server
      * @param validValueManagement client for managing valid value sets and definitions
      * @param eventClient client to register for events
+     * @param generateIntegrationReport should an integration report be generated?
      * @param permittedSynchronization the direction of integration permitted by the integration connector
      * @param integrationConnectorGUID unique identifier for the integration connector if it is started via an integration group (otherwise it is
      *                                 null).
      * @param externalSourceGUID unique identifier of the software server capability for the api manager
      * @param externalSourceName unique name of the software server capability for the api manager
+     * @param auditLog logging destination
      * @param maxPageSize max number of elements that can be returned on a query
      */
     public APIIntegratorContext(String                       connectorId,
@@ -67,6 +70,7 @@ public class APIIntegratorContext extends IntegrationContext
                                 String                       integrationConnectorGUID,
                                 String                       externalSourceGUID,
                                 String                       externalSourceName,
+                                AuditLog                     auditLog,
                                 int                          maxPageSize)
     {
         super(connectorId,
@@ -80,6 +84,7 @@ public class APIIntegratorContext extends IntegrationContext
               externalSourceGUID,
               externalSourceName,
               integrationConnectorGUID,
+              auditLog,
               maxPageSize);
 
         this.apiManagerClient        = apiManagerClient;
@@ -372,7 +377,7 @@ public class APIIntegratorContext extends IntegrationContext
             }
             else
             {
-                integrationReportWriter.setAnchor(apiGUID, apiGUID, OpenMetadataTypesMapper.DEPLOYED_API_TYPE_NAME);
+                integrationReportWriter.setAnchor(apiGUID, apiGUID, OpenMetadataType.DEPLOYED_API_TYPE_NAME);
                 integrationReportWriter.reportElementCreation(apiGUID);
             }
         }

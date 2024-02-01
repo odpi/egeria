@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.assetowner.converters;
 
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.FileSystemElement;
 import org.odpi.openmetadata.accessservices.assetowner.properties.FileSystemProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -85,7 +85,7 @@ public class FileSystemConverter<B> extends AssetOwnerOMASConverter<B>
                     fileSystemProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     fileSystemProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME, entity);
 
                     fileSystemProperties.setFormat(this.getFormat(instanceProperties));
                     fileSystemProperties.setEncryption(this.getEncryption(instanceProperties));

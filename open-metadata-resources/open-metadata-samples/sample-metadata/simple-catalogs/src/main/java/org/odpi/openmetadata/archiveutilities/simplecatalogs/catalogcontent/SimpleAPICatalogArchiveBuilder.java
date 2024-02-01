@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -162,7 +162,7 @@ public class SimpleAPICatalogArchiveBuilder
                                                                 null);
 
         String requestGUID = archiveHelper.addAPIParameterList(apiOperationGUID,
-                                                               OpenMetadataTypesMapper.API_REQUEST_RELATIONSHIP_TYPE_NAME,
+                                                               OpenMetadataType.API_REQUEST_RELATIONSHIP_TYPE_NAME,
                                                                getCustomerQualifiedName + "_request",
                                                                getCustomerDisplayName + " Request Parameter List",
                                                                null,
@@ -183,7 +183,7 @@ public class SimpleAPICatalogArchiveBuilder
         archiveHelper.addAttributeForSchemaType(requestGUID, parameterGUID);
 
         String responseGUID = archiveHelper.addAPIParameterList(apiOperationGUID,
-                                                                OpenMetadataTypesMapper.API_RESPONSE_RELATIONSHIP_TYPE_NAME,
+                                                                OpenMetadataType.API_RESPONSE_RELATIONSHIP_TYPE_NAME,
                                                                 getCustomerQualifiedName + "_response",
                                                                 getCustomerDisplayName + " Response Parameter List",
                                                                 null,

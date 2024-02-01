@@ -28,39 +28,37 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum TokenControllerErrorCode implements ExceptionMessageSet
 {
     /**
-     * TOKEN-CONTROLLER-401-001 - Call made to {0} service {1} has no logged on user
+     * TOKEN-CONTROLLER-401-001 - Call made to {0} service {1} has no logged-on user
      */
     NO_USER(400, "TOKEN-CONTROLLER-401-001",
-                     "Call made to {0} service {1} has no logged on user",
+                     "Call made to {0} service {1} has no logged-on user",
                      "An inbound REST API call has been received but there is no userId in the authorization bearer token.",
                      "Ensure the user acquires a valid token and this token is included in the request header."),
     ;
 
-
-    private final ExceptionMessageDefinition messageDefinition;
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
 
 
     /**
-     * The constructor for UserSecurityErrorCode expects to be passed one of the enumeration rows defined in
-     * UserSecurityErrorCode above.   For example:
-     * <br><br>
-     *     UserSecurityErrorCode   errorCode = UserSecurityErrorCode.NO_USER;
-     * <br><br>
-     * This will expand out to the 5 parameters shown below.
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique identifier for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
      */
-    TokenControllerErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    TokenControllerErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -72,7 +70,11 @@ public enum TokenControllerErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -85,6 +87,12 @@ public enum TokenControllerErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -99,8 +107,12 @@ public enum TokenControllerErrorCode implements ExceptionMessageSet
     @Override
     public String toString()
     {
-        return "TokenControllerErrorCode{" +
-                       "messageDefinition=" + messageDefinition +
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
                        '}';
     }
 }

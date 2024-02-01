@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -97,9 +98,9 @@ public class RelatedMediaHandler<B> extends ReferenceableHandler<B>
 
         return repositoryHandler.countAttachedRelationshipsByType(userId,
                                                                   elementGUID,
-                                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                  OpenMetadataAPIMapper.REFERENCEABLE_TO_RELATED_MEDIA_TYPE_GUID,
-                                                                  OpenMetadataAPIMapper.REFERENCEABLE_TO_RELATED_MEDIA_TYPE_NAME,
+                                                                  OpenMetadataType.REFERENCEABLE.typeName,
+                                                                  OpenMetadataType.REFERENCEABLE_TO_RELATED_MEDIA_TYPE_GUID,
+                                                                  OpenMetadataType.REFERENCEABLE_TO_RELATED_MEDIA_TYPE_NAME,
                                                                   2,
                                                                   forLineage,
                                                                   forDuplicateProcessing,
@@ -149,9 +150,9 @@ public class RelatedMediaHandler<B> extends ReferenceableHandler<B>
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_RELATED_MEDIA_TYPE_GUID,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_RELATED_MEDIA_TYPE_NAME,
-                                        OpenMetadataAPIMapper.RELATED_MEDIA_TYPE_NAME,
+                                        OpenMetadataType.REFERENCEABLE_TO_RELATED_MEDIA_TYPE_GUID,
+                                        OpenMetadataType.REFERENCEABLE_TO_RELATED_MEDIA_TYPE_NAME,
+                                        OpenMetadataType.RELATED_MEDIA_TYPE_NAME,
                                         null,
                                         null,
                                         0,

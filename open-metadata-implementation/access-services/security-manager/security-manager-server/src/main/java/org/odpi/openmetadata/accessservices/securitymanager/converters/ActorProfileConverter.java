@@ -12,7 +12,7 @@ import org.odpi.openmetadata.accessservices.securitymanager.properties.ContactMe
 import org.odpi.openmetadata.accessservices.securitymanager.properties.ProfileIdentityProperties;
 import org.odpi.openmetadata.accessservices.securitymanager.properties.ProfileLocationProperties;
 import org.odpi.openmetadata.accessservices.securitymanager.properties.UserIdentityProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -117,7 +117,7 @@ public class ActorProfileConverter<B> extends SecurityManagerOMASConverter<B>
                             {
                                 String entityTypeName = entity.getType().getTypeDefName();
 
-                                if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME))
+                                if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.USER_IDENTITY_TYPE_NAME))
                                 {
                                     UserIdentityElement    userBean       = new UserIdentityElement();
                                     UserIdentityProperties userProperties = new UserIdentityProperties();
@@ -141,7 +141,7 @@ public class ActorProfileConverter<B> extends SecurityManagerOMASConverter<B>
 
                                     userIdentities.put(entity.getGUID(), userBean);
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.CONTACT_DETAILS_TYPE_NAME))
                                 {
                                     ContactMethodElement    contactMethodBean       = new ContactMethodElement();
                                     ContactMethodProperties contactMethodProperties = new ContactMethodProperties();
@@ -196,7 +196,7 @@ public class ActorProfileConverter<B> extends SecurityManagerOMASConverter<B>
                             {
                                 String relationshipTypeName = relationship.getType().getTypeDefName();
 
-                                if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME))
+                                if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.TEAM_MEMBERSHIP_RELATIONSHIP_TYPE_NAME))
                                 {
                                     EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
 
@@ -204,7 +204,7 @@ public class ActorProfileConverter<B> extends SecurityManagerOMASConverter<B>
 
                                     teamMembers.add(elementStub);
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP_TYPE_NAME))
                                 {
                                     EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
 
@@ -212,7 +212,7 @@ public class ActorProfileConverter<B> extends SecurityManagerOMASConverter<B>
 
                                     teamLeaders.add(elementStub);
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP_TYPE_NAME))
                                 {
                                     EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
 
@@ -220,7 +220,7 @@ public class ActorProfileConverter<B> extends SecurityManagerOMASConverter<B>
 
                                     roles.add(elementStub);
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP_TYPE_NAME))
                                 {
                                     EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
 
@@ -228,7 +228,7 @@ public class ActorProfileConverter<B> extends SecurityManagerOMASConverter<B>
 
                                     linkedInfrastructure.add(elementStub);
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.PROFILE_LOCATION_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.PROFILE_LOCATION_TYPE_NAME))
                                 {
                                     EntityProxy entityProxy = relationship.getEntityTwoProxy();
 
@@ -243,7 +243,7 @@ public class ActorProfileConverter<B> extends SecurityManagerOMASConverter<B>
                                     locationElement.setProperties(locationProperties);
                                     locations.add(locationElement);
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME))
                                 {
                                     EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
 
@@ -261,7 +261,7 @@ public class ActorProfileConverter<B> extends SecurityManagerOMASConverter<B>
 
                                     profileIdentities.add(profileIdentityElement);
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.TEAM_STRUCTURE_RELATIONSHIP_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP_TYPE_NAME))
                                 {
                                     EntityProxy entityProxy = relationship.getEntityOneProxy();
 

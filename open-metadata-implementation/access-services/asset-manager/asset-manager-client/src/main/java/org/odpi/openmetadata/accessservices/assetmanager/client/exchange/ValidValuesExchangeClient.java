@@ -23,11 +23,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -272,7 +273,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         invalidParameterHandler.validateObject(validValueProperties, validValuePropertiesName, methodName);
         invalidParameterHandler.validateName(validValueProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        String validValueTypeName = OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME;
+        String validValueTypeName = OpenMetadataType.VALID_VALUE_SET_TYPE_NAME;
 
         if (validValueProperties.getTypeName() != null)
         {
@@ -338,7 +339,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         invalidParameterHandler.validateObject(validValueProperties, validValuePropertiesName, methodName);
         invalidParameterHandler.validateName(validValueProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        String validValueTypeName = OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME;
+        String validValueTypeName = OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME;
 
         if (validValueProperties.getTypeName() != null)
         {
@@ -355,7 +356,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                      this.getElementProperties(validValueProperties),
                                                                                      null,
                                                                                      setGUID,
-                                                                                     OpenMetadataTypesMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                                                                     OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
                                                                                      null,
                                                                                      true);
 
@@ -420,7 +421,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                         assetManagerGUID,
                                         assetManagerName,
                                         validValueGUID,
-                                        OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                        OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                         validValueExternalIdentifier);
 
         openMetadataStoreClient.updateMetadataElementInStore(userId,
@@ -473,7 +474,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                         assetManagerGUID,
                                         assetManagerName,
                                         validValueGUID,
-                                        OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                        OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                         validValueExternalIdentifier);
         
         openMetadataStoreClient.deleteMetadataElementInStore(userId,
@@ -569,11 +570,11 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         if (properties != null)
         {
             ElementProperties elementProperties = propertyHelper.addBooleanProperty(null,
-                                                                                    OpenMetadataTypesMapper.IS_DEFAULT_VALUE_PROPERTY_NAME,
+                                                                                    OpenMetadataType.IS_DEFAULT_VALUE_PROPERTY_NAME,
                                                                                     properties.getDefaultValue());
 
             openMetadataStoreClient.createRelatedElementsInStore(userId,
-                                                                 OpenMetadataTypesMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                                                 OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
                                                                  setGUID,
                                                                  validValueGUID,
                                                                  forLineage,
@@ -586,7 +587,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         else
         {
             openMetadataStoreClient.createRelatedElementsInStore(userId,
-                                                                 OpenMetadataTypesMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                                                 OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
                                                                  setGUID,
                                                                  validValueGUID,
                                                                  forLineage,
@@ -638,7 +639,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         invalidParameterHandler.validateGUID(setGUID, parentGUIDParameterName, methodName);
 
         openMetadataStoreClient.deleteRelatedElementsInStore(userId,
-                                                             OpenMetadataTypesMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                                             OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
                                                              setGUID,
                                                              validValueGUID,
                                                              forLineage,
@@ -688,32 +689,32 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
 
         if (properties != null)
         {
-            ElementProperties elementProperties = propertyHelper.addStringProperty(null, 
-                                                                                   OpenMetadataTypesMapper.ATTRIBUTE_NAME_PROPERTY_NAME, 
+            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                                   OpenMetadataType.ATTRIBUTE_NAME_PROPERTY_NAME,
                                                                                    properties.getAttributeName());
 
             elementProperties = propertyHelper.addIntProperty(elementProperties,
-                                                              OpenMetadataTypesMapper.CONFIDENCE_PROPERTY_NAME,
+                                                              OpenMetadataType.CONFIDENCE_PROPERTY_NAME,
                                                               properties.getConfidence());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.STEWARD_PROPERTY_NAME,
+                                                                 OpenMetadataType.STEWARD_PROPERTY_NAME,
                                                                  properties.getSteward());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                 OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME,
                                                                  properties.getStewardTypeName());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                 OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
                                                                  properties.getStewardPropertyName());
             
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.NOTES_PROPERTY_NAME,
+                                                                 OpenMetadataType.NOTES_PROPERTY_NAME,
                                                                  properties.getNotes());
 
             openMetadataStoreClient.createRelatedElementsInStore(userId,
-                                                                 OpenMetadataTypesMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                 OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
                                                                  referenceableGUID,
                                                                  validValueGUID,
                                                                  forLineage,
@@ -726,7 +727,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         else
         {
             openMetadataStoreClient.createRelatedElementsInStore(userId,
-                                                                 OpenMetadataTypesMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                 OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
                                                                  referenceableGUID,
                                                                  validValueGUID,
                                                                  forLineage,
@@ -778,7 +779,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         invalidParameterHandler.validateGUID(referenceableGUID, itemGUIDParameterName, methodName);
 
         openMetadataStoreClient.deleteRelatedElementsInStore(userId,
-                                                             OpenMetadataTypesMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                             OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
                                                              referenceableGUID,
                                                              validValueGUID,
                                                              forLineage,
@@ -871,16 +872,16 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         invalidParameterHandler.validateName(validValueName, nameParameterName, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        List<String> propertyNames = Arrays.asList(OpenMetadataTypesMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                   OpenMetadataTypesMapper.NAME_PROPERTY_NAME);
+        List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.NAME.name);
 
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
-                                                                                                      OpenMetadataTypesMapper.COLLECTION_TYPE_NAME,
+                                                                                                      OpenMetadataType.COLLECTION_TYPE_NAME,
                                                                                                       null,
                                                                                                       propertyHelper.getSearchPropertiesByName(propertyNames, validValueName),
                                                                                                       null,
                                                                                                       null,
-                                                                                                      OpenMetadataTypesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                       SequencingOrder.PROPERTY_ASCENDING,
                                                                                                       forLineage,
                                                                                                       forDuplicateProcessing,
@@ -934,7 +935,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
 
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElementsWithString(userId,
                                                                                                                 searchString,
-                                                                                                                OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                                                                OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                                                                                 forLineage,
                                                                                                                 forDuplicateProcessing,
                                                                                                                 effectiveTime,
@@ -987,7 +988,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         List<RelatedMetadataElement> linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                           validValueSetGUID,
                                                                                                           1,
-                                                                                                          OpenMetadataTypesMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                                                                                          OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
                                                                                                           forLineage,
                                                                                                           forDuplicateProcessing,
                                                                                                           effectiveTime,
@@ -1000,7 +1001,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
 
             for (RelatedMetadataElement relatedMetadataElement : linkedResources)
             {
-                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME))
+                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME))
                 {
                     ValidValueMember validValueMember = validValueMemberConverter.getNewBean(validValueMemberClass, relatedMetadataElement, methodName);
 
@@ -1010,7 +1011,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                                                          assetManagerGUID,
                                                                                                                          assetManagerName,
                                                                                                                          validValueMember.getValidValueElement().getElementHeader().getGUID(),
-                                                                                                                         OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME));
+                                                                                                                         OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME));
                     }
 
                     validValueMembers.add(validValueMember);
@@ -1070,7 +1071,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         List<RelatedMetadataElement> linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                           validValueGUID,
                                                                                                           2,
-                                                                                                          OpenMetadataTypesMapper.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                                                                                          OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
                                                                                                           forLineage,
                                                                                                           forDuplicateProcessing,
                                                                                                           effectiveTime,
@@ -1083,7 +1084,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
 
             for (RelatedMetadataElement relatedMetadataElement : linkedResources)
             {
-                if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataTypesMapper.VALID_VALUE_SET_TYPE_NAME))
+                if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.VALID_VALUE_SET_TYPE_NAME))
                 {
                     validValueSets.add(this.convertValidValue(userId,
                                                               assetManagerGUID,
@@ -1145,7 +1146,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         List<RelatedMetadataElement> linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                           validValueGUID,
                                                                                                           2,
-                                                                                                          OpenMetadataTypesMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                                                          OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
                                                                                                           forLineage,
                                                                                                           forDuplicateProcessing,
                                                                                                           effectiveTime,
@@ -1158,7 +1159,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
 
             for (RelatedMetadataElement relatedMetadataElement : linkedResources)
             {
-                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataTypesMapper.REFERENCEABLE_TYPE_NAME))
+                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.REFERENCEABLE.typeName))
                 {
                     ReferenceValueAssignmentItemElement bean = referenceValueAssignmentItemConverter.getNewBean(referenceValueAssignmentItemBeanClass, relatedMetadataElement, methodName);
 
@@ -1168,7 +1169,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                                         assetManagerGUID,
                                                                                                         assetManagerName,
                                                                                                         bean.getAssignedItem().getElementHeader().getGUID(),
-                                                                                                        OpenMetadataTypesMapper.REFERENCEABLE_TYPE_NAME));
+                                                                                                        OpenMetadataType.REFERENCEABLE.typeName));
                         results.add(bean);
                     }
                 }
@@ -1226,7 +1227,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         List<RelatedMetadataElement> linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                           referenceableGUID,
                                                                                                           1,
-                                                                                                          OpenMetadataTypesMapper.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                                                          OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
                                                                                                           forLineage,
                                                                                                           forDuplicateProcessing,
                                                                                                           effectiveTime,
@@ -1239,7 +1240,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
 
             for (RelatedMetadataElement relatedMetadataElement : linkedResources)
             {
-                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME))
+                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME))
                 {
                     ReferenceValueAssignmentDefinitionElement bean = referenceValueAssignmentDefinitionConverter.getNewBean(referenceValueAssignmentDefinitionBeanClass, relatedMetadataElement, methodName);
 
@@ -1249,7 +1250,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                                              assetManagerGUID,
                                                                                                              assetManagerName,
                                                                                                              bean.getValidValueElement().getElementHeader().getGUID(),
-                                                                                                             OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME));
+                                                                                                             OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME));
 
                         results.add(bean);
                     }
@@ -1277,43 +1278,43 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         if (validValueProperties != null)
         {
             ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                                   OpenMetadataTypesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                    validValueProperties.getQualifiedName());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.NAME_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.NAME.name,
                                                                  validValueProperties.getDisplayName());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.DESCRIPTION.name,
                                                                  validValueProperties.getDescription());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.USAGE_PROPERTY_NAME,
+                                                                 OpenMetadataType.USAGE_PROPERTY_NAME,
                                                                  validValueProperties.getUsage());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.CATEGORY_PROPERTY_NAME,
+                                                                 OpenMetadataType.CATEGORY_PROPERTY_NAME,
                                                                  validValueProperties.getUsage());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.PREFERRED_VALUE_PROPERTY_NAME,
+                                                                 OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME,
                                                                  validValueProperties.getPreferredValue());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataTypesMapper.SCOPE_PROPERTY_NAME,
+                                                                 OpenMetadataType.SCOPE_PROPERTY_NAME,
                                                                  validValueProperties.getScope());
 
             elementProperties = propertyHelper.addBooleanProperty(elementProperties,
-                                                                  OpenMetadataTypesMapper.IS_DEPRECATED_PROPERTY_NAME,
+                                                                  OpenMetadataType.IS_DEPRECATED_PROPERTY_NAME,
                                                                   validValueProperties.getIsDeprecated());
 
             elementProperties = propertyHelper.addBooleanProperty(elementProperties,
-                                                                  OpenMetadataTypesMapper.IS_CASE_SENSITIVE_PROPERTY_NAME,
+                                                                  OpenMetadataType.IS_CASE_SENSITIVE_PROPERTY_NAME,
                                                                   validValueProperties.getIsCaseSensitive());
 
             elementProperties = propertyHelper.addStringMapProperty(elementProperties,
-                                                                    OpenMetadataTypesMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
+                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
                                                                     validValueProperties.getAdditionalProperties());
 
             elementProperties = propertyHelper.addPropertyMap(elementProperties,
@@ -1346,7 +1347,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME)))
+        if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME)))
         {
             ValidValueElement bean = validValueConverter.getNewBean(validValueBeanClass, openMetadataElement, methodName);
 
@@ -1356,7 +1357,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                               assetManagerGUID,
                                                                               assetManagerName,
                                                                               openMetadataElement.getElementGUID(),
-                                                                              OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME));
+                                                                              OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME));
                 return bean;
             }
         }
@@ -1401,7 +1402,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                                    assetManagerGUID,
                                                                                                    assetManagerName,
                                                                                                    openMetadataElement.getElementGUID(),
-                                                                                                   OpenMetadataTypesMapper.VALID_VALUE_DEFINITION_TYPE_NAME));
+                                                                                                   OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME));
                         validValueElements.add(validValueElement);
                     }
                 }

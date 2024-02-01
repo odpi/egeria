@@ -2,7 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -118,7 +119,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME;
+        String typeName = OpenMetadataType.ACTOR_PROFILE_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -126,7 +127,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                                                   OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -207,10 +208,10 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            templateGUID,
                                            templateGUIDParameterName,
-                                           OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_GUID,
-                                           OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                           OpenMetadataType.ACTOR_PROFILE_TYPE_GUID,
+                                           OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
                                            qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                           OpenMetadataProperty.QUALIFIED_NAME.name,
                                            builder,
                                            supportedZones,
                                            methodName);
@@ -276,7 +277,7 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                                                   OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -353,15 +354,15 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   profile1GUID,
                                   profile1GUIDParameterName,
-                                  OpenMetadataAPIMapper.PERSON_TYPE_NAME,
+                                  OpenMetadataType.PERSON_TYPE_NAME,
                                   profile2GUID,
                                   profile2GUIDParameterName,
-                                  OpenMetadataAPIMapper.PERSON_TYPE_NAME,
+                                  OpenMetadataType.PERSON_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.PEER_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataAPIMapper.PEER_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.PEER_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataType.PEER_RELATIONSHIP_TYPE_NAME,
                                   setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -410,16 +411,16 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       profile1GUID,
                                       profile1GUIDParameterName,
-                                      OpenMetadataAPIMapper.PERSON_TYPE_NAME,
+                                      OpenMetadataType.PERSON_TYPE_NAME,
                                       profile2GUID,
                                       profile2GUIDParameterName,
-                                      OpenMetadataAPIMapper.PERSON_TYPE_GUID,
-                                      OpenMetadataAPIMapper.PERSON_TYPE_NAME,
+                                      OpenMetadataType.PERSON_TYPE_GUID,
+                                      OpenMetadataType.PERSON_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
                                       supportedZones,
-                                      OpenMetadataAPIMapper.PEER_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.PEER_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataType.PEER_RELATIONSHIP_TYPE_GUID,
+                                      OpenMetadataType.PEER_RELATIONSHIP_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -473,15 +474,15 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   superTeamGUID,
                                   superTeamGUIDParameterName,
-                                  OpenMetadataAPIMapper.TEAM_TYPE_NAME,
+                                  OpenMetadataType.TEAM_TYPE_NAME,
                                   subTeamGUID,
                                   subTeamGUIDParameterName,
-                                  OpenMetadataAPIMapper.TEAM_TYPE_NAME,
+                                  OpenMetadataType.TEAM_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.TEAM_STRUCTURE_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataAPIMapper.TEAM_STRUCTURE_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP_TYPE_GUID,
+                                  OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP_TYPE_NAME,
                                   setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -529,16 +530,16 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       superTeamGUID,
                                       superTeamGUIDParameterName,
-                                      OpenMetadataAPIMapper.TEAM_TYPE_NAME,
+                                      OpenMetadataType.TEAM_TYPE_NAME,
                                       subTeamGUID,
                                       subTeamGUIDParameterName,
-                                      OpenMetadataAPIMapper.TEAM_TYPE_GUID,
-                                      OpenMetadataAPIMapper.TEAM_TYPE_NAME,
+                                      OpenMetadataType.TEAM_TYPE_GUID,
+                                      OpenMetadataType.TEAM_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
                                       supportedZones,
-                                      OpenMetadataAPIMapper.TEAM_STRUCTURE_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.TEAM_STRUCTURE_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP_TYPE_GUID,
+                                      OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -579,8 +580,8 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     profileGUID,
                                     profileGUIDParameterName,
-                                    OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_GUID,
-                                    OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                    OpenMetadataType.ACTOR_PROFILE_TYPE_GUID,
+                                    OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
                                     null,
                                     null,
                                     forLineage,
@@ -711,8 +712,8 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                                      PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
 
         List<EntityDetail> entities = this.getEntitiesByValue(userId,
                                                               name,
@@ -771,10 +772,10 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         projectGUID,
                                         projectGUIDParameterName,
-                                        OpenMetadataAPIMapper.PROJECT_TYPE_NAME,
-                                        OpenMetadataAPIMapper.PROJECT_TEAM_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.PROJECT_TEAM_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                        OpenMetadataType.PROJECT_TYPE_NAME,
+                                        OpenMetadataType.PROJECT_TEAM_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataType.PROJECT_TEAM_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
                                         null,
                                         null,
                                         2,
@@ -826,9 +827,9 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                                                                 elementGUID,
                                                                 elementGUIDParameterName,
                                                                 elementTypeName,
-                                                                OpenMetadataAPIMapper.PROFILE_LOCATION_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.PROFILE_LOCATION_TYPE_NAME,
-                                                                OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                                                OpenMetadataType.PROFILE_LOCATION_TYPE_GUID,
+                                                                OpenMetadataType.PROFILE_LOCATION_TYPE_NAME,
+                                                                OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
                                                                 null,
                                                                 null,
                                                                 1,
@@ -978,13 +979,13 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
         final String userGUIDParameterName = "userIdentity.getGUID";
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.USER_ID_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataType.USER_ID_PROPERTY_NAME);
 
         EntityDetail userIdentity = this.getEntityByValue(userId,
                                                           profileUserId,
                                                           profileUserIdParameterName,
-                                                          OpenMetadataAPIMapper.USER_IDENTITY_TYPE_GUID,
-                                                          OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                                          OpenMetadataType.USER_IDENTITY_TYPE_GUID,
+                                                          OpenMetadataType.USER_IDENTITY_TYPE_NAME,
                                                           specificMatchPropertyNames,
                                                           forLineage,
                                                           forDuplicateProcessing,
@@ -996,9 +997,9 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
             EntityDetail entity = this.getAttachedEntity(userId,
                                                          userIdentity.getGUID(),
                                                          userGUIDParameterName,
-                                                         OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
-                                                         OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
-                                                         OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
+                                                         OpenMetadataType.USER_IDENTITY_TYPE_NAME,
+                                                         OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_GUID,
+                                                         OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME,
                                                          typeName,
                                                          1,
                                                          forLineage,
@@ -1193,14 +1194,14 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                 {
                     String relationshipTypeName = relationship.getType().getTypeDefName();
 
-                    if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME))
+                    if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP_TYPE_NAME))
                     {
                         EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
 
                         EntityDetail entity = getEntityFromRepository(userId,
                                                                       entityProxy.getGUID(),
                                                                       userIdentityGUIDParameterName,
-                                                                      OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+                                                                      OpenMetadataType.USER_IDENTITY_TYPE_NAME,
                                                                       null,
                                                                       null,
                                                                       forLineage,
@@ -1214,14 +1215,14 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                             supplementaryEntities.add(entity);
                         }
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP_TYPE_NAME))
                     {
                         EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
 
                         EntityDetail entity = getEntityFromRepository(userId,
                                                                       entityProxy.getGUID(),
                                                                       contactDetailsGUIDParameterName,
-                                                                      OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
+                                                                      OpenMetadataType.CONTACT_DETAILS_TYPE_NAME,
                                                                       null,
                                                                       null,
                                                                       forLineage,
@@ -1235,14 +1236,14 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                             supplementaryEntities.add(entity);
                         }
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataAPIMapper.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.PERSONAL_CONTRIBUTION_RELATIONSHIP_TYPE_NAME))
                     {
                         EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
 
                         EntityDetail entity = getEntityFromRepository(userId,
                                                                       entityProxy.getGUID(),
                                                                       contributionRecordGUIDParameterName,
-                                                                      OpenMetadataAPIMapper.CONTRIBUTION_RECORD_TYPE_NAME,
+                                                                      OpenMetadataType.CONTRIBUTION_RECORD_TYPE_NAME,
                                                                       null,
                                                                       null,
                                                                       forLineage,

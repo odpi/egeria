@@ -4,10 +4,10 @@ package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converter
 
 
 import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Rating;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -59,14 +59,12 @@ public class RatingConverter<B> extends OCFConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof Rating)
+            if (returnBean instanceof Rating bean)
             {
-                Rating bean = (Rating) returnBean;
-
                 /*
                  * Check that the entity is of the correct type.
                  */
-                this.setUpElementHeader(bean, entity, OpenMetadataAPIMapper.RATING_TYPE_NAME, methodName);
+                this.setUpElementHeader(bean, entity, OpenMetadataType.RATING_TYPE_NAME, methodName);
 
                 /*
                  * The initial set of values come from the entity.
@@ -112,7 +110,7 @@ public class RatingConverter<B> extends OCFConverter<B>
 
             if (instancePropertiesMap != null)
             {
-                instancePropertiesMap.remove(OpenMetadataAPIMapper.STARS_PROPERTY_NAME);
+                instancePropertiesMap.remove(OpenMetadataType.STARS_PROPERTY_NAME);
             }
 
             properties.setInstanceProperties(instancePropertiesMap);
@@ -138,37 +136,18 @@ public class RatingConverter<B> extends OCFConverter<B>
 
             if (instancePropertiesMap != null)
             {
-                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataAPIMapper.STARS_PROPERTY_NAME);
+                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataType.STARS_PROPERTY_NAME);
 
-                if (instancePropertyValue instanceof EnumPropertyValue)
+                if (instancePropertyValue instanceof EnumPropertyValue enumPropertyValue)
                 {
-                    EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
-
                     switch (enumPropertyValue.getOrdinal())
                     {
-                        case 0:
-                            starRating = StarRating.NO_RECOMMENDATION;
-                            break;
-
-                        case 1:
-                            starRating = StarRating.ONE_STAR;
-                            break;
-
-                        case 2:
-                            starRating = StarRating.TWO_STARS;
-                            break;
-
-                        case 3:
-                            starRating = StarRating.THREE_STARS;
-                            break;
-
-                        case 4:
-                            starRating = StarRating.FOUR_STARS;
-                            break;
-
-                        case 99:
-                            starRating = StarRating.FIVE_STARS;
-                            break;
+                        case 0 -> starRating = StarRating.NO_RECOMMENDATION;
+                        case 1 -> starRating = StarRating.ONE_STAR;
+                        case 2 -> starRating = StarRating.TWO_STARS;
+                        case 3 -> starRating = StarRating.THREE_STARS;
+                        case 4 -> starRating = StarRating.FOUR_STARS;
+                        case 99 -> starRating = StarRating.FIVE_STARS;
                     }
                 }
             }

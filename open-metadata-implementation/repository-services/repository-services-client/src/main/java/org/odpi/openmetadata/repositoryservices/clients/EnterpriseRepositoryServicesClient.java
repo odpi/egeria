@@ -147,7 +147,7 @@ public class EnterpriseRepositoryServicesClient extends MetadataCollectionServic
             invalidParameterHandler.validateObject(listener, nameParameter, methodName);
             invalidParameterHandler.validateName(callerId, callerIdParameter, methodName);
         }
-        catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException error)
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException error)
         {
             throw new InvalidParameterException(error.getReportedHTTPCode(),
                                                 error.getReportingClassName(),

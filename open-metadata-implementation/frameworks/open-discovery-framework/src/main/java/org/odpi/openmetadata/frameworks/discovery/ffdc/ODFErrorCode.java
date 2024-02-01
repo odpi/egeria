@@ -28,51 +28,47 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum ODFErrorCode implements ExceptionMessageSet
 {
-    NULL_DISCOVERY_CONTEXT(400, "ODF-DISCOVERY-SERVICE-400-001 ",
+    /**
+     * ODF-DISCOVERY-SERVICE-400-001 - No discovery context supplied to the discovery service {0}
+     */
+    NULL_DISCOVERY_CONTEXT(400, "ODF-DISCOVERY-SERVICE-400-001",
             "No discovery context supplied to the discovery service {0}",
             "The discovery service is not able to determine which asset to analyze.",
             "This may be a configuration or a code error.  Look for other error messages and review the code of the discovery service.  Once the cause is resolved, retry the discovery request."),
-    NO_EMBEDDED_DISCOVERY_SERVICES(400, "ODF-DISCOVERY-SERVICE-400-002 ",
-            "No embedded discovery services supplied to the discovery pipeline {0}",
-            "The discovery pipeline is not able to discovery which discovery services to run.",
-            "This may be a configuration or a code error.  Look for other error messages and review the code of the discovery service.  Once the cause is resolved, retry the discovery request."),
-    INVALID_EMBEDDED_DISCOVERY_SERVICE(400, "ODF-DISCOVERY-SERVICE-400-003 ",
-            "No embedded discovery services supplied to the discovery pipeline {0}",
-            "The discovery pipeline is not able to discovery which discovery services to run.",
-            "This may be a configuration or a code error.  Look for other error messages and review the code of the discovery service.  Once the cause is resolved, retry the discovery request."),
-    INVALID_DISCOVERY_SERVICE_CONNECTION(400, "ODF-DISCOVERY-SERVICE-400-004 ",
-            "The discovery engine {0} is not able to create the discovery service for asset type {1} and is therefore not able to discover asset {2}.  Error message was {3}.  The connection was {4}",
-            "The discovery engine is not able to create a discovery service to analyze an asset because the connection information associated with the discovery service is not valid.",
-            "The connection is stored with the discovery service definition in the open metadata repository used by the discovery engine.  Use the error message to correct the connection properties.  Once the connection is corrected is resolved, retry the discovery request."),
-    INVALID_DISCOVERY_SERVICE_CONNECTOR(400, "ODF-DISCOVERY-SERVICE-400-005 ",
-            "Invalid discovery service for asset type {0}.  Discovery engine {1} is not able to analyze asset {2}",
-            "The discovery service is not functioning correctly.",
-            "This may be a configuration or a code error.  Look for other error messages and review the code of the discovery service.  Once the cause is resolved, retry the discovery request."),
-    INVALID_ASSET_CONNECTION(400, "ODF-DISCOVERY-SERVICE-400-006 ",
-            "The connection for asset {0} is no valid.  Error message was {1}.  The connection was {2}",
-            "The discovery engine is not able to create a connector to the asset to allow a discovery service to access its contents.",
-            "The connection is stored with the asset definition in the open metadata repository used by the discovery engine.  Use the error message to correct the connection properties.  Once the connection is corrected is resolved, retry the discovery request."),
-    INVALID_ASSET_CONNECTOR(400, "ODF-DISCOVERY-SERVICE-400-007 ",
-            "Invalid connector for asset {0}.  Error message was {1}.  The connection was {2}",
-            "The discovery service is not able to analyze the asset.",
-            "This may be a configuration or a code error.  Look for other error messages and review the code of the connector.  Once the cause is resolved, retry the discovery request."),
 
-    UNEXPECTED_EXCEPTION(500, "ODF-DISCOVERY-SERVICE-500-001 ",
+    /**
+     * ODF-DISCOVERY-SERVICE-400-002 - No embedded discovery services supplied to the discovery pipeline {0}
+     */
+    NO_EMBEDDED_DISCOVERY_SERVICES(400, "ODF-DISCOVERY-SERVICE-400-002",
+            "No embedded discovery services supplied to the discovery pipeline {0}",
+            "The discovery pipeline is not able to discovery which discovery services to run.",
+            "This may be a configuration or a code error.  Look for other error messages and review the code of the discovery pipeline service.  Once the cause is resolved, retry the discovery request."),
+
+    /**
+     * ODF-DISCOVERY-SERVICE-400-003 - No embedded discovery services supplied to the discovery pipeline {0}
+     */
+    INVALID_EMBEDDED_DISCOVERY_SERVICE(400, "ODF-DISCOVERY-SERVICE-400-003",
+            "No embedded discovery services supplied to the discovery pipeline {0}",
+            "The discovery pipeline is not able to discover which discovery services to run.",
+            "This may be a configuration or a code error.  Look for other error messages and review the code of the discovery pipeline service or the associated open discovery engine.  Once the cause is resolved, retry the discovery request."),
+
+    /**
+     * ODF-DISCOVERY-SERVICE-500-001 - Unexpected exception in discovery service {0} of type {1} detected by method {2}.  The error message was {3}
+     */
+    UNEXPECTED_EXCEPTION(500, "ODF-DISCOVERY-SERVICE-500-001",
             "Unexpected exception in discovery service {0} of type {1} detected by method {2}.  The error message was {3}",
             "The discovery service failed during its operation.",
             "This may be a configuration or a code error.  Look for other error messages and review the code of the discovery service.  Once the cause is resolved, retry the discovery request.");
     ;
 
-    private ExceptionMessageDefinition messageDefinition;
-
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
 
     /**
-     * The constructor for ODFErrorCode expects to be passed one of the enumeration rows defined in
-     * ODFErrorCode above.   For example:
-     *
-     *     ODFErrorCode   errorCode = ODFErrorCode.UNKNOWN_ENDPOINT;
-     *
-     * This will expand out to the 5 parameters shown below.
+     * The constructor for ODFErrorCode expects to be passed one of the enumeration rows defined above.
      *
      * @param httpErrorCode   error code to use over REST calls
      * @param errorMessageId   unique Id for the message
@@ -82,11 +78,11 @@ public enum ODFErrorCode implements ExceptionMessageSet
      */
     ODFErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -98,7 +94,11 @@ public enum ODFErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -111,6 +111,12 @@ public enum ODFErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -126,7 +132,11 @@ public enum ODFErrorCode implements ExceptionMessageSet
     public String toString()
     {
         return "ODFErrorCode{" +
-                       "messageDefinition=" + messageDefinition +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
                        '}';
     }
 }

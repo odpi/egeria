@@ -33,6 +33,9 @@ import java.util.List;
      externalDocs=@ExternalDocumentation(description="Further Information", url="https://egeria-project.org/services/omvs/asset-catalog/overview/"))
 
 @Deprecated
+/**
+ * Original REST Resource
+ */
 public class AssetController
 {
     private final RESTExceptionHandler exceptionHandler = new RESTExceptionHandler();

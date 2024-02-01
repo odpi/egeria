@@ -26,12 +26,18 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum OpenIntegrationErrorCode implements ExceptionMessageSet
 {
+    /**
+     * OPEN-INTEGRATION-SERVICE-404-002 - The open metadata repository services are not initialized for the {0} operation
+     */
     OMRS_NOT_INITIALIZED(404, "OPEN-INTEGRATION-SERVICE-404-002",
                          "The open metadata repository services are not initialized for the {0} operation",
                          "The system is unable to connect to the open metadata property server.",
                          "Check that the server where the Open Integration Service are running initialized correctly.  " +
                                  "Correct any errors discovered and retry the request when the open metadata services are available."),
-    
+
+    /**
+     * OPEN-INTEGRATION-SERVICE-503-005 - A {0} exception was caught during start up of service {1} for server {2}. The error message was: {3}
+     */
     UNEXPECTED_INITIALIZATION_EXCEPTION(503, "OPEN-INTEGRATION-SERVICE-503-005",
                                         "A {0} exception was caught during start up of service {1} for server {2}. The error message was: {3}",
                                         "The system detected an unexpected error during start up and is now in an unknown state.",
@@ -40,15 +46,15 @@ public enum OpenIntegrationErrorCode implements ExceptionMessageSet
 
 
 
-    private final ExceptionMessageDefinition messageDefinition;
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
+
 
     /**
-     * The constructor for OpenIntegrationErrorCode expects to be passed one of the enumeration rows defined in
-     * OpenIntegrationErrorCode above.   For example:
-     *
-     *     OpenIntegrationErrorCode   errorCode = OpenIntegrationErrorCode.SERVER_NOT_AVAILABLE;
-     *
-     * This will expand out to the 5 parameters shown below.
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
      * @param httpErrorCode   error code to use over REST calls
      * @param errorMessageId   unique id for the message
@@ -56,13 +62,13 @@ public enum OpenIntegrationErrorCode implements ExceptionMessageSet
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
      */
-    OpenIntegrationErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    OpenIntegrationErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -74,7 +80,11 @@ public enum OpenIntegrationErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -87,6 +97,12 @@ public enum OpenIntegrationErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -94,15 +110,19 @@ public enum OpenIntegrationErrorCode implements ExceptionMessageSet
 
 
     /**
-     * toString() JSON-style
+     * JSON-style toString
      *
-     * @return string description
+     * @return string of property names and values for this enum
      */
     @Override
     public String toString()
     {
-        return "OpenIntegrationErrorCode{" +
-                       "messageDefinition=" + messageDefinition +
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
                        '}';
     }
 }

@@ -2,10 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.Map;
 
@@ -72,13 +73,13 @@ public class ContributionRecordBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataAPIMapper.IS_PUBLIC_PROPERTY_NAME,
+                                                                   OpenMetadataProperty.IS_PUBLIC.name,
                                                                    isPublic,
                                                                    methodName);
 
         return repositoryHelper.addLongPropertyToInstance(serviceName,
                                                           properties,
-                                                          OpenMetadataAPIMapper.KARMA_POINTS_PROPERTY_NAME,
+                                                          OpenMetadataType.KARMA_POINTS_PROPERTY_NAME,
                                                           karmaPoints,
                                                           methodName);
     }

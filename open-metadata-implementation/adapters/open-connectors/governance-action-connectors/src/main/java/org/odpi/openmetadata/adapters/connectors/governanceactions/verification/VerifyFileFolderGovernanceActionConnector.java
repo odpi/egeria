@@ -35,7 +35,7 @@ public class VerifyFileFolderGovernanceActionConnector extends VerificationGover
          */
         if (configurationProperties != null)
         {
-            Object folderGUIDOption = configurationProperties.get(VerifyFileFolderGovernanceActionProvider.FOLDER_GUID_PROPERTY);
+            Object folderGUIDOption = configurationProperties.get(VerifyFileFolderGovernanceActionProvider.ACTION_TARGET_NAME);
 
             if (folderGUIDOption != null)
             {

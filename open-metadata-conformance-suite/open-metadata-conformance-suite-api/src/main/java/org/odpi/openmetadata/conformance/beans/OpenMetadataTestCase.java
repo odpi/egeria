@@ -34,13 +34,24 @@ public abstract class OpenMetadataTestCase
     protected ExceptionBean       exceptionBean          = null;
     protected String              successMessage         = null;
 
-    /*
+    /**
      * Enumerated type for control of multiphase tests
      */
     public enum TestPhase
     {
+        /**
+         * Set up test
+         */
         SEED,
+
+        /**
+         * Run test
+         */
         EXECUTE,
+
+        /**
+         * clear up after test
+         */
         CLEAN
     }
 

@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.Elements;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Type;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.api.UserInterfaceErrorCodes;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.BadRequestException;
@@ -71,10 +71,10 @@ public class AssetCatalogOMASService {
     public AssetCatalogBean getAssetUniverse(String user,
                                              String assetId,
                                              String assetType)
-            throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+            throws PropertyServerException, InvalidParameterException {
         try {
             return assetCatalog.getAssetUniverse(user, assetId, assetType).getAssetCatalogBean();
-        } catch (PropertyServerException | org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
+        } catch (PropertyServerException | InvalidParameterException e) {
             LOG.error(String.format("Error retrieving asset universe for %s", assetId));
             throw e;
         }

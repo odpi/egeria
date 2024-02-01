@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDef
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -31,9 +32,7 @@ import java.util.Map;
 
 import static org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper.GUID_PROPERTY_NAME;
 import static org.odpi.openmetadata.accessservices.dataengine.server.mappers.CommonMapper.QUALIFIED_NAME_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENGINE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESSING_STATE_CLASSIFICATION_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PROCESSING_STATE_CLASSIFICATION_TYPE_NAME;
+
 
 /**
  * DataEngineRegistrationHandler manages Engine objects from external data engines. It runs
@@ -94,7 +93,7 @@ public class DataEngineRegistrationHandler {
         invalidParameterHandler.validateName(externalEngineName, QUALIFIED_NAME_PROPERTY_NAME,
                 methodName);
 
-        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, ENGINE_TYPE_NAME);
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, OpenMetadataType.ENGINE_TYPE_NAME);
 
         String externalEngineGUID = getExternalDataEngine(userId, externalEngineName);
         if (externalEngineGUID == null) {
@@ -132,7 +131,7 @@ public class DataEngineRegistrationHandler {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
-        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, ENGINE_TYPE_NAME);
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, OpenMetadataType.ENGINE_TYPE_NAME);
         EntityDetail retrievedEntity = softwareServerCapabilityHandler.getEntityByValue(userId, qualifiedName, CommonMapper.QUALIFIED_NAME_PROPERTY_NAME,
                 entityTypeDef.getGUID(), entityTypeDef.getName(), Collections.singletonList(CommonMapper.QUALIFIED_NAME_PROPERTY_NAME),
                 false, false, clockService.getNow(), methodName);
@@ -201,8 +200,8 @@ public class DataEngineRegistrationHandler {
                 newSyncDatesByKey, methodName);
 
         softwareServerCapabilityHandler.setClassificationInRepository(userId, null, null,
-                externalSourceGUID, EXTERNAL_ENGINE_PARAMETER_NAME, ENGINE_TYPE_NAME, PROCESSING_STATE_CLASSIFICATION_TYPE_GUID,
-                PROCESSING_STATE_CLASSIFICATION_TYPE_NAME, instanceProperties, true, false,
+                externalSourceGUID, EXTERNAL_ENGINE_PARAMETER_NAME, OpenMetadataType.ENGINE_TYPE_NAME, OpenMetadataType.PROCESSING_STATE_CLASSIFICATION_TYPE_GUID,
+                                                                      OpenMetadataType.PROCESSING_STATE_CLASSIFICATION_TYPE_NAME, instanceProperties, true, false,
                 false, clockService.getNow(), methodName);
     }
 
@@ -231,7 +230,7 @@ public class DataEngineRegistrationHandler {
     }
 
     private EntityDetail getDataEngineEntity(String userId, String externalSourceName, String methodName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, ENGINE_TYPE_NAME);
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, OpenMetadataType.ENGINE_TYPE_NAME);
         return softwareServerCapabilityHandler.getEntityByValue(userId, externalSourceName, CommonMapper.QUALIFIED_NAME_PROPERTY_NAME,
                 entityTypeDef.getGUID(), entityTypeDef.getName(), Collections.singletonList(CommonMapper.QUALIFIED_NAME_PROPERTY_NAME),
                 false, false, clockService.getNow(), methodName);
@@ -248,7 +247,7 @@ public class DataEngineRegistrationHandler {
         Map<String, Long> newSyncDatesByKey = new HashMap<>();
         if (retrievedEntity.getClassifications() != null) {
             for (Classification classification : retrievedEntity.getClassifications()) {
-                if (classification != null && classification.getName().equals(PROCESSING_STATE_CLASSIFICATION_TYPE_NAME)) {
+                if (classification != null && classification.getName().equals(OpenMetadataType.PROCESSING_STATE_CLASSIFICATION_TYPE_NAME)) {
                     MapPropertyValue syncDatesByKey = (MapPropertyValue) classification.getProperties().getPropertyValue(SYNC_DATES_BY_KEY);
                     for (Map.Entry entry : syncDatesByKey.getMapValues().getInstanceProperties().entrySet()) {
                         newSyncDatesByKey.put(entry.getKey().toString(),
@@ -265,7 +264,7 @@ public class DataEngineRegistrationHandler {
         Map<String, Long> newSyncDatesByKey = new HashMap<>();
         if (retrievedEntity.getClassifications() != null) {
             for (Classification classification : retrievedEntity.getClassifications()) {
-                if (classification != null && classification.getName().equals(PROCESSING_STATE_CLASSIFICATION_TYPE_NAME)) {
+                if (classification != null && classification.getName().equals(OpenMetadataType.PROCESSING_STATE_CLASSIFICATION_TYPE_NAME)) {
                     MapPropertyValue syncDatesByKey = (MapPropertyValue) classification.getProperties().getPropertyValue(SYNC_DATES_BY_KEY);
                     for (Map.Entry entry : syncDatesByKey.getMapValues().getInstanceProperties().entrySet()) {
                         newSyncDatesByKey.put(entry.getKey().toString(),

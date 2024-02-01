@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetlineage;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -35,7 +35,7 @@ public class AssetLineage extends FFDCRESTClient implements AssetLineageInterfac
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
-    public AssetLineage(String serverName, String serverPlatformURLRoot) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+    public AssetLineage(String serverName, String serverPlatformURLRoot) throws InvalidParameterException {
         super(serverName, serverPlatformURLRoot);
     }
 
@@ -48,8 +48,7 @@ public class AssetLineage extends FFDCRESTClient implements AssetLineageInterfac
      * @param password              the password
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
-    public AssetLineage(String serverName, String serverPlatformURLRoot, String userId, String password)
-            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+    public AssetLineage(String serverName, String serverPlatformURLRoot, String userId, String password) throws InvalidParameterException {
         super(serverName, serverPlatformURLRoot, userId, password);
         this.userId = userId;
     }
@@ -58,8 +57,7 @@ public class AssetLineage extends FFDCRESTClient implements AssetLineageInterfac
      * {@inheritDoc}
      */
     @Override
-    public List<String> publishEntities(String serverName, String userId, String entityType, Optional<Date> updatedAfterDate)
-            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public List<String> publishEntities(String serverName, String userId, String entityType, Optional<Date> updatedAfterDate) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "publishEntities";
 
         invalidParameterHandler.validateUserId(methodName, userId);
