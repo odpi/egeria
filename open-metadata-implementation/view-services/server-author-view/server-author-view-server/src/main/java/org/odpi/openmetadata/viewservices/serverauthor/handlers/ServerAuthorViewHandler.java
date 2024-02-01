@@ -523,7 +523,7 @@ public class ServerAuthorViewHandler {
             if (viewServiceOptions == null) {
                 viewServiceOptions = new HashMap<>();
             }
-            client.configureViewService(serviceURLMarker, viewServiceOptions);
+            client.configureViewService(null, null, serviceURLMarker, viewServiceOptions);
         } catch (OMAGNotAuthorizedException error) {
             throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
         } catch (OMAGInvalidParameterException error) {
@@ -573,7 +573,7 @@ public class ServerAuthorViewHandler {
             EngineHostConfigurationClient client = new EngineHostConfigurationClient(this.userId,
                                                                                      serverToBeConfiguredName,
                                                                                      this.platformURL);
-            client.configureEngineService(serviceURLMarker, engineServiceOptions, engines);
+            client.configureEngineService(null, null, serviceURLMarker, engineServiceOptions, engines);
         } catch (OMAGNotAuthorizedException error) {
             throw ServerAuthorExceptionHandler.mapToUserNotAuthorizedException(className, methodName);
         } catch (OMAGInvalidParameterException error) {

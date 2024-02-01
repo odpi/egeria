@@ -15,6 +15,9 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.IOException;
 
+/**
+ * TokenLogoutSuccessHandler handles successful logout.
+ */
 public class TokenLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler implements LogoutSuccessHandler
 {
     private static final Logger log = LoggerFactory.getLogger( TokenLogoutSuccessHandler.class );

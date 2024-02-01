@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -119,7 +121,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.COLLECTION_TYPE_NAME;
+        String typeName = OpenMetadataType.COLLECTION_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -127,7 +129,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+                                                                   OpenMetadataType.COLLECTION_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -206,7 +208,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.COLLECTION_TYPE_NAME;
+        String typeName = OpenMetadataType.COLLECTION_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -214,7 +216,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+                                                                   OpenMetadataType.COLLECTION_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -297,10 +299,10 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            templateGUID,
                                            templateGUIDParameterName,
-                                           OpenMetadataAPIMapper.COLLECTION_TYPE_GUID,
-                                           OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+                                           OpenMetadataType.COLLECTION_TYPE_GUID,
+                                           OpenMetadataType.COLLECTION_TYPE_NAME,
                                            qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                           OpenMetadataProperty.QUALIFIED_NAME.name,
                                            builder,
                                            supportedZones,
                                            methodName);
@@ -358,7 +360,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateGUID(collectionGUID, collectionGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.COLLECTION_TYPE_NAME;
+        String typeName = OpenMetadataType.COLLECTION_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -366,7 +368,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+                                                                   OpenMetadataType.COLLECTION_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -442,9 +444,9 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                            null,
                                            collectionGUID,
                                            collectionGUIDParameterName,
-                                           OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
-                                           OpenMetadataAPIMapper.FOLDER_TYPE_GUID,
-                                           OpenMetadataAPIMapper.FOLDER_TYPE_NAME,
+                                           OpenMetadataType.COLLECTION_TYPE_NAME,
+                                           OpenMetadataType.FOLDER_TYPE_GUID,
+                                           OpenMetadataType.FOLDER_TYPE_NAME,
                                            builder.getFolderProperties(orderBy, orderPropertyName, methodName),
                                            isMergeUpdate,
                                            forLineage,
@@ -486,9 +488,9 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                                 null,
                                                 collectionGUID,
                                                 collectionGUIDParameterName,
-                                                OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
-                                                OpenMetadataAPIMapper.FOLDER_TYPE_GUID,
-                                                OpenMetadataAPIMapper.FOLDER_TYPE_NAME,
+                                                OpenMetadataType.COLLECTION_TYPE_NAME,
+                                                OpenMetadataType.FOLDER_TYPE_GUID,
+                                                OpenMetadataType.FOLDER_TYPE_NAME,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -537,7 +539,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataAPIMapper.MEMBERSHIP_RATIONALE_PROPERTY_NAME,
+                                                                                     OpenMetadataType.MEMBERSHIP_RATIONALE_PROPERTY_NAME,
                                                                                      membershipRationale,
                                                                                      methodName);
         this.linkElementToElement(userId,
@@ -545,15 +547,15 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   collectionGUID,
                                   collectionGUIDParameterName,
-                                  OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+                                  OpenMetadataType.COLLECTION_TYPE_NAME,
                                   memberGUID,
                                   memberGUIDParameterName,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_GUID,
-                                  OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
+                                  OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_GUID,
+                                  OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_NAME,
                                   properties,
                                   effectiveFrom,
                                   effectiveTo,
@@ -630,11 +632,11 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
             Relationship relationship = getUniqueAttachmentLink(userId,
                                                                 collectionGUID,
                                                                 collectionGUIDParameterName,
-                                                                OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
-                                                                OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
+                                                                OpenMetadataType.COLLECTION_TYPE_NAME,
+                                                                OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_GUID,
+                                                                OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_NAME,
                                                                 memberGUID,
-                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                OpenMetadataType.REFERENCEABLE.typeName,
                                                                 2,
                                                                 forLineage,
                                                                 forDuplicateProcessing,
@@ -650,13 +652,13 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.MEMBERSHIP_RATIONALE_PROPERTY_NAME,
+                                                                  OpenMetadataType.MEMBERSHIP_RATIONALE_PROPERTY_NAME,
                                                                   membershipRationale,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.EXPRESSION_PROPERTY_NAME,
+                                                                  OpenMetadataType.EXPRESSION_PROPERTY_NAME,
                                                                   expression,
                                                                   methodName);
 
@@ -664,62 +666,62 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataAPIMapper.STATUS_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.MEMBERSHIP_STATUS_ENUM_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.MEMBERSHIP_STATUS_ENUM_TYPE_NAME,
+                                                                    OpenMetadataType.STATUS_PROPERTY_NAME,
+                                                                    OpenMetadataType.MEMBERSHIP_STATUS_ENUM_TYPE_GUID,
+                                                                    OpenMetadataType.MEMBERSHIP_STATUS_ENUM_TYPE_NAME,
                                                                     membershipStatus,
                                                                     methodName);
         }
         catch (TypeErrorException classificationNotSupported)
         {
-            throw new InvalidParameterException(classificationNotSupported, OpenMetadataAPIMapper.STATUS_PROPERTY_NAME);
+            throw new InvalidParameterException(classificationNotSupported, OpenMetadataType.STATUS_PROPERTY_NAME);
         }
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.USER_DEFINED_STATUS_PROPERTY_NAME,
+                                                                  OpenMetadataType.USER_DEFINED_STATUS_PROPERTY_NAME,
                                                                   userDefinedStatus,
                                                                   methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataAPIMapper.CONFIDENCE_PROPERTY_NAME,
+                                                               OpenMetadataType.CONFIDENCE_PROPERTY_NAME,
                                                                confidence,
                                                                methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.CREATED_BY_PROPERTY_NAME,
+                                                                  OpenMetadataType.CREATED_BY_PROPERTY_NAME,
                                                                   createdBy,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME,
+                                                                  OpenMetadataType.STEWARD_PROPERTY_NAME,
                                                                   steward,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME,
                                                                   stewardTypeName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
                                                                   stewardPropertyName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,
+                                                                  OpenMetadataType.SOURCE_PROPERTY_NAME,
                                                                   source,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.NOTES_PROPERTY_NAME,
+                                                                  OpenMetadataType.NOTES_PROPERTY_NAME,
                                                                   notes,
                                                                   methodName);
 
@@ -729,15 +731,15 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   collectionGUID,
                                   collectionGUIDParameterName,
-                                  OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+                                  OpenMetadataType.COLLECTION_TYPE_NAME,
                                   memberGUID,
                                   memberGUIDParameterName,
-                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                  OpenMetadataType.REFERENCEABLE.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_GUID,
-                                  OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
+                                  OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_GUID,
+                                  OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_NAME,
                                   properties,
                                   effectiveFrom,
                                   effectiveTo,
@@ -785,15 +787,15 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       collectionGUID,
                                       collectionGUIDParameterName,
-                                      OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+                                      OpenMetadataType.COLLECTION_TYPE_NAME,
                                       memberGUID,
                                       memberGUIDParameterName,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE.typeGUID,
+                                      OpenMetadataType.REFERENCEABLE.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
+                                      OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_GUID,
+                                      OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_NAME,
                                       effectiveTime,
                                       methodName);
     }
@@ -834,8 +836,8 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     collectionGUID,
                                     collectionGUIDParameterName,
-                                    OpenMetadataAPIMapper.COLLECTION_TYPE_GUID,
-                                    OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+                                    OpenMetadataType.COLLECTION_TYPE_GUID,
+                                    OpenMetadataType.COLLECTION_TYPE_NAME,
                                     null,
                                     null,
                                     forLineage,
@@ -880,8 +882,8 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
-                              OpenMetadataAPIMapper.COLLECTION_TYPE_GUID,
-                              OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+                              OpenMetadataType.COLLECTION_TYPE_GUID,
+                              OpenMetadataType.COLLECTION_TYPE_NAME,
                               null,
                               startFrom,
                               pageSize,
@@ -926,14 +928,14 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                                                      PropertyServerException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
 
         return this.getBeansByValue(userId,
                                     name,
                                     nameParameterName,
-                                    OpenMetadataAPIMapper.COLLECTION_TYPE_GUID,
-                                    OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+                                    OpenMetadataType.COLLECTION_TYPE_GUID,
+                                    OpenMetadataType.COLLECTION_TYPE_NAME,
                                     specificMatchPropertyNames,
                                     true,
                                     null,
@@ -979,7 +981,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
-                                          OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+                                          OpenMetadataType.COLLECTION_TYPE_NAME,
                                           forLineage,
                                           forDuplicateProcessing,
                                           supportedZones,

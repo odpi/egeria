@@ -17,7 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 
 /**
  * GovernanceActionProcessStepConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a bean that inherits from GovernanceActionTypeElement.
+ * EntityDetail object into a bean that inherits from GovernanceActionProcessStepElement.
  */
 public class GovernanceActionProcessStepConverter<B> extends OpenMetadataStoreConverter<B>
 {

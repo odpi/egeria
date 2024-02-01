@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.datamanager.converters;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DataFileElement;
 import org.odpi.openmetadata.accessservices.datamanager.properties.DataFileProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -87,7 +87,7 @@ public class DataFileConverter<B> extends DataManagerOMASConverter<B>
                     dataFileProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     dataFileProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName, entity);
 
                     dataFileProperties.setEncodingType(this.getDataStoreEncodingType(instanceProperties));
                     dataFileProperties.setEncodingLanguage(this.getDataStoreEncodingLanguage(instanceProperties));

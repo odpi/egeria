@@ -120,7 +120,7 @@ public class SoftwareServerRequestBody extends SoftwareServerProperties
         return "SoftwareServerRequestBody{" +
                        "externalSourceGUID='" + externalSourceGUID + '\'' +
                        ", externalSourceName='" + externalSourceName + '\'' +
-                       ", softwareServerType='" + getSoftwareServerType() + '\'' +
+                       ", deployedImplementationType='" + getDeployedImplementationType() + '\'' +
                        ", softwareServerVersion='" + getSoftwareServerVersion() + '\'' +
                        ", softwareServerSource='" + getSoftwareServerSource() + '\'' +
                        ", softwareServerUserId='" + getSoftwareServerUserId() + '\'' +

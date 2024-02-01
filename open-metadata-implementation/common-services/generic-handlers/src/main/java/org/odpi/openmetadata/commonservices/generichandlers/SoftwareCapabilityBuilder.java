@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
@@ -96,8 +98,8 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
-              OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+              OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
+              OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
               null,
               repositoryHelper,
               serviceName,
@@ -183,15 +185,15 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
         InstanceProperties properties;
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      null,
-                                                                      OpenMetadataAPIMapper.FORMAT_PROPERTY_NAME,
-                                                                      format,
-                                                                      methodName);
+                                                                  null,
+                                                                  OpenMetadataType.FORMAT_PROPERTY_NAME,
+                                                                  format,
+                                                                  methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.ENCRYPTION_PROPERTY_NAME,
-                                                                      encryption,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataType.ENCRYPTION_PROPERTY_NAME,
+                                                                  encryption,
+                                                                  methodName);
 
 
         /*
@@ -206,7 +208,7 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
                                                                                   null,
                                                                                   InstanceProvenanceType.LOCAL_COHORT,
                                                                                   userId,
-                                                                                  OpenMetadataAPIMapper.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME,
+                                                                                  OpenMetadataType.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME,
                                                                                   typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
@@ -215,7 +217,7 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME);
         }
     }
 
@@ -234,37 +236,37 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.NAME.name,
                                                                   displayName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.CAPABILITY_TYPE_PROPERTY_NAME,
+                                                                  OpenMetadataType.CAPABILITY_TYPE_PROPERTY_NAME,
                                                                   type,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.CAPABILITY_VERSION_PROPERTY_NAME,
+                                                                  OpenMetadataType.CAPABILITY_VERSION_PROPERTY_NAME,
                                                                   version,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.PATCH_LEVEL_PROPERTY_NAME,
+                                                                  OpenMetadataType.PATCH_LEVEL_PROPERTY_NAME,
                                                                   patchLevel,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,
+                                                                  OpenMetadataType.SOURCE_PROPERTY_NAME,
                                                                   source,
                                                                   methodName);
 

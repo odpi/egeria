@@ -104,7 +104,6 @@ public enum DataEngineAuditCode {
      *
      * @return message definition object
      */
-    @Getter
     private final AuditLogMessageDefinition messageDefinition;
 
     /**

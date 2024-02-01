@@ -4,23 +4,18 @@ package org.odpi.openmetadata.engineservices.governanceaction.admin;
 
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
-import org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActionAuditCode;
 import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActionErrorCode;
-import org.odpi.openmetadata.engineservices.governanceaction.handlers.GovernanceActionEngineHandler;
 import org.odpi.openmetadata.engineservices.governanceaction.server.GovernanceActionInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.EngineServiceAdmin;
-import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
+import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * GovernanceActionAdmin is called during server start-up and initializes the Governance Action OMES.
@@ -41,27 +36,27 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
      * @param configurationClient client used to connect to the Governance Engine OMAS to retrieve the governance engine definitions.
      * @param serverClient client used to connect to the Governance Engine OMAS to manage governance actions
      * @param engineServiceConfig details of the options and the engines to run.
+     * @param governanceEngineMap map of configured engines
      * @throws OMAGConfigurationErrorException an issue in the configuration prevented initialization
      */
-    public Map<String, GovernanceEngineHandler> initialize(String                              localServerId,
-                                                           String                              localServerName,
-                                                           AuditLog                            auditLog,
-                                                           String                              localServerUserId,
-                                                           String                              localServerPassword,
-                                                           int                                 maxPageSize,
-                                                           GovernanceEngineConfigurationClient configurationClient,
-                                                           GovernanceContextClient             serverClient,
-                                                           EngineServiceConfig                 engineServiceConfig) throws OMAGConfigurationErrorException
+    @SuppressWarnings(value = "deprecation")
+    @Override
+    public void initialize(String                              localServerId,
+                           String                              localServerName,
+                           AuditLog                            auditLog,
+                           String                              localServerUserId,
+                           String                              localServerPassword,
+                           int                                 maxPageSize,
+                           GovernanceEngineConfigurationClient configurationClient,
+                           GovernanceContextClient             serverClient,
+                           EngineServiceConfig                 engineServiceConfig,
+                           GovernanceEngineMap                 governanceEngineMap) throws OMAGConfigurationErrorException
     {
         final String actionDescription = "initialize engine service";
         final String methodName        = "initialize";
 
-        GovernanceEngineRESTClient restClient;
-
         this.auditLog = auditLog;
         this.localServerName = localServerName;
-
-        auditLog.logMessage(actionDescription, GovernanceActionAuditCode.ENGINE_SERVICE_INITIALIZING.getMessageDefinition(localServerName));
 
         try
         {
@@ -73,59 +68,17 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
              */
             String             accessServiceRootURL    = this.getPartnerServiceRootURL(engineServiceConfig);
             String             accessServiceServerName = this.getPartnerServiceServerName(engineServiceConfig);
-            List<EngineConfig> governanceActionEngines = this.getEngines(engineServiceConfig);
+
+            auditLog.logMessage(actionDescription, GovernanceActionAuditCode.ENGINE_SERVICE_INITIALIZING.getMessageDefinition(localServerName,
+                                                                                                                              accessServiceServerName,
+                                                                                                                              accessServiceRootURL));
 
             /*
-             * Create the client for accessing the open metadata repositories.
+             * Create an entry in the governance engine map for each configured engine.
              */
-            GovernanceContextClient governanceContextClient;
-
-            try
-            {
-                if ((localServerName != null) && (localServerPassword != null))
-                {
-                    restClient = new GovernanceEngineRESTClient(accessServiceServerName,
-                                                                accessServiceRootURL,
-                                                                localServerUserId,
-                                                                localServerPassword);
-                }
-                else
-                {
-                    restClient = new GovernanceEngineRESTClient(accessServiceServerName, accessServiceRootURL);
-                }
-
-                governanceContextClient = new GovernanceContextClient(accessServiceServerName,
-                                                                      accessServiceRootURL,
-                                                                      restClient,
-                                                                      maxPageSize);
-            }
-            catch (InvalidParameterException error)
-            {
-                throw new OMAGConfigurationErrorException(error.getReportedErrorMessage(), error);
-            }
-
-
-            /*
-             * Create a governance action handler for each of the governance action engines.
-             */
-            Map<String, GovernanceActionEngineHandler> governanceActionEngineHandlers = this.getGovernanceActionEngineHandlers(governanceActionEngines,
-                                                                                                                               accessServiceRootURL,
-                                                                                                                               accessServiceServerName,
-                                                                                                                               localServerUserId,
-                                                                                                                               configurationClient,
-                                                                                                                               serverClient,
-                                                                                                                               governanceContextClient,
-                                                                                                                               maxPageSize);
-
-            if (governanceActionEngineHandlers == null)
-            {
-                auditLog.logMessage(actionDescription, GovernanceActionAuditCode.NO_GOVERNANCE_ACTION_ENGINES_STARTED.getMessageDefinition(localServerName));
-
-                throw new OMAGConfigurationErrorException(GovernanceActionErrorCode.NO_GOVERNANCE_ACTION_ENGINES_STARTED.getMessageDefinition(localServerName),
-                                                          this.getClass().getName(),
-                                                          methodName);
-            }
-
+            governanceEngineMap.setGovernanceEngineProperties(engineServiceConfig.getEngines(),
+                                                              accessServiceServerName,
+                                                              accessServiceRootURL);
 
             /*
              * Set up the REST APIs.
@@ -136,20 +89,7 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
                                                                     localServerUserId,
                                                                     maxPageSize,
                                                                     engineServiceConfig.getOMAGServerPlatformRootURL(),
-                                                                    engineServiceConfig.getOMAGServerName(),
-                                                                    governanceActionEngineHandlers);
-
-            Map<String, GovernanceEngineHandler> governanceEngineHandlers = new HashMap<>();
-
-            for (String engineName : governanceActionEngineHandlers.keySet())
-            {
-                if (engineName != null)
-                {
-                    governanceEngineHandlers.put(engineName, governanceActionEngineHandlers.get(engineName));
-                }
-            }
-
-            return governanceEngineHandlers;
+                                                                    engineServiceConfig.getOMAGServerName());
         }
         catch (Exception error)
         {
@@ -167,68 +107,9 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
 
 
     /**
-     * Create the list of governance action engine handlers.  Note that a new governance engine client is created for the engine services
-     * in case the metadata server used by the engine services is different from the one configured for the engine host services to manage
-     * configuration etc.  This is particularly important when processing assets since the visibility to assets may be different from server to
-     * server due to the supportedZones configuration.
-     *
-     * @param governanceActionEngines list of governance action engines
-     * @param accessServiceRootURL URL Root for the Governance Action Engine OMAS
-     * @param accessServiceServerName Server Name for the Governance Action Engine OMAS
-     * @param localServerUserId user id for this server to use if sending REST requests and processing inbound messages.
-     * @param configurationClient client to retrieve configuration from
-     * @param serverClient client to control the execution of governance action requests
-     * @param governanceContextClient client for calling REST APIs
-     * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
-     * @return map of governance action engine GUIDs to handlers
-     */
-    private Map<String, GovernanceActionEngineHandler>  getGovernanceActionEngineHandlers(List<EngineConfig>                  governanceActionEngines,
-                                                                                          String                              accessServiceRootURL,
-                                                                                          String                              accessServiceServerName,
-                                                                                          String                              localServerUserId,
-                                                                                          GovernanceEngineConfigurationClient configurationClient,
-                                                                                          GovernanceContextClient             serverClient,
-                                                                                          GovernanceContextClient             governanceContextClient,
-                                                                                          int                                 maxPageSize)
-    {
-        Map<String, GovernanceActionEngineHandler> governanceActionEngineHandlers = new HashMap<>();
-
-        for (EngineConfig   governanceActionEngine : governanceActionEngines)
-        {
-            if (governanceActionEngine != null)
-            {
-                /*
-                 * Create a handler for the governance action engine.
-                 */
-                GovernanceActionEngineHandler  handler = new GovernanceActionEngineHandler(governanceActionEngine,
-                                                                                           localServerName,
-                                                                                           accessServiceServerName,
-                                                                                           accessServiceRootURL,
-                                                                                           localServerUserId,
-                                                                                           configurationClient,
-                                                                                           serverClient,
-                                                                                           governanceContextClient,
-                                                                                           auditLog,
-                                                                                           maxPageSize);
-
-                governanceActionEngineHandlers.put(governanceActionEngine.getEngineQualifiedName(), handler);
-            }
-        }
-
-        if (governanceActionEngineHandlers.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return governanceActionEngineHandlers;
-        }
-    }
-
-
-    /**
      * Shutdown the engine service.
      */
+    @Override
     public void shutdown()
     {
         final String actionDescription = "shutdown";

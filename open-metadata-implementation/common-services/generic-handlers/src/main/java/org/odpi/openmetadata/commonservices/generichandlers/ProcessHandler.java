@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -195,7 +197,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        String typeName = OpenMetadataAPIMapper.PROCESS_TYPE_NAME;
+        String typeName = OpenMetadataType.PROCESS.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -203,7 +205,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
         }
 
         invalidParameterHandler.validateTypeName(typeName,
-                                                 OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                 OpenMetadataType.PROCESS.typeName,
                                                  serviceName,
                                                  methodName,
                                                  repositoryHelper);
@@ -217,7 +219,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                 extendedProperties = new HashMap<>();
             }
 
-            extendedProperties.put(OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME, formula);
+            extendedProperties.put(OpenMetadataProperty.FORMULA.name, formula);
         }
 
         if (formulaType != null)
@@ -227,7 +229,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                 extendedProperties = new HashMap<>();
             }
 
-            extendedProperties.put(OpenMetadataAPIMapper.FORMULA_TYPE_PROPERTY_NAME, formulaType);
+            extendedProperties.put(OpenMetadataProperty.FORMULA_TYPE.name, formulaType);
         }
 
         if (implementationLanguage != null)
@@ -237,7 +239,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                 extendedProperties = new HashMap<>();
             }
 
-            extendedProperties.put(OpenMetadataAPIMapper.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME, implementationLanguage);
+            extendedProperties.put(OpenMetadataType.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME, implementationLanguage);
         }
 
         return processHandler.createAssetInRepository(userId,
@@ -304,8 +306,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                    externalSourceName,
                                                    templateGUID,
                                                    templateGUIDParameterName,
-                                                   OpenMetadataAPIMapper.PROCESS_TYPE_GUID,
-                                                   OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                   OpenMetadataType.PROCESS.typeGUID,
+                                                   OpenMetadataType.PROCESS.typeName,
                                                    qualifiedName,
                                                    qualifiedNameParameterName,
                                                    technicalName,
@@ -373,7 +375,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
-        String typeName = OpenMetadataAPIMapper.PROCESS_TYPE_NAME;
+        String typeName = OpenMetadataType.PROCESS.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -381,7 +383,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                   OpenMetadataType.ASSET.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -395,7 +397,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                 extendedProperties = new HashMap<>();
             }
 
-            extendedProperties.put(OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME, formula);
+            extendedProperties.put(OpenMetadataProperty.FORMULA.name, formula);
         }
 
         if (implementationLanguage != null)
@@ -405,7 +407,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                 extendedProperties = new HashMap<>();
             }
 
-            extendedProperties.put(OpenMetadataAPIMapper.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME, implementationLanguage);
+            extendedProperties.put(OpenMetadataType.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME, implementationLanguage);
         }
 
         processHandler.updateAsset(userId,
@@ -470,8 +472,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                           externalSourceName,
                                           processGUID,
                                           processGUIDParameterName,
-                                          OpenMetadataAPIMapper.PROCESS_TYPE_GUID,
-                                          OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                          OpenMetadataType.PROCESS.typeGUID,
+                                          OpenMetadataType.PROCESS.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
                                           supportedZones,
@@ -526,16 +528,16 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
         try
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
-                                                                     null,
-                                                                     OpenMetadataAPIMapper.CONTAINMENT_TYPE_PROPERTY_NAME,
-                                                                     OpenMetadataAPIMapper.PROCESS_CONTAINMENT_TYPE_ENUM_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.PROCESS_CONTAINMENT_TYPE_ENUM_TYPE_NAME,
-                                                                     containmentType,
-                                                                     methodName);
+                                                                    null,
+                                                                    OpenMetadataType.CONTAINMENT_TYPE_PROPERTY_NAME,
+                                                                    OpenMetadataType.PROCESS_CONTAINMENT_TYPE_ENUM_TYPE_GUID,
+                                                                    OpenMetadataType.PROCESS_CONTAINMENT_TYPE_ENUM_TYPE_NAME,
+                                                                    containmentType,
+                                                                    methodName);
         }
         catch (TypeErrorException classificationNotSupported)
         {
-            throw new InvalidParameterException(classificationNotSupported, OpenMetadataAPIMapper.CONTAINMENT_TYPE_PROPERTY_NAME);
+            throw new InvalidParameterException(classificationNotSupported, OpenMetadataType.CONTAINMENT_TYPE_PROPERTY_NAME);
         }
 
         processHandler.linkElementToElement(userId,
@@ -543,15 +545,15 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                             externalSourceName,
                                             parentProcessGUID,
                                             parentProcessGUIDParameterName,
-                                            OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                            OpenMetadataType.PROCESS.typeName,
                                             childProcessGUID,
                                             childProcessGUIDParameterName,
-                                            OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                            OpenMetadataType.PROCESS.typeName,
                                             forLineage,
                                             forDuplicateProcessing,
                                             supportedZones,
-                                            OpenMetadataAPIMapper.PROCESS_HIERARCHY_TYPE_GUID,
-                                            OpenMetadataAPIMapper.PROCESS_HIERARCHY_TYPE_NAME,
+                                            OpenMetadataType.PROCESS_HIERARCHY_TYPE_GUID,
+                                            OpenMetadataType.PROCESS_HIERARCHY_TYPE_NAME,
                                             properties,
                                             effectiveFrom,
                                             effectiveTo,
@@ -599,16 +601,16 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                 externalSourceName,
                                                 parentProcessGUID,
                                                 parentProcessGUIDParameterName,
-                                                OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                OpenMetadataType.PROCESS.typeName,
                                                 childProcessGUID,
                                                 childProcessGUIDParameterName,
-                                                OpenMetadataAPIMapper.PROCESS_TYPE_GUID,
-                                                OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                OpenMetadataType.PROCESS.typeGUID,
+                                                OpenMetadataType.PROCESS.typeName,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 supportedZones,
-                                                OpenMetadataAPIMapper.PROCESS_HIERARCHY_TYPE_GUID,
-                                                OpenMetadataAPIMapper.PROCESS_HIERARCHY_TYPE_NAME,
+                                                OpenMetadataType.PROCESS_HIERARCHY_TYPE_GUID,
+                                                OpenMetadataType.PROCESS_HIERARCHY_TYPE_NAME,
                                                 effectiveTime,
                                                 methodName);
     }
@@ -720,8 +722,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                               externalSourceName,
                                               processGUID,
                                               processGUIDParameterName,
-                                              OpenMetadataAPIMapper.PROCESS_TYPE_GUID,
-                                              OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                              OpenMetadataType.PROCESS.typeGUID,
+                                              OpenMetadataType.PROCESS.typeName,
                                               null,
                                               null,
                                               forLineage,
@@ -768,8 +770,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
         return processHandler.findAssets(userId,
-                                         OpenMetadataAPIMapper.PROCESS_TYPE_GUID,
-                                         OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                         OpenMetadataType.PROCESS.typeGUID,
+                                         OpenMetadataType.PROCESS.typeName,
                                          searchString,
                                          searchStringParameterName,
                                          startFrom,
@@ -814,8 +816,8 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                                          PropertyServerException
     {
         return processHandler.getAssetsByName(userId,
-                                              OpenMetadataAPIMapper.PROCESS_TYPE_GUID,
-                                              OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                              OpenMetadataType.PROCESS.typeGUID,
+                                              OpenMetadataType.PROCESS.typeName,
                                               name,
                                               nameParameterName,
                                               supportedZones,
@@ -858,7 +860,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
         return processHandler.getBeanFromRepository(userId,
                                                     processGUID,
                                                     processGUIDParameterName,
-                                                    OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                    OpenMetadataType.PROCESS.typeName,
                                                     forLineage,
                                                     forDuplicateProcessing,
                                                     effectiveTime,
@@ -896,10 +898,10 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
         return processHandler.getAttachedElement(userId,
                                                  processGUID,
                                                  processGUIDParameterName,
-                                                 OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
-                                                 OpenMetadataAPIMapper.PROCESS_HIERARCHY_TYPE_GUID,
-                                                 OpenMetadataAPIMapper.PROCESS_HIERARCHY_TYPE_NAME,
-                                                 OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                 OpenMetadataType.PROCESS.typeName,
+                                                 OpenMetadataType.PROCESS_HIERARCHY_TYPE_GUID,
+                                                 OpenMetadataType.PROCESS_HIERARCHY_TYPE_NAME,
+                                                 OpenMetadataType.PROCESS.typeName,
                                                  2,
                                                  forLineage,
                                                  forDuplicateProcessing,
@@ -950,10 +952,10 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                   null,
                                                   processGUID,
                                                   processGUIDParameterName,
-                                                  OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
-                                                  OpenMetadataAPIMapper.PROCESS_HIERARCHY_TYPE_GUID,
-                                                  OpenMetadataAPIMapper.PROCESS_HIERARCHY_TYPE_NAME,
-                                                  OpenMetadataAPIMapper.PROCESS_TYPE_NAME,
+                                                  OpenMetadataType.PROCESS.typeName,
+                                                  OpenMetadataType.PROCESS_HIERARCHY_TYPE_GUID,
+                                                  OpenMetadataType.PROCESS_HIERARCHY_TYPE_NAME,
+                                                  OpenMetadataType.PROCESS.typeName,
                                                   null,
                                                   null,
                                                   2,
@@ -1742,18 +1744,18 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
         InstanceProperties relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                                  null,
-                                                                                                 OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                  qualifiedName,
                                                                                                  methodName);
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,
-                                                                              OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                              OpenMetadataProperty.DESCRIPTION.name,
                                                                               description,
                                                                               methodName);
 
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,
-                                                                              OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
+                                                                              OpenMetadataProperty.FORMULA.name,
                                                                               formula,
                                                                               methodName);
 
@@ -1762,15 +1764,15 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                externalSourceName,
                                                dataSupplierGUID,
                                                dataSupplierGUIDParameterName,
-                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               OpenMetadataType.REFERENCEABLE.typeName,
                                                dataConsumerGUID,
                                                dataConsumerGUIDParameterName,
-                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               OpenMetadataType.REFERENCEABLE.typeName,
                                                forLineage,
                                                forDuplicateProcessing,
                                                supportedZones,
-                                               OpenMetadataAPIMapper.DATA_FLOW_TYPE_GUID,
-                                               OpenMetadataAPIMapper.DATA_FLOW_TYPE_NAME,
+                                               OpenMetadataType.DATA_FLOW_TYPE_GUID,
+                                               OpenMetadataType.DATA_FLOW_TYPE_NAME,
                                                this.setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                                effectiveTime,
                                                methodName);
@@ -1819,11 +1821,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
         List<Relationship> relationships = super.getAttachmentLinks(userId,
                                                                     dataSupplierGUID,
                                                                     dataSupplierGUIDParameterName,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                    OpenMetadataAPIMapper.DATA_FLOW_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.DATA_FLOW_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
+                                                                    OpenMetadataType.DATA_FLOW_TYPE_GUID,
+                                                                    OpenMetadataType.DATA_FLOW_TYPE_NAME,
                                                                     dataConsumerGUID,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
                                                                     2,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
@@ -1845,7 +1847,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                     }
 
                     String relationshipQualifiedName = repositoryHelper.getStringProperty(serviceName,
-                                                                                          OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                           relationship.getProperties(),
                                                                                           methodName);
 
@@ -1906,18 +1908,18 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                      qualifiedName,
                                                                                      methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.FORMULA.name,
                                                                   formula,
                                                                   methodName);
 
@@ -1926,7 +1928,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                            externalSourceName,
                                            dataFlowGUID,
                                            dataFlowGUIDParameterName,
-                                           OpenMetadataAPIMapper.DATA_FLOW_TYPE_NAME,
+                                           OpenMetadataType.DATA_FLOW_TYPE_NAME,
                                            false,
                                            this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                            forLineage,
@@ -1973,7 +1975,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                  externalSourceName,
                                  dataFlowGUID,
                                  dataFlowGUIDParameterName,
-                                 OpenMetadataAPIMapper.DATA_FLOW_TYPE_NAME,
+                                 OpenMetadataType.DATA_FLOW_TYPE_NAME,
                                  forLineage,
                                  forDuplicateProcessing,
                                  effectiveTime,
@@ -2018,11 +2020,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
         List<Relationship> relationships = super.getAttachmentLinks(userId,
                                                                     dataSupplierGUID,
                                                                     dataSupplierGUIDParameterName,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                    OpenMetadataAPIMapper.DATA_FLOW_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.DATA_FLOW_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
+                                                                    OpenMetadataType.DATA_FLOW_TYPE_GUID,
+                                                                    OpenMetadataType.DATA_FLOW_TYPE_NAME,
                                                                     null,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
                                                                     2,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
@@ -2091,11 +2093,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
         List<Relationship> relationships = super.getAttachmentLinks(userId,
                                                                     dataConsumerGUID,
                                                                     dataConsumerGUIDParameterName,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                    OpenMetadataAPIMapper.DATA_FLOW_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.DATA_FLOW_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
+                                                                    OpenMetadataType.DATA_FLOW_TYPE_GUID,
+                                                                    OpenMetadataType.DATA_FLOW_TYPE_NAME,
                                                                     null,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
                                                                     1,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
@@ -2178,18 +2180,18 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
         InstanceProperties relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                                  null,
-                                                                                                 OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                  qualifiedName,
                                                                                                  methodName);
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,
-                                                                              OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                              OpenMetadataProperty.DESCRIPTION.name,
                                                                               description,
                                                                               methodName);
 
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,
-                                                                              OpenMetadataAPIMapper.GUARD_PROPERTY_NAME,
+                                                                              OpenMetadataType.GUARD_PROPERTY_NAME,
                                                                               guard,
                                                                               methodName);
 
@@ -2198,15 +2200,15 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                externalSourceName,
                                                currentStepGUID,
                                                currentStepGUIDParameterName,
-                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               OpenMetadataType.REFERENCEABLE.typeName,
                                                nextStepGUID,
                                                nextStepGUIDParameterName,
-                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               OpenMetadataType.REFERENCEABLE.typeName,
                                                forLineage,
                                                forDuplicateProcessing,
                                                supportedZones,
-                                               OpenMetadataAPIMapper.CONTROL_FLOW_TYPE_GUID,
-                                               OpenMetadataAPIMapper.CONTROL_FLOW_TYPE_NAME,
+                                               OpenMetadataType.CONTROL_FLOW_TYPE_GUID,
+                                               OpenMetadataType.CONTROL_FLOW_TYPE_NAME,
                                                this.setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                                effectiveTime,
                                                methodName);
@@ -2255,11 +2257,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
         List<Relationship> relationships = super.getAttachmentLinks(userId,
                                                                     currentStepGUID,
                                                                     currentStepGUIDParameterName,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                    OpenMetadataAPIMapper.CONTROL_FLOW_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.CONTROL_FLOW_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
+                                                                    OpenMetadataType.CONTROL_FLOW_TYPE_GUID,
+                                                                    OpenMetadataType.CONTROL_FLOW_TYPE_NAME,
                                                                     nextStepGUID,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
                                                                     2,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
@@ -2282,7 +2284,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                     }
 
                     String relationshipQualifiedName = repositoryHelper.getStringProperty(serviceName,
-                                                                                          OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                           relationship.getProperties(),
                                                                                           methodName);
 
@@ -2343,18 +2345,18 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                      qualifiedName,
                                                                                      methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.GUARD_PROPERTY_NAME,
+                                                                  OpenMetadataType.GUARD_PROPERTY_NAME,
                                                                   guard,
                                                                   methodName);
 
@@ -2363,7 +2365,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                            externalSourceName,
                                            controlFlowGUID,
                                            controlFlowGUIDParameterName,
-                                           OpenMetadataAPIMapper.CONTROL_FLOW_TYPE_NAME,
+                                           OpenMetadataType.CONTROL_FLOW_TYPE_NAME,
                                            false,
                                            this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                            forLineage,
@@ -2410,7 +2412,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                  externalSourceName,
                                  controlFlowGUID,
                                  controlFlowGUIDParameterName,
-                                 OpenMetadataAPIMapper.CONTROL_FLOW_TYPE_NAME,
+                                 OpenMetadataType.CONTROL_FLOW_TYPE_NAME,
                                  forLineage,
                                  forDuplicateProcessing,
                                  effectiveTime,
@@ -2455,11 +2457,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
         List<Relationship> relationships = super.getAttachmentLinks(userId,
                                                                     currentStepGUID,
                                                                     currentStepGUIDParameterName,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                    OpenMetadataAPIMapper.CONTROL_FLOW_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.CONTROL_FLOW_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
+                                                                    OpenMetadataType.CONTROL_FLOW_TYPE_GUID,
+                                                                    OpenMetadataType.CONTROL_FLOW_TYPE_NAME,
                                                                     null,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
                                                                     2,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
@@ -2528,11 +2530,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
         List<Relationship> relationships = super.getAttachmentLinks(userId,
                                                                     currentStepGUID,
                                                                     currentStepGUIDParameterName,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                    OpenMetadataAPIMapper.CONTROL_FLOW_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.CONTROL_FLOW_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
+                                                                    OpenMetadataType.CONTROL_FLOW_TYPE_GUID,
+                                                                    OpenMetadataType.CONTROL_FLOW_TYPE_NAME,
                                                                     null,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
                                                                     1,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
@@ -2615,18 +2617,18 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
         InstanceProperties relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                                  null,
-                                                                                                 OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                  qualifiedName,
                                                                                                  methodName);
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,
-                                                                              OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                              OpenMetadataProperty.DESCRIPTION.name,
                                                                               description,
                                                                               methodName);
 
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,
-                                                                              OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
+                                                                              OpenMetadataProperty.FORMULA.name,
                                                                               formula,
                                                                               methodName);
 
@@ -2635,15 +2637,15 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                externalSourceName,
                                                callerGUID,
                                                callerGUIDParameterName,
-                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               OpenMetadataType.REFERENCEABLE.typeName,
                                                calledGUID,
                                                calledGUIDParameterName,
-                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               OpenMetadataType.REFERENCEABLE.typeName,
                                                forLineage,
                                                forDuplicateProcessing,
                                                supportedZones,
-                                               OpenMetadataAPIMapper.PROCESS_CALL_TYPE_GUID,
-                                               OpenMetadataAPIMapper.PROCESS_CALL_TYPE_NAME,
+                                               OpenMetadataType.PROCESS_CALL_TYPE_GUID,
+                                               OpenMetadataType.PROCESS_CALL_TYPE_NAME,
                                                this.setUpEffectiveDates(relationshipProperties, effectiveFrom, effectiveTo),
                                                effectiveTime,
                                                methodName);
@@ -2692,11 +2694,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
         List<Relationship> relationships = super.getAttachmentLinks(userId,
                                                                     callerGUID,
                                                                     callerGUIDParameterName,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                    OpenMetadataAPIMapper.PROCESS_CALL_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.PROCESS_CALL_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
+                                                                    OpenMetadataType.PROCESS_CALL_TYPE_GUID,
+                                                                    OpenMetadataType.PROCESS_CALL_TYPE_NAME,
                                                                     calledGUID,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
                                                                     2,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
@@ -2719,7 +2721,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                     }
 
                     String relationshipQualifiedName = repositoryHelper.getStringProperty(serviceName,
-                                                                                          OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                           relationship.getProperties(),
                                                                                           methodName);
 
@@ -2780,18 +2782,18 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                      qualifiedName,
                                                                                      methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.FORMULA.name,
                                                                   formula,
                                                                   methodName);
 
@@ -2800,7 +2802,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                            externalSourceName,
                                            processCallGUID,
                                            processCallGUIDParameterName,
-                                           OpenMetadataAPIMapper.PROCESS_CALL_TYPE_NAME,
+                                           OpenMetadataType.PROCESS_CALL_TYPE_NAME,
                                            false,
                                            this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                            forLineage,
@@ -2847,7 +2849,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                  externalSourceName,
                                  processCallGUID,
                                  processCallGUIDParameterName,
-                                 OpenMetadataAPIMapper.PROCESS_CALL_TYPE_NAME,
+                                 OpenMetadataType.PROCESS_CALL_TYPE_NAME,
                                  forLineage,
                                  forDuplicateProcessing,
                                  effectiveTime,
@@ -2892,11 +2894,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
         List<Relationship> relationships = super.getAttachmentLinks(userId,
                                                                     callerGUID,
                                                                     callerGUIDParameterName,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                    OpenMetadataAPIMapper.PROCESS_CALL_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.PROCESS_CALL_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
+                                                                    OpenMetadataType.PROCESS_CALL_TYPE_GUID,
+                                                                    OpenMetadataType.PROCESS_CALL_TYPE_NAME,
                                                                     null,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
                                                                     2,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
@@ -2965,11 +2967,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
         List<Relationship> relationships = super.getAttachmentLinks(userId,
                                                                     calledGUID,
                                                                     calledGUIDParameterName,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                    OpenMetadataAPIMapper.PROCESS_CALL_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.PROCESS_CALL_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
+                                                                    OpenMetadataType.PROCESS_CALL_TYPE_GUID,
+                                                                    OpenMetadataType.PROCESS_CALL_TYPE_NAME,
                                                                     null,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
                                                                     1,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
@@ -3048,12 +3050,12 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                      qualifiedName,
                                                                                      methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
@@ -3062,15 +3064,15 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                                null,
                                                sourceElementGUID,
                                                sourceElementGUIDParameterName,
-                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               OpenMetadataType.REFERENCEABLE.typeName,
                                                destinationElementGUID,
                                                destinationElementGUIDParameterName,
-                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               OpenMetadataType.REFERENCEABLE.typeName,
                                                forLineage,
                                                forDuplicateProcessing,
                                                supportedZones,
-                                               OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_GUID,
-                                               OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_NAME,
+                                               OpenMetadataType.LINEAGE_MAPPING_TYPE_GUID,
+                                               OpenMetadataType.LINEAGE_MAPPING_TYPE_NAME,
                                                this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                                effectiveTime,
                                                methodName);
@@ -3119,11 +3121,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
         List<Relationship> relationships = super.getAttachmentLinks(userId,
                                                                     sourceElementGUID,
                                                                     sourceElementGUIDParameterName,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                    OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
+                                                                    OpenMetadataType.LINEAGE_MAPPING_TYPE_GUID,
+                                                                    OpenMetadataType.LINEAGE_MAPPING_TYPE_NAME,
                                                                     destinationElementGUID,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
                                                                     2,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
@@ -3146,7 +3148,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                     }
 
                     String relationshipQualifiedName = repositoryHelper.getStringProperty(serviceName,
-                                                                                          OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                           relationship.getProperties(),
                                                                                           methodName);
 
@@ -3201,12 +3203,12 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                      qualifiedName,
                                                                                      methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
@@ -3215,7 +3217,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                            null,
                                            lineageMappingGUID,
                                            lineageMappingGUIDParameterName,
-                                           OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_NAME,
+                                           OpenMetadataType.LINEAGE_MAPPING_TYPE_NAME,
                                            false,
                                            this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                            forLineage,
@@ -3258,7 +3260,7 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
                                  null,
                                  lineageMappingGUID,
                                  lineageMappingGUIDParameterName,
-                                 OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_NAME,
+                                 OpenMetadataType.LINEAGE_MAPPING_TYPE_NAME,
                                  forLineage,
                                  forDuplicateProcessing,
                                  effectiveTime,
@@ -3303,11 +3305,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
         List<Relationship> relationships = super.getAttachmentLinks(userId,
                                                                     sourceElementGUID,
                                                                     sourceElementGUIDParameterName,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                    OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
+                                                                    OpenMetadataType.LINEAGE_MAPPING_TYPE_GUID,
+                                                                    OpenMetadataType.LINEAGE_MAPPING_TYPE_NAME,
                                                                     null,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
                                                                     2,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
@@ -3376,11 +3378,11 @@ public class ProcessHandler<PROCESS, PORT, DATA_FLOW, CONTROL_FLOW, PROCESS_CALL
         List<Relationship> relationships = super.getAttachmentLinks(userId,
                                                                     destinationElementGUID,
                                                                     destinationElementGUIDParameterName,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                    OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.LINEAGE_MAPPING_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
+                                                                    OpenMetadataType.LINEAGE_MAPPING_TYPE_GUID,
+                                                                    OpenMetadataType.LINEAGE_MAPPING_TYPE_NAME,
                                                                     null,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
                                                                     1,
                                                                     forLineage,
                                                                     forDuplicateProcessing,

@@ -1842,7 +1842,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
 
 
-    /*
+    /**
      *  Method to find all the string values and literalise them for exact match.
      *  The InstanceProperties passed in should already have been populated with the desired test values.
      */
@@ -1969,7 +1969,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
         return comp;
     }
 
-    /*
+    /**
      *  Method to literalise a string value for exact match.
      *
      */
@@ -1979,7 +1979,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
         return repositoryHelper.getExactMatchRegex(value);
     }
 
-    /*
+    /**
      *  Method to literalise a string value for exact match.
      *
      */
@@ -1989,7 +1989,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
         return repositoryHelper.getExactMatchRegex(value);
     }
 
-    /*
+    /**
      *  Method to literalise a string value for prefix match.
      *
      */
@@ -1999,7 +1999,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
         return repositoryHelper.getStartsWithRegex(value);
     }
 
-    /*
+    /**
      *  Method to literalise a string value for suffix match.
      *
      */
@@ -2009,7 +2009,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
         return repositoryHelper.getEndsWithRegex(value);
     }
 
-    /*
+    /**
      *  Method to literalise a string value for suffix match.
      *
      */
@@ -2020,6 +2020,12 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
     }
 
 
+    /**
+     * performTypeFilteringTests
+     *
+     * @param attributeName attribute name
+     * @throws Exception error
+     */
     private void performTypeFilteringTests(String attributeName) throws Exception
     {
         /*

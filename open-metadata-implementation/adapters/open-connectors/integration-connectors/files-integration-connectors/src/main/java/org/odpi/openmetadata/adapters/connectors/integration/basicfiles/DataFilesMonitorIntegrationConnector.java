@@ -3,22 +3,24 @@
 
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.monitor.FileAlterationListenerAdaptor;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DataFileElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.FileFolderElement;
 import org.odpi.openmetadata.accessservices.datamanager.properties.ArchiveProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.DataFileProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
+import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsErrorCode;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exception.FileException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -28,74 +30,23 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
 {
     private static final Logger log = LoggerFactory.getLogger(DataFilesMonitorIntegrationConnector.class);
 
+
     private String templateGUID = null;
 
+
     /**
-     * Set up the file listener class - this is implemented by the subclasses
+     * Retrieve the Folder element from the open metadata repositories.
+     * If the directory does not exist the connector waits for the directory to be created.
      *
-     * @return file alteration listener implementation
+     * @param dataFolderFile the directory to retrieve the folder from
+     * @throws ConnectorCheckedException there is a problem retrieving the folder element.
      */
-    @Override
-    FileAlterationListenerAdaptor getListener()
+    FileFolderElement getFolderElement(File dataFolderFile) throws ConnectorCheckedException
     {
-        return new FileCataloguingListener(this);
-    }
-
-
-    /**
-     * Inner class for the directory listener logic
-     */
-    class FileCataloguingListener extends FileAlterationListenerAdaptor
-    {
-        private final DataFilesMonitorIntegrationConnector connector;
-
-        FileCataloguingListener(DataFilesMonitorIntegrationConnector connector)
-        {
-            this.connector = connector;
-        }
-
-        @Override
-        public void onFileCreate(File file)
-        {
-            final String methodName = "onFileCreate";
-
-            log.debug("File created: " + file.getName());
-            connector.catalogFile(file, methodName);
-        }
-
-        @Override
-        public void onFileDelete(File file)
-        {
-            final String methodName = "onFileDelete";
-
-            log.debug("File deleted: " + file.getName());
-            connector.archiveFileInCatalog(file, null, methodName);
-        }
-
-        @Override
-        public void onFileChange(File file)
-        {
-            log.debug("File changed: " + file.getName());
-            connector.updateFileInCatalog(file);
-        }
-
-        @Override
-        public void onDirectoryCreate(File directory)
-        {
-            final String methodName = "onDirectoryCreate";
-
-            log.debug("Folder created: " + directory.getName());
-            initiateDirectoryMonitoring(directory, methodName);
-        }
-
-        @Override
-        public void onDirectoryDelete(File directory)
-        {
-            final String methodName = "onDirectoryDelete";
-
-            log.debug("Folder deleted: " + directory.getName());
-            stopDirectoryMonitoring(directory.getName(), methodName);
-        }
+        return super.getFolderElement(dataFolderFile,
+                                      DeployedImplementationType.FILE_FOLDER.getAssociatedTypeName(),
+                                      DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType(),
+                                      BasicFolderProvider.class.getName());
     }
 
 
@@ -115,40 +66,31 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
     {
         final String methodName = "refresh";
 
-        File directory = this.getRootDirectoryFile();
+        List<DirectoryToMonitor> directoriesToMonitor = super.getDirectoriesToMonitor();
 
-        if (directory != null)
+        for (DirectoryToMonitor directoryToMonitor : directoriesToMonitor)
         {
             /*
              * Sweep one - cataloguing all files
              */
-            File[] filesArray = directory.listFiles();
-
-            if (filesArray != null)
-            {
-                for (File file : filesArray)
-                {
-                    if (file != null)
-                    {
-                        this.catalogFile(file, methodName);
-                    }
-                }
-            }
+            catalogDirectory(directoryToMonitor.directoryFile, methodName);
 
             /*
-             * Sweep two - ensuring all catalogued files still exist.  Notice that if the folder does not exist, it is
-             * ignored.  It will be dynamically created when a new file is added.
+             * Sweep two - ensuring all catalogued files still exist.  Notice that if the directory does not exist in the catalog,
+             * it is ignored.  It will be dynamically created when a new file is added.
              */
             try
             {
-                FileFolderElement folder = super.getFolderElement();
+                FileFolderElement folder = this.getFolderElement(directoryToMonitor.directoryFile);
 
                 if (folder != null)
                 {
                     int startFrom = 0;
                     int pageSize  = 100;
 
-                    List<DataFileElement> cataloguedFiles = this.getContext().getFolderFiles(folder.getElementHeader().getGUID(), startFrom, pageSize);
+                    List<DataFileElement> cataloguedFiles = this.getContext().getFolderFiles(folder.getElementHeader().getGUID(),
+                                                                                             startFrom,
+                                                                                             pageSize);
 
                     while ((cataloguedFiles != null) && (! cataloguedFiles.isEmpty()))
                     {
@@ -157,7 +99,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                             if (dataFile != null)
                             {
                                 if ((dataFile.getElementHeader() != null) && (dataFile.getElementHeader().getGUID() != null) &&
-                                    (dataFile.getDataFileProperties() != null) && (dataFile.getDataFileProperties().getPathName() != null))
+                                            (dataFile.getDataFileProperties() != null) && (dataFile.getDataFileProperties().getPathName() != null))
                                 {
                                     File file = new File(dataFile.getDataFileProperties().getPathName());
 
@@ -171,8 +113,9 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                                     if (auditLog != null)
                                     {
                                         auditLog.logMessage(methodName,
-                                                            BasicFilesIntegrationConnectorsAuditCode.BAD_FILE_ELEMENT.getMessageDefinition(connectorName,
-                                                                                                                                           dataFile.toString()));
+                                                            BasicFilesIntegrationConnectorsAuditCode.BAD_FILE_ELEMENT.getMessageDefinition(
+                                                                    connectorName,
+                                                                    dataFile.toString()));
                                     }
                                 }
                             }
@@ -188,10 +131,11 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                 if (auditLog != null)
                 {
                     auditLog.logException(methodName,
-                                          BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_DATA_FILE_UPDATE.getMessageDefinition(error.getClass().getName(),
-                                                                                                                                        connectorName,
-                                                                                                                                        directory.getAbsolutePath(),
-                                                                                                                                        error.getMessage()),
+                                          BasicFilesIntegrationConnectorsAuditCode.UNEXPECTED_EXC_DATA_FILE_UPDATE.getMessageDefinition(
+                                                  error.getClass().getName(),
+                                                  connectorName,
+                                                  directoryToMonitor.directoryFile.getAbsolutePath(),
+                                                  error.getMessage()),
                                           error);
 
                 }
@@ -199,12 +143,117 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                 throw new FileException(
                         BasicFilesIntegrationConnectorsErrorCode.UNEXPECTED_EXC_DATA_FILE_UPDATE.getMessageDefinition(error.getClass().getName(),
                                                                                                                       connectorName,
-                                                                                                                      directory.getAbsolutePath(),
+                                                                                                                      directoryToMonitor.directoryFile.getAbsolutePath(),
                                                                                                                       error.getMessage()),
                         error.getClass().getName(),
                         methodName,
                         error,
-                        directory.getAbsolutePath());
+                        directoryToMonitor.directoryFile.getAbsolutePath());
+            }
+        }
+    }
+
+
+    /**
+     * File created Event.
+     *
+     * @param file The file that was created
+     */
+    @Override
+    public void onFileCreate(File file)
+    {
+        final String methodName = "onFileCreate";
+
+        log.debug("File created: " + file.getName());
+        this.catalogFile(file, methodName);
+    }
+
+
+    @Override
+    public void onFileDelete(File file)
+    {
+        final String methodName = "onFileDelete";
+
+        log.debug("File deleted: " + file.getName());
+        this.archiveFileInCatalog(file, null, methodName);
+    }
+
+
+    /**
+     * File changed Event.
+     *
+     * @param file The file that changed
+     */
+    @Override
+    public void onFileChange(File file)
+    {
+        log.debug("File changed: " + file.getName());
+        this.updateFileInCatalog(file);
+    }
+
+
+    /**
+     * Directory created Event.
+     *
+     * @param directory The directory that was created
+     */
+    @Override
+    public void onDirectoryCreate(File directory)
+    {
+    }
+
+
+    /**
+     * Directory changed Event.
+     *
+     * @param directory The directory that changed
+     */
+    @Override
+    public void onDirectoryChange(File directory)
+    {
+    }
+
+
+    /**
+     * Directory deleted Event.
+     *
+     * @param directory The directory that was deleted
+     */
+    @Override
+    public void onDirectoryDelete(File directory)
+    {
+    }
+
+
+
+    /**
+     * Recursively catalog the files in a directory - and its subdirectories.
+     *
+     * @param directory starting directory
+     * @param methodName calling method
+     */
+    private void catalogDirectory(File   directory,
+                                  String methodName)
+    {
+        final String localMethodName = "catalogDirectory";
+
+        File[] filesArray = directory.listFiles();
+
+        if (filesArray != null)
+        {
+            for (File file : filesArray)
+            {
+                if (file != null)
+                {
+                    if (file.isDirectory())
+                    {
+                        this.catalogDirectory(file, localMethodName);
+                    }
+                    else
+                    {
+                        this.catalogFile(file, methodName);
+                    }
+                }
             }
         }
     }
@@ -227,16 +276,20 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
 
                 if (cataloguedElement == null)
                 {
-                    if (templateQualifiedName == null)
+                    if (fileTemplateQualifiedName == null)
                     {
-                        String fileExtension = FilenameUtils.getExtension(file.getAbsolutePath());
+                        FileClassifier fileClassifier = new FileClassifier(this.getContext().getIntegrationGovernanceContext().getOpenMetadataAccess(), file);
 
+                        /*
+                         * Create the file ...
+                         */
                         DataFileProperties properties = new DataFileProperties();
 
-                        String assetTypeName = this.getAssetTypeName(fileExtension);
-                        properties.setTypeName(assetTypeName);
-                        properties.setPathName(file.getAbsolutePath());
-                        properties.setName(file.getName());
+                        properties.setTypeName(fileClassifier.getAssetTypeName());
+                        properties.setDeployedImplementationType(fileClassifier.getDeployedImplementationType());
+                        properties.setPathName(fileClassifier.getPathName());
+                        properties.setName(fileClassifier.getFileName());
+                        properties.setFileType(fileClassifier.getFileType());
                         properties.setModifiedTime(new Date(file.lastModified()));
 
                         List<String> guids = this.getContext().addDataFileToCatalog(properties, null);
@@ -253,7 +306,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                     {
                         if (templateGUID == null)
                         {
-                            DataFileElement templateElement = this.getContext().getFileByPathName(templateQualifiedName);
+                            DataFileElement templateElement = this.getContext().getFileByPathName(fileTemplateQualifiedName);
 
                             if (templateElement != null)
                             {
@@ -278,7 +331,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                                 {
                                     auditLog.logMessage(methodName,
                                                         BasicFilesIntegrationConnectorsAuditCode.MISSING_TEMPLATE.getMessageDefinition(connectorName,
-                                                                                                                                       templateQualifiedName));
+                                                                                                                                       fileTemplateQualifiedName));
                                 }
                             }
                         }
@@ -300,7 +353,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                                                             connectorName,
                                                             properties.getPathName(),
                                                             guids.get(guids.size() - 1),
-                                                            templateQualifiedName,
+                                                            fileTemplateQualifiedName,
                                                             templateGUID));
                             }
                         }
@@ -324,58 +377,6 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
         }
     }
 
-
-    /**
-     * Determine the open metadata type to use based on the file extension from the file name.  If no file extension, or it is unrecognized
-     * then the default is "DataFile".
-     *
-     * @param fileExtension file extension extracted from the file name
-     * @return asset type name to use
-     */
-    private String getAssetTypeName(String fileExtension)
-    {
-        String assetTypeName = "DataFile";
-
-        if (fileExtension != null)
-        {
-            switch (fileExtension)
-            {
-                case "csv":
-                    assetTypeName = "CSVFile";
-                    break;
-
-                case "json":
-                    assetTypeName = "JSONFile";
-                    break;
-
-                case "avro":
-                    assetTypeName = "AvroFile";
-                    break;
-
-                case "pdf":
-                case "doc":
-                case "docx":
-                case "ppt":
-                case "pptx":
-                case "xls":
-                case "xlsx":
-                case "md":
-                    assetTypeName = "Document";
-                    break;
-
-                case "jpg":
-                case "jpeg":
-                case "png":
-                case "gif":
-                case "mp3":
-                case "mp4":
-                    assetTypeName = "MediaFile";
-                    break;
-            }
-        }
-
-        return assetTypeName;
-    }
 
     /**
      * The file no longer exists so this method updates the metadata catalog. This may be a call to delete() or an archive action

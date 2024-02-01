@@ -7,9 +7,9 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.GovernanceEngin
 import org.odpi.openmetadata.accessservices.governanceengine.events.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
+import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
 
-import java.util.Map;
 
 
 /**
@@ -18,8 +18,8 @@ import java.util.Map;
  */
 public class GovernanceEngineOutTopicListener extends GovernanceEngineEventListener
 {
-    private final Map<String, GovernanceEngineHandler> governanceEngineHandlers;
-    private final AuditLog                             auditLog;
+    private final GovernanceEngineMap governanceEngineHandlers;
+    private final AuditLog            auditLog;
 
     /**
      * Constructor for the listener.  Its job is to receive events and pass the information received on to the
@@ -29,8 +29,8 @@ public class GovernanceEngineOutTopicListener extends GovernanceEngineEventListe
      *                                engine host server.
      * @param auditLog logging destination
      */
-    public GovernanceEngineOutTopicListener(Map<String, GovernanceEngineHandler> governanceEngineHandlers,
-                                            AuditLog                             auditLog)
+    public GovernanceEngineOutTopicListener(GovernanceEngineMap governanceEngineHandlers,
+                                            AuditLog            auditLog)
     {
         this.governanceEngineHandlers = governanceEngineHandlers;
         this.auditLog = auditLog;
@@ -52,11 +52,9 @@ public class GovernanceEngineOutTopicListener extends GovernanceEngineEventListe
 
         if (event != null)
         {
-            if (event instanceof GovernanceServiceConfigurationEvent)
+            if (event instanceof GovernanceServiceConfigurationEvent governanceServiceEvent)
             {
-                GovernanceServiceConfigurationEvent governanceServiceEvent = (GovernanceServiceConfigurationEvent) event;
-                GovernanceEngineHandler             governanceEngineHandler =
-                        governanceEngineHandlers.get(governanceServiceEvent.getGovernanceEngineName());
+                GovernanceEngineHandler governanceEngineHandler = governanceEngineHandlers.getGovernanceEngineHandler(governanceServiceEvent.getGovernanceEngineName());
 
                 if (governanceEngineHandler != null)
                 {
@@ -77,11 +75,10 @@ public class GovernanceEngineOutTopicListener extends GovernanceEngineEventListe
                     }
                 }
             }
-            else if (event instanceof GovernanceEngineConfigurationEvent)
+            else if (event instanceof GovernanceEngineConfigurationEvent governanceEngineEvent)
             {
-                GovernanceEngineConfigurationEvent governanceEngineEvent = (GovernanceEngineConfigurationEvent) event;
-                GovernanceEngineHandler            governanceEngineHandler =
-                        governanceEngineHandlers.get(governanceEngineEvent.getGovernanceEngineName());
+                GovernanceEngineHandler governanceEngineHandler = governanceEngineHandlers.getGovernanceEngineHandler(governanceEngineEvent.getGovernanceEngineGUID(),
+                                                                                                                      governanceEngineEvent.getGovernanceEngineName());
 
                 if (governanceEngineHandler != null)
                 {
@@ -100,10 +97,9 @@ public class GovernanceEngineOutTopicListener extends GovernanceEngineEventListe
                     }
                 }
             }
-            else if (event instanceof EngineActionEvent)
+            else if (event instanceof EngineActionEvent engineActionEvent)
             {
-                EngineActionEvent       engineActionEvent       = (EngineActionEvent)event;
-                GovernanceEngineHandler governanceEngineHandler = governanceEngineHandlers.get(engineActionEvent.getGovernanceEngineName());
+                GovernanceEngineHandler governanceEngineHandler = governanceEngineHandlers.getGovernanceEngineHandler(engineActionEvent.getGovernanceEngineName());
 
                 if (governanceEngineHandler != null)
                 {
@@ -122,14 +118,12 @@ public class GovernanceEngineOutTopicListener extends GovernanceEngineEventListe
                     }
                 }
             }
-            else if (event instanceof WatchdogGovernanceServiceEvent)
+            else if (event instanceof WatchdogGovernanceServiceEvent watchdogGovernanceServiceEvent)
             {
                 /*
                  * The watchdog event is for all governance engines
                  */
-                WatchdogGovernanceServiceEvent watchdogGovernanceServiceEvent = (WatchdogGovernanceServiceEvent)event;
-
-                for (GovernanceEngineHandler governanceEngineHandler : governanceEngineHandlers.values())
+                for (GovernanceEngineHandler governanceEngineHandler : governanceEngineHandlers.getGovernanceEngineHandlers())
                 {
                     if (governanceEngineHandler != null)
                     {

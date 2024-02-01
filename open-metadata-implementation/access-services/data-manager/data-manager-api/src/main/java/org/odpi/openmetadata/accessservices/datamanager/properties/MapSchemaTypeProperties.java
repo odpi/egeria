@@ -21,8 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public class MapSchemaTypeProperties extends SchemaTypeProperties
 {
-    private static final long     serialVersionUID = 1L;
-
     /**
      * Default constructor
      */

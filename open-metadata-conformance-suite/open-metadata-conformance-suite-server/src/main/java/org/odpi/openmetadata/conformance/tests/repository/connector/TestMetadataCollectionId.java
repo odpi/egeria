@@ -9,6 +9,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
+/**
+ * TestMetadataCollectionId tests the metadata collection id
+ */
 public class TestMetadataCollectionId extends RepositoryConformanceTestCase
 {
     private static final  String testCaseId   = "repository-metadata-collection";

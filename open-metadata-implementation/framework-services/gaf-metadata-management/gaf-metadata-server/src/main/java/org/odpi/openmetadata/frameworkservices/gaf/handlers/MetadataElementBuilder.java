@@ -4,8 +4,8 @@ package org.odpi.openmetadata.frameworkservices.gaf.handlers;
 
 
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericBuilder;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
@@ -73,8 +73,8 @@ public class MetadataElementBuilder extends OpenMetadataAPIGenericBuilder
                            String                             serviceName,
                            String                             serverName)
     {
-        super(OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
-              OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+        super(OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
+              OpenMetadataType.OPEN_METADATA_ROOT.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -94,8 +94,8 @@ public class MetadataElementBuilder extends OpenMetadataAPIGenericBuilder
                            String               serviceName,
                            String               serverName)
     {
-        super(OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
-              OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+        super(OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
+              OpenMetadataType.OPEN_METADATA_ROOT.typeName,
               repositoryHelper,
               serviceName,
               serverName);

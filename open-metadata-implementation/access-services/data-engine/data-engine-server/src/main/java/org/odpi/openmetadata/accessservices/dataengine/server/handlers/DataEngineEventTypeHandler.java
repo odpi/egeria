@@ -11,6 +11,8 @@ import org.odpi.openmetadata.commonservices.generichandlers.EventTypeHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
@@ -18,12 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineTopicHandler.TOPIC_GUID_PARAMETER_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.EVENT_SCHEMA_ATTRIBUTE_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.EVENT_TYPE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
+
 
 /**
  * DataEngineEventTypeHandler manages event type objects. It runs server-side in the
@@ -77,32 +74,32 @@ public class DataEngineEventTypeHandler {
         validateParameters(userId, methodName, eventType.getQualifiedName(), eventType.getDisplayName());
 
         Optional<EntityDetail> originalEventTypeEntity = dataEngineCommonHandler.findEntity(userId, eventType.getQualifiedName(),
-                EVENT_TYPE_TYPE_NAME);
+                                                                                            OpenMetadataType.EVENT_TYPE_TYPE_NAME);
         String eventTypeGUID;
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         Date now = dataEngineCommonHandler.getNow();
         if (originalEventTypeEntity.isEmpty()) {
             eventTypeHandler.verifyExternalSourceIdentity(userId, externalSourceGUID, externalSourceName,
                     false, false, null, null);
-            eventTypeGUID = eventTypeHandler.createEventType(userId, externalSourceGUID, externalSourceName, topicGUID, TOPIC_GUID_PARAMETER_NAME,
-                    eventType.getQualifiedName(), eventType.getDisplayName(), eventType.getDescription(), eventType.getVersionNumber(),
-                    eventType.getIsDeprecated(), eventType.getAuthor(), eventType.getUsage(), eventType.getEncodingStandard(),
-                    eventType.getNamespace(), eventType.getAdditionalProperties(), EVENT_TYPE_TYPE_NAME, null,
-                    null, null, false, false, now, methodName);
+            eventTypeGUID = eventTypeHandler.createEventType(userId, externalSourceGUID, externalSourceName, topicGUID, OpenMetadataProperty.GUID.name,
+                                                             eventType.getQualifiedName(), eventType.getDisplayName(), eventType.getDescription(), eventType.getVersionNumber(),
+                                                             eventType.getIsDeprecated(), eventType.getAuthor(), eventType.getUsage(), eventType.getEncodingStandard(),
+                                                             eventType.getNamespace(), eventType.getAdditionalProperties(), OpenMetadataType.EVENT_TYPE_TYPE_NAME, null,
+                                                             null, null, false, false, now, methodName);
         } else {
             eventTypeGUID = originalEventTypeEntity.get().getGUID();
             eventTypeHandler.updateEventType(userId, externalSourceGUID, externalSourceName, eventTypeGUID, EVENT_TYPE_GUID_PARAMETER_NAME,
                     eventType.getQualifiedName(), eventType.getDisplayName(), eventType.getDescription(), eventType.getVersionNumber(),
                     eventType.getIsDeprecated(), eventType.getAuthor(), eventType.getUsage(), eventType.getEncodingStandard(),
-                    eventType.getNamespace(), eventType.getAdditionalProperties(), EVENT_TYPE_TYPE_NAME, null,
+                    eventType.getNamespace(), eventType.getAdditionalProperties(), OpenMetadataType.EVENT_TYPE_TYPE_NAME, null,
                     null, null, true, false, false, now, methodName);
         }
 
         List<Attribute> attributeList = eventType.getAttributeList();
         if (CollectionUtils.isNotEmpty(attributeList)) {
             attributeList.forEach(column -> {
-                column.setTypeName(EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME);
-                column.setTypeGuid(EVENT_SCHEMA_ATTRIBUTE_TYPE_GUID);
+                column.setTypeName(OpenMetadataType.EVENT_SCHEMA_ATTRIBUTE_TYPE_NAME);
+                column.setTypeGuid(OpenMetadataType.EVENT_SCHEMA_ATTRIBUTE_TYPE_GUID);
             });
         }
         dataEngineSchemaAttributeHandler.upsertSchemaAttributes(userId, attributeList, externalSourceName, externalSourceGUID, eventTypeGUID);
@@ -121,8 +118,8 @@ public class DataEngineEventTypeHandler {
      */
     private void validateParameters(String userId, String methodName, String qualifiedName, String displayName) throws InvalidParameterException {
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
-        invalidParameterHandler.validateName(displayName, DISPLAY_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, methodName);
+        invalidParameterHandler.validateName(displayName, OpenMetadataProperty.DISPLAY_NAME.name, methodName);
     }
 
     /**

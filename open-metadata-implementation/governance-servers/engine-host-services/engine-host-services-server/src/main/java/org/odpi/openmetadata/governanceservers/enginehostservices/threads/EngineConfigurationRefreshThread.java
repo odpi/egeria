@@ -4,18 +4,17 @@
 package org.odpi.openmetadata.governanceservers.enginehostservices.threads;
 
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineEventClient;
-import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
+import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.enginehostservices.listener.GovernanceEngineOutTopicListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * EngineConfigurationRefreshThread is the class responsible for establishing the listener for configuration
@@ -24,15 +23,15 @@ import java.util.Map;
  */
 public class EngineConfigurationRefreshThread implements Runnable
 {
-    private final Map<String, GovernanceEngineHandler> engineHandlers;
-    private final GovernanceEngineEventClient          eventClient;
-    private final AuditLog                             auditLog;
-    private final String                               localServerUserId;
-    private final String                               localServerName;
-    private final String                               accessServiceServerName;
-    private final String                               accessServiceRootURL;
+    private final GovernanceEngineMap         engineHandlers;
+    private final GovernanceEngineEventClient eventClient;
+    private final AuditLog                    auditLog;
+    private final String                      localServerUserId;
+    private final String                      localServerName;
+    private final String                      accessServiceServerName;
+    private final String                      accessServiceRootURL;
 
-    private volatile boolean                     keepTrying = true;
+    private volatile boolean                  keepTrying = true;
 
     private static final Logger log = LoggerFactory.getLogger(EngineConfigurationRefreshThread.class);
 
@@ -49,7 +48,7 @@ public class EngineConfigurationRefreshThread implements Runnable
      * @param accessServiceServerName metadata server's name
      * @param accessServiceRootURL platform location for metadata server
      */
-    public EngineConfigurationRefreshThread(Map<String, GovernanceEngineHandler> engineHandlers,
+    public EngineConfigurationRefreshThread(GovernanceEngineMap                  engineHandlers,
                                             GovernanceEngineEventClient          eventClient,
                                             AuditLog                             auditLog,
                                             String                               localServerUserId,
@@ -57,7 +56,7 @@ public class EngineConfigurationRefreshThread implements Runnable
                                             String                               accessServiceServerName,
                                             String                               accessServiceRootURL)
     {
-        this.engineHandlers          = new HashMap<>(engineHandlers);
+        this.engineHandlers          = engineHandlers;
         this.eventClient             = eventClient;
         this.auditLog                = auditLog;
         this.localServerUserId       = localServerUserId;
@@ -75,19 +74,12 @@ public class EngineConfigurationRefreshThread implements Runnable
     {
         final String actionDescription = "Register configuration listener";
 
-        boolean  listenerRegistered = false;
-        List<GovernanceEngineHandler>  configToRetrieve;
+        boolean       listenerRegistered = false;
+        List<String>  configToRetrieve;
 
         while (keepTrying)
         {
-            if (engineHandlers != null)
-            {
-                configToRetrieve = new ArrayList<>(engineHandlers.values());
-            }
-            else
-            {
-                configToRetrieve = new ArrayList<>();
-            }
+            configToRetrieve = new ArrayList<>(engineHandlers.getGovernanceEngineNames());
 
             while ((! listenerRegistered) && (keepTrying))
             {
@@ -124,13 +116,13 @@ public class EngineConfigurationRefreshThread implements Runnable
                 }
             }
 
-            while ((configToRetrieve.size() != 0) && (keepTrying))
+            while ((!configToRetrieve.isEmpty()) && (keepTrying))
             {
-                List<GovernanceEngineHandler>  configFailed = new ArrayList<>();
+                List<String>  configFailed = new ArrayList<>();
 
-                for (GovernanceEngineHandler engineHandler : configToRetrieve)
+                for (String governanceEngineName : configToRetrieve)
                 {
-                    if (engineHandler != null)
+                    if (governanceEngineName != null)
                     {
                         /*
                          * Request the configuration for the governance engine.  If it fails just log the error but let the
@@ -139,18 +131,23 @@ public class EngineConfigurationRefreshThread implements Runnable
                          */
                         try
                         {
-                            engineHandler.refreshConfig();
+                            GovernanceEngineHandler governanceEngineHandler = engineHandlers.getGovernanceEngineHandler(governanceEngineName);
+
+                            if (governanceEngineHandler != null)
+                            {
+                                governanceEngineHandler.refreshConfig();
+                            }
                         }
                         catch (Exception error)
                         {
                             auditLog.logException(actionDescription,
-                                                  EngineHostServicesAuditCode.GOVERNANCE_ENGINE_NO_CONFIG.getMessageDefinition(engineHandler.getGovernanceEngineName(),
+                                                  EngineHostServicesAuditCode.GOVERNANCE_ENGINE_NO_CONFIG.getMessageDefinition(governanceEngineName,
                                                                                                                                error.getClass().getName(),
                                                                                                                                error.getMessage()),
                                                   error.toString(),
                                                   error);
 
-                            configFailed.add(engineHandler);
+                            configFailed.add(governanceEngineName);
                         }
                     }
                 }

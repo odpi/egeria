@@ -416,7 +416,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      *
      * @param userId         userId of user making request.
      * @param assetGUID      unique identifier for asset.
-     * @param discoveryService      unique name for discoveryService.
+     * @param serviceName      unique name for discoveryService.
      * @param message        message to log
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -425,7 +425,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      */
     public void logAssetAuditMessage(String    userId,
                                      String    assetGUID,
-                                     String    discoveryService,
+                                     String serviceName,
                                      String    message) throws InvalidParameterException,
                                                                PropertyServerException,
                                                                UserNotAuthorizedException
@@ -438,7 +438,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
-        invalidParameterHandler.validateName(discoveryService, discoveryServiceParameter, methodName);
+        invalidParameterHandler.validateName(serviceName, discoveryServiceParameter, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -446,7 +446,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                         serverName,
                                         userId,
                                         assetGUID,
-                                        discoveryService);
+                                        serviceName);
     }
 
 
@@ -1156,6 +1156,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
     /**
      * Return any peer data fields attached to this data field.
      *
+     * @param userId calling user
      * @param dataFieldGUID starting data field identifier
      * @param startingFrom starting position in the list
      * @param maximumResults maximum number of data fields that can be returned.

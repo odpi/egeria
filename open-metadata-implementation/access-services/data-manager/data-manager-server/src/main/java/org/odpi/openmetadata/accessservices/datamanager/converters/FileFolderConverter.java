@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.datamanager.converters;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.FileFolderElement;
 import org.odpi.openmetadata.accessservices.datamanager.properties.FileFolderProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -89,7 +89,7 @@ public class FileFolderConverter<B> extends DataManagerOMASConverter<B>
                     fileFolderProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
 
-                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName, entity);
 
                     fileFolderProperties.setEncodingType(this.getDataStoreEncodingType(instanceProperties));
                     fileFolderProperties.setEncodingLanguage(this.getDataStoreEncodingLanguage(instanceProperties));

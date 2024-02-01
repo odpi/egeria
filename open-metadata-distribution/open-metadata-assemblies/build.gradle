@@ -44,6 +44,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:discovery-service-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:survey-action-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector')
@@ -144,6 +145,7 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-encrypted-file-store-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:discovery-service-connectors').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:survey-action-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors').jar }

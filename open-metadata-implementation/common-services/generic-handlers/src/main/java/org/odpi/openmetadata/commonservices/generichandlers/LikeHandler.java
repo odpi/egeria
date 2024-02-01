@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -93,9 +94,9 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
     {
         return super.countAttachments(userId,
                                       elementGUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE.typeName,
+                                      OpenMetadataType.REFERENCEABLE_TO_LIKE_TYPE_GUID,
+                                      OpenMetadataType.REFERENCEABLE_TO_LIKE_TYPE_NAME,
                                       2,
                                       forLineage,
                                       forDuplicateProcessing,
@@ -143,9 +144,9 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_NAME,
-                                        OpenMetadataAPIMapper.LIKE_TYPE_NAME,
+                                        OpenMetadataType.REFERENCEABLE_TO_LIKE_TYPE_GUID,
+                                        OpenMetadataType.REFERENCEABLE_TO_LIKE_TYPE_NAME,
+                                        OpenMetadataType.LIKE_TYPE_NAME,
                                         null,
                                         null,
                                         0,
@@ -220,8 +221,8 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
         String likeGUID = this.createBeanInRepository(userId,
                                                       externalSourceGUID,
                                                       externalSourceName,
-                                                      OpenMetadataAPIMapper.LIKE_TYPE_GUID,
-                                                      OpenMetadataAPIMapper.LIKE_TYPE_NAME,
+                                                      OpenMetadataType.LIKE_TYPE_GUID,
+                                                      OpenMetadataType.LIKE_TYPE_NAME,
                                                       builder,
                                                       effectiveTime,
                                                       methodName);
@@ -235,15 +236,15 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                externalSourceName,
                                                elementGUID,
                                                elementGUIDParameterName,
-                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               OpenMetadataType.REFERENCEABLE.typeName,
                                                likeGUID,
                                                likeGUIDParameterName,
-                                               OpenMetadataAPIMapper.LIKE_TYPE_NAME,
+                                               OpenMetadataType.LIKE_TYPE_NAME,
                                                forLineage,
                                                forDuplicateProcessing,
                                                supportedZones,
-                                               OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID,
-                                               OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_NAME,
+                                               OpenMetadataType.REFERENCEABLE_TO_LIKE_TYPE_GUID,
+                                               OpenMetadataType.REFERENCEABLE_TO_LIKE_TYPE_NAME,
                                                builder.getRelationshipInstanceProperties(methodName),
                                                effectiveTime,
                                                methodName);
@@ -280,20 +281,20 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                         UserNotAuthorizedException
     {
         String likeGUID = this.unlinkConnectedElement(userId,
-                                                        true,
-                                                        externalSourceGUID,
-                                                        externalSourceName,
-                                                        elementGUID,
-                                                        elementGUIDParameterName,
-                                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                        forLineage,
-                                                        forDuplicateProcessing,
-                                                        supportedZones,
-                                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID,
-                                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_LIKE_TYPE_NAME,
-                                                        OpenMetadataAPIMapper.LIKE_TYPE_NAME,
-                                                        effectiveTime,
-                                                        methodName);
+                                                      true,
+                                                      externalSourceGUID,
+                                                      externalSourceName,
+                                                      elementGUID,
+                                                      elementGUIDParameterName,
+                                                      OpenMetadataType.REFERENCEABLE.typeName,
+                                                      forLineage,
+                                                      forDuplicateProcessing,
+                                                      supportedZones,
+                                                      OpenMetadataType.REFERENCEABLE_TO_LIKE_TYPE_GUID,
+                                                      OpenMetadataType.REFERENCEABLE_TO_LIKE_TYPE_NAME,
+                                                      OpenMetadataType.LIKE_TYPE_NAME,
+                                                      effectiveTime,
+                                                      methodName);
 
         if (likeGUID != null)
         {
@@ -304,8 +305,8 @@ public class LikeHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         externalSourceName,
                                         likeGUID,
                                         ratingGUIDParameterName,
-                                        OpenMetadataAPIMapper.LIKE_TYPE_GUID,
-                                        OpenMetadataAPIMapper.LIKE_TYPE_NAME,
+                                        OpenMetadataType.LIKE_TYPE_GUID,
+                                        OpenMetadataType.LIKE_TYPE_NAME,
                                         null,
                                         null,
                                         forLineage,

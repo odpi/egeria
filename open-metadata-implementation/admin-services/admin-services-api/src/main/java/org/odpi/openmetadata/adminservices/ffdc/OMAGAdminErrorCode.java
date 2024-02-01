@@ -110,8 +110,8 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
      */
     LOCAL_REPOSITORY_MODE_NOT_SET(400, "OMAG-ADMIN-400-008",
             "The local repository mode has not been set for OMAG server {0}",
-            "The local repository mode must be enabled before the event mapper connection is set.  The system is unable to configure the local server.",
-            "The local repository mode is supplied by the caller to the OMAG server. This call to enable the local repository needs to be made before the call to set the event mapper connection."),
+            "The local repository mode must be enabled before the event mapper connection, local metadata collection id or local metadata collection name is set.",
+            "Set up a local repository for this server, then rerun the failing request."),
 
     /**
      * OMAG-ADMIN-400-009 - The OMAG server {0} has been passed null configuration
@@ -128,9 +128,24 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
             "The OMAG server {0} has been passed a configuration document with no open metadata repository services configuration",
             "The system is unable to initialize the local server instance because all servers need at least an audit log which is supported by the " +
                                    "repository services.",
-            "Use the administration services to add the repository services configuration.  At a minimum, configure the audit log.  If this server " +
-                                   "is to be a cohort member, then there are choices to also configure the local repository, enterprise repository " +
-                                   "services and the cohort services."),
+            "Use the administration services to add the repository services configuration."),
+
+
+    /**
+     * OMAG-ADMIN-400-011 No configuration document was found for OMAG server {0}
+     */
+    NO_CONFIG_DOCUMENT(400, "OMAG-ADMIN-400-011",
+                           "No configuration document was found for OMAG server {0}",
+                           "The system is unable to initialize the local server instance without a configuration document.",
+                           "Use the administration services to build up the definition of the server into a configuration document."),
+
+    /**
+     * OMAG-ADMIN-400-012 Unable to parse configuration document for OMAG server {0} due to exception {1} with message {2}
+     */
+    CONFIG_DOCUMENT_PARSE_ERROR(400, "OMAG-ADMIN-400-012",
+                       "Unable to parse configuration document for OMAG server {0} due to exception {1} with message {2}",
+                       "The system is unable to process a configuration document.",
+                       "Review the error message to understand why the parsing error occurred."),
 
 
     /**
@@ -475,7 +490,7 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
     UNEXPECTED_EXCEPTION(500, "OMAG-ADMIN-500-001",
             "Method {1} for OMAG server {0} returned an unexpected exception of {2} with message {3}",
             "The function requested failed.",
-            "This is likely to be either a configuration, operational or logic error. Look for other errors.  Validate the request.  If you are stuck, raise an issue."),
+            "This is likely to be either a configuration, operational or logic error. Validate the request. Look at the user action for the embedded exception since this will provide the most specific information."),
 
     /**
      * OMAG-ADMIN-500-002 - Method {0} returned an unexpected {1} exception with message {2}

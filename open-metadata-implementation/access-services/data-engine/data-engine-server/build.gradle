@@ -21,6 +21,7 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
     implementation project(':open-metadata-implementation:common-services:repository-handler')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-handlers')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')

@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.*;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.CatalogTargetProperties;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.IntegrationGroupProperties;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredGovernanceServiceProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.ConnectionConverter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -17,12 +16,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
-import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -31,11 +28,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -53,8 +46,6 @@ public class GovernanceConfigurationHandler
     private final AssetHandler<GovernanceServiceElement>             governanceServiceHandler;
     private final AssetHandler<IntegrationConnectorElement>          integrationConnectorHandler;
     private final ConnectionHandler<Connection>                      connectionHandler;
-    private final ConnectorTypeHandler<ConnectorType>                connectorTypeHandler;
-    private final EndpointHandler<Endpoint>                          endpointHandler;
     private final InvalidParameterHandler                            invalidParameterHandler;
     private final RegisteredIntegrationConnectorConverter            registeredIntegrationConnectorConverter;
     private final CatalogTargetConverter<CatalogTarget>              catalogTargetConverter;
@@ -165,34 +156,6 @@ public class GovernanceConfigurationHandler
                                                          defaultZones,
                                                          publishZones,
                                                          auditLog);
-
-        this.connectorTypeHandler = new ConnectorTypeHandler<>(new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
-                                                               ConnectorType.class,
-                                                               serviceName,
-                                                               serverName,
-                                                               invalidParameterHandler,
-                                                               repositoryHandler,
-                                                               repositoryHelper,
-                                                               localServerUserId,
-                                                               securityVerifier,
-                                                               supportedZones,
-                                                               defaultZones,
-                                                               publishZones,
-                                                               auditLog);
-
-        this.endpointHandler = new EndpointHandler<>(new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
-                                                     Endpoint.class,
-                                                     serviceName,
-                                                     serverName,
-                                                     invalidParameterHandler,
-                                                     repositoryHandler,
-                                                     repositoryHelper,
-                                                     localServerUserId,
-                                                     securityVerifier,
-                                                     supportedZones,
-                                                     defaultZones,
-                                                     publishZones,
-                                                     auditLog);
     }
 
 
@@ -273,7 +236,7 @@ public class GovernanceConfigurationHandler
         return governanceEngineHandler.getBeanFromRepository(userId,
                                                              guid,
                                                              guidParameter,
-                                                             OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
+                                                             OpenMetadataType.GOVERNANCE_ENGINE.typeName,
                                                              false,
                                                              false,
                                                              new Date(),
@@ -303,13 +266,13 @@ public class GovernanceConfigurationHandler
         final  String   nameParameter = "name";
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
 
         return governanceEngineHandler.getBeanByValue(userId,
                                                       name,
                                                       nameParameter,
-                                                      OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_GUID,
-                                                      OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
+                                                      OpenMetadataType.GOVERNANCE_ENGINE.typeGUID,
+                                                      OpenMetadataType.GOVERNANCE_ENGINE.typeName,
                                                       specificMatchPropertyNames,
                                                       false,
                                                       false,
@@ -339,8 +302,8 @@ public class GovernanceConfigurationHandler
         final String methodName = "getAllGovernanceEngines";
 
         return governanceEngineHandler.getBeansByType(userId,
-                                                      OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_GUID,
-                                                      OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
+                                                      OpenMetadataType.GOVERNANCE_ENGINE.typeGUID,
+                                                      OpenMetadataType.GOVERNANCE_ENGINE.typeName,
                                                       null,
                                                       startingFrom,
                                                       maximumResults,
@@ -401,8 +364,8 @@ public class GovernanceConfigurationHandler
                                                                           patchLevel,
                                                                           source,
                                                                           additionalProperties,
-                                                                          OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_GUID,
-                                                                          OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
+                                                                          OpenMetadataType.GOVERNANCE_ENGINE.typeGUID,
+                                                                          OpenMetadataType.GOVERNANCE_ENGINE.typeName,
                                                                           extendedProperties,
                                                                           repositoryHelper,
                                                                           serviceName,
@@ -415,8 +378,8 @@ public class GovernanceConfigurationHandler
                                                        null,
                                                        guid,
                                                        guidParameter,
-                                                       OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_GUID,
-                                                       OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
+                                                       OpenMetadataType.GOVERNANCE_ENGINE.typeGUID,
+                                                       OpenMetadataType.GOVERNANCE_ENGINE.typeName,
                                                        properties,
                                                        false,
                                                        methodName);
@@ -453,8 +416,8 @@ public class GovernanceConfigurationHandler
                                                        null,
                                                        guid,
                                                        guidParameter,
-                                                       OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_GUID,
-                                                       OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
+                                                       OpenMetadataType.GOVERNANCE_ENGINE.typeGUID,
+                                                       OpenMetadataType.GOVERNANCE_ENGINE.typeName,
                                                        qualifiedNameParameter,
                                                        qualifiedName,
                                                        false,
@@ -493,8 +456,6 @@ public class GovernanceConfigurationHandler
         final String methodName = "createGovernanceService";
         final String connectionParameterName = "createGovernanceService";
         final String assetGUIDParameterName = "assetGUID";
-        final String connectorTypeGUIDParameterName = "connectorTypeGUID";
-        final String embeddedConnectionGUIDParameterName = "embeddedConnectionGUID ";
         final String typeNameParameterName = "typeName";
 
         invalidParameterHandler.validateName(typeName, typeNameParameterName, methodName);
@@ -520,177 +481,20 @@ public class GovernanceConfigurationHandler
 
         if (assetGUID != null)
         {
-            Endpoint      endpoint     = connection.getEndpoint();
-            String        endpointGUID = null;
-            String        endpointParameterName = "connection.getEndpoint()";
-
-            if (endpoint != null)
-            {
-                if (endpoint.getGUID() != null)
-                {
-                    endpointGUID = endpoint.getGUID();
-                }
-                else
-                {
-                    String endpointTypeName = OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME;
-
-                    if ((endpoint.getType() != null) && (endpoint.getType().getTypeName() != null))
-                    {
-                        endpointTypeName = endpoint.getType().getTypeName();
-                    }
-
-                    endpointGUID = endpointHandler.createEndpoint(userId,
-                                                                  null,
-                                                                  null,
-                                                                  assetGUID,
-                                                                  endpoint.getQualifiedName(),
-                                                                  endpoint.getDisplayName(),
-                                                                  endpoint.getDescription(),
-                                                                  endpoint.getAddress(),
-                                                                  endpoint.getProtocol(),
-                                                                  endpoint.getEncryptionMethod(),
-                                                                  endpoint.getAdditionalProperties(),
-                                                                  endpointTypeName,
-                                                                  endpoint.getExtendedProperties(),
-                                                                  null,
-                                                                  null,
-                                                                  null,
-                                                                  methodName);
-                }
-            }
-
-            ConnectorType connectorType = connection.getConnectorType();
-
-            String connectorTypeGUID = connectorTypeHandler.getConnectorTypeForConnection(userId,
-                                                                                          null,
-                                                                                          null,
-                                                                                          assetGUID,
-                                                                                          connectorType.getQualifiedName(),
-                                                                                          connectorType.getDisplayName(),
-                                                                                          connectorType.getDescription(),
-                                                                                          connectorType.getSupportedAssetTypeName(),
-                                                                                          connectorType.getExpectedDataFormat(),
-                                                                                          connectorType.getConnectorProviderClassName(),
-                                                                                          connectorType.getConnectorFrameworkName(),
-                                                                                          connectorType.getConnectorInterfaceLanguage(),
-                                                                                          connectorType.getConnectorInterfaces(),
-                                                                                          connectorType.getTargetTechnologySource(),
-                                                                                          connectorType.getTargetTechnologyName(),
-                                                                                          connectorType.getTargetTechnologyInterfaces(),
-                                                                                          connectorType.getTargetTechnologyVersions(),
-                                                                                          connectorType.getRecognizedAdditionalProperties(),
-                                                                                          connectorType.getRecognizedSecuredProperties(),
-                                                                                          connectorType.getRecognizedConfigurationProperties(),
-                                                                                          connectorType.getAdditionalProperties(),
-                                                                                          false,
-                                                                                          false,
-                                                                                          effectiveTime,
-                                                                                          methodName);
-
-            if (connectorTypeGUID != null)
-            {
-                if (connection instanceof VirtualConnection)
-                {
-                    /*
-                     * OpenGovernancePipelines are represented using a VirtualConnection that
-                     * nests all the Connections for services to call.
-                     */
-                    final String connectionGUIDParameterName = "connection.getGUID";
-
-                    String connectionGUID = connectionHandler.createVirtualConnection(userId,
-                                                                                      null,
-                                                                                      null,
-                                                                                      assetGUID,
-                                                                                      assetGUIDParameterName,
-                                                                                      connection.getAssetSummary(),
-                                                                                      connection.getQualifiedName(),
-                                                                                      connection.getDisplayName(),
-                                                                                      connection.getDescription(),
-                                                                                      connection.getAdditionalProperties(),
-                                                                                      connection.getSecuredProperties(),
-                                                                                      connection.getConfigurationProperties(),
-                                                                                      connection.getUserId(),
-                                                                                      connection.getClearPassword(),
-                                                                                      connection.getEncryptedPassword(),
-                                                                                      connectorTypeGUID,
-                                                                                      connectorTypeGUIDParameterName,
-                                                                                      null,
-                                                                                      null,
-                                                                                      false,
-                                                                                      false,
-                                                                                      effectiveTime,
-                                                                                      methodName);
-
-                    List<EmbeddedConnection> embeddedConnections = ((VirtualConnection) connection).getEmbeddedConnections();
-
-                    if (embeddedConnections != null)
-                    {
-                        for (EmbeddedConnection embeddedConnection : embeddedConnections)
-                        {
-                            if (embeddedConnection != null)
-                            {
-                                String embeddedConnectionGUID = connectionHandler.saveConnection(userId,
-                                                                                                 null,
-                                                                                                 null,
-                                                                                                 assetGUID,
-                                                                                                 null,
-                                                                                                 assetGUIDParameterName,
-                                                                                                 OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
-                                                                                                 embeddedConnection.getEmbeddedConnection(),
-                                                                                                 null,
-                                                                                                 false,
-                                                                                                 false,
-                                                                                                 effectiveTime,
-                                                                                                 methodName);
-                                connectionHandler.addEmbeddedConnection(userId,
-                                                                        null,
-                                                                        null,
-                                                                        connectionGUID,
-                                                                        connectionGUIDParameterName,
-                                                                        embeddedConnection.getPosition(),
-                                                                        embeddedConnection.getDisplayName(),
-                                                                        embeddedConnection.getArguments(),
-                                                                        embeddedConnectionGUID,
-                                                                        embeddedConnectionGUIDParameterName,
-                                                                        null,
-                                                                        null,
-                                                                        false,
-                                                                        false,
-                                                                        effectiveTime,
-                                                                        methodName);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    connectionHandler.createConnection(userId,
-                                                       null,
-                                                       null,
-                                                       assetGUID,
-                                                       assetGUIDParameterName,
-                                                       connection.getAssetSummary(),
-                                                       connection.getQualifiedName(),
-                                                       connection.getDisplayName(),
-                                                       connection.getDescription(),
-                                                       connection.getAdditionalProperties(),
-                                                       connection.getSecuredProperties(),
-                                                       connection.getConfigurationProperties(),
-                                                       connection.getUserId(),
-                                                       connection.getClearPassword(),
-                                                       connection.getEncryptedPassword(),
-                                                       connectorTypeGUID,
-                                                       connectorTypeGUIDParameterName,
-                                                       endpointGUID,
-                                                       endpointParameterName,
-                                                       null,
-                                                       null,
-                                                       false,
-                                                       false,
-                                                       effectiveTime,
-                                                       methodName);
-                }
-            }
+            connectionHandler.saveConnection(userId,
+                                             null,
+                                             null,
+                                             assetGUID,
+                                             assetGUID,
+                                             assetGUIDParameterName,
+                                             typeName,
+                                             qualifiedName,
+                                             connection,
+                                             "Connection to create governance service",
+                                             false,
+                                             false,
+                                             effectiveTime,
+                                             methodName);
         }
 
         return assetGUID;
@@ -720,7 +524,7 @@ public class GovernanceConfigurationHandler
         return governanceServiceHandler.getAssetWithConnection(userId,
                                                                guid,
                                                                guidParameter,
-                                                               OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
+                                                               OpenMetadataType.GOVERNANCE_SERVICE.typeName,
                                                                false,
                                                                false,
                                                                new Date(),
@@ -751,8 +555,8 @@ public class GovernanceConfigurationHandler
         return governanceServiceHandler.getAssetByNameWithConnection(userId,
                                                                      name,
                                                                      nameParameter,
-                                                                     OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                     OpenMetadataType.GOVERNANCE_SERVICE.typeGUID,
+                                                                     OpenMetadataType.GOVERNANCE_SERVICE.typeName,
                                                                      false,
                                                                      false,
                                                                      new Date(),
@@ -782,8 +586,8 @@ public class GovernanceConfigurationHandler
         final  String   methodName = "getAllGovernanceServices";
 
         return governanceServiceHandler.getAllAssetsWithConnection(userId,
-                                                                   OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_GUID,
-                                                                   OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                   OpenMetadataType.GOVERNANCE_SERVICE.typeGUID,
+                                                                   OpenMetadataType.GOVERNANCE_SERVICE.typeName,
                                                                    startingFrom,
                                                                    maximumResults,
                                                                    false,
@@ -824,7 +628,7 @@ public class GovernanceConfigurationHandler
         connectionHandler.getBeanFromRepository(userId,
                                                 governanceServiceGUID,
                                                 guidParameter,
-                                                OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
+                                                OpenMetadataType.GOVERNANCE_SERVICE.typeName,
                                                 false,
                                                 false,
                                                 effectiveTime,
@@ -832,9 +636,9 @@ public class GovernanceConfigurationHandler
 
         List<Relationship>  relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                      governanceServiceGUID,
-                                                                                     OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
-                                                                                     OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
-                                                                                     OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                     OpenMetadataType.GOVERNANCE_SERVICE.typeName,
+                                                                                     OpenMetadataType.CONNECTION_TO_ASSET_TYPE_GUID,
+                                                                                     OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME,
                                                                                      1,
                                                                                      false,
                                                                                      false,
@@ -911,8 +715,8 @@ public class GovernanceConfigurationHandler
                                                            null,
                                                            description,
                                                            additionalProperties,
-                                                           OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_GUID,
-                                                           OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
+                                                           OpenMetadataType.GOVERNANCE_SERVICE.typeGUID,
+                                                           OpenMetadataType.GOVERNANCE_SERVICE.typeName,
                                                            extendedProperties,
                                                            null,
                                                            null,
@@ -954,8 +758,8 @@ public class GovernanceConfigurationHandler
                                                  null,
                                                  guid,
                                                  guidParameter,
-                                                 OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_GUID,
-                                                 OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
+                                                 OpenMetadataType.GOVERNANCE_SERVICE.typeGUID,
+                                                 OpenMetadataType.GOVERNANCE_SERVICE.typeName,
                                                  qualifiedNameParameter,
                                                  qualifiedName,
                                                  false,
@@ -1007,9 +811,9 @@ public class GovernanceConfigurationHandler
                                                                                        invalidParameterHandler,
                                                                                        userId,
                                                                                        governanceEngineGUID,
-                                                                                       OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
-                                                                                       OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
-                                                                                       OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                                       OpenMetadataType.GOVERNANCE_ENGINE.typeName,
+                                                                                       OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeGUID,
+                                                                                       OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName,
                                                                                        2,
                                                                                        false,
                                                                                        false,
@@ -1026,7 +830,7 @@ public class GovernanceConfigurationHandler
             if (supportedGovernanceService != null)
             {
                 String existingRequestType = repositoryHelper.getStringProperty(serviceName,
-                                                                                OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                                                OpenMetadataProperty.REQUEST_TYPE.name,
                                                                                 supportedGovernanceService.getProperties(),
                                                                                 methodName);
 
@@ -1045,13 +849,13 @@ public class GovernanceConfigurationHandler
                          */
                         InstanceProperties properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                                                         supportedGovernanceService.getProperties(),
-                                                                                                        OpenMetadataAPIMapper.REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                                                                        OpenMetadataProperty.REQUEST_PARAMETERS.name,
                                                                                                         defaultAnalysisParameters,
                                                                                                         methodName);
 
                         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                   properties,
-                                                                                  OpenMetadataAPIMapper.SERVICE_REQUEST_TYPE_PROPERTY_NAME,
+                                                                                  OpenMetadataProperty.SERVICE_REQUEST_TYPE.name,
                                                                                   serviceRequestType,
                                                                                   methodName);
                         repositoryHandler.updateRelationshipProperties(userId,
@@ -1086,19 +890,19 @@ public class GovernanceConfigurationHandler
 
         repositoryHelper.addStringPropertyToInstance(serviceName,
                                                      instanceProperties,
-                                                     OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                     OpenMetadataProperty.REQUEST_TYPE.name,
                                                      governanceRequestType,
                                                      methodName);
 
         instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                           instanceProperties,
-                                                                          OpenMetadataAPIMapper.SERVICE_REQUEST_TYPE_PROPERTY_NAME,
+                                                                          OpenMetadataProperty.SERVICE_REQUEST_TYPE.name,
                                                                           serviceRequestType,
                                                                           methodName);
 
         instanceProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                              instanceProperties,
-                                                                             OpenMetadataAPIMapper.REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                                             OpenMetadataProperty.REQUEST_PARAMETERS.name,
                                                                              defaultAnalysisParameters,
                                                                              methodName);
 
@@ -1107,15 +911,15 @@ public class GovernanceConfigurationHandler
                                                           null,
                                                           governanceEngineGUID,
                                                           governanceEngineGUIDParameter,
-                                                          OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
+                                                          OpenMetadataType.GOVERNANCE_ENGINE.typeName,
                                                           governanceServiceGUID,
                                                           governanceServiceGUIDParameter,
-                                                          OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
+                                                          OpenMetadataType.GOVERNANCE_SERVICE.typeName,
                                                           false,
                                                           false,
                                                           governanceEngineHandler.getSupportedZones(),
-                                                          OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
-                                                          OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                          OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeGUID,
+                                                          OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName,
                                                           instanceProperties,
                                                           new Date(),
                                                           methodName);
@@ -1151,10 +955,10 @@ public class GovernanceConfigurationHandler
 
         List<Relationship> relationships = repositoryHandler.getRelationshipsBetweenEntities(userId,
                                                                                              governanceServiceGUID,
-                                                                                             OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                                             OpenMetadataType.GOVERNANCE_SERVICE.typeName,
                                                                                              governanceEngineGUID,
-                                                                                             OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
-                                                                                             OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                                             OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeGUID,
+                                                                                             OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName,
                                                                                              1,
                                                                                              false,
                                                                                              false,
@@ -1200,11 +1004,11 @@ public class GovernanceConfigurationHandler
         List<Relationship> relationships = governanceEngineHandler.getAttachmentLinks(userId,
                                                                                       governanceEngineGUID,
                                                                                       governanceEngineGUIDParameter,
-                                                                                      OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
-                                                                                      OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
-                                                                                      OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                                      OpenMetadataType.GOVERNANCE_ENGINE.typeName,
+                                                                                      OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeGUID,
+                                                                                      OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName,
                                                                                       null,
-                                                                                      OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                                      OpenMetadataType.GOVERNANCE_SERVICE.typeName,
                                                                                       2,
                                                                                       false,
                                                                                       false,
@@ -1251,7 +1055,7 @@ public class GovernanceConfigurationHandler
                      * Build the request type list for the service.
                      */
                     String requestType = repositoryHelper.getStringProperty(serviceName,
-                                                                            OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                                            OpenMetadataProperty.REQUEST_TYPE.name,
                                                                             relationship.getProperties(),
                                                                             methodName);
 
@@ -1260,11 +1064,11 @@ public class GovernanceConfigurationHandler
                         RegisteredGovernanceServiceProperties relationshipProperties = new RegisteredGovernanceServiceProperties();
 
                         relationshipProperties.setServiceRequestType(repositoryHelper.getStringProperty(serviceName,
-                                                                                                        OpenMetadataAPIMapper.SERVICE_REQUEST_TYPE_PROPERTY_NAME,
+                                                                                                        OpenMetadataProperty.SERVICE_REQUEST_TYPE.name,
                                                                                                         relationship.getProperties(),
                                                                                                         methodName));
                         relationshipProperties.setRequestParameters(repositoryHelper.getStringMapFromProperty(serviceName,
-                                                                                                              OpenMetadataAPIMapper.REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                                                                              OpenMetadataProperty.REQUEST_PARAMETERS.name,
                                                                                                               relationship.getProperties(),
                                                                                                               methodName));
 
@@ -1323,9 +1127,9 @@ public class GovernanceConfigurationHandler
                                                                                        invalidParameterHandler,
                                                                                        userId,
                                                                                        governanceEngineGUID,
-                                                                                       OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
-                                                                                       OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
-                                                                                       OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                                       OpenMetadataType.GOVERNANCE_ENGINE.typeName,
+                                                                                       OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeGUID,
+                                                                                       OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName,
                                                                                        2,
                                                                                        false,
                                                                                        false,
@@ -1342,7 +1146,7 @@ public class GovernanceConfigurationHandler
             if (supportedGovernanceService != null)
             {
                 String existingRequestType = repositoryHelper.getStringProperty(serviceName,
-                                                                                OpenMetadataAPIMapper.REQUEST_TYPE_PROPERTY_NAME,
+                                                                                OpenMetadataProperty.REQUEST_TYPE.name,
                                                                                 supportedGovernanceService.getProperties(),
                                                                                 methodName);
 
@@ -1354,14 +1158,14 @@ public class GovernanceConfigurationHandler
                                                                      null,
                                                                      governanceEngineGUID,
                                                                      governanceEngineGUIDParameter,
-                                                                     OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
+                                                                     OpenMetadataType.GOVERNANCE_ENGINE.typeName,
                                                                      governanceServiceGUID,
                                                                      governanceServiceGUIDParameter,
-                                                                     OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                     OpenMetadataType.GOVERNANCE_SERVICE.typeGUID,
+                                                                     OpenMetadataType.GOVERNANCE_SERVICE.typeName,
                                                                      false,
                                                                      false,
-                                                                     OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                     OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName,
                                                                      supportedGovernanceService,
                                                                      new Date(),
                                                                      methodName);
@@ -1402,9 +1206,9 @@ public class GovernanceConfigurationHandler
                                                                                        invalidParameterHandler,
                                                                                        userId,
                                                                                        governanceEngineGUID,
-                                                                                       OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
-                                                                                       OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_GUID,
-                                                                                       OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                                       OpenMetadataType.GOVERNANCE_ENGINE.typeName,
+                                                                                       OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeGUID,
+                                                                                       OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName,
                                                                                        2,
                                                                                        false,
                                                                                        false,
@@ -1430,14 +1234,14 @@ public class GovernanceConfigurationHandler
                                                                      null,
                                                                      governanceEngineGUID,
                                                                      governanceEngineGUIDParameter,
-                                                                     OpenMetadataAPIMapper.GOVERNANCE_ENGINE_TYPE_NAME,
+                                                                     OpenMetadataType.GOVERNANCE_ENGINE.typeName,
                                                                      governanceServiceGUID,
                                                                      governanceServiceGUIDParameter,
-                                                                     OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_GUID,
-                                                                     OpenMetadataAPIMapper.GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                     OpenMetadataType.GOVERNANCE_SERVICE.typeGUID,
+                                                                     OpenMetadataType.GOVERNANCE_SERVICE.typeName,
                                                                      false,
                                                                      false,
-                                                                     OpenMetadataAPIMapper.SUPPORTED_GOVERNANCE_SERVICE_TYPE_NAME,
+                                                                     OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName,
                                                                      supportedGovernanceService,
                                                                      new Date(),
                                                                      methodName);
@@ -1473,7 +1277,7 @@ public class GovernanceConfigurationHandler
         return integrationGroupHandler.createSoftwareCapability(userId,
                                                                 null,
                                                                 null,
-                                                                OpenMetadataAPIMapper.INTEGRATION_GROUP_TYPE_NAME,
+                                                                OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
                                                                 null,
                                                                 properties.getQualifiedName(),
                                                                 properties.getDisplayName(),
@@ -1518,7 +1322,7 @@ public class GovernanceConfigurationHandler
         return integrationGroupHandler.getBeanFromRepository(userId,
                                                              guid,
                                                              guidParameter,
-                                                             OpenMetadataAPIMapper.INTEGRATION_GROUP_TYPE_NAME,
+                                                             OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
                                                              false,
                                                              false,
                                                              new Date(),
@@ -1548,13 +1352,13 @@ public class GovernanceConfigurationHandler
         final  String   nameParameter = "name";
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
 
         return integrationGroupHandler.getBeanByValue(userId,
                                                       name,
                                                       nameParameter,
-                                                      OpenMetadataAPIMapper.INTEGRATION_GROUP_TYPE_GUID,
-                                                      OpenMetadataAPIMapper.INTEGRATION_GROUP_TYPE_NAME,
+                                                      OpenMetadataType.INTEGRATION_GROUP_TYPE_GUID,
+                                                      OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
                                                       specificMatchPropertyNames,
                                                       false,
                                                       false,
@@ -1584,8 +1388,8 @@ public class GovernanceConfigurationHandler
         final String methodName = "getAllIntegrationGroups";
 
         return integrationGroupHandler.getBeansByType(userId,
-                                                      OpenMetadataAPIMapper.INTEGRATION_GROUP_TYPE_GUID,
-                                                      OpenMetadataAPIMapper.INTEGRATION_GROUP_TYPE_NAME,
+                                                      OpenMetadataType.INTEGRATION_GROUP_TYPE_GUID,
+                                                      OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
                                                       null,
                                                       startingFrom,
                                                       maximumResults,
@@ -1633,8 +1437,8 @@ public class GovernanceConfigurationHandler
                                                                           properties.getPatchLevel(),
                                                                           properties.getSource(),
                                                                           properties.getAdditionalProperties(),
-                                                                          OpenMetadataAPIMapper.INTEGRATION_GROUP_TYPE_GUID,
-                                                                          OpenMetadataAPIMapper.INTEGRATION_GROUP_TYPE_NAME,
+                                                                          OpenMetadataType.INTEGRATION_GROUP_TYPE_GUID,
+                                                                          OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
                                                                           null,
                                                                           repositoryHelper,
                                                                           serviceName,
@@ -1647,8 +1451,8 @@ public class GovernanceConfigurationHandler
                                                        null,
                                                        guid,
                                                        guidParameter,
-                                                       OpenMetadataAPIMapper.INTEGRATION_GROUP_TYPE_GUID,
-                                                       OpenMetadataAPIMapper.INTEGRATION_GROUP_TYPE_NAME,
+                                                       OpenMetadataType.INTEGRATION_GROUP_TYPE_GUID,
+                                                       OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
                                                        instanceProperties,
                                                        isMergeUpdate,
                                                        methodName);
@@ -1685,8 +1489,8 @@ public class GovernanceConfigurationHandler
                                                        null,
                                                        guid,
                                                        guidParameter,
-                                                       OpenMetadataAPIMapper.INTEGRATION_GROUP_TYPE_GUID,
-                                                       OpenMetadataAPIMapper.INTEGRATION_GROUP_TYPE_NAME,
+                                                       OpenMetadataType.INTEGRATION_GROUP_TYPE_GUID,
+                                                       OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
                                                        qualifiedNameParameter,
                                                        qualifiedName,
                                                        false,
@@ -1730,8 +1534,6 @@ public class GovernanceConfigurationHandler
         final String methodName = "createIntegrationConnector";
         final String connectionParameterName = "createIntegrationConnector";
         final String assetGUIDParameterName = "assetGUID";
-        final String connectorTypeGUIDParameterName = "connectorTypeGUID";
-        final String embeddedConnectionGUIDParameterName = "embeddedConnectionGUID ";
 
         invalidParameterHandler.validateConnection(connection, connectionParameterName, methodName);
 
@@ -1739,7 +1541,7 @@ public class GovernanceConfigurationHandler
 
         Map<String, Object> extendedProperties = new HashMap<>();
 
-        extendedProperties.put(OpenMetadataAPIMapper.USES_BLOCKING_CALLS_PROPERTY_NAME, usesBlockingCalls);
+        extendedProperties.put(OpenMetadataType.USES_BLOCKING_CALLS_PROPERTY_NAME, usesBlockingCalls);
 
         String assetGUID = integrationConnectorHandler.createAssetInRepository(userId,
                                                                                null,
@@ -1749,7 +1551,7 @@ public class GovernanceConfigurationHandler
                                                                                versionIdentifier,
                                                                                description,
                                                                                additionalProperties,
-                                                                               OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                               OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
                                                                                extendedProperties,
                                                                                InstanceStatus.ACTIVE,
                                                                                null,
@@ -1759,177 +1561,20 @@ public class GovernanceConfigurationHandler
 
         if (assetGUID != null)
         {
-            Endpoint      endpoint     = connection.getEndpoint();
-            String        endpointGUID = null;
-            String        endpointParameterName = "connection.getEndpoint()";
-
-            if (endpoint != null)
-            {
-                if (endpoint.getGUID() != null)
-                {
-                    endpointGUID = endpoint.getGUID();
-                }
-                else
-                {
-                    String typeName = OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME;
-
-                    if ((endpoint.getType() != null) && (endpoint.getType().getTypeName() != null))
-                    {
-                        typeName = endpoint.getType().getTypeName();
-                    }
-
-                    endpointGUID = endpointHandler.createEndpoint(userId,
-                                                                  null,
-                                                                  null,
-                                                                  assetGUID,
-                                                                  endpoint.getQualifiedName(),
-                                                                  endpoint.getDisplayName(),
-                                                                  endpoint.getDescription(),
-                                                                  endpoint.getAddress(),
-                                                                  endpoint.getProtocol(),
-                                                                  endpoint.getEncryptionMethod(),
-                                                                  endpoint.getAdditionalProperties(),
-                                                                  typeName,
-                                                                  endpoint.getExtendedProperties(),
-                                                                  null,
-                                                                  null,
-                                                                  null,
-                                                                  methodName);
-                }
-            }
-
-            ConnectorType connectorType = connection.getConnectorType();
-
-            String connectorTypeGUID = connectorTypeHandler.getConnectorTypeForConnection(userId,
-                                                                                          null,
-                                                                                          null,
-                                                                                          assetGUID,
-                                                                                          connectorType.getQualifiedName(),
-                                                                                          connectorType.getDisplayName(),
-                                                                                          connectorType.getDescription(),
-                                                                                          connectorType.getSupportedAssetTypeName(),
-                                                                                          connectorType.getExpectedDataFormat(),
-                                                                                          connectorType.getConnectorProviderClassName(),
-                                                                                          connectorType.getConnectorFrameworkName(),
-                                                                                          connectorType.getConnectorInterfaceLanguage(),
-                                                                                          connectorType.getConnectorInterfaces(),
-                                                                                          connectorType.getTargetTechnologySource(),
-                                                                                          connectorType.getTargetTechnologyName(),
-                                                                                          connectorType.getTargetTechnologyInterfaces(),
-                                                                                          connectorType.getTargetTechnologyVersions(),
-                                                                                          connectorType.getRecognizedAdditionalProperties(),
-                                                                                          connectorType.getRecognizedSecuredProperties(),
-                                                                                          connectorType.getRecognizedConfigurationProperties(),
-                                                                                          connectorType.getAdditionalProperties(),
-                                                                                          false,
-                                                                                          false,
-                                                                                          effectiveTime,
-                                                                                          methodName);
-
-            if (connectorTypeGUID != null)
-            {
-                if (connection instanceof VirtualConnection)
-                {
-                    /*
-                     * OpenGovernancePipelines are represented using a VirtualConnection that
-                     * nests all the Connections for services to call.
-                     */
-                    final String connectionGUIDParameterName = "connection.getGUID";
-
-                    String connectionGUID = connectionHandler.createVirtualConnection(userId,
-                                                                                      null,
-                                                                                      null,
-                                                                                      assetGUID,
-                                                                                      assetGUIDParameterName,
-                                                                                      connection.getAssetSummary(),
-                                                                                      connection.getQualifiedName(),
-                                                                                      connection.getDisplayName(),
-                                                                                      connection.getDescription(),
-                                                                                      connection.getAdditionalProperties(),
-                                                                                      connection.getSecuredProperties(),
-                                                                                      connection.getConfigurationProperties(),
-                                                                                      connection.getUserId(),
-                                                                                      connection.getClearPassword(),
-                                                                                      connection.getEncryptedPassword(),
-                                                                                      connectorTypeGUID,
-                                                                                      connectorTypeGUIDParameterName,
-                                                                                      null,
-                                                                                      null,
-                                                                                      false,
-                                                                                      false,
-                                                                                      effectiveTime,
-                                                                                      methodName);
-
-                    List<EmbeddedConnection> embeddedConnections = ((VirtualConnection) connection).getEmbeddedConnections();
-
-                    if (embeddedConnections != null)
-                    {
-                        for (EmbeddedConnection embeddedConnection : embeddedConnections)
-                        {
-                            if (embeddedConnection != null)
-                            {
-                                String embeddedConnectionGUID = connectionHandler.saveConnection(userId,
-                                                                                                 null,
-                                                                                                 null,
-                                                                                                 assetGUID,
-                                                                                                 null,
-                                                                                                 assetGUIDParameterName,
-                                                                                                 OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_NAME,
-                                                                                                 embeddedConnection.getEmbeddedConnection(),
-                                                                                                 null,
-                                                                                                 false,
-                                                                                                 false,
-                                                                                                 effectiveTime,
-                                                                                                 methodName);
-                                connectionHandler.addEmbeddedConnection(userId,
-                                                                        null,
-                                                                        null,
-                                                                        connectionGUID,
-                                                                        connectionGUIDParameterName,
-                                                                        embeddedConnection.getPosition(),
-                                                                        embeddedConnection.getDisplayName(),
-                                                                        embeddedConnection.getArguments(),
-                                                                        embeddedConnectionGUID,
-                                                                        embeddedConnectionGUIDParameterName,
-                                                                        null,
-                                                                        null,
-                                                                        false,
-                                                                        false,
-                                                                        effectiveTime,
-                                                                        methodName);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    connectionHandler.createConnection(userId,
-                                                       null,
-                                                       null,
-                                                       assetGUID,
-                                                       assetGUIDParameterName,
-                                                       connection.getAssetSummary(),
-                                                       connection.getQualifiedName(),
-                                                       connection.getDisplayName(),
-                                                       connection.getDescription(),
-                                                       connection.getAdditionalProperties(),
-                                                       connection.getSecuredProperties(),
-                                                       connection.getConfigurationProperties(),
-                                                       connection.getUserId(),
-                                                       connection.getClearPassword(),
-                                                       connection.getEncryptedPassword(),
-                                                       connectorTypeGUID,
-                                                       connectorTypeGUIDParameterName,
-                                                       endpointGUID,
-                                                       endpointParameterName,
-                                                       null,
-                                                       null,
-                                                       false,
-                                                       false,
-                                                       effectiveTime,
-                                                       methodName);
-                }
-            }
+            connectionHandler.saveConnection(userId,
+                                             null,
+                                             null,
+                                             assetGUID,
+                                             assetGUID,
+                                             assetGUIDParameterName,
+                                             OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                             qualifiedName,
+                                             connection,
+                                             "Connection to create integration connector",
+                                             false,
+                                             false,
+                                             effectiveTime,
+                                             methodName);
         }
 
         return assetGUID;
@@ -1959,7 +1604,7 @@ public class GovernanceConfigurationHandler
         return integrationConnectorHandler.getAssetWithConnection(userId,
                                                                   guid,
                                                                   guidParameter,
-                                                                  OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                  OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
                                                                   false,
                                                                   false,
                                                                   new Date(),
@@ -1990,8 +1635,8 @@ public class GovernanceConfigurationHandler
         return integrationConnectorHandler.getAssetByNameWithConnection(userId,
                                                                         name,
                                                                         nameParameter,
-                                                                        OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_GUID,
-                                                                        OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                        OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_GUID,
+                                                                        OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
                                                                         false,
                                                                         false,
                                                                         new Date(),
@@ -2021,8 +1666,8 @@ public class GovernanceConfigurationHandler
         final  String   methodName = "getAllIntegrationConnectors";
 
         return integrationConnectorHandler.getAllAssetsWithConnection(userId,
-                                                                      OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_GUID,
-                                                                      OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                      OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_GUID,
+                                                                      OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
                                                                       startingFrom,
                                                                       maximumResults,
                                                                       false,
@@ -2061,21 +1706,21 @@ public class GovernanceConfigurationHandler
          * Checks this is a valid, visible service.
          */
         connectionHandler.getEntityFromRepository(userId,
-                                                integrationConnectorGUID,
-                                                guidParameter,
-                                                OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_NAME,
-                                                null,
-                                                null,
-                                                false,
-                                                false,
-                                                effectiveTime,
-                                                methodName);
+                                                  integrationConnectorGUID,
+                                                  guidParameter,
+                                                  OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                  null,
+                                                  null,
+                                                  false,
+                                                  false,
+                                                  effectiveTime,
+                                                  methodName);
 
         List<Relationship>  relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                      integrationConnectorGUID,
-                                                                                     OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_NAME,
-                                                                                     OpenMetadataAPIMapper.REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID,
-                                                                                     OpenMetadataAPIMapper.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                                     OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                                     OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID,
+                                                                                     OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
                                                                                      1,
                                                                                      false,
                                                                                      false,
@@ -2157,8 +1802,8 @@ public class GovernanceConfigurationHandler
                                                               versionIdentifier,
                                                               description,
                                                               additionalProperties,
-                                                              OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                              OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_GUID,
+                                                              OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
                                                               extendedProperties,
                                                               null,
                                                               null,
@@ -2200,8 +1845,8 @@ public class GovernanceConfigurationHandler
                                                  null,
                                                  guid,
                                                  guidParameter,
-                                                 OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_GUID,
-                                                 OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                 OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_GUID,
+                                                 OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
                                                  qualifiedNameParameter,
                                                  qualifiedName,
                                                  false,
@@ -2258,37 +1903,37 @@ public class GovernanceConfigurationHandler
 
         repositoryHelper.addStringPropertyToInstance(serviceName,
                                                      instanceProperties,
-                                                     OpenMetadataAPIMapper.CONNECTOR_NAME_PROPERTY_NAME,
+                                                     OpenMetadataType.CONNECTOR_NAME_PROPERTY_NAME,
                                                      connectorName,
                                                      methodName);
 
         instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                           instanceProperties,
-                                                                          OpenMetadataAPIMapper.CONNECTOR_USER_ID_PROPERTY_NAME,
+                                                                          OpenMetadataType.CONNECTOR_USER_ID_PROPERTY_NAME,
                                                                           connectorUserId,
                                                                           methodName);
 
         instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                        instanceProperties,
-                                                        OpenMetadataAPIMapper.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME,
-                                                        metadataSourceQualifiedName,
-                                                        methodName);
+                                                                          instanceProperties,
+                                                                          OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME,
+                                                                          metadataSourceQualifiedName,
+                                                                          methodName);
 
         instanceProperties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                         instanceProperties,
-                                                                        OpenMetadataAPIMapper.START_DATE_PROPERTY_NAME,
+                                                                        OpenMetadataType.START_DATE_PROPERTY_NAME,
                                                                         startDate,
                                                                         methodName);
 
         instanceProperties = repositoryHelper.addLongPropertyToInstance(serviceName,
                                                                         instanceProperties,
-                                                                        OpenMetadataAPIMapper.REFRESH_TIME_INTERVAL_PROPERTY_NAME,
+                                                                        OpenMetadataType.REFRESH_TIME_INTERVAL_PROPERTY_NAME,
                                                                         refreshTimeInterval,
                                                                         methodName);
 
         instanceProperties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                         instanceProperties,
-                                                                        OpenMetadataAPIMapper.STOP_DATE_PROPERTY_NAME,
+                                                                        OpenMetadataType.STOP_DATE_PROPERTY_NAME,
                                                                         stopDate,
                                                                         methodName);
 
@@ -2298,15 +1943,15 @@ public class GovernanceConfigurationHandler
             {
                 instanceProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                 instanceProperties,
-                                                                                OpenMetadataAPIMapper.PERMITTED_SYNC_PROPERTY_NAME,
-                                                                                OpenMetadataAPIMapper.PERMITTED_SYNC_ENUM_TYPE_GUID,
-                                                                                OpenMetadataAPIMapper.PERMITTED_SYNC_ENUM_TYPE_NAME,
+                                                                                OpenMetadataType.PERMITTED_SYNC_PROPERTY_NAME,
+                                                                                OpenMetadataType.PERMITTED_SYNC_ENUM_TYPE_GUID,
+                                                                                OpenMetadataType.PERMITTED_SYNC_ENUM_TYPE_NAME,
                                                                                 permittedSynchronization.getOpenTypeOrdinal(),
                                                                                 methodName);
             }
             catch (TypeErrorException error)
             {
-                throw new InvalidParameterException(error, OpenMetadataAPIMapper.KEY_PATTERN_PROPERTY_NAME);
+                throw new InvalidParameterException(error, OpenMetadataType.KEY_PATTERN_PROPERTY_NAME);
             }
         }
 
@@ -2315,15 +1960,15 @@ public class GovernanceConfigurationHandler
                                                      null,
                                                      integrationGroupGUID,
                                                      integrationGroupGUIDParameter,
-                                                     OpenMetadataAPIMapper.INTEGRATION_GROUP_TYPE_NAME,
+                                                     OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
                                                      integrationConnectorGUID,
                                                      integrationConnectorGUIDParameter,
-                                                     OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                     OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
                                                      false,
                                                      false,
                                                      integrationGroupHandler.getSupportedZones(),
-                                                     OpenMetadataAPIMapper.REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                     OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID,
+                                                     OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
                                                      instanceProperties,
                                                      null,
                                                      null,
@@ -2361,10 +2006,10 @@ public class GovernanceConfigurationHandler
 
         List<Relationship> relationships = repositoryHandler.getRelationshipsBetweenEntities(userId,
                                                                                              integrationConnectorGUID,
-                                                                                             OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                                             OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
                                                                                              integrationGroupGUID,
-                                                                                             OpenMetadataAPIMapper.REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID,
-                                                                                             OpenMetadataAPIMapper.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                                             OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID,
+                                                                                             OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
                                                                                              1,
                                                                                              false,
                                                                                              false,
@@ -2374,8 +2019,7 @@ public class GovernanceConfigurationHandler
 
         if (relationships != null)
         {
-
-            if (relationships.size() > 0)
+            if (!relationships.isEmpty())
             {
                 return registeredIntegrationConnectorConverter.getBean(this.getIntegrationConnectorByGUID(userId, integrationConnectorGUID), relationships.get(0));
             }
@@ -2412,11 +2056,11 @@ public class GovernanceConfigurationHandler
         List<Relationship> relationships = integrationGroupHandler.getAttachmentLinks(userId,
                                                                                       integrationGroupGUID,
                                                                                       integrationGroupGUIDParameter,
-                                                                                      OpenMetadataAPIMapper.INTEGRATION_GROUP_TYPE_NAME,
-                                                                                      OpenMetadataAPIMapper.REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID,
-                                                                                      OpenMetadataAPIMapper.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                                      OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
+                                                                                      OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID,
+                                                                                      OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
                                                                                       null,
-                                                                                      OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                                      OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
                                                                                       2,
                                                                                       false,
                                                                                       false,
@@ -2474,15 +2118,15 @@ public class GovernanceConfigurationHandler
                                                          null,
                                                          integrationGroupGUID,
                                                          integrationGroupGUIDParameter,
-                                                         OpenMetadataAPIMapper.INTEGRATION_GROUP_TYPE_NAME,
+                                                         OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
                                                          integrationConnectorGUID,
                                                          integrationConnectorGUIDParameter,
-                                                         OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_GUID,
-                                                         OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                         OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_GUID,
+                                                         OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
                                                          false,
                                                          false,
-                                                         OpenMetadataAPIMapper.REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID,
-                                                         OpenMetadataAPIMapper.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                         OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID,
+                                                         OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
                                                          new Date(),
                                                          methodName);
     }
@@ -2521,7 +2165,7 @@ public class GovernanceConfigurationHandler
 
         repositoryHelper.addStringPropertyToInstance(serviceName,
                                                      instanceProperties,
-                                                     OpenMetadataAPIMapper.CATALOG_TARGET_NAME_PROPERTY_NAME,
+                                                     OpenMetadataType.CATALOG_TARGET_NAME_PROPERTY_NAME,
                                                      properties.getCatalogTargetName(),
                                                      methodName);
 
@@ -2530,15 +2174,15 @@ public class GovernanceConfigurationHandler
                                                      null,
                                                      integrationConnectorGUID,
                                                      integrationConnectorGUIDParameter,
-                                                     OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                     OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
                                                      metadataElementGUID,
                                                      metadataElementGUIDParameter,
-                                                     OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                     OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                      false,
                                                      false,
                                                      integrationGroupHandler.getSupportedZones(),
-                                                     OpenMetadataAPIMapper.CATALOG_TARGET_RELATIONSHIP_TYPE_GUID,
-                                                     OpenMetadataAPIMapper.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
+                                                     OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_GUID,
+                                                     OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
                                                      instanceProperties,
                                                      null,
                                                      null,
@@ -2574,10 +2218,10 @@ public class GovernanceConfigurationHandler
 
         List<Relationship> relationships = repositoryHandler.getRelationshipsBetweenEntities(userId,
                                                                                              integrationConnectorGUID,
-                                                                                             OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_GUID,
+                                                                                             OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_GUID,
                                                                                              metadataElementGUID,
-                                                                                             OpenMetadataAPIMapper.CATALOG_TARGET_RELATIONSHIP_TYPE_GUID,
-                                                                                             OpenMetadataAPIMapper.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
+                                                                                             OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_GUID,
+                                                                                             OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
                                                                                              2,
                                                                                              false,
                                                                                              false,
@@ -2587,8 +2231,7 @@ public class GovernanceConfigurationHandler
 
         if (relationships != null)
         {
-
-            if (relationships.size() > 0)
+            if (!relationships.isEmpty())
             {
                 return catalogTargetConverter.getNewBean(CatalogTarget.class, relationships.get(0), methodName);
             }
@@ -2629,11 +2272,11 @@ public class GovernanceConfigurationHandler
         List<Relationship> relationships = integrationGroupHandler.getAttachmentLinks(userId,
                                                                                       integrationConnectorGUID,
                                                                                       integrationConnectorGUIDParameter,
-                                                                                      OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_NAME,
-                                                                                      OpenMetadataAPIMapper.CATALOG_TARGET_RELATIONSHIP_TYPE_GUID,
-                                                                                      OpenMetadataAPIMapper.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
+                                                                                      OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                                      OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_GUID,
+                                                                                      OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
                                                                                       null,
-                                                                                      OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                                       2,
                                                                                       false,
                                                                                       false,
@@ -2689,15 +2332,15 @@ public class GovernanceConfigurationHandler
                                                          null,
                                                          integrationConnectorGUID,
                                                          integrationConnectorGUIDParameter,
-                                                         OpenMetadataAPIMapper.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                         OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
                                                          metadataElementGUID,
                                                          metadataElementGUIDParameter,
-                                                         OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
-                                                         OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                         OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
+                                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                          false,
                                                          false,
-                                                         OpenMetadataAPIMapper.CATALOG_TARGET_RELATIONSHIP_TYPE_GUID,
-                                                         OpenMetadataAPIMapper.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
+                                                         OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_GUID,
+                                                         OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
                                                          new Date(),
                                                          methodName);
     }

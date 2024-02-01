@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -201,7 +203,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
 
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
+        String typeName = OpenMetadataType.SCHEMA_TYPE_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -209,7 +211,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                   OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -309,7 +311,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
 
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME;
+        String typeName = OpenMetadataType.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -317,7 +319,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME,
+                                                                   OpenMetadataType.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -419,7 +421,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
 
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.LITERAL_SCHEMA_TYPE_TYPE_NAME;
+        String typeName = OpenMetadataType.LITERAL_SCHEMA_TYPE_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -427,7 +429,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.LITERAL_SCHEMA_TYPE_TYPE_NAME,
+                                                                   OpenMetadataType.LITERAL_SCHEMA_TYPE_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -532,7 +534,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
 
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.ENUM_SCHEMA_TYPE_TYPE_NAME;
+        String typeName = OpenMetadataType.ENUM_SCHEMA_TYPE_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -540,7 +542,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.ENUM_SCHEMA_TYPE_TYPE_NAME,
+                                                                   OpenMetadataType.ENUM_SCHEMA_TYPE_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -639,7 +641,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
 
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.STRUCT_SCHEMA_TYPE_TYPE_NAME;
+        String typeName = OpenMetadataType.STRUCT_SCHEMA_TYPE_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -647,7 +649,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.STRUCT_SCHEMA_TYPE_TYPE_NAME,
+                                                                   OpenMetadataType.STRUCT_SCHEMA_TYPE_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -743,7 +745,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
 
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.SCHEMA_TYPE_CHOICE_TYPE_NAME;
+        String typeName = OpenMetadataType.SCHEMA_TYPE_CHOICE_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -751,7 +753,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.SCHEMA_TYPE_CHOICE_TYPE_NAME,
+                                                                   OpenMetadataType.SCHEMA_TYPE_CHOICE_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -855,7 +857,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         invalidParameterHandler.validateGUID(mapFromSchemaTypeGUID, fromGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(mapToSchemaTypeGUID, toGUIDParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.SCHEMA_TYPE_CHOICE_TYPE_NAME;
+        String typeName = OpenMetadataType.SCHEMA_TYPE_CHOICE_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -863,7 +865,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.SCHEMA_TYPE_CHOICE_TYPE_NAME,
+                                                                   OpenMetadataType.SCHEMA_TYPE_CHOICE_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -950,10 +952,10 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                            externalSourceName,
                                            templateGUID,
                                            templateGUIDParameterName,
-                                           OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_GUID,
-                                           OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                           OpenMetadataType.SCHEMA_TYPE_TYPE_GUID,
+                                           OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                            qualifiedName,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                           OpenMetadataProperty.QUALIFIED_NAME.name,
                                            builder,
                                            supportedZones,
                                            methodName);
@@ -1075,7 +1077,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
 
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
+        String typeName = OpenMetadataType.SCHEMA_TYPE_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -1083,7 +1085,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                   OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -1134,7 +1136,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         }
         else
         {
-            return OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_GUID;
+            return OpenMetadataType.SCHEMA_TYPE_TYPE_GUID;
         }
     }
 
@@ -1153,7 +1155,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         }
         else
         {
-            return OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
+            return OpenMetadataType.SCHEMA_TYPE_TYPE_NAME;
         }
     }
 
@@ -1191,8 +1193,8 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                     externalSourceName,
                                     schemaTypeGUID,
                                     guidParameterName,
-                                    OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_GUID,
-                                    OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                    OpenMetadataType.SCHEMA_TYPE_TYPE_GUID,
+                                    OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                     null,
                                     null,
                                     forLineage,
@@ -1232,9 +1234,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         return this.getSchemaTypeForParent(userId,
                                            assetGUID,
                                            assetGUIDParameterName,
-                                           OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                           OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                           OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                           OpenMetadataType.ASSET.typeName,
+                                           OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
+                                           OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                            forLineage,
                                            forDuplicateProcessing,
                                            effectiveTime,
@@ -1272,9 +1274,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         return this.getSchemaTypeForParent(userId,
                                            portGUID,
                                            portGUIDParameterName,
-                                           OpenMetadataAPIMapper.PORT_TYPE_NAME,
-                                           OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
-                                           OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
+                                           OpenMetadataType.PORT_TYPE_NAME,
+                                           OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
+                                           OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
                                            forLineage,
                                            forDuplicateProcessing,
                                            effectiveTime,
@@ -1322,7 +1324,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                 parentTypeName,
                                                                 relationshipTypeGUID,
                                                                 relationshipTypeName,
-                                                                OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                 2,
                                                                 forLineage,
                                                                 forDuplicateProcessing,
@@ -1379,7 +1381,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
 
         invalidParameterHandler.validateName(parentElementTypeName, parentElementTypeParameterName, methodName);
 
-        if (repositoryHelper.isTypeOf(serviceName, parentElementTypeName, OpenMetadataAPIMapper.PORT_TYPE_NAME))
+        if (repositoryHelper.isTypeOf(serviceName, parentElementTypeName, OpenMetadataType.PORT_TYPE_NAME))
         {
             this.linkElementToElement(userId,
                                       externalSourceGUID,
@@ -1389,11 +1391,11 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                       parentElementTypeName,
                                       schemaTypeGUID,
                                       schemaTypeGUIDParameterName,
-                                      OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                      OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
+                                      OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
                                       null,
                                       effectiveFrom,
                                       effectiveTo,
@@ -1410,11 +1412,11 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                       parentElementTypeName,
                                       schemaTypeGUID,
                                       schemaTypeGUIDParameterName,
-                                      OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                      OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                      OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                      OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
+                                      OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                       null,
                                       effectiveFrom,
                                       effectiveTo,
@@ -1463,7 +1465,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
 
         if ((parentElementTypeName != null) && repositoryHelper.isTypeOf(serviceName,
                                                                          parentElementTypeName,
-                                                                         OpenMetadataAPIMapper.PORT_TYPE_NAME))
+                                                                         OpenMetadataType.PORT_TYPE_NAME))
         {
             this.unlinkElementFromElement(userId,
                                           false,
@@ -1474,12 +1476,12 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                           parentElementTypeName,
                                           schemaTypeGUID,
                                           schemaTypeGUIDParameterName,
-                                          OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_GUID,
-                                          OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                          OpenMetadataType.SCHEMA_TYPE_TYPE_GUID,
+                                          OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                           forLineage,
                                           forDuplicateProcessing,
-                                          OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
-                                          OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
+                                          OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
+                                          OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
                                           effectiveTime,
                                           methodName);
         }
@@ -1494,12 +1496,12 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                           parentElementTypeName,
                                           schemaTypeGUID,
                                           schemaTypeGUIDParameterName,
-                                          OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_GUID,
-                                          OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                          OpenMetadataType.SCHEMA_TYPE_TYPE_GUID,
+                                          OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                           forLineage,
                                           forDuplicateProcessing,
-                                          OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                          OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                          OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
+                                          OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                           effectiveTime,
                                           methodName);
         }
@@ -1556,15 +1558,15 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         {
             List<EntityDetail> schemaTypeEntities;
 
-            if (repositoryHelper.isTypeOf(serviceName, parentEntity.getType().getTypeDefName(), OpenMetadataAPIMapper.API_SCHEMA_TYPE_TYPE_NAME))
+            if (repositoryHelper.isTypeOf(serviceName, parentEntity.getType().getTypeDefName(), OpenMetadataType.API_SCHEMA_TYPE_TYPE_NAME))
             {
                 schemaTypeEntities = this.getAttachedEntities(userId,
                                                               parentEntity,
                                                               parentGUIDParameterName,
                                                               parentTypeName,
-                                                              OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.API_OPERATIONS_RELATIONSHIP_TYPE_NAME,
-                                                              OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                              OpenMetadataType.API_OPERATIONS_RELATIONSHIP_TYPE_GUID,
+                                                              OpenMetadataType.API_OPERATIONS_RELATIONSHIP_TYPE_NAME,
+                                                              OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                               null,
                                                               null,
                                                               2,
@@ -1582,9 +1584,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                               parentEntity,
                                                               parentGUIDParameterName,
                                                               parentTypeName,
-                                                              OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
-                                                              OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                              OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
+                                                              OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
+                                                              OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                               null,
                                                               null,
                                                               2,
@@ -1651,7 +1653,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         EntityDetail  schemaTypeEntity = this.getEntityFromRepository(userId,
                                                                       schemaTypeGUID,
                                                                       guidParameterName,
-                                                                      OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                      OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                       null,
                                                                       null,
                                                                       forLineage,
@@ -1703,7 +1705,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
     {
         final String searchStringParameterName = "searchString";
 
-        String typeName = OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
+        String typeName = OpenMetadataType.SCHEMA_TYPE_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -1711,7 +1713,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                   OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -1774,7 +1776,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
     {
         final String nameParameterName = "name";
 
-        String typeName = OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
+        String typeName = OpenMetadataType.SCHEMA_TYPE_TYPE_NAME;
 
         if (suppliedTypeName != null)
         {
@@ -1782,15 +1784,15 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                   OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
 
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
 
         List<EntityDetail> entities = this.getEntitiesByValue(userId,
                                                               name,
@@ -1870,39 +1872,39 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         {
             for (Relationship relationship : relationships)
             {
-                if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME))
+                if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME))
                 {
                     return this.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
                 }
-                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME))
+                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME))
                 {
                     return this.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
                 }
-                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME))
+                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME))
                 {
                     return this.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
                 }
-                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_NAME))
+                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_NAME))
                 {
                     return this.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
                 }
-                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_NAME))
+                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.MAP_FROM_RELATIONSHIP_TYPE_NAME))
                 {
                     return this.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
                 }
-                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_NAME))
+                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.MAP_TO_RELATIONSHIP_TYPE_NAME))
                 {
                     return this.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
                 }
-                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME))
+                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME))
                 {
                     return this.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
                 }
-                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME))
+                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME))
                 {
                     return this.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
                 }
-                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.SOLUTION_PORT_SCHEMA_RELATIONSHIP_TYPE_NAME))
+                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.SOLUTION_PORT_SCHEMA_RELATIONSHIP_TYPE_NAME))
                 {
                     return this.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
                 }
@@ -2059,15 +2061,15 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         /*
          * Look for an external schema type - the real content will be hanging off of this element.
          */
-        if (repositoryHelper.isTypeOf(serviceName, schemaRootTypeName, OpenMetadataAPIMapper.EXTERNAL_SCHEMA_TYPE_TYPE_NAME))
+        if (repositoryHelper.isTypeOf(serviceName, schemaRootTypeName, OpenMetadataType.EXTERNAL_SCHEMA_TYPE_TYPE_NAME))
         {
             EntityDetail externalSchemaTypeEntity = this.getAttachedEntity(userId,
                                                                            schemaRootHeader.getGUID(),
                                                                            schemaGUIDParameterName,
-                                                                           OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
-                                                                           OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_GUID,
-                                                                           OpenMetadataAPIMapper.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_NAME,
-                                                                           OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                           OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                                                           OpenMetadataType.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_GUID,
+                                                                           OpenMetadataType.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP_TYPE_NAME,
+                                                                           OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                            2,
                                                                            forLineage,
                                                                            forDuplicateProcessing,
@@ -2090,7 +2092,7 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         /*
          * Collect up the interesting information about the schema type that is outside the entity.
          */
-        if (repositoryHelper.isTypeOf(serviceName, schemaRootTypeName, OpenMetadataAPIMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME))
+        if (repositoryHelper.isTypeOf(serviceName, schemaRootTypeName, OpenMetadataType.COMPLEX_SCHEMA_TYPE_TYPE_NAME))
         {
             attributeCount = this.countSchemaAttributes(userId,
                                                         schemaRootHeader.getGUID(),
@@ -2098,15 +2100,15 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                         effectiveTime,
                                                         methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, schemaRootTypeName, OpenMetadataAPIMapper.ENUM_SCHEMA_TYPE_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, schemaRootTypeName, OpenMetadataType.ENUM_SCHEMA_TYPE_TYPE_NAME))
         {
             EntityDetail validValuesSetEntity = this.getAttachedEntity(userId,
                                                                        schemaRootHeader.getGUID(),
                                                                        schemaGUIDParameterName,
-                                                                       OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
-                                                                       OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
-                                                                       OpenMetadataAPIMapper.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
-                                                                       OpenMetadataAPIMapper.VALID_VALUE_SET_TYPE_NAME,
+                                                                       OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                                                       OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
+                                                                       OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                       OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                                                        2,
                                                                        forLineage,
                                                                        forDuplicateProcessing,
@@ -2119,15 +2121,15 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                 validValuesSetGUID = validValuesSetEntity.getGUID();
             }
         }
-        else if (repositoryHelper.isTypeOf(serviceName, schemaRootTypeName, OpenMetadataAPIMapper.MAP_SCHEMA_TYPE_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, schemaRootTypeName, OpenMetadataType.MAP_SCHEMA_TYPE_TYPE_NAME))
         {
             EntityDetail mapFromSchemaTypeEntity = this.getAttachedEntity(userId,
                                                                           schemaRootHeader.getGUID(),
                                                                           schemaGUIDParameterName,
-                                                                          OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
-                                                                          OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_GUID,
-                                                                          OpenMetadataAPIMapper.MAP_FROM_RELATIONSHIP_TYPE_NAME,
-                                                                          OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                          OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                                                          OpenMetadataType.MAP_FROM_RELATIONSHIP_TYPE_GUID,
+                                                                          OpenMetadataType.MAP_FROM_RELATIONSHIP_TYPE_NAME,
+                                                                          OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                           2,
                                                                           forLineage,
                                                                           forDuplicateProcessing,
@@ -2149,10 +2151,10 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
             EntityDetail mapToSchemaTypeEntity = this.getAttachedEntity(userId,
                                                                         schemaRootHeader.getGUID(),
                                                                         schemaGUIDParameterName,
-                                                                        OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
-                                                                        OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_GUID,
-                                                                        OpenMetadataAPIMapper.MAP_TO_RELATIONSHIP_TYPE_NAME,
-                                                                        OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                        OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                                                        OpenMetadataType.MAP_TO_RELATIONSHIP_TYPE_GUID,
+                                                                        OpenMetadataType.MAP_TO_RELATIONSHIP_TYPE_NAME,
+                                                                        OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                         2,
                                                                         forLineage,
                                                                         forDuplicateProcessing,
@@ -2171,15 +2173,15 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                                                methodName);
             }
         }
-        else if (repositoryHelper.isTypeOf(serviceName, schemaRootTypeName, OpenMetadataAPIMapper.SCHEMA_TYPE_CHOICE_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, schemaRootTypeName, OpenMetadataType.SCHEMA_TYPE_CHOICE_TYPE_NAME))
         {
             List<EntityDetail> schemaTypeOptionsEntities = getAttachedEntities(userId,
                                                                                schemaRootHeader.getGUID(),
                                                                                schemaGUIDParameterName,
-                                                                               OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
-                                                                               OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
-                                                                               OpenMetadataAPIMapper.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
-                                                                               OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                               OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                                                               OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID,
+                                                                               OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_NAME,
+                                                                               OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                                                null,
                                                                                null,
                                                                                2,
@@ -2215,11 +2217,11 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         List<Relationship> queryTargets = this.getAttachmentLinks(userId,
                                                                   schemaRootHeader.getGUID(),
                                                                   schemaGUIDParameterName,
-                                                                  OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
-                                                                  OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_GUID,
-                                                                  OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME,
+                                                                  OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                                                  OpenMetadataType.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_GUID,
+                                                                  OpenMetadataType.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME,
                                                                   null,
-                                                                  OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                                  OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
                                                                   2,
                                                                   forLineage,
                                                                   forDuplicateProcessing,

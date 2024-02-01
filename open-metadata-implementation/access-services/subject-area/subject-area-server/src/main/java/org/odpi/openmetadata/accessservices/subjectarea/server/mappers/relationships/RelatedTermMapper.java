@@ -7,6 +7,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
@@ -31,19 +33,19 @@ public class RelatedTermMapper extends RelationshipMapper<RelatedTerm> {
     @Override
     protected void mapRelationshipToInstanceProperties(RelatedTerm relatedTerm, InstanceProperties instanceProperties) {
         if (relatedTerm.getDescription() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, relatedTerm.getDescription(), OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, relatedTerm.getDescription(), OpenMetadataProperty.DESCRIPTION.name);
         }
         if (relatedTerm.getExpression() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, relatedTerm.getExpression(), OpenMetadataAPIMapper.EXPRESSION_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, relatedTerm.getExpression(), OpenMetadataType.EXPRESSION_PROPERTY_NAME);
         }
         if (relatedTerm.getSteward() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, relatedTerm.getSteward(), OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, relatedTerm.getSteward(), OpenMetadataType.STEWARD_PROPERTY_NAME);
         }
         if (relatedTerm.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, relatedTerm.getSource(), OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, relatedTerm.getSource(), OpenMetadataType.SOURCE_PROPERTY_NAME);
         }
         if (relatedTerm.getStatus() != null) {
-            SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, relatedTerm.getStatus(), OpenMetadataAPIMapper.STATUS_PROPERTY_NAME);
+            SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, relatedTerm.getStatus(), OpenMetadataType.STATUS_PROPERTY_NAME);
         }
     }
 
@@ -59,19 +61,19 @@ public class RelatedTermMapper extends RelationshipMapper<RelatedTerm> {
     protected boolean mapPrimitiveToRelationship(RelatedTerm relatedTerm, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
-        if (propertyName.equals(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.DESCRIPTION.name)) {
             relatedTerm.setDescription(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataAPIMapper.EXPRESSION_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataType.EXPRESSION_PROPERTY_NAME)) {
             relatedTerm.setExpression(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataType.STEWARD_PROPERTY_NAME)) {
             relatedTerm.setSteward(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataType.SOURCE_PROPERTY_NAME)) {
             relatedTerm.setSource(stringValue);
             foundProperty = true;
         }
@@ -81,7 +83,7 @@ public class RelatedTermMapper extends RelationshipMapper<RelatedTerm> {
     @Override
     protected boolean mapEnumToRelationship(RelatedTerm relatedTerm, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
-        if (propertyName.equals(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataType.STATUS_PROPERTY_NAME)) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
             relatedTerm.setStatus(status);
             foundProperty = true;

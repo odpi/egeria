@@ -406,6 +406,7 @@ public class EgeriaPlatformReport
          *
          * @param configuration configuration document for the server
          */
+        @SuppressWarnings(value = "deprecation")
         void setConfiguration(OMAGServerConfig configuration)
         {
             this.configuration = configuration;

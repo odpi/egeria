@@ -3,9 +3,9 @@
 package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters;
 
 import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ExternalReference;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -57,14 +57,12 @@ public class ExternalReferenceConverter<B> extends OCFConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ExternalReference)
+            if (returnBean instanceof ExternalReference bean)
             {
-                ExternalReference bean = (ExternalReference) returnBean;
-
                 /*
                  * Check that the entity is of the correct type.
                  */
-                this.setUpElementHeader(bean, entity, OpenMetadataAPIMapper.EXTERNAL_REFERENCE_TYPE_NAME, methodName);
+                this.setUpElementHeader(bean, entity, OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME, methodName);
 
                 /*
                  * The initial set of values come from the entity properties.  The super class properties are removed from a copy of the entities

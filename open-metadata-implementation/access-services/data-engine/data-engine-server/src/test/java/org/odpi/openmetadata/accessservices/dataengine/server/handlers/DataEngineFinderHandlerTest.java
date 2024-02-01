@@ -18,6 +18,8 @@ import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGener
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -37,9 +39,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
@@ -77,24 +77,24 @@ class DataEngineFinderHandlerTest {
         mockRepositoryHelper();
         List<EntityDetail> findResult = buildFindResult();
 
-        when(genericHandler.getEntitiesByValue(USER, QUALIFIED_NAME, QUALIFIED_NAME_PROPERTY_NAME, REFERENCEABLE_TYPE_GUID,
-                REFERENCEABLE_TYPE_NAME, Collections.singletonList(QUALIFIED_NAME_PROPERTY_NAME), true,
-                null, null, false, false,
-                0, invalidParameterHandler.getMaxPagingSize(), null, METHOD)).thenReturn(findResult);
+        when(genericHandler.getEntitiesByValue(USER, QUALIFIED_NAME, OpenMetadataProperty.QUALIFIED_NAME.name, OpenMetadataType.REFERENCEABLE.typeName,
+                                               OpenMetadataType.REFERENCEABLE.typeName, Collections.singletonList(OpenMetadataProperty.QUALIFIED_NAME.name), true,
+                                               null, null, false, false,
+                                               0, invalidParameterHandler.getMaxPagingSize(), null, METHOD)).thenReturn(findResult);
 
         FindRequestBody findRequestBody = buildFindRequestBody();
         GUIDListResponse guidListResponse = dataEngineFindHandler.find(findRequestBody, USER, METHOD);
 
         assertEquals(1, guidListResponse.getGUIDs().size());
-        verify(repositoryHelper, times(1)).getTypeDefByName(USER, REFERENCEABLE_TYPE_NAME);
+        verify(repositoryHelper, times(1)).getTypeDefByName(USER, OpenMetadataType.REFERENCEABLE.typeName);
     }
 
     private void mockRepositoryHelper(){
         when(repositoryHelper.getExactMatchRegex(QUALIFIED_NAME, false)).thenReturn(QUALIFIED_NAME);
 
         TypeDef referenceableTypeDef = mock(TypeDef.class);
-        when(referenceableTypeDef.getGUID()).thenReturn(REFERENCEABLE_TYPE_GUID);
-        when(repositoryHelper.getTypeDefByName(USER, REFERENCEABLE_TYPE_NAME)).thenReturn(referenceableTypeDef);
+        when(referenceableTypeDef.getGUID()).thenReturn(OpenMetadataType.REFERENCEABLE.typeGUID);
+        when(repositoryHelper.getTypeDefByName(USER, OpenMetadataType.REFERENCEABLE.typeName)).thenReturn(referenceableTypeDef);
     }
 
     private FindRequestBody buildFindRequestBody(){
@@ -102,7 +102,7 @@ class DataEngineFinderHandlerTest {
         identifiers.setQualifiedName(QUALIFIED_NAME);
 
         FindRequestBody findRequestBody = new FindRequestBody();
-        findRequestBody.setType(REFERENCEABLE_TYPE_NAME);
+        findRequestBody.setType(OpenMetadataType.REFERENCEABLE.typeName);
         findRequestBody.setExternalSourceName(EXTERNAL_SOURCE_NAME);
         findRequestBody.setIdentifiers(identifiers);
 

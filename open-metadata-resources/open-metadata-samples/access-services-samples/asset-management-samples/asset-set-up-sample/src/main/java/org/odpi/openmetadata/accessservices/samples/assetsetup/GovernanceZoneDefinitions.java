@@ -9,6 +9,9 @@ package org.odpi.openmetadata.accessservices.samples.assetsetup;
  */
 public enum GovernanceZoneDefinitions
 {
+    /**
+     * Personal Files Zone
+     */
     PERSONAL(   "personal-files",
                 "Personal Files Zone",
                 "Assets that are for an individual's use.  Initially the creator of the asset is the owner. " +
@@ -16,17 +19,26 @@ public enum GovernanceZoneDefinitions
                       "reassign the ownership.",
                 "Assets that should only be visible and editable to the owner."),
 
+    /**
+     * Quarantine Zone
+     */
     QUARANTINE( "quarantine",
                 "Quarantine Zone",
                 "Assets from third parties that are being evaluated by the onboarding team. " +
                         "The assets will move into the other zones once the asset has been catalogued and classified.",
                 "Data sets just received and have not yet been properly catalogued."),
 
+    /**
+     * Data Lake Zone
+     */
     DATA_LAKE( "data-lake",
                 "Data Lake Zone",
                 "Assets for sharing that are read only.",
                 "These are production assets that can be used for business decisions."),
 
+    /**
+     * Trash Can Zone
+     */
     TRASH_CAN(  "trash-can",
                 "Trash Can Zone",
                 "Asset that are in a holding zone ready to be deleted.",

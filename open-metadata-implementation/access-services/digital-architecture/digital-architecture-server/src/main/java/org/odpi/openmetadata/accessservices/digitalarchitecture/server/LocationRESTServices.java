@@ -10,7 +10,8 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.LocationHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
@@ -912,8 +913,8 @@ public class LocationRESTServices
                 List<LocationElement> locations = handler.findBeans(userId,
                                                                     requestBody.getSearchString(),
                                                                     parameterName,
-                                                                    OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                                                    OpenMetadataType.LOCATION_TYPE_GUID,
+                                                                    OpenMetadataType.LOCATION_TYPE_NAME,
                                                                     null,
                                                                     startFrom,
                                                                     pageSize,
@@ -972,14 +973,14 @@ public class LocationRESTServices
                 LocationHandler<LocationElement> handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
                 List<String> specificMatchPropertyNames = new ArrayList<>();
-                specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-                specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+                specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
 
                 List<LocationElement> locations = handler.getBeansByValue(userId,
                                                                           requestBody.getName(),
                                                                           parameterName,
-                                                                          OpenMetadataAPIMapper.LOCATION_TYPE_GUID,
-                                                                          OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                                                          OpenMetadataType.LOCATION_TYPE_GUID,
+                                                                          OpenMetadataType.LOCATION_TYPE_NAME,
                                                                           specificMatchPropertyNames,
                                                                           true,
                                                                           null,
@@ -1037,7 +1038,7 @@ public class LocationRESTServices
             LocationElement location = handler.getBeanFromRepository(userId,
                                                                      locationGUID,
                                                                      locationGUIDParameter,
-                                                                     OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                                                     OpenMetadataType.LOCATION_TYPE_NAME,
                                                                      false,
                                                                      false,
                                                                      new Date(),

@@ -6,11 +6,11 @@ import org.odpi.openmetadata.accessservices.digitalservice.metadataelements.Coll
 import org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionMemberStatus;
 import org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -127,7 +127,7 @@ public class CollectionMemberConverter<B> extends DigitalServiceConverterBase<B>
         if (elementProperties != null)
         {
             String retrievedProperty = propertyHelper.removeEnumProperty(serviceName,
-                                                                         OpenMetadataTypesMapper.MEMBERSHIP_STATUS_ENUM_TYPE_NAME,
+                                                                         OpenMetadataType.MEMBERSHIP_STATUS_ENUM_TYPE_NAME,
                                                                          elementProperties,
                                                                          methodName);
 

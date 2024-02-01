@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.RemediationGovernanceActionService;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
@@ -20,7 +21,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,8 +29,6 @@ import java.util.List;
  */
 public class QualifiedNamePeerDuplicateGovernanceActionConnector extends RemediationGovernanceActionService
 {
-    private static final String QUALIFIED_NAME_PROPERTY = "qualifiedName";
-
     /**
      * Indicates that the governance action service is completely configured and can begin processing.
      * <p>
@@ -62,8 +60,9 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
                 OpenMetadataElement targetElement = actionTarget.getTargetElement();
 
                 OpenMetadataStore store = governanceContext.getOpenMetadataStore();
+                store.setForDuplicateProcessing(true);
 
-                String qualifiedName = targetElement.getElementProperties().getPropertyValueMap().get(QUALIFIED_NAME_PROPERTY).valueAsString();
+                String qualifiedName = targetElement.getElementProperties().getPropertyValueMap().get(OpenMetadataProperty.QUALIFIED_NAME.name).valueAsString();
                 SearchProperties searchProperties = getSearchProperties(qualifiedName);
                 List<OpenMetadataElement> elements = store.findMetadataElements(targetElement.getType().getTypeId(),
                                                                                 null,
@@ -72,9 +71,6 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                false,
-                                                                                true,
-                                                                                new Date(),
                                                                                 0,
                                                                                 0);
 
@@ -94,14 +90,14 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
                         }
 
                         governanceContext.linkElementsAsPeerDuplicates(targetElementGUID,
-                                                           duplicateAssetGUID,
-                                                           1,
-                                                           null,
-                                                           null,
-                                                           null,
-                                                           null,
-                                                           null,
-                                                           true);
+                                                                       duplicateAssetGUID,
+                                                                       1,
+                                                                       null,
+                                                                       null,
+                                                                       null,
+                                                                       null,
+                                                                       null,
+                                                                       true);
                         outputGuards.add(QualifiedNamePeerDuplicateGovernanceActionProvider.DUPLICATE_ASSIGNED_GUARD);
                         completionStatus = CompletionStatus.ACTIONED;
                         break;
@@ -144,7 +140,7 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
         primitivePropertyValue.setPrimitiveValue(qualifiedName);
         primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
 
-        condition.setProperty(QUALIFIED_NAME_PROPERTY);
+        condition.setProperty(OpenMetadataProperty.QUALIFIED_NAME.name);
         condition.setOperator(PropertyComparisonOperator.EQ);
         condition.setValue(primitivePropertyValue);
 
