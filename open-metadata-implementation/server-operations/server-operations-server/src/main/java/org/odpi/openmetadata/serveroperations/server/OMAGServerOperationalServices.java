@@ -1142,7 +1142,7 @@ public class OMAGServerOperationalServices
          */
         else if (ServerTypeClassification.OPEN_LINEAGE_SERVER.equals(serverTypeClassification))
         {
-            instance.setServerServiceActiveStatus(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(), ServerActiveStatus.STARTING);
+            instance.setServerServiceActiveStatus(GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(), ServerActiveStatus.STARTING);
 
             OpenLineageServerOperationalServices
                     operationalOpenLineageServer = new OpenLineageServerOperationalServices(configuration.getLocalServerId(),
@@ -1153,14 +1153,14 @@ public class OMAGServerOperationalServices
             instance.setOpenLineageOperationalServices(operationalOpenLineageServer);
             operationalOpenLineageServer.initialize(configuration.getOpenLineageServerConfig(),
                                                     operationalRepositoryServices.getAuditLog(
-                                                            GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceCode(),
-                                                            GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceDevelopmentStatus(),
-                                                            GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
-                                                            GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceDescription(),
-                                                            GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceWiki()));
+                                                            GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceCode(),
+                                                            GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceDevelopmentStatus(),
+                                                            GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(),
+                                                            GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceDescription(),
+                                                            GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceWiki()));
 
-            activatedServiceList.add(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName());
-            instance.setServerServiceActiveStatus(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(), ServerActiveStatus.RUNNING);
+            activatedServiceList.add(GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName());
+            instance.setServerServiceActiveStatus(GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(), ServerActiveStatus.RUNNING);
         }
     }
 
@@ -1340,11 +1340,11 @@ public class OMAGServerOperationalServices
                  */
                 if (instance.getOpenLineageOperationalServices() != null)
                 {
-                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(), ServerActiveStatus.STOPPING);
+                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(), ServerActiveStatus.STOPPING);
 
                     instance.getOpenLineageOperationalServices().shutdown();
 
-                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(), ServerActiveStatus.INACTIVE);
+                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(), ServerActiveStatus.INACTIVE);
                 }
 
                 /*
