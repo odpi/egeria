@@ -17,7 +17,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.CertificationHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
@@ -129,7 +129,7 @@ public class CertificationRESTServices
             CertificationHandler<CertificationTypeElement> handler = instanceHandler.getCertificationTypeHandler(userId, serverName, methodName);
 
             List<CertificationTypeElement> certificationTypeElements = handler.getGovernanceDefinitionsByName(userId,
-                                                                                                              OpenMetadataAPIMapper.CERTIFICATION_TYPE_TYPE_NAME,
+                                                                                                              OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
                                                                                                               documentIdentifier,
                                                                                                               documentIdParameterName,
                                                                                                               0,
@@ -191,7 +191,7 @@ public class CertificationRESTServices
                 CertificationHandler<CertificationTypeElement> handler = instanceHandler.getCertificationTypeHandler(userId, serverName, methodName);
 
                 response.setElements(handler.findGovernanceDefinitions(userId,
-                                                                       OpenMetadataAPIMapper.CERTIFICATION_TYPE_TYPE_NAME,
+                                                                       OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
                                                                        requestBody.getSearchString(),
                                                                        titleParameterName,
                                                                        startFrom,
@@ -250,7 +250,7 @@ public class CertificationRESTServices
             CertificationHandler<CertificationTypeElement> handler = instanceHandler.getCertificationTypeHandler(userId, serverName, methodName);
 
             response.setElements(handler.getGovernanceDefinitionsByDomain(userId,
-                                                                          OpenMetadataAPIMapper.CERTIFICATION_TYPE_TYPE_NAME,
+                                                                          OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
                                                                           domainIdentifier,
                                                                           startFrom,
                                                                           pageSize,
@@ -319,10 +319,10 @@ public class CertificationRESTServices
                                                             null,
                                                             elementGUID,
                                                             elementGUIDParameterName,
-                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                            OpenMetadataType.REFERENCEABLE.typeName,
                                                             certificationTypeGUID,
                                                             certificationTypeGUIDParameterName,
-                                                            OpenMetadataAPIMapper.CERTIFICATION_TYPE_TYPE_NAME,
+                                                            OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
                                                             properties.getCertificateId(),
                                                             properties.getStartDate(),
                                                             properties.getEndDate(),
@@ -539,10 +539,10 @@ public class CertificationRESTServices
             response.setElementList(handler.getAttachedElements(userId,
                                                                 certificationTypeGUID,
                                                                 guidParameter,
-                                                                OpenMetadataAPIMapper.CERTIFICATION_TYPE_TYPE_NAME,
-                                                                OpenMetadataAPIMapper.CERTIFICATION_OF_REFERENCEABLE_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
-                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
+                                                                OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_GUID,
+                                                                OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                                                                OpenMetadataType.REFERENCEABLE.typeName,
                                                                 null,
                                                                 null,
                                                                 1,
@@ -599,10 +599,10 @@ public class CertificationRESTServices
             response.setElementList(handler.getAttachedElements(userId,
                                                                 elementGUID,
                                                                 guidParameterName,
-                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                OpenMetadataAPIMapper.CERTIFICATION_OF_REFERENCEABLE_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
-                                                                OpenMetadataAPIMapper.CERTIFICATION_TYPE_TYPE_NAME,
+                                                                OpenMetadataType.REFERENCEABLE.typeName,
+                                                                OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_GUID,
+                                                                OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                                                                OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
                                                                 null,
                                                                 null,
                                                                 2,

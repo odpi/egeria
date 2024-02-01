@@ -25,7 +25,7 @@ public class ConnectedAssetClient extends ConnectedAssetClientBase
     public ConnectedAssetClient(String serverName,
                                 String serverPlatformURLRoot) throws InvalidParameterException
     {
-        super(serviceURLMarker, serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot, serviceURLMarker);
     }
 
 
@@ -46,6 +46,6 @@ public class ConnectedAssetClient extends ConnectedAssetClientBase
                                 String serverUserId,
                                 String serverPassword) throws InvalidParameterException
     {
-        super(serviceURLMarker, serverName, serverPlatformURLRoot, serverUserId, serverPassword);
+        super(serverName, serverPlatformURLRoot, serviceURLMarker, serverUserId, serverPassword);
     }
 }

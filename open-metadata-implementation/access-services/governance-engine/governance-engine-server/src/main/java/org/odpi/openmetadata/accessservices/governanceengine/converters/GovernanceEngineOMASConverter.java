@@ -24,12 +24,12 @@ public class GovernanceEngineOMASConverter<B> extends OpenMetadataStoreConverter
      * Constructor
      *
      * @param repositoryHelper helper object to parse entity
-     * @param serviceName name of this component
-     * @param serverName name of this server
+     * @param serviceName      name of this component
+     * @param serverName       name of this server
      */
     public GovernanceEngineOMASConverter(OMRSRepositoryHelper repositoryHelper,
-                                         String               serviceName,
-                                         String               serverName)
+                                         String serviceName,
+                                         String serverName)
     {
         super(repositoryHelper, serviceName, serverName);
     }
@@ -38,11 +38,13 @@ public class GovernanceEngineOMASConverter<B> extends OpenMetadataStoreConverter
     /**
      * Retrieve and delete the GovernanceActionStatus enum property from the instance properties of an entity
      *
-     * @param properties  entity properties
+     * @param properties entity properties
+     *
      * @return OwnerType  enum value
      */
-    protected GovernanceActionStatus removeGovernanceActionStatus(String               propertyName,
-                                                              InstanceProperties properties)
+    @SuppressWarnings(value = "deprecation")
+    protected GovernanceActionStatus removeGovernanceActionStatus(String propertyName,
+                                                                  InstanceProperties properties)
     {
         GovernanceActionStatus actionStatus = this.getGovernanceActionStatus(propertyName, properties);
 
@@ -66,11 +68,13 @@ public class GovernanceEngineOMASConverter<B> extends OpenMetadataStoreConverter
      * Retrieve the ActionStatus enum property from the instance properties of a Governance Action.
      *
      * @param propertyName name ot property to extract the enum from
-     * @param properties  entity properties
+     * @param properties   entity properties
+     *
      * @return ActionStatus  enum value
      */
-    private GovernanceActionStatus getGovernanceActionStatus(String               propertyName,
-                                                             InstanceProperties   properties)
+    @SuppressWarnings(value = "deprecation")
+    private GovernanceActionStatus getGovernanceActionStatus(String propertyName,
+                                                             InstanceProperties properties)
     {
         GovernanceActionStatus governanceActionStatus = GovernanceActionStatus.OTHER;
 
@@ -82,10 +86,8 @@ public class GovernanceEngineOMASConverter<B> extends OpenMetadataStoreConverter
             {
                 InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(propertyName);
 
-                if (instancePropertyValue instanceof EnumPropertyValue)
+                if (instancePropertyValue instanceof EnumPropertyValue enumPropertyValue)
                 {
-                    EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
-
                     switch (enumPropertyValue.getOrdinal())
                     {
                         case 0 -> governanceActionStatus = GovernanceActionStatus.REQUESTED;
@@ -104,5 +106,4 @@ public class GovernanceEngineOMASConverter<B> extends OpenMetadataStoreConverter
 
         return governanceActionStatus;
     }
-
 }

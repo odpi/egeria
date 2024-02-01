@@ -27,7 +27,7 @@ public enum AssetAnalysisAuditCode implements AuditLogMessageSet
      */
     ENGINE_SERVICE_INITIALIZING("OMES-ASSET-ANALYSIS-0001",
                                 AuditLogRecordSeverityLevel.STARTUP,
-                                "The Asset Analysis engine services are initializing in server {0}",
+                                "The Asset Analysis engine services are initializing in server {0}; they will call Discovery Engine OMAS on server {1} at {2}",
                                 "A new OMAG server has been started that is configured to run the Asset Analysis OMES.  " +
                                  "Within this engine service are one or more discovery engines that analyze the " +
                                  "content of assets on demand and create annotation metadata. The configuration for the " +

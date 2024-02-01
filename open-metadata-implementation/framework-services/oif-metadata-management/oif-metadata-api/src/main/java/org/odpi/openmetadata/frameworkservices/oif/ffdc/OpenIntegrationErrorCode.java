@@ -26,12 +26,18 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum OpenIntegrationErrorCode implements ExceptionMessageSet
 {
+    /**
+     * OPEN-INTEGRATION-SERVICE-404-002 - The open metadata repository services are not initialized for the {0} operation
+     */
     OMRS_NOT_INITIALIZED(404, "OPEN-INTEGRATION-SERVICE-404-002",
                          "The open metadata repository services are not initialized for the {0} operation",
                          "The system is unable to connect to the open metadata property server.",
                          "Check that the server where the Open Integration Service are running initialized correctly.  " +
                                  "Correct any errors discovered and retry the request when the open metadata services are available."),
-    
+
+    /**
+     * OPEN-INTEGRATION-SERVICE-503-005 - A {0} exception was caught during start up of service {1} for server {2}. The error message was: {3}
+     */
     UNEXPECTED_INITIALIZATION_EXCEPTION(503, "OPEN-INTEGRATION-SERVICE-503-005",
                                         "A {0} exception was caught during start up of service {1} for server {2}. The error message was: {3}",
                                         "The system detected an unexpected error during start up and is now in an unknown state.",

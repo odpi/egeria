@@ -11,8 +11,8 @@ public class IntegrationGovernanceContext
 {
     protected final OpenMetadataAccess      openMetadataAccess;
     protected final MultiLanguageManagement multiLanguageManagement;
-    protected final StewardshipAction       stewardshipAction;
-    protected final ValidMetadataValues     validMetadataValues;
+    protected final StewardshipAction          stewardshipAction;
+    protected final ValidMetadataValuesContext validMetadataValues;
 
 
     /**
@@ -21,17 +21,17 @@ public class IntegrationGovernanceContext
      * @param openMetadataAccess Governance Action Framework (GAF) extension for accessing open metadata
      * @param multiLanguageManagement Governance Action Framework (GAF) extension for managing multi-language content
      * @param stewardshipAction Governance Action Framework (GAF) extension to requesting help from stewards
-     * @param validMetadataValues Governance Action Framework (GAF) extension for working with valid values for metadata
+     * @param validMetadataValuesContext Governance Action Framework (GAF) extension for working with valid values for metadata
      */
     public IntegrationGovernanceContext(OpenMetadataAccess       openMetadataAccess,
                                         MultiLanguageManagement  multiLanguageManagement,
                                         StewardshipAction        stewardshipAction,
-                                        ValidMetadataValues      validMetadataValues)
+                                        ValidMetadataValuesContext validMetadataValuesContext)
     {
         this.openMetadataAccess          = openMetadataAccess;
         this.multiLanguageManagement     = multiLanguageManagement;
         this.stewardshipAction           = stewardshipAction;
-        this.validMetadataValues         = validMetadataValues;
+        this.validMetadataValues         = validMetadataValuesContext;
     }
 
 
@@ -75,7 +75,7 @@ public class IntegrationGovernanceContext
      *
      * @return valid metadata values context extension
      */
-    public ValidMetadataValues getValidMetadataValues()
+    public ValidMetadataValuesContext getValidMetadataValuesContext()
     {
         return validMetadataValues;
     }

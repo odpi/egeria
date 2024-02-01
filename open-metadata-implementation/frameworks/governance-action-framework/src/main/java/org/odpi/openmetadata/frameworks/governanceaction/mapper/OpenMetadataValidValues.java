@@ -8,6 +8,16 @@ package org.odpi.openmetadata.frameworks.governanceaction.mapper;
 public class OpenMetadataValidValues
 {
     /**
+     * Egeria:IntegrationGroup:DefaultIntegrationGroup is the qualified name of Egeria's default integration group.
+     */
+    public static final String DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME = "Egeria:IntegrationGroup:DefaultIntegrationGroup";
+
+    /**
+     * DefaultIntegrationGroup is the display name of the default integration group.
+     */
+    public static final String DEFAULT_INTEGRATION_GROUP_NAME = "DefaultIntegrationGroup";
+
+    /**
      * This scope value means that the associated value is valid across the open metadata ecosystem - that is all tools, runtimes, repositories
      * using open metadata standards.
      */
@@ -39,25 +49,14 @@ public class OpenMetadataValidValues
     public static final String CONNECTOR_INTERFACE_LANGUAGE_DEFAULT = "Java";
 
     /**
-     * The "resourceUse" property value for a ResourceList relationship between a type of server and a type of service.
+     * This value is added to the description property of a PropertyFacet
      */
-    public static final String HOSTED_SERVICE_RESOURCE_USE = "Hosted Service";
+    public static final String VENDOR_PROPERTIES_DESCRIPTION_VALUE = "vendorProperties";
 
     /**
-     * The "resourceUse" property value for a ResourceList relationship between a type of service/engine and a type of connector.
+     * The name of the additional properties entry in valid metadata values that represent the associated Asset subtype name.
      */
-    public static final String HOSTED_CONNECTOR_RESOURCE_USE = "Hosted Connector";
-
-
-    /**
-     * The "resourceUse" property value for a ResourceList relationship between a type of service and a type of governance engine.
-     */
-    public static final String HOSTED_GOVERNANCE_ENGINE_RESOURCE_USE = "Hosted Governance Engine";
-
-    /**
-     * The "resourceUse" property value for a ResourceList relationship between a type of service and another type of service it calls.
-     */
-    public static final String CALLED_SERVICE_RESOURCE_USE = "Called Service";
+    public static final String ASSET_SUB_TYPE_NAME = "assetSubTypeName";
 
     /**
      * Creates the qualifiedName of the element based on the properties supplied.
@@ -75,18 +74,43 @@ public class OpenMetadataValidValues
      *     <li><i>Egeria:ValidMetadataValue::propertyName--mapName--(preferredValue)</i> - This is a valid metadata map value for a property name used with any type.</li>
      * </ul>
      *
-     * @param typeName name of the type (can be null)
-     * @param propertyName name of the property (can be null)
-     * @param mapName name of the mapName (can be null)
-     * @param preferredValue name of the valid value (can be null)
+     * @param incomingTypeName name of the type (can be null)
+     * @param incomingPropertyName name of the property (can be null)
+     * @param incomingMapName name of the mapName (can be null)
+     * @param incomingPreferredValue name of the valid value (can be null)
      * @return string (never null)
      */
-    public static String constructValidValueQualifiedName(String typeName,
-                                                          String propertyName,
-                                                          String mapName,
-                                                          String preferredValue)
+    public static String constructValidValueQualifiedName(String incomingTypeName,
+                                                          String incomingPropertyName,
+                                                          String incomingMapName,
+                                                          String incomingPreferredValue)
     {
         String qualifiedName = VALID_METADATA_VALUES_QUALIFIED_NAME_PREFIX;
+
+        String typeName = incomingTypeName;
+        String propertyName = incomingPropertyName;
+        String mapName = incomingMapName;
+        String preferredValue = incomingPreferredValue;
+
+        if ((typeName != null) && (typeName.isBlank()))
+        {
+            typeName = null;
+        }
+
+        if ((propertyName != null) && (propertyName.isBlank()))
+        {
+            propertyName = null;
+        }
+
+        if ((mapName != null) && (mapName.isBlank()))
+        {
+            mapName = null;
+        }
+
+        if ((preferredValue != null) && (preferredValue.isBlank()))
+        {
+            preferredValue = null;
+        }
 
         if ((typeName != null) || (propertyName != null))
         {
@@ -132,18 +156,37 @@ public class OpenMetadataValidValues
      *     <li><i>propertyName--mapName</i> This is a valid map name for a property name used with any type</li>
      * </ul>
      *
-     * @param typeName name of the type (can be null)
-     * @param propertyName name of the property (can be null)
-     * @param mapName name of the mapName (can be null)
+     * @param incomingTypeName name of the type (can be null)
+     * @param incomingPropertyName name of the property (can be null)
+     * @param incomingMapName name of the mapName (can be null)
      * @return string (never null)
      */
-    public static String constructValidValueCategory(String typeName,
-                                                     String propertyName,
-                                                     String mapName)
+    public static String constructValidValueCategory(String incomingTypeName,
+                                                     String incomingPropertyName,
+                                                     String incomingMapName)
     {
         final String propertyNameStartSpacer = ":";
         final String mapNameStartSpacer = "-";
         final String mapNameEndSpacer = "--";
+
+        String typeName = incomingTypeName;
+        String propertyName = incomingPropertyName;
+        String mapName = incomingMapName;
+
+        if ((typeName != null) && (typeName.isBlank()))
+        {
+            typeName = null;
+        }
+
+        if ((propertyName != null) && (propertyName.isBlank()))
+        {
+            propertyName = null;
+        }
+
+        if ((mapName != null) && (mapName.isBlank()))
+        {
+            mapName = null;
+        }
 
         if (typeName != null)
         {

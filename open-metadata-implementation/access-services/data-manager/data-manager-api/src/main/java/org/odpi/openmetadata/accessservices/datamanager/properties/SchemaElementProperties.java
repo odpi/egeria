@@ -27,8 +27,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class SchemaElementProperties extends ReferenceableProperties
 {
-    private static final long     serialVersionUID = 1L;
-
     private boolean isDeprecated = false;
     private String  displayName = null;
     private String  description = null;

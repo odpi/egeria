@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adminservices.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.adminservices.rest.BasicServerPropertiesResponse;
 import org.odpi.openmetadata.adminservices.rest.ServerPropertiesRequestBody;
 import org.odpi.openmetadata.adminservices.server.OMAGServerAdminServices;
 import org.odpi.openmetadata.adminservices.rest.ServerTypeClassificationResponse;
@@ -73,6 +74,7 @@ public class ConfigPropertiesResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/omag-server/#types-of-omag-server"))
 
+    @Deprecated
     public VoidResponse setServerType(@PathVariable String userId,
                                       @PathVariable String serverName,
                                       @RequestParam String typeName)
@@ -233,5 +235,28 @@ public class ConfigPropertiesResource
                                                  @RequestBody  ServerPropertiesRequestBody requestBody)
     {
         return adminAPI.setBasicServerProperties(userId, serverName, requestBody);
+    }
+
+
+    /**
+     * Get the basic server properties in a single request.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return properties response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or maxPageSize parameter.
+     */
+    @GetMapping(path = "/server-properties")
+
+    @Operation(summary="getBasicServerProperties",
+            description="Return the basic server properties in a single request.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/omag-server/"))
+
+    public BasicServerPropertiesResponse getBasicServerProperties(@PathVariable String userId,
+                                                                  @PathVariable String serverName)
+    {
+        return adminAPI.getBasicServerProperties(userId, serverName);
     }
 }

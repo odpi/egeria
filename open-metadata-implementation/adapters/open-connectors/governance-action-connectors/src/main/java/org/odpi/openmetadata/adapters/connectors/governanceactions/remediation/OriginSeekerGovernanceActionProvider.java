@@ -5,8 +5,11 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.remediation;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
+import org.odpi.openmetadata.frameworks.governanceaction.actiontargettype.ActionTargetType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * OriginSeekerGovernanceActionProvider is the OCF connector provider for the Origin Seeker Governance Action Service.
@@ -26,6 +29,11 @@ public class OriginSeekerGovernanceActionProvider extends GovernanceActionServic
     static final String NO_TARGETS_DETECTED_GUARD       = "no-targets-detected";
     static final String MULTIPLE_TARGETS_DETECTED_GUARD = "multiple-targets-detected";
     static final String ORIGIN_SEEKING_FAILED_GUARD     = "origin-seeking-failed";
+
+    /**
+     * Name of the target action where the asset's unique identifier.
+     */
+    private static final String ACTION_TARGET_NAME      = "assetGUID";
 
     private static final String connectorClassName = OriginSeekerGovernanceActionConnector.class.getName();
 
@@ -60,5 +68,13 @@ public class OriginSeekerGovernanceActionProvider extends GovernanceActionServic
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
 
         super.connectorTypeBean = connectorType;
+
+        actionTargetTypes = new HashMap<>();
+        ActionTargetType actionTargetType = new ActionTargetType();
+
+        actionTargetType.setTypeName(DeployedImplementationType.DATA_ASSET.getAssociatedTypeName());
+        actionTargetType.setDeployedImplementationType(DeployedImplementationType.DATA_ASSET.getDeployedImplementationType());
+
+        super.actionTargetTypes.put(ACTION_TARGET_NAME, actionTargetType);
     }
 }

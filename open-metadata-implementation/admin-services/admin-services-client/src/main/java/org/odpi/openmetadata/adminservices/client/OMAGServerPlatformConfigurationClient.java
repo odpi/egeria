@@ -9,6 +9,7 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationError
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
+import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigsResponse;
 import org.odpi.openmetadata.adminservices.rest.PlatformSecurityRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -28,8 +29,8 @@ public class OMAGServerPlatformConfigurationClient
     protected String adminUserId;              /* Initialized in constructor */
     protected String serverPlatformRootURL;    /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private AdminServicesRESTClient restClient;               /* Initialized in constructor */
+    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private final AdminServicesRESTClient restClient;               /* Initialized in constructor */
 
     private static final String NULL_SERVER_NAME = "<*>";
 
@@ -95,6 +96,81 @@ public class OMAGServerPlatformConfigurationClient
         {
             throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
         }
+    }
+
+
+    /**
+     * Override the default server configuration document.
+     *
+     * @param defaultServerConfig values to include in every new configured server.
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void setDefaultOMAGServerConfig(OMAGServerConfig defaultServerConfig) throws OMAGNotAuthorizedException,
+                                                                                        OMAGInvalidParameterException,
+                                                                                        OMAGConfigurationErrorException
+    {
+        final String methodName    = "setDefaultOMAGServerConfig";
+        final String parameterName = "defaultServerConfig";
+        final String urlTemplate   = "/open-metadata/admin-services/users/{0}/stores/default-configuration-document";
+
+        try
+        {
+            invalidParameterHandler.validateObject(defaultServerConfig, parameterName, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            throw new OMAGInvalidParameterException(error.getReportedErrorMessage(), error);
+        }
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        defaultServerConfig,
+                                        adminUserId);
+    }
+
+
+    /**
+     * Return the default server configuration document.
+     *
+     * @return connection response
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public OMAGServerConfig getDefaultOMAGServerConfig() throws OMAGNotAuthorizedException,
+                                                                OMAGInvalidParameterException,
+                                                                OMAGConfigurationErrorException
+    {
+        final String methodName  = "getDefaultOMAGServerConfig";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/stores/default-configuration-document";
+
+        OMAGServerConfigResponse restResult = restClient.callOMAGServerConfigGetRESTCall(methodName,
+                                                                                         serverPlatformRootURL + urlTemplate,
+                                                                                         adminUserId);
+
+        return restResult.getOMAGServerConfig();
+    }
+
+
+    /**
+     * Clear the default configuration document.
+     *
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void clearDefaultServerConfig() throws OMAGNotAuthorizedException,
+                                                  OMAGInvalidParameterException,
+                                                  OMAGConfigurationErrorException
+    {
+        final String methodName  = "clearDefaultServerConfig";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/stores/default-configuration-document";
+
+        restClient.callVoidDeleteRESTCall(methodName,
+                                          serverPlatformRootURL + urlTemplate,
+                                          adminUserId);
     }
 
 

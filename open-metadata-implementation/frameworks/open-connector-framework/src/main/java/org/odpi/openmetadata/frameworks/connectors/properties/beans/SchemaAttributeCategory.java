@@ -20,13 +20,34 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum SchemaAttributeCategory implements Serializable
 {
+    /**
+     * The schema type is unknown.
+     */
     UNKNOWN   (0, "<Unknown>", "The schema type is unknown."),
+
+    /**
+     * There may be multiple instances of this attribute.  The instances are ordered and the same value may appear in different instances.
+     */
     ARRAY     (1, "Array"    , "There may be multiple instances of this attribute.  " +
                "The instances are ordered and the same value may appear in different instances."),
+
+    /**
+     * There may be multiple instances of this attribute.  The instances are unordered and the same value can not
+     * appear in more than one instance.
+     */
     SET       (2, "Set"      , "There may be multiple instances of this attribute.  " +
                "The instances are unordered and the same value can not appear in more than one instance."),
+
+    /**
+     * There may be multiple instances of this attribute.  The instances are unordered and the same value may
+     * appear in different instances.
+     */
     BAG       (3, "Bag", "There may be multiple instances of this attribute.  " +
                "The instances are unordered and the same value may appear in different instances."),
+
+    /**
+     * There is at maximum, only one instance of the attribute.
+     */
     SINGLETON (4, "Singleton", "There is at maximum, only one instance of the attribute.");
 
     private final int      schemaTypeCode;

@@ -17,6 +17,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenMetadataTypeDefElementHeader
 {
+    /**
+     * Header version for this code base.
+     */
     public static final long  CURRENT_TYPE_DEF_HEADER_VERSION = 1;
 
     /**

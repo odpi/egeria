@@ -21,6 +21,9 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
  */
 public enum DynamicArchiverConnectorsAuditCode implements AuditLogMessageSet
 {
+    /**
+     * DYNAMIC-ARCHIVER-SERVICES-0001 The {0} governance action service is copying source file {1} to destination file {2}
+     */
     COPY_FILE("DYNAMIC-ARCHIVER-SERVICES-0001",
               AuditLogRecordSeverityLevel.INFO,
               "The {0} governance action service is copying source file {1} to destination file {2}",

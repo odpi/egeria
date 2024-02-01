@@ -20,8 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public class LiteralSchemaTypeProperties extends SchemaTypeProperties
 {
-    private static final long     serialVersionUID = 1L;
-
     private String dataType   = null;
     private String fixedValue = null;
 

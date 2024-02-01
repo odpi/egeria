@@ -9,6 +9,7 @@ import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.adminservices.properties.BasicServerProperties;
 import org.odpi.openmetadata.adminservices.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
@@ -442,6 +443,30 @@ public class OMAGServerConfigurationClient
                                         requestBody,
                                         adminUserId,
                                         serverName);
+    }
+
+
+    /**
+     * Return the basic server properties in a single request.
+     *
+     * @return basic server properties
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public BasicServerProperties getBasicServerProperties() throws OMAGNotAuthorizedException,
+                                                                   OMAGInvalidParameterException,
+                                                                   OMAGConfigurationErrorException
+    {
+        final String methodName  = "getBasicServerProperties";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/server-properties";
+
+        BasicServerPropertiesResponse response = restClient.callBasicServerPropertiesGetRESTCall(methodName,
+                                                                                                 serverPlatformRootURL + urlTemplate,
+                                                                                                 adminUserId,
+                                                                                                 serverName);
+
+        return response.getBasicServerProperties();
     }
 
 

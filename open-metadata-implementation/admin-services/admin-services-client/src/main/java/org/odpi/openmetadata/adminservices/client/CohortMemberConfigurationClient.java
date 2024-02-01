@@ -673,6 +673,32 @@ public class CohortMemberConfigurationClient extends OMAGServerConfigurationClie
      */
 
 
+
+    /**
+     * Return the local metadata collection name.  If the local repository is not configured
+     * then the invalid parameter exception is returned.
+     *
+     * @return string guid
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public String getLocalMetadataCollectionName() throws OMAGNotAuthorizedException,
+                                                          OMAGInvalidParameterException,
+                                                          OMAGConfigurationErrorException
+    {
+        final String methodName  = "getLocalMetadataCollectionName";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository/metadata-collection-name";
+
+        StringResponse restResult = restClient.callStringGetRESTCall(methodName,
+                                                                     serverPlatformRootURL + urlTemplate,
+                                                                     adminUserId,
+                                                                     serverName);
+        return restResult.getResultString();
+    }
+
+
+
     /**
      * Set up the local metadata collection name.  If a null is passed, the connection name is cleared to null.
      * If this is not set then the default value is the local server name.

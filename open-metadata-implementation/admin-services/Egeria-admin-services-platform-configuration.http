@@ -1,0 +1,31 @@
+# Egeria-admin-services-platform-configuration
+
+###
+# @name Get Configuration Document Store Connection
+# Query the Connection object used to create the connector to the configuration document.  If the result is null it means that the server is using the default connector that stores the configuration document as a file.
+GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/stores/connection
+
+###
+# @name Set Configuration Document Store Connection
+# Overrides the default connector that stores the configuration documents in a plain text file.
+# The request body is a Connection object that is used to create and configure the connector.
+# This call is preconfigured to switch the store to using the encrypted configuration document store.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/stores/connection
+Content-Type: application/json
+
+{
+    "class": "Connection",
+    "connectorType": {
+        "class": "ConnectorType",
+        "connectorProviderClassName": "org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedServerConfigStoreProvider"
+    },
+    "endpoint": {
+        "class": "Endpoint",
+        "address": "data/servers/{0}/config/{0}.config"
+    }
+}
+
+###
+# @name Delete Configuration Document Store Connection
+# Remove the currently configured Configuration Document Store Connection.  The default Configuration Document Store will be used for future configuration.  This stores the configuration in a file in plain text.
+DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/stores/connection

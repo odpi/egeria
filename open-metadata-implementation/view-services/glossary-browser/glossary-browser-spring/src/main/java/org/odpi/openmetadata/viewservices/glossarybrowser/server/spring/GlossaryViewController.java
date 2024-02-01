@@ -23,7 +23,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.OpenMetadataElementResponse;
@@ -357,7 +358,7 @@ public class GlossaryViewController
 
         GlossaryTermRelationshipRequestBody requestBody = new GlossaryTermRelationshipRequestBody();
 
-        requestBody.setRelationshipTypeName(OpenMetadataTypesMapper.ANTONYM_RELATIONSHIP_NAME);
+        requestBody.setRelationshipTypeName(OpenMetadataType.ANTONYM_RELATIONSHIP_NAME);
 
         GlossaryTermElementsResponse restResult = restAPI.getRelatedTerms(serverName,
                                                                           termGUID,
@@ -453,7 +454,7 @@ public class GlossaryViewController
 
         GlossaryTermRelationshipRequestBody requestBody = new GlossaryTermRelationshipRequestBody();
 
-        requestBody.setRelationshipTypeName(OpenMetadataTypesMapper.TERM_HAS_A_RELATIONSHIP_NAME);
+        requestBody.setRelationshipTypeName(OpenMetadataType.TERM_HAS_A_RELATIONSHIP_NAME);
 
         GlossaryTermElementsResponse restResult = restAPI.getRelatedTerms(serverName,
                                                                           termGUID,
@@ -491,7 +492,7 @@ public class GlossaryViewController
 
         GlossaryTermRelationshipRequestBody requestBody = new GlossaryTermRelationshipRequestBody();
 
-        requestBody.setRelationshipTypeName(OpenMetadataTypesMapper.ISA_RELATIONSHIP_NAME);
+        requestBody.setRelationshipTypeName(OpenMetadataType.ISA_RELATIONSHIP_NAME);
 
         GlossaryTermElementsResponse restResult = restAPI.getRelatedTerms(serverName,
                                                                           termGUID,
@@ -528,7 +529,7 @@ public class GlossaryViewController
 
         GlossaryTermRelationshipRequestBody requestBody = new GlossaryTermRelationshipRequestBody();
 
-        requestBody.setRelationshipTypeName(OpenMetadataTypesMapper.PREFERRED_TERM_RELATIONSHIP_NAME);
+        requestBody.setRelationshipTypeName(OpenMetadataType.PREFERRED_TERM_RELATIONSHIP_NAME);
 
         GlossaryTermElementsResponse restResult = restAPI.getRelatedTerms(serverName,
                                                                           termGUID,
@@ -565,7 +566,7 @@ public class GlossaryViewController
 
         GlossaryTermRelationshipRequestBody requestBody = new GlossaryTermRelationshipRequestBody();
 
-        requestBody.setRelationshipTypeName(OpenMetadataTypesMapper.RELATED_TERM_RELATIONSHIP_NAME);
+        requestBody.setRelationshipTypeName(OpenMetadataType.RELATED_TERM_RELATIONSHIP_NAME);
 
         GlossaryTermElementsResponse restResult = restAPI.getRelatedTerms(serverName,
                                                                           termGUID,
@@ -602,7 +603,7 @@ public class GlossaryViewController
 
         GlossaryTermRelationshipRequestBody requestBody = new GlossaryTermRelationshipRequestBody();
 
-        requestBody.setRelationshipTypeName(OpenMetadataTypesMapper.REPLACEMENT_TERM_RELATIONSHIP_NAME);
+        requestBody.setRelationshipTypeName(OpenMetadataType.REPLACEMENT_TERM_RELATIONSHIP_NAME);
 
         GlossaryTermElementsResponse restResult = restAPI.getRelatedTerms(serverName,
                                                                           termGUID,
@@ -639,7 +640,7 @@ public class GlossaryViewController
 
         GlossaryTermRelationshipRequestBody requestBody = new GlossaryTermRelationshipRequestBody();
 
-        requestBody.setRelationshipTypeName(OpenMetadataTypesMapper.TERM_IS_A_TYPE_OF_RELATIONSHIP_NAME);
+        requestBody.setRelationshipTypeName(OpenMetadataType.TERM_IS_A_TYPE_OF_RELATIONSHIP_NAME);
 
         GlossaryTermElementsResponse restResult = restAPI.getRelatedTerms(serverName,
                                                                           termGUID,
@@ -676,7 +677,7 @@ public class GlossaryViewController
 
         GlossaryTermRelationshipRequestBody requestBody = new GlossaryTermRelationshipRequestBody();
 
-        requestBody.setRelationshipTypeName(OpenMetadataTypesMapper.SYNONYM_RELATIONSHIP_NAME);
+        requestBody.setRelationshipTypeName(OpenMetadataType.SYNONYM_RELATIONSHIP_NAME);
 
         GlossaryTermElementsResponse restResult = restAPI.getRelatedTerms(serverName,
                                                                           termGUID,
@@ -713,7 +714,7 @@ public class GlossaryViewController
 
         GlossaryTermRelationshipRequestBody requestBody = new GlossaryTermRelationshipRequestBody();
 
-        requestBody.setRelationshipTypeName(OpenMetadataTypesMapper.TRANSLATION_RELATIONSHIP_NAME);
+        requestBody.setRelationshipTypeName(OpenMetadataType.TRANSLATION_RELATIONSHIP_NAME);
 
         GlossaryTermElementsResponse restResult = restAPI.getRelatedTerms(serverName,
                                                                           termGUID,
@@ -750,7 +751,7 @@ public class GlossaryViewController
 
         GlossaryTermRelationshipRequestBody requestBody = new GlossaryTermRelationshipRequestBody();
 
-        requestBody.setRelationshipTypeName(OpenMetadataTypesMapper.TERM_TYPED_BY_RELATIONSHIP_NAME);
+        requestBody.setRelationshipTypeName(OpenMetadataType.TERM_TYPED_BY_RELATIONSHIP_NAME);
 
         GlossaryTermElementsResponse restResult = restAPI.getRelatedTerms(serverName,
                                                                           termGUID,
@@ -787,7 +788,7 @@ public class GlossaryViewController
 
         GlossaryTermRelationshipRequestBody requestBody = new GlossaryTermRelationshipRequestBody();
 
-        requestBody.setRelationshipTypeName(OpenMetadataTypesMapper.USED_IN_CONTEXT_RELATIONSHIP_NAME);
+        requestBody.setRelationshipTypeName(OpenMetadataType.USED_IN_CONTEXT_RELATIONSHIP_NAME);
 
         GlossaryTermElementsResponse restResult = restAPI.getRelatedTerms(serverName,
                                                                           termGUID,
@@ -824,7 +825,7 @@ public class GlossaryViewController
 
         GlossaryTermRelationshipRequestBody requestBody = new GlossaryTermRelationshipRequestBody();
 
-        requestBody.setRelationshipTypeName(OpenMetadataTypesMapper.VALID_VALUE_RELATIONSHIP_NAME);
+        requestBody.setRelationshipTypeName(OpenMetadataType.VALID_VALUE_RELATIONSHIP_NAME);
 
         GlossaryTermElementsResponse restResult = restAPI.getRelatedTerms(serverName,
                                                                           termGUID,
@@ -1091,11 +1092,11 @@ public class GlossaryViewController
 
             Map<String, String> properties = new HashMap<>();
 
-            properties.put(OpenMetadataTypesMapper.QUALIFIED_NAME_PROPERTY_NAME, openMetadataGlossaryElement.getGlossaryProperties().getQualifiedName());
-            properties.put(OpenMetadataTypesMapper.DISPLAY_NAME_PROPERTY_NAME, openMetadataGlossaryElement.getGlossaryProperties().getDisplayName());
-            properties.put(OpenMetadataTypesMapper.DESCRIPTION_PROPERTY_NAME, openMetadataGlossaryElement.getGlossaryProperties().getDescription());
-            properties.put(OpenMetadataTypesMapper.LANGUAGE_PROPERTY_NAME, openMetadataGlossaryElement.getGlossaryProperties().getLanguage());
-            properties.put(OpenMetadataTypesMapper.USAGE_PROPERTY_NAME, openMetadataGlossaryElement.getGlossaryProperties().getUsage());
+            properties.put(OpenMetadataProperty.QUALIFIED_NAME.name, openMetadataGlossaryElement.getGlossaryProperties().getQualifiedName());
+            properties.put(OpenMetadataProperty.DISPLAY_NAME.name, openMetadataGlossaryElement.getGlossaryProperties().getDisplayName());
+            properties.put(OpenMetadataProperty.DESCRIPTION.name, openMetadataGlossaryElement.getGlossaryProperties().getDescription());
+            properties.put(OpenMetadataType.LANGUAGE_PROPERTY_NAME, openMetadataGlossaryElement.getGlossaryProperties().getLanguage());
+            properties.put(OpenMetadataType.USAGE_PROPERTY_NAME, openMetadataGlossaryElement.getGlossaryProperties().getUsage());
 
             if (openMetadataGlossaryElement.getGlossaryProperties().getExtendedProperties() != null)
             {
@@ -1175,14 +1176,14 @@ public class GlossaryViewController
 
             Map<String, String> properties = new HashMap<>();
 
-            properties.put(OpenMetadataTypesMapper.QUALIFIED_NAME_PROPERTY_NAME, openMetadataGlossaryTermElement.getGlossaryTermProperties().getQualifiedName());
-            properties.put(OpenMetadataTypesMapper.DISPLAY_NAME_PROPERTY_NAME, openMetadataGlossaryTermElement.getGlossaryTermProperties().getDisplayName());
-            properties.put(OpenMetadataTypesMapper.SUMMARY_PROPERTY_NAME, openMetadataGlossaryTermElement.getGlossaryTermProperties().getSummary());
-            properties.put(OpenMetadataTypesMapper.DESCRIPTION_PROPERTY_NAME, openMetadataGlossaryTermElement.getGlossaryTermProperties().getDescription());
-            properties.put(OpenMetadataTypesMapper.EXAMPLES_PROPERTY_NAME, openMetadataGlossaryTermElement.getGlossaryTermProperties().getExamples());
-            properties.put(OpenMetadataTypesMapper.ABBREVIATION_PROPERTY_NAME, openMetadataGlossaryTermElement.getGlossaryTermProperties().getUsage());
-            properties.put(OpenMetadataTypesMapper.USAGE_PROPERTY_NAME, openMetadataGlossaryTermElement.getGlossaryTermProperties().getUsage());
-            properties.put(OpenMetadataTypesMapper.PUBLISH_VERSION_ID_PROPERTY_NAME, openMetadataGlossaryTermElement.getGlossaryTermProperties().getPublishVersionIdentifier());
+            properties.put(OpenMetadataProperty.QUALIFIED_NAME.name, openMetadataGlossaryTermElement.getGlossaryTermProperties().getQualifiedName());
+            properties.put(OpenMetadataProperty.DISPLAY_NAME.name, openMetadataGlossaryTermElement.getGlossaryTermProperties().getDisplayName());
+            properties.put(OpenMetadataType.SUMMARY_PROPERTY_NAME, openMetadataGlossaryTermElement.getGlossaryTermProperties().getSummary());
+            properties.put(OpenMetadataProperty.DESCRIPTION.name, openMetadataGlossaryTermElement.getGlossaryTermProperties().getDescription());
+            properties.put(OpenMetadataType.EXAMPLES_PROPERTY_NAME, openMetadataGlossaryTermElement.getGlossaryTermProperties().getExamples());
+            properties.put(OpenMetadataType.ABBREVIATION_PROPERTY_NAME, openMetadataGlossaryTermElement.getGlossaryTermProperties().getUsage());
+            properties.put(OpenMetadataType.USAGE_PROPERTY_NAME, openMetadataGlossaryTermElement.getGlossaryTermProperties().getUsage());
+            properties.put(OpenMetadataType.PUBLISH_VERSION_ID_PROPERTY_NAME, openMetadataGlossaryTermElement.getGlossaryTermProperties().getPublishVersionIdentifier());
 
             if (openMetadataGlossaryTermElement.getGlossaryTermProperties().getExtendedProperties() != null)
             {
@@ -1261,9 +1262,9 @@ public class GlossaryViewController
 
             Map<String, String> properties = new HashMap<>();
 
-            properties.put(OpenMetadataTypesMapper.QUALIFIED_NAME_PROPERTY_NAME, openMetadataGlossaryCategoryElement.getGlossaryCategoryProperties().getQualifiedName());
-            properties.put(OpenMetadataTypesMapper.DISPLAY_NAME_PROPERTY_NAME, openMetadataGlossaryCategoryElement.getGlossaryCategoryProperties().getDisplayName());
-            properties.put(OpenMetadataTypesMapper.DESCRIPTION_PROPERTY_NAME, openMetadataGlossaryCategoryElement.getGlossaryCategoryProperties().getDescription());
+            properties.put(OpenMetadataProperty.QUALIFIED_NAME.name, openMetadataGlossaryCategoryElement.getGlossaryCategoryProperties().getQualifiedName());
+            properties.put(OpenMetadataProperty.DISPLAY_NAME.name, openMetadataGlossaryCategoryElement.getGlossaryCategoryProperties().getDisplayName());
+            properties.put(OpenMetadataProperty.DESCRIPTION.name, openMetadataGlossaryCategoryElement.getGlossaryCategoryProperties().getDescription());
 
             if (openMetadataGlossaryCategoryElement.getGlossaryCategoryProperties().getExtendedProperties() != null)
             {

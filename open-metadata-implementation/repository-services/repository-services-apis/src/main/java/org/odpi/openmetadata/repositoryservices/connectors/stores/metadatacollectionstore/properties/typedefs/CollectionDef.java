@@ -191,6 +191,7 @@ public class CollectionDef extends AttributeTypeDef
                 ", guid='" + guid + '\'' +
                 ", description='" + description + '\'' +
                 ", descriptionGUID='" + descriptionGUID + '\'' +
+                ", descriptionWiki='" + descriptionWiki + '\'' +
                 '}';
     }
 

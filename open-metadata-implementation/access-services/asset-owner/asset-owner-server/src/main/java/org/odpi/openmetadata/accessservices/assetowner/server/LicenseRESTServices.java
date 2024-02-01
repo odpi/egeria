@@ -17,7 +17,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.LicenseHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
@@ -128,15 +128,15 @@ public class LicenseRESTServices
             LicenseHandler<LicenseTypeElement> handler = instanceHandler.getLicenseTypeHandler(userId, serverName, methodName);
 
             List<LicenseTypeElement> licenseTypeElements = handler.getGovernanceDefinitionsByName(userId,
-                                                                                                              OpenMetadataAPIMapper.LICENSE_TYPE_TYPE_NAME,
-                                                                                                              documentIdentifier,
-                                                                                                              documentIdParameterName,
-                                                                                                              0,
-                                                                                                              0,
-                                                                                                              false,
-                                                                                                              false,
-                                                                                                              new Date(),
-                                                                                                              methodName);
+                                                                                                  OpenMetadataType.LICENSE_TYPE_TYPE_NAME,
+                                                                                                  documentIdentifier,
+                                                                                                  documentIdParameterName,
+                                                                                                  0,
+                                                                                                  0,
+                                                                                                  false,
+                                                                                                  false,
+                                                                                                  new Date(),
+                                                                                                  methodName);
 
             if ((licenseTypeElements != null) && (! licenseTypeElements.isEmpty()))
             {
@@ -190,7 +190,7 @@ public class LicenseRESTServices
                 LicenseHandler<LicenseTypeElement> handler = instanceHandler.getLicenseTypeHandler(userId, serverName, methodName);
 
                 response.setElements(handler.findGovernanceDefinitions(userId,
-                                                                       OpenMetadataAPIMapper.LICENSE_TYPE_TYPE_NAME,
+                                                                       OpenMetadataType.LICENSE_TYPE_TYPE_NAME,
                                                                        requestBody.getSearchString(),
                                                                        titleParameterName,
                                                                        startFrom,
@@ -249,7 +249,7 @@ public class LicenseRESTServices
             LicenseHandler<LicenseTypeElement> handler = instanceHandler.getLicenseTypeHandler(userId, serverName, methodName);
 
             response.setElements(handler.getGovernanceDefinitionsByDomain(userId,
-                                                                          OpenMetadataAPIMapper.LICENSE_TYPE_TYPE_NAME,
+                                                                          OpenMetadataType.LICENSE_TYPE_TYPE_NAME,
                                                                           domainIdentifier,
                                                                           startFrom,
                                                                           pageSize,
@@ -318,10 +318,10 @@ public class LicenseRESTServices
                                                             null,
                                                             elementGUID,
                                                             elementGUIDParameterName,
-                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                            OpenMetadataType.REFERENCEABLE.typeName,
                                                             licenseTypeGUID,
                                                             licenseTypeGUIDParameterName,
-                                                            OpenMetadataAPIMapper.LICENSE_TYPE_TYPE_NAME,
+                                                            OpenMetadataType.LICENSE_TYPE_TYPE_NAME,
                                                             properties.getLicenseId(),
                                                             properties.getStartDate(),
                                                             properties.getEndDate(),
@@ -538,10 +538,10 @@ public class LicenseRESTServices
             response.setElementList(handler.getAttachedElements(userId,
                                                                 licenseTypeGUID,
                                                                 guidParameter,
-                                                                OpenMetadataAPIMapper.LICENSE_TYPE_TYPE_NAME,
-                                                                OpenMetadataAPIMapper.LICENSE_OF_REFERENCEABLE_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.LICENSE_OF_REFERENCEABLE_TYPE_NAME,
-                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                OpenMetadataType.LICENSE_TYPE_TYPE_NAME,
+                                                                OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_GUID,
+                                                                OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_NAME,
+                                                                OpenMetadataType.REFERENCEABLE.typeName,
                                                                 null,
                                                                 null,
                                                                 1,
@@ -598,10 +598,10 @@ public class LicenseRESTServices
             response.setElementList(handler.getAttachedElements(userId,
                                                                 elementGUID,
                                                                 guidParameterName,
-                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                OpenMetadataAPIMapper.LICENSE_OF_REFERENCEABLE_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.LICENSE_OF_REFERENCEABLE_TYPE_NAME,
-                                                                OpenMetadataAPIMapper.LICENSE_TYPE_TYPE_NAME,
+                                                                OpenMetadataType.REFERENCEABLE.typeName,
+                                                                OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_GUID,
+                                                                OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_NAME,
+                                                                OpenMetadataType.LICENSE_TYPE_TYPE_NAME,
                                                                 null,
                                                                 null,
                                                                 2,

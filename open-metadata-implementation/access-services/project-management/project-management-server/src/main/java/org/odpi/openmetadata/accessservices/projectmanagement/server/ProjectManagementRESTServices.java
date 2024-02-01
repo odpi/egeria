@@ -29,7 +29,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ProjectHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
@@ -1305,8 +1305,8 @@ public class ProjectManagementRESTServices
             response.setElements(handler.getMoreInformation(userId,
                                                             elementGUID,
                                                             guidPropertyName,
-                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                            OpenMetadataType.REFERENCEABLE.typeName,
+                                                            OpenMetadataType.REFERENCEABLE.typeName,
                                                             startFrom,
                                                             pageSize,
                                                             false,
@@ -1362,8 +1362,8 @@ public class ProjectManagementRESTServices
             response.setElements(handler.getDescriptiveElements(userId,
                                                                 detailGUID,
                                                                 guidPropertyName,
-                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                OpenMetadataType.REFERENCEABLE.typeName,
+                                                                OpenMetadataType.REFERENCEABLE.typeName,
                                                                 startFrom,
                                                                 pageSize,
                                                                 false,
@@ -1588,8 +1588,8 @@ public class ProjectManagementRESTServices
             response.setElements(handler.getStakeholders(userId,
                                                          elementGUID,
                                                          guidPropertyName,
-                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                         OpenMetadataType.REFERENCEABLE.typeName,
+                                                         OpenMetadataType.REFERENCEABLE.typeName,
                                                          startFrom,
                                                          pageSize,
                                                          false,
@@ -1645,8 +1645,8 @@ public class ProjectManagementRESTServices
             response.setElements(handler.getCommissionedByStakeholder(userId,
                                                                       stakeholderGUID,
                                                                       guidPropertyName,
-                                                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                      OpenMetadataType.REFERENCEABLE.typeName,
+                                                                      OpenMetadataType.REFERENCEABLE.typeName,
                                                                       startFrom,
                                                                       pageSize,
                                                                       false,
@@ -1873,8 +1873,8 @@ public class ProjectManagementRESTServices
             response.setElements(handler.getAssignmentScope(userId,
                                                             elementGUID,
                                                             guidPropertyName,
-                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                            OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                            OpenMetadataType.REFERENCEABLE.typeName,
+                                                            OpenMetadataType.REFERENCEABLE.typeName,
                                                             startFrom,
                                                             pageSize,
                                                             false,
@@ -1930,8 +1930,8 @@ public class ProjectManagementRESTServices
             response.setElements(handler.getAssignedActors(userId,
                                                            scopeGUID,
                                                            guidPropertyName,
-                                                           OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                           OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                           OpenMetadataType.REFERENCEABLE.typeName,
+                                                           OpenMetadataType.REFERENCEABLE.typeName,
                                                            startFrom,
                                                            pageSize,
                                                            false,
@@ -1987,10 +1987,8 @@ public class ProjectManagementRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ResourceListProperties)
+                if (requestBody.getProperties() instanceof ResourceListProperties properties)
                 {
-                    ResourceListProperties properties = (ResourceListProperties) requestBody.getProperties();
-
                     handler.saveResourceListMember(userId,
                                                    requestBody.getExternalSourceGUID(),
                                                    requestBody.getExternalSourceName(),
@@ -1999,6 +1997,8 @@ public class ProjectManagementRESTServices
                                                    resourceGUID,
                                                    resourceGUIDParameterName,
                                                    properties.getResourceUse(),
+                                                   properties.getResourceUseDescription(),
+                                                   properties.getResourceUseProperties(),
                                                    properties.getWatchResource(),
                                                    properties.getEffectiveFrom(),
                                                    properties.getEffectiveTo(),
@@ -2016,6 +2016,8 @@ public class ProjectManagementRESTServices
                                                    elementGUIDParameterName,
                                                    resourceGUID,
                                                    resourceGUIDParameterName,
+                                                   null,
+                                                   null,
                                                    null,
                                                    false,
                                                    null,
@@ -2158,7 +2160,7 @@ public class ProjectManagementRESTServices
             response.setElements(handler.getResourceList(userId,
                                                          elementGUID,
                                                          guidPropertyName,
-                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                         OpenMetadataType.REFERENCEABLE.typeName,
                                                          startFrom,
                                                          pageSize,
                                                          false,
@@ -2215,7 +2217,7 @@ public class ProjectManagementRESTServices
             response.setElements(handler.getSupportedByResource(userId,
                                                                 resourceGUID,
                                                                 guidPropertyName,
-                                                                OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                OpenMetadataType.REFERENCEABLE.typeName,
                                                                 startFrom,
                                                                 pageSize,
                                                                 false,

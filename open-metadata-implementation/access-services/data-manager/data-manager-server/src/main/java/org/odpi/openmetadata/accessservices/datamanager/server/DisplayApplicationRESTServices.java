@@ -19,7 +19,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.DisplayDataContainerHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -93,7 +94,7 @@ public class DisplayApplicationRESTServices
 
             if (requestBody != null)
             {
-                String typeName = OpenMetadataAPIMapper.FORM_TYPE_NAME;
+                String typeName = OpenMetadataType.FORM_TYPE_NAME;
 
                 if (requestBody.getTypeName() != null)
                 {
@@ -203,8 +204,8 @@ public class DisplayApplicationRESTServices
                                                                handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
                                                                templateGUID,
                                                                templateGUIDParameterName,
-                                                               OpenMetadataAPIMapper.FORM_TYPE_GUID,
-                                                               OpenMetadataAPIMapper.FORM_TYPE_NAME,
+                                                               OpenMetadataType.FORM_TYPE_GUID,
+                                                               OpenMetadataType.FORM_TYPE_NAME,
                                                                requestBody.getQualifiedName(),
                                                                qualifiedNameParameterName,
                                                                requestBody.getDisplayName(),
@@ -288,7 +289,7 @@ public class DisplayApplicationRESTServices
 
             if (requestBody != null)
             {
-                String typeName = OpenMetadataAPIMapper.FORM_TYPE_NAME;
+                String typeName = OpenMetadataType.FORM_TYPE_NAME;
 
                 if (requestBody.getTypeName() != null)
                 {
@@ -479,9 +480,9 @@ public class DisplayApplicationRESTServices
                                                requestBody.getExternalSourceName(),
                                                formGUID,
                                                formGUIDParameterName,
-                                               OpenMetadataAPIMapper.FORM_TYPE_GUID,
-                                               OpenMetadataAPIMapper.FORM_TYPE_NAME,
-                                               OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                               OpenMetadataType.FORM_TYPE_GUID,
+                                               OpenMetadataType.FORM_TYPE_NAME,
+                                               OpenMetadataProperty.QUALIFIED_NAME.name,
                                                qualifiedName,
                                                false,
                                                false,
@@ -538,8 +539,8 @@ public class DisplayApplicationRESTServices
                 AssetHandler<FormElement> handler = instanceHandler.getFormHandler(userId, serverName, methodName);
 
                 List<FormElement> formAssets = handler.findAssets(userId,
-                                                                  OpenMetadataAPIMapper.FORM_TYPE_GUID,
-                                                                  OpenMetadataAPIMapper.FORM_TYPE_NAME,
+                                                                  OpenMetadataType.FORM_TYPE_GUID,
+                                                                  OpenMetadataType.FORM_TYPE_NAME,
                                                                   requestBody.getSearchString(),
                                                                   searchStringParameterName,
                                                                   startFrom,
@@ -605,8 +606,8 @@ public class DisplayApplicationRESTServices
                 AssetHandler<FormElement> handler = instanceHandler.getFormHandler(userId, serverName, methodName);
 
                 List<FormElement> formAssets = handler.getAssetsByName(userId,
-                                                                       OpenMetadataAPIMapper.FORM_TYPE_GUID,
-                                                                       OpenMetadataAPIMapper.FORM_TYPE_NAME,
+                                                                       OpenMetadataType.FORM_TYPE_GUID,
+                                                                       OpenMetadataType.FORM_TYPE_NAME,
                                                                        requestBody.getName(),
                                                                        nameParameterName,
                                                                        startFrom,
@@ -674,10 +675,10 @@ public class DisplayApplicationRESTServices
             List<FormElement> formAssets = handler.getAttachedElements(userId,
                                                                        applicationGUID,
                                                                        applicationGUIDParameterName,
-                                                                       OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
-                                                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                                       OpenMetadataAPIMapper.FORM_TYPE_NAME,
+                                                                       OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                       OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
+                                                                       OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
+                                                                       OpenMetadataType.FORM_TYPE_NAME,
                                                                        null,
                                                                        null,
                                                                        0,
@@ -734,7 +735,7 @@ public class DisplayApplicationRESTServices
             FormElement formAsset = handler.getBeanFromRepository(userId,
                                                                   guid,
                                                                   guidParameterName,
-                                                                  OpenMetadataAPIMapper.FORM_TYPE_NAME,
+                                                                  OpenMetadataType.FORM_TYPE_NAME,
                                                                   false,
                                                                   false,
                                                                   new Date(),
@@ -788,7 +789,7 @@ public class DisplayApplicationRESTServices
 
             if (requestBody != null)
             {
-                String typeName = OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME;
+                String typeName = OpenMetadataType.DEPLOYED_REPORT_TYPE_NAME;
 
                 if (requestBody.getTypeName() != null)
                 {
@@ -804,32 +805,32 @@ public class DisplayApplicationRESTServices
 
                 if (requestBody.getId() != null)
                 {
-                    extendedProperties.put(OpenMetadataAPIMapper.ID_PROPERTY_NAME, requestBody.getId());
+                    extendedProperties.put(OpenMetadataType.ID_PROPERTY_NAME, requestBody.getId());
                 }
 
                 if (requestBody.getAuthor() != null)
                 {
-                    extendedProperties.put(OpenMetadataAPIMapper.AUTHOR_PROPERTY_NAME, requestBody.getAuthor());
+                    extendedProperties.put(OpenMetadataType.AUTHOR_PROPERTY_NAME, requestBody.getAuthor());
                 }
 
                 if (requestBody.getUrl() != null)
                 {
-                    extendedProperties.put(OpenMetadataAPIMapper.URL_PROPERTY_NAME, requestBody.getUrl());
+                    extendedProperties.put(OpenMetadataType.URL_PROPERTY_NAME, requestBody.getUrl());
                 }
 
                 if (requestBody.getCreateTime() != null)
                 {
-                    extendedProperties.put(OpenMetadataAPIMapper.CREATED_TIME_PROPERTY_NAME, requestBody.getCreateTime());
+                    extendedProperties.put(OpenMetadataType.CREATED_TIME_PROPERTY_NAME, requestBody.getCreateTime());
                 }
 
                 if (requestBody.getLastModifiedTime() != null)
                 {
-                    extendedProperties.put(OpenMetadataAPIMapper.LAST_MODIFIED_TIME_PROPERTY_NAME, requestBody.getLastModifiedTime());
+                    extendedProperties.put(OpenMetadataType.LAST_MODIFIED_TIME_PROPERTY_NAME, requestBody.getLastModifiedTime());
                 }
 
                 if (requestBody.getLastModifier() != null)
                 {
-                    extendedProperties.put(OpenMetadataAPIMapper.LAST_MODIFIER_PROPERTY_NAME, requestBody.getLastModifier());
+                    extendedProperties.put(OpenMetadataType.LAST_MODIFIER_PROPERTY_NAME, requestBody.getLastModifier());
                 }
 
                 if (extendedProperties.isEmpty())
@@ -860,14 +861,14 @@ public class DisplayApplicationRESTServices
                                                  handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
                                                  requestBody.getExternalSourceGUID(),
                                                  applicationGUIDParameterName,
-                                                 OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                 OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                  reportGUID,
                                                  reportGUIDParameterName,
-                                                 OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
+                                                 OpenMetadataType.DEPLOYED_REPORT_TYPE_NAME,
                                                  false,
                                                  false,
-                                                 OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                 OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                 OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
+                                                 OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
                                                  (InstanceProperties) null,
                                                  null,
                                                  null,
@@ -951,8 +952,8 @@ public class DisplayApplicationRESTServices
                                                                  handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
                                                                  templateGUID,
                                                                  templateGUIDParameterName,
-                                                                 OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_GUID,
-                                                                 OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
+                                                                 OpenMetadataType.DEPLOYED_REPORT_TYPE_GUID,
+                                                                 OpenMetadataType.DEPLOYED_REPORT_TYPE_NAME,
                                                                  requestBody.getQualifiedName(),
                                                                  qualifiedNameParameterName,
                                                                  requestBody.getDisplayName(),
@@ -972,14 +973,14 @@ public class DisplayApplicationRESTServices
                                                  handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
                                                  requestBody.getExternalSourceGUID(),
                                                  applicationGUIDParameterName,
-                                                 OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                 OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                  reportGUID,
                                                  reportGUIDParameterName,
-                                                 OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
+                                                 OpenMetadataType.DEPLOYED_REPORT_TYPE_NAME,
                                                  false,
                                                  false,
-                                                 OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                 OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                 OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
+                                                 OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
                                                  (InstanceProperties) null,
                                                  null,
                                                  null,
@@ -1041,7 +1042,7 @@ public class DisplayApplicationRESTServices
 
             if (requestBody != null)
             {
-                String typeName = OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME;
+                String typeName = OpenMetadataType.DEPLOYED_REPORT_TYPE_NAME;
 
                 if (requestBody.getTypeName() != null)
                 {
@@ -1057,32 +1058,32 @@ public class DisplayApplicationRESTServices
 
                 if (requestBody.getId() != null)
                 {
-                    extendedProperties.put(OpenMetadataAPIMapper.ID_PROPERTY_NAME, requestBody.getId());
+                    extendedProperties.put(OpenMetadataType.ID_PROPERTY_NAME, requestBody.getId());
                 }
 
                 if (requestBody.getAuthor() != null)
                 {
-                    extendedProperties.put(OpenMetadataAPIMapper.AUTHOR_PROPERTY_NAME, requestBody.getAuthor());
+                    extendedProperties.put(OpenMetadataType.AUTHOR_PROPERTY_NAME, requestBody.getAuthor());
                 }
 
                 if (requestBody.getUrl() != null)
                 {
-                    extendedProperties.put(OpenMetadataAPIMapper.URL_PROPERTY_NAME, requestBody.getUrl());
+                    extendedProperties.put(OpenMetadataType.URL_PROPERTY_NAME, requestBody.getUrl());
                 }
 
                 if (requestBody.getCreateTime() != null)
                 {
-                    extendedProperties.put(OpenMetadataAPIMapper.CREATED_TIME_PROPERTY_NAME, requestBody.getCreateTime());
+                    extendedProperties.put(OpenMetadataType.CREATED_TIME_PROPERTY_NAME, requestBody.getCreateTime());
                 }
 
                 if (requestBody.getLastModifiedTime() != null)
                 {
-                    extendedProperties.put(OpenMetadataAPIMapper.LAST_MODIFIED_TIME_PROPERTY_NAME, requestBody.getLastModifiedTime());
+                    extendedProperties.put(OpenMetadataType.LAST_MODIFIED_TIME_PROPERTY_NAME, requestBody.getLastModifiedTime());
                 }
 
                 if (requestBody.getLastModifier() != null)
                 {
-                    extendedProperties.put(OpenMetadataAPIMapper.LAST_MODIFIER_PROPERTY_NAME, requestBody.getLastModifier());
+                    extendedProperties.put(OpenMetadataType.LAST_MODIFIER_PROPERTY_NAME, requestBody.getLastModifier());
                 }
 
                 if (extendedProperties.isEmpty())
@@ -1274,9 +1275,9 @@ public class DisplayApplicationRESTServices
                                                requestBody.getExternalSourceName(),
                                                reportGUID,
                                                reportGUIDParameterName,
-                                               OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_GUID,
-                                               OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
-                                               OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                               OpenMetadataType.DEPLOYED_REPORT_TYPE_GUID,
+                                               OpenMetadataType.DEPLOYED_REPORT_TYPE_NAME,
+                                               OpenMetadataProperty.QUALIFIED_NAME.name,
                                                qualifiedName,
                                                false,
                                                false,
@@ -1333,8 +1334,8 @@ public class DisplayApplicationRESTServices
                 AssetHandler<ReportElement> handler = instanceHandler.getReportHandler(userId, serverName, methodName);
 
                 List<ReportElement> reportAssets = handler.findAssets(userId,
-                                                                      OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_GUID,
-                                                                      OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
+                                                                      OpenMetadataType.DEPLOYED_REPORT_TYPE_GUID,
+                                                                      OpenMetadataType.DEPLOYED_REPORT_TYPE_NAME,
                                                                       requestBody.getSearchString(),
                                                                       searchStringParameterName,
                                                                       startFrom,
@@ -1400,8 +1401,8 @@ public class DisplayApplicationRESTServices
                 AssetHandler<ReportElement> handler = instanceHandler.getReportHandler(userId, serverName, methodName);
 
                 List<ReportElement> reportAssets = handler.getAssetsByName(userId,
-                                                                           OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_GUID,
-                                                                           OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
+                                                                           OpenMetadataType.DEPLOYED_REPORT_TYPE_GUID,
+                                                                           OpenMetadataType.DEPLOYED_REPORT_TYPE_NAME,
                                                                            requestBody.getName(),
                                                                            nameParameterName,
                                                                            startFrom,
@@ -1469,10 +1470,10 @@ public class DisplayApplicationRESTServices
             List<ReportElement> reportAssets = handler.getAttachedElements(userId,
                                                                            applicationGUID,
                                                                            applicationGUIDParameterName,
-                                                                           OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
-                                                                           OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                                           OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                                           OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
+                                                                           OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                           OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
+                                                                           OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
+                                                                           OpenMetadataType.DEPLOYED_REPORT_TYPE_NAME,
                                                                            null,
                                                                            null,
                                                                            0,
@@ -1529,7 +1530,7 @@ public class DisplayApplicationRESTServices
             ReportElement reportAsset = handler.getBeanFromRepository(userId,
                                                                       guid,
                                                                       guidParameterName,
-                                                                      OpenMetadataAPIMapper.DEPLOYED_REPORT_TYPE_NAME,
+                                                                      OpenMetadataType.DEPLOYED_REPORT_TYPE_NAME,
                                                                       false,
                                                                       false,
                                                                       new Date(),
@@ -1583,7 +1584,7 @@ public class DisplayApplicationRESTServices
 
             if (requestBody != null)
             {
-                String typeName = OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME;
+                String typeName = OpenMetadataType.INFORMATION_VIEW_TYPE_NAME;
 
                 if (requestBody.getTypeName() != null)
                 {
@@ -1613,14 +1614,14 @@ public class DisplayApplicationRESTServices
                                                  handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
                                                  requestBody.getExternalSourceGUID(),
                                                  applicationGUIDParameterName,
-                                                 OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                 OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                  queryGUID,
                                                  queryGUIDParameterName,
-                                                 OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
+                                                 OpenMetadataType.INFORMATION_VIEW_TYPE_NAME,
                                                  false,
                                                  false,
-                                                 OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                 OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                 OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
+                                                 OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
                                                  (InstanceProperties) null,
                                                  null,
                                                  null,
@@ -1704,8 +1705,8 @@ public class DisplayApplicationRESTServices
                                                                 handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
                                                                 templateGUID,
                                                                 templateGUIDParameterName,
-                                                                OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_GUID,
-                                                                OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
+                                                                OpenMetadataType.INFORMATION_VIEW_TYPE_GUID,
+                                                                OpenMetadataType.INFORMATION_VIEW_TYPE_NAME,
                                                                 requestBody.getQualifiedName(),
                                                                 qualifiedNameParameterName,
                                                                 requestBody.getDisplayName(),
@@ -1725,14 +1726,14 @@ public class DisplayApplicationRESTServices
                                                  handler.getExternalSourceID(applicationIsHome, requestBody.getExternalSourceName()),
                                                  requestBody.getExternalSourceGUID(),
                                                  applicationGUIDParameterName,
-                                                 OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                 OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                  queryGUID,
                                                  queryGUIDParameterName,
-                                                 OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
+                                                 OpenMetadataType.INFORMATION_VIEW_TYPE_NAME,
                                                  false,
                                                  false,
-                                                 OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                 OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                 OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
+                                                 OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
                                                  (InstanceProperties) null,
                                                  null,
                                                  null,
@@ -1794,7 +1795,7 @@ public class DisplayApplicationRESTServices
 
             if (requestBody != null)
             {
-                String typeName = OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME;
+                String typeName = OpenMetadataType.INFORMATION_VIEW_TYPE_NAME;
 
                 if (requestBody.getTypeName() != null)
                 {
@@ -1983,9 +1984,9 @@ public class DisplayApplicationRESTServices
                                            requestBody.getExternalSourceName(),
                                            queryGUID,
                                            queryGUIDParameterName,
-                                           OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_GUID,
-                                           OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
-                                           OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                           OpenMetadataType.INFORMATION_VIEW_TYPE_GUID,
+                                           OpenMetadataType.INFORMATION_VIEW_TYPE_NAME,
+                                           OpenMetadataProperty.QUALIFIED_NAME.name,
                                            qualifiedName,
                                            false,
                                            false,
@@ -2041,8 +2042,8 @@ public class DisplayApplicationRESTServices
                 AssetHandler<QueryElement> handler = instanceHandler.getQueryHandler(userId, serverName, methodName);
 
                 List<QueryElement> queryAssets = handler.findAssets(userId,
-                                                                    OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
+                                                                    OpenMetadataType.INFORMATION_VIEW_TYPE_GUID,
+                                                                    OpenMetadataType.INFORMATION_VIEW_TYPE_NAME,
                                                                     requestBody.getSearchString(),
                                                                     searchStringParameterName,
                                                                     startFrom,
@@ -2108,8 +2109,8 @@ public class DisplayApplicationRESTServices
                 AssetHandler<QueryElement> handler = instanceHandler.getQueryHandler(userId, serverName, methodName);
 
                 List<QueryElement> queryAssets = handler.getAssetsByName(userId,
-                                                                         OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_GUID,
-                                                                         OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
+                                                                         OpenMetadataType.INFORMATION_VIEW_TYPE_GUID,
+                                                                         OpenMetadataType.INFORMATION_VIEW_TYPE_NAME,
                                                                          requestBody.getName(),
                                                                          nameParameterName,
                                                                          startFrom,
@@ -2177,10 +2178,10 @@ public class DisplayApplicationRESTServices
             List<QueryElement> queryAssets = handler.getAttachedElements(userId,
                                                                          applicationGUID,
                                                                          applicationGUIDParameterName,
-                                                                         OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
-                                                                         OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                                         OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
-                                                                         OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
+                                                                         OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                         OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
+                                                                         OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
+                                                                         OpenMetadataType.INFORMATION_VIEW_TYPE_NAME,
                                                                          null,
                                                                          null,
                                                                          0,
@@ -2237,7 +2238,7 @@ public class DisplayApplicationRESTServices
             QueryElement queryAsset = handler.getBeanFromRepository(userId,
                                                                     guid,
                                                                     guidParameterName,
-                                                                    OpenMetadataAPIMapper.INFORMATION_VIEW_TYPE_NAME,
+                                                                    OpenMetadataType.INFORMATION_VIEW_TYPE_NAME,
                                                                     false,
                                                                     false,
                                                                     new Date(),
@@ -2295,7 +2296,7 @@ public class DisplayApplicationRESTServices
 
             if (requestBody != null)
             {
-                String typeName = OpenMetadataAPIMapper.DISPLAY_DATA_CONTAINER_TYPE_NAME;
+                String typeName = OpenMetadataType.DISPLAY_DATA_CONTAINER_TYPE_NAME;
 
                 if (requestBody.getTypeName() != null)
                 {

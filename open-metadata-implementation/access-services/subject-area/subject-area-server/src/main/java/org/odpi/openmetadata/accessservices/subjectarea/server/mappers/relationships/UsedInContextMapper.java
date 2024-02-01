@@ -7,6 +7,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
@@ -31,19 +33,19 @@ public class UsedInContextMapper extends RelationshipMapper<UsedInContext> {
     @Override
     protected void mapRelationshipToInstanceProperties(UsedInContext usedInContext, InstanceProperties instanceProperties) {
         if (usedInContext.getDescription() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, usedInContext.getDescription(), OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, usedInContext.getDescription(), OpenMetadataProperty.DESCRIPTION.name);
         }
         if (usedInContext.getExpression() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, usedInContext.getExpression(), OpenMetadataAPIMapper.EXPRESSION_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, usedInContext.getExpression(), OpenMetadataType.EXPRESSION_PROPERTY_NAME);
         }
         if (usedInContext.getSteward() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, usedInContext.getSteward(), OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, usedInContext.getSteward(), OpenMetadataType.STEWARD_PROPERTY_NAME);
         }
         if (usedInContext.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, usedInContext.getSource(), OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, usedInContext.getSource(), OpenMetadataType.SOURCE_PROPERTY_NAME);
         }
         if (usedInContext.getStatus() != null) {
-            SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, usedInContext.getStatus(), OpenMetadataAPIMapper.STATUS_PROPERTY_NAME);
+            SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, usedInContext.getStatus(), OpenMetadataType.STATUS_PROPERTY_NAME);
         }
     }
 
@@ -59,19 +61,19 @@ public class UsedInContextMapper extends RelationshipMapper<UsedInContext> {
     protected boolean mapPrimitiveToRelationship(UsedInContext usedInContext, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
-        if (propertyName.equals(OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.DESCRIPTION.name)) {
             usedInContext.setDescription(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataAPIMapper.EXPRESSION_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataType.EXPRESSION_PROPERTY_NAME)) {
             usedInContext.setExpression(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataType.STEWARD_PROPERTY_NAME)) {
             usedInContext.setSteward(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataType.SOURCE_PROPERTY_NAME)) {
             usedInContext.setSource(stringValue);
             foundProperty = true;
         }
@@ -81,7 +83,7 @@ public class UsedInContextMapper extends RelationshipMapper<UsedInContext> {
     @Override
     protected boolean mapEnumToRelationship(UsedInContext usedInContext, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
-        if (propertyName.equals(OpenMetadataAPIMapper.STATUS_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataType.STATUS_PROPERTY_NAME)) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
             usedInContext.setStatus(status);
             foundProperty = true;

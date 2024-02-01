@@ -24,7 +24,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 
 import org.odpi.openmetadata.commonservices.generichandlers.CollectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceDomainHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -103,7 +103,7 @@ public class GovernanceDomainRESTServices
                                                               properties.getAdditionalProperties(),
                                                               properties.getTypeName(),
                                                               properties.getExtendedProperties(),
-                                                              OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_SET_CLASSIFICATION_NAME,
+                                                              OpenMetadataType.GOVERNANCE_DOMAIN_SET_CLASSIFICATION_NAME,
                                                               properties.getEffectiveFrom(),
                                                               properties.getEffectiveTo(),
                                                               new Date(),
@@ -870,8 +870,8 @@ public class GovernanceDomainRESTServices
                                                                                                                         methodName);
 
             response.setElements(domainHandler.getBeansByType(userId,
-                                                              OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_GUID,
-                                                              OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_NAME,
+                                                              OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_GUID,
+                                                              OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME,
                                                               null,
                                                               startFrom,
                                                               pageSize,
@@ -987,10 +987,10 @@ public class GovernanceDomainRESTServices
             List<GovernanceDomainSetElement> sets = handler.getAttachedElements(userId,
                                                                                 governanceDomainGUID,
                                                                                 guidParameterName,
-                                                                                OpenMetadataAPIMapper.GOVERNANCE_DOMAIN_TYPE_NAME,
-                                                                                OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_GUID,
-                                                                                OpenMetadataAPIMapper.COLLECTION_MEMBERSHIP_TYPE_NAME,
-                                                                                OpenMetadataAPIMapper.COLLECTION_TYPE_NAME,
+                                                                                OpenMetadataType.GOVERNANCE_DOMAIN_TYPE_NAME,
+                                                                                OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_GUID,
+                                                                                OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_NAME,
+                                                                                OpenMetadataType.COLLECTION_TYPE_NAME,
                                                                                 null,
                                                                                 null,
                                                                                 1,

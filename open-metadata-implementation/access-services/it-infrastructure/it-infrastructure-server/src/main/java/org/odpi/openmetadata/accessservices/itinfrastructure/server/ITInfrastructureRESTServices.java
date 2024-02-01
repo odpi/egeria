@@ -29,7 +29,8 @@ import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -1708,14 +1709,14 @@ public class ITInfrastructureRESTServices
                                                  requestBody.getExternalSourceName(),
                                                  infrastructureGUID,
                                                  infrastructureGUIDParameterName,
-                                                 OpenMetadataAPIMapper.IT_INFRASTRUCTURE_TYPE_NAME,
+                                                 OpenMetadataType.IT_INFRASTRUCTURE_TYPE_NAME,
                                                  endpointGUID,
                                                  endpointGUIDParameterName,
-                                                 OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                 OpenMetadataType.ENDPOINT_TYPE_NAME,
                                                  false,
                                                  false,
-                                                 OpenMetadataAPIMapper.SERVER_ENDPOINT_TYPE_GUID,
-                                                 OpenMetadataAPIMapper.SERVER_ENDPOINT_TYPE_NAME,
+                                                 OpenMetadataType.SERVER_ENDPOINT_TYPE_GUID,
+                                                 OpenMetadataType.SERVER_ENDPOINT_TYPE_NAME,
                                                  (InstanceProperties)null,
                                                  null,
                                                  null,
@@ -1793,14 +1794,14 @@ public class ITInfrastructureRESTServices
                                                  requestBody.getExternalSourceName(),
                                                  infrastructureGUID,
                                                  infrastructureGUIDParameterName,
-                                                 OpenMetadataAPIMapper.IT_INFRASTRUCTURE_TYPE_NAME,
+                                                 OpenMetadataType.IT_INFRASTRUCTURE_TYPE_NAME,
                                                  endpointGUID,
                                                  endpointGUIDParameterName,
-                                                 OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                 OpenMetadataType.ENDPOINT_TYPE_NAME,
                                                  false,
                                                  false,
-                                                 OpenMetadataAPIMapper.SERVER_ENDPOINT_TYPE_GUID,
-                                                 OpenMetadataAPIMapper.SERVER_ENDPOINT_TYPE_NAME,
+                                                 OpenMetadataType.SERVER_ENDPOINT_TYPE_GUID,
+                                                 OpenMetadataType.SERVER_ENDPOINT_TYPE_NAME,
                                                  (InstanceProperties) null,
                                                  null,
                                                  null,
@@ -2190,10 +2191,10 @@ public class ITInfrastructureRESTServices
             List<EndpointElement> endpoints = handler.getAttachedElements(userId,
                                                                           infrastructureGUID,
                                                                           guidParameterName,
-                                                                          OpenMetadataAPIMapper.IT_INFRASTRUCTURE_TYPE_NAME,
-                                                                          OpenMetadataAPIMapper.SERVER_ENDPOINT_TYPE_GUID,
-                                                                          OpenMetadataAPIMapper.SERVER_ENDPOINT_TYPE_NAME,
-                                                                          OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                                          OpenMetadataType.IT_INFRASTRUCTURE_TYPE_NAME,
+                                                                          OpenMetadataType.SERVER_ENDPOINT_TYPE_GUID,
+                                                                          OpenMetadataType.SERVER_ENDPOINT_TYPE_NAME,
+                                                                          OpenMetadataType.ENDPOINT_TYPE_NAME,
                                                                           null,
                                                                           null,
                                                                           0,
@@ -2812,8 +2813,8 @@ public class ITInfrastructureRESTServices
                                                requestBody.getExternalSourceName(),
                                                capabilityGUID,
                                                elementGUIDParameterName,
-                                               OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
-                                               OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                               OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                               OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                null,
                                                null,
                                                false,
@@ -2877,8 +2878,8 @@ public class ITInfrastructureRESTServices
                 List<SoftwareCapabilityElement> capabilities = handler.findBeans(userId,
                                                                                  requestBody.getSearchString(),
                                                                                  searchStringParameterName,
-                                                                                 OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
-                                                                                 OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                                 OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                                                                 OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                                  null,
                                                                                  startFrom,
                                                                                  pageSize,
@@ -2938,17 +2939,17 @@ public class ITInfrastructureRESTServices
                 SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
 
                 List<String> specificMatchPropertyNames = new ArrayList<>();
-                specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-                specificMatchPropertyNames.add(OpenMetadataAPIMapper.NAME_PROPERTY_NAME);
-                specificMatchPropertyNames.add(OpenMetadataAPIMapper.CAPABILITY_TYPE_PROPERTY_NAME);
-                specificMatchPropertyNames.add(OpenMetadataAPIMapper.CAPABILITY_TYPE_PROPERTY_NAME_DEP1);
-                specificMatchPropertyNames.add(OpenMetadataAPIMapper.CAPABILITY_TYPE_PROPERTY_NAME_DEP2);
+                specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
+                specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
+                specificMatchPropertyNames.add(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
+                specificMatchPropertyNames.add(OpenMetadataType.CAPABILITY_TYPE_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataType.CAPABILITY_TYPE_PROPERTY_NAME_DEP1);
 
                 List<SoftwareCapabilityElement> capabilities = handler.getBeansByValue(userId,
                                                                                        requestBody.getName(),
                                                                                        nameParameterName,
-                                                                                       OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
-                                                                                       OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                                       OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                                                                       OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                                        specificMatchPropertyNames,
                                                                                        true,
                                                                                        null,
@@ -3007,7 +3008,7 @@ public class ITInfrastructureRESTServices
             SoftwareCapabilityElement capability = handler.getBeanFromRepository(userId,
                                                                                  guid,
                                                                                  guidParameterName,
-                                                                                 OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                                 OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                                  false,
                                                                                  false,
                                                                                  new Date(),
@@ -3153,14 +3154,14 @@ public class ITInfrastructureRESTServices
                                                     requestBody.getExternalSourceName(),
                                                     capabilityGUID,
                                                     capabilityGUIDParameterName,
-                                                    OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                    OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                     assetGUID,
                                                     assetGUIDParameterName,
-                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                    OpenMetadataType.ASSET.typeName,
                                                     false,
                                                     false,
-                                                    OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                    OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                    OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
+                                                    OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
                                                     this.getServerAssetUseProperties(requestBody.getProperties(),
                                                                                      instanceHandler.getRepositoryHelper(userId, serverName,
                                                                                                                          methodName),
@@ -3178,14 +3179,14 @@ public class ITInfrastructureRESTServices
                                                     null,
                                                     capabilityGUID,
                                                     capabilityGUIDParameterName,
-                                                    OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                    OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                     assetGUID,
                                                     assetGUIDParameterName,
-                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                    OpenMetadataType.ASSET.typeName,
                                                     false,
                                                     false,
-                                                    OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                    OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                    OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
+                                                    OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
                                                     this.getServerAssetUseProperties(requestBody.getProperties(),
                                                                                      instanceHandler.getRepositoryHelper(userId, serverName,
                                                                                                                          methodName),
@@ -3231,7 +3232,7 @@ public class ITInfrastructureRESTServices
         {
             instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               null,
-                                                                              OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                              OpenMetadataProperty.DESCRIPTION.name,
                                                                               properties.getDescription(),
                                                                               methodName);
 
@@ -3239,7 +3240,7 @@ public class ITInfrastructureRESTServices
             {
                 instanceProperties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                                null,
-                                                                               OpenMetadataAPIMapper.MAXIMUM_INSTANCES_PROPERTY_NAME,
+                                                                               OpenMetadataType.MAXIMUM_INSTANCES_PROPERTY_NAME,
                                                                                properties.getMaximumInstances(),
                                                                                methodName);
             }
@@ -3248,7 +3249,7 @@ public class ITInfrastructureRESTServices
             {
                 instanceProperties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                                null,
-                                                                               OpenMetadataAPIMapper.MINIMUM_INSTANCES_PROPERTY_NAME,
+                                                                               OpenMetadataType.MINIMUM_INSTANCES_PROPERTY_NAME,
                                                                                properties.getMinimumInstances(),
                                                                                methodName);
             }
@@ -3259,15 +3260,15 @@ public class ITInfrastructureRESTServices
                 {
                     instanceProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                     instanceProperties,
-                                                                                    OpenMetadataAPIMapper.USE_TYPE_PROPERTY_NAME,
-                                                                                    OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_TYPE_GUID,
-                                                                                    OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_TYPE_NAME,
+                                                                                    OpenMetadataType.USE_TYPE_PROPERTY_NAME,
+                                                                                    OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_GUID,
+                                                                                    OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_NAME,
                                                                                     properties.getUseType().getOpenTypeOrdinal(),
                                                                                     methodName);
                 }
                 catch (TypeErrorException error)
                 {
-                    throw new InvalidParameterException(error, OpenMetadataAPIMapper.USE_TYPE_PROPERTY_NAME);
+                    throw new InvalidParameterException(error, OpenMetadataType.USE_TYPE_PROPERTY_NAME);
                 }
             }
 
@@ -3326,7 +3327,7 @@ public class ITInfrastructureRESTServices
                                                  requestBody.getExternalSourceName(),
                                                  serverAssetUseGUID,
                                                  elementGUIDParameterName,
-                                                 OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                 OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
                                                  isMergeUpdate,
                                                  this.getServerAssetUseProperties(requestBody.getProperties(),
                                                                                   instanceHandler.getRepositoryHelper(userId, serverName, methodName),
@@ -3383,7 +3384,7 @@ public class ITInfrastructureRESTServices
                                        requestBody.getExternalSourceName(),
                                        serverAssetUseGUID,
                                        elementGUIDParameterName,
-                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                       OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
                                        false,
                                        false,
                                        null,
@@ -3441,11 +3442,11 @@ public class ITInfrastructureRESTServices
             List<Relationship> relationships = handler.getAttachmentLinks(userId,
                                                                           capabilityGUID,
                                                                           elementGUIDParameterName,
-                                                                          OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
-                                                                          OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                                          OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                                          OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                          OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
+                                                                          OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
                                                                           null,
-                                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                          OpenMetadataType.ASSET.typeName,
                                                                           0,
                                                                           false,
                                                                           false,
@@ -3514,11 +3515,11 @@ public class ITInfrastructureRESTServices
             List<Relationship> relationships = handler.getAttachmentLinks(userId,
                                                                           assetGUID,
                                                                           elementGUIDParameterName,
-                                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                                                          OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                                          OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                                          OpenMetadataType.ASSET.typeName,
+                                                                          OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
+                                                                          OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
                                                                           null,
-                                                                          OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                          OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                           0,
                                                                           false,
                                                                           false,
@@ -3589,11 +3590,11 @@ public class ITInfrastructureRESTServices
             List<Relationship> relationships = handler.getAttachmentLinks(userId,
                                                                           capabilityGUID,
                                                                           capabilityGUIDParameterName,
-                                                                          OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
-                                                                          OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
-                                                                          OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                                          OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                          OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
+                                                                          OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
                                                                           assetGUID,
-                                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                          OpenMetadataType.ASSET.typeName,
                                                                           0,
                                                                           false,
                                                                           false,
@@ -3656,7 +3657,7 @@ public class ITInfrastructureRESTServices
             Relationship relationship = handler.getAttachmentLink(userId,
                                                                   guid,
                                                                   elementGUIDParameterName,
-                                                                  OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                                  OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
                                                                   null,
                                                                   methodName);
 
@@ -3778,7 +3779,7 @@ public class ITInfrastructureRESTServices
         InstanceProperties instanceProperties = relationship.getProperties();
 
         int propertyUseTypeOrdinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                                OpenMetadataAPIMapper.USE_TYPE_PROPERTY_NAME,
+                                                                                OpenMetadataType.USE_TYPE_PROPERTY_NAME,
                                                                                 instanceProperties,
                                                                                 methodName);
 
@@ -3801,7 +3802,7 @@ public class ITInfrastructureRESTServices
             element.setAsset(assetHandler.getBeanFromRepository(userId,
                                                                 relationship.getEntityTwoProxy().getGUID(),
                                                                 assetGUIDParameterName,
-                                                                OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                OpenMetadataType.ASSET.typeName,
                                                                 false,
                                                                 false,
                                                                 new Date(),
@@ -3825,32 +3826,32 @@ public class ITInfrastructureRESTServices
                     {
                         String propertyName = propertyNames.next();
 
-                        if (OpenMetadataAPIMapper.MAXIMUM_INSTANCES_PROPERTY_NAME.equals(propertyName))
+                        if (OpenMetadataType.MAXIMUM_INSTANCES_PROPERTY_NAME.equals(propertyName))
                         {
                             properties.setMaximumInstancesSet(true);
 
                             properties.setMaximumInstances(repositoryHelper.getIntProperty(serviceName,
-                                                                                           OpenMetadataAPIMapper.MAXIMUM_INSTANCES_PROPERTY_NAME,
+                                                                                           OpenMetadataType.MAXIMUM_INSTANCES_PROPERTY_NAME,
                                                                                            relationship.getProperties(),
                                                                                            methodName));
                         }
-                        else if (OpenMetadataAPIMapper.MINIMUM_INSTANCES_PROPERTY_NAME.equals(propertyName))
+                        else if (OpenMetadataType.MINIMUM_INSTANCES_PROPERTY_NAME.equals(propertyName))
                         {
                             properties.setMinimumInstancesSet(true);
 
                             properties.setMinimumInstances(repositoryHelper.getIntProperty(serviceName,
-                                                                                           OpenMetadataAPIMapper.MAXIMUM_INSTANCES_PROPERTY_NAME,
+                                                                                           OpenMetadataType.MAXIMUM_INSTANCES_PROPERTY_NAME,
                                                                                            relationship.getProperties(),
                                                                                            methodName));
                         }
-                        else if (OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME.equals(propertyName))
+                        else if (OpenMetadataProperty.DESCRIPTION.name.equals(propertyName))
                         {
                             properties.setDescription(repositoryHelper.getStringProperty(serviceName,
-                                                                                         OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                                         OpenMetadataProperty.DESCRIPTION.name,
                                                                                          relationship.getProperties(),
                                                                                          methodName));
                         }
-                        else if (OpenMetadataAPIMapper.USE_TYPE_PROPERTY_NAME.equals(propertyName))
+                        else if (OpenMetadataType.USE_TYPE_PROPERTY_NAME.equals(propertyName))
                         {
 
                             for (ServerAssetUseType useTypeValue : ServerAssetUseType.values())

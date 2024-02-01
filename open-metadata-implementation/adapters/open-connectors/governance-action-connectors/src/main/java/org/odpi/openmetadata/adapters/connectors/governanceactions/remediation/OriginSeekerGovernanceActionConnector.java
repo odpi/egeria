@@ -232,9 +232,6 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
         List<RelatedMetadataElement> lineageLinks = store.getRelatedMetadataElements(asset.getElementGUID(),
                                                                                      2,
                                                                                      null,
-                                                                                     true,
-                                                                                     false,
-                                                                                     null,
                                                                                      0,
                                                                                      0);
 

@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.securitymanager.converters;
 
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.SecurityGroupElement;
 import org.odpi.openmetadata.accessservices.securitymanager.properties.SecurityGroupProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;

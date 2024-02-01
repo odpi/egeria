@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable;
 
+import java.io.Serial;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -27,6 +28,8 @@ public class GlossaryTerm extends Referenceable
     private String abbreviation = null;
     private String usage        = null;
 
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Default Constructor

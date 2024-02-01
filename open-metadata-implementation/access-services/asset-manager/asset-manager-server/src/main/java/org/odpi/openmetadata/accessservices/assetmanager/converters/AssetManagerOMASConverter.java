@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.converters;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -109,7 +109,7 @@ public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGeneri
         if (instanceProperties != null)
         {
             int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataAPIMapper.SORT_ORDER_PROPERTY_NAME,
+                                                                     OpenMetadataType.SORT_ORDER_PROPERTY_NAME,
                                                                      instanceProperties,
                                                                      methodName);
 
@@ -139,7 +139,7 @@ public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGeneri
         if (instanceProperties != null)
         {
             int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataAPIMapper.KEY_PATTERN_PROPERTY_NAME,
+                                                                     OpenMetadataType.KEY_PATTERN_PROPERTY_NAME,
                                                                      instanceProperties,
                                                                      methodName);
 
@@ -169,7 +169,7 @@ public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGeneri
         if (instanceProperties != null)
         {
             int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataAPIMapper.PERMITTED_SYNC_PROPERTY_NAME,
+                                                                     OpenMetadataType.PERMITTED_SYNC_PROPERTY_NAME,
                                                                      instanceProperties,
                                                                      methodName);
 
@@ -199,7 +199,7 @@ public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGeneri
         if (instanceProperties != null)
         {
             int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataAPIMapper.PORT_TYPE_PROPERTY_NAME,
+                                                                     OpenMetadataType.PORT_TYPE_PROPERTY_NAME,
                                                                      instanceProperties,
                                                                      methodName);
 
@@ -229,7 +229,7 @@ public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGeneri
         if (instanceProperties != null)
         {
             int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataAPIMapper.CONTAINMENT_TYPE_PROPERTY_NAME,
+                                                                     OpenMetadataType.CONTAINMENT_TYPE_PROPERTY_NAME,
                                                                      instanceProperties,
                                                                      methodName);
 

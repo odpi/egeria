@@ -14,7 +14,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataTypesMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
@@ -377,7 +377,7 @@ public class APIIntegratorContext extends IntegrationContext
             }
             else
             {
-                integrationReportWriter.setAnchor(apiGUID, apiGUID, OpenMetadataTypesMapper.DEPLOYED_API_TYPE_NAME);
+                integrationReportWriter.setAnchor(apiGUID, apiGUID, OpenMetadataType.DEPLOYED_API_TYPE_NAME);
                 integrationReportWriter.reportElementCreation(apiGUID);
             }
         }

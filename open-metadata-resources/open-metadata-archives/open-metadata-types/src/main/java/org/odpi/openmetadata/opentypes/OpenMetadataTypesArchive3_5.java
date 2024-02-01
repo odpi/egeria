@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -58,8 +60,8 @@ public class OpenMetadataTypesArchive3_5
     private static final String versionName   = "1.0";
 
 
-    private OMRSArchiveBuilder archiveBuilder;
-    private OMRSArchiveHelper  archiveHelper;
+    private final OMRSArchiveBuilder archiveBuilder;
+    private final OMRSArchiveHelper  archiveHelper;
 
     /**
      * Default constructor sets up the archive builder.  This in turn sets up the header for the archive.
@@ -169,7 +171,6 @@ public class OpenMetadataTypesArchive3_5
         extend0112Person();
         update0130Projects();
         update0140Communities();
-        update0461GovernanceEngines();
     }
 
 
@@ -207,7 +208,7 @@ public class OpenMetadataTypesArchive3_5
         final String description     = "A software capability such as an software service or engine.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "Referenceable";
+        final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -239,9 +240,9 @@ public class OpenMetadataTypesArchive3_5
         final String attribute6Name            = "source";
         final String attribute6Description     = "Supplier of the software server capability.";
         final String attribute6DescriptionGUID = null;
-        final String attribute7Name            = "deployedImplementationType";
-        final String attribute7Description     = "Class of technology for the software capability.";
-        final String attribute7DescriptionGUID = null;
+        final String attribute7Name            = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name;
+        final String attribute7Description     = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.description;
+        final String attribute7DescriptionGUID = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -336,21 +337,21 @@ public class OpenMetadataTypesArchive3_5
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "deploymentTime";
-        final String attribute1Description     = "Time that the software capability was deployed to the IT Infrastructure.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "deployer";
-        final String attribute2Description     = "Person, organization or engine that deployed the software capability.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "deployerTypeName";
-        final String attribute3Description     = "Type name of deployer.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "deployerPropertyName";
-        final String attribute4Description     = "Identifying property name of deployer.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "capabilityStatus";
-        final String attribute5Description     = "The operational status of the software capability on this IT Infrastructure.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DEPLOYMENT_TIME.name;
+        final String attribute1Description     = OpenMetadataProperty.DEPLOYMENT_TIME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DEPLOYMENT_TIME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DEPLOYER.name;
+        final String attribute2Description     = OpenMetadataProperty.DEPLOYER.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DEPLOYER.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.DEPLOYER_TYPE_NAME.name;
+        final String attribute3Description     = OpenMetadataProperty.DEPLOYER_TYPE_NAME.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.DEPLOYER_TYPE_NAME.descriptionGUID;
+        final String attribute4Name            = OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.name;
+        final String attribute4Description     = OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.DEPLOYER_PROPERTY_NAME.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.OPERATIONAL_STATUS.name;
+        final String attribute5Description     = OpenMetadataProperty.OPERATIONAL_STATUS.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.OPERATIONAL_STATUS.descriptionGUID;
 
         property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
                                                          attribute1Description,
@@ -368,7 +369,7 @@ public class OpenMetadataTypesArchive3_5
                                                            attribute4Description,
                                                            attribute4DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("OperationalStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
                                                          attribute5Name,
                                                          attribute5Description,
                                                          attribute5DescriptionGUID);
@@ -423,7 +424,7 @@ public class OpenMetadataTypesArchive3_5
          * Create the Patch
          */
         final String typeName = "FileSystem";
-        final String attachToEntity = "Referenceable";
+        final String attachToEntity = OpenMetadataType.REFERENCEABLE.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -445,7 +446,7 @@ public class OpenMetadataTypesArchive3_5
          * Create the Patch
          */
         final String typeName = "FileManager";
-        final String attachToEntity = "Referenceable";
+        final String attachToEntity = OpenMetadataType.REFERENCEABLE.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -466,7 +467,7 @@ public class OpenMetadataTypesArchive3_5
          * Create the Patch
          */
         final String typeName = "NotificationManager";
-        final String attachToEntity = "Referenceable";
+        final String attachToEntity = OpenMetadataType.REFERENCEABLE.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -487,7 +488,7 @@ public class OpenMetadataTypesArchive3_5
          * Create the Patch
          */
         final String typeName = "ContentCollectionManager";
-        final String attachToEntity = "Referenceable";
+        final String attachToEntity = OpenMetadataType.REFERENCEABLE.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -509,7 +510,7 @@ public class OpenMetadataTypesArchive3_5
         final String description     = "Defines a software source code library that provides version control.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "Referenceable";
+        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
 
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
@@ -547,7 +548,7 @@ public class OpenMetadataTypesArchive3_5
         final String description     = "Defines a managed collection of requirements, defects and proposed changes to a project.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "Referenceable";
+        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
 
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
@@ -586,7 +587,7 @@ public class OpenMetadataTypesArchive3_5
         final String description     = "Defines a collection of software modules.  Also known as the definitive software library.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "Referenceable";
+        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
 
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
@@ -693,7 +694,7 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Asset";
+        final String                     end2EntityType               = OpenMetadataType.ASSET.typeName;
         final String                     end2AttributeName            = "consumedAsset";
         final String                     end2AttributeDescription     = "Asset that this software capability is dependent on.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -791,9 +792,9 @@ public class OpenMetadataTypesArchive3_5
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "deployedImplementationType";
-        final String attribute1Description     = "Type of software deployed - such as product name.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name;
+        final String attribute1Description     = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID;
 
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
@@ -1186,51 +1187,5 @@ public class OpenMetadataTypesArchive3_5
      * -------------------------------------------------------------------------------------------------------
      */
 
-
-    /**
-     * 0461 Add Archive Engines and Services
-     */
-    private void update0461GovernanceEngines()
-    {
-        this.archiveBuilder.addEntityDef(addArchiveEngineEntity());
-        this.archiveBuilder.addEntityDef(addArchiveServiceEntity());
-    }
-
-
-    private EntityDef addArchiveEngineEntity()
-    {
-        /*
-         * Build the Entity
-         */
-        final String guid            = "773298be-68ab-4b99-99ab-19eaa886261e";
-        final String name            = "ArchiveEngine";
-        final String description     = "A collection of related archive services.";
-        final String descriptionGUID = null;
-        final String superTypeName   = "GovernanceEngine";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
-    }
-
-    private EntityDef addArchiveServiceEntity()
-    {
-        /*
-         * Build the Entity
-         */
-        final String guid            = "e6c049e2-56aa-4512-a634-20cd7085e534";
-        final String name            = "ArchiveService";
-        final String description     = "A governance service that maintains open metadata archives.";
-        final String descriptionGUID = null;
-        final String superTypeName   = "GovernanceService";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
-    }
 }
 

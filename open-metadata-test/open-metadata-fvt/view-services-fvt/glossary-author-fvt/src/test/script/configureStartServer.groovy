@@ -183,7 +183,7 @@ post2g.setRequestProperty("Content-Type", "application/json")
 //https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cocoView1/view-services/glossary-author
 post2g.setDoOutput(true)
 HashMap<String, String> viewServiceRequestBodyMap = new HashMap<>()
-viewServiceRequestBodyMap.put("class","ViewServiceConfig")
+viewServiceRequestBodyMap.put("class","ViewServiceRequestBody")
 viewServiceRequestBodyMap.put("omagserverName",serverMem)
 viewServiceRequestBodyMap.put("omagserverPlatformRootURL",baseURL)
 //JsonOutput.toJson()

@@ -1351,11 +1351,11 @@ public class OMAGServerAdminForAccessServices
 
             if (enterpriseAccessConfig == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for enterprise repository services (used by access services).");
+                configAuditTrail.add(new Date() + " " + userId + " removed configuration for enterprise repository services (used by access services).");
             }
             else
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for enterprise repository services (used by access services).");
+                configAuditTrail.add(new Date() + " " + userId + " updated configuration for enterprise repository services (used by access services).");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
