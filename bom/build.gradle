@@ -290,7 +290,7 @@ dependencies {
         // Explicitly enforced versions of transitive dependencies to mitigate potential CVEs reported by static security scans.
         //TODO: Remove dependency line below in case the new parent library is updated and pulls good version.
         api("com.beust:jcommander:1.82")
-        api("org.antlr:antlr4:4.13.0")
+        api("org.antlr:antlr4:4.13.1")
         api("org.apache.ivy:ivy:2.5.2")
 
         // XTDB Additions
