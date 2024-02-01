@@ -24,7 +24,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           # Only cache for main build
           cache-read-only: true
