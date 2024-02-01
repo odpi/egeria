@@ -242,6 +242,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param assetGUID unique identifier of linked asset (or null)
      * @param assetGUIDParameterName  parameter name supplying assetGUID
      * @param assetTypeName type of asset
+     * @param parentQualifiedName qualified name of associated asset/connection
      * @param connection object to add
      * @param assetSummary description of the asset for the connection
      * @param forLineage return elements marked with the Memento classification?
@@ -261,6 +262,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                   String     assetGUID,
                                   String     assetGUIDParameterName,
                                   String     assetTypeName,
+                                  String     parentQualifiedName,
                                   Connection connection,
                                   String     assetSummary,
                                   boolean    forLineage,
@@ -296,6 +298,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                  assetGUID,
                                  assetGUIDParameterName,
                                  assetTypeName,
+                                 parentQualifiedName,
                                  connection,
                                  assetSummary,
                                  forLineage,
@@ -326,8 +329,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param anchorGUID unique identifier of the anchor entity if applicable
-     * @param anchorTypeName type name of anchor
      * @param connectionGUID unique identifier of connected connection
+     * @param connectionQualifiedName connection qualified name
      * @param endpoint endpoint object or null
      * @param connectorType connector type object or null
      * @param embeddedConnections list of embedded connections or null - only for Virtual Connections
@@ -344,8 +347,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                   String                   externalSourceGUID,
                                                   String                   externalSourceName,
                                                   String                   anchorGUID,
-                                                  String                   anchorTypeName,
                                                   String                   connectionGUID,
+                                                  String                   connectionQualifiedName,
                                                   Endpoint                 endpoint,
                                                   ConnectorType            connectorType,
                                                   List<EmbeddedConnection> embeddedConnections,
@@ -370,6 +373,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
             String endpointGUID = endpointHandler.saveEndpoint(userId,
                                                                externalSourceGUID,
                                                                externalSourceName,
+                                                               connectionQualifiedName,
                                                                endpoint,
                                                                forLineage,
                                                                forDuplicateProcessing,
@@ -422,6 +426,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
             String connectorTypeGUID = connectorTypeHandler.saveConnectorType(userId,
                                                                               externalSourceGUID,
                                                                               externalSourceName,
+                                                                              connectionQualifiedName,
                                                                               connectorType,
                                                                               methodName);
 
@@ -497,6 +502,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                     null,
                                                                     null,
                                                                     null,
+                                                                    connectionQualifiedName,
                                                                     realConnection,
                                                                     null,
                                                                     forLineage,
@@ -514,10 +520,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                               serviceName,
                                                               serverName);
 
-                        embeddedConnectionBuilder.setAnchors(userId, anchorGUID, anchorTypeName, methodName);
-
                         repositoryHandler.createRelationship(userId,
-                                                             OpenMetadataType.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
+                                                             OpenMetadataType.EMBEDDED_CONNECTION_TYPE_GUID,
                                                              externalSourceGUID,
                                                              externalSourceName,
                                                              connectionGUID,
@@ -543,6 +547,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param assetGUID unique identifier of linked asset (or null)
      * @param assetGUIDParameterName  parameter name supplying assetGUID
      * @param assetTypeName type of asset
+     * @param parentQualifiedName qualified name of parent asset/connection
      * @param connection object to add
      * @param assetSummary description of the asset for the connection
      * @param forLineage return elements marked with the Memento classification?
@@ -562,6 +567,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                   String     assetGUID,
                                   String     assetGUIDParameterName,
                                   String     assetTypeName,
+                                  String     parentQualifiedName,
                                   Connection connection,
                                   String     assetSummary,
                                   boolean    forLineage,
@@ -609,7 +615,14 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
             }
         }
 
-        ConnectionBuilder connectionBuilder = new ConnectionBuilder(connection.getQualifiedName(),
+        String connectionQualifiedName = connection.getQualifiedName();
+
+        if ((connectionQualifiedName == null) && (parentQualifiedName != null))
+        {
+            connectionQualifiedName = parentQualifiedName + "-" +connectionTypeName;
+        }
+
+        ConnectionBuilder connectionBuilder = new ConnectionBuilder(connectionQualifiedName,
                                                                     connection.getDisplayName(),
                                                                     connection.getDescription(),
                                                                     connection.getAdditionalProperties(),
@@ -645,8 +658,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                   externalSourceGUID,
                                                   externalSourceName,
                                                   anchorGUID,
-                                                  anchorTypeName,
                                                   connectionGUID,
+                                                  connectionQualifiedName,
                                                   connection.getEndpoint(),
                                                   connection.getConnectorType(),
                                                   embeddedConnections,
@@ -770,8 +783,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                               externalSourceGUID,
                                               externalSourceName,
                                               anchorGUID,
-                                              null,
                                               existingConnectionGUID,
+                                              connection.getQualifiedName(),
                                               connection.getEndpoint(),
                                               connection.getConnectorType(),
                                               embeddedConnections,
