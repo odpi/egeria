@@ -34,7 +34,7 @@ ext {
     commonsconfigurationVersion = '1.10'
     commonsioVersion = '2.13.0'
     commonsloggingVersion = '1.3.0'
-    commonstextVersion = '1.10.0'
+    commonstextVersion = '1.11.0'
     commonscliVersion = '1.6.0'
     elasticsearchVersion = '8.7.1'
     findbugsVersion = '3.0.2'
@@ -60,7 +60,7 @@ ext {
     javassistVersion = '3.29.2-GA'
     jaxbVersion = '2.3.1'
     jenaVersion = '4.7.0'
-    jodatimeVersion = '2.12.5'
+    jodatimeVersion = '2.12.6'
     jsonldVersion = '0.13.6'
     junitVersion = '4.13.2'
     junitjupiterVersion = '5.10.0'
@@ -69,10 +69,10 @@ ext {
     jwtApiVersion = '0.11.5'
     jwtImplVersion = '0.11.5'
     jwtJacksonVersion = '0.11.5'
-    kafkaVersion = '3.6.0'
+    kafkaVersion = '3.6.1'
     lang3Version = '3.14.0'
     logbackVersion = '1.4.5'
-    lettuceVersion = '6.2.6.RELEASE'
+    lettuceVersion = '6.3.1.RELEASE'
     // TODO: Version 9 now available
     luceneVersion = '8.11.2'
     openlineageVersion = '1.8.0'
@@ -101,16 +101,16 @@ ext {
     testngVersion = '7.8.0'
     thriftVersion = '0.19.0'
     springwebVersion = '6.0.6'
-    tinkVersion = '1.11.0'
+    tinkVersion = '1.12.0'
     tomcatVersion = '10.1.13'
     validationVersion = '2.0.1.Final'
     gsonVersion = '2.10.1'
     antVersion = '1.10.14'
     jnrVersion = '3.1.18'
     cassandraVersion = '4.1.3'
-    protobufVersion = '3.25.1'
+    protobufVersion = '3.25.2'
     osgiVersion = '8.0.0'
-    log4jVersion = '2.22.0'
+    log4jVersion = '2.22.1'
     jacksonjdk8Version = '2.16.1'
     reactivestreamsVersion = '1.0.4'
     springdocStarterVersion = '2.2.0'
@@ -290,7 +290,7 @@ dependencies {
         // Explicitly enforced versions of transitive dependencies to mitigate potential CVEs reported by static security scans.
         //TODO: Remove dependency line below in case the new parent library is updated and pulls good version.
         api("com.beust:jcommander:1.82")
-        api("org.antlr:antlr4:4.13.0")
+        api("org.antlr:antlr4:4.13.1")
         api("org.apache.ivy:ivy:2.5.2")
 
         // XTDB Additions

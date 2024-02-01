@@ -251,13 +251,14 @@ public class FolderSurveyService extends AuditableSurveyService
 
         File logFile = new File(logFileName);
 
-        if (logFile.exists())
+        try
         {
+            FileUtils.sizeOf(logFile);
             auditLog.logMessage(methodName,
                                 SurveyServiceAuditCode.REUSING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
                                                                                              logFileName));
         }
-        else
+        catch (IllegalArgumentException notFound)
         {
             auditLog.logMessage(methodName,
                                 SurveyServiceAuditCode.CREATING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
