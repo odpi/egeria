@@ -162,6 +162,7 @@ public class AssetContextHandler {
     /**
      * Builds the column context for a schema element
      *
+     * @param userId calling user
      * @param lineageEntity column as lineage entity
      *
      * @return column context of the schema element

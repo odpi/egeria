@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -110,7 +111,7 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                        elementTypeName,
                                                        relationshipTypeGUID,
                                                        relationshipTypeName,
-                                                       OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                       OpenMetadataType.ASSET.typeName,
                                                        serviceSupportedZones,
                                                        0,
                                                        0,
@@ -191,7 +192,7 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                    relationshipTypeGUID,
                                                                    relationshipTypeName,
                                                                    null,
-                                                                   OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                   OpenMetadataType.ASSET.typeName,
                                                                    0,
                                                                    forLineage,
                                                                    forDuplicateProcessing,

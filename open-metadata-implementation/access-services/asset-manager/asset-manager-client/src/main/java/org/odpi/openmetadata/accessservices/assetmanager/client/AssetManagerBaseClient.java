@@ -432,13 +432,15 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
      * Return the asset manager identifiers packaged in an appropriate request body.
      * @param assetManagerGUID unique identifier for the asset manager
      * @param assetManagerName unique name for the asset manager
+     * @param relationshipTypeName optional name of relationship
      * @param limitResultsByStatus By default, term relationships in all statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
      * @param effectiveTime the time that the retrieved elements must be effective for
      * @return request body
      */
-    protected GlossaryTermRelationshipRequestBody getGlossaryTermRelationshipRequestBody(String assetManagerGUID,
+    protected GlossaryTermRelationshipRequestBody getGlossaryTermRelationshipRequestBody(String                               assetManagerGUID,
                                                                                          String                               assetManagerName,
+                                                                                         String                               relationshipTypeName,
                                                                                          List<GlossaryTermRelationshipStatus> limitResultsByStatus,
                                                                                          Date                                 effectiveTime)
     {
@@ -450,6 +452,7 @@ public class AssetManagerBaseClient implements ExternalIdentifierManagerInterfac
             requestBody.setAssetManagerName(assetManagerName);
         }
 
+        requestBody.setRelationshipTypeName(relationshipTypeName);
         requestBody.setLimitResultsByStatus(limitResultsByStatus);
         requestBody.setEffectiveTime(effectiveTime);
 

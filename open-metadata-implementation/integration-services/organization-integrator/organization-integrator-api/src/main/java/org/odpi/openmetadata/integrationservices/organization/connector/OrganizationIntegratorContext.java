@@ -102,6 +102,7 @@ public class OrganizationIntegratorContext extends IntegrationContext
               externalSourceGUID,
               externalSourceName,
               integrationConnectorGUID,
+              auditLog,
               maxPageSize);
 
         this.organizationClient  = organizationManagement;

@@ -3,9 +3,9 @@
 package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters;
 
 import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -57,11 +57,9 @@ public class EndpointConverter<B> extends OCFConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ConnectorType)
+            if (returnBean instanceof Endpoint bean)
             {
-                Endpoint bean = new Endpoint();
-
-                this.setUpElementHeader(bean, entity, OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME, methodName);
+                this.setUpElementHeader(bean, entity, OpenMetadataType.ENDPOINT_TYPE_NAME, methodName);
 
                 /*
                  * The initial set of values come from the entity.

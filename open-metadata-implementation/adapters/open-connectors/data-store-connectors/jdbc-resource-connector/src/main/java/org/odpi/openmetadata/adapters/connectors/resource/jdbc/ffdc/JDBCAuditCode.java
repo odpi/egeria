@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.resource.jdbc.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
@@ -25,7 +25,7 @@ public enum JDBCAuditCode implements AuditLogMessageSet
      * JDBC-RESOURCE-CONNECTOR-0001 - The JDBC resource connector received an unexpected exception {0} during method {1}; the error message was: {2}
      */
     UNEXPECTED_EXCEPTION("JDBC-RESOURCE-CONNECTOR-0001",
-                         OMRSAuditLogRecordSeverity.EXCEPTION,
+                         AuditLogRecordSeverityLevel.EXCEPTION,
                          "The JDBC resource connector for database {0} received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector is unable to process the current request.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
@@ -34,7 +34,7 @@ public enum JDBCAuditCode implements AuditLogMessageSet
      * JDBC-RESOURCE-CONNECTOR-0002 - The JDBC resource connector has connected to database {0}
      */
     CONNECTOR_CONNECTED_TO_DATABASE("JDBC-RESOURCE-CONNECTOR-0002",
-                                    OMRSAuditLogRecordSeverity.INFO,
+                                    AuditLogRecordSeverityLevel.INFO,
                                     "The JDBC resource connector has connected to database {0}",
                                     "The connector is designed provide a standard interface to a relational database that supports Java Database Connectivity (JDBC).  This message confirms that the connector has successfully connected to the database.  The number of times that this message is emitted by a connector indicates how many database connections it is using.",
                                     "No specific action is required.  This message is to confirm that the configuration of the connector is sufficient to connect to the database."),
@@ -43,7 +43,7 @@ public enum JDBCAuditCode implements AuditLogMessageSet
      * JDBC-RESOURCE-CONNECTOR-0002 - The JDBC resource connector has connected to database {0}
      */
     UNEXPECTED_ROW_COUNT_FROM_DATABASE("JDBC-RESOURCE-CONNECTOR-0003",
-                                    OMRSAuditLogRecordSeverity.INFO,
+                                       AuditLogRecordSeverityLevel.INFO,
                                     "The JDBC resource connector for database {0} has received {1} results from query {2}",
                                     "The connector is designed provide a standard interface to a relational database that supports Java Database Connectivity (JDBC).  This message confirms that the connector has successfully connected to the database.  The number of times that this message is emitted by a connector indicates how many database connections it is using.",
                                     "No specific action is required.  This message is to confirm that the configuration of the connector is sufficient to connect to the database."),
@@ -52,7 +52,7 @@ public enum JDBCAuditCode implements AuditLogMessageSet
      * JDBC-RESOURCE-CONNECTOR-0009 - JDBC resource connector is closing all {0} connection(s) to database {1} and is shutting down
      */
     CONNECTOR_STOPPING("JDBC-RESOURCE-CONNECTOR-0009",
-                       OMRSAuditLogRecordSeverity.INFO,
+                       AuditLogRecordSeverityLevel.INFO,
                        "The JDBC resource connector for database {0} is closing all {1} connection(s) to database and is shutting down",
                        "The connector has been requested to disconnect from the database and is ensuring all connections are closed.  This message is output by each data source that was created by the connector.  Therefore the number of times that this message is emitted indicates the number of data sources were created by the connector.",
                        "No action is required unless there are errors that follow indicating that there were problems shutting down."),
@@ -62,7 +62,7 @@ public enum JDBCAuditCode implements AuditLogMessageSet
     ;
 
     private final String                     logMessageId;
-    private final OMRSAuditLogRecordSeverity severity;
+    private final AuditLogRecordSeverityLevel severity;
     private final String                     logMessage;
     private final String                     systemAction;
     private final String                     userAction;
@@ -74,7 +74,7 @@ public enum JDBCAuditCode implements AuditLogMessageSet
      * <br>
      *     JDBCAuditCode   auditCode = JDBCAuditCode.SERVER_NOT_AVAILABLE;
      * <br>
-     * This will expand out to the 4 parameters shown below.
+     * This will expand out to the 5 parameters shown below.
      *
      * @param messageId - unique id for the message
      * @param severity - severity of the message
@@ -82,11 +82,11 @@ public enum JDBCAuditCode implements AuditLogMessageSet
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
      */
-    JDBCAuditCode(String                     messageId,
-                  OMRSAuditLogRecordSeverity severity,
-                  String                     message,
-                  String                     systemAction,
-                  String                     userAction)
+    JDBCAuditCode(String                      messageId,
+                  AuditLogRecordSeverityLevel severity,
+                  String                      message,
+                  String                      systemAction,
+                  String                      userAction)
     {
         this.logMessageId = messageId;
         this.severity = severity;

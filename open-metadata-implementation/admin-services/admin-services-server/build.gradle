@@ -20,6 +20,7 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-apis')
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-server')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-databind'
     testCompileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'

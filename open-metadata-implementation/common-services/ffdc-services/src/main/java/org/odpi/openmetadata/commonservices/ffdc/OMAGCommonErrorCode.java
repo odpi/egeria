@@ -319,15 +319,14 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
                                "Look for errors in the local server's console to understand and correct the source of the error.")
     ;
 
-    private final ExceptionMessageDefinition messageDefinition;
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
 
     /**
-     * The constructor for OMAGCommonErrorCode expects to be passed one of the enumeration rows defined in
-     * OMAGCommonErrorCode above.   For example:
-     * <br><br>
-     *     OMAGCommonErrorCode   errorCode = OMAGCommonErrorCode.SERVER_URL_NOT_SPECIFIED;
-     * <br><br>
-     * This will expand out to the 5 parameters shown below.
+     * The constructor for OMAGCommonErrorCode expects to be passed one of the enumeration rows defined above.
      *
      * @param httpErrorCode   error code to use over REST calls
      * @param errorMessageId   unique identifier for the message
@@ -337,11 +336,11 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
      */
     OMAGCommonErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -353,7 +352,11 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -366,6 +369,12 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -380,8 +389,12 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
     @Override
     public String toString()
     {
-        return "OMAGCommonErrorCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

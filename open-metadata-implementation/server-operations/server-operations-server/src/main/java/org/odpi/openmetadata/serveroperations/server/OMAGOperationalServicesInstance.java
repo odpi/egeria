@@ -144,6 +144,32 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
 
 
     /**
+     * Return the list of services that are active in the server.
+     *
+     * @return list of services names
+     */
+    public synchronized  List<String> getActiveServiceListForServer()
+    {
+        if (! serviceStatusMap.isEmpty())
+        {
+            List<String> activeServices = new ArrayList<>();
+
+            for (String serviceName : serviceStatusMap.keySet())
+            {
+                if (serviceStatusMap.get(serviceName) == ServerActiveStatus.RUNNING)
+                {
+                    activeServices.add(serviceName);
+                }
+            }
+
+            return activeServices;
+        }
+
+        return null;
+    }
+
+
+    /**
      * Return the configuration document that was used to start the current running server.
      * This value is null if the server has not been started.
      *

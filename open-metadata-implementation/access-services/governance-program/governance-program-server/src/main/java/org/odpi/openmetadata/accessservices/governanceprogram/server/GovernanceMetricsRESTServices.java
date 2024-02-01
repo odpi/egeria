@@ -24,7 +24,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceMetricHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
@@ -660,7 +660,7 @@ public class GovernanceMetricsRESTServices
                                                                            requestBody.getExternalSourceName(),
                                                                            dataSetGUID,
                                                                            guidParameter,
-                                                                           OpenMetadataAPIMapper.DATA_SET_TYPE_NAME,
+                                                                           OpenMetadataType.DATA_SET.typeName,
                                                                            properties.getDescription(),
                                                                            false,
                                                                            false,
@@ -727,7 +727,7 @@ public class GovernanceMetricsRESTServices
                                                                           requestBody.getExternalSourceName(),
                                                                           dataSetGUID,
                                                                           guidParameter,
-                                                                          OpenMetadataAPIMapper.DATA_SET_TYPE_NAME,
+                                                                          OpenMetadataType.DATA_SET.typeName,
                                                                           false,
                                                                           false,
                                                                           null,
@@ -740,7 +740,7 @@ public class GovernanceMetricsRESTServices
                                                                           null,
                                                                           dataSetGUID,
                                                                           guidParameter,
-                                                                          OpenMetadataAPIMapper.DATA_SET_TYPE_NAME,
+                                                                          OpenMetadataType.DATA_SET.typeName,
                                                                           false,
                                                                           false,
                                                                           null,
@@ -795,20 +795,20 @@ public class GovernanceMetricsRESTServices
                     GovernanceExpectationsProperties properties = (GovernanceExpectationsProperties)requestBody.getProperties();
 
                     handler.addGovernanceExpectationsClassification(userId,
-                                                         requestBody.getExternalSourceGUID(),
-                                                         requestBody.getExternalSourceName(),
-                                                         elementGUID,
-                                                         elementGUIDParameterName,
-                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                         properties.getCounts(),
-                                                         properties.getValues(),
-                                                         properties.getFlags(),
-                                                         false,
-                                                         false,
-                                                         properties.getEffectiveFrom(),
-                                                         properties.getEffectiveTo(),
-                                                         null,
-                                                         methodName);
+                                                                    requestBody.getExternalSourceGUID(),
+                                                                    requestBody.getExternalSourceName(),
+                                                                    elementGUID,
+                                                                    elementGUIDParameterName,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
+                                                                    properties.getCounts(),
+                                                                    properties.getValues(),
+                                                                    properties.getFlags(),
+                                                                    false,
+                                                                    false,
+                                                                    properties.getEffectiveFrom(),
+                                                                    properties.getEffectiveTo(),
+                                                                    null,
+                                                                    methodName);
                 }
                 else
                 {
@@ -868,7 +868,7 @@ public class GovernanceMetricsRESTServices
                                                                    requestBody.getExternalSourceName(),
                                                                    elementGUID,
                                                                    elementGUIDParameterName,
-                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                   OpenMetadataType.REFERENCEABLE.typeName,
                                                                    false,
                                                                    false,
                                                                    null,
@@ -881,7 +881,7 @@ public class GovernanceMetricsRESTServices
                                                                    null,
                                                                    elementGUID,
                                                                    elementGUIDParameterName,
-                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                   OpenMetadataType.REFERENCEABLE.typeName,
                                                                    false,
                                                                    false,
                                                                    null,
@@ -940,7 +940,7 @@ public class GovernanceMetricsRESTServices
                                                                     requestBody.getExternalSourceName(),
                                                                     elementGUID,
                                                                     elementGUIDParameterName,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
                                                                     properties.getCounts(),
                                                                     properties.getValues(),
                                                                     properties.getFlags(),
@@ -1009,7 +1009,7 @@ public class GovernanceMetricsRESTServices
                                                                    requestBody.getExternalSourceName(),
                                                                    elementGUID,
                                                                    elementGUIDParameterName,
-                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                   OpenMetadataType.REFERENCEABLE.typeName,
                                                                    false,
                                                                    false,
                                                                    null,
@@ -1022,7 +1022,7 @@ public class GovernanceMetricsRESTServices
                                                                    null,
                                                                    elementGUID,
                                                                    elementGUIDParameterName,
-                                                                   OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                   OpenMetadataType.REFERENCEABLE.typeName,
                                                                    false,
                                                                    false,
                                                                    null,

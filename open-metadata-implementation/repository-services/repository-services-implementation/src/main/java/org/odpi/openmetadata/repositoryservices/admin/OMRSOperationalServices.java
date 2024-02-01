@@ -519,7 +519,7 @@ public class OMRSOperationalServices
      * cohorts initialized.  During this time, outbound repository events have been buffered.
      * Calling start() releases these buffered events into the cohort(s).
      */
-    private void startOutboundEvents()
+    public void startOutboundEvents()
     {
         if (localRepositoryEventManager != null)
         {
@@ -924,8 +924,6 @@ public class OMRSOperationalServices
                 metadataHighwayManager.setSecurityVerifier(securityVerifier);
             }
         }
-
-        this.startOutboundEvents();
     }
 
 

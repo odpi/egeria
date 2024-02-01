@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adminservices.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.server.OMAGServerAdminServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
@@ -39,6 +40,12 @@ public class ConfigResource
      * OMAGInvalidParameterException invalid serverName parameter.
      */
     @GetMapping(path = "/configuration")
+
+    @Operation(summary="getStoredConfiguration",
+               description="Return the stored configuration document for the server.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/configuration-document/"))
+
     public OMAGServerConfigResponse getStoredConfiguration(@PathVariable String userId,
                                                            @PathVariable String serverName)
     {
@@ -57,6 +64,12 @@ public class ConfigResource
      * OMAGInvalidParameterException invalid serverName or OMAGServerConfig parameter.
      */
     @PostMapping(path = "/configuration")
+
+    @Operation(summary="setOMAGServerConfig",
+               description="Set up the configuration properties for an OMAG Server in a single command.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/configuration-document/"))
+
     public VoidResponse setOMAGServerConfig(@PathVariable String           userId,
                                             @PathVariable String           serverName,
                                             @RequestBody  OMAGServerConfig omagServerConfig)
@@ -75,6 +88,12 @@ public class ConfigResource
      * OMAGInvalidParameterException invalid serverName or OMAGServerConfig parameter.
      */
     @DeleteMapping(path = "/configuration")
+
+    @Operation(summary="clearOMAGServerConfig",
+               description="Clear the configuration properties for an OMAG Server in a single command.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/configuration-document/"))
+
     public VoidResponse clearOMAGServerConfig(@PathVariable String userId,
                                               @PathVariable String serverName)
     {
@@ -94,6 +113,12 @@ public class ConfigResource
      * OMAGInvalidParameterException invalid serverName or destinationPlatform parameter.
      */
     @PostMapping(path = "/configuration/deploy")
+
+    @Operation(summary="deployOMAGServerConfig",
+               description="Push the configuration for the server to another OMAG Server Platform.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/configuration-document/"))
+
     public VoidResponse deployOMAGServerConfig(@PathVariable String           userId,
                                                @PathVariable String           serverName,
                                                @RequestBody  URLRequestBody   destinationPlatform)

@@ -26,7 +26,15 @@ or the organization in some way.
 (called discovery services) that access data-related assets and extract characteristics 
 about the data that can be stored in an open metadata repository.
 
-**Note:** Both the discovery services and the governance actions are specialized OCF connectors, making the OCF the
+* **[Survey Action Framework (SAF)](survey-action-framework)** provides the interfaces and base implementations for components
+  (called survey action services) that survey and extract characteristics
+  about the real-world resources and stores them in an open metadata repository.
+
+* **[Event Action Framework (EAF)](event-action-framework)** provides the interfaces and base implementations for components
+  (called survey action services) that survey and extract characteristics
+  about the real-world resources and stores them in an open metadata repository.
+
+**Note:** The survey services, discovery services and the governance actions are specialized OCF connectors, making the OCF the
 **only** plug-in mechanism in the open metadata and governance technology.
 
 ----

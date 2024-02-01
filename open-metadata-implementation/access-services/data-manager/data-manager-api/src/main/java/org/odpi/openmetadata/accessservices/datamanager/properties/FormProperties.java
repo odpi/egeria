@@ -18,8 +18,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FormProperties extends DataSetProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Default constructor
      */

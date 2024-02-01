@@ -710,7 +710,7 @@ public class CreateAssetTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no asset universe for CreateSchemaType)");
             }
 
-            SchemaType schemaType = assetUniverse.getSchema();
+            SchemaType schemaType = assetUniverse.getRootSchemaType();
 
             if (schemaType == null)
             {

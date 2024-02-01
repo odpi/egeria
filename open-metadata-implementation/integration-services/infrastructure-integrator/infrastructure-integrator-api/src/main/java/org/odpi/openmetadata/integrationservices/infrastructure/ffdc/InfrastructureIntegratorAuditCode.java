@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.integrationservices.infrastructure.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
@@ -25,7 +25,7 @@ public enum InfrastructureIntegratorAuditCode implements AuditLogMessageSet
      * OMIS-INFRASTRUCTURE-INTEGRATOR-0001 - The infrastructure integrator context manager is being initialized for calls to server {0} on platform {1}
      */
     CONTEXT_INITIALIZING("OMIS-INFRASTRUCTURE-INTEGRATOR-0001",
-                        OMRSAuditLogRecordSeverity.STARTUP,
+                         AuditLogRecordSeverityLevel.STARTUP,
                         "The infrastructure integrator context manager is being initialized for calls to server {0} on platform {1}",
                         "The Infrastructure Integrator OMIS is initializing its context manager.",
                         "Verify that the start up sequence goes on to initialize the context for each connector configured for this service."),
@@ -34,7 +34,7 @@ public enum InfrastructureIntegratorAuditCode implements AuditLogMessageSet
      * OMIS-INFRASTRUCTURE-INTEGRATOR-0002 - Creating context for integration connector {0} ({1}) connecting to third party technology {2} with permitted synchronization of {3} and service options of {4}
      */
     CONNECTOR_CONTEXT_INITIALIZING("OMIS-INFRASTRUCTURE-INTEGRATOR-0002",
-                        OMRSAuditLogRecordSeverity.STARTUP,
+                                   AuditLogRecordSeverityLevel.STARTUP,
                         "Creating context for integration connector {0} ({1}) connecting to third party technology {2} with permitted synchronization of {3} and service options of {4}",
                         "A new context is created for an integration connector.  This acts as a client to the open metadata repositories " +
                                 "enabling the integration connector to synchronize open metadata with the third party technology's metadata",
@@ -44,7 +44,7 @@ public enum InfrastructureIntegratorAuditCode implements AuditLogMessageSet
      * OMIS-INFRASTRUCTURE-INTEGRATOR-0003 - The context for connector {0} has its permitted synchronization set to {1}
      */
     PERMITTED_SYNCHRONIZATION("OMIS-INFRASTRUCTURE-INTEGRATOR-0003",
-             OMRSAuditLogRecordSeverity.STARTUP,
+                              AuditLogRecordSeverityLevel.STARTUP,
              "The context for connector {0} has its permitted synchronization set to {1}",
              "The context is set up to ensure that the connector can only issue requests that support the permitted synchronization.  " +
                      "If the connector issues requests that are not permitted it is returned UserNotAuthorizedExceptions.",
@@ -55,7 +55,7 @@ public enum InfrastructureIntegratorAuditCode implements AuditLogMessageSet
      * OMIS-INFRASTRUCTURE-INTEGRATOR-0004 - The following exchange services are disabled in the context for connector {1}: {2}
      */
     DISABLED_EXCHANGE_SERVICES("OMIS-INFRASTRUCTURE-INTEGRATOR-0004",
-                               OMRSAuditLogRecordSeverity.STARTUP,
+                               AuditLogRecordSeverityLevel.STARTUP,
                                "The following exchange services are disabled in the context for connector {1}: {2}",
                                "The context is set up to ensure that the connector can only issue requests to supported services.  " +
                                        "If the connector issues requests that are not permitted it is returned UserNotAuthorizedExceptions.",
@@ -66,7 +66,7 @@ public enum InfrastructureIntegratorAuditCode implements AuditLogMessageSet
      * OMIS-INFRASTRUCTURE-INTEGRATOR-0005 - Integration connector {0} has a null context
      */
     NULL_CONTEXT("OMIS-INFRASTRUCTURE-INTEGRATOR-0005",
-                 OMRSAuditLogRecordSeverity.ERROR,
+                 AuditLogRecordSeverityLevel.ERROR,
                  "Integration connector {0} has a null context",
                  "The integration connector is running but does not have a context.  This is a timing issue in the integration daemon.",
                  "Gather information about the connector's configuration, the types of metadata it was integrating, the audit log messages " +
@@ -74,8 +74,11 @@ public enum InfrastructureIntegratorAuditCode implements AuditLogMessageSet
     ;
 
 
-    private final AuditLogMessageDefinition messageDefinition;
-
+    private final String                      logMessageId;
+    private final AuditLogRecordSeverityLevel severity;
+    private final String                      logMessage;
+    private final String                      systemAction;
+    private final String                      userAction;
 
 
     /**
@@ -84,7 +87,7 @@ public enum InfrastructureIntegratorAuditCode implements AuditLogMessageSet
      * <br><br>
      *     InfrastructureIntegratorAuditCode   auditCode = InfrastructureIntegratorAuditCode.SERVER_SHUTDOWN;
      * <br><br>
-     * This will expand out to the 4 parameters shown below.
+     * This will expand out to the 5 parameters shown below.
      *
      * @param messageId - unique id for the message
      * @param severity - severity of the message
@@ -92,17 +95,17 @@ public enum InfrastructureIntegratorAuditCode implements AuditLogMessageSet
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
      */
-    InfrastructureIntegratorAuditCode(String                     messageId,
-                                    OMRSAuditLogRecordSeverity severity,
-                                    String                     message,
-                                    String                     systemAction,
-                                    String                     userAction)
+    InfrastructureIntegratorAuditCode(String                      messageId,
+                                      AuditLogRecordSeverityLevel severity,
+                                      String                      message,
+                                      String                      systemAction,
+                                      String                      userAction)
     {
-        messageDefinition = new AuditLogMessageDefinition(messageId,
-                                                          severity,
-                                                          message,
-                                                          systemAction,
-                                                          userAction);
+        this.logMessageId = messageId;
+        this.severity = severity;
+        this.logMessage = message;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -114,7 +117,11 @@ public enum InfrastructureIntegratorAuditCode implements AuditLogMessageSet
     @Override
     public AuditLogMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new AuditLogMessageDefinition(logMessageId,
+                                             severity,
+                                             logMessage,
+                                             systemAction,
+                                             userAction);
     }
 
 
@@ -125,23 +132,32 @@ public enum InfrastructureIntegratorAuditCode implements AuditLogMessageSet
      * @return message definition object.
      */
     @Override
-    public AuditLogMessageDefinition getMessageDefinition(String ...params)
+    public AuditLogMessageDefinition getMessageDefinition(String... params)
     {
+        AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
+                                                                                    severity,
+                                                                                    logMessage,
+                                                                                    systemAction,
+                                                                                    userAction);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
     }
 
 
     /**
-     * toString() JSON-style
+     * JSON-style toString
      *
-     * @return string description
+     * @return string of property names and values for this enum
      */
     @Override
     public String toString()
     {
-        return "InfrastructureIntegratorAuditCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
+        return "AuditCode{" +
+                       "logMessageId='" + logMessageId + '\'' +
+                       ", severity=" + severity +
+                       ", logMessage='" + logMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

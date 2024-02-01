@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices.configuration.registration;
 
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -11,7 +12,8 @@ import java.io.Serializable;
  */
 public class ViewServiceRegistrationEntry implements Serializable
 {
-    private static final long     serialVersionUID    = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private int                            viewServiceCode;
     private ComponentDevelopmentStatus     viewServiceDevelopmentStatus;

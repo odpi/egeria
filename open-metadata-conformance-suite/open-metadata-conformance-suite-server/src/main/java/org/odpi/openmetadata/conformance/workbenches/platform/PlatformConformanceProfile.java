@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.conformance.beans.OpenMetadataConformanceProfilePriority;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -19,28 +17,29 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum PlatformConformanceProfile implements Serializable
+public enum PlatformConformanceProfile
 {
+    /**
+     * The technology under test is able to report on its origin.
+     */
     PLATFORM_ORIGIN       (0,  "Platform origin",
                                "The technology under test is able to report on its origin.",
                                "https://egeria-project.org/guides/cts/platform-workbench/profiles/platform-origin",
                                OpenMetadataConformanceProfilePriority.MANDATORY_PROFILE);
 
-    private static final long serialVersionUID = 1L;
-
-    private int                                    profileId;
-    private String                                 profileName;
-    private String                                 profileDescription;
-    private String                                 profileDocumentationURL;
-    private OpenMetadataConformanceProfilePriority profilePriority;
+    private final int                                    profileId;
+    private final String                                 profileName;
+    private final String                                 profileDescription;
+    private final String                                 profileDocumentationURL;
+    private final OpenMetadataConformanceProfilePriority profilePriority;
 
 
     /**
      * Default constructor sets up the values for this enum instance.
      *
-     * @param profileId int identifier for the enum, used for indexing arrays etc with the enum.
+     * @param profileId int identifier for the enum, used for indexing arrays etcetera with the enum.
      * @param profileName String name for the enum, used for message content.
-     * @param profileDescription String default description for the enum, used when there is not natural
+     * @param profileDescription String default description for the enum, used when there is not a natural
      *                             language resource bundle available.
      * @param profileDocumentationURL link to more documentation
      * @param profilePriority is the profile mandatory or not?
@@ -60,7 +59,7 @@ public enum PlatformConformanceProfile implements Serializable
 
 
     /**
-     * Return the identifier for the enum, used for indexing arrays etc with the enum.
+     * Return the identifier for the enum, used for indexing arrays etcetera with the enum.
      *
      * @return int identifier
      */
@@ -82,7 +81,7 @@ public enum PlatformConformanceProfile implements Serializable
 
 
     /**
-     * Return the default description for the enum, used when there is not natural
+     * Return the default description for the enum, used when there is not a natural
      * language resource bundle available.
      *
      * @return String default description

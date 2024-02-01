@@ -83,6 +83,7 @@ public class OpenMetadataEntityDef extends OpenMetadataTypeDef
                 ", superType=" + getSuperType() +
                 ", description='" + getDescription() + '\'' +
                 ", descriptionGUID='" + getDescriptionGUID() + '\'' +
+                ", descriptionWiki='" + getDescriptionWiki() + '\'' +
                 ", origin='" + getOrigin() + '\'' +
                 ", createdBy='" + getCreatedBy() + '\'' +
                 ", updatedBy='" + getUpdatedBy() + '\'' +

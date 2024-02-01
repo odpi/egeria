@@ -18,12 +18,12 @@ public enum GovernanceServicesDescription implements Serializable
     /**
      * Store and query asset lineage.
      */
-    OPEN_LINEAGE_SERVICES            (190,
-                                      ComponentDevelopmentStatus.STABLE,
-                                      "Open Lineage Services",
-                                      "open-lineage",
-                                      "Store and query asset lineage",
-                                      "https://egeria-project.org/services/open-lineage-services/"),
+    LINEAGE_WAREHOUSE_SERVICES(190,
+                               ComponentDevelopmentStatus.STABLE,
+                               "Lineage Warehouse Services",
+                               "open-lineage",
+                               "Store and query asset lineage",
+                               "https://egeria-project.org/services/lineage-warehouse-services/"),
 
     /**
      * Run automated open metadata conformance suite services.
@@ -86,7 +86,7 @@ public enum GovernanceServicesDescription implements Serializable
     {
         List<GovernanceServicesDescription> serviceDescriptionList = new ArrayList<>();
 
-        serviceDescriptionList.add(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES);
+        serviceDescriptionList.add(GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES);
         serviceDescriptionList.add(GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES);
         serviceDescriptionList.add(GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES);
         serviceDescriptionList.add(GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES);

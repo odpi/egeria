@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -10,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * GovernanceActionBuilder creates the parts for an entity that represents a governance action.
+ * GovernanceActionProcessStepBuilder creates the parts for an entity that represents a governance action process step.
  */
 public class GovernanceActionProcessStepBuilder extends ReferenceableBuilder
 {
@@ -50,8 +52,8 @@ public class GovernanceActionProcessStepBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
-              OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_GUID,
-              OpenMetadataAPIMapper.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+              OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_GUID,
+              OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
               null,
               repositoryHelper,
               serviceName,
@@ -80,36 +82,36 @@ public class GovernanceActionProcessStepBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataAPIMapper.DOMAIN_IDENTIFIER_PROPERTY_NAME,
+                                                               OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME,
                                                                domainIdentifier,
                                                                methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
                                                                   displayName,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,
-                                                                       OpenMetadataAPIMapper.PRODUCED_GUARDS_PROPERTY_NAME,
+                                                                       OpenMetadataType.PRODUCED_GUARDS_PROPERTY_NAME,
                                                                        supportedGuards,
                                                                        methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataAPIMapper.IGNORE_MULTIPLE_TRIGGERS_PROPERTY_NAME,
+                                                                   OpenMetadataType.IGNORE_MULTIPLE_TRIGGERS_PROPERTY_NAME,
                                                                    ignoreMultipleTriggers,
                                                                    methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataAPIMapper.WAIT_TIME_PROPERTY_NAME,
+                                                               OpenMetadataType.WAIT_TIME_PROPERTY_NAME,
                                                                waitTime,
                                                                methodName);
 

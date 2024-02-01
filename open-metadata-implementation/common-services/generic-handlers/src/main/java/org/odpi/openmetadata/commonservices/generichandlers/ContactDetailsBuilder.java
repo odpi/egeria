@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -41,8 +43,8 @@ public class ContactDetailsBuilder extends OpenMetadataAPIGenericBuilder
                                  String               serviceName,
                                  String               serverName)
     {
-        super(OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_GUID,
-              OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
+        super(OpenMetadataType.CONTACT_DETAILS_TYPE_GUID,
+              OpenMetadataType.CONTACT_DETAILS_TYPE_NAME,
               repositoryHelper,
               serviceName,
               serverName);
@@ -71,40 +73,40 @@ public class ContactDetailsBuilder extends OpenMetadataAPIGenericBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataAPIMapper.CONTACT_METHOD_TYPE_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.CONTACT_METHOD_TYPE_ENUM_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.CONTACT_METHOD_TYPE_ENUM_TYPE_NAME,
+                                                                    OpenMetadataType.CONTACT_METHOD_TYPE_PROPERTY_NAME,
+                                                                    OpenMetadataType.CONTACT_METHOD_TYPE_ENUM_TYPE_GUID,
+                                                                    OpenMetadataType.CONTACT_METHOD_TYPE_ENUM_TYPE_NAME,
                                                                     contactMethodType,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataAPIMapper.STARS_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataType.STARS_PROPERTY_NAME);
         }
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.NAME.name,
                                                                   name,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.CONTACT_TYPE_PROPERTY_NAME,
+                                                                  OpenMetadataType.CONTACT_TYPE_PROPERTY_NAME,
                                                                   contactType,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.CONTACT_METHOD_SERVICE_PROPERTY_NAME,
+                                                                  OpenMetadataType.CONTACT_METHOD_SERVICE_PROPERTY_NAME,
                                                                   contactMethodService,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.CONTACT_METHOD_VALUE_PROPERTY_NAME,
-                                                                      contactMethodValue,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataType.CONTACT_METHOD_VALUE_PROPERTY_NAME,
+                                                                  contactMethodValue,
+                                                                  methodName);
 
         return properties;
     }

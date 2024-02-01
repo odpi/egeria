@@ -34,6 +34,7 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.So
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareServerPlatformElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.UserIdentityElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.*;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -97,6 +98,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
      *                                 null).
      * @param externalSourceGUID unique identifier of the software server capability for the asset manager
      * @param externalSourceName unique name of the software server capability for the asset manager
+     * @param auditLog logging destination
      * @param maxPageSize max number of elements that can be returned on a query
      */
     public InfrastructureIntegratorContext(String                       connectorId,
@@ -121,6 +123,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
                                            String                       integrationConnectorGUID,
                                            String                       externalSourceGUID,
                                            String                       externalSourceName,
+                                           AuditLog                     auditLog,
                                            int                          maxPageSize)
     {
         super(connectorId,
@@ -134,6 +137,7 @@ public class InfrastructureIntegratorContext extends IntegrationContext
               externalSourceGUID,
               externalSourceName,
               integrationConnectorGUID,
+              auditLog,
               maxPageSize);
 
         this.capabilityManagerClient    = capabilityManagerClient;

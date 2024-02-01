@@ -51,6 +51,13 @@ public enum BasicFileConnectorErrorCode implements ExceptionMessageSet
             "Ensure the name of a readable file is passed in the address property in the Endpoint object of the Connection object."),
 
     /**
+     * BASIC-FILE-CONNECTOR-400-004 - The file {0} given in Connection object {1} is a directory
+     */
+    FILE_SPECIFIED(400, "BASIC-FILE-CONNECTOR-400-004",
+                        "The pathname {0} given in Connection object {1} points to a file not a directory",
+                        "The connector is unable to work with a file.",
+                        "Ensure a valid directory name is passed in the address property in the Endpoint object of the Connection object."),
+    /**
      * BASIC-FILE-CONNECTOR-404-001 - The file named {0} in the Connection object {1} does not exist
      */
     FILE_NOT_FOUND(404, "BASIC-FILE-CONNECTOR-404-001",
@@ -76,16 +83,15 @@ public enum BasicFileConnectorErrorCode implements ExceptionMessageSet
              "Use the details from the error message to determine the cause of the error and retry the request once it is resolved.");
 
 
-    private final ExceptionMessageDefinition messageDefinition;
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
 
 
     /**
-     * The constructor for BasicFileConnectorErrorCode expects to be passed one of the enumeration rows defined in
-     * BasicFileConnectorErrorCode above.   For example:
-     * <br><br>
-     *     BasicFileConnectorErrorCode   errorCode = BasicFileConnectorErrorCode.ERROR_SENDING_EVENT;
-     * <br><br>
-     * This will expand out to the 5 parameters shown below.
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
      * @param httpErrorCode   error code to use over REST calls
      * @param errorMessageId   unique id for the message
@@ -93,13 +99,13 @@ public enum BasicFileConnectorErrorCode implements ExceptionMessageSet
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
      */
-    BasicFileConnectorErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    BasicFileConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -111,7 +117,11 @@ public enum BasicFileConnectorErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -124,6 +134,12 @@ public enum BasicFileConnectorErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -138,8 +154,12 @@ public enum BasicFileConnectorErrorCode implements ExceptionMessageSet
     @Override
     public String toString()
     {
-        return "BasicFileConnectorErrorCode{" +
-                       "messageDefinition=" + messageDefinition +
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
                        '}';
     }
 }

@@ -72,7 +72,7 @@ public class GovernanceActionOpenLineageIntegrationProvider extends IntegrationC
 
         componentDescription.setComponentId(connectorComponentId);
         componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.TECHNICAL_PREVIEW);
-        componentDescription.setComponentName(connectorQualifiedName);
+        componentDescription.setComponentName(connectorDisplayName);
         componentDescription.setComponentDescription(connectorDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);
 

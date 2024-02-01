@@ -17,7 +17,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * The TexViewRESTResource provides the Spring API endpoints of the Type Explorer Open Metadata View Service (OMVS).
- * This interface provides an interfaces for enterprise architects.
+ * This interface provides a service for enterprise architects.
  */
 
 @RestController

@@ -21,7 +21,6 @@ import org.odpi.openmetadata.adminservices.server.OMAGServerErrorHandler;
 import org.odpi.openmetadata.adminservices.server.OMAGServerExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworkservices.gaf.admin.GAFMetadataOperationalServices;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerPlatformInstanceMap;
@@ -32,11 +31,13 @@ import org.odpi.openmetadata.governanceservers.enginehostservices.server.EngineH
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonOperationalServices;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineProxyOperationalServices;
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageServerOperationalServices;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
+import org.odpi.openmetadata.serveroperations.rest.ServerServicesListResponse;
 import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -154,7 +155,7 @@ public class OMAGServerOperationalServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            response = activateWithSuppliedConfig(userId, serverName, configStore.getServerConfig(userId, serverName, false, methodName));
+            response = activateWithSuppliedConfig(userId, serverName, configStore.getServerConfigForStartUp(userId, serverName, methodName));
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -474,6 +475,11 @@ public class OMAGServerOperationalServices
                                                                   methodName);
                     }
                 }
+
+                /*
+                 * Start publishing events from the local repository.
+                 */
+                operationalRepositoryServices.startOutboundEvents();
             }
 
             else if (ServerTypeClassification.VIEW_SERVER.equals(serverTypeClassification))
@@ -1136,7 +1142,7 @@ public class OMAGServerOperationalServices
          */
         else if (ServerTypeClassification.OPEN_LINEAGE_SERVER.equals(serverTypeClassification))
         {
-            instance.setServerServiceActiveStatus(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(), ServerActiveStatus.STARTING);
+            instance.setServerServiceActiveStatus(GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(), ServerActiveStatus.STARTING);
 
             OpenLineageServerOperationalServices
                     operationalOpenLineageServer = new OpenLineageServerOperationalServices(configuration.getLocalServerId(),
@@ -1147,14 +1153,14 @@ public class OMAGServerOperationalServices
             instance.setOpenLineageOperationalServices(operationalOpenLineageServer);
             operationalOpenLineageServer.initialize(configuration.getOpenLineageServerConfig(),
                                                     operationalRepositoryServices.getAuditLog(
-                                                            GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceCode(),
-                                                            GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceDevelopmentStatus(),
-                                                            GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
-                                                            GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceDescription(),
-                                                            GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceWiki()));
+                                                            GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceCode(),
+                                                            GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceDevelopmentStatus(),
+                                                            GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(),
+                                                            GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceDescription(),
+                                                            GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceWiki()));
 
-            activatedServiceList.add(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName());
-            instance.setServerServiceActiveStatus(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(), ServerActiveStatus.RUNNING);
+            activatedServiceList.add(GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName());
+            instance.setServerServiceActiveStatus(GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(), ServerActiveStatus.RUNNING);
         }
     }
 
@@ -1334,11 +1340,11 @@ public class OMAGServerOperationalServices
                  */
                 if (instance.getOpenLineageOperationalServices() != null)
                 {
-                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(), ServerActiveStatus.STOPPING);
+                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(), ServerActiveStatus.STOPPING);
 
                     instance.getOpenLineageOperationalServices().shutdown();
 
-                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(), ServerActiveStatus.INACTIVE);
+                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(), ServerActiveStatus.INACTIVE);
                 }
 
                 /*
@@ -1638,6 +1644,39 @@ public class OMAGServerOperationalServices
         return response;
     }
 
+
+    /**
+     * Return the list of services that are active on a specific OMAG Server that is active on this OMAG Server Platform.
+     *
+     * @param userId name of the user making the request
+     * @param serverName name of the server of interest
+     * @return List of service names
+     */
+    public ServerServicesListResponse getActiveServices(String    userId,
+                                                        String    serverName)
+    {
+        final String   methodName = "getActiveServiceListForServer";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ServerServicesListResponse response = new ServerServicesListResponse();
+
+        try
+        {
+            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, serverName, methodName);
+
+            response.setServerName(serverName);
+            response.setServerServicesList(instance.getActiveServiceListForServer());
+        }
+        catch (Exception error)
+        {
+            exceptionHandler.captureExceptions(response, error, methodName, null);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
 
 
     /**

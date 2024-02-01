@@ -67,6 +67,35 @@ public interface ActionControlInterface
 
 
     /**
+     * Using the named governance action type as a template, initiate an engine action.
+     *
+     * @param userId caller's userId
+     * @param governanceActionTypeQualifiedName unique name of the governance action type to use
+     * @param requestSourceGUIDs  request source elements for the resulting governance service
+     * @param actionTargets list of action target names to GUIDs for the resulting governance service
+     * @param startTime future start time or null for "as soon as possible".
+     * @param requestParameters request properties to be passed to the engine action
+     * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
+     * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
+     *
+     * @return unique identifier of the engine action
+     * @throws InvalidParameterException null or unrecognized qualified name of the type
+     * @throws UserNotAuthorizedException the caller is not authorized to create an engine action
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    String initiateGovernanceActionType(String                userId,
+                                        String                governanceActionTypeQualifiedName,
+                                        List<String>          requestSourceGUIDs,
+                                        List<NewActionTarget> actionTargets,
+                                        Date                  startTime,
+                                        Map<String, String>   requestParameters,
+                                        String                originatorServiceName,
+                                        String                originatorEngineName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException;
+
+
+    /**
      * Using the named governance action process as a template, initiate a chain of governance actions.
      *
      * @param userId caller's userId

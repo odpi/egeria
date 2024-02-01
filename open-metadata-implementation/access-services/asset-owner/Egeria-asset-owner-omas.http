@@ -1,0 +1,160 @@
+# Egeria-asset-owner-omas
+
+###
+# @name Get names of the subtypes of Asset
+# Asset is the top level type definition for an asset.  The type system also defines many more specialized types for Asset.  This requests lists the names of all of these specialized types found in the open metadata ecosystem that this instance of the Asset Owner OMAS is connected to.
+GET {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-owner/users/{{user}}/assets/sub-types
+
+###
+# @name Get details of the subtypes of Asset
+# Asset is the top level type definition for an asset.  The type system also defines many more specialized types for Asset.  This requests lists the details of all of these specialized types found in the open metadata ecosystem that this instance of the Asset Owner OMAS is connected to.
+GET {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-owner/users/{{user}}/assets/sub-types/descriptions
+
+###
+# @name Create a CSV Asset without schema
+# Add an asset definition for a CSV file
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-owner/users/{{user}}/assets/data-files/csv
+Content-Type: application/json
+
+{
+	"class"       : "NewCSVFileAssetRequestBody",
+	"displayName" : "My CSV File",
+	"description" : "This is a test CSV file description added with Postman.",
+	"fullPath"    : "home/my-file.csv"
+}
+
+###
+# @name Get Assets by name
+# Return a list of assets with the requested name.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-owner/users/{{user}}/assets/by-name?
+    startFrom=0&
+    pageSize=10
+Content-Type: application/json
+
+{
+    "class" : "NameRequestBody",
+    "name" : "DropFoot"
+}
+
+###
+# @name Find Assets
+# Return a list of assets with the requested search string in their name, qualified name or description.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-owner/users/{{user}}/assets/by-search-string?
+    startFrom=0&
+    pageSize=10
+Content-Type: application/json
+
+{
+    "class" : "SearchStringRequestBody",
+    "searchString" : ".*."
+}
+
+###
+# @name Create a CSV file with schema
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-owner/users/{{user}}/assets/data-files/csv
+Content-Type: application/json
+
+{
+    "class": "NewCSVFileAssetRequestBody", 
+    "displayName" : "AIS data for January 2015 zone 1", 
+    "description": "TBA .", 
+    "fullPath": "file://Users/davidradley/testplatforms/usaf/files/AIS_2015_01_Zone06.csv", 
+    "columnHeaders": ["MMSI", "BaseDateTime", "LAT", "LON", "SOG", "COG", "Heading", "VesselName", "IMO", "CallSign", "VesselType", "Status", "Length", "Width", "Draft", "Cargo"]
+}
+
+###
+# @name Get Asset Summary
+GET {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-owner/users/{{user}}/assets/{{assetGUID}}
+
+###
+# @name Get Asset's Connection
+GET {{baseURL}}/servers/{{server}}/open-metadata/common-services/asset-owner/connected-asset/users/{{user}}/assets/{{assetGUID}}/connection
+
+###
+# @name Get Schema Attributes
+GET {{baseURL}}/servers/{{server}}/open-metadata/common-services/asset-owner/connected-asset/users/{{user}}/assets/schemas/{{guid}}/schema-attributes?
+    elementStart=0&
+    maxElements=100
+
+###
+# @name Create Database Asset
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-owner/users/{{user}}/assets/Database
+Content-Type: application/json
+
+{
+"class":"AssetProperties",
+"qualifiedName": "EIN124",
+"displayName": "Employee 1",
+"description": "To Create First Employee Asset",
+"extendedProperties": {
+"type":"Oracle",
+"deployedImplementationType":"On-Prem",
+"databaseVersion":"19c"
+}
+}
+
+###
+# @name Add Database SchemaType
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-owner/users/{{user}}/assets/{{assetGUID}}/schemas
+Content-Type: application/json
+
+{
+"class" :"SchemaTypeProperties",
+"versionNumber" : "v1.0",
+"author":"Employee Dept",
+"usage" : "Employee DB Schema",
+"encodingStandard":"utf8",
+"namespace" : "Employee Repository",
+"displayName" : "Schema for Employee DB",
+"description" : "Employee Repository Employee Details ",
+"qualifiedName" :"E_EmployeeSchema",
+"typeName":"RelationalDBSchemaType"
+}
+
+###
+# @name Add Simple SchemaType
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-owner/users/{{user}}/assets/{{assetGUID}}/schemas
+Content-Type: application/json
+
+{
+    "class" :"PrimitiveSchemaTypeProperties",
+    "displayName" : "Schema for Simple Table",
+    "description" : "Employee Details ",
+    "qualifiedName" :"ListOfValues",
+    "typeName":"PrimitiveSchemaType"
+}
+
+###
+# @name Add SchemaAttribute
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-owner/users/{{user}}/assets/{{assetGUID}}/schemas/{{schemaTypeGUID}}/schema-attributes
+Content-Type: application/json
+
+{
+    "class":"SchemaAttributeProperties",
+    "allowsDuplicateValues":"false",
+    "orderedValues":"false",
+    "sortOrder": "ASCENDING",
+    "minimumLength": "5",
+    "length":"20",
+    "isNullable":"false",
+    "displayName":"Employee ID",
+    "description":"Unique ID Assigned to each Employee",
+    "qualifiedName":"EMP_DTLSx",
+    "typeName":"RelationalTable",
+     "additionalProperties": {    
+     "encodingStandard":"base64",
+     "dataType":"string",
+     "type":"RelationalDBSchemaType"
+     },
+    "attributeType": {
+        "class":"SchemaTypeProperties",
+        "usage" : "Table in DB Schema",
+        "displayName":"Employee Table",            
+        "qualifiedName":"EMP_DTLSx",
+        "typeName":"RelationalTableType",
+         "additionalProperties": {    
+     
+     "usedInSchemas":"1"
+            }
+    }
+}

@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -76,8 +77,8 @@ public class UserIdentityBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
-              OpenMetadataAPIMapper.USER_IDENTITY_TYPE_GUID,
-              OpenMetadataAPIMapper.USER_IDENTITY_TYPE_NAME,
+              OpenMetadataType.USER_IDENTITY_TYPE_GUID,
+              OpenMetadataType.USER_IDENTITY_TYPE_NAME,
               extendedProperties,
               repositoryHelper,
               serviceName,
@@ -101,13 +102,13 @@ public class UserIdentityBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.USER_ID_PROPERTY_NAME,
+                                                                  OpenMetadataType.USER_ID_PROPERTY_NAME,
                                                                   userId,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DISTINGUISHED_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.DISTINGUISHED_NAME_PROPERTY_NAME,
                                                                   distinguishedName,
                                                                   methodName);
 

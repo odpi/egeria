@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.assetowner.metadataelements.RelatedE
 import org.odpi.openmetadata.accessservices.assetowner.properties.OwnerType;
 import org.odpi.openmetadata.accessservices.assetowner.properties.RelationshipProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -56,7 +56,7 @@ abstract class AssetOwnerOMASConverter<B> extends OpenMetadataAPIGenericConverte
 
             if (instancePropertiesMap != null)
             {
-                instancePropertiesMap.remove(OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME);
+                instancePropertiesMap.remove(OpenMetadataType.OWNER_TYPE_PROPERTY_NAME);
             }
 
             properties.setInstanceProperties(instancePropertiesMap);
@@ -82,7 +82,7 @@ abstract class AssetOwnerOMASConverter<B> extends OpenMetadataAPIGenericConverte
 
             if (instancePropertiesMap != null)
             {
-                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME);
+                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataType.OWNER_TYPE_PROPERTY_NAME);
 
                 if (instancePropertyValue instanceof EnumPropertyValue)
                 {

@@ -11,6 +11,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionTypeProperties;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.ConsolidatedDuplicatesRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.EngineActionElementResponse;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.EngineActionElementsResponse;
@@ -18,14 +19,18 @@ import org.odpi.openmetadata.frameworkservices.gaf.rest.EngineActionRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.GovernanceActionProcessElementResponse;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.GovernanceActionProcessElementsResponse;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.GovernanceActionProcessRequestBody;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.GovernanceActionTypeRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.GovernanceActionProcessStepResponse;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.GovernanceActionProcessStepsResponse;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.GovernanceActionTypeResponse;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.GovernanceActionTypesResponse;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.GovernanceActionRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.NewGovernanceActionProcessRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.NextGovernanceActionProcessStepRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.NextGovernanceActionProcessStepsResponse;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.PeerDuplicatesRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateGovernanceActionProcessRequestBody;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateGovernanceActionTypeRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateGovernanceActionProcessStepRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.server.OpenGovernanceRESTServices;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,6 +56,192 @@ public class OpenGovernanceResource
 {
     private final OpenGovernanceRESTServices restAPI = new OpenGovernanceRESTServices();
 
+
+
+    /* =====================================================================================================================
+     * A governance action type describes a step in a governance action process
+     */
+
+    /**
+     * Create a new metadata element to represent a governance action type.
+     *
+     * @param serverName name of the service to route the request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId calling user
+     * @param requestBody properties about the process to store
+     *
+     * @return unique identifier of the new governance action type or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/governance-action-types/new")
+    @Operation(summary="createGovernanceActionType",
+            description="Create a new metadata element to represent a governance action type.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-action-type"))
+
+    public GUIDResponse createGovernanceActionType(@PathVariable String                         serverName,
+                                                   @PathVariable String                         serviceURLMarker,
+                                                   @PathVariable String                         userId,
+                                                   @RequestBody  GovernanceActionTypeProperties requestBody)
+    {
+        return restAPI.createGovernanceActionType(serverName, serviceURLMarker, userId, requestBody);
+    }
+
+
+    /**
+     * Update the metadata element representing a governance action type.
+     *
+     * @param serverName name of the service to route the request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId calling user
+     * @param governanceActionTypeGUID unique identifier of the metadata element to update
+     * @param requestBody new properties for the metadata element
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/governance-action-types/{governanceActionTypeGUID}/update")
+    @Operation(summary="updateGovernanceActionType",
+            description="Create a new metadata element to represent a governance action type.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-action-type"))
+
+    public VoidResponse updateGovernanceActionType(@PathVariable String                                serverName,
+                                                   @PathVariable String                                serviceURLMarker,
+                                                   @PathVariable String                                userId,
+                                                   @PathVariable String                                governanceActionTypeGUID,
+                                                   @RequestBody  UpdateGovernanceActionTypeRequestBody requestBody)
+    {
+        return restAPI.updateGovernanceActionType(serverName, serviceURLMarker, userId, governanceActionTypeGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the metadata element representing a governance action type.
+     *
+     * @param serverName name of the service to route the request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId calling user
+     * @param governanceActionTypeGUID unique identifier of the metadata element to remove
+     * @param requestBody null request body
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/governance-action-types/{governanceActionTypeGUID}/remove")
+    @Operation(summary="removeGovernanceActionType",
+            description="Remove the metadata element representing a governance action type.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-action-type"))
+
+    public VoidResponse removeGovernanceActionType(@PathVariable                   String          serverName,
+                                                   @PathVariable                   String          serviceURLMarker,
+                                                   @PathVariable                   String          userId,
+                                                   @PathVariable                   String          governanceActionTypeGUID,
+                                                   @RequestBody (required = false) NullRequestBody requestBody)
+    {
+        return restAPI.removeGovernanceActionType(serverName, serviceURLMarker, userId, governanceActionTypeGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of governance action type metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param serverName name of the service to route the request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/governance-action-types/by-search-string")
+    @Operation(summary="findGovernanceActionTypes",
+            description="Retrieve the list of governance action type metadata elements that contain the search string. The search string is treated as a regular expression.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-action-type"))
+
+    public GovernanceActionTypesResponse findGovernanceActionTypes(@PathVariable String                  serverName,
+                                                                   @PathVariable String                  serviceURLMarker,
+                                                                   @PathVariable String                  userId,
+                                                                   @RequestParam int                     startFrom,
+                                                                   @RequestParam int                     pageSize,
+                                                                   @RequestBody  SearchStringRequestBody requestBody)
+    {
+        return restAPI.findGovernanceActionTypes(serverName, serviceURLMarker, userId, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of governance action type metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param serverName name of the service to route the request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody name to search for
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/governance-action-types/by-name")
+    @Operation(summary="getGovernanceActionTypesByName",
+            description="Retrieve the list of governance action type metadata elements with a matching qualified or display name. There are no wildcards supported on this request.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-action-type"))
+
+    public GovernanceActionTypesResponse getGovernanceActionTypesByName(@PathVariable String          serverName,
+                                                                        @PathVariable String          serviceURLMarker,
+                                                                        @PathVariable String          userId,
+                                                                        @RequestParam int             startFrom,
+                                                                        @RequestParam int             pageSize,
+                                                                        @RequestBody  NameRequestBody requestBody)
+    {
+        return restAPI.getGovernanceActionTypesByName(serverName, serviceURLMarker, userId, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
+     * Retrieve the governance action type metadata element with the supplied unique identifier.
+     *
+     * @param serverName name of the service to route the request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId calling user
+     * @param governanceActionTypeGUID unique identifier of the governance action type
+     *
+     * @return requested metadata element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @GetMapping(path = "/governance-action-types/{governanceActionTypeGUID}")
+    @Operation(summary="getGovernanceActionTypeByGUID",
+            description="Retrieve the governance action type metadata element with the supplied unique identifier.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-action-type"))
+
+    public GovernanceActionTypeResponse getGovernanceActionTypeByGUID(@PathVariable String serverName,
+                                                                      @PathVariable String serviceURLMarker,
+                                                                      @PathVariable String userId,
+                                                                      @PathVariable String governanceActionTypeGUID)
+    {
+        return restAPI.getGovernanceActionTypeByGUID(serverName, serviceURLMarker, userId, governanceActionTypeGUID);
+    }
 
 
     /* =====================================================================================================================
@@ -343,7 +534,7 @@ public class OpenGovernanceResource
      * @param serverName name of the service to route the request to
      * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId calling user
-     * @param processStepGUID unique identifier of the metadata element to update
+     * @param governanceActionTypeGUID unique identifier of the metadata element to update
      * @param requestBody new properties for the metadata element
      *
      * @return void or
@@ -351,7 +542,7 @@ public class OpenGovernanceResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/governance-action-process-steps/{processStepGUID}/update")
+    @PostMapping(path = "/governance-action-process-steps/{governanceActionTypeGUID}/update")
     @Operation(summary="updateGovernanceActionProcessStep",
                description="Create a new metadata element to represent a governance action process step.",
                externalDocs=@ExternalDocumentation(description="Further Information",
@@ -360,10 +551,10 @@ public class OpenGovernanceResource
     public VoidResponse updateGovernanceActionProcessStep(@PathVariable String                                       serverName,
                                                           @PathVariable String                                       serviceURLMarker,
                                                           @PathVariable String                                       userId,
-                                                          @PathVariable String                                       processStepGUID,
+                                                          @PathVariable String                                       governanceActionTypeGUID,
                                                           @RequestBody  UpdateGovernanceActionProcessStepRequestBody requestBody)
     {
-        return restAPI.updateGovernanceActionProcessStep(serverName, serviceURLMarker, userId, processStepGUID, requestBody);
+        return restAPI.updateGovernanceActionProcessStep(serverName, serviceURLMarker, userId, governanceActionTypeGUID, requestBody);
     }
 
 
@@ -752,7 +943,7 @@ public class OpenGovernanceResource
      * @param governanceEngineName name of the governance engine that should execute the request
      * @param requestBody properties for the governance action and to pass to the governance service
      *
-     * @return unique identifier of the governance action or
+     * @return unique identifier of the engine action or
      *  InvalidParameterException null qualified name
      *  UserNotAuthorizedException the caller is not authorized to create a governance action
      *  PropertyServerException there is a problem with the metadata store
@@ -779,6 +970,34 @@ public class OpenGovernanceResource
      * @param serverName     name of server instance to route request to
      * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId caller's userId
+     * @param requestBody properties to initiate the new instance of the engine action
+     *
+     * @return unique identifier of the first engine action of the process or
+     *  InvalidParameterException null or unrecognized qualified name of the process
+     *  UserNotAuthorizedException the caller is not authorized to create a governance action process
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    @PostMapping(path = "/governance-action-types/initiate")
+    @Operation(summary="initiateGovernanceActionType",
+               description="Using the named governance action type as a template, initiate an engine action.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/governance-action-type"))
+
+    public GUIDResponse initiateGovernanceActionType(@PathVariable String                          serverName,
+                                                     @PathVariable String                          serviceURLMarker,
+                                                     @PathVariable String                          userId,
+                                                     @RequestBody  GovernanceActionTypeRequestBody requestBody)
+    {
+        return restAPI.initiateGovernanceActionType(serverName, serviceURLMarker, userId, requestBody);
+    }
+
+
+    /**
+     * Using the named governance action process as a template, initiate a chain of engine actions.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
      * @param requestBody properties to initiate the new instance of the process
      *
      * @return unique identifier of the first engine action of the process or
@@ -788,9 +1007,9 @@ public class OpenGovernanceResource
      */
     @PostMapping(path = "/governance-action-processes/initiate")
     @Operation(summary="initiateGovernanceActionProcess",
-               description="Using the named governance action process as a template, initiate a chain of engine actions.",
-               externalDocs=@ExternalDocumentation(description="Further Information",
-                                                   url="https://egeria-project.org/concepts/governance-action-process"))
+            description="Using the named governance action process as a template, initiate a chain of engine actions.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-action-process"))
 
     public GUIDResponse initiateGovernanceActionProcess(@PathVariable String                             serverName,
                                                         @PathVariable String                             serviceURLMarker,

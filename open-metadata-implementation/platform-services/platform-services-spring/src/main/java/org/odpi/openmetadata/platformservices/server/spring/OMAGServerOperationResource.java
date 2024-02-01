@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * OMAGServerOperationResource provides the REST API for controlling the start up, management and
+ * OMAGServerOperationResource provides the REST API for controlling the start-up, management and
  * shutdown of services in the OMAG Server.
  */
 @RestController
@@ -220,9 +220,7 @@ public class OMAGServerOperationResource
     @Operation(summary="getActiveConfiguration",
             description="Retrieve the configuration document used to start a running instance of a server. The stored configuration " +
                     "document may have changed since the server was started.  This operation makes it possible to verify the " +
-                    "configuration values actually being used in the running server. \n" +
-                    "\n" +
-                    "An InvalidParameterException is returned if the server is not running.",
+                    "configuration values actually being used in the running server. An InvalidParameterException is returned if the server is not running.",
             externalDocs=@ExternalDocumentation(description="Configuration Documents",
                     url="https://egeria-project.org/concepts/configuration-document"))
 
@@ -250,9 +248,7 @@ public class OMAGServerOperationResource
     @Operation(summary="getActiveServerStatus",
                description="Retrieve the status for a running instance of a server. The stored configuration " +
                                    "document may have changed since the server was started.  This operation makes it possible to verify that " +
-                                   "all the services. \n" +
-                                   "\n" +
-                                   "An InvalidParameterException is returned if the server is not running.",
+                                   "all the services. An InvalidParameterException is returned if the server is not running.",
                externalDocs=@ExternalDocumentation(description="OMAG Server",
                                                    url="https://egeria-project.org/concepts/omag-server"))
 

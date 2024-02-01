@@ -7,7 +7,8 @@ import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.DeleteSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeBuilder;
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -26,18 +27,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DATA_FLOW_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.GUID_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TABULAR_COLUMN_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TABULAR_SCHEMA_TYPE_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME;
+
 
 /**
  * DataEngineSchemaTypeHandler manages schema types objects from the property server. It runs server-side in the
@@ -98,17 +88,33 @@ public class DataEngineSchemaTypeHandler {
     public String upsertSchemaType(String userId, SchemaType schemaType, String anchorGUID, String externalSourceName) throws InvalidParameterException,
                                                                                                            PropertyServerException,
                                                                                                            UserNotAuthorizedException {
-        String methodName = "upsertSchemaType";
+        final String methodName = "upsertSchemaType";
+        final String anchorGUIDParameterName = "anchorGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(schemaType.getQualifiedName(), QUALIFIED_NAME_PROPERTY_NAME, methodName);
-        invalidParameterHandler.validateName(schemaType.getDisplayName(), DISPLAY_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(schemaType.getQualifiedName(), OpenMetadataProperty.QUALIFIED_NAME.name, methodName);
+        invalidParameterHandler.validateName(schemaType.getDisplayName(), OpenMetadataProperty.DISPLAY_NAME.name, methodName);
 
         Optional<EntityDetail> originalSchemaTypeEntity = findSchemaTypeEntity(userId, schemaType.getQualifiedName());
 
         SchemaTypeBuilder schemaTypeBuilder = getSchemaTypeBuilder(schemaType);
-        if (anchorGUID != null) {
-            schemaTypeBuilder.setAnchors(userId, anchorGUID, methodName);
+        if (anchorGUID != null)
+        {
+            EntityDetail anchorEntity = schemaTypeHandler.getEntityFromRepository(userId,
+                                                                                  anchorGUID,
+                                                                                  anchorGUIDParameterName,
+                                                                                  OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                                  null,
+                                                                                  null,
+                                                                                  false,
+                                                                                  false,
+                                                                                  null,
+                                                                                  methodName);
+
+            if (anchorEntity != null)
+            {
+                schemaTypeBuilder.setAnchors(userId, anchorEntity.getGUID(), anchorEntity.getType().getTypeDefName(), methodName);
+            }
         }
 
         String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngine(userId, externalSourceName);
@@ -151,7 +157,7 @@ public class DataEngineSchemaTypeHandler {
     public Optional<EntityDetail> findSchemaTypeEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
                                                                                                    PropertyServerException,
                                                                                                    InvalidParameterException {
-        return dataEngineCommonHandler.findEntity(userId, qualifiedName, SCHEMA_TYPE_TYPE_NAME);
+        return dataEngineCommonHandler.findEntity(userId, qualifiedName, OpenMetadataType.SCHEMA_TYPE_TYPE_NAME);
     }
 
     /**
@@ -172,8 +178,8 @@ public class DataEngineSchemaTypeHandler {
         String methodName = "addDataFlowRelationship";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(dataSupplierQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
-        invalidParameterHandler.validateName(dataConsumerQualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(dataSupplierQualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, methodName);
+        invalidParameterHandler.validateName(dataConsumerQualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, methodName);
 
         Optional<EntityDetail> dataSupplierEntity = getDataFlowEntity(userId, dataSupplierQualifiedName);
         Optional<EntityDetail> dataconsumertEntity = getDataFlowEntity(userId, dataConsumerQualifiedName);
@@ -190,12 +196,12 @@ public class DataEngineSchemaTypeHandler {
         }
 
         InstanceProperties relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName, null,
-                OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME, description, methodName);
+                                                                                                 OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName, relationshipProperties,
-                OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME, formula, methodName);
+                                                                              OpenMetadataProperty.FORMULA.name, formula, methodName);
 
         dataEngineCommonHandler.upsertExternalRelationship(userId, dataSupplierEntity.get().getGUID(), dataconsumertEntity.get().getGUID(),
-                DATA_FLOW_TYPE_NAME, dataSupplierEntity.get().getType().getTypeDefName(),
+                                                           OpenMetadataType.DATA_FLOW_TYPE_NAME, dataSupplierEntity.get().getType().getTypeDefName(),
                 dataconsumertEntity.get().getType().getTypeDefName(), externalSourceName, relationshipProperties);
     }
 
@@ -215,14 +221,14 @@ public class DataEngineSchemaTypeHandler {
     private Optional<EntityDetail> getDataFlowEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
                                                                                                  PropertyServerException,
                                                                                                  InvalidParameterException {
-        Optional<EntityDetail> referenceableEntity = dataEngineCommonHandler.findEntity(userId, qualifiedName, REFERENCEABLE_TYPE_NAME);
+        Optional<EntityDetail> referenceableEntity = dataEngineCommonHandler.findEntity(userId, qualifiedName, OpenMetadataType.REFERENCEABLE.typeName);
 
         if (referenceableEntity.isPresent()) {
             EntityDetail entityDetail = referenceableEntity.get();
 
-            if (TABULAR_SCHEMA_TYPE_TYPE_NAME.equalsIgnoreCase(entityDetail.getType().getTypeDefName())) {
+            if (OpenMetadataType.TABULAR_SCHEMA_TYPE_TYPE_NAME.equalsIgnoreCase(entityDetail.getType().getTypeDefName())) {
                 return dataEngineCommonHandler.getEntityForRelationship(userId, entityDetail.getGUID(),
-                        ASSET_TO_SCHEMA_TYPE_TYPE_NAME, TABULAR_SCHEMA_TYPE_TYPE_NAME);
+                                                                        OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME, OpenMetadataType.TABULAR_SCHEMA_TYPE_TYPE_NAME);
             }
         }
 
@@ -250,21 +256,23 @@ public class DataEngineSchemaTypeHandler {
         String methodName = "removeSchemaType";
         dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(schemaTypeGUID, GUID_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateGUID(schemaTypeGUID, OpenMetadataProperty.GUID.name, methodName);
 
         // remove the tabular columns manually, because schemaTypeHandler.removeSchemaType does not remove the columns
         Set<String> schemaAttributeGUIDs = getSchemaAttributesForSchemaType(userId, schemaTypeGUID);
         for (String schemaAttributeGUID : schemaAttributeGUIDs) {
-            dataEngineCommonHandler.removeEntity(userId, schemaAttributeGUID, TABULAR_COLUMN_TYPE_NAME, externalSourceName);
+            dataEngineCommonHandler.removeEntity(userId, schemaAttributeGUID, OpenMetadataType.TABULAR_COLUMN_TYPE_NAME, externalSourceName);
         }
-        dataEngineCommonHandler.removeEntity(userId, schemaTypeGUID, TABULAR_SCHEMA_TYPE_TYPE_NAME, externalSourceName);
+        dataEngineCommonHandler.removeEntity(userId, schemaTypeGUID, OpenMetadataType.TABULAR_SCHEMA_TYPE_TYPE_NAME, externalSourceName);
     }
 
     private Set<String> getSchemaAttributesForSchemaType(String userId, String schemaTypeGUID) throws UserNotAuthorizedException,
                                                                                                       PropertyServerException,
                                                                                                       InvalidParameterException {
         Set<EntityDetail> entities = dataEngineCommonHandler.getEntitiesForRelationship(userId, schemaTypeGUID,
-                TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME, SCHEMA_ATTRIBUTE_TYPE_NAME, SCHEMA_TYPE_TYPE_NAME);
+                                                                                        OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                        OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                                        OpenMetadataType.SCHEMA_TYPE_TYPE_NAME);
 
         if (CollectionUtils.isEmpty(entities)) {
             return new HashSet<>();
@@ -284,7 +292,7 @@ public class DataEngineSchemaTypeHandler {
         return new SchemaTypeBuilder(schemaType.getQualifiedName(), schemaType.getDisplayName(), null,
                 schemaType.getVersionNumber(), false, schemaType.getAuthor(), schemaType.getUsage(),
                 schemaType.getEncodingStandard(), null, null,
-                TABULAR_SCHEMA_TYPE_TYPE_GUID, TABULAR_SCHEMA_TYPE_TYPE_NAME,
+                                     OpenMetadataType.TABULAR_SCHEMA_TYPE_TYPE_GUID, OpenMetadataType.TABULAR_SCHEMA_TYPE_TYPE_NAME,
                 null, repositoryHelper, serviceName, serverName);
     }
 }

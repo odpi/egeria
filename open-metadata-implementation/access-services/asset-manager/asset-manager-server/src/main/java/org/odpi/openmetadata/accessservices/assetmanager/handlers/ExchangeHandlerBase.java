@@ -16,6 +16,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -312,7 +314,7 @@ class ExchangeHandlerBase
                                                                   correlationProperties.getAssetManagerGUID(),
                                                                   assetManagerGUIDParameterName,
                                                                   correlationProperties.getAssetManagerName(),
-                                                                  OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                  OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                   getPermittedSynchronization(correlationProperties.getSynchronizationDirection()),
                                                                   correlationProperties.getSynchronizationDescription(),
                                                                   null,
@@ -411,7 +413,7 @@ class ExchangeHandlerBase
                                                                     correlationProperties.getAssetManagerGUID(),
                                                                     scopeGUIDParameterName,
                                                                     correlationProperties.getAssetManagerName(),
-                                                                    OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                    OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
                                                                     effectiveTime,
@@ -460,7 +462,7 @@ class ExchangeHandlerBase
                                                                         elementGUIDParameterName,
                                                                         elementTypeName,
                                                                         assetManagerGUID,
-                                                                        OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                        OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                         assetManagerName,
                                                                         forLineage,
                                                                         forDuplicateProcessing,
@@ -583,24 +585,24 @@ class ExchangeHandlerBase
         if ((glossaryEntity != null) && (glossaryEntity.getProperties() != null))
         {
             supplementaryProperties.setDisplayName(repositoryHelper.getStringProperty(serviceName,
-                                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                                      OpenMetadataProperty.DISPLAY_NAME.name,
                                                                                       glossaryEntity.getProperties(),
                                                                                       methodName));
 
             supplementaryProperties.setSummary(repositoryHelper.getStringProperty(serviceName,
-                                                                                  OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME,
+                                                                                  OpenMetadataType.SUMMARY_PROPERTY_NAME,
                                                                                   glossaryEntity.getProperties(),
                                                                                   methodName));
             supplementaryProperties.setDescription(repositoryHelper.getStringProperty(serviceName,
-                                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                                      OpenMetadataProperty.DESCRIPTION.name,
                                                                                       glossaryEntity.getProperties(),
                                                                                       methodName));
             supplementaryProperties.setAbbreviation(repositoryHelper.getStringProperty(serviceName,
-                                                                                       OpenMetadataAPIMapper.ABBREVIATION_PROPERTY_NAME,
+                                                                                       OpenMetadataType.ABBREVIATION_PROPERTY_NAME,
                                                                                        glossaryEntity.getProperties(),
                                                                                        methodName));
             supplementaryProperties.setUsage(repositoryHelper.getStringProperty(serviceName,
-                                                                                OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
+                                                                                OpenMetadataType.USAGE_PROPERTY_NAME,
                                                                                 glossaryEntity.getProperties(),
                                                                                 methodName));
         }
@@ -644,7 +646,7 @@ class ExchangeHandlerBase
         List<NoteLogElement> noteLogs = noteLogHandler.getAttachedNoteLogs(userId,
                                                                            elementGUID,
                                                                            elementParameterName,
-                                                                           OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                           OpenMetadataType.REFERENCEABLE.typeName,
                                                                            0,
                                                                            0,
                                                                            false,
@@ -747,7 +749,7 @@ class ExchangeHandlerBase
         this.validateExternalIdentifier(userId,
                                         elementGUID,
                                         elementGUIDParameterName,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                        OpenMetadataType.REFERENCEABLE.typeName,
                                         correlationProperties,
                                         forLineage,
                                         forDuplicateProcessing,
@@ -759,7 +761,7 @@ class ExchangeHandlerBase
             externalIdentifierHandler.addDataFieldValuesClassification(userId,
                                                                        elementGUID,
                                                                        elementGUIDParameterName,
-                                                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                       OpenMetadataType.REFERENCEABLE.typeName,
                                                                        properties.getDefaultValue(),
                                                                        properties.getSampleValues(),
                                                                        properties.getDataPattern(),
@@ -774,7 +776,7 @@ class ExchangeHandlerBase
             externalIdentifierHandler.addDataFieldValuesClassification(userId,
                                                                        elementGUID,
                                                                        elementGUIDParameterName,
-                                                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                       OpenMetadataType.REFERENCEABLE.typeName,
                                                                        null,
                                                                        null,
                                                                        null,
@@ -818,7 +820,7 @@ class ExchangeHandlerBase
         this.validateExternalIdentifier(userId,
                                         elementGUID,
                                         elementGUIDParameterName,
-                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                        OpenMetadataType.REFERENCEABLE.typeName,
                                         correlationProperties,
                                         forLineage,
                                         forDuplicateProcessing,
@@ -828,7 +830,7 @@ class ExchangeHandlerBase
         externalIdentifierHandler.removeDataFieldValuesClassification(userId,
                                                                       elementGUID,
                                                                       elementGUIDParameterName,
-                                                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                      OpenMetadataType.REFERENCEABLE.typeName,
                                                                       forLineage,
                                                                       forDuplicateProcessing,
                                                                       effectiveTime,

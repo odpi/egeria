@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -20,14 +21,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SoftwareServerProperties extends ITInfrastructureProperties
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-    private static final String deployedImplementationTypeProperty = "deployedImplementationType";
     private static final String versionProperty                    = "serverVersion";
     private static final String sourceProperty                     = "source";
     private static final String userIdProperty                     = "userId";
 
-    private String  softwareServerType    = null;
     private String  softwareServerVersion = null;
     private String  softwareServerSource  = null;
     private String  softwareServerUserId  = null;
@@ -52,7 +52,6 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
 
         if (template != null)
         {
-            softwareServerType    = template.getSoftwareServerType();
             softwareServerVersion = template.getSoftwareServerVersion();
             softwareServerSource  = template.getSoftwareServerSource();
             softwareServerUserId  = template.getSoftwareServerUserId();
@@ -75,12 +74,6 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
 
             if (assetExtendedProperties != null)
             {
-                if (assetExtendedProperties.get(deployedImplementationTypeProperty) != null)
-                {
-                    softwareServerType = assetExtendedProperties.get(deployedImplementationTypeProperty).toString();
-                    assetExtendedProperties.remove(deployedImplementationTypeProperty);
-                }
-
                 if (assetExtendedProperties.get(versionProperty) != null)
                 {
                     softwareServerVersion = assetExtendedProperties.get(versionProperty).toString();
@@ -120,11 +113,6 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
         if (extendedProperties == null)
         {
             extendedProperties = new HashMap<>();
-        }
-
-        if (softwareServerType != null)
-        {
-            extendedProperties.put(deployedImplementationTypeProperty, softwareServerType);
         }
 
         if (softwareServerVersion != null)
@@ -171,10 +159,6 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
             assetExtendedProperties = new HashMap<>();
         }
 
-        if (softwareServerType != null)
-        {
-            assetExtendedProperties.put(deployedImplementationTypeProperty, softwareServerType);
-        }
         if (softwareServerVersion != null)
         {
             assetExtendedProperties.put(versionProperty, softwareServerVersion);
@@ -191,28 +175,6 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
         assetProperties.setExtendedProperties(assetExtendedProperties);
 
         return assetProperties;
-    }
-
-
-    /**
-     * Return the type description for the server's type.
-     *
-     * @return type description string
-     */
-    public String getSoftwareServerType()
-    {
-        return softwareServerType;
-    }
-
-
-    /**
-     * Set up the type description for the server's type.
-     *
-     * @param softwareServerType type description string
-     */
-    public void setSoftwareServerType(String softwareServerType)
-    {
-        this.softwareServerType = softwareServerType;
     }
 
 
@@ -302,7 +264,7 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
                        ", vendorProperties=" + getVendorProperties() +
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
-                       ", softwareServerType='" + softwareServerType + '\'' +
+                       ", deployedImplementationType='" + getDeployedImplementationType() + '\'' +
                        ", softwareServerVersion='" + softwareServerVersion + '\'' +
                        ", softwareServerSource='" + softwareServerSource + '\'' +
                        ", softwareServerUserId='" + softwareServerUserId + '\'' +
@@ -333,8 +295,7 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
             return false;
         }
         SoftwareServerProperties that = (SoftwareServerProperties) objectToCompare;
-        return Objects.equals(softwareServerType, that.softwareServerType) &&
-                Objects.equals(softwareServerVersion, that.softwareServerVersion) &&
+        return Objects.equals(softwareServerVersion, that.softwareServerVersion) &&
                 Objects.equals(softwareServerSource, that.softwareServerSource) &&
                 Objects.equals(softwareServerUserId, that.softwareServerUserId);
     }
@@ -348,6 +309,6 @@ public class SoftwareServerProperties extends ITInfrastructureProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), softwareServerType, softwareServerVersion, softwareServerSource, softwareServerUserId);
+        return Objects.hash(super.hashCode(), softwareServerVersion, softwareServerSource, softwareServerUserId);
     }
 }

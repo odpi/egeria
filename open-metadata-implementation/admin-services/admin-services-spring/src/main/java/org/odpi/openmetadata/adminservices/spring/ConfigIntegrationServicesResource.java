@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adminservices.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.server.OMAGServerAdminForIntegrationServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig;
@@ -42,6 +43,11 @@ public class ConfigIntegrationServicesResource
      */
     @GetMapping("/integration-services")
 
+    @Operation(summary="getRegisteredIntegrationServices",
+               description="Return the list of registered integration services for this server.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/services/omis/"))
+
     public RegisteredOMAGServicesResponse getRegisteredIntegrationServices(@PathVariable String userId,
                                                                            @PathVariable String serverName)
     {
@@ -57,6 +63,11 @@ public class ConfigIntegrationServicesResource
      * @return response containing the integration services configuration
      */
     @GetMapping("/integration-services/configuration")
+
+    @Operation(summary="getIntegrationServicesConfiguration",
+               description="Return the integration services configuration for this server.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/services/omis/"))
 
     public IntegrationServicesResponse getIntegrationServicesConfiguration(@PathVariable String userId,
                                                                            @PathVariable String serverName)
@@ -75,6 +86,11 @@ public class ConfigIntegrationServicesResource
      */
     @GetMapping("/integration-services/{serviceURLMarker}/configuration")
 
+    @Operation(summary="getIntegrationServiceConfiguration",
+               description="Return the configuration for the named integration service for this server.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/services/omis/"))
+
     public IntegrationServiceConfigResponse getIntegrationServiceConfiguration(@PathVariable String userId,
                                                                                @PathVariable String serverName,
                                                                                @PathVariable String serviceURLMarker)
@@ -84,8 +100,7 @@ public class ConfigIntegrationServicesResource
 
 
     /**
-     * Enable a single registered integration service.  This builds the integration service configuration for the
-     * server's config document.
+     * Enable a single registered integration service.  This builds the integration service configuration for the server's config document.
      *
      * @param userId  user that is issuing the request.
      * @param serverName       local server name.
@@ -97,6 +112,12 @@ public class ConfigIntegrationServicesResource
      * OMAGInvalidParameterException invalid serverName parameter.
      */
     @PostMapping(path = "/integration-services/{serviceURLMarker}")
+
+    @Operation(summary="configureIntegrationService",
+               description="Enable a single registered integration service.  " +
+                                   "This builds the integration service configuration for the server's config document.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/services/omis/"))
 
     public VoidResponse configureIntegrationService(@PathVariable String                        userId,
                                                     @PathVariable String                        serverName,
@@ -121,6 +142,11 @@ public class ConfigIntegrationServicesResource
      */
     @PostMapping(path = "/integration-services/configuration")
 
+    @Operation(summary="configureIntegrationService",
+               description="Add configuration for a single integration service to the server's config document.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/services/omis/"))
+
     public VoidResponse configureIntegrationService(@PathVariable String                   userId,
                                                     @PathVariable String                   serverName,
                                                     @RequestBody  IntegrationServiceConfig serviceConfig)
@@ -130,8 +156,7 @@ public class ConfigIntegrationServicesResource
 
 
     /**
-     * Set up the configuration for all the open metadata integration services (OMISs).  This overrides
-     * the current values.
+     * Set up the configuration for all the open metadata integration services (OMISs).  This overrides the current values.
      *
      * @param userId                user that is issuing the request.
      * @param serverName            local server name.
@@ -142,6 +167,11 @@ public class ConfigIntegrationServicesResource
      */
     @PostMapping(path = "/integration-services/configuration/all")
 
+    @Operation(summary="setIntegrationServicesConfig",
+               description="Set up the configuration for all the open metadata integration services (OMISs).  This overrides the current values.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/services/omis/"))
+
     public VoidResponse setIntegrationServicesConfig(@PathVariable String                         userId,
                                                      @PathVariable String                         serverName,
                                                      @RequestBody  List<IntegrationServiceConfig> integrationServicesConfig)
@@ -151,8 +181,7 @@ public class ConfigIntegrationServicesResource
 
 
     /**
-     * Disable the integration services.  This removes all configuration for the integration services nad
-     * hence the integration daemon.
+     * Disable the integration services.  This removes all configuration for the integration services from the integration daemon.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
@@ -162,6 +191,12 @@ public class ConfigIntegrationServicesResource
      * OMAGConfigurationErrorException unusual state in the admin server.
      */
     @DeleteMapping(path = "/integration-services")
+
+    @Operation(summary="clearAllIntegrationServices",
+               description="Disable the integration services.  This removes all configuration for the integration services from the integration daemon.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/services/omis/"))
+
     public VoidResponse clearAllIntegrationServices(@PathVariable String userId,
                                                     @PathVariable String serverName)
     {
@@ -180,6 +215,11 @@ public class ConfigIntegrationServicesResource
      * OMAGInvalidParameterException invalid serverName  parameter.
      */
     @DeleteMapping(path = "/integration-services/{serviceURLMarker}")
+
+    @Operation(summary="clearIntegrationService",
+               description="Remove an integration service.  This removes all configuration for the integration service.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/services/omis/"))
 
     public VoidResponse clearIntegrationService(@PathVariable String userId,
                                                 @PathVariable String serverName,

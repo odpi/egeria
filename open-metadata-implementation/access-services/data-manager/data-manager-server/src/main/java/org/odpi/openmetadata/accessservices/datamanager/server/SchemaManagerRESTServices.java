@@ -21,12 +21,16 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeBuilder;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -351,6 +355,7 @@ public class SchemaManagerRESTServices
                                                                     pageSize,
                                                                     false,
                                                                     false,
+                                                                    instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                     new Date(),
                                                                     methodName));
             }
@@ -414,6 +419,7 @@ public class SchemaManagerRESTServices
                                                                 pageSize,
                                                                 false,
                                                                 false,
+                                                                instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                 new Date(),
                                                                 methodName));
             }
@@ -963,10 +969,10 @@ public class SchemaManagerRESTServices
                                                  requestBody.getExternalSourceName(),
                                                  endOneGUID,
                                                  endOneParameterName,
-                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                 OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
                                                  endTwoGUID,
                                                  endTwoParameterName,
-                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                 OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
                                                  false,
                                                  false,
                                                  relationshipTypeGUID,
@@ -984,10 +990,10 @@ public class SchemaManagerRESTServices
                                                  requestBody.getExternalSourceName(),
                                                  endOneGUID,
                                                  endOneParameterName,
-                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                 OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
                                                  endTwoGUID,
                                                  endTwoParameterName,
-                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                 OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
                                                  false,
                                                  false,
                                                  relationshipTypeGUID,
@@ -1006,10 +1012,10 @@ public class SchemaManagerRESTServices
                                              null,
                                              endOneGUID,
                                              endOneParameterName,
-                                             OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                             OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
                                              endTwoGUID,
                                              endTwoParameterName,
-                                             OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                             OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
                                              false,
                                              false,
                                              relationshipTypeGUID,
@@ -1084,11 +1090,11 @@ public class SchemaManagerRESTServices
                                                  requestBody.getExternalSourceName(),
                                                  endOneGUID,
                                                  endOneParameterName,
-                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                 OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
                                                  endTwoGUID,
                                                  endTwoParameterName,
-                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_GUID,
-                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                 OpenMetadataType.SCHEMA_ELEMENT_TYPE_GUID,
+                                                 OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
                                                  false,
                                                  false,
                                                  relationshipTypeGUID,
@@ -1104,11 +1110,11 @@ public class SchemaManagerRESTServices
                                                  null,
                                                  endOneGUID,
                                                  endOneParameterName,
-                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                 OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
                                                  endTwoGUID,
                                                  endTwoParameterName,
-                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_GUID,
-                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                 OpenMetadataType.SCHEMA_ELEMENT_TYPE_GUID,
+                                                 OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
                                                  false,
                                                  false,
                                                  relationshipTypeGUID,
@@ -1399,11 +1405,11 @@ public class SchemaManagerRESTServices
             List<Relationship> relationships = handler.getAttachmentLinks(userId,
                                                                           schemaTypeGUID,
                                                                           guidParameterName,
-                                                                          OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                                                          OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                                                          OpenMetadataAPIMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                                                          OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                                          OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
+                                                                          OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
                                                                           null,
-                                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                          OpenMetadataType.ASSET.typeName,
                                                                           1,
                                                                           false,
                                                                           false,
@@ -1420,11 +1426,11 @@ public class SchemaManagerRESTServices
                 relationships = handler.getAttachmentLinks(userId,
                                                            schemaTypeGUID,
                                                            guidParameterName,
-                                                           OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
-                                                           OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
-                                                           OpenMetadataAPIMapper.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
+                                                           OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
+                                                           OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_GUID,
+                                                           OpenMetadataType.PORT_SCHEMA_RELATIONSHIP_TYPE_NAME,
                                                            null,
-                                                           OpenMetadataAPIMapper.PORT_TYPE_NAME,
+                                                           OpenMetadataType.PORT_TYPE_NAME,
                                                            1,
                                                            false,
                                                            false,
@@ -1489,7 +1495,7 @@ public class SchemaManagerRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             SchemaAttributeHandler<SchemaAttributeElement,
-                                          SchemaTypeElement> handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
+                                   SchemaTypeElement> handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -1689,10 +1695,10 @@ public class SchemaManagerRESTServices
                                                      requestBody.getExternalSourceName(),
                                                      schemaAttributeGUID,
                                                      schemaAttributeGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                     OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                      schemaTypeGUID,
                                                      schemaTypeGUIDParameterName,
-                                                     OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                     OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                      false,
                                                      false,
                                                      relationshipTypeDef.getGUID(),
@@ -1938,8 +1944,8 @@ public class SchemaManagerRESTServices
                                                requestBody.getExternalSourceName(),
                                                schemaAttributeGUID,
                                                elementGUIDParameterName,
-                                               OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
-                                               OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                               OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_GUID,
+                                               OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                null,
                                                null,
                                                false,
@@ -2002,7 +2008,7 @@ public class SchemaManagerRESTServices
             SchemaAttributeHandler<SchemaAttributeElement,
                                           SchemaTypeElement> handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
 
-            TypeDef typeDef = handler.getTypeDefByName(typeName, OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
+            TypeDef typeDef = handler.getTypeDefByName(typeName, OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME);
 
             if (typeDef != null)
             {
@@ -2072,7 +2078,7 @@ public class SchemaManagerRESTServices
             List<SchemaAttributeElement> results = handler.getAttachedSchemaAttributes(userId,
                                                                                        parentSchemaElementGUID,
                                                                                        elementGUIDParameterName,
-                                                                                       OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                                       OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                                        startFrom,
                                                                                        pageSize,
                                                                                        false,
@@ -2132,7 +2138,7 @@ public class SchemaManagerRESTServices
                 SchemaAttributeHandler<SchemaAttributeElement,
                                               SchemaTypeElement> handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
 
-                TypeDef typeDef = handler.getTypeDefByName(typeName, OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
+                TypeDef typeDef = handler.getTypeDefByName(typeName, OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME);
 
                 if (typeDef != null)
                 {
@@ -2202,7 +2208,7 @@ public class SchemaManagerRESTServices
             SchemaAttributeElement result = handler.getSchemaAttribute(userId,
                                                                        schemaAttributeGUID,
                                                                        guidParameterName,
-                                                                       OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                       OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                        null,
                                                                        null,
                                                                        false,
@@ -2271,9 +2277,9 @@ public class SchemaManagerRESTServices
                                                   requestBody.getExternalSourceName(),
                                                   schemaElementGUID,
                                                   schemaElementGUIDParameterName,
-                                                  OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
-                                                  OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
-                                                  OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                  OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                                  OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
+                                                  OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                   builder.getCalculatedValueProperties(requestBody.getFormula(), methodName),
                                                   false,
                                                   false,
@@ -2330,9 +2336,9 @@ public class SchemaManagerRESTServices
                                                        requestBody.getExternalSourceName(),
                                                        schemaElementGUID,
                                                        schemaElementGUIDParameterName,
-                                                       OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
-                                                       OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
-                                                       OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                       OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
+                                                       OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
+                                                       OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                        false,
                                                        false,
                                                        new Date(),
@@ -2392,7 +2398,7 @@ public class SchemaManagerRESTServices
                                                  requestBody.getExternalSourceName(),
                                                  derivedElementGUID,
                                                  schemaElementGUIDParameterName,
-                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                 OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
                                                  requestBody.getQueryId(),
                                                  requestBody.getQuery(),
                                                  queryTargetGUID,
@@ -2456,7 +2462,7 @@ public class SchemaManagerRESTServices
                                                   requestBody.getExternalSourceName(),
                                                   derivedElementGUID,
                                                   schemaElementGUIDParameterName,
-                                                  OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                  OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
                                                   requestBody.getQueryId(),
                                                   requestBody.getQuery(),
                                                   queryTargetGUID,
@@ -2521,7 +2527,7 @@ public class SchemaManagerRESTServices
                                                  requestBody.getExternalSourceName(),
                                                  derivedElementGUID,
                                                  schemaElementGUIDParameterName,
-                                                 OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                 OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME,
                                                  queryTargetGUID,
                                                  queryTargetGUIDParameterName,
                                                  methodName);

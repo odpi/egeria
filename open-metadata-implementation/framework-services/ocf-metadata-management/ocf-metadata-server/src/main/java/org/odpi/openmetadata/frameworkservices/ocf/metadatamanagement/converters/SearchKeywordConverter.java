@@ -3,9 +3,9 @@
 package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converters;
 
 import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SearchKeyword;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -57,14 +57,12 @@ public class SearchKeywordConverter<B> extends OCFConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof SearchKeyword)
+            if (returnBean instanceof SearchKeyword bean)
             {
-                SearchKeyword bean = (SearchKeyword) returnBean;
-
                 /*
                  * Check that the entity is of the correct type.
                  */
-                this.setUpElementHeader(bean, entity, OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME, methodName);
+                this.setUpElementHeader(bean, entity, OpenMetadataType.SEARCH_KEYWORD.typeName, methodName);
 
                 /*
                  * The initial set of values come from the entity properties.  The super class properties are removed from a copy of the entities

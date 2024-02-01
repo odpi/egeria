@@ -4,26 +4,14 @@ package org.odpi.openmetadata.frameworkservices.gaf.server;
 
 
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
-import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.EngineActionHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionProcessStepHandler;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepElement;
-import org.odpi.openmetadata.frameworkservices.gaf.converters.EngineActionConverter;
-import org.odpi.openmetadata.frameworkservices.gaf.converters.GovernanceActionProcessConverter;
-import org.odpi.openmetadata.frameworkservices.gaf.converters.GovernanceActionProcessStepConverter;
-import org.odpi.openmetadata.frameworkservices.gaf.converters.MetadataElementConverter;
-import org.odpi.openmetadata.frameworkservices.gaf.converters.ValidMetadataValueConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworkservices.gaf.converters.*;
 import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenMetadataStoreErrorCode;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValueDetail;
-import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 /**
@@ -41,6 +29,7 @@ public class GAFMetadataManagementInstance extends OMASServiceInstance
     private final EngineActionHandler<EngineActionElement>                               engineActionHandler;
     private final AssetHandler<GovernanceActionProcessElement>                           governanceActionProcessHandler;
     private final GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement> governanceActionProcessStepHandler;
+    private final GovernanceActionTypeHandler<GovernanceActionTypeElement>               governanceActionTypeHandler;
 
 
     /**
@@ -159,6 +148,20 @@ public class GAFMetadataManagementInstance extends OMASServiceInstance
                                                                                                defaultZones,
                                                                                                publishZones,
                                                                                                auditLog);
+
+            this.governanceActionTypeHandler = new GovernanceActionTypeHandler<>(new GovernanceActionTypeConverter<>(repositoryHelper, serviceName, serverName),
+                                                                                 GovernanceActionTypeElement.class,
+                                                                                 serviceName,
+                                                                                 serverName,
+                                                                                 invalidParameterHandler,
+                                                                                 repositoryHandler,
+                                                                                 repositoryHelper,
+                                                                                 localServerUserId,
+                                                                                 securityVerifier,
+                                                                                 supportedZones,
+                                                                                 defaultZones,
+                                                                                 publishZones,
+                                                                                 auditLog);
         }
         else
         {
@@ -212,7 +215,7 @@ public class GAFMetadataManagementInstance extends OMASServiceInstance
 
 
     /**
-     * Return the handler for governance action type requests.
+     * Return the handler for governance action process step requests.
      *
      * @return handler object
      */
@@ -220,6 +223,18 @@ public class GAFMetadataManagementInstance extends OMASServiceInstance
     {
         return governanceActionProcessStepHandler;
     }
+
+
+    /**
+     * Return the handler for governance action type requests.
+     *
+     * @return handler object
+     */
+    GovernanceActionTypeHandler<GovernanceActionTypeElement> getGovernanceActionTypeHandler()
+    {
+        return governanceActionTypeHandler;
+    }
+
 
 
     /**

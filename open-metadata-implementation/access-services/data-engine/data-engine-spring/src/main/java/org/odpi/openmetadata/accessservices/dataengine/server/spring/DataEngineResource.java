@@ -25,6 +25,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +36,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.PORT_IMPLEMENTATION_TYPE_NAME;
 
 /**
  * The DataEngineResource provides the server-side implementation of the Data Engine Open Metadata Assess Service
@@ -51,7 +51,7 @@ import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataA
                                          url="https://egeria-project.org/services/omas/data-engine/overview/"))
 
 public class DataEngineResource {
-    private DataEngineRESTServices restAPI;
+    private final DataEngineRESTServices restAPI;
 
     /**
      * Default Constructor
@@ -190,7 +190,7 @@ public class DataEngineResource {
     public VoidResponse deletePortImplementation(@PathVariable("userId") String userId,
                                                  @PathVariable("serverName") String serverName,
                                                  @RequestBody DeleteRequestBody requestBody) {
-        return restAPI.deletePort(userId, serverName, requestBody, PORT_IMPLEMENTATION_TYPE_NAME);
+        return restAPI.deletePort(userId, serverName, requestBody, OpenMetadataType.PORT_IMPLEMENTATION_TYPE_NAME);
     }
 
     /**

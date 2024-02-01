@@ -2,16 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.restclients.ffdc;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.text.MessageFormat;
-import java.util.Arrays;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
 /**
  * The RESTClientConnectorErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  * the REST Client.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -27,7 +23,7 @@ import java.util.Arrays;
  *     <li>UserAction - describes how a consumer should correct the error</li>
  * </ul>
  */
-public enum RESTClientConnectorErrorCode
+public enum RESTClientConnectorErrorCode implements ExceptionMessageSet
 {
     /**
      * CLIENT-SIDE-REST-API-CONNECTOR-503-001 - A null response was received from REST API call {0} to server {1}
@@ -54,7 +50,7 @@ public enum RESTClientConnectorErrorCode
     EXCEPTION_RESPONSE_FROM_API(503, "CLIENT-SIDE-REST-API-CONNECTOR-503-003 ",
             "A {0} exception was received from REST API call {1} to server {2}: error message was: {3}",
             "The system has issued a call to an open metadata access service REST API in a remote server and has received an exception response.",
-            "The error message should indicate the cause of the error.  Otherwise look for errors in the remote server's audit log and console to understand and correct the source of the error.")
+            "The error message should indicate the cause of the error.  Otherwise look for errors in the remote server's audit log and console to understand and correct the source of the error."),
     ;
 
 
@@ -64,105 +60,60 @@ public enum RESTClientConnectorErrorCode
     private final String systemAction;
     private final String userAction;
 
-    private static final Logger log = LoggerFactory.getLogger(RESTClientConnectorErrorCode.class);
-
 
     /**
-     * The constructor for CommunityProfileErrorCode expects to be passed one of the enumeration rows defined in
-     * CommunityProfileErrorCode above.   For example:
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
-     *     CommunityProfileErrorCode   errorCode = CommunityProfileErrorCode.PROFILE_NOT_FOUND;
-     *
-     * This will expand out to the 5 parameters shown below.
-     *
-     * @param newHTTPErrorCode - error code to use over REST calls
-     * @param newErrorMessageId - unique identifier for the message
-     * @param newErrorMessage - text for the message
-     * @param newSystemAction - description of the action taken by the system when the error condition happened
-     * @param newUserAction - instructions for resolving the error
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
      */
-    RESTClientConnectorErrorCode(int  newHTTPErrorCode, String newErrorMessageId, String newErrorMessage, String newSystemAction, String newUserAction)
+    RESTClientConnectorErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.httpErrorCode = newHTTPErrorCode;
-        this.errorMessageId = newErrorMessageId;
-        this.errorMessage = newErrorMessage;
-        this.systemAction = newSystemAction;
-        this.userAction = newUserAction;
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
     /**
-     * Return the HTTP code.
+     * Retrieve a message definition object for an exception.  This method is used when there are no message inserts.
      *
-     * @return int
+     * @return message definition object.
      */
-    public int getHTTPErrorCode()
+    @Override
+    public ExceptionMessageDefinition getMessageDefinition()
     {
-        return httpErrorCode;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
     /**
-     * Returns the unique identifier for the error message.
+     * Retrieve a message definition object for an exception.  This method is used when there are values to be inserted into the message.
      *
-     * @return errorMessageId
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
      */
-    public String getErrorMessageId()
+    @Override
+    public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
-        return errorMessageId;
-    }
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
 
+        messageDefinition.setMessageParameters(params);
 
-    /**
-     * Returns the error message with placeholders for specific details.
-     *
-     * @return errorMessage (unformatted)
-     */
-    public String getUnformattedErrorMessage()
-    {
-        return errorMessage;
-    }
-
-
-    /**
-     * Returns the error message with the placeholders filled out with the supplied parameters.
-     *
-     * @param params - strings that plug into the placeholders in the errorMessage
-     * @return errorMessage (formatted with supplied parameters)
-     */
-    public String getFormattedErrorMessage(String... params)
-    {
-        log.debug(String.format("<== CommunityProfileErrorCode.getMessage(%s)", Arrays.toString(params)));
-
-        MessageFormat mf = new MessageFormat(errorMessage);
-        String result = mf.format(params);
-
-        log.debug(String.format("==> CommunityProfileErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
-
-        return result;
-    }
-
-
-    /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
-     *
-     * @return systemAction
-     */
-    public String getSystemAction()
-    {
-        return systemAction;
-    }
-
-
-    /**
-     * Returns instructions of how to resolve the issue reported in this exception.
-     *
-     * @return userAction
-     */
-    public String getUserAction()
-    {
-        return userAction;
+        return messageDefinition;
     }
 
 
@@ -174,12 +125,12 @@ public enum RESTClientConnectorErrorCode
     @Override
     public String toString()
     {
-        return "CommunityProfileErrorCode{" +
-                "httpErrorCode=" + httpErrorCode +
-                ", errorMessageId='" + errorMessageId + '\'' +
-                ", errorMessage='" + errorMessage + '\'' +
-                ", systemAction='" + systemAction + '\'' +
-                ", userAction='" + userAction + '\'' +
-                '}';
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

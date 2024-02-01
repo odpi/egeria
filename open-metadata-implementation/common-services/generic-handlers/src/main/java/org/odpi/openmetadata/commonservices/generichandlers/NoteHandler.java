@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -93,9 +94,9 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
     {
         return super.countAttachments(userId,
                                       elementGUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                      OpenMetadataAPIMapper.NOTE_TYPE_GUID,
-                                      OpenMetadataAPIMapper.NOTE_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE.typeName,
+                                      OpenMetadataType.NOTE_TYPE_GUID,
+                                      OpenMetadataType.NOTE_TYPE_NAME,
                                       2,
                                       forLineage,
                                       forDuplicateProcessing,
@@ -147,6 +148,7 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
     {
         final String textParameter = "text";
         final String noteGUIDParameter = "noteGUID";
+        final String anchorGUIDParameter = "anchorGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(noteLogGUID, noteLogGUIDParameterName, methodName);
@@ -164,37 +166,23 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
                                               serviceName,
                                               serverName);
 
-        EntityDetail parentEntity = this.getEntityFromRepository(userId,
-                                                                 noteLogGUID,
-                                                                 noteLogGUIDParameterName,
-                                                                 OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                 null,
-                                                                 null,
-                                                                 forLineage,
-                                                                 forDuplicateProcessing,
-                                                                 supportedZones,
-                                                                 effectiveTime,
-                                                                 methodName);
-
-        String parentAnchorGUID = anchorGUID;
-
-        if (parentEntity != null)
-        {
-            parentAnchorGUID = this.getAnchorGUIDFromAnchorsClassification(parentEntity, methodName);
-        }
-
-        if (parentAnchorGUID != null)
-        {
-            builder.setAnchors(userId, parentAnchorGUID, methodName);
-        }
+        this.addAnchorGUIDToBuilder(userId,
+                                    anchorGUID,
+                                    anchorGUIDParameter,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
+                                    supportedZones,
+                                    builder,
+                                    methodName);
 
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         String  noteGUID = this.createBeanInRepository(userId,
                                                        externalSourceGUID,
                                                        externalSourceName,
-                                                       OpenMetadataAPIMapper.NOTE_TYPE_GUID,
-                                                       OpenMetadataAPIMapper.NOTE_TYPE_NAME,
+                                                       OpenMetadataType.NOTE_TYPE_GUID,
+                                                       OpenMetadataType.NOTE_TYPE_NAME,
                                                        builder,
                                                        effectiveTime,
                                                        methodName);
@@ -206,15 +194,15 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
                                                externalSourceName,
                                                noteLogGUID,
                                                noteLogGUIDParameterName,
-                                               OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                               OpenMetadataType.REFERENCEABLE.typeName,
                                                noteGUID,
                                                noteGUIDParameter,
-                                               OpenMetadataAPIMapper.NOTE_TYPE_NAME,
+                                               OpenMetadataType.NOTE_TYPE_NAME,
                                                forLineage,
                                                forDuplicateProcessing,
                                                supportedZones,
-                                               OpenMetadataAPIMapper.NOTE_LOG_ENTRIES_RELATIONSHIP_TYPE_GUID,
-                                               OpenMetadataAPIMapper.NOTE_LOG_ENTRIES_RELATIONSHIP_TYPE_NAME,
+                                               OpenMetadataType.NOTE_LOG_ENTRIES_RELATIONSHIP_TYPE_GUID,
+                                               OpenMetadataType.NOTE_LOG_ENTRIES_RELATIONSHIP_TYPE_NAME,
                                                null,
                                                effectiveFrom,
                                                methodName);
@@ -272,7 +260,7 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
         EntityDetail startingEntity = repositoryHandler.getEntityByGUID(userId,
                                                                         noteGUID,
                                                                         noteGUIDParameterName,
-                                                                        OpenMetadataAPIMapper.NOTE_TYPE_NAME,
+                                                                        OpenMetadataType.NOTE_TYPE_NAME,
                                                                         forLineage,
                                                                         forDuplicateProcessing,
                                                                         effectiveTime,
@@ -292,8 +280,8 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     startingEntity,
                                     noteGUIDParameterName,
-                                    OpenMetadataAPIMapper.NOTE_TYPE_GUID,
-                                    OpenMetadataAPIMapper.NOTE_TYPE_NAME,
+                                    OpenMetadataType.NOTE_TYPE_GUID,
+                                    OpenMetadataType.NOTE_TYPE_NAME,
                                     forLineage,
                                     forDuplicateProcessing,
                                     supportedZones,
@@ -338,8 +326,8 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     noteGUID,
                                     noteGUIDParameterName,
-                                    OpenMetadataAPIMapper.NOTE_TYPE_GUID,
-                                    OpenMetadataAPIMapper.NOTE_TYPE_NAME,
+                                    OpenMetadataType.NOTE_TYPE_GUID,
+                                    OpenMetadataType.NOTE_TYPE_NAME,
                                     null,
                                     null,
                                     forLineage,
@@ -388,9 +376,9 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
                                         noteLogGUID,
                                         noteLogGUIDParameterName,
                                         noteLogTypeName,
-                                        OpenMetadataAPIMapper.NOTE_LOG_ENTRIES_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.NOTE_LOG_ENTRIES_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataAPIMapper.NOTE_TYPE_NAME,
+                                        OpenMetadataType.NOTE_LOG_ENTRIES_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataType.NOTE_LOG_ENTRIES_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.NOTE_TYPE_NAME,
                                         null,
                                         null,
                                         2,
@@ -445,9 +433,9 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
                                         noteLogGUID,
                                         noteLogGUIDParameterName,
                                         noteLogTypeName,
-                                        OpenMetadataAPIMapper.NOTE_LOG_ENTRIES_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.NOTE_LOG_ENTRIES_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataAPIMapper.NOTE_TYPE_NAME,
+                                        OpenMetadataType.NOTE_LOG_ENTRIES_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataType.NOTE_LOG_ENTRIES_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.NOTE_TYPE_NAME,
                                         null,
                                         null,
                                         2,
@@ -495,8 +483,8 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
-                              OpenMetadataAPIMapper.NOTE_TYPE_GUID,
-                              OpenMetadataAPIMapper.NOTE_TYPE_NAME,
+                              OpenMetadataType.NOTE_TYPE_GUID,
+                              OpenMetadataType.NOTE_TYPE_NAME,
                               null,
                               startFrom,
                               pageSize,

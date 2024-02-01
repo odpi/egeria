@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.converters;
 
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceServiceElement;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceServiceProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -94,7 +94,7 @@ public class GovernanceServiceConverter<B> extends GovernanceEngineOMASConverter
                         {
                             if ((entity != null) && (entity.getType() != null))
                             {
-                                if (repositoryHelper.isTypeOf(serviceName, entity.getType().getTypeDefName(), OpenMetadataAPIMapper.CONNECTION_TYPE_NAME))
+                                if (repositoryHelper.isTypeOf(serviceName, entity.getType().getTypeDefName(), OpenMetadataType.CONNECTION_TYPE_NAME))
                                 {
                                     properties.setConnection(super.getEmbeddedConnection(beanClass,
                                                                                          entity,

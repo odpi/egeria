@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -101,10 +102,10 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         null,
                                         profileGUID,
                                         profileGUIDParameterName,
-                                        OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
-                                        OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
+                                        OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
+                                        OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP_TYPE_GUID,
+                                        OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP_TYPE_NAME,
+                                        OpenMetadataType.CONTACT_DETAILS_TYPE_NAME,
                                         null,
                                         null,
                                         2,
@@ -171,18 +172,23 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                   serviceName,
                                                                   serverName);
 
-        if (profileGUID != null)
-        {
-            builder.setAnchors(userId, profileGUID, methodName);
-        }
+        this.addAnchorGUIDToBuilder(userId,
+                                    profileGUID,
+                                    profileGUIDParameterName,
+                                    forLineage,
+                                    forDuplicateProcessing,
+                                    effectiveTime,
+                                    supportedZones,
+                                    builder,
+                                    methodName);
 
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 
         String contactMethodGUID = this.createBeanInRepository(userId,
                                                                externalSourceGUID,
                                                                externalSourceName,
-                                                               OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_GUID,
-                                                               OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
+                                                               OpenMetadataType.CONTACT_DETAILS_TYPE_GUID,
+                                                               OpenMetadataType.CONTACT_DETAILS_TYPE_NAME,
                                                                builder,
                                                                effectiveTime,
                                                                methodName);
@@ -196,15 +202,15 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                externalSourceName,
                                                profileGUID,
                                                profileGUIDParameterName,
-                                               OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                               OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
                                                contactMethodGUID,
                                                contactMethodGUIDParameterName,
-                                               OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
+                                               OpenMetadataType.CONTACT_DETAILS_TYPE_NAME,
                                                forLineage,
                                                forDuplicateProcessing,
                                                supportedZones,
-                                               OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_GUID,
-                                               OpenMetadataAPIMapper.CONTACT_THROUGH_RELATIONSHIP_TYPE_NAME,
+                                               OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP_TYPE_GUID,
+                                               OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP_TYPE_NAME,
                                                null,
                                                effectiveTime,
                                                methodName);
@@ -248,8 +254,8 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     externalSourceName,
                                     contactMethodGUID,
                                     contactMethodGUIDParameterName,
-                                    OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_GUID,
-                                    OpenMetadataAPIMapper.CONTACT_DETAILS_TYPE_NAME,
+                                    OpenMetadataType.CONTACT_DETAILS_TYPE_GUID,
+                                    OpenMetadataType.CONTACT_DETAILS_TYPE_NAME,
                                     null,
                                     null,
                                     forLineage,

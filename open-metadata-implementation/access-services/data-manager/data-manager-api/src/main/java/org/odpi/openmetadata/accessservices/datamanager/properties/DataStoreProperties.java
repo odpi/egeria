@@ -29,15 +29,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class DataStoreProperties extends AssetProperties
 {
-    private static final long    serialVersionUID = 1L;
-
-    private String              pathName            = null;
-    private Date                createTime          = null;
-    private Date                modifiedTime        = null;
-    private String              encodingType        = null;
-    private String              encodingLanguage    = null;
-    private String              encodingDescription = null;
-    private Map<String, String> encodingProperties  = null;
+    private String              deployedImplementationType = null;
+    private String              pathName                   = null;
+    private Date                createTime                 = null;
+    private Date                modifiedTime               = null;
+    private String              encodingType               = null;
+    private String              encodingLanguage           = null;
+    private String              encodingDescription        = null;
+    private Map<String, String> encodingProperties         = null;
 
 
     /**
@@ -60,13 +59,14 @@ public class DataStoreProperties extends AssetProperties
 
         if (template != null)
         {
-            pathName            = template.getPathName();
-            createTime          = template.getCreateTime();
-            modifiedTime        = template.getModifiedTime();
-            encodingType        = template.getEncodingType();
-            encodingLanguage    = template.getEncodingLanguage();
-            encodingDescription = template.getEncodingDescription();
-            encodingProperties  = template.getEncodingProperties();
+            deployedImplementationType = template.getDeployedImplementationType();
+            pathName                   = template.getPathName();
+            createTime                 = template.getCreateTime();
+            modifiedTime               = template.getModifiedTime();
+            encodingType               = template.getEncodingType();
+            encodingLanguage           = template.getEncodingLanguage();
+            encodingDescription        = template.getEncodingDescription();
+            encodingProperties         = template.getEncodingProperties();
         }
     }
 
@@ -79,6 +79,28 @@ public class DataStoreProperties extends AssetProperties
     public DataStoreProperties(AssetProperties template)
     {
         super(template);
+    }
+
+
+    /**
+     * Retrieve the name of the technology used for this data asset.
+     *
+     * @return string name
+     */
+    public String getDeployedImplementationType()
+    {
+        return deployedImplementationType;
+    }
+
+
+    /**
+     * Set up the name of the technology used for this data asset.
+     *
+     * @param deployedImplementationType string name
+     */
+    public void setDeployedImplementationType(String deployedImplementationType)
+    {
+        this.deployedImplementationType = deployedImplementationType;
     }
 
 
@@ -258,6 +280,7 @@ public class DataStoreProperties extends AssetProperties
                        "name='" + getName() + '\'' +
                        ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", description='" + getDescription() + '\'' +
+                       ", deployedImplementationType='" + deployedImplementationType + '\'' +
                        ", pathName='" + pathName + '\'' +
                        ", createTime=" + createTime +
                        ", modifiedTime=" + modifiedTime +
@@ -289,7 +312,7 @@ public class DataStoreProperties extends AssetProperties
         {
             return true;
         }
-        if (! (objectToCompare instanceof DataStoreProperties))
+        if (! (objectToCompare instanceof DataStoreProperties that))
         {
             return false;
         }
@@ -297,34 +320,14 @@ public class DataStoreProperties extends AssetProperties
         {
             return false;
         }
-
-        DataStoreProperties that = (DataStoreProperties) objectToCompare;
-
-        if (pathName != null ? ! pathName.equals(that.pathName) : that.pathName != null)
-        {
-            return false;
-        }
-        if (createTime != null ? ! createTime.equals(that.createTime) : that.createTime != null)
-        {
-            return false;
-        }
-        if (modifiedTime != null ? ! modifiedTime.equals(that.modifiedTime) : that.modifiedTime != null)
-        {
-            return false;
-        }
-        if (encodingType != null ? ! encodingType.equals(that.encodingType) : that.encodingType != null)
-        {
-            return false;
-        }
-        if (encodingLanguage != null ? ! encodingLanguage.equals(that.encodingLanguage) : that.encodingLanguage != null)
-        {
-            return false;
-        }
-        if (encodingDescription != null ? ! encodingDescription.equals(that.encodingDescription) : that.encodingDescription != null)
-        {
-            return false;
-        }
-        return encodingProperties != null ? encodingProperties.equals(that.encodingProperties) : that.encodingProperties == null;
+        return Objects.equals(deployedImplementationType, that.deployedImplementationType) &&
+                       Objects.equals(pathName, that.pathName) &&
+                       Objects.equals(createTime, that.createTime) &&
+                       Objects.equals(modifiedTime, that.modifiedTime) &&
+                       Objects.equals(encodingType, that.encodingType) &&
+                       Objects.equals(encodingLanguage, that.encodingLanguage) &&
+                       Objects.equals(encodingDescription, that.encodingDescription) &&
+                       Objects.equals(encodingProperties, that.encodingProperties);
     }
 
 
@@ -336,7 +339,7 @@ public class DataStoreProperties extends AssetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), pathName, createTime, modifiedTime, encodingType,
+        return Objects.hash(super.hashCode(), deployedImplementationType, pathName, createTime, modifiedTime, encodingType,
                             encodingLanguage, encodingDescription, encodingProperties);
     }
 }

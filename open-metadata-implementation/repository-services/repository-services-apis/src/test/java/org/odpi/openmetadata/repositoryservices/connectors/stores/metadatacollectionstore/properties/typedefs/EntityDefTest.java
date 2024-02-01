@@ -27,6 +27,7 @@ public class EntityDefTest
     protected TypeDefLink                   superType                = new TypeDefLink();
     protected String                        description              = "TestDescription";
     protected String                        descriptionGUID          = "TestDescriptionGUID";
+    protected String                        descriptionWiki          = "TestDescriptionWiki";
     protected String                        origin                   = "TestOrigin";
     protected String                        createdBy                = "TestCreatedBy";
     protected String                        updatedBy                = "TestUpdatedBy";
@@ -89,6 +90,7 @@ public class EntityDefTest
         testObject.setSuperType(superType);
         testObject.setDescription(description);
         testObject.setDescriptionGUID(descriptionGUID);
+        testObject.setDescriptionWiki(descriptionWiki);
         testObject.setOrigin(origin);
         testObject.setCreatedBy(createdBy);
         testObject.setUpdatedBy(updatedBy);
@@ -122,6 +124,7 @@ public class EntityDefTest
         assertTrue(testObject.getSuperType().equals(superType));
         assertTrue(testObject.getDescription().equals(description));
         assertTrue(testObject.getDescriptionGUID().equals(descriptionGUID));
+        assertTrue(testObject.getDescriptionWiki().equals(descriptionWiki));
         assertTrue(testObject.getOrigin().equals(origin));
         assertTrue(testObject.getCreatedBy().equals(createdBy));
         assertTrue(testObject.getUpdatedBy().equals(updatedBy));
@@ -164,6 +167,7 @@ public class EntityDefTest
         assertNull(testObject.getSuperType());
         assertNull(testObject.getDescription());
         assertNull(testObject.getDescriptionGUID());
+        assertNull(testObject.getDescriptionWiki());
         assertNull(testObject.getOrigin());
         assertNull(testObject.getCreatedBy());
         assertNull(testObject.getUpdatedBy());

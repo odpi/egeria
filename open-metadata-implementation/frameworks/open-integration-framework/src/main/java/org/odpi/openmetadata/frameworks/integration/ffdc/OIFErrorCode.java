@@ -4,12 +4,6 @@ package org.odpi.openmetadata.frameworks.integration.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.text.MessageFormat;
-import java.util.Arrays;
 
 
 /**
@@ -26,6 +20,9 @@ import java.util.Arrays;
  */
 public enum OIFErrorCode implements ExceptionMessageSet
 {
+    /**
+     * OIF-CONNECTOR-400-001 - The integration connector {0} has been configured to have its own thread to issue blocking calls but has not implemented the engage() method
+     */
     ENGAGE_IMPLEMENTATION_MISSING(400,"OIF-CONNECTOR-400-001",
                     "The integration connector {0} has been configured to have its own thread to issue blocking calls but has not " +
                                           "implemented the engage() method",
@@ -36,101 +33,42 @@ public enum OIFErrorCode implements ExceptionMessageSet
                                           "will terminate the thread once the engage() method returns.",
                     "If the connector does not need to issue blocking calls update the configuration to remove the need for the " +
                                           "dedicated thread.  Otherwise update the integration connector's implementation to override " +
-                                          "the default engage() method implementation.");
-
-    private final ExceptionMessageDefinition messageDefinition;
-
-    private static final Logger log = LoggerFactory.getLogger(OCFErrorCode.class);
+                                          "the default engage() method implementation."),
 
 
     /**
-     * The constructor for OCFErrorCode expects to be passed one of the enumeration rows defined in
-     * OCFErrorCode above.   For example:
-     * <br>
-     *     OCFErrorCode   errorCode = OCFErrorCode.UNKNOWN_ENDPOINT;
-     * <br>
-     * This will expand out to the 5 parameters shown below.
+     * OIF-CONNECTOR-400-001 - The object passed on the {0} parameter of the {1} operation is null
+     */
+    NULL_OBJECT(400, "OIF-CONNECTOR-400-002",
+                        "The object passed on the {0} parameter of the {1} operation is null",
+                        "The system is unable to process the request without this object.",
+                        "Correct the code in the caller to provide the object."),
+
+    ;
+
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
+
+
+    /**
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
      */
-    OIFErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    OIFErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
-    }
-
-
-    /**
-     * Return the HTTP error code for this exception.
-     *
-     * @return int
-     */
-    @Deprecated
-    public int getHTTPErrorCode()
-    {
-        return messageDefinition.getHttpErrorCode();
-    }
-
-
-    /**
-     * Returns the unique identifier for the error message.
-     *
-     * @return errorMessageId
-     */
-    @Deprecated
-    public String getErrorMessageId()
-    {
-        return messageDefinition.getMessageId();
-    }
-
-
-    /**
-     * Returns the error message with the placeholders filled out with the supplied parameters.
-     *
-     * @param params   strings that plug into the placeholders in the errorMessage
-     * @return errorMessage (formatted with supplied parameters)
-     */
-    @Deprecated
-    public String getFormattedErrorMessage(String... params)
-    {
-        MessageFormat mf     = new MessageFormat(messageDefinition.getMessageTemplate());
-        String        result = mf.format(params);
-
-        log.debug(String.format("OIFErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
-
-        return result;
-    }
-
-
-    /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
-     *
-     * @return systemAction
-     */
-    @Deprecated
-    public String getSystemAction()
-    {
-        return messageDefinition.getSystemAction();
-    }
-
-
-    /**
-     * Returns instructions of how to resolve the issue reported in this exception.
-     *
-     * @return userAction
-     */
-    @Deprecated
-    public String getUserAction()
-    {
-        return messageDefinition.getUserAction();
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -142,7 +80,11 @@ public enum OIFErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -155,6 +97,12 @@ public enum OIFErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -169,8 +117,12 @@ public enum OIFErrorCode implements ExceptionMessageSet
     @Override
     public String toString()
     {
-        return "OIFErrorCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

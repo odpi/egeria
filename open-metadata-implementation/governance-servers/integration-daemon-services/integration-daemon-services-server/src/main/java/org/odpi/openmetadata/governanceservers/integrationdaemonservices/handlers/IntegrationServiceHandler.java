@@ -74,7 +74,7 @@ public class IntegrationServiceHandler
     /**
      * Return the full name of the service.
      *
-     * @return stirng name
+     * @return string name
      */
     public String getIntegrationServiceFullName()
     {
@@ -88,7 +88,7 @@ public class IntegrationServiceHandler
      * within them are fully initialized and have their context set.  They are ready to be called
      * for start() which is done by the integration daemon handler when they are on the correct thread.
      *
-     * @return list of initialized connection handlers or null if no working connectors
+     * @return list of initialized connection handlers or empty list of no working connectors
      */
     public List<IntegrationConnectorHandler> initialize()
     {

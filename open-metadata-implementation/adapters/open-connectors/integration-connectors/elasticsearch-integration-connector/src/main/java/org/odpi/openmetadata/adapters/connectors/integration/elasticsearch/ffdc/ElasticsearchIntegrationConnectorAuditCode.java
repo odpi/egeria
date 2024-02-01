@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.elasticsearch.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 
 /**
@@ -22,24 +22,30 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public enum ElasticsearchIntegrationConnectorAuditCode implements AuditLogMessageSet {
 
-
+    /**
+     * ELASTICSEARCH-INTEGRATION-CONNECTOR-0001 - The {0} integration connector has stopped its monitoring and is shutting down
+     */
     CONNECTOR_STOPPING("ELASTICSEARCH-INTEGRATION-CONNECTOR-0001",
-            OMRSAuditLogRecordSeverity.INFO,
-            "The {0} integration connector has stopped its monitoring and is shutting down",
-            "The connector is disconnecting.",
-            "No action is required unless there are errors that follow indicating that there were problems shutting down."),
+                       AuditLogRecordSeverityLevel.INFO,
+                       "The {0} integration connector has stopped its monitoring and is shutting down",
+                       "The connector is disconnecting.",
+                       "No action is required unless there are errors that follow indicating that there were problems shutting down."),
 
 
+    /**
+     * ELASTICSEARCH-INTEGRATION-CONNECTOR-0002 - The {0} integration connector could not save data to Elasticsearch
+     */
     IO_EXCEPTION("ELASTICSEARCH-INTEGRATION-CONNECTOR-0002",
-            OMRSAuditLogRecordSeverity.ERROR,
+                 AuditLogRecordSeverityLevel.ERROR,
             "The {0} integration connector could not save data to Elasticsearch",
             "The connector is disconnecting.",
             "Verify the integrity of the ElasticSearch cluster and the client connection.");
-    private String logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
-    private String logMessage;
-    private String systemAction;
-    private String userAction;
+
+    private final String logMessageId;
+    private final AuditLogRecordSeverityLevel severity;
+    private final String logMessage;
+    private final String systemAction;
+    private final String userAction;
 
 
     /**
@@ -48,7 +54,7 @@ public enum ElasticsearchIntegrationConnectorAuditCode implements AuditLogMessag
      * <p>
      * ElasticsearchIntegrationConnectorAuditCode   auditCode = ElasticsearchIntegrationConnectorAuditCode.CONNECTOR_STOPPING;
      * <p>
-     * This will expand out to the 4 parameters shown below.
+     * This will expand out to the 5 parameters shown below.
      *
      * @param messageId    - unique identifier for the message
      * @param severity     - severity of the message
@@ -57,7 +63,7 @@ public enum ElasticsearchIntegrationConnectorAuditCode implements AuditLogMessag
      * @param userAction   - instructions for resolving the situation, if any
      */
     ElasticsearchIntegrationConnectorAuditCode(String messageId,
-                                               OMRSAuditLogRecordSeverity severity,
+                                               AuditLogRecordSeverityLevel severity,
                                                String message,
                                                String systemAction,
                                                String userAction) {

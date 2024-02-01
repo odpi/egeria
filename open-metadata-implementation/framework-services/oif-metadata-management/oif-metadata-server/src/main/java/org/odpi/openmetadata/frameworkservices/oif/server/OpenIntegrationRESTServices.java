@@ -8,13 +8,9 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.integration.properties.IntegrationReport;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.integration.properties.IntegrationReportProperties;
 import org.odpi.openmetadata.frameworkservices.oif.handlers.OpenIntegrationHandler;
 import org.odpi.openmetadata.frameworkservices.oif.rest.CatalogTargetsResponse;
@@ -24,7 +20,6 @@ import org.odpi.openmetadata.frameworkservices.oif.rest.MetadataSourceRequestBod
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -83,8 +78,8 @@ public class OpenIntegrationRESTServices
                 SoftwareCapabilityHandler<Object> handler = instanceHandler.getMetadataSourceHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.getBeanGUIDByQualifiedName(userId,
-                                                                    OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                    OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                                                    OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
                                                                     requestBody.getName(),
                                                                     parameterName,
                                                                     false,
@@ -228,6 +223,7 @@ public class OpenIntegrationRESTServices
      * @param serverName name of the service to route the request to.
      * @param userId calling user
      * @param anchorGUID element to attach the integration report to
+     * @param anchorTypeName typeName of the anchor for the integration report
      * @param properties properties of the report
      *
      * @return void or
@@ -238,6 +234,7 @@ public class OpenIntegrationRESTServices
     public VoidResponse publishIntegrationReport(String                      serverName,
                                                  String                      userId,
                                                  String                      anchorGUID,
+                                                 String                      anchorTypeName,
                                                  IntegrationReportProperties properties)
     {
         final String methodName = "publishIntegrationReport";
@@ -252,7 +249,7 @@ public class OpenIntegrationRESTServices
             OpenIntegrationHandler handler = instanceHandler.getOpenIntegrationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName,methodName);
-            handler.publishIntegrationReport(userId, anchorGUID, properties);
+            handler.publishIntegrationReport(userId, anchorGUID, anchorTypeName, properties);
         }
         catch (Exception error)
         {

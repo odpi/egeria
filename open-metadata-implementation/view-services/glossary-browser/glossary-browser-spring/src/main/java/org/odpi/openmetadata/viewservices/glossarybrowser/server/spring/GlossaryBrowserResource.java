@@ -17,6 +17,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryElementRes
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryElementsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermElementsResponse;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryTermRelationshipRequestBody;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.GovernanceDefinitionsResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.InformalTagsResponse;
@@ -36,7 +37,6 @@ import org.odpi.openmetadata.viewservices.glossarybrowser.rest.FindByPropertiesR
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryNameRequestBody;
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossarySearchStringRequestBody;
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryTermActivityTypeListResponse;
-import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryTermRelationshipRequestBody;
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryTermRelationshipStatusListResponse;
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.GlossaryTermStatusListResponse;
 import org.odpi.openmetadata.viewservices.glossarybrowser.rest.HistoryRequestBody;
@@ -56,7 +56,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * The GlossaryBrowserResource provides the Spring API endpoints of the Glossary Browser Open Metadata View Service (OMVS).
- * This interface provides an interfaces for Egeria UIs.
+ * This interface provides a service for Egeria UIs.
  */
 
 @RestController
@@ -109,7 +109,7 @@ public class GlossaryBrowserResource
     @GetMapping(path = "/glossaries/terms/relationships/status-list")
 
     @Operation(summary="getGlossaryTermRelationshipStatuses",
-               description="Return the list of glossary term relationship status enum values.  These values are stored in a term-ot-term, or term-to-category, relationship and are used to indicate how much the relationship should be trusted",
+               description="Return the list of glossary term relationship status enum values.  These values are stored in a term-to-term, or term-to-category, relationship and are used to indicate how much the relationship should be trusted",
                externalDocs=@ExternalDocumentation(description="Relationship statuses",
                                                    url="https://egeria-project.org/services/omvs/glossary-workflow/overview/#relationship-statuses"))
 

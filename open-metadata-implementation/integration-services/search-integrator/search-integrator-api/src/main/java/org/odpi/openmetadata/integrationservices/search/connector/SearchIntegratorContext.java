@@ -68,6 +68,7 @@ public class SearchIntegratorContext extends IntegrationContext
               externalSourceGUID,
               externalSourceName,
               integrationConnectorGUID,
+              auditLog,
               maxPageSize);
 
         this.integrationServiceName = integrationServiceName;

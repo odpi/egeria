@@ -1,0 +1,186 @@
+# Egeria-data-manager-omas
+
+###
+# @name Create a data file
+# Create a SoftwareServerCapability entity to represent the Asset Manager.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/filesystems/data-files
+Content-Type: application/json
+
+{
+	"class" : "DataFileRequestBody",
+	"qualifiedName" : "/Users/mandy-chessell/CloudStation/Drive/Code/JavaTest/ruey.csv",
+    "displayName" : "freddy.csv"
+}
+
+###
+# @name Create a data file using a template
+# Create a SoftwareServerCapability entity to represent the Asset Manager.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/filesystems/data-files/from-template/{{templateGUID}}
+Content-Type: application/json
+
+{
+	"class" : "TemplateRequestBody",
+	"qualifiedName" : "/Users/mandy-chessell/CloudStation/Drive/Code/JavaTest/copyCat23.csv",
+    "displayName" : "copyCat2.csv"
+}
+
+###
+# @name Create a database manager
+# Create a SoftwareServerCapability entity to represent the Asset Manager.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/metadata-sources/database-managers
+Content-Type: application/json
+
+{
+	"class" : "DatabaseManagerRequestBody",
+	"qualifiedName" : "MyDBMS",
+    "displayName" : "MyDBMS"
+}
+
+###
+# @name Create a database
+# Create an Asset entity to represent the Database.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/database-managers/{{externalSourceGUID}}/{{externalSourceName}}/databases
+Content-Type: application/json
+
+{
+	"class" : "DatabaseProperties",
+	"qualifiedName" : "MyDBMS.MyDB",
+    "displayName" : "MyDB",
+    "databaseImportedFrom" : "ImportSource"
+}
+
+###
+# @name Create a Topic
+# Create an Asset entity to represent the Database.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/topics?
+    eventBrokerIsHome=false
+Content-Type: application/json
+
+{
+	"class" : "TopicRequestBody",
+	"qualifiedName" : "Test.MyTopic",
+    "displayName" : "MyTopic",
+    "description" : "This is a test topic"
+}
+
+###
+# @name Create an Event Type for a Topic
+# Create an Asset entity to represent the Database.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/topics/c3a5ae62-4b79-49ee-bec2-8887c58d6dc6/event-types?
+    eventBrokerIsHome=false
+Content-Type: application/json
+
+{
+	"class" : "EventTypeRequestBody",
+	"qualifiedName" : "Test.MyTopic.EventType1",
+    "displayName" : "EventType1",
+    "description" : "This is a test event type for a topic"
+}
+
+###
+# @name Create a database schema
+# Create a Schema Attribute entity to represent the Database Table.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/database-managers/{{externalSourceGUID}}/{{externalSourceName}}/databases/{{databaseGUID}}/schemas
+Content-Type: application/json
+
+{
+	"class" : "DatabaseSchemaProperties",
+	"qualifiedName" : "MyDBMS.MyDB.Schema1a",
+    "displayName" : "MyDB.Schema1",
+    "zoneMembership" : [ "quarantine" ],
+    "owner" : "dba",
+    "ownerCategory" : "USER_ID"
+}
+
+###
+# @name Create a database table
+# Create a Schema Attribute entity to represent the Database Table.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/database-managers/{{externalSourceGUID}}/{{externalSourceName}}/databases/schemas/{{databaseSchemaGUID}}/tables
+Content-Type: application/json
+
+{
+	"class" : "DatabaseTableProperties",
+	"qualifiedName" : "MyDBMS.MyDB.Schema1.TableB",
+    "displayName" : "MyDB.Schema1.TableB"
+}
+
+###
+# @name Create a database column
+# Create a Schema Attribute entity to represent the Database Table.
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/database-managers/{{externalSourceGUID}}/{{externalSourceName}}/databases/schemas/tables/{{databaseTableGUID}}/columns
+Content-Type: application/json
+
+{
+	"class" : "DatabaseColumnProperties",
+	"qualifiedName" : "MyDBMS.MyDB.Schema1.TableA.Column2",
+    "displayName" : "MyDB.Schema1.TableA.Column2",
+    "dataType" : "string"
+}
+
+###
+# @name Get topics for event broker
+GET {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/event-brokers/db5ff6c5-476b-4aec-a373-0a63c6adea13/TopicMonitor/topics?
+    startFrom=0&
+    pageSize=1
+
+###
+# @name Find topics
+GET {{baseURL}}/servers/cocoMDSx/open-metadata/access-services/data-manager/users/erinoverview/topics/by-search-string/.*.?
+    startFrom=0&
+    pageSize=100
+
+###
+# @name Find endpoints
+POST {{baseURL}}/servers/{{mdrServer}}/open-metadata/access-services/data-manager/users/{{user}}/endpoints/by-search-string?
+    startFrom=0&
+    pageSize=100
+Content-Type: application/json
+
+{
+    "class" : "SearchStringRequestBody",
+    "searchString" : ".*."
+}
+
+###
+# @name GetDatabaseByName
+GET {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/databases/by-name/MyDBMS.MyDB?
+    startFrom=0&
+    pageSize=1
+
+###
+# @name Get Event Type By Name
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/topics/event-types/by-name?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+{
+    "class" : "NameRequestBody",
+    "name" : "Test.MyTopic.EventType1"
+}
+
+###
+# @name Find Event Type
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/topics/event-types/by-search-string?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+{
+    "class" : "SearchStringRequestBody",
+    "searchString" : "Test.MyTopic.EventType1"
+}
+
+###
+# @name GetDatabaseByGUID
+GET {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/databases/{{databaseGUID}}
+
+###
+# @name GetDatabaseSchemaByGUID
+GET {{baseURL}}/servers/{{server}}/open-metadata/access-services/data-manager/users/{{user}}/databases/schemas/{{databaseSchemaGUID}}
+
+###
+# @name Get Nested Schema Attribute
+GET {{baseURL}}/servers/cocoMDS2/open-metadata/access-services/data-manager/users/erinoverview/schema-elements/{{guid}}/nested-attributes?
+    startFrom=0&
+    pageSizee=0
