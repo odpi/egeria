@@ -33,7 +33,7 @@ ext {
     commonsconfiguration2Version = '2.9.0'
     commonsconfigurationVersion = '1.10'
     commonsioVersion = '2.13.0'
-    commonsloggingVersion = '1.2'
+    commonsloggingVersion = '1.3.0'
     commonstextVersion = '1.10.0'
     commonscliVersion = '1.5.0'
     elasticsearchVersion = '8.7.1'
