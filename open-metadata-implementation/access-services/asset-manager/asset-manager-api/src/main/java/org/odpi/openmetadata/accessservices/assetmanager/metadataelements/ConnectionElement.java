@@ -7,16 +7,15 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 /**
  * ConnectionElement contains the properties and header for a connection retrieved from the metadata repository.
@@ -24,10 +23,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ConnectionElement implements MetadataElement, Serializable
+public class ConnectionElement implements MetadataElement
 {
-    private static final long serialVersionUID = 1L;
-
     private ConnectionProperties            connectionProperties = null;
     private List<MetadataCorrelationHeader> correlationHeaders   = null;
     private ElementHeader elementHeader = null;

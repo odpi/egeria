@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDef
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,8 +107,8 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                                                             suppliedProject.getPlannedEndDate(),
                                                             suppliedProject.getStatus(),
                                                             null,
-                                                            OpenMetadataAPIMapper.PROJECT_TYPE_GUID,
-                                                            OpenMetadataAPIMapper.PROJECT_TYPE_NAME,
+                                                            OpenMetadataType.PROJECT_TYPE_GUID,
+                                                            OpenMetadataType.PROJECT_TYPE_NAME,
                                                             null,
                                                             genericHandler.getRepositoryHelper(),
                                                             genericHandler.getServiceName(),
@@ -118,8 +119,8 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                 String entityDetailGuid = genericHandler.createBeanInRepository(userId,
                                                                                 null,
                                                                                 null,
-                                                                                OpenMetadataAPIMapper.PROJECT_TYPE_GUID,
-                                                                                OpenMetadataAPIMapper.PROJECT_TYPE_NAME,
+                                                                                OpenMetadataType.PROJECT_TYPE_GUID,
+                                                                                OpenMetadataType.PROJECT_TYPE_NAME,
                                                                                 builder,
                                                                                 null,
                                                                                 methodName);
@@ -155,7 +156,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
             EntityDetail entityDetail = genericHandler.getEntityFromRepository(userId,
                                                                                guid,
                                                                                "guid",
-                                                                               OpenMetadataAPIMapper.PROJECT_TYPE_NAME,
+                                                                               OpenMetadataType.PROJECT_TYPE_NAME,
                                                                                null,
                                                                                null,
                                                                                false,
@@ -195,7 +196,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
-            List<Project> foundProjects = findNodes(userId, OpenMetadataAPIMapper.PROJECT_TYPE_NAME, OpenMetadataAPIMapper.PROJECT_TYPE_GUID,  findRequest, exactValue, ignoreCase, ProjectMapper.class, methodName);
+            List<Project> foundProjects = findNodes(userId, OpenMetadataType.PROJECT_TYPE_NAME, OpenMetadataType.PROJECT_TYPE_GUID, findRequest, exactValue, ignoreCase, ProjectMapper.class, methodName);
             if (foundProjects != null) {
                 response.addAllResults(foundProjects);
             } else {
@@ -225,7 +226,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
 
     public SubjectAreaOMASAPIResponse<Relationship> getProjectRelationships(String userId, String guid, FindRequest findRequest) {
         String methodName = "getProjectRelationships";
-        return getAllRelationshipsForEntity(methodName, userId, guid, findRequest, OpenMetadataAPIMapper.PROJECT_TYPE_NAME );
+        return getAllRelationshipsForEntity(methodName, userId, guid, findRequest, OpenMetadataType.PROJECT_TYPE_NAME );
     }
 
     /**
@@ -272,8 +273,8 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                                                           null,
                                                           guid,
                                                           "guid",
-                                                          OpenMetadataAPIMapper.PROJECT_TYPE_GUID,
-                                                          OpenMetadataAPIMapper.PROJECT_TYPE_NAME,
+                                                          OpenMetadataType.PROJECT_TYPE_GUID,
+                                                          OpenMetadataType.PROJECT_TYPE_NAME,
                                                           false,
                                                           false,
                                                           suppliedEntity.getProperties(),
@@ -284,8 +285,8 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                                        suppliedProject,
                                        methodName,
                                        guid,
-                                       OpenMetadataAPIMapper.PROJECT_TYPE_GUID,
-                                       OpenMetadataAPIMapper.PROJECT_TYPE_NAME);
+                                       OpenMetadataType.PROJECT_TYPE_GUID,
+                                       OpenMetadataType.PROJECT_TYPE_NAME);
                 response = getProjectByGuid(userId, guid);
             }
         } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
@@ -326,7 +327,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
         boolean issueDelete = false;        try {
             if (genericHandler.isBeanIsolated(userId,
                                               guid,
-                                              OpenMetadataAPIMapper.PROJECT_TYPE_NAME,
+                                              OpenMetadataType.PROJECT_TYPE_NAME,
                                               false,
                                               false,
                                               null,
@@ -345,8 +346,8 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                                                       null,
                                                       guid,
                                                       "guid",
-                                                      OpenMetadataAPIMapper.PROJECT_TYPE_GUID,    // true for sub types
-                                                      OpenMetadataAPIMapper.PROJECT_TYPE_NAME,    // true for sub types
+                                                      OpenMetadataType.PROJECT_TYPE_GUID,    // true for sub types
+                                                      OpenMetadataType.PROJECT_TYPE_NAME,    // true for sub types
                                                       null,
                                                       null,
                                                       false,
@@ -432,9 +433,9 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
 //                List<EntityDetail> entities = genericHandler.getAttachedFilteredEntities(userId,
 //                                                                                         guid,
 //                                                                                         "guid",
-//                                                                                         OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_GUID,
-//                                                                                         OpenMetadataAPIMapper.PROJECT_SCOPE_RELATIONSHIP_TYPE_NAME,
-//                                                                                         OpenMetadataAPIMapper.PROJECT_SCOPE_RELATIONSHIP_TYPE_GUID ,
+//                                                                                         OpenMetadataType.GLOSSARY_TERM_TYPE_GUID,
+//                                                                                         OpenMetadataType.PROJECT_SCOPE_RELATIONSHIP_TYPE_NAME,
+//                                                                                         OpenMetadataType.PROJECT_SCOPE_RELATIONSHIP_TYPE_GUID ,
 //                                                                                         2,      // get the content
 //                                                                                         null,
 //                                                                                         "", // no search criteria
@@ -450,7 +451,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
 //                for (EntityDetail entity : entities) {
 //                    String typeName = entity.getType().getTypeDefName();
 //                    String serviceName = genericHandler.getServiceName();
-//                    if (genericHandler.getRepositoryHelper().isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.GLOSSARY_TERM_TYPE_NAME)) {
+//                    if (genericHandler.getRepositoryHelper().isTypeOf(serviceName, typeName, OpenMetadataType.GLOSSARY_TERM_TYPE_NAME)) {
 //                        SubjectAreaOMASAPIResponse<Term> termResponse = termHandler.getTermByGuid(userId, entity.getGUID());
 //                        if (termResponse.getRelatedHTTPCode() == 200) {
 //                            nodes.add(termResponse.results().get(0));
@@ -458,7 +459,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
 //                            response = termResponse;
 //                            break;
 //                        }
-//                    } else  if (genericHandler.getRepositoryHelper().isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.GLOSSARY_CATEGORY_TYPE_NAME)) {
+//                    } else  if (genericHandler.getRepositoryHelper().isTypeOf(serviceName, typeName, OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME)) {
 //                        SubjectAreaOMASAPIResponse<Category> categoryResponse = categoryHandler.getCategoryByGuid(userId, entity.getGUID());
 //                        if (categoryResponse.getRelatedHTTPCode() == 200) {
 //                            nodes.add(categoryResponse.results().get(0));
@@ -466,7 +467,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
 //                            response = categoryResponse;
 //                            break;
 //                        }
-//                    } else  if (genericHandler.getRepositoryHelper().isTypeOf(serviceName, typeName, OpenMetadataAPIMapper.GLOSSARY_TYPE_NAME)) {
+//                    } else  if (genericHandler.getRepositoryHelper().isTypeOf(serviceName, typeName, OpenMetadataType.GLOSSARY_TYPE_NAME)) {
 //                        SubjectAreaOMASAPIResponse<Glossary> glossaryResponse = glossaryHandler.getCategoryByGuid(userId, entity.getGUID());
 //                        if (glossaryResponse.getRelatedHTTPCode() == 200) {
 //                            nodes.add(glossaryResponse.results().get(0));

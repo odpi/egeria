@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.commonservices.repositoryhandler;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 
 import java.util.Date;
 
@@ -14,6 +14,9 @@ import java.util.Date;
  */
 public class RepositoryIterator
 {
+    /**
+     * Page size used when retrieving metadataion
+     */
     public static final int MAX_PAGE_SIZE = 500;
 
     protected RepositoryHandler       repositoryHandler;

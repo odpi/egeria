@@ -12,7 +12,7 @@ import org.odpi.openmetadata.viewservices.myprofile.admin.MyProfileAdmin;
  * MyProfileRegistration registers the view service with the OMAG Server administration services.
  * This registration must be driven once at server start up. The OMAG Server administration services
  * then use this registration information as confirmation that there is an implementation of this
- * view service in the server and it can be configured and used.
+ * view service in the server, and it can be configured and used.
  */
 public class MyProfileRegistration
 {

@@ -4,6 +4,8 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 
+import java.io.Serial;
+
 
 /**
  * AssetSummary holds asset properties that are used for displaying details of
@@ -36,7 +38,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
  */
 public class AssetSummary extends Asset
 {
-    private static final long     serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Default constructor only for subclasses

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.governanceengine.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionElementResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.rest.GovernanceActionElementsResponse;
@@ -41,6 +42,11 @@ public class GovernanceEngineOMASResource
      */
     @GetMapping(path = "/topics/out-topic-connection/{callerId}")
 
+    @Operation(summary="getOutTopicConnection",
+               description="Return the connection object for the Governance Engine OMAS's out topic.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/out-topic/"))
+
     public ConnectionResponse getOutTopicConnection(@PathVariable String serverName,
                                                     @PathVariable String userId,
                                                     @PathVariable String callerId)
@@ -63,6 +69,11 @@ public class GovernanceEngineOMASResource
      *  PropertyServerException there was a problem that occurred within the property server.
      */
     @PostMapping(path = "/assets/{assetGUID}/log-records/{governanceService}")
+
+    @Operation(summary="logAssetAuditMessage",
+               description="Log an audit message about an asset.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/audit-log/"))
 
     public VoidResponse logAssetAuditMessage(@PathVariable String serverName,
                                              @PathVariable String userId,

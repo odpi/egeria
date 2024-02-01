@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -37,8 +39,8 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
                               String               serviceName,
                               String               serverName)
     {
-        super(OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_GUID,
-              OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
+        super(OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_GUID,
+              OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_NAME,
               repositoryHelper,
               serviceName,
               serverName);
@@ -71,8 +73,8 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
                               String               serverName)
     {
         super(identifier + UUID.randomUUID(),
-              OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_GUID,
-              OpenMetadataAPIMapper.EXTERNAL_IDENTIFIER_TYPE_NAME,
+              OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_GUID,
+              OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_NAME,
               repositoryHelper,
               serviceName,
               serverName);
@@ -101,7 +103,7 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.IDENTIFIER_PROPERTY_NAME,
+                                                                  OpenMetadataType.IDENTIFIER_PROPERTY_NAME,
                                                                   identifier,
                                                                   methodName);
 
@@ -109,44 +111,44 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataAPIMapper.KEY_PATTERN_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.KEY_PATTERN_ENUM_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.KEY_PATTERN_ENUM_TYPE_NAME,
+                                                                    OpenMetadataType.KEY_PATTERN_PROPERTY_NAME,
+                                                                    OpenMetadataType.KEY_PATTERN_ENUM_TYPE_GUID,
+                                                                    OpenMetadataType.KEY_PATTERN_ENUM_TYPE_NAME,
                                                                     keyPattern,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataAPIMapper.KEY_PATTERN_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataType.KEY_PATTERN_PROPERTY_NAME);
         }
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.EXT_INSTANCE_CREATED_BY_PROPERTY_NAME,
+                                                                  OpenMetadataType.EXT_INSTANCE_CREATED_BY_PROPERTY_NAME,
                                                                   externalInstanceCreatedBy,
                                                                   methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataAPIMapper.EXT_INSTANCE_CREATION_TIME_PROPERTY_NAME,
-                                                                  externalInstanceCreationTime,
-                                                                  methodName);
+                                                                properties,
+                                                                OpenMetadataType.EXT_INSTANCE_CREATION_TIME_PROPERTY_NAME,
+                                                                externalInstanceCreationTime,
+                                                                methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.EXT_INSTANCE_LAST_UPDATED_BY_PROPERTY_NAME,
+                                                                  OpenMetadataType.EXT_INSTANCE_LAST_UPDATED_BY_PROPERTY_NAME,
                                                                   externalInstanceLastUpdatedBy,
                                                                   methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataAPIMapper.EXT_INSTANCE_LAST_UPDATE_TIME_PROPERTY_NAME,
+                                                                OpenMetadataType.EXT_INSTANCE_LAST_UPDATE_TIME_PROPERTY_NAME,
                                                                 externalInstanceLastUpdateTime,
                                                                 methodName);
 
         properties = repositoryHelper.addLongPropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataAPIMapper.EXT_INSTANCE_VERSION_PROPERTY_NAME,
+                                                                OpenMetadataType.EXT_INSTANCE_VERSION_PROPERTY_NAME,
                                                                 externalInstanceVersion,
                                                                 methodName);
 
@@ -174,31 +176,31 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   null,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
+                                                                  OpenMetadataType.USAGE_PROPERTY_NAME,
                                                                   usage,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,
+                                                                  OpenMetadataType.SOURCE_PROPERTY_NAME,
                                                                   source,
                                                                   methodName);
 
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                      properties,
-                                                                     OpenMetadataAPIMapper.MAPPING_PROPERTIES_PROPERTY_NAME,
+                                                                     OpenMetadataType.MAPPING_PROPERTIES_PROPERTY_NAME,
                                                                      mappingProperties,
                                                                      methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataAPIMapper.LAST_SYNCHRONIZED_PROPERTY_NAME,
+                                                                OpenMetadataType.LAST_SYNCHRONIZED_PROPERTY_NAME,
                                                                 new Date(),
                                                                 methodName);
 
@@ -225,7 +227,7 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   null,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
@@ -233,15 +235,15 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataAPIMapper.PERMITTED_SYNC_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.PERMITTED_SYNC_ENUM_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.PERMITTED_SYNC_ENUM_TYPE_NAME,
+                                                                    OpenMetadataType.PERMITTED_SYNC_PROPERTY_NAME,
+                                                                    OpenMetadataType.PERMITTED_SYNC_ENUM_TYPE_GUID,
+                                                                    OpenMetadataType.PERMITTED_SYNC_ENUM_TYPE_NAME,
                                                                     permittedSynchronization,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataAPIMapper.KEY_PATTERN_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataType.KEY_PATTERN_PROPERTY_NAME);
         }
 
         setEffectivityDates(properties);

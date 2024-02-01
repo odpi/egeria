@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![TechPreview](../../../images/egeria-content-status-tech-preview.png#pagewidth)
+![TechPreview](../../../images/egeria-content-status-deprecated.png#pagewidth)
 
 # Asset Catalog Open Metadata Access Service (OMAS)
 
@@ -24,14 +24,14 @@ The module structure for the Asset Catalog OMAS is as follows:
 
 * [asset-catalog-client](asset-catalog-client) supports the client library.
 * [asset-catalog-api](asset-catalog-api) supports the common Java classes that are used both by the client and the server.
-* [asset-catalog-server](asset-catalog-server) supports the server side implementation of the access service.
+* [omas-asset-catalog-server](asset-catalog-server) supports the server side implementation of the access service.
  This includes the
   * interaction with the [administration services](../../admin-services) for
     registration, configuration, initialization and termination of the access service.
   * interaction with the [repository services](../../repository-services) to work with open metadata from the
     [cohort](https://egeria-project.org/concepts/cohort-member).
   * support for the access service's API and its related event management.
-* [asset-catalog-spring](asset-catalog-spring) supports the REST API using the [Spring](../../../developer-resources/Spring.md) libraries.
+* [omas-asset-catalog-spring](asset-catalog-spring) supports the REST API using the [Spring](../../../developer-resources/Spring.md) libraries.
 * [asset-catalog-topic-connector](asset-catalog-topic-connector) supports asynchronous messaging through a connector
 and connector provider class
 

@@ -27,18 +27,28 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum StewardshipActionErrorCode implements ExceptionMessageSet
 {
+    /**
+     * OMAS-STEWARDSHIP-ACTION-400-017 - A null topic listener has been passed by user {0} on method {1}
+     */
     NULL_LISTENER(400, "OMAS-STEWARDSHIP-ACTION-400-017",
                   "A null topic listener has been passed by user {0} on method {1}",
                   "There is a coding error in the caller to the Stewardship Action OMAS.",
                   "Correct the caller logic and retry the request."),
 
 
+    /**
+     * OMAS-STEWARDSHIP-ACTION-404-001 - The open metadata repository services are not initialized for the {0} operation
+     */
     OMRS_NOT_INITIALIZED(404, "OMAS-STEWARDSHIP-ACTION-404-001",
                          "The open metadata repository services are not initialized for the {0} operation",
                          "The system is unable to connect to an open metadata repository.",
                          "Check that the server where the Stewardship Action OMAS is running initialized correctly.  " +
                                  "Correct any errors discovered and retry the request when the open metadata services are available."),
 
+    /**
+     * OMAS-STEWARDSHIP-ACTION-500-004 - An unexpected exception occurred when sending an event through connector {0} to the Stewardship
+     * Action OMAS out topic.  The failing event was {1}, the exception was {2} with message {3}
+     */
     UNABLE_TO_SEND_EVENT(500, "OMAS-STEWARDSHIP-ACTION-500-004",
                          "An unexpected exception occurred when sending an event through connector {0} to the Stewardship Action OMAS out topic.  The failing " +
                                  "event was {1}, the exception was {2} with message {3}",
@@ -46,6 +56,10 @@ public enum StewardshipActionErrorCode implements ExceptionMessageSet
                          "Look for errors in the event bus to understand why this is failing.  When the event bus is operating correctly, event will" +
                                  " begin to be published again.  In the meantime, events are being lost."),
 
+    /**
+     * OMAS-STEWARDSHIP-ACTION-500-006 - The requested connector for connection named {0} has not been created.
+     * The connection was provided by the {1} service running in OMAG Server {2} at {3}
+     */
     NULL_CONNECTOR_RETURNED(500, "OMAS-STEWARDSHIP-ACTION-500-006",
                             "The requested connector for connection named {0} has not been created.  The connection was provided by the {1} service" +
                                     " running in OMAG Server {2} at {3}",
@@ -53,6 +67,10 @@ public enum StewardshipActionErrorCode implements ExceptionMessageSet
                             "This problem is likely to be caused by an incorrect connection object.  Check the settings on the Connection" +
                                     "and correct if necessary.  If the connection is correct, contact the Egeria community for help."),
 
+    /**
+     * OMAS-STEWARDSHIP-ACTION-500-007 - The connector generated from the connection named {0} return by the {1} service running in
+     * OMAG Server {2} at {3} is not of the required type. It should be an instance of {4}
+     */
     WRONG_TYPE_OF_CONNECTOR(500, "OMAS-STEWARDSHIP-ACTION-500-007",
                             "The connector generated from the connection named {0} return by the {1} service running in OMAG Server {2} at {3} is " +
                                     "not of the required type. It should be an instance of {4}",
@@ -61,29 +79,29 @@ public enum StewardshipActionErrorCode implements ExceptionMessageSet
 
 
 
-    private final ExceptionMessageDefinition messageDefinition;
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
+
 
     /**
-     * The constructor for StewardshipActionErrorCode expects to be passed one of the enumeration rows defined in
-     * StewardshipActionErrorCode above.   For example:
-     *
-     *     StewardshipActionErrorCode   errorCode = StewardshipActionErrorCode.SERVER_NOT_AVAILABLE;
-     *
-     * This will expand out to the 5 parameters shown below.
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
      */
-    StewardshipActionErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    StewardshipActionErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -95,7 +113,11 @@ public enum StewardshipActionErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -108,6 +130,12 @@ public enum StewardshipActionErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -115,15 +143,19 @@ public enum StewardshipActionErrorCode implements ExceptionMessageSet
 
 
     /**
-     * toString() JSON-style
+     * JSON-style toString
      *
-     * @return string description
+     * @return string of property names and values for this enum
      */
     @Override
     public String toString()
     {
-        return "StewardshipActionErrorCode{" +
-                "messageDefinition=" + messageDefinition +
-                '}';
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

@@ -13,7 +13,8 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -27,10 +28,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.CONNECTION_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENDPOINT_TYPE_GUID;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME;
-import static org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper.GUID_PROPERTY_NAME;
+
 
 
 /**
@@ -144,7 +142,7 @@ public class DataEngineConnectionAndEndpointHandler {
 
         String connectionQualifiedName = getConnectionQualifiedName(assetTypeName, assetQualifiedName);
         Optional<EntityDetail> existingConnection = dataEngineCommonHandler.findEntity(userID, connectionQualifiedName,
-                CONNECTION_TYPE_NAME);
+                                                                                       OpenMetadataType.CONNECTION_TYPE_NAME);
         if (existingConnection.isEmpty()) {
             createConnectionAndRelatedEntities(assetQualifiedName, assetGUID, assetTypeName, protocol, networkAddress,
                     externalSourceGUID, externalSourceName, userID, methodName, connectorType, connectionQualifiedName);
@@ -160,12 +158,12 @@ public class DataEngineConnectionAndEndpointHandler {
         String connectorTypeQualifiedName = getConnectorTypeQualifiedName(assetTypeName, assetQualifiedName);
         Date now = dataEngineCommonHandler.getNow();
         String connectorTypeGUID = connectorTypeHandler.getConnectorTypeForConnection(userID, externalSourceGUID,
-                externalSourceName, null, connectorTypeQualifiedName, connectorTypeQualifiedName,
-                null, assetTypeName, null, connectorProviderClassName,
-                OpenMetadataAPIMapper.CONNECTOR_FRAMEWORK_NAME_DEFAULT, OpenMetadataAPIMapper.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT,
-                null, null, null, null,
-                null, null, null, null,
-                null,false, false, now, methodName);
+                                                                                      externalSourceName, null, connectorTypeQualifiedName, connectorTypeQualifiedName,
+                                                                                      null, assetTypeName, null, connectorProviderClassName,
+                                                                                      OpenMetadataType.CONNECTOR_FRAMEWORK_NAME_DEFAULT, OpenMetadataType.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT,
+                                                                                      null, null, null, null,
+                                                                                      null, null, null, null,
+                                                                                      null, false, false, now, methodName);
 
         String endpointQualifiedName = getEndpointQualifiedName(assetTypeName, assetQualifiedName);
         String endpointGUID = endpointHandler.createEndpoint(userID, externalSourceGUID, externalSourceName, null,
@@ -174,11 +172,11 @@ public class DataEngineConnectionAndEndpointHandler {
                 null, now, methodName);
 
         String connectionGUID = connectionHandler.createConnection(userID, externalSourceGUID, externalSourceName, assetGUID, ASSET_GUID,
-                null, connectionQualifiedName, connectionQualifiedName, null, null,
-                null, null, null, null, null,
-                OpenMetadataAPIMapper.CONNECTION_TYPE_NAME, null, connectorTypeGUID, CONNECTOR_TYPE_GUID_PARAMETER_NAME,
-                endpointGUID, ENDPOINT_GUID_PARAMETER_NAME, null, null,false,
-                false, now, methodName);
+                                                                   null, connectionQualifiedName, connectionQualifiedName, null, null,
+                                                                   null, null, null, null, null,
+                                                                   OpenMetadataType.CONNECTION_TYPE_NAME, null, connectorTypeGUID, CONNECTOR_TYPE_GUID_PARAMETER_NAME,
+                                                                   endpointGUID, ENDPOINT_GUID_PARAMETER_NAME, null, null, false,
+                                                                   false, now, methodName);
 
         log.debug(CONNECTION_CREATED, assetQualifiedName, connectionQualifiedName, connectionGUID, endpointGUID, connectorTypeGUID);
     }
@@ -225,7 +223,7 @@ public class DataEngineConnectionAndEndpointHandler {
         final String methodName = "removeConnection";
         dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(connectionGUID, GUID_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateGUID(connectionGUID, OpenMetadataProperty.GUID.name, methodName);
 
         connectionHandler.removeConnection(userId, externalSourceGUID, externalSourceName, connectionGUID,
                 CONNECTION_GUID_PARAMETER_NAME, false, false, dataEngineCommonHandler.getNow(), methodName);
@@ -251,7 +249,7 @@ public class DataEngineConnectionAndEndpointHandler {
         final String methodName = "removeEndpoint";
         dataEngineCommonHandler.validateDeleteSemantic(deleteSemantic, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(endpointGUID, GUID_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateGUID(endpointGUID, OpenMetadataProperty.GUID.name, methodName);
 
         endpointHandler.removeEndpoint(userId, externalSourceGUID, externalSourceName, endpointGUID,
                 ENDPOINT_GUID_PARAMETER_NAME, false, false, dataEngineCommonHandler.getNow(), methodName);
@@ -264,7 +262,7 @@ public class DataEngineConnectionAndEndpointHandler {
         final String methodName = "updateEndpoint";
         String endpointQualifiedName = getEndpointQualifiedName(assetTypeName, assetQualifiedName);
         Optional<EntityDetail> existingEndpoint = dataEngineCommonHandler.findEntity(userID, endpointQualifiedName,
-                ENDPOINT_TYPE_NAME);
+                                                                                     OpenMetadataType.ENDPOINT_TYPE_NAME);
 
         if (existingEndpoint.isEmpty()) {
             log.debug(EXISTING_ENDPOINT_NOT_FOUND, endpointQualifiedName, assetQualifiedName);
@@ -287,8 +285,8 @@ public class DataEngineConnectionAndEndpointHandler {
     }
 
     EndpointBuilder getEndpointBuilder(String protocol, String networkAddress, String qualifiedName) {
-        return new EndpointBuilder(protocol, networkAddress, qualifiedName, ENDPOINT_TYPE_GUID,
-                ENDPOINT_TYPE_NAME, repositoryHelper, serviceName, serverName);
+        return new EndpointBuilder(protocol, networkAddress, qualifiedName, OpenMetadataType.ENDPOINT_TYPE_GUID,
+                                   OpenMetadataType.ENDPOINT_TYPE_NAME, repositoryHelper, serviceName, serverName);
     }
 
     private void validateParameters(String qualifiedName, String typeName, String externalSourceGuid, String externalSourceName,

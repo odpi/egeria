@@ -13,7 +13,6 @@ import java.util.Map;
 /**
  * OMAGEngineServiceRegistration provides static methods to enable an engine service to dynamically
  * register itself with the OMAG Server.
- *
  * Static methods are needed to be able to get this information to the Admin Services REST API singletons
  * created by Spring.
  */
@@ -24,14 +23,18 @@ public class OMAGEngineServiceRegistration
      * The last registration is used.
      */
     static final private Map<String, EngineServiceRegistrationEntry> engineServiceRegistrationMap = new HashMap<>();
+    static final private Map<String, GovernanceEngineHandlerFactory> engineHandlerFactoryMap = new HashMap<>();
+    static final private Map<String, String> engineServiceToTypeNameMap = new HashMap<>();
 
 
     /**
      * Register Open Metadata Engine Service (OMES)
      *
      * @param registration information about the specific OMES
+     * @param engineHandlerFactory factory object for the engine service
      */
-    public static synchronized void registerEngineService(EngineServiceRegistrationEntry registration)
+    public static synchronized void registerEngineService(EngineServiceRegistrationEntry registration,
+                                                          GovernanceEngineHandlerFactory engineHandlerFactory)
     {
         if (registration != null)
         {
@@ -40,6 +43,15 @@ public class OMAGEngineServiceRegistration
             if (serviceName != null)
             {
                 engineServiceRegistrationMap.put(serviceName, registration);
+            }
+
+            String governanceEngineTypeName = registration.getHostedGovernanceEngineType();
+
+            if (governanceEngineTypeName != null)
+            {
+                engineHandlerFactoryMap.put(governanceEngineTypeName, engineHandlerFactory);
+                engineServiceToTypeNameMap.put(registration.getEngineServiceURLMarker(),
+                                               governanceEngineTypeName);
             }
         }
     }
@@ -89,5 +101,28 @@ public class OMAGEngineServiceRegistration
         }
 
         return null;
+    }
+
+
+    /**
+     * Return the type name of the governance engine for the url marker for the engine service.
+     *
+     * @param serviceURLMarker url marker for the engine service
+     * @return open metadata type name
+     */
+    public static String getGovernanceEngineTypeName(String serviceURLMarker)
+    {
+        return engineServiceToTypeNameMap.get(serviceURLMarker);
+    }
+
+
+    /**
+     * Retrieve the requested OMES governance engine handler factory map
+     *
+     * @return engine service registration info
+     */
+    public static synchronized Map<String, GovernanceEngineHandlerFactory> getGovernanceEngineHandlerFactoryMap()
+    {
+        return new HashMap<>(engineHandlerFactoryMap);
     }
 }

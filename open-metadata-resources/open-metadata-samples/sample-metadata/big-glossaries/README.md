@@ -6,7 +6,7 @@
 
 This utility creates 10 glossaries of 10,000 unique terms each in their own archive file.  They are named as follows:
 
-* BigGlossaryA.json
+* BigGlossaryA.omarchive
   * BigGlossaryA
      * TermA00001
      *  :

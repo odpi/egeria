@@ -268,8 +268,10 @@ public class OpenMetadataStoreResource
                                                                 @PathVariable String  serviceURLMarker,
                                                                 @PathVariable String  userId,
                                                                 @PathVariable String  elementGUID,
-                                                                @RequestParam boolean forLineage,
-                                                                @RequestParam boolean forDuplicateProcessing,
+                                                                @RequestParam (required = false, defaultValue = "false")
+                                                                              boolean forLineage,
+                                                                @RequestParam (required = false, defaultValue = "false")
+                                                                              boolean forDuplicateProcessing,
                                                                 @RequestParam long    effectiveTime)
     {
         return restAPI.getMetadataElementByGUID(serverName, serviceURLMarker, userId, elementGUID, forLineage, forDuplicateProcessing, effectiveTime);
@@ -284,7 +286,6 @@ public class OpenMetadataStoreResource
      * @param userId caller's userId
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param requestBody unique name for the metadata element
      *
      * @return metadata element properties or
@@ -297,12 +298,13 @@ public class OpenMetadataStoreResource
     public OpenMetadataElementResponse getMetadataElementByUniqueName(@PathVariable String          serverName,
                                                                       @PathVariable String          serviceURLMarker,
                                                                       @PathVariable String          userId,
-                                                                      @RequestParam boolean         forLineage,
-                                                                      @RequestParam boolean         forDuplicateProcessing,
-                                                                      @RequestParam long            effectiveTime,
+                                                                      @RequestParam (required = false, defaultValue = "false")
+                                                                                    boolean         forLineage,
+                                                                      @RequestParam (required = false, defaultValue = "false")
+                                                                                    boolean         forDuplicateProcessing,
                                                                       @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getMetadataElementByUniqueName(serverName, serviceURLMarker, userId, forLineage, forDuplicateProcessing, effectiveTime, requestBody);
+        return restAPI.getMetadataElementByUniqueName(serverName, serviceURLMarker, userId, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -314,7 +316,6 @@ public class OpenMetadataStoreResource
      * @param userId caller's userId
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param requestBody unique name for the metadata element
      *
      * @return metadata element unique identifier (guid) or
@@ -327,12 +328,13 @@ public class OpenMetadataStoreResource
     public GUIDResponse getMetadataElementGUIDByUniqueName(@PathVariable String          serverName,
                                                            @PathVariable String          serviceURLMarker,
                                                            @PathVariable String          userId,
-                                                           @RequestParam boolean         forLineage,
-                                                           @RequestParam boolean         forDuplicateProcessing,
-                                                           @RequestParam long            effectiveTime,
+                                                           @RequestParam (required = false, defaultValue = "false")
+                                                                         boolean         forLineage,
+                                                           @RequestParam (required = false, defaultValue = "false")
+                                                                         boolean         forDuplicateProcessing,
                                                            @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getMetadataElementGUIDByUniqueName(serverName, serviceURLMarker, userId, forLineage, forDuplicateProcessing, effectiveTime, requestBody);
+        return restAPI.getMetadataElementGUIDByUniqueName(serverName, serviceURLMarker, userId, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -344,7 +346,6 @@ public class OpenMetadataStoreResource
      * @param userId caller's userId
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
-     * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param requestBody searchString  to retrieve
@@ -359,14 +360,17 @@ public class OpenMetadataStoreResource
     public OpenMetadataElementsResponse findMetadataElementsWithString(@PathVariable String                  serverName,
                                                                        @PathVariable String                  serviceURLMarker,
                                                                        @PathVariable String                  userId,
-                                                                       @RequestParam boolean                 forLineage,
-                                                                       @RequestParam boolean                 forDuplicateProcessing,
-                                                                       @RequestParam long                    effectiveTime,
-                                                                       @RequestParam int                     startFrom,
-                                                                       @RequestParam int                     pageSize,
+                                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                                     boolean                 forLineage,
+                                                                       @RequestParam (required = false, defaultValue = "false")
+                                                                                     boolean                 forDuplicateProcessing,
+                                                                       @RequestParam (required = false, defaultValue = "0")
+                                                                                     int                     startFrom,
+                                                                       @RequestParam (required = false, defaultValue = "0")
+                                                                                     int                     pageSize,
                                                                        @RequestBody  SearchStringRequestBody requestBody)
     {
-        return restAPI.findMetadataElementsWithString(serverName, serviceURLMarker, userId, forLineage, forDuplicateProcessing, effectiveTime, startFrom, pageSize, requestBody);
+        return restAPI.findMetadataElementsWithString(serverName, serviceURLMarker, userId, forLineage, forDuplicateProcessing, startFrom, pageSize, requestBody);
     }
 
 
@@ -395,12 +399,18 @@ public class OpenMetadataStoreResource
                                                                             @PathVariable String  serviceURLMarker,
                                                                             @PathVariable String  userId,
                                                                             @PathVariable String  elementGUID,
-                                                                            @RequestParam boolean forLineage,
-                                                                            @RequestParam boolean forDuplicateProcessing,
-                                                                            @RequestParam long    effectiveTime,
-                                                                            @RequestParam int     startingAtEnd,
-                                                                            @RequestParam int     startFrom,
-                                                                            @RequestParam int     pageSize)
+                                                                            @RequestParam (required = false, defaultValue = "false")
+                                                                                          boolean forLineage,
+                                                                            @RequestParam (required = false, defaultValue = "false")
+                                                                                          boolean forDuplicateProcessing,
+                                                                            @RequestParam (required = false, defaultValue = "0")
+                                                                                          long    effectiveTime,
+                                                                            @RequestParam (required = false, defaultValue = "0")
+                                                                                          int     startingAtEnd,
+                                                                            @RequestParam (required = false, defaultValue = "0")
+                                                                                          int     startFrom,
+                                                                            @RequestParam (required = false, defaultValue = "0")
+                                                                                          int     pageSize)
     {
         return restAPI.getRelatedMetadataElements(serverName,
                                                   serviceURLMarker,
@@ -443,12 +453,18 @@ public class OpenMetadataStoreResource
                                                                          @PathVariable String  userId,
                                                                          @PathVariable String  elementGUID,
                                                                          @PathVariable String  relationshipTypeName,
-                                                                         @RequestParam boolean forLineage,
-                                                                         @RequestParam boolean forDuplicateProcessing,
-                                                                         @RequestParam long    effectiveTime,
-                                                                         @RequestParam int     startingAtEnd,
-                                                                         @RequestParam int     startFrom,
-                                                                         @RequestParam int     pageSize)
+                                                                         @RequestParam(required = false, defaultValue = "false")
+                                                                                       boolean forLineage,
+                                                                         @RequestParam(required = false, defaultValue = "false")
+                                                                                       boolean forDuplicateProcessing,
+                                                                         @RequestParam (required = false, defaultValue = "0")
+                                                                                       long    effectiveTime,
+                                                                         @RequestParam (required = false, defaultValue = "0")
+                                                                                       int     startingAtEnd,
+                                                                         @RequestParam (required = false, defaultValue = "0")
+                                                                                       int     startFrom,
+                                                                         @RequestParam (required = false, defaultValue = "0")
+                                                                                       int     pageSize)
     {
         return restAPI.getRelatedMetadataElements(serverName,
                                                   serviceURLMarker,
@@ -491,11 +507,16 @@ public class OpenMetadataStoreResource
                                                                                   @PathVariable String  userId,
                                                                                   @PathVariable String  metadataElementAtEnd1GUID,
                                                                                   @PathVariable String  metadataElementAtEnd2GUID,
-                                                                                  @RequestParam boolean forLineage,
-                                                                                  @RequestParam boolean forDuplicateProcessing,
-                                                                                  @RequestParam long    effectiveTime,
-                                                                                  @RequestParam int     startFrom,
-                                                                                  @RequestParam int     pageSize)
+                                                                                  @RequestParam(required = false, defaultValue = "false")
+                                                                                                boolean forLineage,
+                                                                                  @RequestParam(required = false, defaultValue = "false")
+                                                                                                boolean forDuplicateProcessing,
+                                                                                  @RequestParam (required = false, defaultValue = "0")
+                                                                                                long    effectiveTime,
+                                                                                  @RequestParam (required = false, defaultValue = "0")
+                                                                                                int     startFrom,
+                                                                                  @RequestParam (required = false, defaultValue = "0")
+                                                                                                int     pageSize)
     {
         return restAPI.getMetadataElementRelationships(serverName,
                                                        serviceURLMarker,
@@ -539,11 +560,16 @@ public class OpenMetadataStoreResource
                                                                                @PathVariable String  metadataElementAtEnd1GUID,
                                                                                @PathVariable String  relationshipTypeName,
                                                                                @PathVariable String  metadataElementAtEnd2GUID,
-                                                                               @RequestParam boolean forLineage,
-                                                                               @RequestParam boolean forDuplicateProcessing,
-                                                                               @RequestParam long    effectiveTime,
-                                                                               @RequestParam int     startFrom,
-                                                                               @RequestParam int     pageSize)
+                                                                               @RequestParam(required = false, defaultValue = "false")
+                                                                                             boolean forLineage,
+                                                                               @RequestParam(required = false, defaultValue = "false")
+                                                                                             boolean forDuplicateProcessing,
+                                                                               @RequestParam (required = false, defaultValue = "0")
+                                                                                             long    effectiveTime,
+                                                                               @RequestParam  (required = false, defaultValue = "0")
+                                                                                             int     startFrom,
+                                                                               @RequestParam  (required = false, defaultValue = "0")
+                                                                                             int     pageSize)
     {
         return restAPI.getMetadataElementRelationships(serverName,
                                                        serviceURLMarker,
@@ -585,15 +611,15 @@ public class OpenMetadataStoreResource
                                                              @RequestParam(required = false, defaultValue = "false")
                                                                            boolean         forLineage,
                                                              @RequestParam(required = false, defaultValue = "false")
-                                                                 boolean         forDuplicateProcessing,
+                                                                           boolean         forDuplicateProcessing,
                                                              @RequestParam(required = false, defaultValue = "0")
-                                                                 long            effectiveTime,
+                                                                           long            effectiveTime,
                                                              @RequestParam(required = false, defaultValue = "0")
-                                                                 int             startFrom,
+                                                                           int             startFrom,
                                                              @RequestParam(required = false, defaultValue = "0")
-                                                                 int             pageSize,
-                                                             @RequestBody(required = false)
-                                                                 FindRequestBody requestBody)
+                                                                           int             pageSize,
+                                                             @RequestBody (required = false)
+                                                                           FindRequestBody requestBody)
     {
         return restAPI.findMetadataElements(serverName, serviceURLMarker, userId, forLineage, forDuplicateProcessing, effectiveTime, startFrom, pageSize, requestBody);
     }
@@ -622,11 +648,16 @@ public class OpenMetadataStoreResource
     public RelatedMetadataElementsListResponse findRelationshipsBetweenMetadataElements(@PathVariable String          serverName,
                                                                                         @PathVariable String          serviceURLMarker,
                                                                                         @PathVariable String          userId,
-                                                                                        @RequestParam boolean         forLineage,
-                                                                                        @RequestParam boolean         forDuplicateProcessing,
-                                                                                        @RequestParam long            effectiveTime,
-                                                                                        @RequestParam int             startFrom,
-                                                                                        @RequestParam int             pageSize,
+                                                                                        @RequestParam(required = false, defaultValue = "false")
+                                                                                                      boolean         forLineage,
+                                                                                        @RequestParam(required = false, defaultValue = "false")
+                                                                                                      boolean         forDuplicateProcessing,
+                                                                                        @RequestParam (required = false, defaultValue = "0")
+                                                                                                      long            effectiveTime,
+                                                                                        @RequestParam (required = false, defaultValue = "0")
+                                                                                                      int             startFrom,
+                                                                                        @RequestParam  (required = false, defaultValue = "0")
+                                                                                                      int             pageSize,
                                                                                         @RequestBody  FindRequestBody requestBody)
     {
         return restAPI.findRelationshipsBetweenMetadataElements(serverName, serviceURLMarker, userId, forLineage, forDuplicateProcessing, effectiveTime, startFrom, pageSize, requestBody);
@@ -655,9 +686,12 @@ public class OpenMetadataStoreResource
                                                                  @PathVariable String  serviceURLMarker,
                                                                  @PathVariable String  userId,
                                                                  @PathVariable String  relationshipGUID,
-                                                                 @RequestParam boolean forLineage,
-                                                                 @RequestParam boolean forDuplicateProcessing,
-                                                                 @RequestParam long    effectiveTime)
+                                                                 @RequestParam(required = false, defaultValue = "false")
+                                                                               boolean forLineage,
+                                                                 @RequestParam(required = false, defaultValue = "false")
+                                                                               boolean forDuplicateProcessing,
+                                                                 @RequestParam (required = false, defaultValue = "0")
+                                                                               long    effectiveTime)
     {
         return restAPI.getRelationshipByGUID(serverName, serviceURLMarker, userId, relationshipGUID, forLineage, forDuplicateProcessing, effectiveTime);
     }
@@ -792,9 +826,35 @@ public class OpenMetadataStoreResource
                                                       @PathVariable String            serviceURLMarker,
                                                       @PathVariable String            userId,
                                                       @PathVariable String            metadataElementGUID,
-                                                      @RequestBody  UpdateRequestBody requestBody)
+                                                      @RequestBody(required = false)  UpdateRequestBody requestBody)
     {
         return restAPI.deleteMetadataElementInStore(serverName, serviceURLMarker, userId, metadataElementGUID, requestBody);
+    }
+
+
+    /**
+     * Archive a specific metadata element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param requestBody null request body
+     *
+     * @return void or
+     *  InvalidParameterException the unique identifier is null or invalid in some way
+     *  UserNotAuthorizedException the governance action service is not authorized to archive this element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    @PostMapping(path = "/metadata-elements/{metadataElementGUID}/archive")
+
+    public  VoidResponse archiveMetadataElementInStore(@PathVariable String            serverName,
+                                                       @PathVariable String            serviceURLMarker,
+                                                       @PathVariable String            userId,
+                                                       @PathVariable String            metadataElementGUID,
+                                                       @RequestBody(required = false)  ArchiveRequestBody requestBody)
+    {
+        return restAPI.archiveMetadataElementInStore(serverName, serviceURLMarker, userId, metadataElementGUID, requestBody);
     }
 
 
@@ -1580,16 +1640,107 @@ public class OpenMetadataStoreResource
      */
     @GetMapping(path = "/valid-metadata-values/get-valid-metadata-values/{propertyName}")
 
-    public ValidMetadataValueListResponse getValidMetadataValues(@PathVariable String serverName,
-                                                                 @PathVariable String serviceURLMarker,
-                                                                 @PathVariable String userId,
-                                                                 @RequestParam(required = false)
+    public ValidMetadataValueDetailListResponse getValidMetadataValues(@PathVariable String serverName,
+                                                                       @PathVariable String serviceURLMarker,
+                                                                       @PathVariable String userId,
+                                                                       @RequestParam(required = false)
                                                                                String typeName,
-                                                                 @PathVariable String propertyName,
-                                                                 @RequestParam int    startFrom,
-                                                                 @RequestParam int    pageSize)
+                                                                       @PathVariable String propertyName,
+                                                                       @RequestParam int    startFrom,
+                                                                       @RequestParam int    pageSize)
     {
         return restAPI.getValidMetadataValues(serverName, serviceURLMarker, userId, typeName, propertyName, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve all the consistent valid values for the requested property.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName name of property that this valid value applies
+     * @param mapName optional name of map key that this valid value applies
+     * @param preferredValue the value to match against
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of valid values defined for the property or
+     * InvalidParameterException  the property name is null or not known.
+     * UserNotAuthorizedException the service is not able to create/access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    @GetMapping(path = "/valid-metadata-values/{propertyName}/consistent-metadata-values")
+
+    public ValidMetadataValueListResponse getConsistentMetadataValues(@PathVariable String serverName,
+                                                                      @PathVariable String serviceURLMarker,
+                                                                      @PathVariable String userId,
+                                                                      @RequestParam(required = false)
+                                                                                    String typeName,
+                                                                      @PathVariable String propertyName,
+                                                                      @RequestParam(required = false)
+                                                                                    String mapName,
+                                                                      @RequestParam String preferredValue,
+                                                                      @RequestParam int    startFrom,
+                                                                      @RequestParam int    pageSize)
+    {
+        return restAPI.getConsistentMetadataValues(serverName, serviceURLMarker, userId, typeName, propertyName, mapName, preferredValue, startFrom, pageSize);
+    }
+
+
+    /**
+     * Set up consistent metadata values relationship between the two property values.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param typeName1 type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName1 name of property that this valid value applies
+     * @param mapName1 optional name of map key that this valid value applies
+     * @param preferredValue1 the value to match against
+     * @param typeName2 type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
+     * @param propertyName2 name of property that this valid value applies
+     * @param mapName2 optional name of map key that this valid value applies
+     * @param preferredValue2 the value to match against
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException  the property name is null or not known.
+     * UserNotAuthorizedException the service is not able to create/access the element
+     * PropertyServerException    there is a problem accessing the metadata store
+     */
+    @PostMapping(path = "/valid-metadata-values/{propertyName1}/consistent-metadata-values/{propertyName2}")
+
+    public VoidResponse setConsistentMetadataValues(@PathVariable String          serverName,
+                                                    @PathVariable String          serviceURLMarker,
+                                                    @PathVariable String          userId,
+                                                    @RequestParam(required = false)
+                                                                  String          typeName1,
+                                                    @PathVariable String          propertyName1,
+                                                    @RequestParam(required = false)
+                                                                  String          mapName1,
+                                                    @RequestParam String          preferredValue1,
+                                                    @RequestParam(required = false)
+                                                                  String          typeName2,
+                                                    @PathVariable String          propertyName2,
+                                                    @RequestParam(required = false)
+                                                                  String          mapName2,
+                                                    @RequestParam String          preferredValue2,
+                                                    @RequestBody  NullRequestBody requestBody)
+    {
+        return restAPI.setConsistentMetadataValues(serverName,
+                                                   serviceURLMarker,
+                                                   userId,
+                                                   typeName1,
+                                                   propertyName1,
+                                                   mapName1,
+                                                   preferredValue1,
+                                                   typeName2,
+                                                   propertyName2,
+                                                   mapName2,
+                                                   preferredValue2,
+                                                   requestBody);
     }
 
 

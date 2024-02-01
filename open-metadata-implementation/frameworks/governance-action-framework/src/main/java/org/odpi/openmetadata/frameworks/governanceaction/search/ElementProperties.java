@@ -157,7 +157,7 @@ public class ElementProperties
 
     /**
      * Adds or updates an instance property.
-     * If a null is supplied for the property name, an OMRS runtime exception is thrown.
+     * If a null is supplied for the property name, the property name "null" is used.
      * If a null is supplied for the property value, the property is removed.
      *
      * @param  newPropertyName name
@@ -165,24 +165,20 @@ public class ElementProperties
      */
     public void setProperty(String newPropertyName, PropertyValue newPropertyValue)
     {
-        final String methodName = "setProperty";
+        String propertyName = "null";
 
-        if (newPropertyName == null)
+        if (newPropertyName != null)
         {
-            /*
-             * Build and throw exception.
-             */
-            throw new GAFRuntimeException(GAFErrorCode.NULL_PROPERTY_NAME.getMessageDefinition(),
-                                          this.getClass().getName(),
-                                          methodName);
+            propertyName = newPropertyName;
         }
-        else if (newPropertyValue == null)
+
+        if (newPropertyValue == null)
         {
-            propertyValueMap.remove(newPropertyName);
+            propertyValueMap.remove(propertyName);
         }
         else
         {
-            propertyValueMap.put(newPropertyName, newPropertyValue);
+            propertyValueMap.put(propertyName, newPropertyValue);
         }
     }
 
@@ -195,6 +191,29 @@ public class ElementProperties
     public int getPropertyCount()
     {
         return propertyValueMap.size();
+    }
+
+
+    /**
+     * Return all the properties as a string map.
+     *
+     * @return map of property name to property value as string.
+     */
+    public Map<String, String> getPropertiesAsStrings()
+    {
+        if ((propertyValueMap != null) && (! propertyValueMap.isEmpty()))
+        {
+            Map<String, String> stringStringMap = new HashMap<>();
+
+            for (String propertyName : propertyValueMap.keySet())
+            {
+                stringStringMap.put(propertyName, propertyValueMap.get(propertyName).valueAsString());
+            }
+
+            return stringStringMap;
+        }
+
+        return null;
     }
 
 

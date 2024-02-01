@@ -110,29 +110,6 @@ public class EventBusConfig extends AdminServicesConfigHeader
         this.topicURLRoot = topicURLRoot;
     }
 
-
-    /**
-     * Return the additional properties for the event bus connection.
-     *
-     * @return map of name value pairs
-     */
-    @Deprecated public Map<String, Object> getAdditionalProperties()
-    {
-        return getConfigurationProperties();
-    }
-
-
-    /**
-     * Set up the additional properties for the event bus connection.
-     *
-     * @param properties map of name value pairs
-     */
-    @Deprecated public void setAdditionalProperties(Map<String, Object> properties)
-    {
-        this.configurationProperties = properties;
-    }
-
-
     /**
      * Return the configuration properties for the event bus connection.
      *

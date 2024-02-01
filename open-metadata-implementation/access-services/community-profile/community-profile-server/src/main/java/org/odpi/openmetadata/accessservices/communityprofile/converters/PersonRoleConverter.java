@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonRoleProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -78,7 +78,7 @@ public class PersonRoleConverter<B> extends CommunityProfileOMASConverter<B>
                     roleProperties.setDescription(this.removeDescription(instanceProperties));
                     roleProperties.setScope(this.removeScope(instanceProperties));
                     roleProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
-                    roleProperties.setHeadCountLimitSet(instanceProperties.getPropertyValue(OpenMetadataAPIMapper.HEAD_COUNT_PROPERTY_NAME) != null);
+                    roleProperties.setHeadCountLimitSet(instanceProperties.getPropertyValue(OpenMetadataType.HEAD_COUNT_PROPERTY_NAME) != null);
                     roleProperties.setHeadCount(this.removeHeadCount(instanceProperties));
 
                     roleProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));

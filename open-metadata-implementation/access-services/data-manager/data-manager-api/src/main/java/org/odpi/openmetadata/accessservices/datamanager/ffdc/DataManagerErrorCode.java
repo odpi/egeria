@@ -8,7 +8,6 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 /**
  * The DataManagerErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  * the Data Manager OMAS Services.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -26,84 +25,67 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum DataManagerErrorCode implements ExceptionMessageSet
 {
-    ADD_ENTITY_EXCEPTION(400, "OMAS-DATA-MANAGER-400-001",
-            "Entity {0} could not be added. Error: {1}",
-            "The system is unable to process the add entity request.",
-            "Verify the topic event for the add entity."),
-    ADD_RELATIONSHIP_EXCEPTION(400, "OMAS-DATA-MANAGER-400-002",
-            "Relationship {0} could not be added. Error: {1}",
-            "The system is unable to process the add relationship request.",
-            "Verify the topic event for the add relationship."),
-    GET_ENTITY_EXCEPTION(400, "OMAS-DATA-MANAGER-400-003",
-            "Entity matching criteria [{0}] could not be fetched. Error: {1}",
-            "The system is unable to process the get entity request.",
-            "Verify the topic event for correct unique identifier of the entity."),
-    GET_RELATIONSHIP_EXCEPTION(400, "OMAS-DATA-MANAGER-400-004",
-            "Relationship {0} could not be fetched. Error: {1}",
-            "The system is unable to process the request.",
-            "Verify the topic event related to the relationship."),
-
-    ADD_CLASSIFICATION_EXCEPTION(400, "OMAS-DATA-MANAGER-400-005",
-            "Unable to create classification {0} for entity of type {1}. Error: {2}",
-            "The system is unable to process the create classification request.",
-            "Verify the topic event for the create classification request."),
-
+    /**
+     * OMAS-DATA-MANAGER-400-006 - At least one of the properties supplied for a new relationship of type {0} are invalid.
+     * The {1} exception was returned with error message: {2}
+     */
     BAD_PARAMETER(400, "OMAS-DATA-MANAGER-400-006",
                   "At least one of the properties supplied for a new relationship of type {0} are invalid.  The {1} exception was returned with error message: {2}",
                   "The system is unable to create the requested relationship because it can not parse the properties.",
                   "Correct the caller's logic so that the properties passed are correctly formatted and retry the request."),
 
+    /**
+     * OMAS-DATA-MANAGER-404-001 - The open metadata repository services are not initialized for the {0} operation
+     */
     OMRS_NOT_INITIALIZED(404, "OMAS-DATA-MANAGER-404-001",
             "The open metadata repository services are not initialized for the {0} operation",
             "The system is unable to connect to an open metadata repository.",
             "Check that the server where the Data Manager OMAS is running initialized correctly.  " +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
-    
+
+    /**
+     * OMAS-DATA-MANAGER-500-001 - A null topic listener has been passed by user {0} on method {1}
+     */
     NULL_LISTENER(500, "OMAS-DATA-MANAGER-500-001",
                   "A null topic listener has been passed by user {0} on method {1}",
                   "There is a coding error in the caller to the Data Manager OMAS.",
                   "Correct the caller logic and retry the request."),
 
+    /**
+     * OMAS-DATA-MANAGER-500-004 - An unexpected exception occurred when sending an event through connector {0} to the Data Manager
+     * OMAS out topic.  The failing event was {1}, the exception was {2} with message {2}
+     */
     UNABLE_TO_SEND_EVENT(500, "OMAS-DATA-MANAGER-500-004",
                          "An unexpected exception occurred when sending an event through connector {0} to the Data Manager OMAS out topic.  The failing " +
                                  "event was {1}, the exception was {2} with message {2}",
                          "The system has issued a call to an open metadata access service REST API in a remote server and has received a null response.",
                          "Look for errors in the remote server's audit log and console to understand and correct the source of the error."),
 
-    UNEXPECTED_INITIALIZATION_EXCEPTION(503, "OMAS-DATA-MANAGER-503-005",
-                                        "A {0} exception was caught during start up of service {1} for server {2}. The error message was: {3}",
-                                        "The system detected an unexpected error during start up and is now in an unknown state.",
-                                        "The error message should indicate the cause of the error.  Otherwise look for errors in the remote server's audit log and console to understand and correct the source of the error.")
-
-
     ;
 
-    private static final long    serialVersionUID = 1L;
-
-    private final ExceptionMessageDefinition messageDefinition;
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
 
 
     /**
-     * The constructor for DataManagerErrorCode expects to be passed one of the enumeration rows defined in
-     * DataManagerErrorCode above.   For example:
-     *
-     *     DataManagerErrorCode   errorCode = DataManagerErrorCode.UNKNOWN_ENDPOINT;
-     *
-     * This will expand out to the 5 parameters shown below.
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
      * @param httpErrorCode   error code to use over REST calls
-     * @param errorMessageId   unique Id for the message
+     * @param errorMessageId   unique id for the message
      * @param errorMessage   text for the message
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
      */
-    DataManagerErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    DataManagerErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -115,7 +97,11 @@ public enum DataManagerErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -128,6 +114,12 @@ public enum DataManagerErrorCode implements ExceptionMessageSet
     @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -142,8 +134,12 @@ public enum DataManagerErrorCode implements ExceptionMessageSet
     @Override
     public String toString()
     {
-        return "DataManagerErrorCode{" +
-                       "messageDefinition=" + messageDefinition +
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
                        '}';
     }
 }

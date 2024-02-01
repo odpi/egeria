@@ -2,14 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.stewardshipaction.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-
 
 /**
  * The StewardshipActionAuditCode is used to define the message content for the OMRS Audit Log.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>Log Message Id - to uniquely identify the message</li>
@@ -22,47 +20,70 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
  */
 public enum StewardshipActionAuditCode implements AuditLogMessageSet
 {
+    /**
+     * OMAS-STEWARDSHIP-ACTION-0001 - The Stewardship Action Open Metadata Access Service (OMAS) is initializing a new server instance
+     */
     SERVICE_INITIALIZING("OMAS-STEWARDSHIP-ACTION-0001",
-             OMRSAuditLogRecordSeverity.STARTUP,
-             "The Stewardship Action Open Metadata Access Service (OMAS) is initializing a new server instance",
-             "The local server has started up a new instance of the Stewardship Action OMAS.",
-             "No action is needed if this service is required.  This is part of the configured operation of the server"),
+                         AuditLogRecordSeverityLevel.STARTUP,
+                         "The Stewardship Action Open Metadata Access Service (OMAS) is initializing a new server instance",
+                         "The local server has started up a new instance of the Stewardship Action OMAS.",
+                         "No action is needed if this service is required.  This is part of the configured operation of the server"),
 
+    /**
+     * OMAS-STEWARDSHIP-ACTION-0002 - The Stewardship Action Open Metadata Access Service (OMAS) is ready to publish asset notifications to topic {0}
+     */
     SERVICE_PUBLISHING("OMAS-STEWARDSHIP-ACTION-0002",
-                       OMRSAuditLogRecordSeverity.STARTUP,
+                       AuditLogRecordSeverityLevel.STARTUP,
                        "The Stewardship Action Open Metadata Access Service (OMAS) is ready to publish asset notifications to topic {0}",
                        "The local server has started up the event publisher for the Stewardship Action OMAS.  " +
                                "It will begin publishing asset configuration changes to its out topic.",
                        "This is part of the normal start up of the service. Check that there are no errors from the event bus."),
 
+    /**
+     * OMAS-STEWARDSHIP-ACTION-0003 - The Stewardship Action Open Metadata Access Service (OMAS) has initialized a new instance for server {0}
+     */
     SERVICE_INITIALIZED("OMAS-STEWARDSHIP-ACTION-0003",
-             OMRSAuditLogRecordSeverity.STARTUP,
-             "The Stewardship Action Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
-             "The access service has completed initialization of a new instance.",
-             "Verify that there were no errors reported as the service started."),
+                        AuditLogRecordSeverityLevel.STARTUP,
+                        "The Stewardship Action Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
+                        "The access service has completed initialization of a new instance.",
+                        "Verify that there were no errors reported as the service started."),
 
+    /**
+     * OMAS-STEWARDSHIP-ACTION-0004 - The Stewardship Action Open Metadata Access Service (OMAS) is shutting down its instance for server {0}
+     */
     SERVICE_SHUTDOWN("OMAS-STEWARDSHIP-ACTION-0004",
-             OMRSAuditLogRecordSeverity.SHUTDOWN,
-             "The Stewardship Action Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
-             "The local administrator has requested shut down of an Stewardship Action OMAS instance.",
-             "Verify that all resources have been released."),
+                     AuditLogRecordSeverityLevel.SHUTDOWN,
+                     "The Stewardship Action Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
+                     "The local administrator has requested shut down of an Stewardship Action OMAS instance.",
+                     "Verify that all resources have been released."),
 
+
+    /**
+     * OMAS-STEWARDSHIP-ACTION-0005 - The Stewardship Action Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}
+     */
     SERVICE_INSTANCE_FAILURE("OMAS-STEWARDSHIP-ACTION-0005",
-             OMRSAuditLogRecordSeverity.EXCEPTION,
-             "The Stewardship Action Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
-             "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
+                             AuditLogRecordSeverityLevel.EXCEPTION,
+                             "The Stewardship Action Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
+                             "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
 
+    /**
+     * OMAS-STEWARDSHIP-ACTION-0010 - The Stewardship Action Open Metadata Access Service (OMAS) is no longer publishing events to topic {0}
+     */
     PUBLISHING_SHUTDOWN("OMAS-STEWARDSHIP-ACTION-0010",
-                        OMRSAuditLogRecordSeverity.SHUTDOWN,
+                        AuditLogRecordSeverityLevel.SHUTDOWN,
                         "The Stewardship Action Open Metadata Access Service (OMAS) is no longer publishing events to topic {0}",
                         "The local administrator has requested shut down of an Stewardship Action OMAS instance.  " +
                                 "No more configuration events will be published to the named topic.",
                         "This is part of the normal shutdown of the service.   No action is required if this is service" +
                                 "shutdown was intentional."),
 
+    /**
+     * OMAS-STEWARDSHIP-ACTION-0011 - The Stewardship Action Open Metadata Access Service (OMAS) caught an unexpected {0} exception whilst 
+     * shutting down the out topic {1}. The error message was: {2}
+     */
     PUBLISHING_SHUTDOWN_ERROR("OMAS-STEWARDSHIP-ACTION-0011",
-                              OMRSAuditLogRecordSeverity.SHUTDOWN,
+                              AuditLogRecordSeverityLevel.SHUTDOWN,
                               "The Stewardship Action Open Metadata Access Service (OMAS) caught an unexpected {0} exception whilst shutting down the out " +
                                       "topic {1}. The error message was: {2}",
                               "The local administrator has requested shut down of an Stewardship Action OMAS instance.  " +
@@ -72,22 +93,32 @@ public enum StewardshipActionAuditCode implements AuditLogMessageSet
                                       "is the consequence of a previous error. Review the error message and any other reported failures to " +
                                       "determine if this exception needs special attention."),
 
+    /**
+     * OMAS-STEWARDSHIP-ACTION-0012 - The Stewardship Action Open Metadata Access Service (OMAS) has sent event of type: {0}
+     */
     OUT_TOPIC_EVENT("OMAS-STEWARDSHIP-ACTION-0012",
-                    OMRSAuditLogRecordSeverity.EVENT,
+                    AuditLogRecordSeverityLevel.EVENT,
                     "The Stewardship Action Open Metadata Access Service (OMAS) has sent event of type: {0}",
                     "The access service sends out asset notifications to ensure connected tools have the most up to-date " +
                             "knowledge about assets.  This audit log message is to create a record of the events that are being published.",
                     "This event indicates that the metadata for an asset has changed.  This my or may not be significant to " +
                             "the receiving tools."),
 
+    /**
+     * OMAS-STEWARDSHIP-ACTION-0014 - Event {0} could not be published due to {1} exception with message: {2}
+     */
     PROCESS_EVENT_EXCEPTION("OMAS-STEWARDSHIP-ACTION-0014",
-                            OMRSAuditLogRecordSeverity.EXCEPTION,
+                            AuditLogRecordSeverityLevel.EXCEPTION,
                             "Event {0} could not be published due to {1} exception with message: {2}",
                             "The system is unable to publish the event to the Stewardship Action OMAS's OutTopic.",
                             "Verify the topic configuration and that the event broker is running."),
 
+    /**
+     * OMAS-STEWARDSHIP-ACTION-0018 - The Stewardship Action Open Metadata Access Service (OMAS) is unable to send an event on its out topic {0}; 
+     * exception {1} returned error message: {2}
+     */
     OUT_TOPIC_FAILURE("OMAS-STEWARDSHIP-ACTION-0018",
-                      OMRSAuditLogRecordSeverity.EXCEPTION,
+                      AuditLogRecordSeverityLevel.EXCEPTION,
                       "The Stewardship Action Open Metadata Access Service (OMAS) is unable to send an event on its out topic {0}; exception {1} returned " +
                               "error message: {2}",
                       "The access service detected an error during the start up of the out topic.  Its services are not available for the server.",
@@ -96,34 +127,37 @@ public enum StewardshipActionAuditCode implements AuditLogMessageSet
     ;
 
 
-    private final AuditLogMessageDefinition messageDefinition;
+    private final String                      logMessageId;
+    private final AuditLogRecordSeverityLevel severity;
+    private final String                      logMessage;
+    private final String                      systemAction;
+    private final String                      userAction;
+
 
 
     /**
      * The constructor for StewardshipActionAuditCode expects to be passed one of the enumeration rows defined in
      * StewardshipActionAuditCode above.   For example:
-     *
      *     StewardshipActionAuditCode   auditCode = StewardshipActionAuditCode.SERVER_NOT_AVAILABLE;
+     * This will expand out to the 5 parameters shown below.
      *
-     * This will expand out to the 4 parameters shown below.
-     *
-     * @param messageId - unique Id for the message
+     * @param messageId - unique id for the message
      * @param severity - severity of the message
      * @param message - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
      */
-    StewardshipActionAuditCode(String                     messageId,
-                               OMRSAuditLogRecordSeverity severity,
-                               String                     message,
-                               String                     systemAction,
-                               String                     userAction)
+    StewardshipActionAuditCode(String                      messageId,
+                               AuditLogRecordSeverityLevel severity,
+                               String                      message,
+                               String                      systemAction,
+                               String                      userAction)
     {
-        messageDefinition = new AuditLogMessageDefinition(messageId,
-                                                          severity,
-                                                          message,
-                                                          systemAction,
-                                                          userAction);
+        this.logMessageId = messageId;
+        this.severity = severity;
+        this.logMessage = message;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -135,7 +169,11 @@ public enum StewardshipActionAuditCode implements AuditLogMessageSet
     @Override
     public AuditLogMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new AuditLogMessageDefinition(logMessageId,
+                                             severity,
+                                             logMessage,
+                                             systemAction,
+                                             userAction);
     }
 
 
@@ -146,9 +184,32 @@ public enum StewardshipActionAuditCode implements AuditLogMessageSet
      * @return message definition object.
      */
     @Override
-    public AuditLogMessageDefinition getMessageDefinition(String ...params)
+    public AuditLogMessageDefinition getMessageDefinition(String... params)
     {
+        AuditLogMessageDefinition messageDefinition = new AuditLogMessageDefinition(logMessageId,
+                                                                                    severity,
+                                                                                    logMessage,
+                                                                                    systemAction,
+                                                                                    userAction);
         messageDefinition.setMessageParameters(params);
         return messageDefinition;
+    }
+
+
+    /**
+     * JSON-style toString
+     *
+     * @return string of property names and values for this enum
+     */
+    @Override
+    public String toString()
+    {
+        return "StewardshipActionAuditCode{" +
+                       "logMessageId='" + logMessageId + '\'' +
+                       ", severity=" + severity +
+                       ", logMessage='" + logMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
+                       '}';
     }
 }

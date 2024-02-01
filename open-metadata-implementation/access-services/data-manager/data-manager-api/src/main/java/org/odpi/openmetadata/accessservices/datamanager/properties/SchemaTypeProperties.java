@@ -30,8 +30,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
               })
 public class SchemaTypeProperties extends SchemaElementProperties
 {
-    private static final long     serialVersionUID = 1L;
-
     private String versionNumber    = null;
     private String author           = null;
     private String usage            = null;

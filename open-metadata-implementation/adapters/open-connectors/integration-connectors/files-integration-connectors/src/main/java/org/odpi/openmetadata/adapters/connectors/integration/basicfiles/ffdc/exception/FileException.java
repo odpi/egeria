@@ -6,6 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.ex
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
@@ -15,6 +16,12 @@ import java.util.Objects;
  */
 public class FileException extends ConnectorCheckedException
 {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * File in error.
+     */
     private  final String fileName;
 
 

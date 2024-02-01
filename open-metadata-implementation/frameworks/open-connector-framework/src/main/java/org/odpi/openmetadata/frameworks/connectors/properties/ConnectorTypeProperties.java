@@ -59,8 +59,6 @@ import java.util.Objects;
  */
 public class ConnectorTypeProperties extends AssetReferenceable
 {
-    private static final long     serialVersionUID = 1L;
-
     protected   ConnectorType  connectorTypeBean;
 
 

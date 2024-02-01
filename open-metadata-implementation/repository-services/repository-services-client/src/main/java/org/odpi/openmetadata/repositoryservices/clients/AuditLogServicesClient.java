@@ -23,9 +23,7 @@ import java.util.Map;
  * The AuditLogServicesClient supports the OMRS Repository Services APIs for retrieving audit logs.
  * Requests to this client are translated one-for-one to requests to the audit log service since
  * the OMRS REST API has a one-to-one correspondence with the audit log service API.
- * 
  * The URLs for the REST APIs are of this form:
- * 
  * <ul>
  *     <li><i>restURLroot</i> - serverURLroot + "/servers/" + serverName</li>
  *     <li><i>rootServiceNameInURL</i> - "/open-metadata/repository-services"</li>
@@ -68,7 +66,7 @@ public class AuditLogServicesClient implements AuditLoggingComponent
         {
             invalidParameterHandler.validateOMAGServerPlatformURL(restURLRoot, methodName);
         }
-        catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException error)
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException error)
         {
             throw new InvalidParameterException(error.getReportedHTTPCode(),
                                                 error.getReportingClassName(),
@@ -113,7 +111,7 @@ public class AuditLogServicesClient implements AuditLoggingComponent
         {
             invalidParameterHandler.validateOMAGServerPlatformURL(restURLRoot, methodName);
         }
-        catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException error)
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException error)
         {
             throw new InvalidParameterException(error.getReportedHTTPCode(),
                                                 error.getReportingClassName(),

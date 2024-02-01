@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -33,8 +35,8 @@ public class RatingBuilder extends OpenMetadataAPIGenericBuilder
                          String               serviceName,
                          String               serverName)
     {
-        super(OpenMetadataAPIMapper.RATING_TYPE_GUID,
-              OpenMetadataAPIMapper.RATING_TYPE_NAME,
+        super(OpenMetadataType.RATING_TYPE_GUID,
+              OpenMetadataType.RATING_TYPE_NAME,
               repositoryHelper,
               serviceName,
               serverName);
@@ -55,7 +57,7 @@ public class RatingBuilder extends OpenMetadataAPIGenericBuilder
     {
         return repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                              null,
-                                                             OpenMetadataAPIMapper.IS_PUBLIC_PROPERTY_NAME,
+                                                             OpenMetadataProperty.IS_PUBLIC.name,
                                                              isPublic,
                                                              methodName);
     }
@@ -77,20 +79,20 @@ public class RatingBuilder extends OpenMetadataAPIGenericBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataAPIMapper.STARS_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.STAR_RATING_ENUM_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.STAR_RATING_ENUM_TYPE_NAME,
+                                                                    OpenMetadataType.STARS_PROPERTY_NAME,
+                                                                    OpenMetadataType.STAR_RATING_ENUM_TYPE_GUID,
+                                                                    OpenMetadataType.STAR_RATING_ENUM_TYPE_NAME,
                                                                     starRating,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataAPIMapper.STARS_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataType.STARS_PROPERTY_NAME);
         }
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.REVIEW_PROPERTY_NAME,
+                                                                  OpenMetadataType.REVIEW_PROPERTY_NAME,
                                                                   review,
                                                                   methodName);
 

@@ -9,6 +9,9 @@ import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 import org.odpi.openmetadata.userauthn.auth.TokenClient;
 
+/**
+ * Redis token client
+ */
 public class TokenRedisClient implements TokenClient
 {
 

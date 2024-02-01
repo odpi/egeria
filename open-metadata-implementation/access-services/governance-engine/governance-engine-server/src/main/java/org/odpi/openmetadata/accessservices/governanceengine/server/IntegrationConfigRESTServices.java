@@ -835,13 +835,13 @@ public class IntegrationConfigRESTServices
      * PropertyServerException problem storing the integration group definition.
      */
     @SuppressWarnings(value = "unused")
-    public VoidResponse unregisterIntegrationConnectorFromEngine(String          serverName,
-                                                                 String          userId,
-                                                                 String          integrationGroupGUID,
-                                                                 String          integrationConnectorGUID,
-                                                                 NullRequestBody requestBody)
+    public VoidResponse unregisterIntegrationConnectorFromGroup(String          serverName,
+                                                                String          userId,
+                                                                String          integrationGroupGUID,
+                                                                String          integrationConnectorGUID,
+                                                                NullRequestBody requestBody)
     {
-        final String        methodName = "unregisterIntegrationConnectorFromEngine";
+        final String        methodName = "unregisterIntegrationConnectorFromGroup";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 

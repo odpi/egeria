@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -136,7 +138,7 @@ public class OpenMetadataAPIGenericBuilder
 
         if (this.typeName == null)
         {
-            this.typeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+            this.typeName = OpenMetadataType.REFERENCEABLE.typeName;
         }
 
         if (this.typeGUID == null)
@@ -211,7 +213,7 @@ public class OpenMetadataAPIGenericBuilder
 
             for (Classification templateClassification : templateClassifications)
             {
-                if ((templateClassification != null) && (! OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME.equals(templateClassification.getName())))
+                if ((templateClassification != null) && (! OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(templateClassification.getName())))
                 {
                     try
                     {
@@ -274,7 +276,7 @@ public class OpenMetadataAPIGenericBuilder
                                                                                   null,
                                                                                   InstanceProvenanceType.LOCAL_COHORT,
                                                                                   userId,
-                                                                                  OpenMetadataAPIMapper.TEMPLATE_SUBSTITUTE_CLASSIFICATION_TYPE_NAME,
+                                                                                  OpenMetadataType.TEMPLATE_SUBSTITUTE_CLASSIFICATION.typeName,
                                                                                   typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
@@ -283,7 +285,7 @@ public class OpenMetadataAPIGenericBuilder
         }
         catch (Exception error)
         {
-            errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME);
+            errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataType.TEMPLATE_SUBSTITUTE_CLASSIFICATION.typeName);
         }
     }
 
@@ -294,11 +296,13 @@ public class OpenMetadataAPIGenericBuilder
      *
      * @param userId calling user
      * @param anchorGUID unique identifier of the anchor entity that this entity is linked to directly or indirectly
+     * @param anchorTypeName unique identifier of the anchor entity's type
      * @param methodName calling method
      * @throws PropertyServerException a null anchors GUID has been supplied
      */
     public void setAnchors(String userId,
                            String anchorGUID,
+                           String anchorTypeName,
                            String methodName) throws PropertyServerException
     {
         final String localMethodName = "setAnchors";
@@ -324,16 +328,16 @@ public class OpenMetadataAPIGenericBuilder
                                                                                       null,
                                                                                       InstanceProvenanceType.LOCAL_COHORT,
                                                                                       userId,
-                                                                                      OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME,
+                                                                                      OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
                                                                                       typeName,
                                                                                       ClassificationOrigin.ASSIGNED,
                                                                                       null,
-                                                                                      getAnchorsProperties(anchorGUID, methodName));
+                                                                                      getAnchorsProperties(anchorGUID, anchorTypeName, methodName));
                 newClassifications.put(classification.getName(), classification);
             }
             catch (Exception error)
             {
-                errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataAPIMapper.ANCHORS_CLASSIFICATION_TYPE_NAME);
+                errorHandler.handleUnsupportedAnchorsType(error, methodName, OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
             }
         }
         else
@@ -350,23 +354,26 @@ public class OpenMetadataAPIGenericBuilder
     /**
      * Return the Anchors properties in an InstanceProperties object.
      *
-     * @param methodName name of the calling method
      * @param anchorGUID unique identifier of the anchor entity that this entity is linked to directly or indirectly
+     * @param anchorTypeName unique identifier of the anchor entity's type
+     * @param methodName name of the calling method
      * @return InstanceProperties object
      */
     InstanceProperties getAnchorsProperties(String anchorGUID,
+                                            String anchorTypeName,
                                             String methodName)
     {
-        InstanceProperties properties = null;
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataProperty.ANCHOR_GUID.name,
+                                                                                     anchorGUID,
+                                                                                     methodName);
 
-        if (anchorGUID != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      null,
-                                                                      OpenMetadataAPIMapper.ANCHOR_GUID_PROPERTY_NAME,
-                                                                      anchorGUID,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.ANCHOR_TYPE_NAME.name,
+                                                                  anchorTypeName,
+                                                                  methodName);
 
         return properties;
     }
@@ -419,7 +426,7 @@ public class OpenMetadataAPIGenericBuilder
                                                                                   null,
                                                                                   InstanceProvenanceType.LOCAL_COHORT,
                                                                                   userId,
-                                                                                  OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME,
+                                                                                  OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeName,
                                                                                   typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
@@ -436,7 +443,7 @@ public class OpenMetadataAPIGenericBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.LATEST_CHANGE_CLASSIFICATION_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeName);
         }
     }
 
@@ -474,85 +481,68 @@ public class OpenMetadataAPIGenericBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     null,
-                                                                    OpenMetadataAPIMapper.CHANGE_TARGET_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.LATEST_CHANGE_TARGET_ENUM_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.LATEST_CHANGE_TARGET_ENUM_TYPE_NAME,
+                                                                    OpenMetadataProperty.CHANGE_TARGET.name,
+                                                                    OpenMetadataType.LATEST_CHANGE_TARGET_ENUM_TYPE_GUID,
+                                                                    OpenMetadataType.LATEST_CHANGE_TARGET_ENUM_TYPE_NAME,
                                                                     latestChangeTargetOrdinal,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.LATEST_CHANGE_TARGET_ENUM_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.LATEST_CHANGE_TARGET_ENUM_TYPE_NAME);
         }
 
         try
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataAPIMapper.CHANGE_ACTION_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.LATEST_CHANGE_ACTION_ENUM_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.LATEST_CHANGE_ACTION_ENUM_TYPE_NAME,
+                                                                    OpenMetadataProperty.CHANGE_ACTION.name,
+                                                                    OpenMetadataType.LATEST_CHANGE_ACTION_ENUM_TYPE_GUID,
+                                                                    OpenMetadataType.LATEST_CHANGE_ACTION_ENUM_TYPE_NAME,
                                                                     latestChangeActionOrdinal,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.LATEST_CHANGE_ACTION_ENUM_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.LATEST_CHANGE_ACTION_ENUM_TYPE_NAME);
         }
 
-        if (classificationName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                           properties,
-                                                                           OpenMetadataAPIMapper.CLASSIFICATION_NAME_PROPERTY_NAME,
-                                                                           classificationName,
-                                                                           methodName);
-        }
 
-        if (attachmentGUID != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                   properties,
-                                                                   OpenMetadataAPIMapper.ATTACHMENT_GUID_PROPERTY_NAME,
-                                                                   attachmentGUID,
-                                                                   methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.CLASSIFICATION_NAME.name,
+                                                                  classificationName,
+                                                                  methodName);
 
-        if (attachmentTypeName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.ATTACHMENT_TYPE_PROPERTY_NAME,
-                                                                      attachmentTypeName,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.ATTACHMENT_GUID.name,
+                                                                  attachmentGUID,
+                                                                  methodName);
 
-        if (userId != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.USER_PROPERTY_NAME,
-                                                                      userId,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.ATTACHMENT_TYPE.name,
+                                                                  attachmentTypeName,
+                                                                  methodName);
 
-        if (relationshipTypeName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.RELATIONSHIP_TYPE_PROPERTY_NAME,
-                                                                      relationshipTypeName,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.USER.name,
+                                                                  userId,
+                                                                  methodName);
 
-        if (actionDescription != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.ACTION_DESCRIPTION_PROPERTY_NAME,
-                                                                      actionDescription,
-                                                                      methodName);
-        }
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.RELATIONSHIP_TYPE.name,
+                                                                  relationshipTypeName,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.ACTION_DESCRIPTION.name,
+                                                                  actionDescription,
+                                                                  methodName);
 
         return properties;
     }

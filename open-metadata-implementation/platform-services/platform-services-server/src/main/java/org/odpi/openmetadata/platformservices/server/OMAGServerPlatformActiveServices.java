@@ -427,8 +427,8 @@ public class OMAGServerPlatformActiveServices
      * @param serverName name of the server of interest
      * @return List of service names
      */
-    public ServerServicesListResponse getActiveServiceListForServer(String    userId,
-                                                                    String    serverName)
+    public ServerServicesListResponse getActiveServicesForServer(String    userId,
+                                                                 String    serverName)
     {
         final String   methodName = "getActiveServerList";
 
@@ -439,7 +439,7 @@ public class OMAGServerPlatformActiveServices
         try
         {
             response.setServerName(serverName);
-            response.setServerServicesList(serverInstanceMap.getActiveServiceListForServer(userId, serverName));
+            response.setServerServicesList(serverInstanceMap.getActiveServicesForServer(userId, serverName));
         }
         catch (Exception error)
         {

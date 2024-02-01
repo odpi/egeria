@@ -8,7 +8,6 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 /**
  * The BasicFilesIntegrationConnectorsErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  * the Basic File Connector.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
- *
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -42,11 +41,11 @@ public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessage
             "The directory (folder) {0} is not readable",
             "The connector is unable to open the file because it does not have sufficient permission.",
             "Ensure the name of a readable file is passed in the address property in the Endpoint object of the Connection object."),
-    UNEXPECTED_EXC_RETRIEVING_FOLDER(400,"BASIC-FILES-INTEGRATION-CONNECTORS-400-004",
-            "An unexpected {0} exception was returned to the {1} integration connector by the Files Integrator OMIS {2} " +
+    UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_PATH_NAME(400, "BASIC-FILES-INTEGRATION-CONNECTORS-400-004",
+                                                  "An unexpected {0} exception was returned to the {1} integration connector by the Files Integrator OMIS {2} " +
                     "method when trying to retrieve the FileFolder asset for directory {3} (absolute path {4}).  The error message was {5}",
-            "The exception is returned to the integration daemon that is hosting this connector to enable it to perform error handling.",
-            "Use the message in the nested exception to determine the root cause of the error. Once this is " +
+                                                  "The exception is returned to the integration daemon that is hosting this connector to enable it to perform error handling.",
+                                                  "Use the message in the nested exception to determine the root cause of the error. Once this is " +
                     "resolved, follow the instructions in the messages produced by the integration daemon to restart the connector."),
     UNEXPECTED_EXC_DATA_FILE_UPDATE(400,"BASIC-FILES-INTEGRATION-CONNECTORS-400-005",
             "An unexpected {0} exception was returned to the {1} integration connector when it tried to update the " +
@@ -67,20 +66,37 @@ public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessage
              "The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}",
              "The connector is unable to process the file.",
              "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+
+    UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_GUID(500, "BASIC-FILES-INTEGRATION-CONNECTORS-500-003",
+             "An unexpected {0} exception was returned to the {1} integration connector by the " +
+                     "Files Integrator OMIS {2} method when trying to retrieve the FileFolder asset {3}.  The error message was {4}",
+             "The exception is returned to the integration daemon that is hosting this connector to enable it to " +
+                     "perform error handling since this is likely to be a logic error.",
+             "Use the message in the nested exception to determine the root cause of the error. Report the situation to the Egeria community."),
+
+    UNEXPECTED_EXC_RETRIEVING_CATALOG_TARGETS(500, "BASIC-FILES-INTEGRATION-CONNECTORS-500-004",
+             "An unexpected {0} exception was returned to the {1} integration connector by the " +
+                              "Files Integrator OMIS {2} method when trying to retrieve the catalog targets for connector {3}.  The error message was {4}",
+             "The exception is returned to the integration daemon that is hosting this connector to enable it to " +
+                                                     "perform error handling since this is likely to be a set up error. This exception is not expected if there are no catalog targets.",
+             "Use the message in the nested exception to determine the root cause of the error. Fix the configuration error and restart the connector."),
+
+    UNEXPECTED_EXCEPTION(500, "BASIC-FILES-INTEGRATION-CONNECTORS-500-005",
+                            "The connector {0} received an unexpected {1} exception when processing the file named {2} in method {3}; the error message was: {4}",
+                            "The connector is unable to process the file.  The associated catalog entry may be out of date",
+                            "Use the details from the error message to determine the cause of the error and fix it. Retry the connector once it is resolved."),
     ;
 
 
-    private final ExceptionMessageDefinition messageDefinition;
+    private final int    httpErrorCode;
+    private final String errorMessageId;
+    private final String errorMessage;
+    private final String systemAction;
+    private final String userAction;
 
 
     /**
-     * The constructor for BasicFilesIntegrationConnectorsErrorCode expects to be passed one of the enumeration rows defined in
-     * BasicFilesIntegrationConnectorsErrorCode above.   For example:
-     *
-     *     BasicFilesIntegrationConnectorsErrorCode   errorCode = BasicFilesIntegrationConnectorsErrorCode.ERROR_SENDING_EVENT;
-     *
-     * This will expand out to the 5 parameters shown below.
-     *
+     * The constructor expects to be passed one of the enumeration rows defined above.
      *
      * @param httpErrorCode   error code to use over REST calls
      * @param errorMessageId   unique id for the message
@@ -88,13 +104,13 @@ public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessage
      * @param systemAction   description of the action taken by the system when the error condition happened
      * @param userAction   instructions for resolving the error
      */
-    BasicFilesIntegrationConnectorsErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
+    BasicFilesIntegrationConnectorsErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
-                                                                errorMessageId,
-                                                                errorMessage,
-                                                                systemAction,
-                                                                userAction);
+        this.httpErrorCode = httpErrorCode;
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
     }
 
 
@@ -106,7 +122,11 @@ public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessage
     @Override
     public ExceptionMessageDefinition getMessageDefinition()
     {
-        return messageDefinition;
+        return new ExceptionMessageDefinition(httpErrorCode,
+                                              errorMessageId,
+                                              errorMessage,
+                                              systemAction,
+                                              userAction);
     }
 
 
@@ -119,6 +139,12 @@ public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessage
     @Override
     public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
+        ExceptionMessageDefinition messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                                      errorMessageId,
+                                                                                      errorMessage,
+                                                                                      systemAction,
+                                                                                      userAction);
+
         messageDefinition.setMessageParameters(params);
 
         return messageDefinition;
@@ -133,8 +159,12 @@ public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessage
     @Override
     public String toString()
     {
-        return "BasicFilesIntegrationConnectorsErrorCode{" +
-                       "messageDefinition=" + messageDefinition +
+        return "ErrorCode{" +
+                       "httpErrorCode=" + httpErrorCode +
+                       ", errorMessageId='" + errorMessageId + '\'' +
+                       ", errorMessage='" + errorMessage + '\'' +
+                       ", systemAction='" + systemAction + '\'' +
+                       ", userAction='" + userAction + '\'' +
                        '}';
     }
 }

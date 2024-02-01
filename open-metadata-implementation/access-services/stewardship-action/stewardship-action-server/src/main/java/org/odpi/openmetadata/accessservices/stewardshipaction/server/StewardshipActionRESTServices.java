@@ -16,7 +16,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
@@ -264,9 +264,9 @@ public class StewardshipActionRESTServices
                                                   null,
                                                   elementGUID,
                                                   elementGUIDParameter,
-                                                  OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                  OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_GUID,
-                                                  OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
+                                                  OpenMetadataType.REFERENCEABLE.typeName,
+                                                  OpenMetadataType.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_GUID,
+                                                  OpenMetadataType.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
                                                   null,
                                                   false,
                                                   true,
@@ -326,9 +326,9 @@ public class StewardshipActionRESTServices
                                                        null,
                                                        elementGUID,
                                                        elementGUIDParameter,
-                                                       OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                       OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_GUID,
-                                                       OpenMetadataAPIMapper.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
+                                                       OpenMetadataType.REFERENCEABLE.typeName,
+                                                       OpenMetadataType.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_GUID,
+                                                       OpenMetadataType.KNOWN_DUPLICATE_CLASSIFICATION_TYPE_NAME,
                                                        true,
                                                        true,
                                                        instanceHandler.getSupportedZones(userId, serverName, methodName),
@@ -382,11 +382,11 @@ public class StewardshipActionRESTServices
             List<Relationship> relationships = handler.getAttachmentLinks(userId,
                                                                           elementGUID,
                                                                           guidParameterName,
-                                                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                          OpenMetadataAPIMapper.PEER_DUPLICATE_LINK_TYPE_GUID,
-                                                                          OpenMetadataAPIMapper.PEER_DUPLICATE_LINK_TYPE_NAME,
+                                                                          OpenMetadataType.REFERENCEABLE.typeName,
+                                                                          OpenMetadataType.PEER_DUPLICATE_LINK_TYPE_GUID,
+                                                                          OpenMetadataType.PEER_DUPLICATE_LINK_TYPE_NAME,
                                                                           null,
-                                                                          OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                          OpenMetadataType.REFERENCEABLE.typeName,
                                                                           0,
                                                                           true,
                                                                           true,
@@ -420,27 +420,27 @@ public class StewardshipActionRESTServices
                             OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
 
                             duplicateProperties.setStatusIdentifier(repositoryHelper.getIntProperty(instanceHandler.getServiceName(),
-                                                                                                    OpenMetadataAPIMapper.STATUS_IDENTIFIER_PROPERTY_NAME,
+                                                                                                    OpenMetadataType.STATUS_IDENTIFIER_PROPERTY_NAME,
                                                                                                     relationship.getProperties(),
                                                                                                     methodName));
                             duplicateProperties.setSteward(repositoryHelper.getStringProperty(instanceHandler.getServiceName(),
-                                                                                              OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME,
+                                                                                              OpenMetadataType.STEWARD_PROPERTY_NAME,
                                                                                               relationship.getProperties(),
                                                                                               methodName));
                             duplicateProperties.setStewardTypeName(repositoryHelper.getStringProperty(instanceHandler.getServiceName(),
-                                                                                                      OpenMetadataAPIMapper.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                                                      OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME,
                                                                                                       relationship.getProperties(),
                                                                                                       methodName));
                             duplicateProperties.setStewardPropertyName(repositoryHelper.getStringProperty(instanceHandler.getServiceName(),
-                                                                                                          OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                                                          OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
                                                                                                           relationship.getProperties(),
                                                                                                           methodName));
                             duplicateProperties.setSource(repositoryHelper.getStringProperty(instanceHandler.getServiceName(),
-                                                                                             OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,
+                                                                                             OpenMetadataType.SOURCE_PROPERTY_NAME,
                                                                                              relationship.getProperties(),
                                                                                              methodName));
                             duplicateProperties.setNotes(repositoryHelper.getStringProperty(instanceHandler.getServiceName(),
-                                                                                            OpenMetadataAPIMapper.NOTES_PROPERTY_NAME,
+                                                                                            OpenMetadataType.NOTES_PROPERTY_NAME,
                                                                                             relationship.getProperties(),
                                                                                             methodName));
 
@@ -518,37 +518,37 @@ public class StewardshipActionRESTServices
 
                 InstanceProperties properties = repositoryHelper.addIntPropertyToInstance(instanceHandler.getServiceName(),
                                                                                           null,
-                                                                                          OpenMetadataAPIMapper.STATUS_IDENTIFIER_PROPERTY_NAME,
+                                                                                          OpenMetadataType.STATUS_IDENTIFIER_PROPERTY_NAME,
                                                                                           requestBody.getStatusIdentifier(),
                                                                                           methodName);
 
                 properties = repositoryHelper.addStringPropertyToInstance(instanceHandler.getServiceName(),
                                                                           properties,
-                                                                          OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME,
+                                                                          OpenMetadataType.STEWARD_PROPERTY_NAME,
                                                                           requestBody.getSteward(),
                                                                           methodName);
 
                 properties = repositoryHelper.addStringPropertyToInstance(instanceHandler.getServiceName(),
                                                                           properties,
-                                                                          OpenMetadataAPIMapper.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                          OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME,
                                                                           requestBody.getStewardTypeName(),
                                                                           methodName);
 
                 properties = repositoryHelper.addStringPropertyToInstance(instanceHandler.getServiceName(),
                                                                           properties,
-                                                                          OpenMetadataAPIMapper.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                          OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
                                                                           requestBody.getStewardPropertyName(),
                                                                           methodName);
 
                 properties = repositoryHelper.addStringPropertyToInstance(instanceHandler.getServiceName(),
                                                                           properties,
-                                                                          OpenMetadataAPIMapper.SOURCE_PROPERTY_NAME,
+                                                                          OpenMetadataType.SOURCE_PROPERTY_NAME,
                                                                           requestBody.getSource(),
                                                                           methodName);
 
                 properties = repositoryHelper.addStringPropertyToInstance(instanceHandler.getServiceName(),
                                                                           properties,
-                                                                          OpenMetadataAPIMapper.NOTES_PROPERTY_NAME,
+                                                                          OpenMetadataType.NOTES_PROPERTY_NAME,
                                                                           requestBody.getNotes(),
                                                                           methodName);
 
@@ -557,9 +557,9 @@ public class StewardshipActionRESTServices
                                                       null,
                                                       consolidatedDuplicateGUID,
                                                       elementGUIDParameter,
-                                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                      OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_TYPE_GUID,
-                                                      OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_TYPE_NAME,
+                                                      OpenMetadataType.REFERENCEABLE.typeName,
+                                                      OpenMetadataType.CONSOLIDATED_DUPLICATE_TYPE_GUID,
+                                                      OpenMetadataType.CONSOLIDATED_DUPLICATE_TYPE_NAME,
                                                       properties,
                                                       false,
                                                       true,
@@ -627,15 +627,15 @@ public class StewardshipActionRESTServices
                                          null,
                                          consolidatedDuplicateGUID,
                                          element1GUIDParameter,
-                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                         OpenMetadataType.REFERENCEABLE.typeName,
                                          contributingElementGUID,
                                          element2GUIDParameter,
-                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                         OpenMetadataType.REFERENCEABLE.typeName,
                                          true,
                                          true,
                                          instanceHandler.getSupportedZones(userId, serverName, methodName),
-                                         OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_GUID,
-                                         OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_NAME,
+                                         OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK_TYPE_GUID,
+                                         OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK_TYPE_NAME,
                                          null,
                                          null,
                                          (Date)null,
@@ -698,16 +698,16 @@ public class StewardshipActionRESTServices
                                              null,
                                              consolidatedDuplicateGUID,
                                              element1GUIDParameter,
-                                             OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                             OpenMetadataType.REFERENCEABLE.typeName,
                                              contributingElementGUID,
                                              element2GUIDParameter,
-                                             OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
-                                             OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                             OpenMetadataType.REFERENCEABLE.typeGUID,
+                                             OpenMetadataType.REFERENCEABLE.typeName,
                                              true,
                                              true,
                                              instanceHandler.getSupportedZones(userId, serverName, methodName),
-                                             OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_GUID,
-                                             OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_NAME,
+                                             OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK_TYPE_GUID,
+                                             OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK_TYPE_NAME,
                                              null,
                                              methodName);
         }
@@ -761,10 +761,10 @@ public class StewardshipActionRESTServices
                                                                          null,
                                                                          consolidatedDuplicateGUID,
                                                                          guidParameterName,
-                                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                         OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_GUID,
-                                                                         OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_NAME,
-                                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                                         OpenMetadataType.REFERENCEABLE.typeName,
+                                                                         OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK_TYPE_GUID,
+                                                                         OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK_TYPE_NAME,
+                                                                         OpenMetadataType.REFERENCEABLE.typeName,
                                                                          null,
                                                                          null,
                                                                          1,
@@ -820,19 +820,19 @@ public class StewardshipActionRESTServices
             ReferenceableHandler<ElementStub> handler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
 
             Relationship relationship = handler.getUniqueAttachmentLink(userId,
-                                                                         elementGUID,
-                                                                         guidParameterName,
-                                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                         OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_GUID,
-                                                                         OpenMetadataAPIMapper.CONSOLIDATED_DUPLICATE_LINK_TYPE_NAME,
-                                                                         null,
-                                                                         OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                         2,
-                                                                         true,
-                                                                         true,
+                                                                        elementGUID,
+                                                                        guidParameterName,
+                                                                        OpenMetadataType.REFERENCEABLE.typeName,
+                                                                        OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK_TYPE_GUID,
+                                                                        OpenMetadataType.CONSOLIDATED_DUPLICATE_LINK_TYPE_NAME,
+                                                                        null,
+                                                                        OpenMetadataType.REFERENCEABLE.typeName,
+                                                                        2,
+                                                                        true,
+                                                                        true,
                                                                         instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                         null,
-                                                                         methodName);
+                                                                        methodName);
             if (relationship != null)
             {
                 ElementStubConverter<ElementStub> converter = instanceHandler.getElementStubConverter(userId, serverName, methodName);
@@ -893,8 +893,8 @@ public class StewardshipActionRESTServices
                                            null,
                                            consolidatedDuplicateGUID,
                                            element1GUIDParameter,
-                                           OpenMetadataAPIMapper.REFERENCEABLE_TYPE_GUID,
-                                           OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                           OpenMetadataType.REFERENCEABLE.typeGUID,
+                                           OpenMetadataType.REFERENCEABLE.typeName,
                                            null,
                                            null,
                                            true,

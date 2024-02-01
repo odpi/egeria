@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -97,9 +98,9 @@ public class CertificationHandler<B> extends GovernanceDefinitionHandler<B>
     {
         return super.countAttachments(userId,
                                       connectedEntityGUID,
-                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                      OpenMetadataAPIMapper.CERTIFICATION_OF_REFERENCEABLE_TYPE_GUID,
-                                      OpenMetadataAPIMapper.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                                      OpenMetadataType.REFERENCEABLE.typeName,
+                                      OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_GUID,
+                                      OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
                                       2,
                                       forLineage,
                                       forDuplicateProcessing,
@@ -184,11 +185,11 @@ public class CertificationHandler<B> extends GovernanceDefinitionHandler<B>
         List<Relationship>  relationships = this.getAttachmentLinks(userId,
                                                                     parentGUID,
                                                                     parentGUIDParameterName,
-                                                                    OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
-                                                                    OpenMetadataAPIMapper.CERTIFICATION_OF_REFERENCEABLE_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                                                                    OpenMetadataType.REFERENCEABLE.typeName,
+                                                                    OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_GUID,
+                                                                    OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
                                                                     null,
-                                                                    OpenMetadataAPIMapper.CERTIFICATION_TYPE_TYPE_NAME,
+                                                                    OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
                                                                     2,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
@@ -214,7 +215,7 @@ public class CertificationHandler<B> extends GovernanceDefinitionHandler<B>
                         EntityDetail entity = this.getEntityFromRepository(userId,
                                                                            entityProxy.getGUID(),
                                                                            entityParameterName,
-                                                                           OpenMetadataAPIMapper.CERTIFICATION_TYPE_TYPE_NAME,
+                                                                           OpenMetadataType.CERTIFICATION_TYPE_TYPE_NAME,
                                                                            null,
                                                                            null,
                                                                            false,
@@ -326,8 +327,8 @@ public class CertificationHandler<B> extends GovernanceDefinitionHandler<B>
                                               forLineage,
                                               forDuplicateProcessing,
                                               supportedZones,
-                                              OpenMetadataAPIMapper.CERTIFICATION_OF_REFERENCEABLE_TYPE_GUID,
-                                              OpenMetadataAPIMapper.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                                              OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_GUID,
+                                              OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
                                               getCertificationProperties(certificateGUID,
                                                                          start,
                                                                          end,
@@ -418,7 +419,7 @@ public class CertificationHandler<B> extends GovernanceDefinitionHandler<B>
                                           externalSourceName,
                                           certificationGUID,
                                           certificationGUIDParameterName,
-                                          OpenMetadataAPIMapper.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                                          OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
                                           isMergeUpdate,
                                           getCertificationProperties(certificateGUID,
                                                                      start,
@@ -487,85 +488,85 @@ public class CertificationHandler<B> extends GovernanceDefinitionHandler<B>
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataAPIMapper.CERTIFICATE_GUID_PROPERTY_NAME,
+                                                                                     OpenMetadataType.CERTIFICATE_GUID_PROPERTY_NAME,
                                                                                      certificateGUID,
                                                                                      methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
-                                                                  properties,
-                                                                  OpenMetadataAPIMapper.START_PROPERTY_NAME,
-                                                                  start,
-                                                                  methodName);
+                                                                properties,
+                                                                OpenMetadataType.START_PROPERTY_NAME,
+                                                                start,
+                                                                methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataAPIMapper.END_PROPERTY_NAME,
+                                                                OpenMetadataType.END_PROPERTY_NAME,
                                                                 end,
                                                                 methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.CONDITIONS_PROPERTY_NAME,
+                                                                  OpenMetadataType.CONDITIONS_PROPERTY_NAME,
                                                                   conditions,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.CERTIFIED_BY_PROPERTY_NAME,
+                                                                  OpenMetadataType.CERTIFIED_BY_PROPERTY_NAME,
                                                                   certifiedBy,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.CERTIFIED_BY_TYPE_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.CERTIFIED_BY_TYPE_NAME_PROPERTY_NAME,
                                                                   certifiedByTypeName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.CERTIFIED_BY_PROPERTY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.CERTIFIED_BY_PROPERTY_NAME_PROPERTY_NAME,
                                                                   certifiedByPropertyName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.CUSTODIAN_PROPERTY_NAME,
+                                                                  OpenMetadataType.CUSTODIAN_PROPERTY_NAME,
                                                                   custodian,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.CUSTODIAN_TYPE_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.CUSTODIAN_TYPE_NAME_PROPERTY_NAME,
                                                                   custodianTypeName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.CUSTODIAN_PROPERTY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.CUSTODIAN_PROPERTY_NAME_PROPERTY_NAME,
                                                                   custodianPropertyName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.RECIPIENT_PROPERTY_NAME,
+                                                                  OpenMetadataType.RECIPIENT_PROPERTY_NAME,
                                                                   recipient,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.RECIPIENT_TYPE_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.RECIPIENT_TYPE_NAME_PROPERTY_NAME,
                                                                   recipientTypeName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.RECIPIENT_PROPERTY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataType.RECIPIENT_PROPERTY_NAME_PROPERTY_NAME,
                                                                   recipientPropertyName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.NOTES_PROPERTY_NAME,
+                                                                  OpenMetadataType.NOTES_PROPERTY_NAME,
                                                                   notes,
                                                                   methodName);
 
@@ -607,7 +608,7 @@ public class CertificationHandler<B> extends GovernanceDefinitionHandler<B>
                                 externalSourceName,
                                 certificationGUID,
                                 certificationGUIDParameterName,
-                                OpenMetadataAPIMapper.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
+                                OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
                                 forLineage,
                                 forDuplicateProcessing,
                                 effectiveTime,

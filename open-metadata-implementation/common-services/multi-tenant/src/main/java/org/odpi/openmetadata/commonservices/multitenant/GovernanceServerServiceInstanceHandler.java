@@ -133,11 +133,11 @@ public class GovernanceServerServiceInstanceHandler extends AuditableServerServi
         if (connectorProvider instanceof GovernanceActionServiceProviderBase)
         {
             GovernanceActionServiceProviderBase governanceActionServiceProvider = (GovernanceActionServiceProviderBase)connectorProvider;
-            connectorReport.setSupportedRequestTypes(governanceActionServiceProvider.supportedRequestTypes());
-            connectorReport.setSupportedRequestParameters(governanceActionServiceProvider.supportedRequestParameters());
-            connectorReport.setSupportedRequestSourceNames(governanceActionServiceProvider.supportedRequestSourceNames());
-            connectorReport.setSupportedActionTargetNames(governanceActionServiceProvider.supportedActionTargetNames());
-            connectorReport.setSupportedGuards(governanceActionServiceProvider.supportedGuards());
+            connectorReport.setSupportedRequestTypes(governanceActionServiceProvider.getSupportedRequestTypes());
+            connectorReport.setSupportedRequestParameters(governanceActionServiceProvider.getSupportedRequestParameters());
+            connectorReport.setSupportedRequestSourceNames(governanceActionServiceProvider.getSupportedRequestSourceNames());
+            connectorReport.setSupportedActionTargetNames(governanceActionServiceProvider.getSupportedActionTargetNames());
+            connectorReport.setSupportedGuards(governanceActionServiceProvider.getSupportedGuards());
         }
 
         connector.disconnect();

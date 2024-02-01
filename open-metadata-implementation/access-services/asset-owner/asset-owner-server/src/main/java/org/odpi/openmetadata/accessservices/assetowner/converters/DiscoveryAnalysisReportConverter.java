@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.converters;
 
 import org.odpi.openmetadata.commonservices.generichandlers.ODFConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
@@ -101,7 +101,7 @@ public class DiscoveryAnalysisReportConverter<B> extends ODFConverter<B>
                     {
                         if ((relationship != null) && (relationship.getType() != null) && (relationship.getType().getTypeDefName() != null))
                         {
-                            if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.REPORT_TO_ASSET_TYPE_NAME))
+                            if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.REPORT_TO_ASSET_TYPE_NAME))
                             {
                                 EntityProxy endOne = relationship.getEntityOneProxy();
 
@@ -110,7 +110,7 @@ public class DiscoveryAnalysisReportConverter<B> extends ODFConverter<B>
                                     bean.setAssetGUID(endOne.getGUID());
                                 }
                             }
-                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.REPORT_TO_ENGINE_TYPE_NAME))
+                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.REPORT_TO_ENGINE_TYPE_NAME))
                             {
                                 EntityProxy endOne = relationship.getEntityOneProxy();
 
@@ -119,7 +119,7 @@ public class DiscoveryAnalysisReportConverter<B> extends ODFConverter<B>
                                     bean.setDiscoveryEngineGUID(endOne.getGUID());
                                 }
                             }
-                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataAPIMapper.REPORT_TO_SERVICE_TYPE_NAME))
+                            else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.REPORT_TO_SERVICE_TYPE_NAME))
                             {
                                 EntityProxy endOne = relationship.getEntityOneProxy();
 
@@ -158,7 +158,7 @@ public class DiscoveryAnalysisReportConverter<B> extends ODFConverter<B>
         {
             Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
 
-            InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataAPIMapper.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME);
+            InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataType.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME);
 
             if (instancePropertyValue instanceof EnumPropertyValue)
             {
@@ -195,7 +195,7 @@ public class DiscoveryAnalysisReportConverter<B> extends ODFConverter<B>
                         break;
                 }
 
-                instancePropertiesMap.remove(OpenMetadataAPIMapper.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME);
+                instancePropertiesMap.remove(OpenMetadataType.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME);
 
                 properties.setInstanceProperties(instancePropertiesMap);
             }

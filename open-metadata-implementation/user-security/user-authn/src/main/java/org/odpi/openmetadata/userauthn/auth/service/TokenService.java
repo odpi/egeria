@@ -15,6 +15,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Token service
+ */
 @Service
 public class TokenService
 {
@@ -26,7 +29,8 @@ public class TokenService
             this.encoder = encoder;
     }
 
-    public String generateToken(Authentication authentication) {
+    public String generateToken(Authentication authentication)
+    {
         Instant now = Instant.now();
         List<String> authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)

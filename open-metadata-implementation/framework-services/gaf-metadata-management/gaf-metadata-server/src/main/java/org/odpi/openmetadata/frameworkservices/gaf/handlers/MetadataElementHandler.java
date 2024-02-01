@@ -4,7 +4,7 @@ package org.odpi.openmetadata.frameworkservices.gaf.handlers;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableBuilder;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -13,6 +13,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.ArchiveProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ArrayTypePropertyValue;
@@ -34,18 +36,12 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.StructTypeProper
 import org.odpi.openmetadata.frameworkservices.gaf.converters.RelatedElementConverter;
 import org.odpi.openmetadata.frameworkservices.gaf.converters.RelatedElementsConverter;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EnumDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EnumElementDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -154,7 +150,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         return this.getBeanFromRepository(userId,
                                           elementGUID,
                                           guidParameterName,
-                                          OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                          OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
                                           serviceSupportedZones,
@@ -207,8 +203,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                             uniqueName,
                                             uniqueNameParameterName,
                                             uniqueNamePropertyName,
-                                            OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
-                                            OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                            OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
+                                            OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                             forLineage,
                                             forDuplicateProcessing,
                                             serviceSupportedZones,
@@ -223,8 +219,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                             uniqueName,
                                             nameParameterName,
                                             uniqueNamePropertyName,
-                                            OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
-                                            OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                            OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
+                                            OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                             forLineage,
                                             forDuplicateProcessing,
                                             serviceSupportedZones,
@@ -281,8 +277,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                             uniqueName,
                                             uniqueNameParameterName,
                                             uniqueNamePropertyName,
-                                            OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
-                                            OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                            OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
+                                            OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                             forLineage,
                                             forDuplicateProcessing,
                                             serviceSupportedZones,
@@ -297,6 +293,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId caller's userId
      * @param searchString name to retrieve
+     * @param typeName optional type name to restrict search to a specific type of element (and their subtypes)
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param serviceSupportedZones list of supported zones for this service
@@ -328,7 +325,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
 
-        String searchTypeName = OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME;
+        String searchTypeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
 
         if (typeName != null)
         {
@@ -336,7 +333,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         }
 
         String searchTypeGUID = invalidParameterHandler.validateTypeName(searchTypeName,
-                                                                         OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                          serviceName,
                                                                          methodName,
                                                                          repositoryHelper);
@@ -423,7 +420,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         EntityDetail startingEntity = repositoryHandler.getEntityByGUID(userId,
                                                                         elementGUID,
                                                                         guidParameterName,
-                                                                        OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                        OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                         forLineage,
                                                                         forDuplicateProcessing,
                                                                         effectiveTime,
@@ -432,11 +429,11 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         List<Relationship> relationships = super.getAttachmentLinks(userId,
                                                                     startingEntity,
                                                                     guidParameterName,
-                                                                    OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                    OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                     relationshipTypeGUID,
                                                                     relationshipTypeName,
                                                                     null,
-                                                                    OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                    OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                     attachmentAtEnd,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
@@ -470,7 +467,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                 EntityDetail otherEndEntity = this.getEntityFromRepository(userId,
                                                                                            otherEnd.getGUID(),
                                                                                            otherEndGUIDParameterName,
-                                                                                           OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                                           OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                                            null,
                                                                                            null,
                                                                                            forLineage,
@@ -515,9 +512,11 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param relationshipTypeName type name of relationships to follow (or null for all)
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved elements are for duplicate processing so do not combine results from known duplicates.
+     * @param serviceSupportedZones list of zones
      * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param methodName calling method
      *
      * @return list of related elements
      *
@@ -555,11 +554,11 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         List<Relationship> relationships = super.getAttachmentLinks(userId,
                                                                     metadataElementAtEnd1GUID,
                                                                     end1ParameterName,
-                                                                    OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                    OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                     relationshipTypeGUID,
                                                                     relationshipTypeName,
                                                                     metadataElementAtEnd2GUID,
-                                                                    OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                    OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                     0,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
@@ -1357,6 +1356,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
     {
         final String elementTypeParameterName  = "metadataElementTypeName";
         final String templateGUIDParameterName = "templateGUID";
+        final String anchorGUIDParameterName = "anchorGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(metadataElementTypeName, elementTypeParameterName, methodName);
@@ -1369,7 +1369,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         }
 
         String metadataElementTypeGUID = invalidParameterHandler.validateTypeName(metadataElementTypeName,
-                                                                                  OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                                                  OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                                   serviceName,
                                                                                   methodName,
                                                                                   repositoryHelper);
@@ -1386,27 +1386,56 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
         if (anchorGUID != null)
         {
-            builder.setAnchors(userId, anchorGUID, methodName);
+            EntityDetail anchorEntity = this.getEntityFromRepository(userId,
+                                                                     anchorGUID,
+                                                                     anchorGUIDParameterName,
+                                                                     OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                     null,
+                                                                     null,
+                                                                     false,
+                                                                     false,
+                                                                     serviceSupportedZones,
+                                                                     effectiveTime,
+                                                                     methodName);
+
+            if (anchorEntity != null)
+            {
+                builder.setAnchors(userId, anchorEntity.getGUID(), anchorEntity.getType().getTypeDefName(), methodName);
+            }
         }
 
         if (initialClassifications != null)
         {
             for (String classificationName : initialClassifications.keySet())
             {
-                Classification classification = new Classification();
-
-                classification.setMetadataCollectionName(classificationName);
-
                 ElementProperties classificationProperties = initialClassifications.get(classificationName);
 
+                Map<String,InstancePropertyValue> instancePropertyValueMap = null;
                 if (classificationProperties != null)
                 {
-                    Map<String,InstancePropertyValue> instancePropertyValueMap = this.getElementPropertiesAsOMRSMap(classificationProperties);
-
-                    classification.setProperties(builder.getInstanceProperties(instancePropertyValueMap, null, null));
+                    instancePropertyValueMap = this.getElementPropertiesAsOMRSMap(classificationProperties);
                 }
 
-                builder.setClassification(classification);
+                try
+                {
+                    Classification classification = repositoryHelper.getNewClassification(serviceName,
+                                                                                          null,
+                                                                                          null,
+                                                                                          InstanceProvenanceType.LOCAL_COHORT,
+                                                                                          userId,
+                                                                                          classificationName,
+                                                                                          metadataElementTypeName,
+                                                                                          ClassificationOrigin.ASSIGNED,
+                                                                                          null,
+                                                                                          builder.getInstanceProperties(instancePropertyValueMap, null, null));
+                    builder.setClassification(classification);
+                }
+                catch (TypeErrorException error)
+                {
+                    errorHandler.handleUnsupportedType(error, methodName, classificationName);
+                }
+
+
             }
         }
 
@@ -1539,8 +1568,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     metadataElementGUID,
                                     guidParameterName,
-                                    OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
-                                    OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                    OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
+                                    OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                     forLineage,
                                     forDuplicateProcessing,
                                     serviceSupportedZones,
@@ -1594,8 +1623,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            metadataElementGUID,
                                            guidParameterName,
-                                           OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
-                                           OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                           OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
+                                           OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                            forLineage,
                                            forDuplicateProcessing,
                                            serviceSupportedZones,
@@ -1649,8 +1678,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                          externalSourceName,
                                          metadataElementGUID,
                                          guidParameterName,
-                                         OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
-                                         OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                         OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
+                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                          forLineage,
                                          forDuplicateProcessing,
                                          effectiveFrom,
@@ -1700,8 +1729,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                      externalSourceName,
                                      metadataElementGUID,
                                      guidParameterName,
-                                     OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_GUID,
-                                     OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                     OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
+                                     OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                      null,
                                      null,
                                      forLineage,
@@ -1709,6 +1738,85 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                      serviceSupportedZones,
                                      effectiveTime,
                                      methodName);
+    }
+
+
+    /**
+     * Archive a specific metadata element.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param metadataElementGUID unique identifier of the metadata element to update
+     * @param archiveProperties description of the archiving process
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param serviceSupportedZones list of supported zones for this service
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the unique identifier is null or invalid in some way
+     * @throws UserNotAuthorizedException the governance action service is not authorized to archive this element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public  void archiveMetadataElementInStore(String           userId,
+                                              String            externalSourceGUID,
+                                              String            externalSourceName,
+                                              String            metadataElementGUID,
+                                              ArchiveProperties archiveProperties,
+                                              boolean           forLineage,
+                                              boolean           forDuplicateProcessing,
+                                              List<String>      serviceSupportedZones,
+                                              Date              effectiveTime,
+                                              String            methodName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String guidParameterName = "metadataElementGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
+
+        ReferenceableBuilder builder = new ReferenceableBuilder(repositoryHelper, serviceName, serverName);
+
+        if (archiveProperties != null)
+        {
+            super.archiveBeanInRepository(userId,
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          metadataElementGUID,
+                                          guidParameterName,
+                                          OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                          builder.getMementoProperties(archiveProperties.getArchiveDate(),
+                                                                       userId,
+                                                                       archiveProperties.getArchiveProcess(),
+                                                                       archiveProperties.getArchiveProperties(),
+                                                                       methodName),
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          serviceSupportedZones,
+                                          effectiveTime,
+                                          methodName);
+        }
+        else
+        {
+            super.archiveBeanInRepository(userId,
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          metadataElementGUID,
+                                          guidParameterName,
+                                          OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                          builder.getMementoProperties(null,
+                                                                       userId,
+                                                                       null,
+                                                                       null,
+                                                                       methodName),
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          serviceSupportedZones,
+                                          effectiveTime,
+                                          methodName);
+        }
     }
 
 
@@ -1776,7 +1884,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            metadataElementGUID,
                                            guidParameterName,
-                                           OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                           OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                            classificationTypeGUID,
                                            classificationName,
                                            classificationProperties,
@@ -1850,7 +1958,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            metadataElementGUID,
                                            guidParameterName,
-                                           OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                           OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                            classificationTypeGUID,
                                            classificationName,
                                            classificationProperties,
@@ -1917,7 +2025,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                    externalSourceName,
                                                    metadataElementGUID,
                                                    guidParameterName,
-                                                   OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                                   OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                    classificationTypeGUID,
                                                    classificationName,
                                                    forLineage,
@@ -2062,10 +2170,10 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                    externalSourceName,
                                    metadataElement1GUID,
                                    end1ParameterName,
-                                   OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                   OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                    metadataElement2GUID,
                                    end2ParameterName,
-                                   OpenMetadataAPIMapper.OPEN_METADATA_ROOT_TYPE_NAME,
+                                   OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                    forLineage,
                                    forDuplicateProcessing,
                                    serviceSupportedZones,

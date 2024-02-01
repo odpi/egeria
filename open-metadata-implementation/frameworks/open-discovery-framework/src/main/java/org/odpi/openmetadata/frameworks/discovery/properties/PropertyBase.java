@@ -32,6 +32,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public abstract class PropertyBase implements Serializable
 {
+    /**
+     * Header version for this implementation
+     */
     public static final long CURRENT_AUDIT_HEADER_VERSION = 1;
 
     private static final long serialVersionUID = 1L;

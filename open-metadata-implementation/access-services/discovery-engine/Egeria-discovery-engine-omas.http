@@ -1,0 +1,28 @@
+# Egeria-discovery-engine-omas
+
+###
+# @name Get Assets by Name
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/discovery-engine/users/{{user}}/assets/by-name?
+    startFrom=0&
+    pageSize=10
+Content-Type: text/plain
+
+"/Users/mandy-chessell/CloudStation/Drive/Code/ODPi/egeria-code/egeria/data/landing-area/hospitals/oak-dene/clinical-trials/drop-foot/week1.csv"
+
+###
+# @name Get Assets by qualifiedName
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/discovery-engine/users/{{user}}/assets/by-qualified-name?
+    startFrom=0&
+    pageSize=10
+Content-Type: text/plain
+
+/Users/mandy-chessell/CloudStation/Drive/Code/ODPi/egeria-code/egeria/data/landing-area/hospitals/oak-dene/clinical-trials/drop-foot/week1.csv
+
+###
+# @name Find Assets
+POST {{baseURL}}/servers/{{server}}/open-metadata/access-services/discovery-engine/users/{{user}}/assets/by-search-string?
+    startFrom=0&
+    pageSize=10
+Content-Type: text/plain
+
+.*week5.*

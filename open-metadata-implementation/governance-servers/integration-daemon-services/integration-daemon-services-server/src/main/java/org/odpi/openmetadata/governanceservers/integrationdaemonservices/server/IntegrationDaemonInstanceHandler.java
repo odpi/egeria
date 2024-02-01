@@ -3,8 +3,13 @@
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.server;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
+import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.multitenant.GovernanceServerServiceInstanceHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationServiceHandler;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
@@ -268,6 +273,69 @@ public class IntegrationDaemonInstanceHandler extends GovernanceServerServiceIns
             instance.updateConfigurationProperties(userId, connectorName, isMergeUpdate, configurationProperties);
         }
     }
+
+
+
+    /**
+     * Update the endpoint network address for a specific integration connector.
+     *
+     * @param serverName integration daemon server name
+     * @param userId calling user
+     * @param serviceOperationName calling method
+     * @param connectorName name of a specific connector
+     * @param networkAddress name of a specific connector or null for all connectors and the properties to change
+     *
+     * @throws InvalidParameterException the connector name is not recognized
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+
+    public void updateEndpointNetworkAddress(String userId,
+                                             String serverName,
+                                             String serviceOperationName,
+                                             String connectorName,
+                                             String networkAddress)  throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        IntegrationDaemonInstance instance = (IntegrationDaemonInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            instance.updateEndpointNetworkAddress(userId, connectorName, networkAddress);
+        }
+    }
+
+
+    /**
+     * Update the connection for a specific integration connector.
+     *
+     * @param serverName integration daemon server name
+     * @param userId calling user
+     * @param serviceOperationName calling method
+     * @param connectorName name of a specific connector
+     * @param connection new connection object
+     *
+     * @throws InvalidParameterException the connector name is not recognized
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    public  void updateConnectorConnection(String     userId,
+                                           String     serverName,
+                                           String     serviceOperationName,
+                                           String     connectorName,
+                                           Connection connection) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        IntegrationDaemonInstance instance = (IntegrationDaemonInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            instance.updateConnectorConnection(userId, connectorName, connection);
+        }
+    }
+
 
 
     /**

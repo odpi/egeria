@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.datamanager.converters;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
@@ -105,31 +105,31 @@ public class SchemaTypeConverter<B> extends DataManagerOMASConverter<B>
                      * This next piece of logic sorts out which type of schema properties to create.
                      */
 
-                    if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataAPIMapper.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME))
+                    if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME))
                     {
                         bean.setSchemaTypeProperties(this.getPrimitiveSchemaType(instanceProperties));
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataAPIMapper.LITERAL_SCHEMA_TYPE_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.LITERAL_SCHEMA_TYPE_TYPE_NAME))
                     {
                         bean.setSchemaTypeProperties(this.getLiteralSchemaType(instanceProperties));
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataAPIMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.COMPLEX_SCHEMA_TYPE_TYPE_NAME))
                     {
                         bean.setSchemaTypeProperties(this.getComplexSchemaType(instanceProperties));
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataAPIMapper.LITERAL_SCHEMA_TYPE_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.LITERAL_SCHEMA_TYPE_TYPE_NAME))
                     {
                         bean.setSchemaTypeProperties(this.getEnumSchemaType(instanceProperties, validValueSetGUID));
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataAPIMapper.MAP_SCHEMA_TYPE_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.MAP_SCHEMA_TYPE_TYPE_NAME))
                     {
                         bean.setSchemaTypeProperties(this.getMapSchemaType(instanceProperties));
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataAPIMapper.SCHEMA_TYPE_CHOICE_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.SCHEMA_TYPE_CHOICE_TYPE_NAME))
                     {
                         bean.setSchemaTypeProperties(this.getSchemaTypeChoice(instanceProperties));
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataAPIMapper.EXTERNAL_SCHEMA_TYPE_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, schemaTypeTypeName, OpenMetadataType.EXTERNAL_SCHEMA_TYPE_TYPE_NAME))
                     {
                         bean.setSchemaTypeProperties(this.getExternalSchemaType(instanceProperties));
                     }
@@ -138,7 +138,7 @@ public class SchemaTypeConverter<B> extends DataManagerOMASConverter<B>
                         /*
                          * This will throw an exception
                          */
-                        super.validateInstanceType(OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                        super.validateInstanceType(OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
                                                    beanClass.getName(),
                                                    schemaTypeTypeName,
                                                    methodName);
@@ -168,7 +168,7 @@ public class SchemaTypeConverter<B> extends DataManagerOMASConverter<B>
                     }
 
                     InstanceProperties classificationProperties =
-                                super.getClassificationProperties(OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                super.getClassificationProperties(OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                                   schemaRootClassifications);
 
                     bean.setFormula(this.getFormula(classificationProperties));

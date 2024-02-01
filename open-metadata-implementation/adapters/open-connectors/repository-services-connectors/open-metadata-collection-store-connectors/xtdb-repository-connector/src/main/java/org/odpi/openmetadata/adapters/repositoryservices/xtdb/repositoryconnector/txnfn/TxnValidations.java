@@ -10,7 +10,6 @@ import org.odpi.openmetadata.adapters.repositoryservices.xtdb.repositoryconnecto
 import org.odpi.openmetadata.adapters.repositoryservices.xtdb.repositoryconnector.mapping.InstanceAuditHeaderMapping;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.io.IOException;
@@ -161,7 +160,6 @@ public class TxnValidations {
      * Verify that a metadata instance can be updated by the metadataCollection. The caller can update a
      * metadata instance provided: the instance is locally homed (matching metadataCollectionId) OR the
      * instance has instanceProvenanceType set to external and replicatedBy is set to the local metadataCollectionId.
-     *
      * Any other combination suggests that this is either a reference copy of an instance from the local cohort or
      * a reference copy of an external entity (and something else is responsible for its replication): in these cases
      * we are not permitted to update the metadata instance and will instead throw an InvalidParameterException.
@@ -185,7 +183,6 @@ public class TxnValidations {
      * Verify that a metadata instance can be updated by the metadataCollection. The caller can update a
      * metadata instance provided: the instance is locally homed (matching metadataCollectionId) OR the
      * instance has instanceProvenanceType set to external and replicatedBy is set to the local metadataCollectionId.
-     *
      * Any other combination suggests that this is either a reference copy of an instance from the local cohort or
      * a reference copy of an external entity (and something else is responsible for its replication): in these cases
      * we are not permitted to update the metadata instance and will instead throw an InvalidParameterException.
@@ -347,7 +344,7 @@ public class TxnValidations {
     }
 
     /**
-     * Return boolean indicating whether the (AttributeTypeDef/TypeDef is known, either as an open type, or one defined
+     * Return boolean indicating whether the AttributeTypeDef/TypeDef is known, either as an open type, or one defined
      * by one or more of the members of the cohort.
      *
      * @param typeGUID unique identifier of the type
@@ -365,7 +362,7 @@ public class TxnValidations {
         if (typeDef == null) {
             AttributeTypeDef attributeTypeDef = TypeDefCache.getAttributeTypeDef(typeGUID);
             if (attributeTypeDef == null) {
-                throw new RepositoryErrorException(OMRSErrorCode.INACTIVE_INSTANCE_TYPE.getMessageDefinition(
+                throw new RepositoryErrorException(XTDBErrorCode.INACTIVE_INSTANCE_TYPE.getMessageDefinition(
                         AbstractTransactionFunction.getGUID(instance),
                         typeName,
                         typeGUID),
@@ -908,17 +905,16 @@ public class TxnValidations {
                     return;
                 }
 
-                throw new InvalidParameterException(OMRSErrorCode.INVALID_RELATIONSHIP_ENDS.getMessageDefinition(
-                        typeDef.getName(),
-                        entityOneGUID,
-                        entityOneTypeName,
-                        entityOneTypeDefName,
-                        entityTwoGUID,
-                        entityTwoTypeName,
-                        entityTwoTypeDefName),
-                        className,
-                        methodName,
-                        "relationship.End");
+                throw new InvalidParameterException(XTDBErrorCode.INVALID_RELATIONSHIP_ENDS.getMessageDefinition(typeDef.getName(),
+                                                                                                                 entityOneGUID,
+                                                                                                                 entityOneTypeName,
+                                                                                                                 entityOneTypeDefName,
+                                                                                                                 entityTwoGUID,
+                                                                                                                 entityTwoTypeName,
+                                                                                                                 entityTwoTypeDefName),
+                                                    className,
+                                                    methodName,
+                                                    "relationship.End");
             } catch (InvalidParameterException error) {
                 throw error;
             } catch (Exception error) {

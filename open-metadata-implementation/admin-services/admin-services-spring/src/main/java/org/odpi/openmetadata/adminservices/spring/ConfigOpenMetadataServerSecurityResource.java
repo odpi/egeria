@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices.spring;
 
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.server.OMAGServerAdminSecurityServices;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
@@ -29,7 +30,7 @@ public class ConfigOpenMetadataServerSecurityResource
     private final OMAGServerAdminSecurityServices adminSecurityAPI = new OMAGServerAdminSecurityServices();
 
     /**
-     * Override the default server security connector.
+     * Override the existing server security connector.
      *
      * @param userId calling user.
      * @param serverName server to configure
@@ -37,6 +38,11 @@ public class ConfigOpenMetadataServerSecurityResource
      * @return void response
      */
     @PostMapping(path = "/connection")
+
+    @Operation(summary="setServerSecurityConnection",
+               description="Override the existing server security connector.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/server-metadata-security-connector/"))
 
     public synchronized VoidResponse setServerSecurityConnection(@PathVariable String       userId,
                                                                  @PathVariable String       serverName,
@@ -55,6 +61,11 @@ public class ConfigOpenMetadataServerSecurityResource
      */
     @GetMapping(path = "/connection")
 
+    @Operation(summary="getServerSecurityConnection",
+               description="Return the connection object for the server security connector.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/server-metadata-security-connector/"))
+
     public synchronized ConnectionResponse getServerSecurityConnection(@PathVariable  String       userId,
                                                                        @PathVariable  String       serverName)
     {
@@ -63,14 +74,19 @@ public class ConfigOpenMetadataServerSecurityResource
 
 
     /**
-     * Clear the connection object for the server security connector.
-     * This sets the server security back to default.
+     * Clear the connection object for the server security connector. This sets the server security back to default of no authorization security.
      *
      * @param userId calling user
      * @param serverName server to configure
      * @return connection response
      */
     @DeleteMapping(path = "/connection")
+
+    @Operation(summary="clearServerSecurityConnection",
+               description="Clear the connection object for the server security connector. " +
+                                   "This sets the server security back to default of no authorization security.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/server-metadata-security-connector/"))
 
     public synchronized VoidResponse clearServerSecurityConnection(@PathVariable  String   userId,
                                                                    @PathVariable  String   serverName)

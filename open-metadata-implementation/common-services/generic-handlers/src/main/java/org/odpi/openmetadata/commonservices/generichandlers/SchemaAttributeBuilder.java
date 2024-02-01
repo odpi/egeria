@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
@@ -57,8 +59,8 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                   String               serverName)
     {
         super(qualifiedName,
-              OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
-              OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+              OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_GUID,
+              OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
               repositoryHelper,
               serviceName,
               serverName);
@@ -79,8 +81,8 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                   String               serviceName,
                                   String               serverName)
     {
-        super(OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
-              OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+        super(OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_GUID,
+              OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
               repositoryHelper,
               serviceName,
               serverName);
@@ -194,7 +196,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                                                                   null,
                                                                                   InstanceProvenanceType.LOCAL_COHORT,
                                                                                   userId,
-                                                                                  OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+                                                                                  OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
                                                                                   typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
@@ -203,7 +205,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME);
         }
     }
 
@@ -267,20 +269,20 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
             }
 
             Classification classification = repositoryHelper.getNewClassification(serviceName,
-                    externalSourceGUID,
-                    externalSourceName,
-                    instanceProvenanceType,
-                    userId,
-                    OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
-                    typeName,
-                    ClassificationOrigin.ASSIGNED,
-                    null,
-                    instanceProperties);
+                                                                                  externalSourceGUID,
+                                                                                  externalSourceName,
+                                                                                  instanceProvenanceType,
+                                                                                  userId,
+                                                                                  OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                                                  typeName,
+                                                                                  ClassificationOrigin.ASSIGNED,
+                                                                                  null,
+                                                                                  instanceProperties);
             newClassifications.put(classification.getName(), classification);
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME);
         }
     }
 
@@ -301,7 +303,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
-                                                                      OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
+                                                                      OpenMetadataProperty.FORMULA.name,
                                                                       formula,
                                                                       methodName);
         }
@@ -324,61 +326,61 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DISPLAY_NAME.name,
                                                                   displayName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataAPIMapper.ELEMENT_POSITION_PROPERTY_NAME,
+                                                               OpenMetadataType.ELEMENT_POSITION_PROPERTY_NAME,
                                                                elementPosition,
                                                                methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.CARDINALITY_PROPERTY_NAME,
+                                                                  OpenMetadataType.CARDINALITY_PROPERTY_NAME,
                                                                   cardinality,
                                                                   methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataAPIMapper.MIN_CARDINALITY_PROPERTY_NAME,
+                                                               OpenMetadataType.MIN_CARDINALITY_PROPERTY_NAME,
                                                                minCardinality,
                                                                methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataAPIMapper.MAX_CARDINALITY_PROPERTY_NAME,
+                                                               OpenMetadataType.MAX_CARDINALITY_PROPERTY_NAME,
                                                                maxCardinality,
                                                                methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataAPIMapper.IS_DEPRECATED_PROPERTY_NAME,
+                                                                   OpenMetadataType.IS_DEPRECATED_PROPERTY_NAME,
                                                                    isDeprecated,
                                                                    methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataAPIMapper.DEFAULT_VALUE_OVERRIDE_PROPERTY_NAME,
+                                                                  OpenMetadataType.DEFAULT_VALUE_OVERRIDE_PROPERTY_NAME,
                                                                   defaultValueOverride,
                                                                   methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataAPIMapper.ALLOWS_DUPLICATES_PROPERTY_NAME,
+                                                                   OpenMetadataType.ALLOWS_DUPLICATES_PROPERTY_NAME,
                                                                    allowsDuplicateValues,
                                                                    methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataAPIMapper.ORDERED_VALUES_PROPERTY_NAME,
+                                                                   OpenMetadataType.ORDERED_VALUES_PROPERTY_NAME,
                                                                    orderedValues,
                                                                    methodName);
 
@@ -386,52 +388,52 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataAPIMapper.SORT_ORDER_PROPERTY_NAME,
-                                                                    OpenMetadataAPIMapper.DATA_ITEM_SORT_ORDER_TYPE_GUID,
-                                                                    OpenMetadataAPIMapper.DATA_ITEM_SORT_ORDER_TYPE_NAME,
+                                                                    OpenMetadataType.SORT_ORDER_PROPERTY_NAME,
+                                                                    OpenMetadataType.DATA_ITEM_SORT_ORDER_TYPE_GUID,
+                                                                    OpenMetadataType.DATA_ITEM_SORT_ORDER_TYPE_NAME,
                                                                     sortOrder,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataAPIMapper.SORT_ORDER_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataType.SORT_ORDER_PROPERTY_NAME);
         }
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataAPIMapper.MIN_LENGTH_PROPERTY_NAME,
+                                                               OpenMetadataType.MIN_LENGTH_PROPERTY_NAME,
                                                                minimumLength,
                                                                methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataAPIMapper.LENGTH_PROPERTY_NAME,
+                                                               OpenMetadataType.LENGTH_PROPERTY_NAME,
                                                                length,
                                                                methodName);
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataAPIMapper.SIGNIFICANT_DIGITS_PROPERTY_NAME,
+                                                               OpenMetadataType.SIGNIFICANT_DIGITS_PROPERTY_NAME,
                                                                significantDigits,
                                                                methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataAPIMapper.IS_NULLABLE_PROPERTY_NAME,
+                                                                   OpenMetadataType.IS_NULLABLE_PROPERTY_NAME,
                                                                    isNullable,
                                                                    methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.NATIVE_CLASS_PROPERTY_NAME,
-                                                                      nativeJavaClass,
-                                                                      methodName);
+                                                                  properties,
+                                                                  OpenMetadataType.NATIVE_CLASS_PROPERTY_NAME,
+                                                                  nativeJavaClass,
+                                                                  methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                                           properties,
-                                                                           OpenMetadataAPIMapper.ALIASES_PROPERTY_NAME,
-                                                                           aliases,
-                                                                           methodName);
+                                                                       properties,
+                                                                       OpenMetadataType.ALIASES_PROPERTY_NAME,
+                                                                       aliases,
+                                                                       methodName);
 
         return properties;
     }

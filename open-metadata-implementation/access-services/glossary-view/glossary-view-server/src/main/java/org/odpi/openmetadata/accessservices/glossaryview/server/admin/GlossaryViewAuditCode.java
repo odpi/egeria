@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.glossaryview.server.admin;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,25 +25,25 @@ import java.util.Arrays;
 public enum GlossaryViewAuditCode {
 
     SERVICE_INITIALIZING("OMAS-GLOSSARY-VIEW-0001",
-            OMRSAuditLogRecordSeverity.STARTUP,
-            "The Glossary View Open Metadata Access Service (OMAS) is initializing a new server instance",
-            "The local server has started up a new instance of the Glossary View OMAS.",
-            Constants.NORMAL_OPERATION_OF_THE_SERVICE),
+                         AuditLogRecordSeverityLevel.STARTUP,
+                         "The Glossary View Open Metadata Access Service (OMAS) is initializing a new server instance",
+                         "The local server has started up a new instance of the Glossary View OMAS.",
+                         Constants.NORMAL_OPERATION_OF_THE_SERVICE),
 
     SERVICE_INITIALIZED("OMAS-GLOSSARY-VIEW-0002",
-            OMRSAuditLogRecordSeverity.STARTUP,
+            AuditLogRecordSeverityLevel.STARTUP,
             "The Glossary View Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
             "The Glossary View OMAS has completed initialization of a new instance.",
             Constants.NORMAL_OPERATION_OF_THE_SERVICE),
 
     SERVICE_SHUTDOWN("OMAS-GLOSSARY-VIEW-0003",
-            OMRSAuditLogRecordSeverity.SHUTDOWN,
+                     AuditLogRecordSeverityLevel.SHUTDOWN,
             "The Glossary View Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
             "The local server has requested shut down of an Glossary View OMAS instance.",
             Constants.NORMAL_OPERATION_OF_THE_SERVICE),
 
     SERVICE_INSTANCE_FAILURE("OMAS-GLOSSARY-VIEW-0004",
-            OMRSAuditLogRecordSeverity.EXCEPTION,
+                             AuditLogRecordSeverityLevel.EXCEPTION,
             "The Glossary View Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
             "The access service detected an error during the start up of a specific server instance.  " +
                     "Its services are not available for the server.",
@@ -51,7 +51,7 @@ public enum GlossaryViewAuditCode {
                     " Once this is resolved, restart the server.");
 
     private String logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
+    private AuditLogRecordSeverityLevel severity;
     private String logMessage;
     private String systemAction;
     private String userAction;
@@ -65,7 +65,7 @@ public enum GlossaryViewAuditCode {
      * @param systemAction description of action taken by the system when the condition happened
      * @param userAction   instructions for resolving the situation, if any
      */
-    GlossaryViewAuditCode(String messageId, OMRSAuditLogRecordSeverity severity, String message, String systemAction,
+    GlossaryViewAuditCode(String messageId, AuditLogRecordSeverityLevel severity, String message, String systemAction,
                         String userAction) {
         this.logMessageId = messageId;
         this.severity = severity;
@@ -88,7 +88,7 @@ public enum GlossaryViewAuditCode {
      *
      * @return severity
      */
-    public OMRSAuditLogRecordSeverity getSeverity() {
+    public AuditLogRecordSeverityLevel getSeverity() {
         return severity;
     }
 

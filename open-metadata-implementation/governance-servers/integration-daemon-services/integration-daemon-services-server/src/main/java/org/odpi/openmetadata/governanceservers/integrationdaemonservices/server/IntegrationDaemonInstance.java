@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesErrorCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorCacheMap;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorHandler;
@@ -297,6 +298,89 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
         else
         {
             final String actionDescription = "Update connector configuration properties REST API call";
+            final String parameterName = "connectorName";
+
+            throw new InvalidParameterException(IntegrationDaemonServicesErrorCode.UNKNOWN_CONNECTOR_NAME.getMessageDefinition(connectorName,
+                                                                                                                               serverName),
+                                                this.getClass().getName(),
+                                                actionDescription,
+                                                parameterName);
+        }
+    }
+
+
+    /**
+     * Update the endpoint network address for a specific integration connector.
+     *
+     * @param userId calling user
+     * @param connectorName name of a specific connector
+     * @param networkAddress name of a specific connector or null for all connectors and the properties to change
+     *
+     * @throws InvalidParameterException the connector name is not recognized
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+
+    public void updateEndpointNetworkAddress(String userId,
+                                             String connectorName,
+                                             String networkAddress)  throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        final String   methodName = "updateEndpointNetworkAddress";
+        final String   connectorNameParameterName = "connectorName";
+
+        invalidParameterHandler.validateName(connectorName, connectorNameParameterName, methodName);
+
+        IntegrationConnectorHandler connectorHandler = integrationConnectorCacheMap.getHandlerByConnectorName(connectorName);
+        if (connectorHandler != null)
+        {
+            connectorHandler.updateEndpointNetworkAddress(userId, methodName, networkAddress);
+        }
+        else
+        {
+            final String actionDescription = "Update connector endpoint network address REST API call";
+            final String parameterName = "connectorName";
+
+            throw new InvalidParameterException(IntegrationDaemonServicesErrorCode.UNKNOWN_CONNECTOR_NAME.getMessageDefinition(connectorName,
+                                                                                                                               serverName),
+                                                this.getClass().getName(),
+                                                actionDescription,
+                                                parameterName);
+        }
+    }
+
+
+    /**
+     * Update the connection for a specific integration connector.
+     *
+     * @param userId calling user
+     * @param connectorName name of a specific connector
+     * @param connection new connection object
+     *
+     * @throws InvalidParameterException the connector name is not recognized
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    public  void updateConnectorConnection(String     userId,
+                                           String     connectorName,
+                                           Connection connection) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String   methodName = "updateConnectorConnection";
+        final String   connectorNameParameterName = "connectorName";
+
+        invalidParameterHandler.validateName(connectorName, connectorNameParameterName, methodName);
+
+        IntegrationConnectorHandler connectorHandler = integrationConnectorCacheMap.getHandlerByConnectorName(connectorName);
+        if (connectorHandler != null)
+        {
+            connectorHandler.updateConnectorConnection(userId, methodName, connection);
+        }
+        else
+        {
+            final String actionDescription = "Update connector connection REST API call";
             final String parameterName = "connectorName";
 
             throw new InvalidParameterException(IntegrationDaemonServicesErrorCode.UNKNOWN_CONNECTOR_NAME.getMessageDefinition(connectorName,

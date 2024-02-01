@@ -26,14 +26,25 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum OwnerType implements Serializable
 {
+    /**
+     * The owner's user id is stored in the owner property.
+     */
     USER_ID     (0,  0,  "UserId",    "The owner's user id is stored in the owner property."),
+
+    /**
+     * The owner's profile unique identifier (guid) is stored in the owner property.
+     */
     PROFILE_ID  (1,  1,  "ProfileId", "The owner's profile unique identifier (guid) is stored in the owner property."),
-    OTHER       (99, 99, "Other",     "A different identifier for the owner outside of the scope of open metadata has been used.");
+
+    /**
+     * A different identifier for the owner outside the scope of the open metadata enum has been used.
+     */
+    OTHER       (99, 99, "Other",     "A different identifier for the owner outside the scope of open metadata enum has been used.");
 
     private static final String ENUM_TYPE_GUID  = "9548390c-69f5-4dc6-950d-6feeee257b56";
     private static final String ENUM_TYPE_NAME  = "AssetOwnerType";
 
-    private int    openTypeOrdinal;
+    private final int openTypeOrdinal;
 
     private final int    ordinal;
     private final String name;

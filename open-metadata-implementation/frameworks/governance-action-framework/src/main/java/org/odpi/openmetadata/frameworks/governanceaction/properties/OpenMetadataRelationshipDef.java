@@ -195,6 +195,7 @@ public class OpenMetadataRelationshipDef extends OpenMetadataTypeDef
                 ", multiLink=" + multiLink +
                 ", superType=" + getSuperType() +
                 ", descriptionGUID='" + getDescriptionGUID() + '\'' +
+                ", descriptionWiki='" + getDescriptionWiki() + '\'' +
                 ", origin='" + getOrigin() + '\'' +
                 ", createdBy='" + getCreatedBy() + '\'' +
                 ", updatedBy='" + getUpdatedBy() + '\'' +

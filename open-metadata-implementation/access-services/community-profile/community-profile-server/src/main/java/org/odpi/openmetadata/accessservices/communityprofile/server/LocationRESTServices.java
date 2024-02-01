@@ -26,7 +26,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.LocationHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
@@ -1573,7 +1573,7 @@ public class LocationRESTServices
             List<LocationElement> locations = handler.getAdjacentLocations(userId,
                                                                            locationGUID,
                                                                            parameterName,
-                                                                           OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                                                           OpenMetadataType.LOCATION_TYPE_NAME,
                                                                            startFrom,
                                                                            pageSize,
                                                                            false,
@@ -1630,7 +1630,7 @@ public class LocationRESTServices
             List<LocationElement> locations = handler.getNestedLocations(userId,
                                                                          locationGUID,
                                                                          parameterName,
-                                                                         OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                                                         OpenMetadataType.LOCATION_TYPE_NAME,
                                                                          startFrom,
                                                                          pageSize,
                                                                          false,
@@ -1687,7 +1687,7 @@ public class LocationRESTServices
             List<LocationElement> locations = handler.getGroupingLocations(userId,
                                                                            locationGUID,
                                                                            parameterName,
-                                                                           OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                                                           OpenMetadataType.LOCATION_TYPE_NAME,
                                                                            startFrom,
                                                                            pageSize,
                                                                            false,
@@ -1743,7 +1743,7 @@ public class LocationRESTServices
             List<LocationElement> locations = handler.getProfileLocations(userId,
                                                                           actorProfileGUID,
                                                                           parameterName,
-                                                                          OpenMetadataAPIMapper.ACTOR_PROFILE_TYPE_NAME,
+                                                                          OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
                                                                           startFrom,
                                                                           pageSize,
                                                                           false,
@@ -1799,7 +1799,7 @@ public class LocationRESTServices
             List<LocationElement> locations = handler.getAssetLocations(userId,
                                                                         assetGUID,
                                                                         parameterName,
-                                                                        OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                        OpenMetadataType.ASSET.typeName,
                                                                         startFrom,
                                                                         pageSize,
                                                                         false,
@@ -1901,7 +1901,7 @@ public class LocationRESTServices
             LocationElement location = handler.getBeanFromRepository(userId,
                                                                      locationGUID,
                                                                      locationGUIDParameter,
-                                                                     OpenMetadataAPIMapper.LOCATION_TYPE_NAME,
+                                                                     OpenMetadataType.LOCATION_TYPE_NAME,
                                                                      false,
                                                                      false,
                                                                      new Date(),

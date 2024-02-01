@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adminservices.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationGroupConfig;
 import org.odpi.openmetadata.adminservices.rest.IntegrationGroupsResponse;
@@ -37,6 +38,11 @@ public class ConfigIntegrationGroupsResource
      */
     @GetMapping("/integration-groups/configuration")
 
+    @Operation(summary="getIntegrationGroupsConfiguration",
+               description="Return the integration groups configuration for this server.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
+
     public IntegrationGroupsResponse getIntegrationGroupsConfiguration(@PathVariable String userId,
                                                                        @PathVariable String serverName)
     {
@@ -58,6 +64,11 @@ public class ConfigIntegrationGroupsResource
      */
     @PostMapping(path = "/integration-groups/configuration")
 
+    @Operation(summary="configureIntegrationGroup",
+               description="Add configuration for a single integration group to the server's config document.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
+
     public VoidResponse configureIntegrationGroup(@PathVariable String                 userId,
                                                   @PathVariable String                 serverName,
                                                   @RequestBody  IntegrationGroupConfig groupConfig)
@@ -78,6 +89,11 @@ public class ConfigIntegrationGroupsResource
      */
     @PostMapping(path = "/integration-groups/configuration/all")
 
+    @Operation(summary="setIntegrationGroupsConfig",
+               description="Set up the configuration for all the open metadata integration groups.  This overrides the current values.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
+
     public VoidResponse setIntegrationGroupsConfig(@PathVariable String                       userId,
                                                    @PathVariable String                       serverName,
                                                    @RequestBody  List<IntegrationGroupConfig> integrationGroupsConfig)
@@ -97,6 +113,11 @@ public class ConfigIntegrationGroupsResource
      * OMAGConfigurationErrorException unusual state in the admin server.
      */
     @DeleteMapping(path = "/integration-groups")
+
+    @Operation(summary="clearAllIntegrationGroups",
+               description="Disable the integration groups.  This removes all configuration for the integration groups from the integration daemon.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
     
     public VoidResponse clearAllIntegrationGroups(@PathVariable String userId,
                                                   @PathVariable String serverName)
@@ -116,6 +137,11 @@ public class ConfigIntegrationGroupsResource
      * OMAGInvalidParameterException invalid serverName  parameter.
      */
     @DeleteMapping(path = "/integration-groups/{groupQualifiedName}")
+
+    @Operation(summary="clearIntegrationGroup",
+               description="Remove an integration group.  This removes all configuration for the integration group.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
 
     public VoidResponse clearIntegrationGroup(@PathVariable String userId,
                                               @PathVariable String serverName,

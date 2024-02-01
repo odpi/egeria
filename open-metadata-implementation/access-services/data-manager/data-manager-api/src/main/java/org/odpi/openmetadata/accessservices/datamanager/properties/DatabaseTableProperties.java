@@ -25,8 +25,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class DatabaseTableProperties extends SchemaElementProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private List<String> aliases = null;
 
 
