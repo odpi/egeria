@@ -108,7 +108,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#ADMINISTRATION_SERVICES" class="member-name-link">ADMINISTRATION_SERVICES</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Configuration of services in an Open Metadata and Governance server (OMAG Server).</div>
+<div class="block">Configuration of services for an Open Metadata and Governance server (OMAG Server).</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#GAF_METADATA_MANAGEMENT" class="member-name-link">GAF_METADATA_MANAGEMENT</a></code></div>
 <div class="col-last odd-row-color">
@@ -140,7 +140,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 </div>
 <div class="col-first even-row-color"><code><a href="#SERVER_OPERATIONS" class="member-name-link">SERVER_OPERATIONS</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Supports the start up and shutdown of OMAG Servers.</div>
+<div class="block">Supports the startup and shutdown of OMAG Servers.</div>
 </div>
 </div>
 </section>
@@ -156,10 +156,20 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="CommonServicesDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">CommonServicesDescription</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getCommonServicesDescriptionList()" class="member-name-link">getCommonServicesDescriptionList</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Return a list containing each of the service descriptions defined in this enum class.</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPartnerServerType()" class="member-name-link">getPartnerServerType</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the type of server where the partner service resides.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPartnerServiceName()" class="member-name-link">getPartnerServiceName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the name of a service called in a remote server (if any).</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerType()" class="member-name-link">getServerType</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the name of the type of server where this service resides.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServiceCode()" class="member-name-link">getServiceCode</a>()</code></div>
@@ -233,7 +243,7 @@ the order they are declared.</div>
 <section class="detail" id="ADMINISTRATION_SERVICES">
 <h3>ADMINISTRATION_SERVICES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CommonServicesDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">CommonServicesDescription</a></span>&nbsp;<span class="element-name">ADMINISTRATION_SERVICES</span></div>
-<div class="block">Configuration of services in an Open Metadata and Governance server (OMAG Server).</div>
+<div class="block">Configuration of services for an Open Metadata and Governance server (OMAG Server).</div>
 </section>
 </li>
 <li>
@@ -275,7 +285,7 @@ the order they are declared.</div>
 <section class="detail" id="SERVER_OPERATIONS">
 <h3>SERVER_OPERATIONS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="CommonServicesDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">CommonServicesDescription</a></span>&nbsp;<span class="element-name">SERVER_OPERATIONS</span></div>
-<div class="block">Supports the start up and shutdown of OMAG Servers.</div>
+<div class="block">Supports the startup and shutdown of OMAG Servers.</div>
 </section>
 </li>
 <li>
@@ -321,17 +331,6 @@ not permitted.)</div>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code> - if this enum class has no constant with the specified name</dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/NullPointerException.html" title="class or interface in java.lang" class="external-link">NullPointerException</a></code> - if the argument is null</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getCommonServicesDescriptionList()">
-<h3>getCommonServicesDescriptionList</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="CommonServicesDescription.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">CommonServicesDescription</a>&gt;</span>&nbsp;<span class="element-name">getCommonServicesDescriptionList</span>()</div>
-<div class="block">Return a list containing each of the service descriptions defined in this enum class.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>List of enums</dd>
 </dl>
 </section>
 </li>
@@ -399,6 +398,39 @@ not permitted.)</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>String URL for the wiki page</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getServerType()">
+<h3>getServerType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getServerType</span>()</div>
+<div class="block">Return the name of the type of server where this service resides.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>server type name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getPartnerServiceName()">
+<h3>getPartnerServiceName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getPartnerServiceName</span>()</div>
+<div class="block">Return the name of a service called in a remote server (if any).</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>name of service</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getPartnerServerType()">
+<h3>getPartnerServerType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getPartnerServerType</span>()</div>
+<div class="block">Return the type of server where the partner service resides.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>name of type of server</dd>
 </dl>
 </section>
 </li>

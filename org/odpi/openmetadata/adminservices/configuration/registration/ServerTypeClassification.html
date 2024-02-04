@@ -129,29 +129,34 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Governance server that hosts connectors that are exchanging metadata with third party technology.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#METADATA_ACCESS_POINT" class="member-name-link">METADATA_ACCESS_POINT</a></code></div>
+<div class="col-first even-row-color"><code><a href="#LINEAGE_WAREHOUSE" class="member-name-link">LINEAGE_WAREHOUSE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Server that manages a warehouse of lineage information.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#METADATA_ACCESS_POINT" class="member-name-link">METADATA_ACCESS_POINT</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Server that is a metadata access server without its own native open metadata repository so all
+ metadata access is remote.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#METADATA_ACCESS_SERVER" class="member-name-link">METADATA_ACCESS_SERVER</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Server that provides specialist APIs for accessing and storing metadata in
  open metadata repositories connected through one or more open metadata repository cohorts.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#METADATA_SERVER" class="member-name-link">METADATA_SERVER</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#METADATA_ACCESS_STORE" class="member-name-link">METADATA_ACCESS_STORE</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Server that is a metadata access point with its own native open metadata repository.</div>
+<div class="block">Server that is a metadata access server with its own native open metadata repository.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#OMAG_SERVER" class="member-name-link">OMAG_SERVER</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Generic name for a server that runs on the OMAG Platform.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#OPEN_LINEAGE_SERVER" class="member-name-link">OPEN_LINEAGE_SERVER</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#REPOSITORY_PROXY" class="member-name-link">REPOSITORY_PROXY</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Server that manages a warehouse of lineage information.</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#REPOSITORY_PROXY" class="member-name-link">REPOSITORY_PROXY</a></code></div>
-<div class="col-last even-row-color">
 <div class="block">Hosting environment for a repository connector acting as an adapter to a third party metadata server.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#VIEW_SERVER" class="member-name-link">VIEW_SERVER</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#VIEW_SERVER" class="member-name-link">VIEW_SERVER</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">A View Server is an OMAG Server that hosts the view services to support a User Interface.</div>
 </div>
 </div>
@@ -234,18 +239,26 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="METADATA_ACCESS_POINT">
-<h3>METADATA_ACCESS_POINT</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerTypeClassification.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">ServerTypeClassification</a></span>&nbsp;<span class="element-name">METADATA_ACCESS_POINT</span></div>
+<section class="detail" id="METADATA_ACCESS_SERVER">
+<h3>METADATA_ACCESS_SERVER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerTypeClassification.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">ServerTypeClassification</a></span>&nbsp;<span class="element-name">METADATA_ACCESS_SERVER</span></div>
 <div class="block">Server that provides specialist APIs for accessing and storing metadata in
  open metadata repositories connected through one or more open metadata repository cohorts.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="METADATA_SERVER">
-<h3>METADATA_SERVER</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerTypeClassification.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">ServerTypeClassification</a></span>&nbsp;<span class="element-name">METADATA_SERVER</span></div>
-<div class="block">Server that is a metadata access point with its own native open metadata repository.</div>
+<section class="detail" id="METADATA_ACCESS_STORE">
+<h3>METADATA_ACCESS_STORE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerTypeClassification.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">ServerTypeClassification</a></span>&nbsp;<span class="element-name">METADATA_ACCESS_STORE</span></div>
+<div class="block">Server that is a metadata access server with its own native open metadata repository.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="METADATA_ACCESS_POINT">
+<h3>METADATA_ACCESS_POINT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerTypeClassification.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">ServerTypeClassification</a></span>&nbsp;<span class="element-name">METADATA_ACCESS_POINT</span></div>
+<div class="block">Server that is a metadata access server without its own native open metadata repository so all
+ metadata access is remote.</div>
 </section>
 </li>
 <li>
@@ -285,9 +298,9 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="OPEN_LINEAGE_SERVER">
-<h3>OPEN_LINEAGE_SERVER</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerTypeClassification.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">ServerTypeClassification</a></span>&nbsp;<span class="element-name">OPEN_LINEAGE_SERVER</span></div>
+<section class="detail" id="LINEAGE_WAREHOUSE">
+<h3>LINEAGE_WAREHOUSE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerTypeClassification.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">ServerTypeClassification</a></span>&nbsp;<span class="element-name">LINEAGE_WAREHOUSE</span></div>
 <div class="block">Server that manages a warehouse of lineage information.</div>
 </section>
 </li>

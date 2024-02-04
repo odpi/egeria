@@ -107,15 +107,15 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeOpenLineageConfig(java.lang.String,java.lang.String)" class="member-name-link">removeOpenLineageConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeLineageWarehouseServices(java.lang.String,java.lang.String)" class="member-name-link">removeLineageWarehouseServices</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove this service from the server configuration.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOpenLineageConfig(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageServerConfig)" class="member-name-link">setOpenLineageConfig</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLineageWarehouseServices(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.LineageWarehouseConfig)" class="member-name-link">setLineageWarehouseServices</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../configuration/properties/OpenLineageServerConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OpenLineageServerConfig</a>&nbsp;openLineageServerConfig)</code></div>
+ <a href="../configuration/properties/LineageWarehouseConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">LineageWarehouseConfig</a>&nbsp;lineageWarehouseConfig)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set the Open Lineage Config</div>
 </div>
@@ -151,26 +151,26 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="setOpenLineageConfig(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageServerConfig)">
-<h3>setOpenLineageConfig</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setOpenLineageConfig</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<section class="detail" id="setLineageWarehouseServices(java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.properties.LineageWarehouseConfig)">
+<h3>setLineageWarehouseServices</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setLineageWarehouseServices</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../configuration/properties/OpenLineageServerConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">OpenLineageServerConfig</a>&nbsp;openLineageServerConfig)</span></div>
+ <a href="../configuration/properties/LineageWarehouseConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">LineageWarehouseConfig</a>&nbsp;lineageWarehouseConfig)</span></div>
 <div class="block">Set the Open Lineage Config</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - user that is issuing the request.</dd>
 <dd><code>serverName</code> - local server name.</dd>
-<dd><code>openLineageServerConfig</code> - Config for the Open Lineage Services</dd>
+<dd><code>lineageWarehouseConfig</code> - Config for the Open Lineage Services</dd>
 <dt>Returns:</dt>
 <dd>void response</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="removeOpenLineageConfig(java.lang.String,java.lang.String)">
-<h3>removeOpenLineageConfig</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">removeOpenLineageConfig</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<section class="detail" id="removeLineageWarehouseServices(java.lang.String,java.lang.String)">
+<h3>removeLineageWarehouseServices</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">removeLineageWarehouseServices</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
 <div class="block">Remove this service from the server configuration.</div>
 <dl class="notes">

@@ -107,13 +107,14 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-last even-row-color">
 <div class="block">Default constructor</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(int,org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus,java.lang.String)" class="member-name-link">ViewServiceRegistrationEntry</a><wbr>(int&nbsp;viewServiceCode,
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(int,org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus,java.lang.String)" class="member-name-link">ViewServiceRegistrationEntry</a><wbr>(int&nbsp;viewServiceCode,
  <a href="../../../frameworks/auditlog/ComponentDevelopmentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.auditlog">ComponentDevelopmentStatus</a>&nbsp;viewServiceDevelopmentStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceFullName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceDescription,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceWiki,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServicePartnerService,
  <a href="ServiceOperationalStatus.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">ServiceOperationalStatus</a>&nbsp;viewServiceOperationalStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceAdminClassName)</code></div>
 <div class="col-last odd-row-color">
@@ -176,55 +177,65 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="block">Return the initial operational status for this view service.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getViewServiceURLMarker()" class="member-name-link">getViewServiceURLMarker</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getViewServicePartnerService()" class="member-name-link">getViewServicePartnerService</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the string that appears in the REST API URL that identifies the owning service.</div>
+<div class="block">Return the full name of the service (typically Open Metadata Access Service (OMAS)) that this view service is partnered with.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getViewServiceWiki()" class="member-name-link">getViewServiceWiki</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getViewServiceURLMarker()" class="member-name-link">getViewServiceURLMarker</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the string that appears in the REST API URL that identifies the owning service.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getViewServiceWiki()" class="member-name-link">getViewServiceWiki</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the URL for the wiki page describing this view service.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setServiceURLMarker(java.lang.String)" class="member-name-link">setServiceURLMarker</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setServiceURLMarker(java.lang.String)" class="member-name-link">setServiceURLMarker</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the string that appears in the REST API URL that identifies the owning service.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setViewServiceAdminClassName(java.lang.String)" class="member-name-link">setViewServiceAdminClassName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceAdminClassName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setViewServiceAdminClassName(java.lang.String)" class="member-name-link">setViewServiceAdminClassName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceAdminClassName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the class name of the admin class that should be called during initialization and
  termination.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setViewServiceCode(int)" class="member-name-link">setViewServiceCode</a><wbr>(int&nbsp;viewServiceCode)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setViewServiceCode(int)" class="member-name-link">setViewServiceCode</a><wbr>(int&nbsp;viewServiceCode)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the code for this view service</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setViewServiceDescription(java.lang.String)" class="member-name-link">setViewServiceDescription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceDescription)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setViewServiceDescription(java.lang.String)" class="member-name-link">setViewServiceDescription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceDescription)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the default description for the type for this view service.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setViewServiceDevelopmentStatus(org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus)" class="member-name-link">setViewServiceDevelopmentStatus</a><wbr>(<a href="../../../frameworks/auditlog/ComponentDevelopmentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.auditlog">ComponentDevelopmentStatus</a>&nbsp;viewServiceDevelopmentStatus)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setViewServiceDevelopmentStatus(org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus)" class="member-name-link">setViewServiceDevelopmentStatus</a><wbr>(<a href="../../../frameworks/auditlog/ComponentDevelopmentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.auditlog">ComponentDevelopmentStatus</a>&nbsp;viewServiceDevelopmentStatus)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the development status of the component.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setViewServiceFullName(java.lang.String)" class="member-name-link">setViewServiceFullName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceFullName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setViewServiceFullName(java.lang.String)" class="member-name-link">setViewServiceFullName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceFullName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the full name for this view service.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setViewServiceName(java.lang.String)" class="member-name-link">setViewServiceName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setViewServiceName(java.lang.String)" class="member-name-link">setViewServiceName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the default name for this view service.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setViewServiceOperationalStatus(org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus)" class="member-name-link">setViewServiceOperationalStatus</a><wbr>(<a href="ServiceOperationalStatus.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">ServiceOperationalStatus</a>&nbsp;viewServiceOperationalStatus)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setViewServiceOperationalStatus(org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus)" class="member-name-link">setViewServiceOperationalStatus</a><wbr>(<a href="ServiceOperationalStatus.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">ServiceOperationalStatus</a>&nbsp;viewServiceOperationalStatus)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the initial operational status for this view service.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setViewServicePartnerService(java.lang.String)" class="member-name-link">setViewServicePartnerService</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServicePartnerService)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the full name of the service (typically Open Metadata Access Service (OMAS)) that this view service is partnered with.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setViewServiceWiki(java.lang.String)" class="member-name-link">setViewServiceWiki</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceWiki)</code></div>
@@ -249,7 +260,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(int,org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(int,org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus,java.lang.String)">
 <h3>ViewServiceRegistrationEntry</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ViewServiceRegistrationEntry</span><wbr><span class="parameters">(int&nbsp;viewServiceCode,
  <a href="../../../frameworks/auditlog/ComponentDevelopmentStatus.html" title="enum class in org.odpi.openmetadata.frameworks.auditlog">ComponentDevelopmentStatus</a>&nbsp;viewServiceDevelopmentStatus,
@@ -258,6 +269,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceDescription,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceWiki,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServicePartnerService,
  <a href="ServiceOperationalStatus.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.registration">ServiceOperationalStatus</a>&nbsp;viewServiceOperationalStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServiceAdminClassName)</span></div>
 <div class="block">Complete Constructor</div>
@@ -270,6 +282,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <dd><code>viewServiceURLMarker</code> - name of the part of the URL that is the name of the view service</dd>
 <dd><code>viewServiceDescription</code> - short description for this view service</dd>
 <dd><code>viewServiceWiki</code> - wiki page for the view service for this view service</dd>
+<dd><code>viewServicePartnerService</code> - service that is called</dd>
 <dd><code>viewServiceOperationalStatus</code> - default initial operational status for the view service</dd>
 <dd><code>viewServiceAdminClassName</code> - name of ViewServiceAdmin implementation class for the view service</dd>
 </dl>
@@ -458,6 +471,28 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>viewServiceWiki</code> - String URL name for the wiki page</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getViewServicePartnerService()">
+<h3>getViewServicePartnerService</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getViewServicePartnerService</span>()</div>
+<div class="block">Return the full name of the service (typically Open Metadata Access Service (OMAS)) that this view service is partnered with.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>Full name of OMAS</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setViewServicePartnerService(java.lang.String)">
+<h3>setViewServicePartnerService</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setViewServicePartnerService</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;viewServicePartnerService)</span></div>
+<div class="block">Set up the full name of the service (typically Open Metadata Access Service (OMAS)) that this view service is partnered with.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>viewServicePartnerService</code> - Full name of OMAS</dd>
 </dl>
 </section>
 </li>
