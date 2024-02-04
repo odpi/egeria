@@ -22,6 +22,15 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 public enum OMAGAdminAuditCode implements AuditLogMessageSet
 {
     /**
+     * OMAG-ADMIN-0001 - The {0} service is being ignored in the startup of server {1} because it is not registered to this platform
+     */
+    IGNORING_UNREGISTERED_SERVICE("OMAG-ADMIN-0001",
+              AuditLogRecordSeverityLevel.STARTUP,
+              "The {0} service is being ignored in the startup of server {1} because it is not registered to this platform",
+              "The configured service will not be available in the running server because the code to run the service is missing from the platform's classpath.",
+              "Determine if this service is needed in the server.  Remove it from the configuration is it is not.  If it is needed, add the jar file for the service into the platform's lib (or extra) directory to ensure it is picked up.  If the jar file is in the correct place then examine its implementation to ensure it registers with the runtime."),
+
+    /**
      * OMAG-ADMIN-0201 - The {0} Open Metadata Access Service (OMAS) is supporting the access to assets for all governance zones
      */
     ALL_ZONES("OMAG-ADMIN-0201",

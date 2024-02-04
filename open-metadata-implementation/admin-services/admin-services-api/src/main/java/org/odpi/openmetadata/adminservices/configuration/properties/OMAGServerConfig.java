@@ -101,9 +101,9 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private List<ViewServiceConfig>         viewServicesConfig              = null;
     private RepositoryServicesConfig        repositoryServicesConfig        = null;
     private ConformanceSuiteConfig          conformanceSuiteConfig          = null;
-    private EngineHostServicesConfig        engineHostServicesConfig        = null;
-    private OpenLineageServerConfig         openLineageServerConfig         = null;
-    private DataEngineProxyConfig           dataEngineProxyConfig           = null;
+    private EngineHostServicesConfig engineHostServicesConfig = null;
+    private LineageWarehouseConfig   lineageWarehouseConfig   = null;
+    private DataEngineProxyConfig    dataEngineProxyConfig    = null;
     private List<String>                    auditTrail                      = null;
 
 
@@ -145,9 +145,9 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             engineHostServicesConfig        = template.getEngineHostServicesConfig();
             viewServicesConfig              = template.getViewServicesConfig();
             repositoryServicesConfig        = template.getRepositoryServicesConfig();
-            conformanceSuiteConfig          = template.getConformanceSuiteConfig();
-            openLineageServerConfig         = template.getOpenLineageServerConfig();
-            dataEngineProxyConfig           = template.getDataEngineProxyConfig();
+            conformanceSuiteConfig = template.getConformanceSuiteConfig();
+            lineageWarehouseConfig = template.getOpenLineageServerConfig();
+            dataEngineProxyConfig  = template.getDataEngineProxyConfig();
             auditTrail                      = template.getAuditTrail();
         }
     }
@@ -583,20 +583,20 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
      *
      * @return OpenLineageConfig properties
      */
-    public OpenLineageServerConfig getOpenLineageServerConfig()
+    public LineageWarehouseConfig getOpenLineageServerConfig()
     {
-        return openLineageServerConfig;
+        return lineageWarehouseConfig;
     }
 
 
     /**
      * Set up the configuration for open lineage services.
      *
-     * @param openLineageServerConfig OpenLineageConfig properties
+     * @param lineageWarehouseConfig OpenLineageConfig properties
      */
-    public void setOpenLineageServerConfig(OpenLineageServerConfig openLineageServerConfig)
+    public void setOpenLineageServerConfig(LineageWarehouseConfig lineageWarehouseConfig)
     {
-        this.openLineageServerConfig = openLineageServerConfig;
+        this.lineageWarehouseConfig = lineageWarehouseConfig;
     }
 
 
@@ -665,12 +665,13 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                        ", serverSecurityConnection=" + serverSecurityConnection +
                        ", eventBusConfig=" + eventBusConfig +
                        ", accessServicesConfig=" + accessServicesConfig +
+                       ", dynamicIntegrationGroupsConfig=" + dynamicIntegrationGroupsConfig +
                        ", integrationServicesConfig=" + integrationServicesConfig +
                        ", engineHostServicesConfig=" + engineHostServicesConfig +
                        ", viewServicesConfig=" + viewServicesConfig +
                        ", repositoryServicesConfig=" + repositoryServicesConfig +
                        ", conformanceSuiteConfig=" + conformanceSuiteConfig +
-                       ", openLineageServerConfig=" + openLineageServerConfig +
+                       ", openLineageServerConfig=" + lineageWarehouseConfig +
                        ", dataEngineProxyConfig=" + dataEngineProxyConfig +
                        ", auditTrail=" + auditTrail +
                        '}';
@@ -708,6 +709,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                        Objects.equals(getServerSecurityConnection(), that.getServerSecurityConnection()) &&
                        Objects.equals(getEventBusConfig(), that.getEventBusConfig()) &&
                        Objects.equals(getAccessServicesConfig(), that.getAccessServicesConfig()) &&
+                       Objects.equals(getDynamicIntegrationGroupsConfig(), that.getDynamicIntegrationGroupsConfig()) &&
                        Objects.equals(getIntegrationServicesConfig(), that.getIntegrationServicesConfig()) &&
                        Objects.equals(getEngineHostServicesConfig(), that.getEngineHostServicesConfig()) &&
                        Objects.equals(getViewServicesConfig(), that.getViewServicesConfig()) &&
@@ -730,7 +732,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
         return Objects.hash(getVersionId(), getLocalServerId(), getLocalServerName(), getLocalServerDescription(), getLocalServerType(), getOrganizationName(),
                             getLocalServerURL(),
                             getLocalServerUserId(), getLocalServerPassword(), getMaxPageSize(), getServerSecurityConnection(), getEventBusConfig(),
-                            getAccessServicesConfig(), getIntegrationServicesConfig(), getEngineHostServicesConfig(), getViewServicesConfig(),
+                            getAccessServicesConfig(), getDynamicIntegrationGroupsConfig(), getIntegrationServicesConfig(), getEngineHostServicesConfig(), getViewServicesConfig(),
                             getRepositoryServicesConfig(), getConformanceSuiteConfig(),
                             getOpenLineageServerConfig(),
                             getDataEngineProxyConfig(), getAuditTrail());

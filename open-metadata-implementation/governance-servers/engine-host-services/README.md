@@ -2,8 +2,7 @@
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
 
-![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
-
+![Released](../../images/egeria-content-status-released.png#pagewidth)
 # Engine Host Services
 
 The engine host services provide the base implementation of the

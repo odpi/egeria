@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * The OMAG ServerPlatform routes these requests to the engine host services active in the server.
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/engine-host-services/users/{userId}")
+@RequestMapping("/servers/{serverName}/open-metadata/engine-host/users/{userId}")
 
 @Tag(name="Engine Host Services",
      description="The Engine Host Services provide the core subsystem for the Engine Host OMAG Server.",
@@ -37,7 +37,6 @@ public class EngineHostServicesResource
      * @param userId calling user
      * @param governanceEngineName name of governance engine of interest
      * @return list of statuses - on for each assigned governance engines or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      */
@@ -58,7 +57,6 @@ public class EngineHostServicesResource
      * @param serverName engine host server name
      * @param userId calling user
      * @return list of statuses - on for each assigned governance engines or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      */
@@ -78,7 +76,6 @@ public class EngineHostServicesResource
      * @param userId calling user
      * @param serviceURLMarker url name for the engine service
      * @return list of statuses - on for each assigned governance engines or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      */
@@ -103,7 +100,6 @@ public class EngineHostServicesResource
      * @param governanceEngineName unique name of the governance engine
      *
      * @return void or
-     *
      *  InvalidParameterException one of the parameters is null or invalid or
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  GovernanceEngineException there was a problem detected by the governance engine.

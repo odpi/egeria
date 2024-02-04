@@ -48,7 +48,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:open-lineage-connectors:open-lineage-janus-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:lineage-warehouse-connectors:lineage-warehouse-janus-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-file-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-directory-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
@@ -90,7 +90,7 @@ dependencies {
     implementation project(':open-metadata-implementation:integration-services:search-integrator:search-integrator-client')
     implementation project(':open-metadata-implementation:governance-servers:engine-host-services:engine-host-services-client')
     implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-client')
-    implementation project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-client')
+    implementation project(':open-metadata-implementation:governance-servers:lineage-warehouse-services:lineage-warehouse-services-client')
     implementation project(':open-metadata-implementation:admin-services:admin-services-client')
     implementation project(':open-metadata-implementation:user-interfaces:ui-chassis:ui-chassis-spring')
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-client')
@@ -213,7 +213,7 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector').jar }
-                from { project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:open-lineage-connectors:open-lineage-janus-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:lineage-warehouse-connectors:lineage-warehouse-janus-connector').jar }
                 from { project(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector').jar }

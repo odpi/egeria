@@ -14,7 +14,7 @@ import org.odpi.openmetadata.frameworkservices.oif.admin.OIFMetadataOperationalS
 import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineProxyOperationalServices;
 import org.odpi.openmetadata.governanceservers.enginehostservices.server.EngineHostOperationalServices;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonOperationalServices;
-import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageServerOperationalServices;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.admin.LineageWarehouseOperationalServices;
 import org.odpi.openmetadata.serveroperations.properties.OMAGServerServiceStatus;
 import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
 import org.odpi.openmetadata.serveroperations.properties.ServerServicesStatus;
@@ -30,7 +30,7 @@ import java.util.Map;
  * OMAGOperationalServicesInstance provides the references to the active services for an instance of an OMAG Server.
  */
 
-class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
+public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
 {
     private       ServerActiveStatus              serverActiveStatus = ServerActiveStatus.INACTIVE;
     private final Map<String, ServerActiveStatus> serviceStatusMap   = new HashMap<>();
@@ -45,9 +45,9 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     private List<ViewServiceAdmin>               operationalViewServiceAdminList     = new ArrayList<>();
     private ConformanceSuiteOperationalServices  operationalConformanceSuiteServices = null;
     private EngineHostOperationalServices        operationalEngineHost               = null;
-    private IntegrationDaemonOperationalServices operationalIntegrationDaemon        = null;
-    private OpenLineageServerOperationalServices openLineageOperationalServices      = null;
-    private DataEngineProxyOperationalServices   operationalDataEngineProxyServices  = null;
+    private IntegrationDaemonOperationalServices operationalIntegrationDaemon       = null;
+    private LineageWarehouseOperationalServices  openLineageOperationalServices     = null;
+    private DataEngineProxyOperationalServices   operationalDataEngineProxyServices = null;
     private OMRSAuditLog                         auditLog                            = null;
 
 
@@ -395,7 +395,7 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
      *
      * @param openLineageOperationalServices OpenLineageOperationalServices object
      */
-    void setOpenLineageOperationalServices(OpenLineageServerOperationalServices openLineageOperationalServices)
+    void setOpenLineageOperationalServices(LineageWarehouseOperationalServices openLineageOperationalServices)
     {
         this.openLineageOperationalServices = openLineageOperationalServices;
     }
@@ -406,7 +406,7 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
      *
      * @return DiscoveryServerOperationalServices object
      */
-    OpenLineageServerOperationalServices getOpenLineageOperationalServices()
+    LineageWarehouseOperationalServices getOpenLineageOperationalServices()
     {
         return openLineageOperationalServices;
     }

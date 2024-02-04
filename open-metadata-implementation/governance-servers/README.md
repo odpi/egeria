@@ -19,7 +19,7 @@ for a particular type of governance server.
 
 * **[engine-host-services](engine-host-services)** - running governance engines.
 
-* **[open-lineage-services](open-lineage-services)** - provides a historic reporting warehouse for lineage.
+* **[lineage-warehouse-services](lineage-warehouse-services)** - provides a historic reporting warehouse for lineage.
 
 
 ----

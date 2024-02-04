@@ -74,7 +74,7 @@ public enum ViewServiceDescription
      * View glossary terms and categories within a glossary.
      */
     GLOSSARY_BROWSER(805,
-                     ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                     ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                      "Glossary Browser",
                      "Glossary Browser OMVS",
                      "glossary-browser",
@@ -86,7 +86,7 @@ public enum ViewServiceDescription
      * Create glossary terms and organize them into categories as part of a controlled workflow process. It supports the editing glossary and multiple states.
      */
     GLOSSARY_WORKFLOW(806,
-                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                       "Glossary Workflow",
                       "Glossary Workflow OMVS",
                       "glossary-workflow",
@@ -122,7 +122,7 @@ public enum ViewServiceDescription
      * Build collections of asset and other metadata.
      */
     COLLECTION_MANAGER  (809,
-                         ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                         ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                          "Collection Manager",
                          "Collection Manager OMVS",
                          "collection-manager",

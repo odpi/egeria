@@ -83,6 +83,9 @@ public class OMAGServerPlatformInstanceMap
      * @param serviceURLMarker name use in URLs
      * @param serviceDescription short description
      * @param serviceWiki link to more info
+     * @param serverType name of server where this service resides
+     * @param partnerServiceName service in remote server that this service depends on
+     * @param partnerServerType type of server where the partner service resides
      * @return service description object
      */
     private static RegisteredOMAGService getServiceDescription(int                        serviceId,
@@ -90,7 +93,10 @@ public class OMAGServerPlatformInstanceMap
                                                                ComponentDevelopmentStatus serviceDevelopmentStatus,
                                                                String                     serviceURLMarker,
                                                                String                     serviceDescription,
-                                                               String                     serviceWiki)
+                                                               String                     serviceWiki,
+                                                               String                     serverType,
+                                                               String                     partnerServiceName,
+                                                               String                     partnerServerType)
     {
         RegisteredOMAGService service = new RegisteredOMAGService();
 
@@ -100,6 +106,9 @@ public class OMAGServerPlatformInstanceMap
         service.setServiceURLMarker(serviceURLMarker);
         service.setServiceDescription(serviceDescription);
         service.setServiceWiki(serviceWiki);
+        service.setServerType(serverType);
+        service.setPartnerServiceName(partnerServiceName);
+        service.setPartnerServerType(partnerServerType);
 
         return service;
     }
@@ -140,7 +149,10 @@ public class OMAGServerPlatformInstanceMap
                                                            registration.getAccessServiceDevelopmentStatus(),
                                                            registration.getAccessServiceURLMarker(),
                                                            registration.getAccessServiceDescription(),
-                                                           registration.getAccessServiceWiki()));
+                                                           registration.getAccessServiceWiki(),
+                                                           ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName(),
+                                                           null,
+                                                           null));
                     }
                 }
             }
@@ -191,7 +203,10 @@ public class OMAGServerPlatformInstanceMap
                                                            registration.getEngineServiceDevelopmentStatus(),
                                                            registration.getEngineServiceURLMarker(),
                                                            registration.getEngineServiceDescription(),
-                                                           registration.getEngineServiceWiki()));
+                                                           registration.getEngineServiceWiki(),
+                                                           ServerTypeClassification.ENGINE_HOST.getServerTypeName(),
+                                                           registration.getEngineServicePartnerOMAS(),
+                                                           ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName()));
                     }
                 }
             }
@@ -258,7 +273,10 @@ public class OMAGServerPlatformInstanceMap
                                                            registration.getViewServiceDevelopmentStatus(),
                                                            registration.getViewServiceURLMarker(),
                                                            registration.getViewServiceDescription(),
-                                                           registration.getViewServiceWiki()));
+                                                           registration.getViewServiceWiki(),
+                                                           ServerTypeClassification.VIEW_SERVER.getServerTypeName(),
+                                                           registration.getViewServicePartnerService(),
+                                                           ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName()));
                     }
                 }
             }
@@ -288,15 +306,11 @@ public class OMAGServerPlatformInstanceMap
 
         List<RegisteredOMAGService> response = new ArrayList<>();
 
-        /*
-         * Get the list of Governance Services implemented in this server.
-         */
-        GovernanceServicesDescription[] governanceServicesDescriptions = GovernanceServicesDescription.values();
 
         /*
          * Set up the available governance services.
          */
-        for (GovernanceServicesDescription registration : governanceServicesDescriptions)
+        for (GovernanceServicesDescription registration : GovernanceServicesDescription.values())
         {
             if (registration != null)
             {
@@ -305,7 +319,10 @@ public class OMAGServerPlatformInstanceMap
                                                    registration.getServiceDevelopmentStatus(),
                                                    registration.getServiceURLMarker(),
                                                    registration.getServiceDescription(),
-                                                   registration.getServiceWiki()));
+                                                   registration.getServiceWiki(),
+                                                   registration.getServerType(),
+                                                   registration.getPartnerServiceName(),
+                                                   registration.getPartnerServerType()));
             }
         }
 
@@ -333,14 +350,9 @@ public class OMAGServerPlatformInstanceMap
         List<RegisteredOMAGService> response = new ArrayList<>();
 
         /*
-         * Get the list of Common Services implemented in this server.
-         */
-        CommonServicesDescription[] commonServicesDescriptions = CommonServicesDescription.values();
-
-        /*
          * Set up the available governance services.
          */
-        for (CommonServicesDescription registration : commonServicesDescriptions)
+        for (CommonServicesDescription registration : CommonServicesDescription.values())
         {
             if (registration != null)
             {
@@ -349,7 +361,10 @@ public class OMAGServerPlatformInstanceMap
                                                    registration.getServiceDevelopmentStatus(),
                                                    registration.getServiceURLMarker(),
                                                    registration.getServiceDescription(),
-                                                   registration.getServiceWiki()));
+                                                   registration.getServiceWiki(),
+                                                   registration.getServerType(),
+                                                   registration.getPartnerServiceName(),
+                                                   registration.getPartnerServerType()));
             }
         }
 

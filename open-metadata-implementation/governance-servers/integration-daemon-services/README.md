@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
-![TechPreview](../../../images/egeria-content-status-tech-preview.png#pagewidth)
+![Released](../../images/egeria-content-status-released.png#pagewidth)
 
 ## Integration Daemon Services
 

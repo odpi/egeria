@@ -18,7 +18,7 @@ for the connectors, the ability to retrieve all the metadata about the asset and
 
   The Asset Lineage OMAS listens to relevant lineage related events on the Enterprise topic level and publishes these on
 the Asset Lineage OutTopic, combined with relevant context information on the described entities. These events are 
-listened to by the Open Lineage Services governance server.  
+listened to by the Lineage Warehouse Services governance server.  
 
 * **[asset-manager](asset-manager)** - manage exchange of metadata with third party metadata catalogs and
 asset managers.

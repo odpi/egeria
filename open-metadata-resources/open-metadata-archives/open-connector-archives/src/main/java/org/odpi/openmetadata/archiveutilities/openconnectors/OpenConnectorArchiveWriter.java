@@ -296,8 +296,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         /*
          * The access services are found in the Metadata Access Server and Metadata Access Point OMAG Servers.
          */
-        String serverTypeGUID = serverTypeGUIDs.get(ServerTypeClassification.METADATA_ACCESS_POINT.getServerTypeName());
-        String serverTypeGUID2 = serverTypeGUIDs.get(ServerTypeClassification.METADATA_SERVER.getServerTypeName());
+        String serverTypeGUID = serverTypeGUIDs.get(ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName());
+        String serverTypeGUID2 = serverTypeGUIDs.get(ServerTypeClassification.METADATA_ACCESS_STORE.getServerTypeName());
 
         for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
         {
