@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
-![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
+![Stable](../../../images/egeria-content-status-released.png#pagewidth)
 
 # Asset Manager Open Metadata Access Service (OMAS)
 

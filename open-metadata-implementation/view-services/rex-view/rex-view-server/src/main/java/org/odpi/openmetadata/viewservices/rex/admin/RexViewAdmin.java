@@ -31,7 +31,6 @@ public class RexViewAdmin extends ViewServiceAdmin {
     protected String   resourceEndpointsPropertyName       = "resourceEndpoints";      /* Common */
 
     private AuditLog                auditLog          = null;
-    private String                  serverUserName    = null;
     private RexViewServicesInstance instance          = null;
     private String                  serverName        = null;
 
@@ -58,7 +57,8 @@ public class RexViewAdmin extends ViewServiceAdmin {
                            String            serverUserName,
                            int               maxPageSize)
 
-    throws OMAGConfigurationErrorException {
+    throws OMAGConfigurationErrorException
+    {
 
         final String actionDescription = "initialize";
 
@@ -74,12 +74,13 @@ public class RexViewAdmin extends ViewServiceAdmin {
          * This method will be called (by Operational Services) with the view service config passed as a ViewServiceConfig.
          * This is the super type of IntegrationViewServiceConfig which is what this service actually requires.
          */
-
-        IntegrationViewServiceConfig integrationViewServiceConfig = null;
-        if (viewServiceConfig instanceof IntegrationViewServiceConfig) {
+        IntegrationViewServiceConfig integrationViewServiceConfig;
+        if (viewServiceConfig instanceof IntegrationViewServiceConfig)
+        {
             integrationViewServiceConfig = (IntegrationViewServiceConfig) viewServiceConfig;
         }
-        else {
+        else
+        {
             logBadConfiguration(viewServiceConfig.getViewServiceName(),
                                 "viewServiceConfig",
                                 viewServiceConfig.toString(),
@@ -92,7 +93,8 @@ public class RexViewAdmin extends ViewServiceAdmin {
 
         final String viewServiceFullName = viewServiceConfig.getViewServiceName();
 
-        try {
+        try
+        {
 
             List<ResourceEndpointConfig> resourceEndpoints = this.extractResourceEndpoints(integrationViewServiceConfig.getResourceEndpoints(),
                                                                                            viewServiceFullName,
@@ -110,7 +112,6 @@ public class RexViewAdmin extends ViewServiceAdmin {
                                                         maxPageSize,
                                                         resourceEndpoints);
 
-            this.serverUserName    = serverUserName;
             this.serverName        = serverName;
 
             auditLog.logMessage(actionDescription,
@@ -177,8 +178,6 @@ public class RexViewAdmin extends ViewServiceAdmin {
                                                                     AuditLog                     auditLog)             throws OMAGConfigurationErrorException
     {
         final String methodName = "extractResourceEndpoints";
-        final String parameterName = "resourceEndpoints";
-
 
         /*
          * Rex cannot operate without any endpoints.
@@ -200,11 +199,10 @@ public class RexViewAdmin extends ViewServiceAdmin {
         }
         else
         {
-
-            @SuppressWarnings("unchecked")
-            List<ResourceEndpointConfig> endpointList = (List<ResourceEndpointConfig>) resourceEndpoints;
-            auditLog.logMessage(methodName, OMAGAdminAuditCode.RESOURCE_ENDPOINTS.getMessageDefinition(viewServiceFullName, endpointList.toString()));
-            return endpointList;
+            auditLog.logMessage(methodName,
+                                OMAGAdminAuditCode.RESOURCE_ENDPOINTS.getMessageDefinition(viewServiceFullName,
+                                                                                           resourceEndpoints.toString()));
+            return resourceEndpoints;
         }
     }
 }

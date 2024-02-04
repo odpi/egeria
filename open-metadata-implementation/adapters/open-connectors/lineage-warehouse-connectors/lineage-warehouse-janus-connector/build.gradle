@@ -1,0 +1,76 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+plugins {
+    id "io.freefair.lombok"
+}
+
+dependencies {
+    compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
+    compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
+    implementation 'org.janusgraph:janusgraph-core'
+    implementation 'org.janusgraph:janusgraph-driver'
+    implementation 'org.apache.tinkerpop:gremlin-core'
+    compileOnly 'org.slf4j:slf4j-api'
+    compileOnly project(':open-metadata-implementation:governance-servers:lineage-warehouse-services:lineage-warehouse-services-api')
+    compileOnly project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-api')
+    implementation 'com.google.guava:guava'
+    runtimeOnly 'org.janusgraph:janusgraph-cql'
+    runtimeOnly 'org.janusgraph:janusgraph-es'
+    runtimeOnly 'org.janusgraph:janusgraph-berkeleyje'
+    runtimeOnly 'org.janusgraph:janusgraph-lucene'
+    testImplementation project(':open-metadata-implementation:governance-servers:lineage-warehouse-services:lineage-warehouse-services-api')
+    testImplementation project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-api')
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    testImplementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    testImplementation project(':open-metadata-implementation:common-services:ffdc-services')
+    testImplementation 'org.mockito:mockito-core'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.junit.jupiter:junit-jupiter-params'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation 'org.hamcrest:hamcrest'
+    testImplementation 'com.fasterxml.jackson.core:jackson-core'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+    testRuntimeOnly 'org.janusgraph:janusgraph-inmemory'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    implementation 'org.apache.commons:commons-collections4'
+    implementation 'commons-configuration:commons-configuration'
+    implementation 'org.apache.commons:commons-configuration2'
+
+}
+
+description = 'Open Lineage Janus Connector'
+
+java {
+    withJavadocJar()
+}
+
+
+test {
+filter {
+    excludeTestsMatching "*.OpenLineageGraphValidationTests"
+}
+    useJUnitPlatform {
+        includeEngines 'junit-jupiter'
+    }
+    dependencies {
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    }
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+    reports {
+        html.required = true
+    }
+}
+// Resolves logging conflict with Jena
+loggingCapabilities {
+    enforceLogback()// Configuration goes here
+}

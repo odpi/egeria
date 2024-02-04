@@ -54,7 +54,7 @@ public enum AccessServiceDescription implements Serializable
      * Manage metadata from a third party asset manager.
      */
     ASSET_MANAGER_OMAS               (204,
-                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                      ComponentDevelopmentStatus.STABLE,
                                       "Asset Manager",
                                       "Asset Manager OMAS",
                                       "asset-manager",
@@ -93,7 +93,7 @@ public enum AccessServiceDescription implements Serializable
      * Define personal profile and collaborate
      */
     COMMUNITY_PROFILE_OMAS           (207,
-                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                      ComponentDevelopmentStatus.STABLE,
                                       "Community Profile",
                                       "Community Profile OMAS",
                                       "community-profile",
@@ -106,7 +106,7 @@ public enum AccessServiceDescription implements Serializable
      * Manage information about the deployed IT infrastructure.
      */
     IT_INFRASTRUCTURE_OMAS           (208,
-                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                       "IT Infrastructure",
                                       "IT Infrastructure OMAS",
                                       "it-infrastructure",
@@ -132,7 +132,7 @@ public enum AccessServiceDescription implements Serializable
      * Capture changes to the data stores and data set managed by a data manager such as a database server, content manager or file system.
      */
     DATA_MANAGER_OMAS                (210,
-                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                      ComponentDevelopmentStatus.STABLE,
                                       "Data Manager",
                                       "Data Manager OMAS",
                                       "data-manager",
@@ -210,7 +210,7 @@ public enum AccessServiceDescription implements Serializable
      * Manage a digital service through its lifecycle.
      */
     DIGITAL_SERVICE_OMAS            ( 216,
-                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                       "Digital Service",
                                       "Digital Service OMAS",
                                       "digital-service",
@@ -240,20 +240,20 @@ public enum AccessServiceDescription implements Serializable
                                       "Glossary View",
                                       "Glossary View OMAS",
                                       "glossary-view",
-                                      "Support glossary terms visualization",
+                                      "Support glossary terms visualization.",
                                       "https://egeria-project.org/services/omas/glossary-view/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.NOT_IMPLEMENTED),
 
     /**
-     * Set up an operational governance engine.
+     * Set up the governance engine and integration group definitions.
      */
     GOVERNANCE_ENGINE_OMAS           (219,
-                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                      ComponentDevelopmentStatus.STABLE,
                                       "Governance Engine",
                                       "Governance Engine OMAS",
                                       "governance-engine",
-                                      "Set up an operational governance engine",
+                                      "Set up the governance engine and integration group definitions.",
                                       "https://egeria-project.org/services/omas/governance-engine/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.ENABLED),
@@ -262,7 +262,7 @@ public enum AccessServiceDescription implements Serializable
      * Manage the governance program.
      */
     GOVERNANCE_PROGRAM_OMAS          (220,
-                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                                       "Governance Program",
                                       "Governance Program OMAS",
                                       "governance-program",
@@ -292,7 +292,7 @@ public enum AccessServiceDescription implements Serializable
                                      "Security Manager",
                                       "Security Manager OMAS",
                                       "security-manager",
-                                      "Manages exchange of metadata with a security service",
+                                      "Manages exchange of metadata with a security service.",
                                       "https://egeria-project.org/services/omas/security-manager/overview/",
                                      ServiceOperationalStatus.NOT_IMPLEMENTED,
                                      ServiceOperationalStatus.ENABLED),

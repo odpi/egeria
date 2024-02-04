@@ -5,14 +5,14 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.service;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
-import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
-import org.odpi.openmetadata.governanceservers.openlineage.model.LineageEdge;
-import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
-import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
-import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
-import org.odpi.openmetadata.governanceservers.openlineage.requests.ElementHierarchyRequest;
-import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.client.LineageWarehouseClientWarehouse;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.ffdc.LineageWarehouseException;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.model.LineageEdge;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.model.LineageVertex;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.model.LineageVerticesAndEdges;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.model.Scope;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.requests.ElementHierarchyRequest;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.requests.LineageSearchRequest;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.LineageNotFoundException;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.api.exceptions.OpenLineageServiceException;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Edge;
@@ -40,17 +40,17 @@ import java.util.stream.Stream;
 @EnableConfigurationProperties(LineageGraphDisplayService.class)
 public class OpenLineageService {
 
-    private final OpenLineageClient openLineageClient;
-    private final LineageGraphDisplayService lineageGraphDisplayService;
+    private final LineageWarehouseClientWarehouse lineageWarehouseClient;
+    private final LineageGraphDisplayService      lineageGraphDisplayService;
     private static final Logger LOG = LoggerFactory.getLogger(OpenLineageService.class);
 
     /**
-     * @param openLineageClient          client to connect to open lineage services
+     * @param lineageWarehouseClient          client to connect to open lineage services
      * @param lineageGraphDisplayService the rules for display
      */
     @Autowired
-    public OpenLineageService(OpenLineageClient openLineageClient, LineageGraphDisplayService lineageGraphDisplayService) {
-        this.openLineageClient = openLineageClient;
+    public OpenLineageService(LineageWarehouseClientWarehouse lineageWarehouseClient, LineageGraphDisplayService lineageGraphDisplayService) {
+        this.lineageWarehouseClient     = lineageWarehouseClient;
         this.lineageGraphDisplayService = lineageGraphDisplayService;
     }
 
@@ -62,14 +62,15 @@ public class OpenLineageService {
      * @return map of nodes and edges describing the ultimate sources for the asset
      * @throws InvalidParameterException from the underlying client
      * @throws PropertyServerException from the underlying client
-     * @throws OpenLineageException from the underlying client
+     * @throws LineageWarehouseException from the underlying client
      */
     public Graph getUltimateSource(String userId,
                                    String guid,
                                    boolean includeProcesses)
-            throws InvalidParameterException, PropertyServerException, OpenLineageException {
+            throws InvalidParameterException, PropertyServerException, LineageWarehouseException
+    {
         try {
-            LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.ULTIMATE_SOURCE, guid, includeProcesses);
+            LineageVerticesAndEdges response = lineageWarehouseClient.lineage(userId, Scope.ULTIMATE_SOURCE, guid, includeProcesses);
             return processResponse(response, guid);
         } catch (PropertyServerException e) {
             LOG.error("Cannot get ultimate source lineage for guid {}", guid);
@@ -77,7 +78,7 @@ public class OpenLineageService {
         } catch (InvalidParameterException e) {
             LOG.error("Cannot get ultimate source for guid {}", guid);
             throw new LineageNotFoundException("ultimate source lineage error", e);
-        } catch (OpenLineageException e) {
+        } catch (LineageWarehouseException e) {
             LOG.error("Error while calling open lineage services {}", guid);
             throw new OpenLineageServiceException("entity details error", e);
         }
@@ -92,14 +93,15 @@ public class OpenLineageService {
      * @return map of nodes and edges describing the end to end flow
      * @throws InvalidParameterException from the underlying client
      * @throws PropertyServerException from the underlying client
-     * @throws OpenLineageException from the underlying client
+     * @throws LineageWarehouseException from the underlying client
      */
     public Graph getEndToEndLineage(String userId,
                                     String guid,
                                     boolean includeProcesses)
-            throws InvalidParameterException, PropertyServerException, OpenLineageException {
+            throws InvalidParameterException, PropertyServerException, LineageWarehouseException
+    {
         try {
-            LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.END_TO_END, guid, includeProcesses);
+            LineageVerticesAndEdges response = lineageWarehouseClient.lineage(userId, Scope.END_TO_END, guid, includeProcesses);
             return processResponse(response, guid);
         } catch (PropertyServerException e) {
             LOG.error("Cannot get end-to-end lineage for guid {}", guid);
@@ -107,7 +109,7 @@ public class OpenLineageService {
         } catch (InvalidParameterException e) {
             LOG.error("Cannot get end-to-end lineage for guid {}", guid);
             throw new LineageNotFoundException("end-to-end lineage error", e);
-        } catch (OpenLineageException e) {
+        } catch (LineageWarehouseException e) {
             LOG.error("Error while calling open lineage services {}", guid);
             throw new OpenLineageServiceException("entity details error", e);
         }
@@ -120,14 +122,15 @@ public class OpenLineageService {
      * @return map of nodes and edges describing the ultimate destinations of the asset
      * @throws InvalidParameterException from the underlying client
      * @throws PropertyServerException from the underlying client
-     * @throws OpenLineageException from the underlying client
+     * @throws LineageWarehouseException from the underlying client
      */
     public Graph getUltimateDestination(String userId,
                                         String guid,
                                         boolean includeProcesses)
-            throws InvalidParameterException, PropertyServerException, OpenLineageException {
+            throws InvalidParameterException, PropertyServerException, LineageWarehouseException
+    {
         try {
-            LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.ULTIMATE_DESTINATION, guid, includeProcesses);
+            LineageVerticesAndEdges response = lineageWarehouseClient.lineage(userId, Scope.ULTIMATE_DESTINATION, guid, includeProcesses);
             return processResponse(response, guid);
         } catch (PropertyServerException e) {
             LOG.error("Cannot get ultimate destination lineage for guid {}", guid);
@@ -135,7 +138,7 @@ public class OpenLineageService {
         } catch (InvalidParameterException e) {
             LOG.error("Cannot get ultimate destination for guid {}", guid);
             throw new LineageNotFoundException("ultimate destination lineage error", e);
-        } catch (OpenLineageException e) {
+        } catch (LineageWarehouseException e) {
             LOG.error("Error while calling open lineage services {}", guid);
             throw new OpenLineageServiceException("entity details error", e);
         }
@@ -150,14 +153,15 @@ public class OpenLineageService {
      * @return map of nodes and edges describing the glossary terms linked to the asset
      * @throws InvalidParameterException from the underlying client
      * @throws PropertyServerException from the underlying client
-     * @throws OpenLineageException from the underlying client
+     * @throws LineageWarehouseException from the underlying client
      */
     public Graph getVerticalLineage(String userId,
                                     String guid,
                                     boolean includeProcesses)
-            throws InvalidParameterException, PropertyServerException, OpenLineageException {
+            throws InvalidParameterException, PropertyServerException, LineageWarehouseException
+    {
         try {
-            LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.VERTICAL, guid, includeProcesses);
+            LineageVerticesAndEdges response = lineageWarehouseClient.lineage(userId, Scope.VERTICAL, guid, includeProcesses);
             return processResponse(response, guid);
         } catch (PropertyServerException e) {
             LOG.error("Error while trying to retrieve verical lineage {}", e.getMessage());
@@ -165,7 +169,7 @@ public class OpenLineageService {
         } catch (InvalidParameterException e) {
             LOG.error("Cannot get vertical lineage for guid {}", guid);
             throw new LineageNotFoundException("vertical lineage error", e);
-        } catch (OpenLineageException e) {
+        } catch (LineageWarehouseException e) {
             LOG.error("Error while calling open lineage services {}", guid);
             throw new OpenLineageServiceException("entity details error", e);
         }
@@ -180,16 +184,17 @@ public class OpenLineageService {
      * @return the node details
      * @throws InvalidParameterException from the underlying client
      * @throws PropertyServerException from the underlying client
-     * @throws OpenLineageException from the underlying client
+     * @throws LineageWarehouseException from the underlying client
      */
     public LineageVertex getEntityDetails(String userId, String guid)
-            throws InvalidParameterException, PropertyServerException, OpenLineageException {
+            throws InvalidParameterException, PropertyServerException, LineageWarehouseException
+    {
         try {
-            return openLineageClient.getEntityDetails(userId, guid);
+            return lineageWarehouseClient.getEntityDetails(userId, guid);
         } catch (InvalidParameterException | PropertyServerException e) {
             LOG.error("Cannot get node details for guid {}", guid);
             throw e;
-        } catch (OpenLineageException e) {
+        } catch (LineageWarehouseException e) {
             LOG.error("Error while calling open lineage services {}", guid);
             throw new OpenLineageServiceException("entity details error", e);
         }
@@ -203,16 +208,17 @@ public class OpenLineageService {
      * @return the node details
      * @throws InvalidParameterException from the underlying client
      * @throws PropertyServerException from the underlying client
-     * @throws OpenLineageException from the underlying client
+     * @throws LineageWarehouseException from the underlying client
      */
     public List<LineageVertex> search(String userId, LineageSearchRequest lineageSearchRequest)
-            throws InvalidParameterException, PropertyServerException, OpenLineageException {
+            throws InvalidParameterException, PropertyServerException, LineageWarehouseException
+    {
         try {
-            return openLineageClient.search(userId, lineageSearchRequest);
+            return lineageWarehouseClient.search(userId, lineageSearchRequest);
         } catch (InvalidParameterException | PropertyServerException e) {
             LOG.error("Error during search with request {}", lineageSearchRequest);
             throw e;
-        } catch (OpenLineageException e) {
+        } catch (LineageWarehouseException e) {
             LOG.error("Error while calling open lineage services {}", lineageSearchRequest);
             throw new OpenLineageServiceException("entity details error", e);
         }
@@ -225,8 +231,8 @@ public class OpenLineageService {
      */
     public List<String> getTypes(String userId) {
         try {
-            return openLineageClient.getTypes(userId);
-        } catch (PropertyServerException | InvalidParameterException | OpenLineageException e) {
+            return lineageWarehouseClient.getTypes(userId);
+        } catch (PropertyServerException | InvalidParameterException | LineageWarehouseException e) {
             LOG.error("Cannot get entities types in the lineage graph");
             throw new OpenLineageServiceException("entities types retrieval error", e);
         }
@@ -242,8 +248,8 @@ public class OpenLineageService {
      */
     public List<String> getNodes(String userId, String type, String searchValue, int limit) {
         try {
-            return openLineageClient.getNodes(userId, type, searchValue, limit);
-        } catch (PropertyServerException | InvalidParameterException | OpenLineageException e) {
+            return lineageWarehouseClient.getNodes(userId, type, searchValue, limit);
+        } catch (PropertyServerException | InvalidParameterException | LineageWarehouseException e) {
             LOG.error("Cannot get node names from the lineage graph");
             throw new OpenLineageServiceException("node names retrieval error", e);
         }
@@ -258,9 +264,9 @@ public class OpenLineageService {
      */
     public Graph getElementHierarchy(String userId, ElementHierarchyRequest elementHierarchyRequest) {
         try {
-            LineageVerticesAndEdges response = openLineageClient.getElementHierarchy(userId, elementHierarchyRequest);
+            LineageVerticesAndEdges response = lineageWarehouseClient.getElementHierarchy(userId, elementHierarchyRequest);
             return processResponse(response, elementHierarchyRequest.getGuid());
-        } catch (PropertyServerException | InvalidParameterException | OpenLineageException e) {
+        } catch (PropertyServerException | InvalidParameterException | LineageWarehouseException e) {
             LOG.error("Cannot get node names from the lineage graph");
             throw new OpenLineageServiceException("node names retrieval error", e);
         }

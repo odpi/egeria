@@ -6,11 +6,11 @@
 
 # Top level
 
-developer-resources/ @mandy-chessell @planetf1
+developer-resources/ @mandy-chessell
 
 open-metadata-conformance-suite/ @mandy-chessell @cmgrote
 
-open-metadata-distribution/ @mandy-chessell @planetf1
+open-metadata-distribution/ @mandy-chessell
 
 # Implementation
 
@@ -42,40 +42,40 @@ open-metadata-implementation/access-services/software-developer/ @mandy-chessell
 open-metadata-implementation/access-services/stewardship-action/ @mandy-chessell
 open-metadata-implementation/access-services/subject-area/ @davidradl
 open-metadata-implementation/adapters/ @mandy-chessell
-open-metadata-implementation/adatpers/authentication-plugins/ @planetf1
+open-metadata-implementation/adatpers/authentication-plugins/ @mandy-chessell
 open-metadata-implementation/adatpers/open-connectors/ @mandy-chessell
-open-metadata-implementation/adapters/open-connectors/rest-client-connectors/spring-rest-client-connector/ @planetf1
+open-metadata-implementation/adapters/open-connectors/rest-client-connectors/spring-rest-client-connector/ @mandy-chessell
 open-metadata-implementation/adapters/open-connectors/configuration-store-connectors/configuration-encrypted-file-store-connector/ @cmgrote
-open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/open-lineage-connectors/ @marius-patrascu @lcpopa
-open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/graph-repository-connector/ @lpalashevski @lcpopa 
+open-metadata-implementation/adapters/open-connectors/lineage-warehouse-connectors/ @marius-patrascu @lcpopa
+open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/graph-repository-connector/ @mandy-chessell
 open-metadata-implementation/admin-services/ @mandy-chessell
 open-metadata-implementation/common-services/ @mandy-chessell
 open-metadata-implementation/frameworks/ @mandy-chessell
 open-metadata-implementation/governance-servers/ @mandy-chessell
 open-metadata-implementation/governance-servers/data-engine-proxy-services/ @cmgrote @popa-raluca
-open-metadata-implementation/governance-servers/open-lineage-services/ @marius-patrascu @popa-raluca
+open-metadata-implementation/governance-servers/lineage-warehouse-services/ @marius-patrascu @popa-raluca
 open-metadata-implementation/platform-services/ @mandy-chessell
 open-metadata-implementation/platform-chassis/ @mandy-chessell
 open-metadata-implementation/platform-chassis/platform-chassis-spring/ @bogdan-sava @lpalashevski
 open-metadata-implementation/user-interface/ui-chassis/ @bogdan-sava @marius-patrascu
-open-metadata-implementation/view-services/ @davidradl
+open-metadata-implementation/view-services/ @mandy-chessell
 open-metadata-implementation/server-chassis/ @lpalashevski @mandy-chessell
 
 # Resources
 
 open-metadata-resources/ @mandy-chessell
-open-metadata-resources/open-metadata-deployment/ @planetf1
+open-metadata-resources/open-metadata-deployment/ @mandy-chessell
 open-metadata-resources/open-metadata-deployment/sample-data/ @cmgrote
 
 open-metadata-resources/open-metadata-samples/ @mandy-chessell
-open-metadata-resources/open-metadata-samples/postman-rest-samples/ @planetf1
+open-metadata-resources/open-metadata-samples/postman-rest-samples/ @mandy-chessell
 open-metadata-resources/open-metadata-samples/access-services-samples/subject-area-client-samples/  @davidradl
 
 # Test
 
 open-metadata-test/ @mandy-chessell
-open-metadata-test/open-metadata-fvt/ @planetf1 @mandy-chessell
-open-metadata-test/open-metadata-fvt/access-services-fvt/ @planetf1 @mandy-chessell
+open-metadata-test/open-metadata-fvt/ @mandy-chessell
+open-metadata-test/open-metadata-fvt/access-services-fvt/ @mandy-chessell
 open-metadata-test/open-metadata-fvt/access-services-fvt/asset-consumer-fvt/ @mandy-chessell
 open-metadata-test/open-metadata-fvt/access-services-fvt/asset-manager-fvt/ @mandy-chessell
 open-metadata-test/open-metadata-fvt/access-services-fvt/data-engine-fvt/ @alexandra-bucur @lcpopa
@@ -89,32 +89,30 @@ open-metadata-test/open-metadata-fvt/access-services-fvt/subject-area-fvt/ @davi
 open-metadata-test/open-metadata-fvt/view-services-fvt/ @davidradl
 open-metadata-test/open-metadata-fvt/view-services-fvt/subject-area-fvt/ @davidradl
 
-open-metadata-test/open-metadata-fvt/open-types-fvt/ @planetf1 @davidradl
+open-metadata-test/open-metadata-fvt/open-types-fvt/ @mandy-chessell
 
 # release notes
-release-notes/ @mandy-chessell @planetf1
+release-notes/ @mandy-chessell
 
-# POMs
-pom.xml @planetf1 @mandy-chessell
 
 # Gradle build
-*.gradle @planetf1
-gradle* @planetf1
-gradle/ @planetf1
+*.gradle @mandy-chessell
+gradle* @mandy-chessell
+gradle/ @mandy-chessell
 
 # Security
-*.p12 @planetf1
+*.p12 @mandy-chessell
 
 # Tools / CICD etc
 .azure-pipelines/ @planetf1
 .dependabot/ @planetf1
 .github/ @planetf1
 .m2/ @planetf1
-.gitignore @planetf1
+.gitignore @mandy-chessell
 .sonarcloud* @planetf1
 INFO.yaml @planetf1
 spotbugs* @planetf1
-CODEOWNERS @mandy-chessell @planetf1
+CODEOWNERS @mandy-chessell
 MAINTAINERS* @mandy-chessell
 CONTRIBUTOR* @mandy-chessell
 Egeria-Operations* @mandy-chessell

@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.server;
 
+import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
 import org.odpi.openmetadata.adminservices.registration.OMAGViewServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationViewServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
@@ -20,6 +21,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSConfigurationFactory;
 import org.slf4j.LoggerFactory;
 
@@ -100,6 +102,9 @@ public class OMAGServerAdminForViewServices
                             service.setServiceDescription(viewServiceConfig.getViewServiceDescription());
                             service.setServiceURLMarker(viewServiceConfig.getViewServiceURLMarker());
                             service.setServiceWiki(viewServiceConfig.getViewServiceWiki());
+                            service.setServerType(ServerTypeClassification.VIEW_SERVER.getServerTypeName());
+                            service.setPartnerServiceName(viewServiceConfig.getViewServicePartnerService());
+                            service.setPartnerServerType(ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName());
                             services.add(service);
                         }
                     }
@@ -435,7 +440,7 @@ public class OMAGServerAdminForViewServices
                 {
                     if (registration != null)
                     {
-                        if (registration.getViewServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
+                        if (registration.getViewServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
                         {
                             viewServiceConfigList.add(createViewServiceConfig(registration, requestBody));
                         }

@@ -225,7 +225,7 @@ public class AssetDeploy
 
             if (platformGUID != null)
             {
-                String serverGUID = deployServer(platformNetworkAddress, "TestServer", ServerTypeClassification.METADATA_SERVER.getServerTypeName());
+                String serverGUID = deployServer(platformNetworkAddress, "TestServer", ServerTypeClassification.METADATA_ACCESS_STORE.getServerTypeName());
             }
         }
         catch (Exception error)

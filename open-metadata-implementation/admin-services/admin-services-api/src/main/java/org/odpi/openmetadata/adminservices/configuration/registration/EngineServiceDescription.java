@@ -35,7 +35,7 @@ public enum EngineServiceDescription
      * Executes requested governance action services to monitor, assess and maintain metadata and its real-world counterparts.
      */
     GOVERNANCE_ACTION_OMES(401,
-                           ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                           ComponentDevelopmentStatus.STABLE,
                            "Governance Action",
                            "Governance Action OMES",
                            "governance-action",
@@ -87,7 +87,7 @@ public enum EngineServiceDescription
      * in a discovery analysis report that is attached to the asset in the open metadata repositories.
      */
     SURVEY_ACTION_OMES(404,
-                        ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                        ComponentDevelopmentStatus.STABLE,
                         "Survey Action",
                         "Survey Action OMES",
                         "survey-action",

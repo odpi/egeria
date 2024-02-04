@@ -5,16 +5,8 @@ package org.odpi.openmetadata.adminservices.server;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
-import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.EngineHostServicesConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
@@ -32,7 +24,6 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.slf4j.LoggerFactory;
@@ -584,11 +575,13 @@ public class OMAGServerAdminStoreServices
      * @return  configuration properties
      * @throws OMAGInvalidParameterException problem with the configuration file
      * @throws OMAGNotAuthorizedException user not authorized to make these changes
+     * @throws InvalidParameterException problem matching the configuration with the internal configuration
      */
     OMAGServerConfig getServerConfig(String   userId,
                                      String   serverName,
                                      String   methodName) throws OMAGInvalidParameterException,
-                                                                 OMAGNotAuthorizedException
+                                                                 OMAGNotAuthorizedException,
+                                                                 InvalidParameterException
     {
         return getServerConfig(userId, serverName, true, methodName);
     }
@@ -609,7 +602,7 @@ public class OMAGServerAdminStoreServices
                                             String  serverName,
                                             boolean adminCall,
                                             String  methodName) throws OMAGInvalidParameterException,
-                                                                       OMAGNotAuthorizedException
+                                                                       OMAGNotAuthorizedException, InvalidParameterException
     {
         OMAGServerConfigStore   serverConfigStore = getServerConfigStore(serverName, methodName);
         OMAGServerConfig        serverConfig      = null;
@@ -694,107 +687,6 @@ public class OMAGServerAdminStoreServices
         }
 
         serverConfig.setLocalServerName(serverName);
-
-        /*
-         * Refresh the definition of any access service to match the current platform implementation.
-         */
-        if (serverConfig.getAccessServicesConfig() != null)
-        {
-            for (AccessServiceConfig accessServiceConfig : serverConfig.getAccessServicesConfig())
-            {
-                if (accessServiceConfig != null)
-                {
-                    AccessServiceDescription description = AccessServiceDescription.getAccessServiceDefinition(accessServiceConfig.getAccessServiceId());
-
-                    if (description != null)
-                    {
-                        accessServiceConfig.setAccessServiceName(description.getAccessServiceName());
-                        accessServiceConfig.setAccessServiceDevelopmentStatus(description.getAccessServiceDevelopmentStatus());
-                        accessServiceConfig.setAccessServiceFullName(description.getAccessServiceFullName());
-                        accessServiceConfig.setAccessServiceDescription(description.getAccessServiceDescription());
-                        accessServiceConfig.setAccessServiceURLMarker(description.getAccessServiceURLMarker());
-                        accessServiceConfig.setAccessServiceWiki(description.getAccessServiceWiki());
-                    }
-                }
-            }
-        }
-
-        /*
-         * Refresh the definition of any engine service to match the current platform implementation.
-         */
-        if (serverConfig.getEngineHostServicesConfig() != null)
-        {
-            EngineHostServicesConfig engineHostServicesConfig = serverConfig.getEngineHostServicesConfig();
-
-            if (engineHostServicesConfig.getEngineServiceConfigs() != null)
-            {
-                for (EngineServiceConfig engineServiceConfig : engineHostServicesConfig.getEngineServiceConfigs())
-                {
-                    if (engineServiceConfig != null)
-                    {
-                        EngineServiceDescription description = EngineServiceDescription.getEngineServiceDefinition(engineServiceConfig.getEngineServiceId());
-
-                        if (description != null)
-                        {
-                            engineServiceConfig.setEngineServiceName(description.getEngineServiceName());
-                            engineServiceConfig.setEngineServiceDevelopmentStatus(description.getEngineServiceDevelopmentStatus());
-                            engineServiceConfig.setEngineServiceFullName(description.getEngineServiceFullName());
-                            engineServiceConfig.setEngineServiceDescription(description.getEngineServiceDescription());
-                            engineServiceConfig.setEngineServiceURLMarker(description.getEngineServiceURLMarker());
-                            engineServiceConfig.setEngineServiceWiki(description.getEngineServiceWiki());
-                        }
-                    }
-                }
-            }
-        }
-
-        /*
-         * Refresh the definition of any integration service to match the current platform implementation.
-         */
-        if (serverConfig.getIntegrationServicesConfig() != null)
-        {
-            for (IntegrationServiceConfig integrationServiceConfig : serverConfig.getIntegrationServicesConfig())
-            {
-                if (integrationServiceConfig != null)
-                {
-                    IntegrationServiceDescription description = IntegrationServiceDescription.getIntegrationServiceDefinition(integrationServiceConfig.getIntegrationServiceId());
-
-                    if (description != null)
-                    {
-                        integrationServiceConfig.setIntegrationServiceName(description.getIntegrationServiceName());
-                        integrationServiceConfig.setIntegrationServiceDevelopmentStatus(description.getIntegrationServiceDevelopmentStatus());
-                        integrationServiceConfig.setIntegrationServiceFullName(description.getIntegrationServiceFullName());
-                        integrationServiceConfig.setIntegrationServiceDescription(description.getIntegrationServiceDescription());
-                        integrationServiceConfig.setIntegrationServiceURLMarker(description.getIntegrationServiceURLMarker());
-                        integrationServiceConfig.setIntegrationServiceWiki(description.getIntegrationServiceWiki());
-                    }
-                }
-            }
-        }
-
-        /*
-         * Refresh the definition of any view service to match the current platform implementation.
-         */
-        if (serverConfig.getViewServicesConfig() != null)
-        {
-            for (ViewServiceConfig viewServiceConfig : serverConfig.getViewServicesConfig())
-            {
-                if (viewServiceConfig != null)
-                {
-                    ViewServiceDescription description = ViewServiceDescription.getViewServiceDefinition(viewServiceConfig.getViewServiceId());
-
-                    if (description != null)
-                    {
-                        viewServiceConfig.setViewServiceName(description.getViewServiceName());
-                        viewServiceConfig.setViewServiceDevelopmentStatus(description.getViewServiceDevelopmentStatus());
-                        viewServiceConfig.setViewServiceFullName(description.getViewServiceFullName());
-                        viewServiceConfig.setViewServiceDescription(description.getViewServiceDescription());
-                        viewServiceConfig.setViewServiceURLMarker(description.getViewServiceURLMarker());
-                        viewServiceConfig.setViewServiceWiki(description.getViewServiceWiki());
-                    }
-                }
-            }
-        }
 
         return serverConfig;
     }
@@ -883,116 +775,16 @@ public class OMAGServerAdminStoreServices
         serverConfig.setLocalServerName(serverName);
 
         /*
-         * Refresh the definition of any access service to match the current platform implementation.
-         */
-        if (serverConfig.getAccessServicesConfig() != null)
-        {
-            for (AccessServiceConfig accessServiceConfig : serverConfig.getAccessServicesConfig())
-            {
-                if (accessServiceConfig != null)
-                {
-                    AccessServiceDescription description = AccessServiceDescription.getAccessServiceDefinition(accessServiceConfig.getAccessServiceId());
-
-                    if (description != null)
-                    {
-                        accessServiceConfig.setAccessServiceName(description.getAccessServiceName());
-                        accessServiceConfig.setAccessServiceDevelopmentStatus(description.getAccessServiceDevelopmentStatus());
-                        accessServiceConfig.setAccessServiceFullName(description.getAccessServiceFullName());
-                        accessServiceConfig.setAccessServiceDescription(description.getAccessServiceDescription());
-                        accessServiceConfig.setAccessServiceURLMarker(description.getAccessServiceURLMarker());
-                        accessServiceConfig.setAccessServiceWiki(description.getAccessServiceWiki());
-                    }
-                }
-            }
-        }
-
-        /*
-         * Refresh the definition of any engine service to match the current platform implementation.
-         */
-        if (serverConfig.getEngineHostServicesConfig() != null)
-        {
-            EngineHostServicesConfig engineHostServicesConfig = serverConfig.getEngineHostServicesConfig();
-
-            if (engineHostServicesConfig.getEngineServiceConfigs() != null)
-            {
-                for (EngineServiceConfig engineServiceConfig : engineHostServicesConfig.getEngineServiceConfigs())
-                {
-                    if (engineServiceConfig != null)
-                    {
-                        EngineServiceDescription description = EngineServiceDescription.getEngineServiceDefinition(engineServiceConfig.getEngineServiceId());
-
-                        if (description != null)
-                        {
-                            engineServiceConfig.setEngineServiceName(description.getEngineServiceName());
-                            engineServiceConfig.setEngineServiceDevelopmentStatus(description.getEngineServiceDevelopmentStatus());
-                            engineServiceConfig.setEngineServiceFullName(description.getEngineServiceFullName());
-                            engineServiceConfig.setEngineServiceDescription(description.getEngineServiceDescription());
-                            engineServiceConfig.setEngineServiceURLMarker(description.getEngineServiceURLMarker());
-                            engineServiceConfig.setEngineServiceWiki(description.getEngineServiceWiki());
-                        }
-                    }
-                }
-            }
-        }
-
-        /*
-         * Refresh the definition of any integration service to match the current platform implementation.
-         */
-        if (serverConfig.getIntegrationServicesConfig() != null)
-        {
-            for (IntegrationServiceConfig integrationServiceConfig : serverConfig.getIntegrationServicesConfig())
-            {
-                if (integrationServiceConfig != null)
-                {
-                    IntegrationServiceDescription description = IntegrationServiceDescription.getIntegrationServiceDefinition(integrationServiceConfig.getIntegrationServiceId());
-
-                    if (description != null)
-                    {
-                        integrationServiceConfig.setIntegrationServiceName(description.getIntegrationServiceName());
-                        integrationServiceConfig.setIntegrationServiceDevelopmentStatus(description.getIntegrationServiceDevelopmentStatus());
-                        integrationServiceConfig.setIntegrationServiceFullName(description.getIntegrationServiceFullName());
-                        integrationServiceConfig.setIntegrationServiceDescription(description.getIntegrationServiceDescription());
-                        integrationServiceConfig.setIntegrationServiceURLMarker(description.getIntegrationServiceURLMarker());
-                        integrationServiceConfig.setIntegrationServiceWiki(description.getIntegrationServiceWiki());
-                    }
-                }
-            }
-        }
-
-        /*
-         * Refresh the definition of any view service to match the current platform implementation.
-         */
-        if (serverConfig.getViewServicesConfig() != null)
-        {
-            for (ViewServiceConfig viewServiceConfig : serverConfig.getViewServicesConfig())
-            {
-                if (viewServiceConfig != null)
-                {
-                    ViewServiceDescription description = ViewServiceDescription.getViewServiceDefinition(viewServiceConfig.getViewServiceId());
-
-                    if (description != null)
-                    {
-                        viewServiceConfig.setViewServiceName(description.getViewServiceName());
-                        viewServiceConfig.setViewServiceDevelopmentStatus(description.getViewServiceDevelopmentStatus());
-                        viewServiceConfig.setViewServiceFullName(description.getViewServiceFullName());
-                        viewServiceConfig.setViewServiceDescription(description.getViewServiceDescription());
-                        viewServiceConfig.setViewServiceURLMarker(description.getViewServiceURLMarker());
-                        viewServiceConfig.setViewServiceWiki(description.getViewServiceWiki());
-                    }
-                }
-            }
-        }
-
-        /*
          * Replace placeholder variables with real values if required.
          */
-        if ((placeHolderVariables != null) && (! placeHolderVariables.isEmpty()))
+        Map<String, String> currentPlaceholderValues = this.getPlaceholderVariables();
+        if ((currentPlaceholderValues != null) && (! currentPlaceholderValues.isEmpty()))
         {
             try
             {
                 String omagServerConfigString = OBJECT_MAPPER.writeValueAsString(serverConfig);
 
-                for (String variableName : placeHolderVariables.keySet())
+                for (String variableName : currentPlaceholderValues.keySet())
                 {
                     String regExMatchString = Pattern.quote("{{"+ variableName + "}}");
                     String[] configBits = omagServerConfigString.split(regExMatchString);
@@ -1006,7 +798,7 @@ public class OMAGServerAdminStoreServices
                         {
                             if (! firstPart)
                             {
-                                newConfigString.append(placeHolderVariables.get(variableName));
+                                newConfigString.append(currentPlaceholderValues.get(variableName));
                             }
 
                             firstPart = false;

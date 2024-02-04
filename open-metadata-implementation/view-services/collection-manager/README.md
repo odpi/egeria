@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the Egeria project. -->
 
+![Technical Preview](../../../images/egeria-content-status-tech-preview.png)
+
 # Collection Manager OMVS
 
 The Collection Manager OMVS enables the caller to manage collections of assets and other types of elements.

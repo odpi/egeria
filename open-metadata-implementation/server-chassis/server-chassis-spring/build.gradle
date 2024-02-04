@@ -103,7 +103,7 @@ dependencies {
         runtimeOnly project(':open-metadata-implementation:governance-servers:data-engine-proxy-services:data-engine-proxy-services-spring')
         runtimeOnly project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-spring')
         runtimeOnly project(':open-metadata-implementation:governance-servers:engine-host-services:engine-host-services-spring')
-        runtimeOnly project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-spring')
+        runtimeOnly project(':open-metadata-implementation:governance-servers:lineage-warehouse-services:lineage-warehouse-services-spring')
     }
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api'

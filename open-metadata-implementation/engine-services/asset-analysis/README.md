@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
+![Deprecated](../../../images/egeria-content-status-deprecated.png#pagewidth)
 
 # Asset Analysis Open Metadata Engine Service (OMES)
 

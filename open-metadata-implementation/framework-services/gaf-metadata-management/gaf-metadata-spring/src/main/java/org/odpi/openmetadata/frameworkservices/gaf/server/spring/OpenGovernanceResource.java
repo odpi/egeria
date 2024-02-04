@@ -59,7 +59,7 @@ public class OpenGovernanceResource
 
 
     /* =====================================================================================================================
-     * A governance action type describes a step in a governance action process
+     * A governance action type describes a template to invoke a governance service in a governance engine.
      */
 
     /**

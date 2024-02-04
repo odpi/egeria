@@ -4,6 +4,7 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.regist
 
 import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -152,6 +153,9 @@ public class IntegrationServiceRegistry
                     service.setServiceURLMarker(serviceDescription.getIntegrationServiceURLMarker());
                     service.setServiceDescription(serviceDescription.getIntegrationServiceDescription());
                     service.setServiceWiki(serviceDescription.getIntegrationServiceWiki());
+                    service.setServerType(ServerTypeClassification.INTEGRATION_DAEMON.getServerTypeName());
+                    service.setPartnerServiceName(serviceDescription.getIntegrationServicePartnerOMAS().getAccessServiceFullName());
+                    service.setPartnerServerType(ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName());
 
                     response.add(service);
                 }

@@ -13,13 +13,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
-import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
-import org.odpi.openmetadata.governanceservers.openlineage.model.LineageEdge;
-import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
-import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
-import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
-import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.client.LineageWarehouseClientWarehouse;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.ffdc.LineageWarehouseException;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.model.LineageEdge;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.model.LineageVertex;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.model.LineageVerticesAndEdges;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.model.Scope;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.requests.LineageSearchRequest;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Graph;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Node;
 import org.slf4j.Logger;
@@ -53,7 +53,7 @@ public class OpenLineageServiceTest {
     private LineageGraphDisplayService lineageGraphDisplayService;
 
     @Mock
-    private OpenLineageClient openLineageClient;
+    private LineageWarehouseClientWarehouse lineageWarehouseClient;
 
     @InjectMocks
     private OpenLineageService openLineageService;
@@ -71,8 +71,9 @@ public class OpenLineageServiceTest {
 
     @Test
     @DisplayName("Ultimate Source")
-    public void testUltimateSource() throws PropertyServerException, InvalidParameterException, OpenLineageException {
-        when(openLineageClient.lineage(USER_ID, Scope.ULTIMATE_SOURCE, guid,true))
+    public void testUltimateSource() throws PropertyServerException, InvalidParameterException, LineageWarehouseException
+    {
+        when(lineageWarehouseClient.lineage(USER_ID, Scope.ULTIMATE_SOURCE, guid, true))
                 .thenReturn(lineageVerticesAndEdges);
         Graph ultimateSource = openLineageService.getUltimateSource(USER_ID, guid, true);
         checkResponse(ultimateSource);
@@ -80,8 +81,9 @@ public class OpenLineageServiceTest {
 
     @Test
     @DisplayName("End To End")
-    public void testEndToEnd() throws PropertyServerException, InvalidParameterException, OpenLineageException {
-        when(openLineageClient.lineage(USER_ID, Scope.END_TO_END, guid,true))
+    public void testEndToEnd() throws PropertyServerException, InvalidParameterException, LineageWarehouseException
+    {
+        when(lineageWarehouseClient.lineage(USER_ID, Scope.END_TO_END, guid, true))
                 .thenReturn(lineageVerticesAndEdges);
         Graph response = openLineageService.getEndToEndLineage(USER_ID, guid, true);
         checkResponse(response);
@@ -90,8 +92,9 @@ public class OpenLineageServiceTest {
 
     @Test
     @DisplayName("Ultimate Destination")
-    public void testUltimateDestination() throws PropertyServerException, InvalidParameterException, OpenLineageException {
-        when(openLineageClient.lineage(USER_ID, Scope.ULTIMATE_DESTINATION, guid, true))
+    public void testUltimateDestination() throws PropertyServerException, InvalidParameterException, LineageWarehouseException
+    {
+        when(lineageWarehouseClient.lineage(USER_ID, Scope.ULTIMATE_DESTINATION, guid, true))
                 .thenReturn(lineageVerticesAndEdges);
         Graph response = openLineageService.getUltimateDestination(USER_ID, guid, true);
         checkResponse(response);
@@ -99,8 +102,9 @@ public class OpenLineageServiceTest {
 
     @Test
     @DisplayName("GlossaryLineage")
-    public void testGlossaryLineage() throws PropertyServerException, InvalidParameterException, OpenLineageException {
-        when(openLineageClient.lineage(USER_ID, Scope.VERTICAL, guid, true))
+    public void testGlossaryLineage() throws PropertyServerException, InvalidParameterException, LineageWarehouseException
+    {
+        when(lineageWarehouseClient.lineage(USER_ID, Scope.VERTICAL, guid, true))
                 .thenReturn(lineageVerticesAndEdges);
         Graph response = openLineageService.getVerticalLineage(USER_ID, guid, true);
         checkResponse(response);
@@ -108,10 +112,11 @@ public class OpenLineageServiceTest {
 
     @Test
     @DisplayName("Search")
-    public void search() throws PropertyServerException, InvalidParameterException, OpenLineageException {
+    public void search() throws PropertyServerException, InvalidParameterException, LineageWarehouseException
+    {
         LineageSearchRequest searchRequest = new LineageSearchRequest();
         List<LineageVertex> lineageVertices = new ArrayList<>(lineageVerticesAndEdges.getLineageVertices());
-        when(openLineageClient.search(USER_ID, searchRequest))
+        when(lineageWarehouseClient.search(USER_ID, searchRequest))
                 .thenReturn(lineageVertices);
         List<LineageVertex> response = openLineageService.search(USER_ID, searchRequest);
         checkSearchResponse(response);

@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![TechPreview](../../../images/egeria-content-status-tech-preview.png#pagewidth)
+![Deprecated](../../../images/egeria-content-status-deprecated.png#pagewidth)
 
 # Discovery Engine Open Metadata Access Service (OMAS)
 
