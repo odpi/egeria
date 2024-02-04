@@ -707,7 +707,6 @@ public class OMAGServerAdminForEngineHostServices
      * OMAGConfigurationErrorException the event bus has not been configured or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    @Deprecated
     public VoidResponse configureEngineService(String              userId,
                                                String              serverName,
                                                EngineServiceConfig serviceConfig)

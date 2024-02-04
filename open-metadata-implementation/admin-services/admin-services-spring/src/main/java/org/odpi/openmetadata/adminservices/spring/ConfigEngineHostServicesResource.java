@@ -215,7 +215,6 @@ public class ConfigEngineHostServicesResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/services/omes/"))
 
-    @Deprecated
     public VoidResponse configureEngineService(@PathVariable String              userId,
                                                @PathVariable String              serverName,
                                                @RequestBody  EngineServiceConfig serviceConfig)
