@@ -11,6 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +51,8 @@ import java.util.Objects;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RepositoryServicesConfig extends AdminServicesConfigHeader
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private List<Connection>       auditLogConnections            = new ArrayList<>();
     private List<Connection>       openMetadataArchiveConnections = new ArrayList<>();

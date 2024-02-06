@@ -74,7 +74,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private static final String  defaultLocalOrganizationName             = null;
     private static final String  defaultLocalServerURL                    = "https://localhost:9443";
     private static final String  defaultLocalServerUserId                 = "OMAGServer";
-    private static final int     defaultMaxPageSize                       = 1000;
+    public  static final int     defaultMaxPageSize                       = 1000;
 
     /*
      * Configuration document version number - if not in document then assume V1.0.

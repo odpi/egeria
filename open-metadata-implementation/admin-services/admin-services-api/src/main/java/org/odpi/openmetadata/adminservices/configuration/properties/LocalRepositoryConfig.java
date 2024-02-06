@@ -12,6 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -64,7 +65,8 @@ import java.util.Objects;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class LocalRepositoryConfig extends AdminServicesConfigHeader
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private String                   metadataCollectionId            = null;
     private String                   metadataCollectionName          = null;

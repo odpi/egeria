@@ -178,6 +178,26 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                                        "The view service fails to start as it does not have a sufficiently large maxPageSize .",
                                        "Reconfigure the View service to have a maxPageSize that is sufficient."),
 
+    /**
+     * OMAG-ADMIN-0216 - The {0} Open Metadata View Service (OMAS) is supporting the access to all types of assets
+     */
+    ALL_SEARCH_TYPES("OMAG-ADMIN-0216",
+              AuditLogRecordSeverityLevel.STARTUP,
+              "The {0} Open Metadata View Service (OMAS) is supporting the access to all types of assets",
+              "The view service has not been passed a list of asset types in the SupportedTypesForSearch property of the view services options.  " +
+                      "This means it is providing access to all Assets irrespective of their type.",
+              "No action is required if this view service should be giving access to all types of assets in the open metadata ecosystem.  " +
+                      "If this scope is too broad then set up a list of asset types in the SupportedTypesForSearch property for this view service."),
+
+    /**
+     * OMAG-ADMIN-0217 - The {0} Open Metadata Access Service (OMAS) is supporting the following governance zones: {1}
+     */
+    SUPPORTED_SEARCH_TYPES("OMAG-ADMIN-0217",
+                    AuditLogRecordSeverityLevel.STARTUP,
+                    "The {0} Open Metadata View Service (OMAS) is supporting the following asset types when searching: {1}",
+                    "The view service was passed a list of asset types in the SupportedTypesForSearch property of the view services options.  " +
+                            "This means it is only providing access to these types of Assets.",
+                    "Verify that these types are the right set for this service deployment."),
     ;
 
     private final String                     logMessageId;
