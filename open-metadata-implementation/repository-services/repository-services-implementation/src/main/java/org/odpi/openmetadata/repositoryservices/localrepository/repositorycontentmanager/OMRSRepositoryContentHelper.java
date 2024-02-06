@@ -5,14 +5,14 @@ package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconte
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.ClassificationCondition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OMRSRepositoryPropertiesUtilities;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -549,19 +549,47 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         List<String>  subTypeNames = new ArrayList<>();
         List<TypeDef> typeDefs = repositoryContentManager.getKnownTypeDefs();
 
-        if (typeDefs != null)
+        if ((typeDefs != null) && (superTypeName != null))
         {
+            /*
+             * There are types to check - step through is one
+             */
             for (TypeDef typeDef : typeDefs)
             {
-                if (typeDef != null)
+                if ((typeDef != null) && (typeDef.getSuperType() != null))
                 {
-                    if (! superTypeName.equals(typeDef.getName()))
+                    /*
+                     * Does the super type name match?
+                     */
+                    if (superTypeName.equals(typeDef.getSuperType().getName()))
                     {
-                        if (repositoryContentManager.isTypeOf(sourceName,
-                                                              typeDef.getName(),
-                                                              superTypeName))
+                        /*
+                         * This type is a direct descendent of the requested type
+                         */
+                        subTypeNames.add(typeDef.getName());
+                    }
+                    else
+                    {
+                        /*
+                         * Each type definition only contains the immediate super type.  We need
+                         * to check the super type's super types.
+                         */
+                        List<TypeDefLink> superTypes = repositoryContentManager.getSuperTypes(sourceName,
+                                                                                              typeDef.getSuperType().getName(),
+                                                                                              methodName);
+
+                        if (superTypes != null)
                         {
-                            subTypeNames.add(typeDef.getName());
+                            for (TypeDefLink typeDefLink : superTypes)
+                            {
+                                if (typeDefLink != null)
+                                {
+                                    if (superTypeName.equals(typeDefLink.getName()))
+                                    {
+                                        subTypeNames.add(typeDef.getName());
+                                    }
+                                }
+                            }
                         }
                     }
                 }
