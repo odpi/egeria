@@ -7,16 +7,9 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * GovernanceArchiveHelper creates elements for governance.  This includes governance program definitions, governance engine definitions and
@@ -325,6 +318,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      * Create a governance action type.
      *
      * @param typeName name of subtype to use - default is GovernanceActionType
+     * @param anchorGUID unique identifier of the anchor
+     * @param anchorTypeName type name of the anchor
      * @param qualifiedName unique name for the capability
      * @param displayName display name for the capability
      * @param description description about the capability
@@ -338,6 +333,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      * @return id for the new entity
      */
     public String addGovernanceActionType(String               typeName,
+                                          String               anchorGUID,
+                                          String               anchorTypeName,
                                           String               qualifiedName,
                                           String               displayName,
                                           String               description,
@@ -366,11 +363,23 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 
+        List<Classification> entityClassifications = classifications;
+
+        if (anchorGUID != null)
+        {
+            if (entityClassifications == null)
+            {
+                entityClassifications = new ArrayList<>();
+            }
+
+            entityClassifications.add(this.getAnchorClassification(anchorGUID, anchorTypeName, methodName));
+        }
+
         EntityDetail assetEntity = archiveHelper.getEntityDetail(actionTypeName,
                                                                  idToGUIDMap.getGUID(qualifiedName),
                                                                  properties,
                                                                  InstanceStatus.ACTIVE,
-                                                                 classifications);
+                                                                 entityClassifications);
 
         archiveBuilder.addEntity(assetEntity);
 

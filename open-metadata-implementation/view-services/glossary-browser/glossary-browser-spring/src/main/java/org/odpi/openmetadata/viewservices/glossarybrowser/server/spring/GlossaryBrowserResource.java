@@ -362,7 +362,7 @@ public class GlossaryBrowserResource
                                                                                  boolean                         forDuplicateProcessing,
                                                                    @RequestBody  GlossarySearchStringRequestBody requestBody)
     {
-        return restAPI.findGlossaryCategories(serverName, startFrom, pageSize, forLineage, forDuplicateProcessing, startsWith, endsWith, ignoreCase, requestBody);
+        return restAPI.findGlossaryCategories(serverName, startFrom, pageSize, startsWith, endsWith, ignoreCase, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -630,7 +630,7 @@ public class GlossaryBrowserResource
                                                                         boolean                         forDuplicateProcessing,
                                                           @RequestBody  GlossarySearchStringRequestBody requestBody)
     {
-        return restAPI.findGlossaryTerms(serverName, startFrom, pageSize, forLineage, forDuplicateProcessing, startsWith, endsWith, ignoreCase, requestBody);
+        return restAPI.findGlossaryTerms(serverName, startFrom, pageSize, startsWith, endsWith, ignoreCase, forLineage, forDuplicateProcessing, requestBody);
     }
 
 

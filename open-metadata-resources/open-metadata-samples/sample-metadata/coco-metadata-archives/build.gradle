@@ -13,6 +13,7 @@ dependencies {
     implementation project(':open-metadata-implementation:repository-services:repository-services-archive-utilities')
     implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types')
     implementation project(':open-metadata-resources:open-metadata-archives:content-pack-helpers')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
     runtimeOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     runtimeOnly project(':open-metadata-implementation:frameworks:open-discovery-framework')
     implementation project(':open-metadata-implementation:frameworks:governance-action-framework')

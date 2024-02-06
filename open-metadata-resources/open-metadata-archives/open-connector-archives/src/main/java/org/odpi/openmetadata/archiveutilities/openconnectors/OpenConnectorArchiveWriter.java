@@ -20,11 +20,7 @@ import org.odpi.openmetadata.adapters.connectors.integration.jdbc.JDBCIntegratio
 import org.odpi.openmetadata.adapters.connectors.integration.kafka.KafkaMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.DistributeAuditEventsFromKafkaProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.OpenAPIMonitorIntegrationProvider;
-import org.odpi.openmetadata.adapters.connectors.integration.openlineage.APIBasedOpenLineageLogStoreProvider;
-import org.odpi.openmetadata.adapters.connectors.integration.openlineage.FileBasedOpenLineageLogStoreProvider;
-import org.odpi.openmetadata.adapters.connectors.integration.openlineage.GovernanceActionOpenLineageIntegrationProvider;
-import org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageCataloguerIntegrationProvider;
-import org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageEventReceiverIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.integration.openlineage.*;
 import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTProvider;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
 import org.odpi.openmetadata.adapters.connectors.secretsstore.envar.EnvVarSecretsStoreProvider;
@@ -32,13 +28,7 @@ import org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv.CSVSurve
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
-import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.*;
 import org.odpi.openmetadata.frameworks.governanceaction.actiontargettype.ActionTargetType;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
@@ -51,11 +41,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.p
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
 import org.odpi.openmetadata.samples.archiveutilities.GovernanceArchiveHelper;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues.constructValidValueCategory;
 import static org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
@@ -498,25 +484,13 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         this.addDeleteFileRequestType(fileProvisioningEngineGUID, fileProvisionerGUID);
 
         /*
-         * Define the AssetGovernance engine
+         * Define the AssetOnboarding engine
          */
-        String assetGovernanceEngineGUID = this.getAssetGovernanceEngine();
+        String assetGovernanceEngineGUID = this.getAssetOnboardingEngine();
 
-        this.addFTPFileRequestType(assetGovernanceEngineGUID, fileProvisionerGUID);
         this.addWatchNestedInFolderRequestType(assetGovernanceEngineGUID, watchDogServiceGUID);
         this.addSeekOriginRequestType(assetGovernanceEngineGUID, originSeekerGUID);
         this.addSetZoneMembershipRequestType(assetGovernanceEngineGUID, zonePublisherGUID);
-        this.addMoveFileRequestType(assetGovernanceEngineGUID, fileProvisionerGUID);
-        this.addDeleteFileRequestType(assetGovernanceEngineGUID, fileProvisionerGUID);
-
-        /*
-         * Define the AssetDiscovery Engine (deprecated)
-         *
-        String assetDiscoveryEngineGUID = this.getAssetDiscoveryEngine();
-
-        this.addSmallCSVRequestType(assetDiscoveryEngineGUID, csvDiscoveryGUID);
-        this.addApacheAtlasRequestType(assetDiscoveryEngineGUID, atlasDiscoveryGUID);
-         */
 
         /*
          * Define the asset survey engine
@@ -605,6 +579,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         if (openMetadataType.wikiURL != null)
         {
             String externalReferenceGUID = this.archiveHelper.addExternalReference(null,
+                                                                                   validValueGUID,
+                                                                                   OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                                                                    qualifiedName + "_wikiLink",
                                                                                    "More information about open metadata type: " + openMetadataType.typeName,
                                                                                    null,
@@ -681,6 +657,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         if (wikiLink != null)
         {
             String externalReferenceGUID = this.archiveHelper.addExternalReference(null,
+                                                                                   validValueGUID,
+                                                                                   OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                                                                    qualifiedName + "_wikiLink",
                                                                                    "More information about deployedImplementationType: " + deployedImplementationType,
                                                                                    null,
@@ -987,15 +965,15 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
 
     /**
-     * Create an entity for the AssetGovernance governance engine.
+     * Create an entity for the AssetOnboarding governance engine.
      *
      * @return unique identifier for the governance engine
      */
-    private String getAssetGovernanceEngine()
+    private String getAssetOnboardingEngine()
     {
-        final String assetGovernanceEngineName        = "AssetGovernance";
-        final String assetGovernanceEngineDisplayName = "Asset Governance Engine";
-        final String assetGovernanceEngineDescription = "Monitors, validates and enriches metadata relating to assets.";
+        final String assetGovernanceEngineName        = "AssetOnboarding";
+        final String assetGovernanceEngineDisplayName = "Asset Onboarding Engine";
+        final String assetGovernanceEngineDescription = "Monitors, validates and enriches metadata relating to assets as they are catalogued.";
 
         return archiveHelper.addGovernanceEngine(OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
                                                  assetGovernanceEngineName,
@@ -1203,7 +1181,19 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         ResourceUse                   resourceUse           = null;
     }
 
+
+    /**
+     * Add details of a request type to the engine.
+     *
+     * @param governanceEngineGUID unique identifier of the engine
+     * @param governanceEngineTypeName type of engine
+     * @param governanceRequestType name of request type
+     * @param serviceRequestType internal name of the request type
+     * @param requestParameters any request parameters
+     * @param governanceActionDescription description of the governance action if and
+     */
     private void addRequestType(String                      governanceEngineGUID,
+                                String                      governanceEngineTypeName,
                                 String                      governanceRequestType,
                                 String                      serviceRequestType,
                                 Map<String, String>         requestParameters,
@@ -1218,6 +1208,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         if (governanceActionDescription.actionTargetTypes != null)
         {
             String governanceActionTypeGUID = archiveHelper.addGovernanceActionType(null,
+                                                                                    governanceEngineGUID,
+                                                                                    governanceEngineTypeName,
                                                                                     "Egeria:GovernanceActionType:" + governanceEngineGUID + governanceRequestType,
                                                                                     governanceRequestType,
                                                                                     governanceActionDescription.governanceServiceDescription,
@@ -1283,29 +1275,6 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         }
     }
 
-    /**
-     * Set up the request type that links the governance engine to the governance service.
-     *
-     * @param governanceEngineGUID unique identifier of the governance engine
-     * @param governanceActionDescription details for calling the governance service
-     */
-    private void addFTPFileRequestType(String                      governanceEngineGUID,
-                                       GovernanceActionDescription governanceActionDescription)
-    {
-        final String governanceRequestType = "simulate-ftp";
-        final String serviceRequestType = "copy-file";
-        final String noLineagePropertyName = "noLineage";
-
-        Map<String, String> requestParameters = new HashMap<>();
-
-        requestParameters.put(noLineagePropertyName, "");
-
-        this.addRequestType(governanceEngineGUID,
-                            governanceRequestType,
-                            serviceRequestType,
-                            requestParameters,
-                            governanceActionDescription);
-    }
 
 
     /**
@@ -1317,10 +1286,11 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     private void addWatchNestedInFolderRequestType(String                      governanceEngineGUID,
                                                    GovernanceActionDescription governanceActionDescription)
     {
-        final String governanceRequestType = "watch-for-new-files";
+        final String governanceRequestType = "watch-for-new-files-in-folder";
         final String serviceRequestType = "watch-nested-in-folder";
 
         this.addRequestType(governanceEngineGUID,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
                             governanceRequestType,
                             serviceRequestType,
                             null,
@@ -1340,6 +1310,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         final String governanceRequestType = "copy-file";
 
         this.addRequestType(governanceEngineGUID,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
                             governanceRequestType,
                             null,
                             null,
@@ -1360,6 +1331,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         final String governanceRequestType = "move-file";
 
         this.addRequestType(governanceEngineGUID,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
                             governanceRequestType,
                             null,
                             null,
@@ -1379,6 +1351,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         final String governanceRequestType = "delete-file";
 
         this.addRequestType(governanceEngineGUID,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
                             governanceRequestType,
                             null,
                             null,
@@ -1395,9 +1368,10 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     private void addSeekOriginRequestType(String                      governanceEngineGUID,
                                           GovernanceActionDescription governanceActionDescription)
     {
-        final String governanceRequestType = "seek-origin";
+        final String governanceRequestType = "seek-origin-of-asset";
 
         this.addRequestType(governanceEngineGUID,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
                             governanceRequestType,
                             null,
                             null,
@@ -1414,9 +1388,10 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     private void addSetZoneMembershipRequestType(String                      governanceEngineGUID,
                                                  GovernanceActionDescription governanceActionDescription)
     {
-        final String governanceRequestType = "set-zone-membership";
+        final String governanceRequestType = "set-zone-membership-for-asset";
 
         this.addRequestType(governanceEngineGUID,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
                             governanceRequestType,
                             null,
                             null,
@@ -1559,9 +1534,10 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     private void addCSVFileRequestType(String                      governanceEngineGUID,
                                        GovernanceActionDescription governanceActionDescription)
     {
-        final String governanceRequestType = "csv-file";
+        final String governanceRequestType = "survey-csv-file";
 
         this.addRequestType(governanceEngineGUID,
+                            OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
                             governanceRequestType,
                             null,
                             null,
@@ -1578,9 +1554,10 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     private void addDataFileRequestType(String                      governanceEngineGUID,
                                         GovernanceActionDescription governanceActionDescription)
     {
-        final String governanceRequestType = "data-file";
+        final String governanceRequestType = "survey-data-file";
 
         this.addRequestType(governanceEngineGUID,
+                            OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
                             governanceRequestType,
                             null,
                             null,
@@ -1597,9 +1574,10 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     private void addFolderRequestType(String                      governanceEngineGUID,
                                       GovernanceActionDescription governanceActionDescription)
     {
-        final String governanceRequestType = "folder";
+        final String governanceRequestType = "survey-folder";
 
         this.addRequestType(governanceEngineGUID,
+                            OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
                             governanceRequestType,
                             null,
                             null,

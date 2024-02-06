@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistrationEntry;
 
+import java.io.Serial;
 import java.util.Map;
 import java.util.Objects;
 
@@ -24,7 +25,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AccessServiceConfig extends AdminServicesConfigHeader
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private int                        accessServiceId                = 0;
     private ComponentDevelopmentStatus accessServiceDevelopmentStatus = null;
