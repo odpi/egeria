@@ -1454,7 +1454,10 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                     {
                         if (auditLog != null)
                         {
-                            auditLog.logMessage(methodName, OMRSAuditCode.IGNORING_DUPLICATE_CLASSIFICATION.getMessageDefinition(entity.getGUID(), classificationName, sourceName));
+                            auditLog.logMessage(methodName, OMRSAuditCode.IGNORING_DUPLICATE_CLASSIFICATION.getMessageDefinition(entity.getType().getTypeDefName(),
+                                                                                                                                 entity.getGUID(),
+                                                                                                                                 classificationName,
+                                                                                                                                 sourceName));
                         }
                         return entityClassification;
                     }

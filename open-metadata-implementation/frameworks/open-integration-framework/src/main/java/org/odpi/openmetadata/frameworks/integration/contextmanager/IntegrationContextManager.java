@@ -93,9 +93,10 @@ public class IntegrationContextManager
      */
     protected String setUpMetadataSource(String   metadataSourceQualifiedName,
                                          String   typeName,
-                                         String   classificationName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                         String   classificationName,
+                                         String   deployedImplementationType) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         if (openIntegrationClient != null)
         {
@@ -106,7 +107,8 @@ public class IntegrationContextManager
                 metadataSourceGUID = openIntegrationClient.createMetadataSource(localServerUserId,
                                                                                 typeName,
                                                                                 classificationName,
-                                                                                metadataSourceQualifiedName);
+                                                                                metadataSourceQualifiedName,
+                                                                                deployedImplementationType);
             }
 
             return metadataSourceGUID;
@@ -146,7 +148,10 @@ public class IntegrationContextManager
     {
         IntegrationContext integrationContext = null;
 
-        String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName, null, null);
+        String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName,
+                                                             null,
+                                                             null,
+                                                             null);
         String externalSourceName = metadataSourceQualifiedName;
 
         if (externalSourceGUID == null)

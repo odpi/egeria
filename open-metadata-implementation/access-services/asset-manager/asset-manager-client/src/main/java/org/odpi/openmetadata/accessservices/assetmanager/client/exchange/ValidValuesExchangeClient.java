@@ -285,8 +285,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                      ElementStatus.ACTIVE,
                                                                                      validValueProperties.getEffectiveFrom(),
                                                                                      validValueProperties.getEffectiveTo(),
-                                                                                     this.getElementProperties(validValueProperties),
-                                                                                     null);
+                                                                                     this.getElementProperties(validValueProperties));
 
         super.addExternalIdentifier(userId,
                                     assetManagerGUID,
@@ -351,10 +350,10 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                      ElementStatus.ACTIVE,
                                                                                      null,
                                                                                      null,
+                                                                                     false,
                                                                                      validValueProperties.getEffectiveFrom(),
                                                                                      validValueProperties.getEffectiveTo(),
                                                                                      this.getElementProperties(validValueProperties),
-                                                                                     null,
                                                                                      setGUID,
                                                                                      OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
                                                                                      null,

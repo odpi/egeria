@@ -20,6 +20,7 @@ public enum DeployedImplementationType
     DATA_ASSET("Data Asset",
                null,
                OpenMetadataType.ASSET.typeName,
+               null,
                "A collection of data, either at rest or in motion.",
                "https://egeria-project.org/concepts/asset/"),
 
@@ -29,6 +30,7 @@ public enum DeployedImplementationType
     FILE("File",
          DeployedImplementationType.DATA_ASSET,
          OpenMetadataType.DATA_FILE.typeName,
+         null,
          "A file stored on a file system.",
          "https://egeria-project.org/types/2/0220-Files-and-Folders/"),
 
@@ -38,6 +40,7 @@ public enum DeployedImplementationType
     DATA_FILE("Data File",
               DeployedImplementationType.FILE,
               OpenMetadataType.DATA_FILE.typeName,
+              null,
               "A file containing externally accessible data - other fields provide information on the internal format.",
               "https://egeria-project.org/types/2/0220-Files-and-Folders/"),
 
@@ -47,6 +50,7 @@ public enum DeployedImplementationType
     CSV_FILE("Data File",
               DeployedImplementationType.DATA_FILE,
               OpenMetadataType.CSV_FILE.typeName,
+             null,
               "A file containing comma-separated (or similar delimited) data.",
               "https://egeria-project.org/types/2/0220-Files-and-Folders/"),
 
@@ -56,6 +60,7 @@ public enum DeployedImplementationType
     PROGRAM_FILE("Program File",
                  DeployedImplementationType.FILE,
                  OpenMetadataType.DATA_FILE.typeName,
+                 null,
                  "A file containing program logic.",
                  "https://egeria-project.org/types/2/0280-Software-Development-Assets/"),
 
@@ -65,6 +70,7 @@ public enum DeployedImplementationType
     LOG_FILE("Log File",
              DeployedImplementationType.FILE,
              OpenMetadataType.DATA_FILE.typeName,
+             null,
              "A file containing log records.",
              "https://egeria-project.org/types/2/0223-Events-and-Logs/"),
 
@@ -75,6 +81,7 @@ public enum DeployedImplementationType
     ARCHIVE_FILE("Archive File",
                  DeployedImplementationType.FILE,
                  OpenMetadataType.DATA_FILE.typeName,
+                 null,
                  "A file containing an organized collection of files.",
                  "https://egeria-project.org/types/2/0226-Archive-Files/"),
 
@@ -85,6 +92,7 @@ public enum DeployedImplementationType
     FILE_FOLDER("FileFolder",
                 DeployedImplementationType.DATA_ASSET,
                 OpenMetadataType.FILE_FOLDER.typeName,
+                null,
                 "A directory (folder) that holds files that are potential data sources.",
                 "https://egeria-project.org/types/2/0220-Files-and-Folders/"),
 
@@ -95,6 +103,7 @@ public enum DeployedImplementationType
     DATA_FOLDER("Data Folder",
                 DeployedImplementationType.FILE_FOLDER,
                 OpenMetadataType.DATA_FOLDER.typeName,
+                null,
                 "A directory (folder) that holds files representing a single data source.",
                 "https://egeria-project.org/types/2/0220-Files-and-Folders/"),
 
@@ -105,6 +114,7 @@ public enum DeployedImplementationType
     JDBC_RELATIONAL_DATABASE("JDBC Relational Database",
                              DeployedImplementationType.DATA_ASSET,
                              OpenMetadataType.RELATIONAL_DATABASE_TYPE_NAME,
+                             null,
                              "A database hosted on a relational database server capable of being called through a JDBC Driver.",
                              "https://en.wikipedia.org/wiki/Java_Database_Connectivity"),
 
@@ -114,6 +124,7 @@ public enum DeployedImplementationType
     POSTGRESQL_DATABASE("PostgreSQL Relational Database",
                         DeployedImplementationType.JDBC_RELATIONAL_DATABASE,
                         OpenMetadataType.RELATIONAL_DATABASE_TYPE_NAME,
+                        null,
                         "A database hosted on a PostgreSQL server.",
                         "https://www.postgresql.org/"),
 
@@ -124,6 +135,7 @@ public enum DeployedImplementationType
     SOFTWARE_SERVER("Software Server",
                     null,
                     OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME,
+                    null,
                     "A callable software server.",
                     "https://egeria-project.org/types/0/0040-Software-Servers/"),
 
@@ -134,6 +146,7 @@ public enum DeployedImplementationType
     POSTGRESQL_SERVER("PostgreSQL Server",
                       DeployedImplementationType.SOFTWARE_SERVER,
                       OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME,
+                      null,
                       "A database server running the PostgreSQL software.",
                       "https://www.postgresql.org/"),
 
@@ -144,6 +157,7 @@ public enum DeployedImplementationType
     APACHE_ATLAS("Apache Atlas",
                  DeployedImplementationType.SOFTWARE_SERVER,
                  OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME,
+                 null,
                  "A data catalog for the Hadoop ecosystem.",
                  "https://atlas.apache.org/"),
 
@@ -153,6 +167,7 @@ public enum DeployedImplementationType
     APACHE_KAFKA_SERVER("Apache Kafka Server",
                         DeployedImplementationType.SOFTWARE_SERVER,
                         OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME,
+                        null,
                         "An event broker supporting high speed, reliable topic-based event exchange.",
                         "https://kafka.apache.org/"),
 
@@ -162,6 +177,7 @@ public enum DeployedImplementationType
     APACHE_KAFKA_TOPIC("Apache Kafka Topic",
                        DeployedImplementationType.DATA_ASSET,
                        OpenMetadataType.KAFKA_TOPIC_TYPE_NAME,
+                       null,
                        "An event topic supporting high speed, reliable event exchange.",
                        "https://kafka.apache.org/"),
 
@@ -171,8 +187,53 @@ public enum DeployedImplementationType
     FILE_SYSTEM("File System",
                 null,
                 OpenMetadataType.DATA_MANAGER_TYPE_NAME,
+                OpenMetadataType.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME,
                 "A system that manages hierarchically organized files on persistent storage.",
                 "https://egeria-project.org/types/0/0056-Resource-Managers/"),
+
+
+    /**
+     * A catalog of metadata that describes assets such as deployed systems, data sources and processes.
+     */
+    ASSET_CATALOG("Asset Metadata Catalog",
+                  null,
+                  OpenMetadataType.CATALOG_TYPE_NAME,
+                  OpenMetadataType.ASSET_MANAGER_TYPE_NAME,
+                  "A catalog of metadata that describes assets such as deployed systems, data sources and processes.",
+                "https://egeria-project.org/types/0/0050-Applications-and-Processes/"),
+
+
+    /**
+     * A software capability that provides callable APIs.
+     */
+    API_MANAGER("API Manager",
+                  null,
+                  OpenMetadataType.API_MANAGER_TYPE_NAME,
+                  null,
+                  "A software capability that provides callable APIs.",
+                  "https://egeria-project.org/types/0/0050-Applications-and-Processes/"),
+
+
+    /**
+     * A system that manages the asynchronous exchange of messages (events) from once to potentially many recipients.  Typically, this exchange of events is organized into groups called topics.
+     */
+    EVENT_BROKER("Event Broker",
+                  null,
+                  OpenMetadataType.EVENT_BROKER_TYPE_NAME,
+                 null,
+                  "A system that manages the asynchronous exchange of messages (events) from once to potentially many recipients.  Typically, this exchange of events is organized into groups called topics.",
+                  "https://egeria-project.org/types/0/0050-Applications-and-Processes/"),
+
+
+    /**
+     * A system that manages collections of data called relational databases which in turn are organized into a tabular format and accessed via the Structured Query Language (SQL).
+     */
+    RELATIONAL_DATABASE_MANAGER("Relational database manager (RDBMS)",
+                                null,
+                                OpenMetadataType.DATABASE_MANAGER_TYPE_NAME,
+                                null,
+                                "A system that manages collections of data called relational databases which in turn are organized into a tabular format and accessed via the Structured Query Language (SQL).",
+                                "https://egeria-project.org/types/0/0050-Applications-and-Processes/"),
 
 
     /**
@@ -181,6 +242,7 @@ public enum DeployedImplementationType
     OMAG_SERVER_PLATFORM("OMAG Server Platform",
                          DeployedImplementationType.SOFTWARE_SERVER,
                          OpenMetadataType.SOFTWARE_SERVER_PLATFORM_TYPE_NAME,
+                         null,
                          "An Open Metadata and Governance (OMAG) platform for running one to many OMAG Servers.",
                          "https://egeria-project.org/concepts/omag-server-platform/"),
 
@@ -190,6 +252,7 @@ public enum DeployedImplementationType
     OMAG_SERVER_RUNTIME("OMAG Server Runtime",
                         DeployedImplementationType.SOFTWARE_SERVER,
                         OpenMetadataType.SOFTWARE_SERVER_PLATFORM_TYPE_NAME,
+                        null,
                         "An Open Metadata and Governance (OMAG) runtime for running a single OMAG Server.",
                         "https://egeria-project.org/concepts/omag-server-runtime/"),
 
@@ -199,6 +262,7 @@ public enum DeployedImplementationType
     SOFTWARE_COMPONENT("Software Component",
                   null,
                   OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME,
+                       null,
                   "A deployable software component.",
                   "https://egeria-project.org/types/2/0215-Software-Components/"),
 
@@ -206,10 +270,11 @@ public enum DeployedImplementationType
      * A pluggable software component that conforms to the Open Connector Framework (OCF).
      */
     OCF_CONNECTOR("Open Connector Framework (OCF) Connector",
-                         null,
-                         OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME,
-                         "A pluggable software component that conforms to the Open Connector Framework (OCF).",
-                         "https://egeria-project.org/concepts/connector/"),
+                  null,
+                  OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME,
+                  null,
+                  "A pluggable software component that conforms to the Open Connector Framework (OCF).",
+                  "https://egeria-project.org/concepts/connector/"),
 
     /**
      * OMRS Repository Connector - Maps open metadata calls to a metadata repository.
@@ -217,6 +282,7 @@ public enum DeployedImplementationType
     REPOSITORY_CONNECTOR("OMRS Repository Connector",
                          null,
                          OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT_TYPE_NAME,
+                         null,
                          "Maps open metadata repository calls defined by the Open Metadata Repository Services (OMRS) to a metadata repository API and event notifications.",
                          "https://egeria-project.org/concepts/repository-connector/"),
 
@@ -225,10 +291,11 @@ public enum DeployedImplementationType
      * Manages the execution of automated governance activity requested via engine actions.
      */
     GOVERNANCE_ENGINE("Governance Engine",
-                         null,
-                         OpenMetadataType.GOVERNANCE_ENGINE.typeName,
-                         "Manages the execution of automated governance activity requested via engine actions.",
-                         "https://egeria-project.org/concepts/governance-engine/"),
+                      null,
+                      OpenMetadataType.GOVERNANCE_ENGINE.typeName,
+                      null,
+                      "Manages the execution of automated governance activity requested via engine actions.",
+                      "https://egeria-project.org/concepts/governance-engine/"),
 
     /**
      * Provides the description of a component that implements an automated governance activity.
@@ -236,6 +303,7 @@ public enum DeployedImplementationType
     GOVERNANCE_SERVICE("Governance Service",
                       DeployedImplementationType.OCF_CONNECTOR,
                       OpenMetadataType.GOVERNANCE_SERVICE.typeName,
+                       null,
                       "Provides the description of a component that implements an automated governance activity.",
                       "https://egeria-project.org/concepts/governance-service/"),
 
@@ -246,6 +314,7 @@ public enum DeployedImplementationType
     OPEN_DISCOVERY_SERVICE_CONNECTOR("Open Discovery Service",
                                      DeployedImplementationType.GOVERNANCE_SERVICE,
                                      OpenMetadataType.OPEN_DISCOVERY_SERVICE.typeName,
+                                     null,
                                      "A connector that analyzing the contents of a digital resource and produces a discovery analysis report.",
                                      "https://egeria-project.org/concepts/open-discovery-service/"),
 
@@ -255,6 +324,7 @@ public enum DeployedImplementationType
     OPEN_DISCOVERY_ENGINE("Open Discovery Engine",
                           DeployedImplementationType.GOVERNANCE_ENGINE,
                           OpenMetadataType.OPEN_DISCOVERY_ENGINE.typeName,
+                          null,
                           "A governance engine that runs open discovery services.",
                           "https://egeria-project.org/concepts/open-discovery-engine/"),
 
@@ -264,6 +334,7 @@ public enum DeployedImplementationType
     GOVERNANCE_ACTION_SERVICE_CONNECTOR("Governance Action Service",
                                         DeployedImplementationType.GOVERNANCE_SERVICE,
                                         OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeName,
+                                        null,
                                         "A connector that coordinates governance of digital resources and metadata.",
                                         "https://egeria-project.org/concepts/governance-action-service/"),
 
@@ -274,6 +345,7 @@ public enum DeployedImplementationType
     GOVERNANCE_ACTION_ENGINE("Governance Action Engine",
                              DeployedImplementationType.GOVERNANCE_ENGINE,
                              OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
+                             null,
                              "A governance engine that runs governance action services.",
                              "https://egeria-project.org/concepts/governance-action-engine/"),
 
@@ -284,6 +356,7 @@ public enum DeployedImplementationType
     EVENT_ACTION_SERVICE_CONNECTOR("Event Action Service",
                                    DeployedImplementationType.GOVERNANCE_SERVICE,
                                    OpenMetadataType.EVENT_ACTION_SERVICE.typeName,
+                                   null,
                                    "A connector that coordinates governance of context events.",
                                    "https://egeria-project.org/concepts/event-action-service/"),
 
@@ -294,6 +367,7 @@ public enum DeployedImplementationType
     EVENT_ACTION_ENGINE("Event Action Engine",
                         DeployedImplementationType.GOVERNANCE_ENGINE,
                         OpenMetadataType.EVENT_ACTION_ENGINE.typeName,
+                        null,
                         "A governance engine that runs event action services.",
                         "https://egeria-project.org/concepts/event-action-engine/"),
 
@@ -303,6 +377,7 @@ public enum DeployedImplementationType
     SURVEY_ACTION_SERVICE_CONNECTOR("Survey Action Service",
                                     DeployedImplementationType.GOVERNANCE_SERVICE,
                                     OpenMetadataType.SURVEY_ACTION_SERVICE.typeName,
+                                    null,
                                     "A connector that coordinates asset surveys.",
                                     "https://egeria-project.org/concepts/survey-action-service/"),
 
@@ -313,6 +388,7 @@ public enum DeployedImplementationType
     SURVEY_ACTION_ENGINE("Survey Action Engine",
                          DeployedImplementationType.GOVERNANCE_ENGINE,
                          OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
+                         null,
                          "A governance engine that runs survey action services.",
                          "https://egeria-project.org/concepts/survey-action-engine/"),
 
@@ -323,6 +399,7 @@ public enum DeployedImplementationType
     REPOSITORY_GOVERNANCE_SERVICE_CONNECTOR("Repository Governance Service Connector",
                                             DeployedImplementationType.GOVERNANCE_SERVICE,
                                             OpenMetadataType.REPOSITORY_GOVERNANCE_SERVICE.typeName,
+                                            null,
                                             "A connector that dynamically governs the activity of the open metadata repositories.",
                                             "https://egeria-project.org/concepts/repository-governance-service"),
 
@@ -332,6 +409,7 @@ public enum DeployedImplementationType
     REPOSITORY_GOVERNANCE_ENGINE("Repository Governance Engine",
                                  DeployedImplementationType.GOVERNANCE_ENGINE,
                                  OpenMetadataType.REPOSITORY_GOVERNANCE_ENGINE.typeName,
+                                 null,
                                  "A governance engine that runs repository governance services.",
                                  "https://egeria-project.org/concepts/repository-governance-engine/"),
 
@@ -339,8 +417,9 @@ public enum DeployedImplementationType
      * Connector that manages metadata exchange with a third party technology.
      */
     INTEGRATION_CONNECTOR("Integration Connector",
-                                    DeployedImplementationType.OCF_CONNECTOR,
-                                    OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                          DeployedImplementationType.OCF_CONNECTOR,
+                          OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                          null,
                                     "Connector that manages metadata exchange with a third party technology.",
                                     "https://egeria-project.org/services/omvs/analytics-integrator/overview"),
 
@@ -350,6 +429,7 @@ public enum DeployedImplementationType
     ANALYTICS_INTEGRATION_CONNECTOR("Analytics Integration Connector",
                                     DeployedImplementationType.INTEGRATION_CONNECTOR,
                                     OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                    null,
                                     "Connector that manages metadata exchange with a third party analytics technology.",
                                     "https://egeria-project.org/services/omvs/analytics-integrator/overview"),
 
@@ -360,6 +440,7 @@ public enum DeployedImplementationType
     API_INTEGRATION_CONNECTOR("API Integration Connector",
                               DeployedImplementationType.INTEGRATION_CONNECTOR,
                               OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                              null,
                               "Connector that manages metadata exchange with a third party API management technology.",
                               "https://egeria-project.org/services/omvs/api-integrator/overview"),
 
@@ -369,6 +450,7 @@ public enum DeployedImplementationType
     CATALOG_INTEGRATION_CONNECTOR("Catalog Integration Connector",
                                   DeployedImplementationType.INTEGRATION_CONNECTOR,
                                   OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                  null,
                                   "Connector that manages metadata exchange with a third party metadata catalog technology.",
                                   "https://egeria-project.org/services/omvs/catalog-integrator/overview"),
 
@@ -378,6 +460,7 @@ public enum DeployedImplementationType
     DATABASE_INTEGRATION_CONNECTOR("Database Integration Connector",
                                    DeployedImplementationType.INTEGRATION_CONNECTOR,
                                    OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                   null,
                                    "Connector that manages metadata exchange with a third party database technology.",
                                    "https://egeria-project.org/services/omvs/database-integrator/overview"),
 
@@ -387,6 +470,7 @@ public enum DeployedImplementationType
     DISPLAY_INTEGRATION_CONNECTOR("Display Integration Connector",
                                   DeployedImplementationType.INTEGRATION_CONNECTOR,
                                   OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                  null,
                                   "Connector that manages metadata exchange with a third party display (user interaction) technology.",
                                   "https://egeria-project.org/services/omvs/display-integrator/overview"),
 
@@ -396,6 +480,7 @@ public enum DeployedImplementationType
     FILES_INTEGRATION_CONNECTOR("Files Integration Connector",
                                 DeployedImplementationType.INTEGRATION_CONNECTOR,
                                 OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                null,
                                 "Connector that manages metadata exchange with a third party filesystem technology.",
                                 "https://egeria-project.org/services/omvs/files-integrator/overview"),
 
@@ -405,6 +490,7 @@ public enum DeployedImplementationType
     INFRASTRUCTURE_INTEGRATION_CONNECTOR("Infrastructure Integration Connector",
                                          DeployedImplementationType.INTEGRATION_CONNECTOR,
                                          OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                         null,
                                          "Connector that manages metadata exchange with a third party infrastructure catalog (CMDB) technology.",
                                          "https://egeria-project.org/services/omvs/infrastructure-integrator/overview"),
 
@@ -415,6 +501,7 @@ public enum DeployedImplementationType
     LINEAGE_INTEGRATION_CONNECTOR("Lineage Integration Connector",
                                   DeployedImplementationType.INTEGRATION_CONNECTOR,
                                   OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                  null,
                                   "Connector that manages metadata exchange with a third party lineage capture technology.",
                                   "https://egeria-project.org/services/omvs/lineage-integrator/overview"),
 
@@ -425,6 +512,7 @@ public enum DeployedImplementationType
     ORGANIZATION_INTEGRATION_CONNECTOR("Organization Integration Connector",
                                        DeployedImplementationType.INTEGRATION_CONNECTOR,
                                        OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                       null,
                                        "Connector that manages metadata exchange with a third party application containing data about people and organizations.",
                                        "https://egeria-project.org/services/omvs/organization-integrator/overview"),
 
@@ -434,6 +522,7 @@ public enum DeployedImplementationType
     SEARCH_INTEGRATION_CONNECTOR("Search Integration Connector",
                                  DeployedImplementationType.INTEGRATION_CONNECTOR,
                                  OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                 null,
                                  "Connector that manages metadata exchange with a third party search technology.",
                                  "https://egeria-project.org/services/omvs/search-integrator/overview"),
 
@@ -443,6 +532,7 @@ public enum DeployedImplementationType
     SECURITY_INTEGRATION_CONNECTOR("Security Integration Connector",
                                    DeployedImplementationType.INTEGRATION_CONNECTOR,
                                    OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                   null,
                                    "Connector that manages metadata exchange with a third party security management technology.",
                                    "https://egeria-project.org/services/omvs/security-integrator/overview"),
 
@@ -452,6 +542,7 @@ public enum DeployedImplementationType
     TOPIC_INTEGRATION_CONNECTOR("Topic Integration Connector",
                                 DeployedImplementationType.INTEGRATION_CONNECTOR,
                                 OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                null,
                                 "Connector that manages metadata exchange with a third party event management technology.",
                                 "https://egeria-project.org/services/omvs/topic-integrator/overview"),
 
@@ -461,6 +552,7 @@ public enum DeployedImplementationType
     PLATFORM_SECURITY_CONNECTOR("Platform Metadata Security Connector",
                                 DeployedImplementationType.OCF_CONNECTOR,
                                 OpenMetadataType.DEPLOYED_CONNECTOR_TYPE_NAME,
+                                null,
                                 "Connector that manages authorization requests to the OMAG Server Platform.",
                                 "https://egeria-project.org/concepts/platform-metadata-security-connector/"),
 
@@ -470,6 +562,7 @@ public enum DeployedImplementationType
     SERVER_SECURITY_CONNECTOR("Server Metadata Security Connector",
                               DeployedImplementationType.OCF_CONNECTOR,
                               OpenMetadataType.DEPLOYED_CONNECTOR_TYPE_NAME,
+                              null,
                               "Connector that manages authorization requests to the OMAG Server.",
                               "https://egeria-project.org/concepts/server-metadata-security-connector/"),
 
@@ -479,6 +572,7 @@ public enum DeployedImplementationType
     ARCHIVE_STORE_CONNECTOR("Open Metadata Archive Store Connector",
                             DeployedImplementationType.OCF_CONNECTOR,
                             OpenMetadataType.DEPLOYED_CONNECTOR_TYPE_NAME,
+                            null,
                             "Reads and writes open metadata types and instances to an open metadata archive.",
                             "https://egeria-project.org/concepts/open-metadata-archive-store-connector/"),
 
@@ -488,6 +582,7 @@ public enum DeployedImplementationType
     COHORT_REGISTRY_STORE("Cohort Registry Store",
                           DeployedImplementationType.OCF_CONNECTOR,
                           OpenMetadataType.DEPLOYED_CONNECTOR_TYPE_NAME,
+                          null,
                           "Stores information about the repositories registered in the open metadata repository cohort.",
                           "https://egeria-project.org/concepts/cohort-registry-store-connector/"),
 
@@ -497,6 +592,7 @@ public enum DeployedImplementationType
     AUDIT_LOG_DESTINATION("Audit Log Destination",
                           DeployedImplementationType.OCF_CONNECTOR,
                           OpenMetadataType.DEPLOYED_CONNECTOR_TYPE_NAME,
+                          null,
                           "Reads and writes records to the Open Metadata Repository Services (OMRS) audit log.",
                           "https://egeria-project.org/concepts/audit-log/"),
 
@@ -507,6 +603,7 @@ public enum DeployedImplementationType
     INTEGRATION_GROUP("Dynamic Integration Group",
                       null,
                       OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
+                      null,
                       "Provides the list of integration connectors that should run in an Integration Daemon.  The Integration Daemon is configured with the qualified names of the integration group(s) that provide its connector list.",
                       "https://egeria-project.org/concepts/integration-group/"),
 
@@ -539,6 +636,7 @@ public enum DeployedImplementationType
     private final String deployedImplementationType;
     private final DeployedImplementationType isATypeOf;
     private final String associatedTypeName;
+    private final String associatedClassification;
     private final String description;
     private final String wikiLink;
 
@@ -549,18 +647,21 @@ public enum DeployedImplementationType
      * @param deployedImplementationType value for deployedImplementationType
      * @param isATypeOf optional deployed implementation type that this type "inherits" from
      * @param associatedTypeName the open metadata type where this value is used
+     * @param associatedClassification the open metadata classification where this value is used
      * @param description description of the type
      * @param wikiLink url link to more information (optional)
      */
     DeployedImplementationType(String                     deployedImplementationType,
                                DeployedImplementationType isATypeOf,
                                String                     associatedTypeName,
+                               String                     associatedClassification,
                                String                     description,
                                String                     wikiLink)
     {
         this.deployedImplementationType = deployedImplementationType;
         this.isATypeOf = isATypeOf;
         this.associatedTypeName = associatedTypeName;
+        this.associatedClassification = associatedClassification;
         this.description = description;
         this.wikiLink = wikiLink;
     }
@@ -595,6 +696,17 @@ public enum DeployedImplementationType
     public String getAssociatedTypeName()
     {
         return associatedTypeName;
+    }
+
+
+    /**
+     * Return the optional classification name that this deployed implementation type is associated with.
+     *
+     * @return string
+     */
+    public String getAssociatedClassification()
+    {
+        return associatedClassification;
     }
 
 

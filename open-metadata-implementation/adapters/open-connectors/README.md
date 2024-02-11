@@ -51,6 +51,9 @@ Java.
 
 * **[secrets-store-connectors](secrets-store-connectors)** provides connectors to access secrets (passwords, certificates etc) at runtime.
 
+* **[survey-action-connectors](survey-action-connectors)** implementations of survey action services
+  from the [Survey Action Framework (SAF)](../../frameworks/survey-action-framework).
+
 * **[system-connectors](system-connectors)** provides connectors to access data and function from different systems.
 
 In addition, there is the **[connector-configuration-factory](connector-configuration-factory)**

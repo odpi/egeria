@@ -1,0 +1,6 @@
+# Egeria-my-profile-view-service
+
+###
+# @name Get My Profile
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile
+Authorization: Bearer {{token}}

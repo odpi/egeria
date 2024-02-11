@@ -506,10 +506,10 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                     ElementStatus.ACTIVE,
                                                                     initialClassifications,
                                                                     null,
+                                                                    false,
                                                                     properties.getEffectiveFrom(),
                                                                     properties.getEffectiveTo(),
                                                                     this.getElementProperties(properties),
-                                                                    null,
                                                                     null,
                                                                     null,
                                                                     null,
@@ -538,17 +538,19 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
-        final String methodName = "createCollectionFromTemplate";
-
-        String collectionGUID = openMetadataStoreClient.createMetadataElementInStore(userId,
-                                                                                     OpenMetadataType.COLLECTION_TYPE_NAME,
-                                                                                     ElementStatus.ACTIVE,
-                                                                                     null,
-                                                                                     null,
-                                                                                     this.getElementProperties(templateProperties),
-                                                                                     templateGUID);
-
-        return collectionGUID;
+        return openMetadataStoreClient.createMetadataElementFromTemplate(userId,
+                                                                         OpenMetadataType.COLLECTION_TYPE_NAME,
+                                                                         null,
+                                                                         false,
+                                                                         null,
+                                                                         null,
+                                                                         templateGUID,
+                                                                         this.getElementProperties(templateProperties),
+                                                                         null,
+                                                                         null,
+                                                                         null,
+                                                                         null,
+                                                                         false);
     }
 
 

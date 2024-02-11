@@ -3,9 +3,10 @@
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.lineagewarehouseconnectors.janusconnector.graph;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.governanceservers.lineagewarehouse.graph.LineageGraphProviderBase;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.connector.LineageWarehouseGraphProviderBase;
 
-public class LineageGraphConnectorProvider extends LineageGraphProviderBase {
+public class LineageGraphConnectorProvider extends LineageWarehouseGraphProviderBase
+{
 
     static final String CONNECTOR_TYPE_GUID = "e2f657d6-e5bd-11e9-81b4-2a2ae2dbcce4";
     static final String CONNECTOR_TYPE_NAME = "Janus Graph Connector";

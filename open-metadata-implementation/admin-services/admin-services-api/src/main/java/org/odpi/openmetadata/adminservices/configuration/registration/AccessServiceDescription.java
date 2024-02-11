@@ -246,14 +246,14 @@ public enum AccessServiceDescription implements Serializable
                                       ServiceOperationalStatus.NOT_IMPLEMENTED),
 
     /**
-     * Set up the governance engine and integration group definitions.
+     * Provide metadata services and watch dog notification to the governance action services.
      */
     GOVERNANCE_ENGINE_OMAS           (219,
                                       ComponentDevelopmentStatus.STABLE,
                                       "Governance Engine",
                                       "Governance Engine OMAS",
                                       "governance-engine",
-                                      "Set up the governance engine and integration group definitions.",
+                                      "Provide metadata services and watch dog notification to the governance action services.",
                                       "https://egeria-project.org/services/omas/governance-engine/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
                                       ServiceOperationalStatus.ENABLED),
@@ -347,7 +347,21 @@ public enum AccessServiceDescription implements Serializable
                                       "Document knowledge about a subject area in a glossary.",
                                       "https://egeria-project.org/services/omas/subject-area/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
-                                      ServiceOperationalStatus.NOT_IMPLEMENTED);
+                                      ServiceOperationalStatus.NOT_IMPLEMENTED),
+
+    /**
+     * Supply the governance engine definitions to the engine hosts and the and integration group definitions to the integration daemons.
+     */
+    GOVERNANCE_SERVER_OMAS           (227,
+                                      ComponentDevelopmentStatus.STABLE,
+                                      "Governance Server",
+                                      "Governance Server OMAS",
+                                      "governance-server",
+                                      "Supply the governance engine definitions to the engine hosts and the and integration group definitions to the integration daemons.",
+                                      "https://egeria-project.org/services/omas/governance-server/overview/",
+                                      ServiceOperationalStatus.NOT_IMPLEMENTED,
+                                      ServiceOperationalStatus.ENABLED),
+    ;
 
 
     private final int                        accessServiceCode;

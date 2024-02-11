@@ -74,7 +74,7 @@ public class SoftwareCapabilityConverter<B> extends ITInfrastructureOMASConverte
                     capabilityProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     capabilityProperties.setDisplayName(this.removeName(instanceProperties));
                     capabilityProperties.setDescription(this.removeDescription(instanceProperties));
-                    capabilityProperties.setTypeDescription(this.removeCapabilityType(instanceProperties));
+                    capabilityProperties.setDeployedImplementationType(this.removeCapabilityType(instanceProperties));
                     capabilityProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
                     capabilityProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
                     capabilityProperties.setSource(this.removeSource(instanceProperties));

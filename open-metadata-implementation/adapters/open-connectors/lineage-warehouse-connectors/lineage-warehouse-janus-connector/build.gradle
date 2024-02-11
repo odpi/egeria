@@ -15,14 +15,14 @@ dependencies {
     implementation 'org.janusgraph:janusgraph-driver'
     implementation 'org.apache.tinkerpop:gremlin-core'
     compileOnly 'org.slf4j:slf4j-api'
-    compileOnly project(':open-metadata-implementation:governance-servers:lineage-warehouse-services:lineage-warehouse-services-api')
+    compileOnly project(':open-metadata-implementation:governance-server-services:lineage-warehouse-services:lineage-warehouse-services-api')
     compileOnly project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-api')
     implementation 'com.google.guava:guava'
     runtimeOnly 'org.janusgraph:janusgraph-cql'
     runtimeOnly 'org.janusgraph:janusgraph-es'
     runtimeOnly 'org.janusgraph:janusgraph-berkeleyje'
     runtimeOnly 'org.janusgraph:janusgraph-lucene'
-    testImplementation project(':open-metadata-implementation:governance-servers:lineage-warehouse-services:lineage-warehouse-services-api')
+    testImplementation project(':open-metadata-implementation:governance-server-services:lineage-warehouse-services:lineage-warehouse-services-api')
     testImplementation project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-api')
     testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')

@@ -499,6 +499,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                        effectiveTo,
                                                        forLineage,
                                                        forDuplicateProcessing,
+                                                       folderHandler.getSupportedZones(),
                                                        effectiveTime,
                                                        methodName);
     }
@@ -596,6 +597,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                      effectiveTo,
                                                      forLineage,
                                                      forDuplicateProcessing,
+                                                     fileHandler.getSupportedZones(),
                                                      effectiveTime,
                                                      methodName);
     }
@@ -1842,6 +1844,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                        effectiveTo,
                                                                        forLineage,
                                                                        forDuplicateProcessing,
+                                                                       fileHandler.getSupportedZones(),
                                                                        effectiveTime,
                                                                        methodName);
 
@@ -2079,6 +2082,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                      effectiveTo,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
+                                                                     fileHandler.getSupportedZones(),
                                                                      effectiveTime,
                                                                      methodName);
 

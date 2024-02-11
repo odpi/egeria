@@ -15,7 +15,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageSyncUpdateContext;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.governanceservers.lineagewarehouse.graph.LineageGraph;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.connector.LineageWarehouseGraphStorageService;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.lineagewarehouseconnectors.janusconnector.model.GraphRelationship;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.lineagewarehouseconnectors.janusconnector.model.ffdc.JanusConnectorException;
 import org.slf4j.Logger;
@@ -78,7 +78,8 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.li
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.lineagewarehouseconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.lineagewarehouseconnectors.janusconnector.utils.GraphConstants.VARIABLE_NAME_ASSET_LINEAGE_LAST_UPDATE_TIME;
 
-public class LineageGraphStorageService implements LineageGraph {
+public class LineageGraphStorageService implements LineageWarehouseGraphStorageService
+{
 
     private static final Logger log = LoggerFactory.getLogger(LineageGraphStorageService.class);
 

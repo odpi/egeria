@@ -14,7 +14,7 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.VertexProperty;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.governanceservers.lineagewarehouse.LineageWarehouseQueryService;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.connector.LineageWarehouseQueryService;
 import org.odpi.openmetadata.governanceservers.lineagewarehouse.ffdc.LineageWarehouseException;
 import org.odpi.openmetadata.governanceservers.lineagewarehouse.ffdc.LineageWarehouseErrorCode;
 import org.odpi.openmetadata.governanceservers.lineagewarehouse.model.LineageEdge;

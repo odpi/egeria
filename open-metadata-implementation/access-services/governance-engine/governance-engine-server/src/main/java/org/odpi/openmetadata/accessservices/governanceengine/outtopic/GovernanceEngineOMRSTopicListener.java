@@ -6,39 +6,20 @@ package org.odpi.openmetadata.accessservices.governanceengine.outtopic;
 import org.odpi.openmetadata.accessservices.governanceengine.converters.GovernanceEngineOMASConverter;
 import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngineAuditCode;
 import org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler;
-import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.MetadataElement;
-import org.odpi.openmetadata.commonservices.generichandlers.EngineActionHandler;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOriginCategory;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementVersions;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogClassificationEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogMetadataElementEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogRelatedElementsEvent;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
@@ -61,14 +42,10 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
 {
     private final GovernanceEngineOutTopicPublisher                eventPublisher;
     private final OMRSRepositoryHelper                             repositoryHelper;
-    private final MetadataElementHandler<OpenMetadataElement>  metadataElementHandler;
-    private final EngineActionHandler<GovernanceActionElement> engineActionHandler;
+    private final MetadataElementHandler<OpenMetadataElement>      metadataElementHandler;
 
     private final String                                           userId;
     private final String                                           serverName;
-
-    private final EntityDetail                                     nullEntity = null;
-    private final Relationship                                     nullRelationship = null;
     private final GovernanceEngineOMASConverter<MetadataElement>   converter;
 
     /**
@@ -78,7 +55,6 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
      * @param serverName name of this server
      * @param userId local server userId for issuing requests to the repository services
      * @param metadataElementHandler handler for working with GAF objects
-     * @param engineActionHandler handler for working with governance actions
      * @param eventPublisher this is the out topic publisher.
      * @param repositoryHelper repository helper
      * @param auditLog logging destination
@@ -87,7 +63,6 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                              String                                           serverName,
                                              String                                           userId,
                                              MetadataElementHandler<OpenMetadataElement>      metadataElementHandler,
-                                             EngineActionHandler<GovernanceActionElement> engineActionHandler,
                                              GovernanceEngineOutTopicPublisher                eventPublisher,
                                              OMRSRepositoryHelper                             repositoryHelper,
                                              AuditLog                                         auditLog)
@@ -95,7 +70,6 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
         super(serviceName, auditLog);
 
         this.metadataElementHandler = metadataElementHandler;
-        this.engineActionHandler = engineActionHandler;
 
         this.userId = userId;
         this.serverName = serverName;
@@ -104,297 +78,6 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
         this.repositoryHelper = repositoryHelper;
 
         this.converter = new GovernanceEngineOMASConverter<>(repositoryHelper, serviceName, metadataElementHandler.getServerName());
-    }
-
-
-    /**
-     * Process an entity extracted from an event.
-     *
-     * @param sourceName source of the event
-     * @param entity entity from the event
-     * @param methodName calling method (indicates type of event action)
-     * @return boolean flag indicating that the event is processed
-     */
-    private boolean processGovernanceEngineEvent(String         sourceName,
-                                                 EntityDetail   entity,
-                                                 String         methodName)
-    {
-        if (entity != null)
-        {
-            InstanceType type = entity.getType();
-
-            if (type != null)
-            {
-                if (repositoryHelper.isTypeOf(sourceName,
-                                              type.getTypeDefName(),
-                                              OpenMetadataType.GOVERNANCE_ENGINE.typeName))
-                {
-                    eventPublisher.publishRefreshGovernanceEngineEvent(entity.getGUID(),
-                                                                      repositoryHelper.getStringProperty(sourceName,
-                                                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                         entity.getProperties(),
-                                                                                                         methodName));
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-
-    /**
-     * Process an entity extracted from an event.
-     *
-     * @param sourceName source of the event
-     * @param entity entity from the event
-     * @return boolean flag indicating that the event is processed
-     */
-    private boolean excludeGovernanceEngineEvent(String         sourceName,
-                                                 EntitySummary  entity)
-    {
-        if (entity != null)
-        {
-            InstanceType type = entity.getType();
-
-            if (type != null)
-            {
-                return (repositoryHelper.isTypeOf(sourceName,
-                                                  type.getTypeDefName(),
-                                                  OpenMetadataType.GOVERNANCE_ENGINE.typeName));
-            }
-        }
-
-        return false;
-    }
-
-
-
-    /**
-     * Process a relationship extracted from an event.
-     *
-     * @param sourceName source of the event
-     * @param relationship relationship from the event
-     * @param methodName calling method (indicates type of event action)
-     * @return boolean flag indicating that the event is processed
-     */
-    private boolean processSupportedGovernanceService(String       sourceName,
-                                                      Relationship relationship,
-                                                      String       methodName)
-    {
-        if (relationship != null)
-        {
-            InstanceType type = relationship.getType();
-
-            if (type != null)
-            {
-                if (repositoryHelper.isTypeOf(sourceName,
-                                              type.getTypeDefName(),
-                                              OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName))
-                {
-                    EntityProxy governanceEngineEntityProxy = relationship.getEntityOneProxy();
-                    EntityProxy governanceServiceEntityProxy = relationship.getEntityTwoProxy();
-
-                    if (governanceEngineEntityProxy != null)
-                    {
-                        eventPublisher.publishRefreshGovernanceServiceEvent(governanceEngineEntityProxy.getGUID(),
-                                                                            repositoryHelper.getStringProperty(sourceName,
-                                                                                                               OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                               governanceEngineEntityProxy.getUniqueProperties(),
-                                                                                                               methodName),
-                                                                            governanceServiceEntityProxy.getGUID(),
-                                                                            repositoryHelper.getStringProperty(sourceName,
-                                                                                                               OpenMetadataProperty.REQUEST_TYPE.name,
-                                                                                                               relationship.getProperties(),
-                                                                                                               methodName));
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
-    }
-
-
-
-    /**
-     * Process a relationship extracted from an event.
-     *
-     * @param sourceName source of the event
-     * @param relationship relationship from the event
-     * @return boolean flag indicating that the event is processed
-     */
-    private boolean excludeSupportedGovernanceService(String       sourceName,
-                                                      Relationship relationship)
-    {
-        if (relationship != null)
-        {
-            InstanceType type = relationship.getType();
-
-            if (type != null)
-            {
-                 return repositoryHelper.isTypeOf(sourceName,
-                                                  type.getTypeDefName(),
-                                                  OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName);
-            }
-        }
-
-        return false;
-    }
-
-
-    /**
-     * Process an entity extracted from an event.
-     *
-     * @param sourceName source of the event
-     * @param entity entity from the event
-     * @param methodName calling method (indicates type of event action)
-     * @return boolean flag indicating that the event should be ignored
-     */
-    private boolean processGovernanceActionEvent(String       sourceName,
-                                                 EntityDetail entity,
-                                                 String       methodName)
-    {
-        if (entity != null)
-        {
-            InstanceType type = entity.getType();
-
-            if (type != null)
-            {
-                if (repositoryHelper.isTypeOf(sourceName,
-                                              type.getTypeDefName(),
-                                              OpenMetadataType.ENGINE_ACTION_TYPE_NAME))
-                {
-                    EngineActionStatus status = engineActionHandler.getActionStatus(OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
-                                                                                    entity.getProperties());
-
-                    if (status == EngineActionStatus.APPROVED)
-                    {
-
-                        String governanceEngineGUID = repositoryHelper.getStringProperty(sourceName,
-                                                                                         OpenMetadataType.EXECUTOR_ENGINE_GUID_PROPERTY_NAME,
-                                                                                         entity.getProperties(),
-                                                                                         methodName);
-                        String governanceEngineName = repositoryHelper.getStringProperty(sourceName,
-                                                                                         OpenMetadataType.EXECUTOR_ENGINE_NAME_PROPERTY_NAME,
-                                                                                         entity.getProperties(),
-                                                                                         methodName);
-
-                        eventPublisher.publishNewGovernanceAction(governanceEngineGUID,
-                                                                  governanceEngineName,
-                                                                  entity.getGUID());
-                    }
-
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-
-
-    /**
-     * Process an entity extracted from an event.
-     *
-     * @param sourceName source of the event
-     * @param entity entity from the event
-     * @return boolean flag indicating that the event should be ignored
-     */
-    private boolean excludeGovernanceActionEvent(String        sourceName,
-                                                 EntitySummary entity)
-    {
-        if (entity != null)
-        {
-            InstanceType type = entity.getType();
-
-            if (type != null)
-            {
-                return repositoryHelper.isTypeOf(sourceName,
-                                                 type.getTypeDefName(),
-                                                 OpenMetadataType.ENGINE_ACTION_TYPE_NAME);
-            }
-        }
-
-        return false;
-    }
-
-
-
-    /**
-     * Ignore events from entities that are part of the governance action processing.
-     * (Called after the GovernanceAction events are handled.)
-     * May not need this.
-     *
-     * @param sourceName source of the event
-     * @param entity entity from the event
-     * @return boolean flag indicating that the event should be ignored
-     */
-    private boolean excludeGovernanceManagementEvents(String        sourceName,
-                                                      EntitySummary entity)
-    {
-        if (entity != null)
-        {
-            InstanceType type = entity.getType();
-
-            if (type != null)
-            {
-                return repositoryHelper.isTypeOf(sourceName,
-                                                 type.getTypeDefName(),
-                                                 OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME);
-            }
-        }
-
-        return false;
-    }
-
-
-    /**
-     * Ignore events from relationships that are part of the governance action processing.
-     *
-     * @param sourceName source of the event
-     * @param relationship relationship from the event
-     * @return boolean flag indicating that the event should be ignored
-     */
-    private boolean excludeGovernanceManagementEvents(String            sourceName,
-                                                      Relationship      relationship)
-    {
-        if (relationship != null)
-        {
-            InstanceType type = relationship.getType();
-
-            if (type != null)
-            {
-                if (repositoryHelper.isTypeOf(sourceName,
-                                              type.getTypeDefName(),
-                                              OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName))
-                {
-                    return true;
-                }
-
-                if (repositoryHelper.isTypeOf(sourceName,
-                                              type.getTypeDefName(),
-                                              OpenMetadataType.TARGET_FOR_ACTION_TYPE_NAME))
-                {
-                    return true;
-                }
-
-                if (repositoryHelper.isTypeOf(sourceName,
-                                              type.getTypeDefName(),
-                                              OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE_TYPE_NAME))
-                {
-                    return true;
-                }
-
-                return (repositoryHelper.isTypeOf(sourceName,
-                                                  type.getTypeDefName(),
-                                                  OpenMetadataType.ENGINE_ACTION_EXECUTOR_TYPE_NAME));
-            }
-        }
-
-        return false;
     }
 
 
@@ -507,7 +190,6 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
             elementControlHeader.setVersions(this.getElementVersions(header));
         }
     }
-
 
 
     /**
@@ -627,8 +309,6 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     }
 
 
-
-
     /**
      * Translate the repository services' InstanceProvenanceType to an ElementOrigin.
      *
@@ -639,29 +319,16 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         if (instanceProvenanceType != null)
         {
-            switch (instanceProvenanceType)
+            return switch (instanceProvenanceType)
             {
-                case DEREGISTERED_REPOSITORY:
-                    return ElementOriginCategory.DEREGISTERED_REPOSITORY;
-
-                case EXTERNAL_SOURCE:
-                    return ElementOriginCategory.EXTERNAL_SOURCE;
-
-                case EXPORT_ARCHIVE:
-                    return ElementOriginCategory.EXPORT_ARCHIVE;
-
-                case LOCAL_COHORT:
-                    return ElementOriginCategory.LOCAL_COHORT;
-
-                case CONTENT_PACK:
-                    return ElementOriginCategory.CONTENT_PACK;
-
-                case CONFIGURATION:
-                    return ElementOriginCategory.CONFIGURATION;
-
-                case UNKNOWN:
-                    return ElementOriginCategory.UNKNOWN;
-            }
+                case DEREGISTERED_REPOSITORY -> ElementOriginCategory.DEREGISTERED_REPOSITORY;
+                case EXTERNAL_SOURCE -> ElementOriginCategory.EXTERNAL_SOURCE;
+                case EXPORT_ARCHIVE -> ElementOriginCategory.EXPORT_ARCHIVE;
+                case LOCAL_COHORT -> ElementOriginCategory.LOCAL_COHORT;
+                case CONTENT_PACK -> ElementOriginCategory.CONTENT_PACK;
+                case CONFIGURATION -> ElementOriginCategory.CONFIGURATION;
+                case UNKNOWN -> ElementOriginCategory.UNKNOWN;
+            };
         }
 
         return ElementOriginCategory.UNKNOWN;
@@ -914,12 +581,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processNewEntityEvent";
 
-        if ((! processGovernanceEngineEvent(sourceName, entity, methodName)) &&
-                    (! processGovernanceActionEvent(sourceName, entity, methodName)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, entity)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.NEW_ELEMENT, entity, nullEntity, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.NEW_ELEMENT, entity, null, methodName);
     }
 
 
@@ -947,12 +609,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processUpdatedEntityEvent";
 
-        if ((! processGovernanceEngineEvent(sourceName, newEntity, methodName)) &&
-                    (! processGovernanceActionEvent(sourceName, newEntity, methodName)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, newEntity)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.UPDATED_ELEMENT_PROPERTIES, newEntity, oldEntity, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.UPDATED_ELEMENT_PROPERTIES, newEntity, oldEntity, methodName);
     }
 
 
@@ -978,12 +635,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processUndoneEntityEvent";
 
-        if ((! processGovernanceEngineEvent(sourceName, entity, methodName)) &&
-                    (! processGovernanceActionEvent(sourceName, entity, methodName)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, entity)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.UPDATED_ELEMENT_PROPERTIES, entity, nullEntity, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.UPDATED_ELEMENT_PROPERTIES, entity, null, methodName);
     }
 
 
@@ -1011,12 +663,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processClassifiedEntityEvent";
 
-        if ((! excludeGovernanceEngineEvent(sourceName, entity)) &&
-                    (! excludeGovernanceActionEvent(sourceName, entity)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, entity)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.NEW_CLASSIFICATION, entity, classification, null, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.NEW_CLASSIFICATION, entity, classification, null, methodName);
     }
 
 
@@ -1044,12 +691,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processClassifiedEntityEvent(proxy)";
 
-        if ((! excludeGovernanceEngineEvent(sourceName, entity)) &&
-                    (! excludeGovernanceActionEvent(sourceName, entity)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, entity)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.NEW_CLASSIFICATION, entity, classification, null, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.NEW_CLASSIFICATION, entity, classification, null, methodName);
     }
 
 
@@ -1077,12 +719,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processDeclassifiedEntityEvent";
 
-        if ((! excludeGovernanceEngineEvent(sourceName, entity)) &&
-                    (! excludeGovernanceActionEvent(sourceName, entity)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, entity)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.DELETED_CLASSIFICATION, entity, originalClassification, null, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.DELETED_CLASSIFICATION, entity, originalClassification, null, methodName);
     }
 
 
@@ -1110,12 +747,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processDeclassifiedEntityEvent";
 
-        if ((! excludeGovernanceEngineEvent(sourceName, entity)) &&
-                    (! excludeGovernanceActionEvent(sourceName, entity)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, entity)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.DELETED_CLASSIFICATION, entity, originalClassification, null, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.DELETED_CLASSIFICATION, entity, originalClassification, null, methodName);
     }
 
 
@@ -1145,12 +777,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReclassifiedEntityEvent";
 
-        if ((! excludeGovernanceEngineEvent(sourceName, entity)) &&
-                    (! excludeGovernanceActionEvent(sourceName, entity)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, entity)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.UPDATED_CLASSIFICATION_PROPERTIES, entity, classification, originalClassification, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.UPDATED_CLASSIFICATION_PROPERTIES, entity, classification, originalClassification, methodName);
     }
 
 
@@ -1181,12 +808,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReclassifiedEntityEvent";
 
-        if ((! excludeGovernanceEngineEvent(sourceName, entity)) &&
-                    (! excludeGovernanceActionEvent(sourceName, entity)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, entity)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.UPDATED_CLASSIFICATION_PROPERTIES, entity, classification, originalClassification, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.UPDATED_CLASSIFICATION_PROPERTIES, entity, classification, originalClassification, methodName);
     }
 
 
@@ -1219,18 +841,12 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processDeletedEntityEvent";
 
-        if ((! processGovernanceEngineEvent(sourceName, entity, methodName)) &&
-                    (! processGovernanceActionEvent(sourceName, entity, methodName)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, entity)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.DELETED_ELEMENT, entity, nullEntity, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.DELETED_ELEMENT, entity, null, methodName);
     }
 
 
     /**
      * An existing entity has been deleted and purged in a single action.
-     *
      * All relationships to the entity are also deleted and purged and will no longer be usable.  These deleted relationships
      * will be notified through separate events.
      *
@@ -1254,12 +870,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processDeletePurgedEntityEvent";
 
-        if ((! processGovernanceEngineEvent(sourceName, entity, methodName)) &&
-                    (! processGovernanceActionEvent(sourceName, entity, methodName)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, entity)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.DELETED_ELEMENT, entity, nullEntity, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.DELETED_ELEMENT, entity, null, methodName);
     }
 
 
@@ -1285,12 +896,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processRestoredEntityEvent";
 
-        if ((! processGovernanceEngineEvent(sourceName, entity, methodName)) &&
-                    (! processGovernanceActionEvent(sourceName, entity, methodName)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, entity)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_ELEMENT, entity, nullEntity, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_ELEMENT, entity, null, methodName);
     }
 
 
@@ -1320,12 +926,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReIdentifiedEntityEvent";
 
-        if ((! processGovernanceEngineEvent(sourceName, entity, methodName)) &&
-                    (! processGovernanceActionEvent(sourceName, entity, methodName)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, entity)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_ELEMENT, entity, nullEntity, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_ELEMENT, entity, null, methodName);
     }
 
 
@@ -1355,12 +956,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReTypedEntityEvent";
 
-        if ((! processGovernanceEngineEvent(sourceName, entity, methodName)) &&
-                    (! processGovernanceActionEvent(sourceName, entity, methodName)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, entity)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_ELEMENT, entity, nullEntity, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_ELEMENT, entity, null, methodName);
     }
 
 
@@ -1390,12 +986,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReHomedEntityEvent";
 
-        if ((! processGovernanceEngineEvent(sourceName, entity, methodName)) &&
-                    (! processGovernanceActionEvent(sourceName, entity, methodName)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, entity)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_ELEMENT, entity, nullEntity, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_ELEMENT, entity, null, methodName);
     }
 
 
@@ -1421,12 +1012,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processRefreshEntityEvent";
 
-        if ((! excludeGovernanceEngineEvent(sourceName, entity)) &&
-                    (! excludeGovernanceActionEvent(sourceName, entity)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, entity)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_ELEMENT, entity, nullEntity, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_ELEMENT, entity, null, methodName);
     }
 
 
@@ -1452,11 +1038,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processNewRelationshipEvent";
 
-        if ((! processSupportedGovernanceService(sourceName, relationship, methodName)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, relationship)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.NEW_RELATIONSHIP, relationship, nullRelationship, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.NEW_RELATIONSHIP, relationship, null, methodName);
     }
 
 
@@ -1484,11 +1066,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processUpdatedRelationshipEvent";
 
-        if ((! processSupportedGovernanceService(sourceName, newRelationship, methodName)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, newRelationship)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.UPDATED_RELATIONSHIP_PROPERTIES, newRelationship, oldRelationship, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.UPDATED_RELATIONSHIP_PROPERTIES, newRelationship, oldRelationship, methodName);
     }
 
 
@@ -1514,11 +1092,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processUndoneRelationshipEvent";
 
-        if ((! processSupportedGovernanceService(sourceName, relationship, methodName)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, relationship)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_RELATIONSHIP, relationship, nullRelationship, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_RELATIONSHIP, relationship, null, methodName);
     }
 
 
@@ -1548,11 +1122,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processDeletedRelationshipEvent";
 
-        if ((! processSupportedGovernanceService(sourceName, relationship, methodName)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, relationship)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.DELETED_RELATIONSHIP, relationship, nullRelationship, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.DELETED_RELATIONSHIP, relationship, null, methodName);
     }
 
 
@@ -1578,11 +1148,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processDeletePurgedRelationshipEvent";
 
-        if ((! processSupportedGovernanceService(sourceName, relationship, methodName)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, relationship)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.DELETED_RELATIONSHIP, relationship, nullRelationship, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.DELETED_RELATIONSHIP, relationship, null, methodName);
     }
 
 
@@ -1608,11 +1174,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processRestoredRelationshipEvent";
 
-        if ((! processSupportedGovernanceService(sourceName, relationship, methodName)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, relationship)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_RELATIONSHIP, relationship, nullRelationship, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_RELATIONSHIP, relationship, null, methodName);
     }
 
 
@@ -1642,11 +1204,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReIdentifiedRelationshipEvent";
 
-        if ((! processSupportedGovernanceService(sourceName, relationship, methodName)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, relationship)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_RELATIONSHIP, relationship, nullRelationship, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_RELATIONSHIP, relationship, null, methodName);
     }
 
 
@@ -1676,11 +1234,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReTypedRelationshipEvent";
 
-        if ((! processSupportedGovernanceService(sourceName, relationship, methodName)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, relationship)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_RELATIONSHIP, relationship, nullRelationship, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_RELATIONSHIP, relationship, null, methodName);
     }
 
 
@@ -1710,11 +1264,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processReHomedRelationshipEvent";
 
-        if ((! processSupportedGovernanceService(sourceName, relationship, methodName)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, relationship)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_RELATIONSHIP, relationship, nullRelationship, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_RELATIONSHIP, relationship, null, methodName);
     }
 
 
@@ -1741,10 +1291,6 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
     {
         final String methodName = "processRefreshRelationshipEvent";
 
-        if ((! excludeSupportedGovernanceService(sourceName, relationship)) &&
-                    (! excludeGovernanceManagementEvents(sourceName, relationship)))
-        {
-            processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_RELATIONSHIP, relationship, nullRelationship, methodName);
-        }
+        processWatchdogEvent(sourceName, WatchdogEventType.REFRESHED_RELATIONSHIP, relationship, null, methodName);
     }
 }

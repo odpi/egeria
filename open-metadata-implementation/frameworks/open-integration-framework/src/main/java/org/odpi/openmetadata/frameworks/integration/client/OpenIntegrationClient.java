@@ -66,6 +66,7 @@ public abstract class OpenIntegrationClient
      * @param softwareCapabilityTypeName name of software capability type to describe the metadata source
      * @param classificationName optional classification name that refines the type of the software capability.
      * @param qualifiedName unique name for the external source
+     * @param deployedImplementationType type of technology
      *
      * @return unique identifier of the new metadata element
      *
@@ -76,9 +77,10 @@ public abstract class OpenIntegrationClient
     public abstract String createMetadataSource(String userId,
                                                 String softwareCapabilityTypeName,
                                                 String classificationName,
-                                                String qualifiedName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException;
+                                                String qualifiedName,
+                                                String deployedImplementationType) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException;
 
 
     /**

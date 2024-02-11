@@ -81,7 +81,7 @@ public class StatusRequestBody extends AssetOwnerOMASAPIRequestBody
     @Override
     public String toString()
     {
-        return "DeleteRequestBody{" +
+        return "StatusRequestBody{" +
                 "qualifiedName='" + annotationStatus + '\'' +
                 '}';
     }

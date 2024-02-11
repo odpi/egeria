@@ -290,6 +290,7 @@ public class SubjectAreaHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                    specificMatchPropertyNames,
                                    forLineage,
                                    forDuplicateProcessing,
+                                   supportedZones,
                                    effectiveTime,
                                    methodName);
     }

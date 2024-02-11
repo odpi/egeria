@@ -83,7 +83,7 @@ public class StatusRequestBody extends ODFOMASAPIRequestBody
     @Override
     public String toString()
     {
-        return "DeleteRequestBody{" +
+        return "StatusRequestBody{" +
                 "qualifiedName='" + annotationStatus + '\'' +
                 '}';
     }

@@ -5,6 +5,8 @@ package org.odpi.openmetadata.accessservices.discoveryengine.rest;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.io.Serial;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -24,11 +26,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = NewDiscoveryEngineRequestBody.class,           name = "NewDiscoveryEngineRequestBody"),
                 @JsonSubTypes.Type(value = NewDiscoveryServiceRequestBody.class,          name = "NewDiscoveryServiceRequestBody"),
                 @JsonSubTypes.Type(value = DiscoveryServiceRegistrationRequestBody.class, name = "DiscoveryServiceRegistrationRequestBody"),
-                @JsonSubTypes.Type(value = DeleteRequestBody.class,                       name = "DeleteRequestBody")
         })
 public abstract class ODFOMASAPIRequestBody implements java.io.Serializable
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
 
     /**

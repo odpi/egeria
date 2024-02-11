@@ -593,8 +593,6 @@ public class DiscoveryOpenMetadataStore
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
-     *                     connection etc)
      *
      * @return unique identifier of the new metadata element
      *
@@ -606,8 +604,7 @@ public class DiscoveryOpenMetadataStore
                                                ElementStatus     initialStatus,
                                                Date              effectiveFrom,
                                                Date              effectiveTo,
-                                               ElementProperties properties,
-                                               String            templateGUID) throws InvalidParameterException,
+                                               ElementProperties properties) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
@@ -618,8 +615,7 @@ public class DiscoveryOpenMetadataStore
                                                               initialStatus,
                                                               effectiveFrom,
                                                               effectiveTo,
-                                                              properties,
-                                                              templateGUID);
+                                                              properties);
     }
 
 
@@ -637,8 +633,6 @@ public class DiscoveryOpenMetadataStore
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
-     *                     connection etc)
      * @param parentGUID unique identifier of optional parent entity
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
@@ -657,7 +651,6 @@ public class DiscoveryOpenMetadataStore
                                                Date                           effectiveFrom,
                                                Date                           effectiveTo,
                                                ElementProperties              properties,
-                                               String                         templateGUID,
                                                String                         parentGUID,
                                                String                         parentRelationshipTypeName,
                                                ElementProperties              parentRelationshipProperties,
@@ -672,10 +665,10 @@ public class DiscoveryOpenMetadataStore
                                                               initialStatus,
                                                               initialClassifications,
                                                               anchorGUID,
+                                                              false,
                                                               effectiveFrom,
                                                               effectiveTo,
                                                               properties,
-                                                              templateGUID,
                                                               parentGUID,
                                                               parentRelationshipTypeName,
                                                               parentRelationshipProperties,

@@ -302,7 +302,6 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
      * @param qualifiedName unique name for the port
      * @param displayName display name for the port
      * @param portType type of port (direction of data flow)
-     * @param templateGUID optional unique identifier of a template port to copy
      *
      * @return unique identifier of the new port
      *
@@ -313,10 +312,9 @@ public interface ProvisioningGovernanceContext extends GovernanceContext
     String createPort(String   processGUID,
                       String   qualifiedName,
                       String   displayName,
-                      PortType portType,
-                      String   templateGUID) throws InvalidParameterException,
-                                                    UserNotAuthorizedException,
-                                                    PropertyServerException;
+                      PortType portType) throws InvalidParameterException,
+                                                UserNotAuthorizedException,
+                                                PropertyServerException;
 
 
     /**

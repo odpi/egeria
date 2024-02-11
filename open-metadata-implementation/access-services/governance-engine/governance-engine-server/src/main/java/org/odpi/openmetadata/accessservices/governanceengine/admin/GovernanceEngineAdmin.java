@@ -120,7 +120,6 @@ public class GovernanceEngineAdmin extends AccessServiceAdmin
                                                                                        serverName,
                                                                                        serverUserName,
                                                                                        instance.getMetadataElementHandler(),
-                                                                                       instance.getEngineActionHandler(),
                                                                                        eventPublisher,
                                                                                        repositoryConnector.getRepositoryHelper(),
                                                                                        outTopicAuditLog),

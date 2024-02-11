@@ -307,6 +307,45 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
 
     /**
+     * Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the
+     * type has no subtypes.     *
+     * @param userId       unique identifier for requesting user.
+     * @param typeName     name of the standard null means any.
+     *
+     * @return TypeDefs list  each entry in the list contains a TypeDef.  This is a structure
+     * describing the TypeDef's category and properties.  If null is returned as the TypeDef list it means the type
+     * has no known subtypes
+     *
+     * @throws InvalidParameterException  all attributes of the external id are null.
+     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public List<OpenMetadataTypeDef> getSubTypes(String userId,
+                                                 String typeName) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        final String methodName  = "getSubTypes";
+        final String parameterName = "typeName";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/open-metadata-types/sub-types?typeName={3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(typeName, parameterName, methodName);
+
+        TypeDefListResponse restResult = restClient.callTypeDefListGetRESTCall(methodName,
+                                                                               urlTemplate,
+                                                                               serverName,
+                                                                               serviceURLMarker,
+                                                                               userId,
+                                                                               typeName);
+
+
+        return restResult.getTypeDefs();
+    }
+
+
+    /**
      * Return the TypeDef identified by the GUID.
      *
      * @param userId unique identifier for requesting user.
@@ -1065,8 +1104,6 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param effectiveFrom           the date when this element is active - null for active on creation
      * @param effectiveTo             the date when this element becomes inactive - null for active until deleted
      * @param properties              properties of the new metadata element
-     * @param templateGUID            the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
-     *                                connection etc)
      *
      * @return unique identifier of the new metadata element
      *
@@ -1080,10 +1117,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                ElementStatus     initialStatus,
                                                Date              effectiveFrom,
                                                Date              effectiveTo,
-                                               ElementProperties properties,
-                                               String            templateGUID) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+                                               ElementProperties properties) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         return this.createMetadataElementInStore(userId,
                                                  null,
@@ -1092,10 +1128,10 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                  initialStatus,
                                                  null,
                                                  null,
+                                                 false,
                                                  effectiveFrom,
                                                  effectiveTo,
                                                  properties,
-                                                 templateGUID,
                                                  null,
                                                  null,
                                                  null,
@@ -1117,8 +1153,6 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param effectiveFrom           the date when this element is active - null for active on creation
      * @param effectiveTo             the date when this element becomes inactive - null for active until deleted
      * @param properties              properties of the new metadata element
-     * @param templateGUID            the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
-     *                                connection etc)
      *
      * @return unique identifier of the new metadata element
      *
@@ -1133,8 +1167,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                ElementStatus     initialStatus,
                                                Date              effectiveFrom,
                                                Date              effectiveTo,
-                                               ElementProperties properties,
-                                               String            templateGUID) throws InvalidParameterException,
+                                               ElementProperties properties) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
@@ -1145,10 +1178,10 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                  initialStatus,
                                                  null,
                                                  null,
+                                                 false,
                                                  effectiveFrom,
                                                  effectiveTo,
                                                  properties,
-                                                 templateGUID,
                                                  null,
                                                  null,
                                                  null,
@@ -1168,11 +1201,11 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
      * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
      *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
-     *                     connection etc)
      * @param parentGUID unique identifier of optional parent entity
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
@@ -1189,10 +1222,10 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                ElementStatus                  initialStatus,
                                                Map<String, ElementProperties> initialClassifications,
                                                String                         anchorGUID,
+                                               boolean                        isOwnAnchor,
                                                Date                           effectiveFrom,
                                                Date                           effectiveTo,
                                                ElementProperties              properties,
-                                               String                         templateGUID,
                                                String                         parentGUID,
                                                String                         parentRelationshipTypeName,
                                                ElementProperties              parentRelationshipProperties,
@@ -1207,10 +1240,10 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                  initialStatus,
                                                  initialClassifications,
                                                  anchorGUID,
+                                                 isOwnAnchor,
                                                  effectiveFrom,
                                                  effectiveTo,
                                                  properties,
-                                                 templateGUID,
                                                  parentGUID,
                                                  parentRelationshipTypeName,
                                                  parentRelationshipProperties,
@@ -1232,11 +1265,11 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
      * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
      *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
-     *                     connection etc)
      * @param parentGUID unique identifier of optional parent entity
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
@@ -1248,6 +1281,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
      * @throws PropertyServerException there is a problem with the metadata store
      */
+    @Override
     public String createMetadataElementInStore(String                         userId,
                                                String                         externalSourceGUID,
                                                String                         externalSourceName,
@@ -1255,10 +1289,10 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                ElementStatus                  initialStatus,
                                                Map<String, ElementProperties> initialClassifications,
                                                String                         anchorGUID,
+                                               boolean                        isOwnAnchor,
                                                Date                           effectiveFrom,
                                                Date                           effectiveTo,
                                                ElementProperties              properties,
-                                               String                         templateGUID,
                                                String                         parentGUID,
                                                String                         parentRelationshipTypeName,
                                                ElementProperties              parentRelationshipProperties,
@@ -1288,10 +1322,171 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         requestBody.setInitialStatus(initialStatus);
         requestBody.setInitialClassifications(initialClassifications);
         requestBody.setAnchorGUID(anchorGUID);
+        requestBody.setIsOwnAnchor(isOwnAnchor);
         requestBody.setEffectiveFrom(effectiveFrom);
         requestBody.setEffectiveTo(effectiveTo);
         requestBody.setProperties(properties);
+        requestBody.setParentGUID(parentGUID);
+        requestBody.setParentRelationshipTypeName(parentRelationshipTypeName);
+        requestBody.setParentRelationshipProperties(parentRelationshipProperties);
+        requestBody.setParentAtEnd1(parentAtEnd1);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  serviceURLMarker,
+                                                                  userId);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
+     * The selected type also controls the names and types of the properties that are allowed.
+     * This version of the method allows access to advanced features such as multiple states and
+     * effectivity dates.
+     *
+     * @param userId caller's userId
+     * @param metadataElementTypeName type name of the new metadata element
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
+     * @param effectiveFrom the date when this element is active - null for active on creation
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                     connection etc)
+     * @param templateProperties properties of the new metadata element.  These override the template values
+     * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
+     *                              template element - and their anchored elements, which are also copied as part of this operaiton.
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException the type name, status or one of the properties is invalid
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    @Override
+    public String createMetadataElementFromTemplate(String                         userId,
+                                                    String                         metadataElementTypeName,
+                                                    String                         anchorGUID,
+                                                    boolean                        isOwnAnchor,
+                                                    Date                           effectiveFrom,
+                                                    Date                           effectiveTo,
+                                                    String                         templateGUID,
+                                                    ElementProperties              templateProperties,
+                                                    Map<String, String>            placeholderProperties,
+                                                    String                         parentGUID,
+                                                    String                         parentRelationshipTypeName,
+                                                    ElementProperties              parentRelationshipProperties,
+                                                    boolean                        parentAtEnd1) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+        return this.createMetadataElementFromTemplate(userId,
+                                                      null,
+                                                      null,
+                                                      metadataElementTypeName,
+                                                      anchorGUID,
+                                                      isOwnAnchor,
+                                                      effectiveFrom,
+                                                      effectiveTo,
+                                                      templateGUID,
+                                                      templateProperties,
+                                                      placeholderProperties,
+                                                      parentGUID,
+                                                      parentRelationshipTypeName,
+                                                      parentRelationshipProperties,
+                                                      parentAtEnd1);
+    }
+
+
+    /**
+     * Create a new metadata element in the metadata store using the template identified by the templateGUID.
+     * The type name comes from the open metadata types.
+     * The selected type also controls the names and types of the properties that are allowed.
+     * The template and any similar anchored objects are
+     * copied in this process.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param metadataElementTypeName type name of the new metadata element
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
+     * @param effectiveFrom the date when this element is active - null for active on creation
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                     connection etc)
+     * @param templateProperties properties of the new metadata element.  These override the template values
+     * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
+     *                              template element - and their anchored elements, which are also copied as part of this operaiton.
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException the type name, status or one of the properties is invalid
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    @Override
+    public String createMetadataElementFromTemplate(String                         userId,
+                                                    String                         externalSourceGUID,
+                                                    String                         externalSourceName,
+                                                    String                         metadataElementTypeName,
+                                                    String                         anchorGUID,
+                                                    boolean                        isOwnAnchor,
+                                                    Date                           effectiveFrom,
+                                                    Date                           effectiveTo,
+                                                    String                         templateGUID,
+                                                    ElementProperties              templateProperties,
+                                                    Map<String, String>            placeholderProperties,
+                                                    String                         parentGUID,
+                                                    String                         parentRelationshipTypeName,
+                                                    ElementProperties              parentRelationshipProperties,
+                                                    boolean                        parentAtEnd1) throws InvalidParameterException,
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        PropertyServerException
+    {
+        final String methodName               = "createMetadataElementFromTemplate";
+        final String elementTypeParameterName = "metadataElementTypeName";
+        final String templateGUIDParameterName = "templateGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/from-template";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(metadataElementTypeName, elementTypeParameterName, methodName);
+
+        if (parentGUID != null)
+        {
+            final String parentRelationshipTypeNameParameterName = "parentRelationshipTypeName";
+
+            invalidParameterHandler.validateName(parentRelationshipTypeName, parentRelationshipTypeNameParameterName, methodName);
+        }
+
+        TemplateRequestBody requestBody = new TemplateRequestBody();
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+        requestBody.setTypeName(metadataElementTypeName);
+        requestBody.setAnchorGUID(anchorGUID);
+        requestBody.setIsOwnAnchor(isOwnAnchor);
+        requestBody.setEffectiveFrom(effectiveFrom);
+        requestBody.setEffectiveTo(effectiveTo);
         requestBody.setTemplateGUID(templateGUID);
+        requestBody.setTemplateProperties(templateProperties);
+        requestBody.setPlaceholderProperties(placeholderProperties);
         requestBody.setParentGUID(parentGUID);
         requestBody.setParentRelationshipTypeName(parentRelationshipTypeName);
         requestBody.setParentRelationshipProperties(parentRelationshipProperties);
@@ -2913,7 +3108,12 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         properties = propertyHelper.addIntProperty(properties, priorityPropertyName, priority);
         properties = propertyHelper.addEnumProperty(properties, statusPropertyName, statusPropertyTypeName, openEnumPropertyValue);
 
-        String todoGUID = this.createMetadataElementInStore(userId, todoTypeName, ElementStatus.ACTIVE, null, null, properties, null);
+        String todoGUID = this.createMetadataElementInStore(userId,
+                                                            todoTypeName,
+                                                            ElementStatus.ACTIVE,
+                                                            null,
+                                                            null,
+                                                            properties);
 
         /*
          * Link the "to do" and the person role

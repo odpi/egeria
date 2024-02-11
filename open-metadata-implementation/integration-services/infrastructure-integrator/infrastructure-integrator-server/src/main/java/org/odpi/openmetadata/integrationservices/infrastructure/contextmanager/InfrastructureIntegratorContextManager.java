@@ -9,6 +9,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
@@ -168,7 +170,10 @@ public class InfrastructureIntegratorContextManager extends IntegrationContextMa
                                                                                                                     permittedSynchronizationName,
                                                                                                                     serviceOptionsString));
 
-            String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName, "Catalog", null);
+            String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName,
+                                                                 DeployedImplementationType.ASSET_CATALOG.getAssociatedTypeName(),
+                                                                 DeployedImplementationType.ASSET_CATALOG.getAssociatedClassification(),
+                                                                 DeployedImplementationType.ASSET_CATALOG.getDeployedImplementationType());
             String externalSourceName = metadataSourceQualifiedName;
 
             if (externalSourceGUID == null)

@@ -4,8 +4,8 @@ package org.odpi.openmetadata.engineservices.surveyaction.handlers;
 
 import org.odpi.openmetadata.accessservices.assetowner.client.CSVFileAssetOwner;
 import org.odpi.openmetadata.accessservices.assetowner.client.FileSystemAssetOwner;
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.accessservices.assetowner.client.ConnectedAssetClient;
 import org.odpi.openmetadata.accessservices.assetowner.client.SurveyAssetStoreClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
@@ -45,7 +45,7 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
      * @param serverName the name of the engine host server where the survey action engine is running
      * @param serverUserId user id for the server to use
      * @param configurationClient client to retrieve the configuration
-     * @param serverClient client used by the engine host services to control the execution of governance action requests
+     * @param engineActionClient client used by the engine host services to control the execution of governance action requests
      * @param connectedAssetClient REST client from the OCF that is linked to the Asset Owner OMAS
      * @param fileSystemAssetOwner REST client that is linked to the Asset Owner OMAS
      * @param csvFileAssetOwner REST client that is linked to the Asset Owner OMAS
@@ -57,7 +57,7 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
                                      String                              serverName,
                                      String                              serverUserId,
                                      GovernanceEngineConfigurationClient configurationClient,
-                                     GovernanceContextClient             serverClient,
+                                     GovernanceContextClient             engineActionClient,
                                      ConnectedAssetClient                connectedAssetClient,
                                      FileSystemAssetOwner                fileSystemAssetOwner,
                                      CSVFileAssetOwner                   csvFileAssetOwner,
@@ -70,7 +70,7 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
               serverUserId,
               EngineServiceDescription.SURVEY_ACTION_OMES.getEngineServiceFullName(),
               configurationClient,
-              serverClient,
+              engineActionClient,
               auditLog,
               maxPageSize);
 
@@ -98,14 +98,14 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
      * @throws PropertyServerException there was a problem detected by the governance action engine.
      */
     @Override
-    public GovernanceServiceHandler runGovernanceService(String                     governanceActionGUID,
-                                                         String                     governanceRequestType,
-                                                         Date                       startDate,
-                                                         Map<String, String>        requestParameters,
-                                                         List<RequestSourceElement> requestSourceElements,
-                                                         List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,
-                                                                                                                 UserNotAuthorizedException,
-                                                                                                                 PropertyServerException
+    public void runGovernanceService(String                     governanceActionGUID,
+                                     String                     governanceRequestType,
+                                     Date                       startDate,
+                                     Map<String, String>        requestParameters,
+                                     List<RequestSourceElement> requestSourceElements,
+                                     List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
         final String methodName = "runGovernanceService";
 
@@ -141,11 +141,7 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
 
             Thread thread = new Thread(surveyActionServiceHandler, governanceServiceCache.getGovernanceServiceName() + assetGUID + new Date());
             thread.start();
-
-            return surveyActionServiceHandler;
         }
-
-        return null;
     }
 
 
@@ -216,7 +212,7 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
                                               governanceEngineGUID,
                                               serverUserId,
                                               engineActionGUID,
-                                              serverClient,
+                                              engineActionClient,
                                               governanceServiceCache.getServiceRequestType(),
                                               governanceServiceCache.getGovernanceServiceGUID(),
                                               governanceServiceCache.getGovernanceServiceName(),

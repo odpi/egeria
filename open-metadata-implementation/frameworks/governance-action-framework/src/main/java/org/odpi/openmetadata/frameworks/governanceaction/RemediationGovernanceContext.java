@@ -42,10 +42,9 @@ public interface RemediationGovernanceContext extends GovernanceContext
      * @throws PropertyServerException there is a problem with the metadata store
      */
     String createMetadataElement(String            metadataElementTypeName,
-                                 ElementProperties properties,
-                                 String            templateGUID) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException;
+                                 ElementProperties properties) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException;
 
 
     /**
@@ -59,8 +58,6 @@ public interface RemediationGovernanceContext extends GovernanceContext
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
-     *                     connection etc)
      *
      * @return unique identifier of the new metadata element
      *
@@ -72,10 +69,9 @@ public interface RemediationGovernanceContext extends GovernanceContext
                                  ElementStatus     initialStatus,
                                  Date              effectiveFrom,
                                  Date              effectiveTo,
-                                 ElementProperties properties,
-                                 String            templateGUID) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException;
+                                 ElementProperties properties) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException;
 
 
     /**

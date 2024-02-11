@@ -18,6 +18,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
@@ -196,7 +197,7 @@ public class GovernanceConfigurationHandler
                                                                 qualifiedName,
                                                                 displayName,
                                                                 description,
-                                                                null,
+                                                                DeployedImplementationType.GOVERNANCE_ENGINE.getDeployedImplementationType(),
                                                                 null,
                                                                 null,
                                                                 null,
@@ -276,6 +277,7 @@ public class GovernanceConfigurationHandler
                                                       specificMatchPropertyNames,
                                                       false,
                                                       false,
+                                                      null,
                                                       null,
                                                       methodName);
     }
@@ -493,6 +495,7 @@ public class GovernanceConfigurationHandler
                                              "Connection to create governance service",
                                              false,
                                              false,
+                                             governanceEngineHandler.getSupportedZones(),
                                              effectiveTime,
                                              methodName);
         }
@@ -527,6 +530,7 @@ public class GovernanceConfigurationHandler
                                                                OpenMetadataType.GOVERNANCE_SERVICE.typeName,
                                                                false,
                                                                false,
+                                                               governanceServiceHandler.getSupportedZones(),
                                                                new Date(),
                                                                methodName);
     }
@@ -559,6 +563,7 @@ public class GovernanceConfigurationHandler
                                                                      OpenMetadataType.GOVERNANCE_SERVICE.typeName,
                                                                      false,
                                                                      false,
+                                                                     governanceServiceHandler.getSupportedZones(),
                                                                      new Date(),
                                                                      methodName);
     }
@@ -592,6 +597,7 @@ public class GovernanceConfigurationHandler
                                                                    maximumResults,
                                                                    false,
                                                                    false,
+                                                                   governanceServiceHandler.getSupportedZones(),
                                                                    new Date(),
                                                                    methodName);
     }
@@ -725,6 +731,7 @@ public class GovernanceConfigurationHandler
                                                            connection,
                                                            false,
                                                            false,
+                                                           governanceServiceHandler.getSupportedZones(),
                                                            new Date(),
                                                            methodName);
     }
@@ -1282,7 +1289,7 @@ public class GovernanceConfigurationHandler
                                                                 properties.getQualifiedName(),
                                                                 properties.getDisplayName(),
                                                                 properties.getDescription(),
-                                                                properties.getTypeDescription(),
+                                                                DeployedImplementationType.INTEGRATION_GROUP.getDeployedImplementationType(),
                                                                 properties.getVersion(),
                                                                 properties.getPatchLevel(),
                                                                 properties.getSource(),
@@ -1362,6 +1369,7 @@ public class GovernanceConfigurationHandler
                                                       specificMatchPropertyNames,
                                                       false,
                                                       false,
+                                                      null,
                                                       null,
                                                       methodName);
     }
@@ -1573,6 +1581,7 @@ public class GovernanceConfigurationHandler
                                              "Connection to create integration connector",
                                              false,
                                              false,
+                                             connectionHandler.getSupportedZones(),
                                              effectiveTime,
                                              methodName);
         }
@@ -1607,6 +1616,7 @@ public class GovernanceConfigurationHandler
                                                                   OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
                                                                   false,
                                                                   false,
+                                                                  integrationConnectorHandler.getSupportedZones(),
                                                                   new Date(),
                                                                   methodName);
     }
@@ -1639,6 +1649,7 @@ public class GovernanceConfigurationHandler
                                                                         OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
                                                                         false,
                                                                         false,
+                                                                        integrationConnectorHandler.getSupportedZones(),
                                                                         new Date(),
                                                                         methodName);
     }
@@ -1672,6 +1683,7 @@ public class GovernanceConfigurationHandler
                                                                       maximumResults,
                                                                       false,
                                                                       false,
+                                                                      integrationConnectorHandler.getSupportedZones(),
                                                                       new Date(),
                                                                       methodName);
     }
@@ -1812,6 +1824,7 @@ public class GovernanceConfigurationHandler
                                                               connection,
                                                               false,
                                                               false,
+                                                              integrationConnectorHandler.getSupportedZones(),
                                                               new Date(),
                                                               methodName);
     }

@@ -70,7 +70,7 @@ public class SoftwareCapabilityConverter<B> extends AssetManagerOMASConverter<B>
                     softwareCapabilitiesProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     softwareCapabilitiesProperties.setTechnicalName(this.removeName(instanceProperties));
                     softwareCapabilitiesProperties.setTechnicalDescription(this.removeDescription(instanceProperties));
-                    softwareCapabilitiesProperties.setTypeDescription(this.removeCapabilityType(instanceProperties));
+                    softwareCapabilitiesProperties.setDeployedImplementationType(this.removeCapabilityType(instanceProperties));
                     softwareCapabilitiesProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
                     softwareCapabilitiesProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
                     softwareCapabilitiesProperties.setSource(this.removeSource(instanceProperties));

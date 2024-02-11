@@ -3,12 +3,12 @@
 
 package org.odpi.openmetadata.engineservices.governanceaction.handlers;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
-import org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.registration.GovernanceEngineHandlerFactory;
 
@@ -49,18 +49,18 @@ public class GovernanceActionEngineHandlerFactory extends GovernanceEngineHandle
         {
 
             GovernanceContextClient governanceContextClient;
-            GovernanceEngineRESTClient restClient;
+            GAFRESTClient           restClient;
 
             if ((localServerName != null) && (localServerPassword != null))
             {
-                restClient = new GovernanceEngineRESTClient(partnerServerName,
-                                                            partnerURLRoot,
-                                                            localServerUserId,
-                                                            localServerPassword);
+                restClient = new GAFRESTClient(partnerServerName,
+                                               partnerURLRoot,
+                                               localServerUserId,
+                                               localServerPassword);
             }
             else
             {
-                restClient = new GovernanceEngineRESTClient(partnerServerName, partnerURLRoot);
+                restClient = new GAFRESTClient(partnerServerName, partnerURLRoot);
             }
 
             governanceContextClient = new GovernanceContextClient(partnerServerName,

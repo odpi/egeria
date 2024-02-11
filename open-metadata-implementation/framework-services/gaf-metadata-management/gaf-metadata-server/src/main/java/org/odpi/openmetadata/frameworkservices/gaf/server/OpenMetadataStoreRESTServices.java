@@ -378,6 +378,73 @@ public class OpenMetadataStoreRESTServices
 
 
     /**
+     * Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the
+     * type has no subtypes.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId unique identifier for requesting user.
+     * @param typeName name of type to retrieve against.
+     * @return TypeDefListResponse:
+     * TypeDefs list or
+     * InvalidParameterException the typeName is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public TypeDefListResponse getSubTypes(String serverName,
+                                           String serviceURLMarker,
+                                           String userId,
+                                           String typeName)
+    {
+        final String methodName = "getSubTypes";
+        final String parameterName = "typeName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        TypeDefListResponse response = new TypeDefListResponse();
+
+        try
+        {
+            auditLog                              = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
+            String               serviceName      = instanceHandler.getServiceName(serviceURLMarker);
+
+            invalidParameterHandler.validateName(typeName, parameterName, methodName);
+
+            List<String>  subTypeNames = repositoryHelper.getSubTypesOf(serviceName, typeName);
+
+            if (subTypeNames != null)
+            {
+                List<OpenMetadataTypeDef> openMetadataTypeDefList = new ArrayList<>();
+
+                for (String subTypeName : subTypeNames)
+                {
+                    if (subTypeName != null)
+                    {
+                        TypeDef subType = repositoryHelper.getTypeDefByName(serviceName, subTypeName);
+
+                        openMetadataTypeDefList.add(this.getTypeDef(subType));
+                    }
+                }
+
+                if (! openMetadataTypeDefList.isEmpty())
+                {
+                    response.setTypeDefs(openMetadataTypeDefList);
+                }
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
      * Return the TypeDef identified by the GUID.
      *
      * @param serverName unique identifier for requested server.
@@ -1205,10 +1272,78 @@ public class OpenMetadataStoreRESTServices
                                                                       requestBody.getInitialStatus(),
                                                                       requestBody.getInitialClassifications(),
                                                                       requestBody.getAnchorGUID(),
+                                                                      requestBody.getIsOwnAnchor(),
                                                                       requestBody.getEffectiveFrom(),
                                                                       requestBody.getEffectiveTo(),
                                                                       requestBody.getProperties(),
+                                                                      requestBody.getParentGUID(),
+                                                                      requestBody.getParentRelationshipTypeName(),
+                                                                      requestBody.getParentRelationshipProperties(),
+                                                                      requestBody.getParentAtEnd1(),
+                                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                      requestBody.getEffectiveTime(),
+                                                                      methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Create a new metadata element in the metadata store using a template.  The type name comes from the open metadata types.
+     * The selected type also controls the names and types of the properties that are allowed.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param requestBody properties for the new element
+     *
+     * @return unique identifier of the new metadata element
+     *  InvalidParameterException the type name, status or one of the properties is invalid
+     *  UserNotAuthorizedException the governance action service is not authorized to create this type of element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    public GUIDResponse createMetadataElementFromTemplate(String              serverName,
+                                                          String              serviceURLMarker,
+                                                          String              userId,
+                                                          TemplateRequestBody requestBody)
+    {
+        final String methodName = "createMetadataElementFromTemplate";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        GUIDResponse response = new GUIDResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+                response.setGUID(handler.createMetadataElementFromTemplate(userId,
+                                                                      requestBody.getExternalSourceGUID(),
+                                                                      requestBody.getExternalSourceName(),
+                                                                      requestBody.getTypeName(),
+                                                                      requestBody.getAnchorGUID(),
+                                                                      requestBody.getIsOwnAnchor(),
+                                                                      requestBody.getEffectiveFrom(),
+                                                                      requestBody.getEffectiveTo(),
                                                                       requestBody.getTemplateGUID(),
+                                                                      requestBody.getTemplateProperties(),
+                                                                      requestBody.getPlaceholderProperties(),
                                                                       requestBody.getParentGUID(),
                                                                       requestBody.getParentRelationshipTypeName(),
                                                                       requestBody.getParentRelationshipProperties(),

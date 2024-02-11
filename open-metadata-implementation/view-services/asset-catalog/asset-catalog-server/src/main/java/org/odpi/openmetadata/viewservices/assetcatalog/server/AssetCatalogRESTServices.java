@@ -9,38 +9,21 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder;
+import org.odpi.openmetadata.frameworks.governanceaction.search.*;
 import org.odpi.openmetadata.tokencontroller.TokenController;
-import org.odpi.openmetadata.viewservices.assetcatalog.beans.AssetCatalogBean;
-import org.odpi.openmetadata.viewservices.assetcatalog.beans.Classification;
-import org.odpi.openmetadata.viewservices.assetcatalog.beans.Element;
-import org.odpi.openmetadata.viewservices.assetcatalog.beans.ElementOrigin;
-import org.odpi.openmetadata.viewservices.assetcatalog.beans.Elements;
-import org.odpi.openmetadata.viewservices.assetcatalog.beans.Relationship;
-import org.odpi.openmetadata.viewservices.assetcatalog.beans.Type;
-import org.odpi.openmetadata.viewservices.assetcatalog.rest.AssetCatalogResponse;
-import org.odpi.openmetadata.viewservices.assetcatalog.rest.AssetCatalogSupportedTypes;
-import org.odpi.openmetadata.viewservices.assetcatalog.rest.AssetListResponse;
-import org.odpi.openmetadata.viewservices.assetcatalog.rest.AssetResponse;
-import org.odpi.openmetadata.viewservices.assetcatalog.rest.ElementHierarchyRequest;
-import org.odpi.openmetadata.viewservices.assetcatalog.rest.LineageNodeNamesResponse;
-import org.odpi.openmetadata.viewservices.assetcatalog.rest.LineageResponse;
-import org.odpi.openmetadata.viewservices.assetcatalog.rest.LineageSearchRequest;
-import org.odpi.openmetadata.viewservices.assetcatalog.rest.LineageSearchResponse;
-import org.odpi.openmetadata.viewservices.assetcatalog.rest.LineageTypesResponse;
-import org.odpi.openmetadata.viewservices.assetcatalog.rest.LineageVertexResponse;
+import org.odpi.openmetadata.viewservices.assetcatalog.beans.*;
+import org.odpi.openmetadata.viewservices.assetcatalog.rest.*;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -62,6 +45,8 @@ public class AssetCatalogRESTServices extends TokenController
 
     private final String sourceName = ViewServiceDescription.ASSET_CATALOG.getViewServiceName();
 
+    private final List<ElementStatus>  activeElementsOnly = new ArrayList<>(Collections.singleton(ElementStatus.ACTIVE));
+
     /**
      * Default constructor
      */
@@ -71,11 +56,51 @@ public class AssetCatalogRESTServices extends TokenController
 
 
     /**
+     * Returns the list with supported types for search, including the subtypes supported.
+     * The list is deduplicated.
+     *
+     * @param serverName name of the server to route the request to
+     * @return the supported types from Asset Consumer OMAS or
+     * PropertyServerException if a configuration on the backend
+     * InvalidParameterException if parameter validation fails
+     * UserNotAuthorizedException security access problem
+     */
+    public AssetCatalogSupportedTypes getSupportedTypes(String serverName)
+    {
+        final String methodName = "getSupportedTypes";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        AssetCatalogSupportedTypes response = new AssetCatalogSupportedTypes();
+        AuditLog                   auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            response.setTypes(instanceHandler.getSupportedAssetTypes(userId, serverName, methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
      * Return a list of assets matching the search criteria without the full context
      *
      * @param serverName name of the server to route the request to
      * @param searchCriteria the query parameter with the search phrase
-     * @param types OM types list to search for
+     * @param typeNames OM types list to search for
      * @param sequencingProperty name of the property based on which to sort the result
      * @param sequencingOrder PROPERTY_ASCENDING or PROPERTY_DESCENDING
      * @param caseSensitive set case sensitive flag
@@ -89,7 +114,7 @@ public class AssetCatalogRESTServices extends TokenController
      */
     public AssetListResponse searchAssets(String          serverName,
                                           String          searchCriteria,
-                                          List<String>    types,
+                                          List<String>    typeNames,
                                           String          sequencingProperty,
                                           SequencingOrder sequencingOrder,
                                           boolean         caseSensitive,
@@ -115,16 +140,21 @@ public class AssetCatalogRESTServices extends TokenController
             OpenMetadataStoreClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
             SearchProperties searchProperties = new SearchProperties();
+            List<PropertyCondition> propertyConditions = new ArrayList<>();
 
+            propertyConditions.add(this.getSearchStringPropertyCondition(searchCriteria, exactMatch, caseSensitive));
 
-            instanceHandler.getSearchString(searchCriteria, false, false, !caseSensitive);
+            searchProperties.setConditions(propertyConditions);
+
+            searchProperties.setMatchCriteria(MatchCriteria.ALL);
 
             List<OpenMetadataElement> results = handler.findMetadataElements(userId,
                                                                              null,
-                                                                             types,
                                                                              null,
-                                                                             null,
-                                                                             null,
+                                                                             searchProperties,
+                                                                             activeElementsOnly,
+                                                                             this.getMatchClassifications(instanceHandler.getSupportedAssetTypes(userId, serverName, methodName),
+                                                                                                          typeNames),
                                                                              sequencingProperty,
                                                                              sequencingOrder,
                                                                              false,
@@ -143,6 +173,93 @@ public class AssetCatalogRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
+    }
+
+
+    /**
+     * Set up the property condition that represents the requested search string.
+     *
+     * @param searchCriteria value from caller
+     * @param exactMatch do they want an exact match?
+     * @param caseSensitive set case sensitive flag
+     * @return property condition
+     */
+    private PropertyCondition getSearchStringPropertyCondition(String  searchCriteria,
+                                                               boolean exactMatch,
+                                                               boolean caseSensitive)
+    {
+        PropertyCondition propertyCondition = new PropertyCondition();
+
+        String searchString;
+        if (exactMatch)
+        {
+            searchString = searchCriteria;
+        }
+        else
+        {
+            searchString = instanceHandler.getSearchString(searchCriteria, false, false, !caseSensitive);
+        }
+
+        PrimitiveTypePropertyValue propertyValue = new PrimitiveTypePropertyValue();
+        propertyValue.setPrimitiveValue(searchString);
+        propertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
+        propertyCondition.setValue(propertyValue);
+
+        return propertyCondition;
+    }
+
+
+    /**
+     * Return the classification conditions that matches the anchor classifications of the
+     * correct type.
+     *
+     * @param supportAssetTypes list of requested types (supplied in the view service options or derived from the list of asset types.
+     * @param requestedAssetTypes list of asset types from user
+     * @return SearchClassifications
+     */
+    private SearchClassifications getMatchClassifications(List<Type>   supportAssetTypes,
+                                                          List<String> requestedAssetTypes)
+    {
+        SearchClassifications searchClassifications = new SearchClassifications();
+        List<ClassificationCondition> classificationConditions = new ArrayList<>();
+
+        for (Type type : supportAssetTypes)
+        {
+            if ((type != null) && (requestedAssetTypes != null) && (requestedAssetTypes.contains(type.getName())))
+            {
+                ClassificationCondition classificationCondition = new ClassificationCondition();
+
+                classificationCondition.setName(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
+
+                SearchProperties searchProperties = new SearchProperties();
+
+                List<PropertyCondition> typeNamePropertyConditions = new ArrayList<>();
+                PropertyCondition       typeNamePropertyCondition  = new PropertyCondition();
+
+                typeNamePropertyCondition.setProperty(OpenMetadataProperty.ANCHOR_TYPE_NAME.name);
+
+                PrimitiveTypePropertyValue propertyValue = new PrimitiveTypePropertyValue();
+                propertyValue.setPrimitiveValue(type.getName());
+                propertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
+
+                typeNamePropertyCondition.setValue(propertyValue);
+                typeNamePropertyCondition.setOperator(PropertyComparisonOperator.EQ);
+
+                typeNamePropertyConditions.add(typeNamePropertyCondition);
+
+                searchProperties.setConditions(typeNamePropertyConditions);
+                searchProperties.setMatchCriteria(MatchCriteria.ALL);
+
+                classificationCondition.setSearchProperties(searchProperties);
+
+                classificationConditions.add(classificationCondition);
+            }
+        }
+
+        searchClassifications.setConditions(classificationConditions);
+        searchClassifications.setMatchCriteria(MatchCriteria.ANY);
+
+        return searchClassifications;
     }
 
 
@@ -178,22 +295,6 @@ public class AssetCatalogRESTServices extends TokenController
      */
     public AssetListResponse searchAssetsByTypeGUID(String serverName,
                                                     String typeGUID)
-    {
-        // todo
-        return null;
-    }
-
-
-    /**
-     * Returns the list with supported types for search, including the subtypes supported
-     *
-     * @param serverName name of the server to route the request to
-     * @return the supported types from Asset Consumer OMAS or
-     * PropertyServerException if a configuration on the backend
-     * InvalidParameterException if parameter validation fails
-     * UserNotAuthorizedException security access problem
-     */
-    public AssetCatalogSupportedTypes getSupportedTypes(String serverName)
     {
         // todo
         return null;
@@ -268,8 +369,8 @@ public class AssetCatalogRESTServices extends TokenController
      *  PropertyServerException from the underlying service or
      *  UserNotAuthorizedException from the underlying service
      */
-    public LineageResponse getEndToEndLineage(String serverName,
-                                              String guid,
+    public LineageResponse getEndToEndLineage(String  serverName,
+                                              String  guid,
                                               boolean includeProcesses)
     {
         // todo

@@ -78,6 +78,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:digital-service:digital-service-client')
     implementation project(':open-metadata-implementation:access-services:discovery-engine:discovery-engine-client')
     implementation project(':open-metadata-implementation:access-services:governance-engine:governance-engine-client')
+    implementation project(':open-metadata-implementation:access-services:governance-server:governance-server-client')
     implementation project(':open-metadata-implementation:access-services:governance-program:governance-program-client')
     implementation project(':open-metadata-implementation:access-services:project-management:project-management-client')
     implementation project(':open-metadata-implementation:access-services:security-officer:security-officer-client')
@@ -98,9 +99,9 @@ dependencies {
     implementation project(':open-metadata-implementation:integration-services:security-integrator:security-integrator-client')
     implementation project(':open-metadata-implementation:integration-services:topic-integrator:topic-integrator-client')
     implementation project(':open-metadata-implementation:integration-services:search-integrator:search-integrator-client')
-    implementation project(':open-metadata-implementation:governance-servers:engine-host-services:engine-host-services-client')
-    implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-client')
-    implementation project(':open-metadata-implementation:governance-servers:lineage-warehouse-services:lineage-warehouse-services-client')
+    implementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-client')
+    implementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-client')
+    implementation project(':open-metadata-implementation:governance-server-services:lineage-warehouse-services:lineage-warehouse-services-client')
     implementation project(':open-metadata-implementation:admin-services:admin-services-client')
     implementation project(':open-metadata-implementation:user-interfaces:ui-chassis:ui-chassis-spring')
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-client')
@@ -186,6 +187,7 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-directory-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:graph-repository-connector').fatJar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:xtdb-repository-connector').shadowJar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:omrs-rest-repository-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector').jar }

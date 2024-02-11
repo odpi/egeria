@@ -1657,6 +1657,19 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                           anchorsClassification.getProperties(),
                                                                                           methodName);
 
+                    if (anchorIdentifiers.anchorGUID == null)
+                    {
+                        /*
+                         * If the anchorGUID is not filled out then the entity is its own anchor.
+                         * This approach allows us to add the Anchors classification to be added
+                         * when an element is created, rather than once we have its GUID.
+                         * This saves a lot of unnecessary processing of Anchors classification by the
+                         * event handlers that receive the createEntity event, since they try to
+                         * derive the Anchors classification if it is missing.
+                         */
+                        anchorIdentifiers.anchorGUID = connectToEntity.getGUID();
+                    }
+
                     /*
                      * This is an attempt to trap an intermittent error recorded in issue #4680.
                      */
@@ -1704,8 +1717,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param targetGUIDParameterName parameter name supplying targetGUID
      * @param targetTypeName type of entity
      * @param targetEntity contents of the entity from the repository
-     * @param anchorGUID unique identifier of the anchor
-     * @param anchorTypeName unique identifier of the anchor entity's type
+     * @param anchorIdentifiers unique identifier/typeName of the anchor
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
@@ -1715,27 +1727,32 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws PropertyServerException problem within the repository services
      * @throws UserNotAuthorizedException local server user not allowed to issue the request.
      */
-    private void maintainAnchorGUIDInClassification(String        targetGUID,
-                                                    String        targetGUIDParameterName,
-                                                    String        targetTypeName,
-                                                    EntitySummary targetEntity,
-                                                    String        anchorGUID,
-                                                    String        anchorTypeName,
-                                                    boolean       forLineage,
-                                                    boolean       forDuplicateProcessing,
-                                                    Date          effectiveTime,
-                                                    String        methodName) throws InvalidParameterException,
-                                                                                     PropertyServerException,
-                                                                                     UserNotAuthorizedException
+    private void maintainAnchorGUIDInClassification(String            targetGUID,
+                                                    String            targetGUIDParameterName,
+                                                    String            targetTypeName,
+                                                    EntitySummary     targetEntity,
+                                                    AnchorIdentifiers anchorIdentifiers,
+                                                    boolean           forLineage,
+                                                    boolean           forDuplicateProcessing,
+                                                    Date              effectiveTime,
+                                                    String            methodName) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
     {
         Classification     anchorsClassification;
         InstanceProperties anchorsProperties = null;
         String             currentAnchorGUID = null;
+        String             newAnchorGUID = null;
+
+        if (anchorIdentifiers != null)
+        {
+            newAnchorGUID = anchorIdentifiers.anchorGUID;
+        }
 
         /*
          * This is an attempt to trap an intermittent error recorded in issue #4680.
          */
-        if ("<unknown>".equals(anchorGUID))
+        if ("<unknown>".equals(newAnchorGUID))
         {
             final String localMethodName = "maintainAnchorGUIDInClassification";
 
@@ -1796,22 +1813,25 @@ public class OpenMetadataAPIGenericHandler<B>
         /*
          * If the anchor guid has changed then update the value in the classification
          */
-        if (((currentAnchorGUID == null) && (anchorGUID != null)) ||
-            ((currentAnchorGUID != null) && (! currentAnchorGUID.equals(anchorGUID))))
+        if (((currentAnchorGUID == null) && (newAnchorGUID != null)) ||
+            ((currentAnchorGUID != null) && (! currentAnchorGUID.equals(newAnchorGUID))))
         {
             try
             {
-                anchorsProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                 anchorsProperties,
-                                                                                 OpenMetadataProperty.ANCHOR_GUID.name,
-                                                                                 anchorGUID,
-                                                                                 methodName);
+                if (anchorIdentifiers != null)
+                {
+                    anchorsProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     anchorsProperties,
+                                                                                     OpenMetadataProperty.ANCHOR_GUID.name,
+                                                                                     anchorIdentifiers.anchorGUID,
+                                                                                     methodName);
 
-                anchorsProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                 anchorsProperties,
-                                                                                 OpenMetadataProperty.ANCHOR_TYPE_NAME.name,
-                                                                                 anchorTypeName,
-                                                                                 methodName);
+                    anchorsProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     anchorsProperties,
+                                                                                     OpenMetadataProperty.ANCHOR_TYPE_NAME.name,
+                                                                                     anchorIdentifiers.anchorTypeName,
+                                                                                     methodName);
+                }
 
                 if (anchorsClassification == null)
                 {
@@ -1834,7 +1854,7 @@ public class OpenMetadataAPIGenericHandler<B>
                 }
                 else
                 {
-                    if (anchorGUID != null)
+                    if (newAnchorGUID != null)
                     {
                         repositoryHandler.reclassifyEntity(localServerUserId,
                                                            null,
@@ -2280,6 +2300,117 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
+     * Walk the graph to locate the anchor for an endpoint.
+     *
+     * @param userId calling user
+     * @param endpointGUID unique identifier of the endpoint
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return unique identifiers of attached anchor or null if there is no attached anchor
+     *
+     * @throws InvalidParameterException bad starting entity
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    private AnchorIdentifiers getAnchorGUIDForEndpoint(String  userId,
+                                                       String  endpointGUID,
+                                                       boolean forLineage,
+                                                       boolean forDuplicateProcessing,
+                                                       Date    effectiveTime,
+                                                       String  methodName) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        /*
+         * Is the endpoint connected to some infrastructure?
+         */
+        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                    endpointGUID,
+                                                                                    OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                                                                    OpenMetadataType.SERVER_ENDPOINT_TYPE_GUID,
+                                                                                    OpenMetadataType.SERVER_ENDPOINT_TYPE_NAME,
+                                                                                    1,
+                                                                                    forLineage,
+                                                                                    forDuplicateProcessing,
+                                                                                    0,
+                                                                                    0,
+                                                                                    effectiveTime,
+                                                                                    methodName);
+
+        if (relationships != null)
+        {
+            /*
+             * The infrastructure can be the anchor.
+             */
+            if (relationships.size() == 1)
+            {
+                EntityProxy proxy = relationships.get(0).getEntityOneProxy();
+
+                if ((proxy != null) && (proxy.getGUID() != null) && (proxy.getType() != null))
+                {
+                    AnchorIdentifiers anchorIdentifiers = new AnchorIdentifiers();
+
+                    anchorIdentifiers.anchorGUID     = proxy.getGUID();
+                    anchorIdentifiers.anchorTypeName = proxy.getType().getTypeDefName();
+
+                    return anchorIdentifiers;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /*
+         * The endpoint is not connected to infrastructure, so try the connection.
+         */
+        relationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                 endpointGUID,
+                                                                 OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                                                 OpenMetadataType.CONNECTION_ENDPOINT_TYPE_GUID,
+                                                                 OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME,
+                                                                 2,
+                                                                 forLineage,
+                                                                 forDuplicateProcessing,
+                                                                 0, 0,
+                                                                 effectiveTime,
+                                                                 methodName);
+
+        if (relationships != null)
+        {
+            /*
+             * Ignore the connection if the endpoint is used in many places.
+             */
+            if (relationships.size() == 1)
+            {
+                for (Relationship relationship : relationships)
+                {
+                    if (relationship != null)
+                    {
+                        EntityProxy proxy = relationship.getEntityOneProxy();
+                        if ((proxy != null) && (proxy.getGUID() != null) && (proxy.getType() != null))
+                        {
+                            AnchorIdentifiers anchorIdentifiers = new AnchorIdentifiers();
+
+                            anchorIdentifiers.anchorGUID     = proxy.getGUID();
+                            anchorIdentifiers.anchorTypeName = proxy.getType().getTypeDefName();
+
+                            return anchorIdentifiers;
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
      * Walk the graph to locate the anchor for a Like.  Likes are attached directly to a referenceable.
      *
      * @param userId calling user
@@ -2451,6 +2582,63 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
+     * Walk the graph to locate the anchor for a Survey report.  Survey reports are attached directly to an asset.
+     *
+     * @param userId calling user
+     * @param reportGUID unique identifier of the connection (it is assumed that the anchorGUID property of this instance is null)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     *
+     * @return unique identifiers of attached anchor or null if there is no attached anchor
+     *
+     * @throws InvalidParameterException one of the guids is no longer available
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    private AnchorIdentifiers getAnchorGUIDForSurveyReport(String  userId,
+                                                           String  reportGUID,
+                                                           boolean forLineage,
+                                                           boolean forDuplicateProcessing,
+                                                           Date    effectiveTime,
+                                                           String  methodName) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        /*
+         * Is the report connected to an Asset?
+         */
+        Relationship relationship = repositoryHandler.getUniqueRelationshipByType(userId,
+                                                                                  reportGUID,
+                                                                                  OpenMetadataType.SURVEY_REPORT.typeName,
+                                                                                  false,
+                                                                                  OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeGUID,
+                                                                                  OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeName,
+                                                                                  forLineage,
+                                                                                  forDuplicateProcessing,
+                                                                                  effectiveTime,
+                                                                                  methodName);
+
+        if (relationship != null)
+        {
+            EntityProxy proxy = relationship.getEntityOneProxy();
+            if ((proxy != null) && (proxy.getGUID() != null))
+            {
+                AnchorIdentifiers anchorIdentifiers = new AnchorIdentifiers();
+
+                anchorIdentifiers.anchorGUID = proxy.getGUID();
+                anchorIdentifiers.anchorTypeName = proxy.getType().getTypeDefName();
+
+                return anchorIdentifiers;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
      * Walk the graph to locate the anchor for an annotation.  Annotations are attached to each other through various levels of nesting
      * and eventually anchored to an asset via an OpenDiscoveryAnalysisReport.   The asset is the anchor.
      *
@@ -2482,8 +2670,8 @@ public class OpenMetadataAPIGenericHandler<B>
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                     annotationGUID,
                                                                                     OpenMetadataType.ANNOTATION.typeName,
-                                                                                    null,
-                                                                                    null,
+                                                                                    OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeGUID,
+                                                                                    OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
                                                                                     1,
                                                                                     forLineage,
                                                                                     forDuplicateProcessing,
@@ -2500,22 +2688,9 @@ public class OpenMetadataAPIGenericHandler<B>
                     EntityProxy proxy = relationship.getEntityOneProxy();
                     if ((proxy != null) && (proxy.getGUID() != null) && (proxy.getType() != null) && (! annotationGUID.equals(proxy.getGUID())))
                     {
-                        if (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME))
+                        if (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataType.SURVEY_REPORT.typeName))
                         {
-                            return this.getAnchorGUIDForOpenDiscoveryAnalysisReport(userId, proxy.getGUID(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
-                        }
-                        else if (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataType.DATA_FIELD_TYPE_NAME))
-                        {
-                            AnchorIdentifiers parentAnchorIdentifiers = this.getAnchorGUIDForDataField(userId, proxy.getGUID(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
-
-                            if (parentAnchorIdentifiers != null)
-                            {
-                                return parentAnchorIdentifiers;
-                            }
-                        }
-                        else if (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataType.ANNOTATION.typeName))
-                        {
-                            return this.getAnchorGUIDForAnnotation(userId, proxy.getGUID(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
+                            return this.getAnchorGUIDForSurveyReport(userId, proxy.getGUID(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
                         }
                     }
                 }
@@ -2845,7 +3020,7 @@ public class OpenMetadataAPIGenericHandler<B>
     /**
      * The properties for an Anchors classification.
      */
-    static class AnchorIdentifiers
+    public static class AnchorIdentifiers
     {
         String anchorGUID = null;
         String anchorTypeName = null;
@@ -2895,6 +3070,10 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             anchorIdentifiers = this.getAnchorGUIDForConnection(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.ENDPOINT_TYPE_NAME))
+        {
+            anchorIdentifiers = this.getAnchorGUIDForEndpoint(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+        }
         else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.COMMENT_TYPE_NAME))
         {
             anchorIdentifiers = this.getAnchorGUIDForComment(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
@@ -2910,6 +3089,10 @@ public class OpenMetadataAPIGenericHandler<B>
         else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME))
         {
             anchorIdentifiers = this.getAnchorGUIDForOpenDiscoveryAnalysisReport(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+        }
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.SURVEY_REPORT.typeName))
+        {
+            anchorIdentifiers = this.getAnchorGUIDForSurveyReport(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
         else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.ANNOTATION.typeName))
         {
@@ -2930,6 +3113,17 @@ public class OpenMetadataAPIGenericHandler<B>
         else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME))
         {
             anchorIdentifiers = this.getAnchorGUIDForGlossaryCategory(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
+        }
+        else if ((repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.ASSET.typeName)) ||
+                (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.PERSON_TYPE_NAME)))
+        {
+            /*
+             * Assume this type of Referenceable is its own anchor.
+             */
+            anchorIdentifiers = new AnchorIdentifiers();
+
+            anchorIdentifiers.anchorGUID = targetGUID;
+            anchorIdentifiers.anchorTypeName = targetTypeName;
         }
 
         return anchorIdentifiers;
@@ -2974,7 +3168,7 @@ public class OpenMetadataAPIGenericHandler<B>
          * The anchorGUID has changed
          */
         if (((newAnchorIdentifiers == null) && (originalAnchorGUID != null)) ||
-            ((newAnchorIdentifiers != null) && (! newAnchorIdentifiers.equals(originalAnchorGUID))))
+            ((newAnchorIdentifiers != null) && (! newAnchorIdentifiers.anchorGUID.equals(originalAnchorGUID))))
         {
             EntityDetail targetElement = repositoryHandler.getEntityByGUID(localServerUserId,
                                                                            targetGUID,
@@ -2991,8 +3185,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                         targetGUIDParameterName,
                                                         targetTypeName,
                                                         targetElement,
-                                                        newAnchorIdentifiers.anchorGUID,
-                                                        newAnchorIdentifiers.anchorTypeName,
+                                                        newAnchorIdentifiers,
                                                         forLineage,
                                                         forDuplicateProcessing,
                                                         effectiveTime,
@@ -3000,7 +3193,12 @@ public class OpenMetadataAPIGenericHandler<B>
             }
         }
 
-        return newAnchorIdentifiers.anchorGUID;
+        if (newAnchorIdentifiers != null)
+        {
+            return newAnchorIdentifiers.anchorGUID;
+        }
+
+        return null;
     }
 
 
@@ -3042,7 +3240,7 @@ public class OpenMetadataAPIGenericHandler<B>
         AnchorIdentifiers newAnchorIdentifiers = this.deriveAnchorGUID(targetGUID, targetTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
 
         /*
-         * The anchorGUID has changed
+         * Has the anchorGUID changed
          */
         if (((newAnchorIdentifiers == null) && (originalAnchorGUID != null)) ||
             ((newAnchorIdentifiers != null) && (! newAnchorIdentifiers.anchorGUID.equals(originalAnchorGUID))))
@@ -3053,8 +3251,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                         targetGUIDParameterName,
                                                         targetTypeName,
                                                         targetElement,
-                                                        newAnchorIdentifiers.anchorGUID,
-                                                        newAnchorIdentifiers.anchorTypeName,
+                                                        newAnchorIdentifiers,
                                                         forLineage,
                                                         forDuplicateProcessing,
                                                         effectiveTime,
@@ -3273,8 +3470,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                    connectToGUIDParameterName,
                                                    connectToType,
                                                    connectToEntity,
-                                                   anchorIdentifiers.anchorGUID,
-                                                   anchorIdentifiers.anchorTypeName,
+                                                   anchorIdentifiers,
                                                    forLineage,
                                                    forDuplicateProcessing,
                                                    effectiveTime,
@@ -3286,11 +3482,11 @@ public class OpenMetadataAPIGenericHandler<B>
          * If an anchor GUID has been found then validate it by retrieving the identified entity.  Note - anchorIdentifiers may be null if the connectToEntity
          * is actually an anchor.
          */
-        if (anchorIdentifiers != null)
+        if ((anchorIdentifiers != null) && (anchorIdentifiers.anchorGUID != null))
         {
             final String anchorGUIDParameterName = "anchorIdentifiers";
 
-            if (! anchorIdentifiers.equals(connectToEntity.getGUID()))
+            if (! anchorIdentifiers.anchorGUID.equals(connectToEntity.getGUID()))
             {
                 anchorEntity = repositoryHandler.getEntityByGUID(userId,
                                                                  anchorIdentifiers.anchorGUID,
@@ -3300,6 +3496,10 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                  forDuplicateProcessing,
                                                                  effectiveTime,
                                                                  methodName);
+            }
+            else
+            {
+                anchorEntity = connectToEntity;
             }
         }
 
@@ -3904,7 +4104,7 @@ public class OpenMetadataAPIGenericHandler<B>
          */
         AnchorIdentifiers parentAnchorIdentifiers = getAnchorGUIDFromAnchorsClassification(anchorEntity, methodName);
 
-        if (parentAnchorIdentifiers != null)
+        if ((parentAnchorIdentifiers != null) && (! anchorEntity.getGUID().equals(parentAnchorIdentifiers.anchorGUID)))
         {
             try
             {
@@ -5553,7 +5753,56 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
     {
+        return this.createBeanInRepository(userId,
+                                           externalSourceGUID,
+                                           externalSourceName,
+                                           entityTypeGUID,
+                                           entityTypeName,
+                                           propertyBuilder,
+                                           false,
+                                           effectiveTime,
+                                           methodName);
+    }
+
+
+    /**
+     * Create a new entity in the repository assuming all parameters are ok.
+     *
+     * @param userId           userId of user making request.
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param entityTypeGUID unique identifier of the type of entity to create
+     * @param entityTypeName unique name of the type of entity to create
+     * @param propertyBuilder builder pre-populated with the properties and classifications of the new entity
+     * @param isOwnAnchor flag to indicate if the new entity should be anchored to itself
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     * @return unique identifier of new entity
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the properties to the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String createBeanInRepository(String                        userId,
+                                         String                        externalSourceGUID,
+                                         String                        externalSourceName,
+                                         String                        entityTypeGUID,
+                                         String                        entityTypeName,
+                                         OpenMetadataAPIGenericBuilder propertyBuilder,
+                                         boolean                       isOwnAnchor,
+                                         Date                          effectiveTime,
+                                         String                        methodName) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
         invalidParameterHandler.validateUserId(userId, methodName);
+
+        if (isOwnAnchor)
+        {
+            /*
+             * A null anchorGUID meant that the element is its own Anchor.
+             */
+            propertyBuilder.setAnchors(userId, null, entityTypeName, methodName);
+        }
 
         validateNewEntityRequest(userId,
                                  entityTypeGUID,
@@ -5589,7 +5838,6 @@ public class OpenMetadataAPIGenericHandler<B>
     }
 
 
-
     /**
      * Create a new entity in the repository based on the contents of an existing entity (the template). The supplied builder is preloaded with
      * properties that should override the properties from the template.  This is the method to call from the specific handlers.
@@ -5626,7 +5874,22 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
     {
-        return createBeanFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateGUIDParameterName, entityTypeGUID, entityTypeName, uniqueParameterValue, uniqueParameterName, propertyBuilder, supportedZones, true, false, methodName);
+        return createBeanFromTemplate(userId,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      templateGUID,
+                                      templateGUIDParameterName,
+                                      entityTypeGUID,
+                                      entityTypeName,
+                                      false,
+                                      uniqueParameterValue,
+                                      uniqueParameterName,
+                                      propertyBuilder,
+                                      supportedZones,
+                                      true,
+                                      false,
+                                      null,
+                                      methodName);
     }
 
 
@@ -5668,7 +5931,22 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
     {
-        return createBeanFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateGUIDParameterName, entityTypeGUID, entityTypeName, uniqueParameterValue, uniqueParameterName, propertyBuilder, serviceSupportedZones, true, false, methodName);
+        return createBeanFromTemplate(userId,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      templateGUID,
+                                      templateGUIDParameterName,
+                                      entityTypeGUID,
+                                      entityTypeName,
+                                      false,
+                                      uniqueParameterValue,
+                                      uniqueParameterName,
+                                      propertyBuilder,
+                                      serviceSupportedZones,
+                                      true,
+                                      false,
+                                      null,
+                                      methodName);
     }
 
 
@@ -5683,6 +5961,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param templateGUIDParameterName name of parameter passing the templateGUID
      * @param entityTypeGUID unique identifier of the type for the entity
      * @param entityTypeName unique name of the type for the entity
+     * @param isOwnAnchor flag to indicate if the new entity should be anchored to itself
      * @param uniqueParameterValue the value of a unique property (eg qualifiedName) in the new entity - this is used to create unique names in the
      *                             attachments.
      * @param uniqueParameterName name of the property where the unique value is stored.
@@ -5691,6 +5970,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones list of supported zones for this service
      * @param deepCopy should the template creation extend to the anchored elements or just the direct entity?
      * @param templateSubstitute is this element a template substitute (used as the "other end" of a new/updated relationship)
+     * @param placeholderProperties values to override placeholder variables in the template
      * @param methodName calling method
      * @return unique identifier of the new bean
      * @throws InvalidParameterException one of the parameters is invalid
@@ -5704,73 +5984,121 @@ public class OpenMetadataAPIGenericHandler<B>
                                          String                        templateGUIDParameterName,
                                          String                        entityTypeGUID,
                                          String                        entityTypeName,
+                                         boolean                       isOwnAnchor,
                                          String                        uniqueParameterValue,
                                          String                        uniqueParameterName,
                                          OpenMetadataAPIGenericBuilder propertyBuilder,
                                          List<String>                  serviceSupportedZones,
                                          boolean                       deepCopy,
                                          boolean                       templateSubstitute,
+                                         Map<String, String>           placeholderProperties,
                                          String                        methodName) throws InvalidParameterException,
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
     {
-        TemplateProgress templateProgress = createBeanFromTemplate(userId,
-                                                                   externalSourceGUID,
-                                                                   externalSourceName,
-                                                                   true,
-                                                                   new TemplateProgress(),
-                                                                   templateGUID,
-                                                                   templateGUIDParameterName,
-                                                                   entityTypeGUID,
-                                                                   entityTypeName,
-                                                                   uniqueParameterValue,
-                                                                   uniqueParameterName,
-                                                                   propertyBuilder,
-                                                                   serviceSupportedZones,
-                                                                   deepCopy,
-                                                                   templateSubstitute,
-                                                                   methodName);
+        TemplateProgress templateProgress = new TemplateProgress();
 
-        if (templateProgress != null)
+        templateProgress = createBeanFromTemplate(userId,
+                                                  externalSourceGUID,
+                                                  externalSourceName,
+                                                  true,
+                                                  templateProgress,
+                                                  templateGUID,
+                                                  templateGUIDParameterName,
+                                                  entityTypeGUID,
+                                                  entityTypeName,
+                                                  uniqueParameterValue,
+                                                  uniqueParameterName,
+                                                  propertyBuilder,
+                                                  serviceSupportedZones,
+                                                  deepCopy,
+                                                  templateSubstitute,
+                                                  placeholderProperties,
+                                                  methodName);
+
+        /*
+         * This relationship shows where the property values for the new bean came from.  It enables traceability.  Also, if the template is
+         * updated, there is a possibility of making complementary changes to the entities that were derived from it.
+         */
+        InstanceProperties relationshipProperties = null;
+
+        if (templateProgress.sourceVersionNumber != 0)
         {
-            /*
-             * This relationship shows where the property values for the new bean came from.  It enables traceability.  Also, if the template is
-             * updated, there is a possibility of making complementary changes to the entities that were derived from it.
-             */
-            InstanceProperties relationshipProperties = null;
+            relationshipProperties = repositoryHelper.addLongPropertyToInstance(serviceName,
+                                                                                null,
+                                                                                OpenMetadataProperty.SOURCE_VERSION_NUMBER.name,
+                                                                                templateProgress.sourceVersionNumber,
+                                                                                methodName);
+        }
 
-            if (templateProgress.sourceVersionNumber != 0)
+        repositoryHandler.createRelationship(localServerUserId,
+                                             OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeGUID,
+                                             externalSourceGUID,
+                                             externalSourceName,
+                                             templateProgress.newBeanGUID,
+                                             templateGUID,
+                                             relationshipProperties,
+                                             methodName);
+
+        if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.ASSET.typeName))
+        {
+            auditLog.logMessage(assetActionDescription,
+                                GenericHandlersAuditCode.ASSET_ACTIVITY_CREATE.getMessageDefinition(userId,
+                                                                                                    entityTypeName,
+                                                                                                    templateProgress.newBeanGUID,
+                                                                                                    methodName,
+                                                                                                    serviceName));
+        }
+
+        if ((templateProgress.beanAnchorGUID == null) && (isOwnAnchor))
+        {
+            final String beanGUIDParameterName = "newBeanGUID";
+            EntityDetail anchorEntity = this.validateAnchorEntity(userId,
+                                                                  templateProgress.newBeanGUID,
+                                                                  beanGUIDParameterName,
+                                                                  entityTypeName,
+                                                                  true,
+                                                                  false,
+                                                                  true,
+                                                                  false,
+                                                                  serviceSupportedZones,
+                                                                  null,
+                                                                  methodName);
+
+            if (anchorEntity != null)
             {
-                relationshipProperties = repositoryHelper.addLongPropertyToInstance(serviceName,
-                                                                                    null,
-                                                                                    OpenMetadataProperty.SOURCE_VERSION_NUMBER.name,
-                                                                                    templateProgress.sourceVersionNumber,
-                                                                                    methodName);
-            }
+                InstanceProperties anchorProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                                   null,
+                                                                                                   OpenMetadataProperty.ANCHOR_GUID.name,
+                                                                                                   anchorEntity.getGUID(),
+                                                                                                   methodName);
 
-            repositoryHandler.createRelationship(localServerUserId,
-                                                 OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeGUID,
+                anchorProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                anchorProperties,
+                                                                                OpenMetadataProperty.ANCHOR_TYPE_NAME.name,
+                                                                                anchorEntity.getType().getTypeDefName(),
+                                                                                methodName);
+
+                repositoryHandler.classifyEntity(userId,
                                                  externalSourceGUID,
                                                  externalSourceName,
                                                  templateProgress.newBeanGUID,
-                                                 templateGUID,
-                                                 relationshipProperties,
+                                                 null,
+                                                 beanGUIDParameterName,
+                                                 entityTypeName,
+                                                 OpenMetadataType.ANCHORS_CLASSIFICATION.typeGUID,
+                                                 OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
+                                                 ClassificationOrigin.ASSIGNED,
+                                                 null,
+                                                 anchorProperties,
+                                                 false,
+                                                 false,
+                                                 null,
                                                  methodName);
-
-            if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.ASSET.typeName))
-            {
-                auditLog.logMessage(assetActionDescription,
-                                    GenericHandlersAuditCode.ASSET_ACTIVITY_CREATE.getMessageDefinition(userId,
-                                                                                                        entityTypeName,
-                                                                                                        templateProgress.newBeanGUID,
-                                                                                                        methodName,
-                                                                                                        serviceName));
             }
-
-            return templateProgress.newBeanGUID;
         }
 
-        return null;
+        return templateProgress.newBeanGUID;
     }
 
 
@@ -5813,6 +6141,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones list of supported zones for this service
      * @param deepCopy should the template creation extend to the anchored element or just the direct entity?
      * @param templateSubstitute is this element a template substitute (used as the "other end" of a new/updated relationship)
+     * @param placeholderProperties values to override placeholder variables in the template
      * @param methodName calling method
      *
      * @return current progress of the template replication
@@ -5836,6 +6165,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                     List<String>                  serviceSupportedZones,
                                                     boolean                       deepCopy,
                                                     boolean                       templateSubstitute,
+                                                    Map<String, String>           placeholderProperties,
                                                     String                        methodName) throws InvalidParameterException,
                                                                                                      PropertyServerException,
                                                                                                      UserNotAuthorizedException
@@ -5944,7 +6274,7 @@ public class OpenMetadataAPIGenericHandler<B>
             /*
              * Set the properties and classifications from the template entity as the default properties.
              */
-            propertyBuilder.setTemplateProperties(templateEntity.getProperties());
+            propertyBuilder.setTemplateProperties(templateEntity.getProperties(), placeholderProperties);
             propertyBuilder.setTemplateClassifications(userId, externalSourceGUID, externalSourceName, templateEntity.getClassifications(), methodName);
 
             /*
@@ -6042,6 +6372,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                    forDuplicateProcessing,
                                                                    serviceSupportedZones,
                                                                    effectiveTime,
+                                                                   placeholderProperties,
                                                                    methodName);
             }
 
@@ -6073,6 +6404,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param serviceSupportedZones list of supported zones for this service
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param placeholderProperties values to override placeholder variables in the template
      * @param methodName calling method
      *
      * @return current progress of the template replication
@@ -6080,22 +6412,23 @@ public class OpenMetadataAPIGenericHandler<B>
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the repositories
      */
-    private TemplateProgress addAttachmentsFromTemplate(String           userId,
-                                                        String           externalSourceGUID,
-                                                        String           externalSourceName,
-                                                        TemplateProgress templateProgress,
-                                                        String           startingGUID,
-                                                        String           startingGUIDParameterName,
-                                                        String           templateGUID,
-                                                        String           expectedTypeName,
-                                                        String           qualifiedName,
-                                                        boolean          forLineage,
-                                                        boolean          forDuplicateProcessing,
-                                                        List<String>     serviceSupportedZones,
-                                                        Date             effectiveTime,
-                                                        String           methodName) throws InvalidParameterException,
-                                                                                            PropertyServerException,
-                                                                                            UserNotAuthorizedException
+    private TemplateProgress addAttachmentsFromTemplate(String              userId,
+                                                        String              externalSourceGUID,
+                                                        String              externalSourceName,
+                                                        TemplateProgress    templateProgress,
+                                                        String              startingGUID,
+                                                        String              startingGUIDParameterName,
+                                                        String              templateGUID,
+                                                        String              expectedTypeName,
+                                                        String              qualifiedName,
+                                                        boolean             forLineage,
+                                                        boolean             forDuplicateProcessing,
+                                                        List<String>        serviceSupportedZones,
+                                                        Date                effectiveTime,
+                                                        Map<String, String> placeholderProperties,
+                                                        String              methodName) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
     {
         final String nextTemplateEntityGUIDParameterName = "nextTemplateEntity.getGUID";
         final String nextQualifiedNameParameterName = "nextQualifiedName";
@@ -6272,7 +6605,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                             serverName);
                             }
 
-                            builder.setTemplateProperties(nextTemplateEntity.getProperties());
+                            builder.setTemplateProperties(nextTemplateEntity.getProperties(), placeholderProperties);
                             builder.setTemplateClassifications(userId,
                                                                externalSourceGUID,
                                                                externalSourceName,
@@ -6294,6 +6627,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                                            serviceSupportedZones,
                                                                            true,
                                                                            false,
+                                                                           placeholderProperties,
                                                                            methodName);
 
                             nextBeanEntityGUID = templateProgress.newBeanGUID;
@@ -10602,6 +10936,7 @@ public class OpenMetadataAPIGenericHandler<B>
         return null;
     }
 
+
     /**
      * Return the bean that matches the requested value.
      *
@@ -10613,6 +10948,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param specificMatchPropertyNames list of property value to look in - if null or empty list then all string properties are checked.
      * @param forLineage             the query is to support lineage retrieval
      * @param forDuplicateProcessing the query is for duplicate processing and so must not deduplicate
+     * @param serviceSupportedZones supported zones for calling service
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method
      * @return matching bean.
@@ -10629,6 +10965,7 @@ public class OpenMetadataAPIGenericHandler<B>
                              List<String> specificMatchPropertyNames,
                              boolean      forLineage,
                              boolean      forDuplicateProcessing,
+                             List<String> serviceSupportedZones,
                              Date         effectiveTime,
                              String       methodName) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
@@ -10640,11 +10977,14 @@ public class OpenMetadataAPIGenericHandler<B>
                                                              resultTypeGUID,
                                                              resultTypeName,
                                                              specificMatchPropertyNames,
-                                                             true,
+                                                             false,
+                                                             false,
                                                              null,
                                                              null,
                                                              forLineage,
                                                              forDuplicateProcessing,
+                                                             serviceSupportedZones,
+                                                             null,
                                                              0,
                                                              invalidParameterHandler.getMaxPagingSize(),
                                                              effectiveTime,

@@ -148,6 +148,7 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                             OpenMetadataType.DATA_MANAGER_TYPE_GUID,
                                                             OpenMetadataType.DATA_MANAGER_TYPE_NAME,
                                                             builder,
+                                                            true,
                                                             effectiveTime,
                                                             methodName);
 
@@ -173,7 +174,7 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
      * @param uniqueName qualified name for the software capability
      * @param displayName short display name
      * @param description description of the file system
-     * @param type type of file system
+     * @param deployedImplementationType type of file system
      * @param version version of file system
      * @param patchLevel patchLevel of software supporting the file system
      * @param source supplier of the software for this file system
@@ -201,7 +202,7 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                              String               uniqueName,
                                              String               displayName,
                                              String               description,
-                                             String               type,
+                                             String               deployedImplementationType,
                                              String               version,
                                              String               patchLevel,
                                              String               source,
@@ -233,7 +234,7 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
         SoftwareCapabilityBuilder builder = new SoftwareCapabilityBuilder(uniqueName,
                                                                           displayName,
                                                                           description,
-                                                                          type,
+                                                                          deployedImplementationType,
                                                                           version,
                                                                           patchLevel,
                                                                           source,
@@ -258,6 +259,7 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                             typeGUID,
                                                             typeName,
                                                             builder,
+                                                            true,
                                                             effectiveTime,
                                                             methodName);
 
@@ -323,10 +325,14 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                            templateGUIDParameterName,
                                            OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
                                            OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                           true,
                                            qualifiedName,
                                            OpenMetadataProperty.QUALIFIED_NAME.name,
                                            builder,
                                            supportedZones,
+                                           true,
+                                           false,
+                                           null,
                                            methodName);
     }
 

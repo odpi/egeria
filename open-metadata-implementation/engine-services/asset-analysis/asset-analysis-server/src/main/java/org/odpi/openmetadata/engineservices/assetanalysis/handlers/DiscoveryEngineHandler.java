@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.engineservices.assetanalysis.handlers;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.client.*;
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -40,7 +40,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
      * @param serverName the name of the engine host server where the discovery engine is running
      * @param serverUserId user id for the server to use
      * @param configurationClient client to retrieve the configuration
-     * @param serverClient client used by the engine host services to control the execution of governance action requests
+     * @param engineActionClient client used by the engine host services to control the execution of governance action requests
      * @param discoveryEngineClient REST client for direct REST Calls to Discovery Engine OMAS - used by discovery services
      * @param openMetadataClient REST Client from the GAF that is linked to the Discovery Engine OMAS
      * @param auditLog logging destination
@@ -50,7 +50,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
                                   String                              serverName,
                                   String                              serverUserId,
                                   GovernanceEngineConfigurationClient configurationClient,
-                                  GovernanceContextClient             serverClient,
+                                  GovernanceContextClient             engineActionClient,
                                   DiscoveryEngineClient               discoveryEngineClient,
                                   OpenMetadataClient                  openMetadataClient,
                                   AuditLog                            auditLog,
@@ -61,7 +61,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
               serverUserId,
               EngineServiceDescription.ASSET_ANALYSIS_OMES.getEngineServiceFullName(),
               configurationClient,
-              serverClient,
+              engineActionClient,
               auditLog,
               maxPageSize);
 
@@ -184,21 +184,19 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
      * @param requestSourceElements metadata elements associated with the request to the governance action service
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
      *
-     * @return service handler for this request
-     *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the governance action engine.
      */
     @Override
-    public GovernanceServiceHandler runGovernanceService(String                     governanceActionGUID,
-                                                         String                     governanceRequestType,
-                                                         Date                       startDate,
-                                                         Map<String, String>        requestParameters,
-                                                         List<RequestSourceElement> requestSourceElements,
-                                                         List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,
-                                                                                                                 UserNotAuthorizedException,
-                                                                                                                 PropertyServerException
+    public void runGovernanceService(String                     governanceActionGUID,
+                                     String                     governanceRequestType,
+                                     Date                       startDate,
+                                     Map<String, String>        requestParameters,
+                                     List<RequestSourceElement> requestSourceElements,
+                                     List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
         final String methodName = "runGovernanceService";
 
@@ -236,11 +234,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
 
             Thread thread = new Thread(discoveryServiceHandler, governanceServiceCache.getGovernanceServiceName() + assetGUID + new Date());
             thread.start();
-
-            return discoveryServiceHandler;
         }
-
-        return null;
     }
 
 
@@ -365,7 +359,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
                                            governanceEngineGUID,
                                            serverUserId,
                                            governanceActionGUID,
-                                           serverClient,
+                                           engineActionClient,
                                            governanceServiceCache.getServiceRequestType(),
                                            governanceServiceCache.getGovernanceServiceGUID(),
                                            governanceServiceCache.getGovernanceServiceName(),
