@@ -358,13 +358,38 @@ distributions {
                         {
                             include 'Egeria*.http'
                         }
-                from { "$rootProject.projectDir/open-metadata-implementation" }
-                        {
-                            include 'admin-services/Egeria*.http'
-                            include 'repository-services/Egeria*.http'
-                            include 'platform-services/Egeria*.http'
-                            include 'access-services/*/Egeria*.http'
-                        }
+                from { "$rootProject.projectDir/open-metadata-implementation/admin-services" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/repository-services" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/platform-services" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/access-services/asset-consumer" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/access-services/asset-manager" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/access-services/asset-owner" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/access-services/data-manager" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/access-services/digital-architecture" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/access-services/discovery-engine" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/access-services/governance-engine" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/access-services/it-infrastructure" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/access-services/subject-area" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/framework-services/ocf-metadata-management" }
+                        { include 'Egeria*.http'}
+                from { "$rootProject.projectDir/open-metadata-implementation/framework-services/oif-metadata-management" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/framework-services/gaf-metadata-management" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-conformance-suite" }
+                        { include 'Egeria*.http' }
                 fileMode = 0755
             }
             into('assembly/opt/postman-collections/framework-services') {
@@ -382,32 +407,10 @@ distributions {
                         }
                 fileMode = 0755
             }
-            into('assembly/opt/http-client-collections/framework-services') {
-                from { "$rootProject.projectDir/open-metadata-implementation/framework-services/ocf-metadata-management" }
-                        {
-                            include 'Egeria*.http'
-                        }
-                from { "$rootProject.projectDir/open-metadata-implementation/framework-services/oif-metadata-management" }
-                        {
-                            include 'Egeria*.http'
-                        }
-                from { "$rootProject.projectDir/open-metadata-implementation/framework-services/gaf-metadata-management" }
-                        {
-                            include 'Egeria*.http'
-                        }
-                fileMode = 0755
-            }
             into('assembly/opt/postman-collections/conformance-suite') {
                 from { "$rootProject.projectDir/open-metadata-conformance-suite" }
                         {
                             include 'Egeria*.json'
-                        }
-                fileMode = 0755
-            }
-            into('assembly/opt/http-client-collections/conformance-suite') {
-                from { "$rootProject.projectDir/open-metadata-conformance-suite" }
-                        {
-                            include 'Egeria*.http'
                         }
                 fileMode = 0755
             }
