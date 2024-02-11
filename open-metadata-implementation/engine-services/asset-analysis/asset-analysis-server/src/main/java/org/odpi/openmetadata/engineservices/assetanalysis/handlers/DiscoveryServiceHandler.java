@@ -2,8 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.assetanalysis.handlers;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceEngineProperties;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
 import org.odpi.openmetadata.engineservices.assetanalysis.ffdc.AssetAnalysisErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.engineservices.assetanalysis.ffdc.AssetAnalysisAuditCode;
@@ -14,6 +13,7 @@ import org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryService;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceEngineProperties;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceHandler;
 
 import java.util.Date;

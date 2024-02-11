@@ -267,12 +267,14 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                   templateGUIDParameterName,
                                                                   OpenMetadataType.GLOSSARY_CATEGORY_TYPE_GUID,
                                                                   OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME,
+                                                                  false,
                                                                   qualifiedName,
                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                   builder,
                                                                   supportedZones,
                                                                   deepCopy,
                                                                   false,
+                                                                  null,
                                                                   methodName);
 
         if (glossaryCategoryGUID != null)

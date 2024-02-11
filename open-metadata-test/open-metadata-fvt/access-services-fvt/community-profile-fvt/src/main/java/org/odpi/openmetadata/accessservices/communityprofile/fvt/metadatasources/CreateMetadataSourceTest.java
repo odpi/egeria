@@ -106,7 +106,7 @@ public class CreateMetadataSourceTest
         metadataSourceProperties.setQualifiedName(profileManagerName);
         metadataSourceProperties.setDisplayName(profileManagerDisplayName);
         metadataSourceProperties.setDescription(profileManagerDescription);
-        metadataSourceProperties.setTypeDescription(profileManagerTypeDescription);
+        metadataSourceProperties.setDeployedImplementationType(profileManagerTypeDescription);
         metadataSourceProperties.setVersion(profileManagerVersion);
     }
 

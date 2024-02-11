@@ -3632,6 +3632,7 @@ public class AssetOwnerRESTServices
                                                      assetSummary,
                                                      false,
                                                      false,
+                                                     connectionHandler.getSupportedZones(),
                                                      new Date(),
                                                      methodName);
                 }

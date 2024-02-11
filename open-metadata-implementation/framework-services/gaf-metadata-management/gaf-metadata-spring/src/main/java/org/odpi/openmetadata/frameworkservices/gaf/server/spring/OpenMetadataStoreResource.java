@@ -142,6 +142,31 @@ public class OpenMetadataStoreResource
 
 
     /**
+     * Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the
+     * type has no subtypes.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId unique identifier for requesting user.
+     * @param typeName name of type to retrieve against.
+     * @return TypeDefsGalleryResponse:
+     * A list of types or
+     * InvalidParameterException all attributes of the external id are null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @GetMapping(path = "/open-metadata-types/sub-types")
+
+    public TypeDefListResponse getSubTypes(@PathVariable String serverName,
+                                           @PathVariable String serviceURLMarker,
+                                           @PathVariable String userId,
+                                           @RequestParam String typeName)
+    {
+        return restAPI.getSubTypes(serverName, serviceURLMarker, userId, typeName);
+    }
+
+
+    /**
      * Return the TypeDef identified by the GUID.
      *
      * @param serverName unique identifier for requested server.
@@ -721,6 +746,31 @@ public class OpenMetadataStoreResource
                                                      @RequestBody  NewMetadataElementRequestBody requestBody)
     {
         return restAPI.createMetadataElementInStore(serverName, serviceURLMarker, userId, requestBody);
+    }
+
+
+    /**
+     * Create a new metadata element in the metadata store using a template.  The type name comes from the open metadata types.
+     * The selected type also controls the names and types of the properties that are allowed.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param requestBody properties for the new element
+     *
+     * @return unique identifier of the new metadata element
+     *  InvalidParameterException the type name, status or one of the properties is invalid
+     *  UserNotAuthorizedException the governance action service is not authorized to create this type of element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    @PostMapping(path = "/metadata-elements/from-template")
+
+    public GUIDResponse createMetadataElementFromTemplate(@PathVariable String              serverName,
+                                                          @PathVariable String              serviceURLMarker,
+                                                          @PathVariable String              userId,
+                                                          @RequestBody  TemplateRequestBody requestBody)
+    {
+        return restAPI.createMetadataElementFromTemplate(serverName, serviceURLMarker, userId, requestBody);
     }
 
 

@@ -170,7 +170,7 @@ public class AssetManagerTestBase
                 properties.setQualifiedName(assetManagerName);
                 properties.setDisplayName(assetManagerName + assetManagerDisplayName);
                 properties.setDescription(assetManagerName + assetManagerDescription);
-                properties.setTypeDescription(assetManagerName + assetManagerTypeDescription);
+                properties.setDeployedImplementationType(assetManagerName + assetManagerTypeDescription);
                 properties.setVersion(assetManagerName + assetManagerVersion);
 
                 assetManagerGUID = client.createExternalAssetManager(userId, properties);

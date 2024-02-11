@@ -75,7 +75,7 @@ public class FileSystemConverter<B> extends DataManagerOMASConverter<B>
                     fileSystemProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     fileSystemProperties.setDisplayName(this.removeName(instanceProperties));
                     fileSystemProperties.setDescription(this.removeDescription(instanceProperties));
-                    fileSystemProperties.setTypeDescription(this.removeCapabilityType(instanceProperties));
+                    fileSystemProperties.setDeployedImplementationType(this.removeCapabilityType(instanceProperties));
                     fileSystemProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
                     fileSystemProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
                     fileSystemProperties.setSource(this.removeSource(instanceProperties));

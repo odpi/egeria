@@ -168,6 +168,7 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
      * @param softwareCapabilityTypeName name of software capability type to describe the metadata source
      * @param classificationName optional classification name that refines the type of the software capability.
      * @param qualifiedName unique name for the external source
+     * @param deployedImplementationType type of technology
      *
      * @return unique identifier of the new metadata element
      *
@@ -178,9 +179,10 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
     public String createMetadataSource(String userId,
                                        String softwareCapabilityTypeName,
                                        String classificationName,
-                                       String qualifiedName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+                                       String qualifiedName,
+                                       String deployedImplementationType) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         final String methodName                  = "createMetadataSource";
         final String qualifiedNameParameterName  = "qualifiedName";
@@ -195,6 +197,7 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
         requestBody.setQualifiedName(qualifiedName);
         requestBody.setTypeName(softwareCapabilityTypeName);
         requestBody.setClassificationName(classificationName);
+        requestBody.setDeployedImplementationType(deployedImplementationType);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,

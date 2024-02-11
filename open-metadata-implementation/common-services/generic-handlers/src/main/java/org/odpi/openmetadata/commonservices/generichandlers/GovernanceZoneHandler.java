@@ -286,6 +286,7 @@ public class GovernanceZoneHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                    specificMatchPropertyNames,
                                    false,
                                    false,
+                                   supportedZones,
                                    new Date(),
                                    methodName);
     }

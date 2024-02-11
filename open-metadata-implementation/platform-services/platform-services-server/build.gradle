@@ -25,12 +25,12 @@ dependencies {
     implementation project(':open-metadata-implementation:framework-services:oif-metadata-management:oif-metadata-server')
     implementation project(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-server')
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-server')
-    implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-registration')
-    implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-server')
-    implementation project(':open-metadata-implementation:governance-servers:engine-host-services:engine-host-services-registration')
-    implementation project(':open-metadata-implementation:governance-servers:engine-host-services:engine-host-services-server')
-    implementation project(':open-metadata-implementation:governance-servers:lineage-warehouse-services:lineage-warehouse-services-server')
-    implementation project(':open-metadata-implementation:governance-servers:data-engine-proxy-services:data-engine-proxy-services-server')
+    implementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-registration')
+    implementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-server')
+    implementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-registration')
+    implementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-server')
+    implementation project(':open-metadata-implementation:governance-server-services:lineage-warehouse-services:lineage-warehouse-services-server')
+    implementation project(':open-metadata-implementation:governance-server-services:data-engine-proxy-services:data-engine-proxy-services-server')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 
 }

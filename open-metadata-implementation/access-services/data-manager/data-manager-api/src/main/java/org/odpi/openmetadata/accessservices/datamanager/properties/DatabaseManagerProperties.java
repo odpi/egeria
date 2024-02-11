@@ -49,7 +49,7 @@ public class DatabaseManagerProperties extends SoftwareCapabilitiesProperties
         return "DatabaseManagerProperties{" +
                 "displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
-                ", typeDescription='" + getTypeDescription() + '\'' +
+                ", typeDescription='" + getDeployedImplementationType() + '\'' +
                 ", version='" + getVersion() + '\'' +
                 ", patchLevel='" + getPatchLevel() + '\'' +
                 ", source='" + getSource() + '\'' +

@@ -2,13 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.governanceaction.handlers;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.*;
+import org.odpi.openmetadata.accessservices.governanceserver.client.*;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
+import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogGovernanceEvent;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceListenerManager;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
-import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogGovernanceEvent;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
@@ -44,7 +44,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
      * @param partnerURLRoot partner platform
      * @param serverUserId user id for the server to use
      * @param configurationClient client to retrieve the configuration
-     * @param serverClient client to control the execution of governance action requests
+     * @param engineActionClient client to control the execution of governance action requests
      * @param governanceContextClient REST client for calls made by the governance action services
      * @param auditLog logging destination
      * @param maxPageSize maximum number of results that can be returned in a single request
@@ -55,7 +55,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
                                          String                              partnerURLRoot,
                                          String                              serverUserId,
                                          GovernanceEngineConfigurationClient configurationClient,
-                                         GovernanceContextClient             serverClient,
+                                         GovernanceContextClient             engineActionClient,
                                          GovernanceContextClient             governanceContextClient,
                                          AuditLog                            auditLog,
                                          int                                 maxPageSize)
@@ -65,7 +65,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
               serverUserId,
               EngineServiceDescription.GOVERNANCE_ACTION_OMES.getEngineServiceFullName(),
               configurationClient,
-              serverClient,
+              engineActionClient,
               auditLog,
               maxPageSize);
 
@@ -104,19 +104,17 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
      * @param requestSourceElements metadata elements associated with the request to the governance action service
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
      *
-     * @return service handler for this request
-     *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there was a problem detected by the governance action engine.
      */
     @Override
-    public GovernanceServiceHandler runGovernanceService(String                     engineActionGUID,
-                                                         String                     governanceRequestType,
-                                                         Date                       startDate,
-                                                         Map<String, String>        requestParameters,
-                                                         List<RequestSourceElement> requestSourceElements,
-                                                         List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,
-                                                                                                                 PropertyServerException
+    public void runGovernanceService(String                     engineActionGUID,
+                                     String                     governanceRequestType,
+                                     Date                       startDate,
+                                     Map<String, String>        requestParameters,
+                                     List<RequestSourceElement> requestSourceElements,
+                                     List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,
+                                                                                             PropertyServerException
     {
         final String methodName = "runGovernanceService";
 
@@ -135,7 +133,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
                                                                                                                governanceEngineGUID,
                                                                                                                serverUserId,
                                                                                                                engineActionGUID,
-                                                                                                               serverClient,
+                                                                                                               engineActionClient,
                                                                                                                governanceServiceCache.getServiceRequestType(),
                                                                                                                governanceServiceCache.getRequestParameters(requestParameters),
                                                                                                                requestSourceElements,
@@ -150,10 +148,6 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
 
             Thread thread = new Thread(governanceActionServiceHandler, governanceServiceCache.getGovernanceServiceName() + engineActionGUID + new Date());
             thread.start();
-
-            return governanceActionServiceHandler;
         }
-
-        return null;
     }
 }

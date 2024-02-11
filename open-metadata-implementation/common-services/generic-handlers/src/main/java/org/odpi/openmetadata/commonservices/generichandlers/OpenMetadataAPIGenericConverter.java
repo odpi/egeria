@@ -3599,23 +3599,23 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             String type = repositoryHelper.removeStringProperty(serviceName,
-                                                                OpenMetadataType.CAPABILITY_TYPE_PROPERTY_NAME,
+                                                                OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                                 instanceProperties,
                                                                 methodName);
+
+            if (type == null)
+            {
+                type = repositoryHelper.removeStringProperty(serviceName,
+                                                             OpenMetadataType.CAPABILITY_TYPE_PROPERTY_NAME,
+                                                             instanceProperties,
+                                                             methodName);
+            }
             if (type == null)
             {
                 type = repositoryHelper.removeStringProperty(serviceName,
                                                              OpenMetadataType.CAPABILITY_TYPE_PROPERTY_NAME_DEP1,
                                                              instanceProperties,
                                                              methodName);
-            }
-
-            if (type == null)
-            {
-                type = repositoryHelper.getStringProperty(serviceName,
-                                                          OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                          instanceProperties,
-                                                          methodName);
             }
 
             return type;

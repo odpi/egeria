@@ -5,7 +5,7 @@ package org.odpi.openmetadata.integrationservices.topic.contextmanager;
 
 import org.odpi.openmetadata.accessservices.datamanager.client.*;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
-import org.odpi.openmetadata.accessservices.datamanager.properties.EventBrokerProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -31,7 +31,6 @@ public class TopicIntegratorContextManager extends IntegrationContextManager
 {
     private EventBrokerClient       eventBrokerClient       = null;
     private ConnectionManagerClient connectionManagerClient = null;
-    private MetadataSourceClient    metadataSourceClient    = null;
     private ValidValueManagement    validValueManagement    = null;
     private DataManagerRESTClient   restClient              = null;
 
@@ -112,47 +111,6 @@ public class TopicIntegratorContextManager extends IntegrationContextManager
                                                         partnerOMASPlatformRootURL,
                                                         restClient,
                                                         maxPageSize);
-
-        metadataSourceClient = new MetadataSourceClient(partnerOMASServerName,
-                                                        partnerOMASPlatformRootURL,
-                                                        restClient,
-                                                        maxPageSize);
-    }
-
-
-    /**
-     * Retrieve the metadata source's unique identifier (GUID) or if it is not defined, create the software server capability
-     * for this event broker.
-     *
-     * @param metadataSourceQualifiedName unique name of the software server capability that represents this integration service
-     *
-     * @return unique identifier of the metadata source
-     *
-     * @throws InvalidParameterException one of the parameters passed (probably on initialize) is invalid
-     * @throws UserNotAuthorizedException the integration daemon's userId does not have access to the partner OMAS
-     * @throws PropertyServerException there is a problem in the remote server running the partner OMAS
-     */
-    private String setUpMetadataSource(String   metadataSourceQualifiedName) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
-    {
-        if (metadataSourceQualifiedName != null)
-        {
-            String metadataSourceGUID = metadataSourceClient.getMetadataSourceGUID(localServerUserId, metadataSourceQualifiedName);
-
-            if (metadataSourceGUID == null)
-            {
-                EventBrokerProperties properties = new EventBrokerProperties();
-
-                properties.setQualifiedName(metadataSourceQualifiedName);
-
-                metadataSourceGUID = metadataSourceClient.createEventBroker(localServerUserId, null, null, properties);
-            }
-
-            return metadataSourceGUID;
-        }
-
-        return null;
     }
 
 
@@ -209,7 +167,10 @@ public class TopicIntegratorContextManager extends IntegrationContextManager
                                                                                                                 permittedSynchronizationName,
                                                                                                                 serviceOptionsString));
 
-            String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName);
+            String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName,
+                                                                 DeployedImplementationType.EVENT_BROKER.getAssociatedTypeName(),
+                                                                 DeployedImplementationType.EVENT_BROKER.getAssociatedClassification(),
+                                                                 DeployedImplementationType.EVENT_BROKER.getDeployedImplementationType());
             String externalSourceName = metadataSourceQualifiedName;
 
             if (externalSourceGUID == null)

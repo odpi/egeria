@@ -49,7 +49,7 @@ public class APIManagerProperties extends SoftwareCapabilitiesProperties
         return "APIManagerProperties{" +
                 "displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
-                ", typeDescription='" + getTypeDescription() + '\'' +
+                ", typeDescription='" + getDeployedImplementationType() + '\'' +
                 ", version='" + getVersion() + '\'' +
                 ", patchLevel='" + getPatchLevel() + '\'' +
                 ", source='" + getSource() + '\'' +

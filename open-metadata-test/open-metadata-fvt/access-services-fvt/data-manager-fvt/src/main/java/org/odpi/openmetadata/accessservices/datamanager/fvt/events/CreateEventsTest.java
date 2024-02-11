@@ -261,7 +261,7 @@ public class CreateEventsTest
             properties.setQualifiedName(eventBrokerName);
             properties.setDisplayName(eventBrokerDisplayName);
             properties.setDescription(eventBrokerDescription);
-            properties.setTypeDescription(eventBrokerTypeDescription);
+            properties.setDeployedImplementationType(eventBrokerTypeDescription);
             properties.setVersion(eventBrokerVersion);
 
             String eventBrokerGUID = client.createEventBroker(userId, null, null, properties);

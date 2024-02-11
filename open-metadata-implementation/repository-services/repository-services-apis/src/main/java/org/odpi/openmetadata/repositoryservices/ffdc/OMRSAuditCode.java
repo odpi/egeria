@@ -438,7 +438,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
      */
     IGNORING_DUPLICATE_CLASSIFICATION("OMRS-AUDIT-0039",
                              AuditLogRecordSeverityLevel.INFO,
-                             "Ignoring duplicate request to classify entity {0} with classification {1} in the {2} repository",
+                             "Ignoring duplicate request to classify {0} entity {1} with classification {2} in the {3} repository",
                              "The server has detected that multiple services are attempting to add the same classification with the same properties to the entity.  It is ignoring the duplicate request",
                              "This is a common race condition.  It is seen often with the Anchors classification that is added automatically when Egeria detects an entity does not have this classification."),
 

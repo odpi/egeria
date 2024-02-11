@@ -82,7 +82,7 @@ open-metadata-test/open-metadata-fvt/access-services-fvt/data-engine-fvt/ @alexa
 open-metadata-test/open-metadata-fvt/access-services-fvt/data-manager-fvt/ @mandy-chessell
 open-metadata-test/open-metadata-fvt/access-services-fvt/digital-architecture-fvt/ @mandy-chessell
 open-metadata-test/open-metadata-fvt/access-services-fvt/discovery-engine-fvt/ @mandy-chessell
-open-metadata-test/open-metadata-fvt/access-services-fvt/governance-engine-fvt/ @mandy-chessell
+open-metadata-test/open-metadata-fvt/access-services-fvt/governance-server-fvt/ @mandy-chessell
 open-metadata-test/open-metadata-fvt/access-services-fvt/governance-program-fvt/ @mandy-chessell
 open-metadata-test/open-metadata-fvt/access-services-fvt/stewardship-action-fvt/ @mandy-chessell
 open-metadata-test/open-metadata-fvt/access-services-fvt/subject-area-fvt/ @davidradl

@@ -473,8 +473,7 @@ public class CSVSurveyService extends AuditableSurveyService
         
         String schemaTypeGUID = openMetadataStore.createMetadataElementInStore(schemaType,
                                                                                ElementStatus.ACTIVE,
-                                                                               elementProperties,
-                                                                               null);
+                                                                               elementProperties);
         if (schemaTypeGUID != null)
         {
             openMetadataStore.createRelatedElementsInStore(OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
@@ -537,10 +536,10 @@ public class CSVSurveyService extends AuditableSurveyService
                                                               ElementStatus.ACTIVE,
                                                               initialClassifications,
                                                               assetUniverse.getGUID(),
+                                                              false,
                                                               null,
                                                               null,
                                                               elementProperties,
-                                                              null,
                                                               schemaTypeGUID,
                                                               OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                               null,

@@ -6,10 +6,10 @@ import lombok.EqualsAndHashCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.governanceservers.lineagewarehouse.LineageWarehouseGraphConnector;
-import org.odpi.openmetadata.governanceservers.lineagewarehouse.LineageWarehouseQueryService;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.connector.LineageWarehouseGraphConnectorBase;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.connector.LineageWarehouseQueryService;
 import org.odpi.openmetadata.governanceservers.lineagewarehouse.ffdc.LineageWarehouseException;
-import org.odpi.openmetadata.governanceservers.lineagewarehouse.graph.LineageGraph;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.connector.LineageWarehouseGraphStorageService;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.lineagewarehouseconnectors.janusconnector.model.ffdc.JanusConnectorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.lineagewarehouseconnectors.janusconnector.model.JanusConnectorErrorCode.GRAPH_DISCONNECT_ERROR;
 
 @EqualsAndHashCode(callSuper = true)
-public class LineageGraphConnector extends ConnectorBase implements LineageWarehouseGraphConnector
+public class LineageGraphConnector extends ConnectorBase implements LineageWarehouseGraphConnectorBase
 {
 
     private static final Logger log = LoggerFactory.getLogger(LineageGraphConnector.class);
@@ -29,9 +29,9 @@ public class LineageGraphConnector extends ConnectorBase implements LineageWareh
     public static final String VERTEX_NOT_FOUND = "Vertex does not exist with guid {} and display name {}";
     public static final String THE_LINEAGE_GRAPH_COULD_NOT_BE_INITIALIZED_DUE_TO_AN_ERROR = "The Lineage graph could not be initialized due to an error";
 
-    private GraphHelper graphHelper;
-    private LineageGraphStorageService graphStorageHelper;
-    private LineageGraphQueryService lineageGraphQueryService;
+    private GraphHelper                                                                                                                                graphHelper;
+    private org.odpi.openmetadata.openconnectors.governancedaemonconnectors.lineagewarehouseconnectors.janusconnector.graph.LineageGraphStorageService graphStorageHelper;
+    private LineageGraphQueryService                                                                                                                   lineageGraphQueryService;
     private AuditLog auditLog;
 
     /**
@@ -46,7 +46,7 @@ public class LineageGraphConnector extends ConnectorBase implements LineageWareh
             this.graphHelper.openGraph(connectionProperties.getConnectorType().getConnectorProviderClassName(),
                     connectionProperties.getConfigurationProperties(), auditLog);
 
-            this.graphStorageHelper = new LineageGraphStorageService(graphHelper, auditLog);
+            this.graphStorageHelper = new org.odpi.openmetadata.openconnectors.governancedaemonconnectors.lineagewarehouseconnectors.janusconnector.graph.LineageGraphStorageService(graphHelper, auditLog);
             this.lineageGraphQueryService = new LineageGraphQueryService(graphHelper, auditLog);
 
         } catch (JanusConnectorException error) {
@@ -80,7 +80,7 @@ public class LineageGraphConnector extends ConnectorBase implements LineageWareh
     }
 
     @Override
-    public LineageGraph getLineageStorageService(){
+    public LineageWarehouseGraphStorageService getLineageStorageService(){
         return this.graphStorageHelper;
     }
 

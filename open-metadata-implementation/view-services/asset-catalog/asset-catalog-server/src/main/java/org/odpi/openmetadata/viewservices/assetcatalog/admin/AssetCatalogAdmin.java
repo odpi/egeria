@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.viewservices.assetcatalog.ffdc.AssetCatalogAuditCode;
 import org.odpi.openmetadata.viewservices.assetcatalog.server.AssetCatalogInstance;
 
+
 /**
  * AssetCatalogAdmin is the class that is called by the View Server to initialize and terminate
  * the Asset Catalog OMVS.  The initialization call provides this OMVS with the Audit log and configuration.
@@ -65,7 +66,10 @@ public class AssetCatalogAdmin extends ViewServiceAdmin
                                                      serverUserName,
                                                      maxPageSize,
                                                      viewServiceConfig.getOMAGServerName(),
-                                                     viewServiceConfig.getOMAGServerPlatformRootURL());
+                                                     viewServiceConfig.getOMAGServerPlatformRootURL(),
+                                                     super.getSupportedTypesForSearchOption(viewServiceConfig.getViewServiceOptions(),
+                                                                                            ViewServiceDescription.ASSET_CATALOG.getViewServiceFullName(),
+                                                                                            auditLog));
 
             auditLog.logMessage(actionDescription,
                                 AssetCatalogAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),

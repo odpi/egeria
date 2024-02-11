@@ -107,16 +107,18 @@ metadata about a digital resource, its schema and the data it stores.
 * **[governance-engine](governance-engine)** - manage metadata for an operational governance engine.
 
   The Governance Engine OMAS provides APIs and events that retrieve and
-manage metadata for governance engines.  Governance engines ensure that 
-the infrastructure supporting the data landscape is operating according
-to the governance program. For example, the governance engine may be ensuring
-that individuals and servers
-only have access to the data they have been authorized to see.
+manage metadata for governance engines.  This OMAS has been replaced by the Governance Server OMAS.
 
 * **[governance-program](governance-program)** - set up and manage a governance program.
 
   The Governance Program OMAS provides the ability to maintain a governance program in the open metadata repositories.
 It is designed for governance and CDO tools.
+
+* **[governance-server](governance-server)** - manage metadata for an operational governance server.
+
+  The Governance Server OMAS provides APIs and events that retrieve and
+  manage metadata for the [Engine Host](https://egeria-project.org/concepts/engine-host/) and 
+  [Integration Daemon](https://egeria-project.org/concepts/integration-daemon/) governance servers.
 
 * **[it-infrastructure](it-infrastructure)** - manage metadata about deployed infrastructure.
 

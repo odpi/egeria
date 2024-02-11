@@ -206,12 +206,14 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                            templateGUIDParameterName,
                                            OpenMetadataType.GLOSSARY_TYPE_GUID,
                                            OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                           true,
                                            qualifiedName,
                                            OpenMetadataProperty.QUALIFIED_NAME.name,
                                            builder,
                                            supportedZones,
                                            deepCopy,
                                            false,
+                                           null,
                                            methodName);
     }
 

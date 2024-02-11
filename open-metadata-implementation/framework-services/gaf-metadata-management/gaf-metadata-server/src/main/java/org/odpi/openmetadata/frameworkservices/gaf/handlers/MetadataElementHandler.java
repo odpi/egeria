@@ -814,15 +814,15 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return OMRS property value
      * @throws InvalidParameterException invalid property specification
      */
-    private org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue
+    private ArrayPropertyValue
     getArrayPropertyValue(AttributeTypeDef     typeDef,
                           int                  arrayCount,
                           Map<String, Object>  arrayValues) throws InvalidParameterException
     {
         final String methodName = "getArrayPropertyValue";
 
-        org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue
-                omrsPropertyValue = new org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ArrayPropertyValue();
+        ArrayPropertyValue
+                omrsPropertyValue = new ArrayPropertyValue();
 
         omrsPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         omrsPropertyValue.setInstancePropertyCategory(InstancePropertyCategory.ARRAY);
@@ -853,7 +853,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return OMRS property value
      * @throws InvalidParameterException invalid property specification
      */
-    private org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue
+    private EnumPropertyValue
     getEnumPropertyValue(AttributeTypeDef typeDef,
                          String           symbolicName) throws InvalidParameterException
     {
@@ -862,7 +862,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         final String propertyParameterName = "omrsPropertyValue";
 
         invalidParameterHandler.validateName(symbolicName, symbolicNameParameterName, methodName);
-        org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue omrsPropertyValue = null;
+        EnumPropertyValue omrsPropertyValue = null;
 
         if (typeDef instanceof EnumDef enumDef)
         {
@@ -875,7 +875,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                     if ((enumElementDef != null) && (symbolicName.equals(enumElementDef.getValue())))
                     {
                         omrsPropertyValue =
-                                new org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue();
+                                new EnumPropertyValue();
 
                         omrsPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                         omrsPropertyValue.setInstancePropertyCategory(InstancePropertyCategory.ENUM);
@@ -902,14 +902,14 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return OMRS property value
      * @throws InvalidParameterException invalid property specification
      */
-    private org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue
+    private MapPropertyValue
     getMapPropertyValue(AttributeTypeDef    typeDef,
                         Map<String, Object> mapValues) throws InvalidParameterException
     {
         final String methodName = "getMapPropertyValue";
 
-        org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue
-                omrsPropertyValue = new org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue();
+        MapPropertyValue
+                omrsPropertyValue = new MapPropertyValue();
 
         omrsPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         omrsPropertyValue.setInstancePropertyCategory(InstancePropertyCategory.MAP);
@@ -940,7 +940,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return OMRS property value
      * @throws InvalidParameterException invalid property specification
      */
-    private org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue
+    private PrimitivePropertyValue
     getPrimitivePropertyValue(AttributeTypeDef     typeDef,
                               PrimitiveTypeCategory primitiveTypeCategory,
                               Object               primitiveValue) throws InvalidParameterException
@@ -952,8 +952,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateObject(primitiveTypeCategory, categoryParameterName, methodName);
         invalidParameterHandler.validateObject(primitiveValue, valueParameterName, methodName);
 
-        org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue
-                omrsPropertyValue = new org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue();
+        PrimitivePropertyValue
+                omrsPropertyValue = new PrimitivePropertyValue();
 
         omrsPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         omrsPropertyValue.setInstancePropertyCategory(InstancePropertyCategory.PRIMITIVE);
@@ -1020,14 +1020,14 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @return OMRS property value
      * @throws InvalidParameterException invalid property specification
      */
-    private org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.StructPropertyValue
+    private StructPropertyValue
     getStructPropertyValue(AttributeTypeDef    typeDef,
                            Map<String, Object> attributes) throws InvalidParameterException
     {
         final String methodName = "getStructPropertyValue";
 
-        org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.StructPropertyValue
-                omrsPropertyValue = new org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.StructPropertyValue();
+        StructPropertyValue
+                omrsPropertyValue = new StructPropertyValue();
 
         omrsPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
         omrsPropertyValue.setInstancePropertyCategory(InstancePropertyCategory.STRUCT);
@@ -1314,11 +1314,10 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
      * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
      *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor flag to indicate if the new entity should be anchored to itself
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
-     *                     connection etc)
      * @param parentGUID unique identifier of optional parent entity
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
@@ -1340,10 +1339,10 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                ElementStatus                  initialStatus,
                                                Map<String, ElementProperties> initialClassifications,
                                                String                         anchorGUID,
+                                               boolean                        isOwnAnchor,
                                                Date                           effectiveFrom,
                                                Date                           effectiveTo,
                                                ElementProperties              properties,
-                                               String                         templateGUID,
                                                String                         parentGUID,
                                                String                         parentRelationshipTypeName,
                                                ElementProperties              parentRelationshipProperties,
@@ -1355,7 +1354,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                                  PropertyServerException
     {
         final String elementTypeParameterName  = "metadataElementTypeName";
-        final String templateGUIDParameterName = "templateGUID";
         final String anchorGUIDParameterName = "anchorGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -1439,34 +1437,181 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
             }
         }
 
-        String metadataElementGUID;
-
-        if (templateGUID == null)
-        {
-            metadataElementGUID = this.createBeanInRepository(userId,
+        String metadataElementGUID = this.createBeanInRepository(userId,
                                                               externalSourceGUID,
                                                               externalSourceName,
                                                               metadataElementTypeGUID,
                                                               metadataElementTypeName,
                                                               builder,
+                                                              isOwnAnchor,
                                                               effectiveTime,
                                                               methodName);
-        }
-        else
+
+        if (metadataElementGUID != null)
         {
-            metadataElementGUID = this.createBeanFromTemplate(userId,
-                                                              externalSourceGUID,
-                                                              externalSourceName,
-                                                              templateGUID,
-                                                              templateGUIDParameterName,
-                                                              metadataElementTypeGUID,
-                                                              metadataElementTypeName,
-                                                              null,
-                                                              null,
-                                                              builder,
-                                                              serviceSupportedZones,
-                                                              methodName);
+            if (parentGUID != null)
+            {
+                if (parentAtEnd1)
+                {
+                    createRelatedElementsInStore(userId,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 parentRelationshipTypeName,
+                                                 parentGUID,
+                                                 metadataElementGUID,
+                                                 false,
+                                                 false,
+                                                 null,
+                                                 null,
+                                                 parentRelationshipProperties,
+                                                 serviceSupportedZones,
+                                                 effectiveTime,
+                                                 methodName);
+                }
+                else
+                {
+                    createRelatedElementsInStore(userId,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 parentRelationshipTypeName,
+                                                 metadataElementGUID,
+                                                 parentGUID,
+                                                 false,
+                                                 false,
+                                                 null,
+                                                 null,
+                                                 parentRelationshipProperties,
+                                                 serviceSupportedZones,
+                                                 effectiveTime,
+                                                 methodName);
+                }
+            }
+
+            return metadataElementGUID;
         }
+
+        return null;
+    }
+
+
+    /**
+     * Create a new metadata element in the metadata store from a template.  The type name comes from the open metadata types.
+     * The selected type also controls the names and types of the properties that are allowed.
+     * This version of the method allows access to advanced features such as multiple states and
+     * effectivity dates.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param metadataElementTypeName type name of the new metadata element
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor flag to indicate if the new entity should be anchored to itself
+     * @param effectiveFrom the date when this element is active - null for active on creation
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                     connection etc.)
+     * @param templateProperties properties of the new metadata element
+     * @param placeholderProperties values to override placeholder variables in the template
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     * @param serviceSupportedZones list of supported zones for this service
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException the type name, status or one of the properties is invalid
+     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    public String createMetadataElementFromTemplate(String                         userId,
+                                                    String                         externalSourceGUID,
+                                                    String                         externalSourceName,
+                                                    String                         metadataElementTypeName,
+                                                    String                         anchorGUID,
+                                                    boolean                        isOwnAnchor,
+                                                    Date                           effectiveFrom,
+                                                    Date                           effectiveTo,
+                                                    String                         templateGUID,
+                                                    ElementProperties              templateProperties,
+                                                    Map<String, String>            placeholderProperties,
+                                                    String                         parentGUID,
+                                                    String                         parentRelationshipTypeName,
+                                                    ElementProperties              parentRelationshipProperties,
+                                                    boolean                        parentAtEnd1,
+                                                    List<String>                   serviceSupportedZones,
+                                                    Date                           effectiveTime,
+                                                    String                         methodName) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        final String templateGUIDParameterName = "templateGUID";
+        final String anchorGUIDParameterName = "anchorGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        if (parentGUID != null)
+        {
+            final String parentRelationshipTypeNameParameterName = "parentRelationshipTypeName";
+
+            invalidParameterHandler.validateName(parentRelationshipTypeName, parentRelationshipTypeNameParameterName, methodName);
+        }
+
+        String metadataElementTypeGUID = invalidParameterHandler.validateTypeName(metadataElementTypeName,
+                                                                                  OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                                  serviceName,
+                                                                                  methodName,
+                                                                                  repositoryHelper);
+
+        MetadataElementBuilder builder = new MetadataElementBuilder(metadataElementTypeGUID,
+                                                                    metadataElementTypeName,
+                                                                    getElementPropertiesAsOMRSMap(templateProperties),
+                                                                    null,
+                                                                    effectiveFrom,
+                                                                    effectiveTo,
+                                                                    repositoryHelper,
+                                                                    serviceName,
+                                                                    serverName);
+
+        if (anchorGUID != null)
+        {
+            EntityDetail anchorEntity = this.getEntityFromRepository(userId,
+                                                                     anchorGUID,
+                                                                     anchorGUIDParameterName,
+                                                                     OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                     null,
+                                                                     null,
+                                                                     false,
+                                                                     false,
+                                                                     serviceSupportedZones,
+                                                                     effectiveTime,
+                                                                     methodName);
+
+            if (anchorEntity != null)
+            {
+                builder.setAnchors(userId, anchorEntity.getGUID(), anchorEntity.getType().getTypeDefName(), methodName);
+            }
+        }
+
+        String metadataElementGUID = this.createBeanFromTemplate(userId,
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 templateGUID,
+                                                                 templateGUIDParameterName,
+                                                                 metadataElementTypeGUID,
+                                                                 metadataElementTypeName,
+                                                                 isOwnAnchor,
+                                                                 null,
+                                                                 null,
+                                                                 builder,
+                                                                 serviceSupportedZones,
+                                                                 true,
+                                                                 false,
+                                                                 placeholderProperties,
+                                                                 methodName);
 
         if (metadataElementGUID != null)
         {
@@ -1514,7 +1659,6 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
         return null;
     }
-
 
 
     /**

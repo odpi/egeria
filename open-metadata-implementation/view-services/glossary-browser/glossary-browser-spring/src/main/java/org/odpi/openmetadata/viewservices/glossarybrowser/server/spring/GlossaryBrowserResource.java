@@ -109,7 +109,7 @@ public class GlossaryBrowserResource
     @GetMapping(path = "/glossaries/terms/relationships/status-list")
 
     @Operation(summary="getGlossaryTermRelationshipStatuses",
-               description="Return the list of glossary term relationship status enum values.  These values are stored in a term-to-term, or term-to-category, relationship and are used to indicate how much the relationship should be trusted",
+               description="Return the list of glossary term relationship status enum values.  These values are stored in a term-to-term, or term-to-category, relationship and are used to indicate how much the relationship should be trusted.",
                externalDocs=@ExternalDocumentation(description="Relationship statuses",
                                                    url="https://egeria-project.org/services/omvs/glossary-workflow/overview/#relationship-statuses"))
 

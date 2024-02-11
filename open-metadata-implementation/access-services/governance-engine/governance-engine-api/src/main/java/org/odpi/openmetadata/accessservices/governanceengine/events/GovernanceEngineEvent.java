@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.events;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -22,13 +23,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-                      @JsonSubTypes.Type(value = GovernanceEngineConfigurationEvent.class, name = "GovernanceEngineConfigurationEvent"),
-                      @JsonSubTypes.Type(value = GovernanceServiceConfigurationEvent.class, name = "GovernanceServiceConfigurationEvent"),
                       @JsonSubTypes.Type(value = WatchdogGovernanceServiceEvent.class, name = "WatchdogGovernanceServiceEvent"),
-                      @JsonSubTypes.Type(value = EngineActionEvent.class, name = "EngineActionEvent")
 })
 public abstract class GovernanceEngineEvent implements Serializable
 {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private long                      eventVersionId       = 1L;

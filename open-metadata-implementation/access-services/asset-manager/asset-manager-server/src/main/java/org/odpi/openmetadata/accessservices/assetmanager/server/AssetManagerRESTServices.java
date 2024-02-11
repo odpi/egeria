@@ -148,7 +148,7 @@ public class AssetManagerRESTServices
                                                                                  assetManagerProperties.getQualifiedName(),
                                                                                  assetManagerProperties.getTechnicalName(),
                                                                                  assetManagerProperties.getTechnicalDescription(),
-                                                                                 assetManagerProperties.getTypeDescription(),
+                                                                                 assetManagerProperties.getDeployedImplementationType(),
                                                                                  assetManagerProperties.getVersion(),
                                                                                  assetManagerProperties.getPatchLevel(),
                                                                                  assetManagerProperties.getSource(),
