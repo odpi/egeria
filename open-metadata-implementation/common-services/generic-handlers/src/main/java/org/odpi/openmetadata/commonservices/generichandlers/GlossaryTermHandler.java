@@ -343,7 +343,6 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                               templateGUIDParameterName,
                                                               OpenMetadataType.GLOSSARY_TERM_TYPE_GUID,
                                                               OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
-                                                              false,
                                                               qualifiedName,
                                                               OpenMetadataProperty.QUALIFIED_NAME.name,
                                                               builder,

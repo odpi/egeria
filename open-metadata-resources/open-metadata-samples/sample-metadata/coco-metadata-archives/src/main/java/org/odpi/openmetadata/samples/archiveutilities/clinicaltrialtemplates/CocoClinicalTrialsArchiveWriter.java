@@ -15,7 +15,7 @@ import java.util.Date;
 
 
 /**
- * CocoGovernanceEnginesArchiveWriter creates a physical open metadata archive file containing the clinical trials templates
+ * CocoClinicalTrialsArchiveWriter creates a physical open metadata archive file containing the clinical trials templates
  * needed by Coco Pharmaceuticals.
  */
 public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter

@@ -1503,7 +1503,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param userId caller's userId
      * @param externalSourceGUID      unique identifier of the software capability that owns this collection
      * @param externalSourceName      unique name of the software capability that owns this collection
-     * @param metadataElementTypeName type name of the new metadata element
+     * @param suppliedMetadataElementTypeName type name of the new metadata element
      * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
      *                   or the Anchors classification is included in the initial classifications.
      * @param isOwnAnchor flag to indicate if the new entity should be anchored to itself
@@ -1512,7 +1512,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
      *                     connection etc.)
      * @param templateProperties properties of the new metadata element
-     * @param placeholderProperties values to override placeholder variables in the template
+     * @param placeholderPropertyValues values to override placeholder variables in the template
      * @param parentGUID unique identifier of optional parent entity
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
@@ -1530,14 +1530,14 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
     public String createMetadataElementFromTemplate(String                         userId,
                                                     String                         externalSourceGUID,
                                                     String                         externalSourceName,
-                                                    String                         metadataElementTypeName,
+                                                    String                         suppliedMetadataElementTypeName,
                                                     String                         anchorGUID,
                                                     boolean                        isOwnAnchor,
                                                     Date                           effectiveFrom,
                                                     Date                           effectiveTo,
                                                     String                         templateGUID,
                                                     ElementProperties              templateProperties,
-                                                    Map<String, String>            placeholderProperties,
+                                                    Map<String, String>            placeholderPropertyValues,
                                                     String                         parentGUID,
                                                     String                         parentRelationshipTypeName,
                                                     ElementProperties              parentRelationshipProperties,
@@ -1552,6 +1552,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         final String anchorGUIDParameterName = "anchorGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
 
         if (parentGUID != null)
         {
@@ -1559,6 +1560,29 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
             invalidParameterHandler.validateName(parentRelationshipTypeName, parentRelationshipTypeNameParameterName, methodName);
         }
+
+        String metadataElementTypeName = suppliedMetadataElementTypeName;
+
+        if (metadataElementTypeName == null)
+        {
+            EntityDetail templateEntity = this.getEntityFromRepository(userId,
+                                                                       templateGUID,
+                                                                       templateGUIDParameterName,
+                                                                       OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                       null,
+                                                                       null,
+                                                                       false,
+                                                                       false,
+                                                                       serviceSupportedZones,
+                                                                       effectiveTime,
+                                                                       methodName);
+
+            if (templateEntity != null)
+            {
+                metadataElementTypeName = templateEntity.getType().getTypeDefName();
+            }
+        }
+
 
         String metadataElementTypeGUID = invalidParameterHandler.validateTypeName(metadataElementTypeName,
                                                                                   OpenMetadataType.OPEN_METADATA_ROOT.typeName,
@@ -1576,6 +1600,9 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                     serviceName,
                                                                     serverName);
 
+        /*
+         * If an anchor entity is supplied, make sure it is saved in the builder
+         */
         if (anchorGUID != null)
         {
             EntityDetail anchorEntity = this.getEntityFromRepository(userId,
@@ -1592,10 +1619,23 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
             if (anchorEntity != null)
             {
+                /*
+                 * The anchorGUID is valid.
+                 */
                 builder.setAnchors(userId, anchorEntity.getGUID(), anchorEntity.getType().getTypeDefName(), methodName);
             }
         }
+        else if (isOwnAnchor)
+        {
+            /*
+             * Set the anchorGUID
+             */
+            builder.setAnchors(userId, null, metadataElementTypeName, methodName);
+        }
 
+        /*
+         * This creates the new bean and all the elements anchored to it
+         */
         String metadataElementGUID = this.createBeanFromTemplate(userId,
                                                                  externalSourceGUID,
                                                                  externalSourceName,
@@ -1603,18 +1643,20 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                  templateGUIDParameterName,
                                                                  metadataElementTypeGUID,
                                                                  metadataElementTypeName,
-                                                                 isOwnAnchor,
                                                                  null,
                                                                  null,
                                                                  builder,
                                                                  serviceSupportedZones,
                                                                  true,
                                                                  false,
-                                                                 placeholderProperties,
+                                                                 placeholderPropertyValues,
                                                                  methodName);
 
         if (metadataElementGUID != null)
         {
+            /*
+             * If the bean is successfully created, attach it to any supplied parent.
+             */
             if (parentGUID != null)
             {
 

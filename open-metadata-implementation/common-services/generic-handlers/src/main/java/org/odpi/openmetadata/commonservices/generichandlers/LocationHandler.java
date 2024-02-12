@@ -207,6 +207,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                                               serviceName,
                                                               serverName);
 
+        locationBuilder.setAnchors(userId, null, OpenMetadataType.LOCATION_TYPE_NAME, methodName);
+
+
         return this.createBeanFromTemplate(userId,
                                            externalSourceGUID,
                                            externalSourceName,
@@ -218,6 +221,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataProperty.QUALIFIED_NAME.name,
                                            locationBuilder,
                                            supportedZones,
+                                           true,
+                                           false,
+                                           null,
                                            methodName);
     }
 

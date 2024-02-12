@@ -452,16 +452,32 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         /*
          * Create the default integration group.
          */
-        archiveHelper.addSoftwareCapability(OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
-                                            OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME,
-                                            OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_NAME,
-                                            "Dynamic integration group to use with an Integration Daemon configuration.",
-                                            DeployedImplementationType.INTEGRATION_GROUP.getDeployedImplementationType(),
-                                            null,
-                                            null,
-                                            archiveFileName,
-                                            null,
-                                            null);
+        String integrationGroupGUID = archiveHelper.addIntegrationGroup(OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME,
+                                                                        OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_NAME,
+                                                                        "Dynamic integration group to use with an Integration Daemon configuration.",
+                                                                        null,
+                                                                        null,
+                                                                        archiveFileName,
+                                                                        null,
+                                                                        null);
+
+        Map<String, Object> configurationProperties = new HashMap<>();
+        configurationProperties.put("waitForDirectory", "true");
+
+        String filesIntegrationConnectorGUID = archiveHelper.addIntegrationConnector(DataFilesMonitorIntegrationProvider.class.getName(),
+                                                                                     configurationProperties,
+                                                                                     OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":DataFilesMonitorIntegrationConnector",
+                                                                                     "DataFilesMonitorIntegrationConnector",
+                                                                                     "Catalogs files found under the starting directory (folder).",
+                                                                                     "sample-data",
+                                                                                     null);
+
+        archiveHelper.addRegisteredIntegrationConnector(integrationGroupGUID,
+                                                        "FilesMonitor",
+                                                        "generalnpa",
+                                                        "cocoDataLake",
+                                                        60,
+                                                        filesIntegrationConnectorGUID);
 
         /*
          * Register the governance services that are going to be in the default governance engines.
@@ -1059,13 +1075,12 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         governanceActionDescription.supportedGuards = provider.getSupportedGuards();
         governanceActionDescription.actionTargetTypes = provider.getActionTargetTypes();
         governanceActionDescription.governanceServiceDescription = governanceServiceDescription;
-        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeName,
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                                                                                                ftpGovernanceServiceProviderClassName,
                                                                                                null,
                                                                                                governanceServiceName,
                                                                                                governanceServiceDisplayName,
                                                                                                governanceServiceDescription,
-                                                                                               null,
                                                                                                null);
 
         return governanceActionDescription;
@@ -1092,21 +1107,20 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         governanceActionDescription.supportedGuards = provider.getSupportedGuards();
         governanceActionDescription.actionTargetTypes = provider.getActionTargetTypes();
         governanceActionDescription.governanceServiceDescription = governanceServiceDescription;
-        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeName,
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                                                                                                governanceServiceProviderClassName,
                                                                                                null,
                                                                                                governanceServiceName,
                                                                                                governanceServiceDisplayName,
                                                                                                governanceServiceDescription,
-                                                                                               null,
                                                                                                null);
         return governanceActionDescription;
     }
 
 
     /**
-     * Add a governance service that walks backwards through an asset's lineage to find an origin classification.  If found, the same origin is added
-     * to the asset.
+     * Add a governance service that walks backwards through an asset's lineage to find an origin classification.
+     * If found, the same origin is added to the asset.
      *
      * @return descriptive information on the governance service
      */
@@ -1125,13 +1139,12 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         governanceActionDescription.supportedGuards = provider.getSupportedGuards();
         governanceActionDescription.actionTargetTypes = provider.getActionTargetTypes();
         governanceActionDescription.governanceServiceDescription = governanceServiceDescription;
-        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeName,
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                                                                                                governanceServiceProviderClassName,
                                                                                                null,
                                                                                                governanceServiceName,
                                                                                                governanceServiceDisplayName,
                                                                                                governanceServiceDescription,
-                                                                                               null,
                                                                                                null);
         return governanceActionDescription;
     }
@@ -1157,13 +1170,12 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         governanceActionDescription.supportedGuards = provider.getSupportedGuards();
         governanceActionDescription.actionTargetTypes = provider.getActionTargetTypes();
         governanceActionDescription.governanceServiceDescription = governanceServiceDescription;
-        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeName,
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                                                                                                governanceServiceProviderClassName,
                                                                                                null,
                                                                                                governanceServiceName,
                                                                                                governanceServiceDisplayName,
                                                                                                governanceServiceDescription,
-                                                                                               null,
                                                                                                null);
         return governanceActionDescription;
     }
@@ -1413,13 +1425,12 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
         GovernanceActionDescription governanceActionDescription = new GovernanceActionDescription();
 
-        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(OpenMetadataType.OPEN_DISCOVERY_SERVICE.typeName,
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.OPEN_DISCOVERY_SERVICE_CONNECTOR,
                                                                                                discoveryServiceProviderClassName,
                                                                                                null,
                                                                                                discoveryServiceName,
                                                                                                discoveryServiceDisplayName,
                                                                                                discoveryServiceDescription,
-                                                                                               null,
                                                                                                null);
 
         return governanceActionDescription;
@@ -1446,13 +1457,12 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         governanceActionDescription.supportedGuards = provider.getSupportedGuards();
         governanceActionDescription.actionTargetTypes = provider.getActionTargetTypes();
         governanceActionDescription.governanceServiceDescription = surveyServiceDescription;
-        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(OpenMetadataType.SURVEY_ACTION_SERVICE.typeName,
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
                                                                                                surveyServiceProviderClassName,
                                                                                                null,
                                                                                                surveyServiceName,
                                                                                                surveyServiceDisplayName,
                                                                                                surveyServiceDescription,
-                                                                                               null,
                                                                                                null);
 
         return governanceActionDescription;
@@ -1479,13 +1489,12 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         governanceActionDescription.supportedGuards = provider.getSupportedGuards();
         governanceActionDescription.actionTargetTypes = provider.getActionTargetTypes();
         governanceActionDescription.governanceServiceDescription = surveyServiceDescription;
-        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(OpenMetadataType.SURVEY_ACTION_SERVICE.typeName,
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
                                                                           surveyServiceProviderClassName,
                                                                           null,
                                                                           surveyServiceName,
                                                                           surveyServiceDisplayName,
                                                                           surveyServiceDescription,
-                                                                          null,
                                                                           null);
 
         return governanceActionDescription;
@@ -1512,13 +1521,12 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         governanceActionDescription.supportedGuards = provider.getSupportedGuards();
         governanceActionDescription.actionTargetTypes = provider.getActionTargetTypes();
         governanceActionDescription.governanceServiceDescription = surveyServiceDescription;
-        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(OpenMetadataType.SURVEY_ACTION_SERVICE.typeName,
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
                                                                           surveyServiceProviderClassName,
                                                                           null,
                                                                           surveyServiceName,
                                                                           surveyServiceDisplayName,
                                                                           surveyServiceDescription,
-                                                                          null,
                                                                           null);
 
         return governanceActionDescription;

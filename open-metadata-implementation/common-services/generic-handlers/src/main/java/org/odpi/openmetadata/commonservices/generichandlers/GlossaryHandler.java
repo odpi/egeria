@@ -199,6 +199,8 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                                       serviceName,
                                                       serverName);
 
+        builder.setAnchors(userId, null, OpenMetadataType.GLOSSARY_TYPE_NAME, methodName);
+
         return this.createBeanFromTemplate(userId,
                                            externalSourceGUID,
                                            externalSourceName,
@@ -206,7 +208,6 @@ public class GlossaryHandler<B> extends ReferenceableHandler<B>
                                            templateGUIDParameterName,
                                            OpenMetadataType.GLOSSARY_TYPE_GUID,
                                            OpenMetadataType.GLOSSARY_TYPE_NAME,
-                                           true,
                                            qualifiedName,
                                            OpenMetadataProperty.QUALIFIED_NAME.name,
                                            builder,

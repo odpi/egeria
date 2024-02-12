@@ -69,6 +69,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
 
         /**
          * This is the unique identifier of the CatalogTarget relationship that this directory matches.
+         * Null means the value was supplied in the endpoint.
          */
         String            catalogTargetGUID = null;
     }

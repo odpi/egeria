@@ -3051,7 +3051,7 @@ public class SimpleCatalogArchiveHelper
      * @param qualifiedName unique name for the capability
      * @param name display name for the capability
      * @param description description about the capability
-     * @param capabilityType type
+     * @param deployedImplementationType type
      * @param capabilityVersion version
      * @param patchLevel patch level
      * @param source source
@@ -3064,7 +3064,7 @@ public class SimpleCatalogArchiveHelper
                                         String              qualifiedName,
                                         String              name,
                                         String              description,
-                                        String              capabilityType,
+                                        String              deployedImplementationType,
                                         String              capabilityVersion,
                                         String              patchLevel,
                                         String              source,
@@ -3083,7 +3083,7 @@ public class SimpleCatalogArchiveHelper
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAME.name, name, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.CAPABILITY_TYPE_PROPERTY_NAME, capabilityType, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.CAPABILITY_VERSION_PROPERTY_NAME, capabilityVersion, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.PATCH_LEVEL_PROPERTY_NAME, patchLevel, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.SOURCE_PROPERTY_NAME, source, methodName);

@@ -336,6 +336,8 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
      * @param userId calling user
      * @param name template name
      * @param description template description
+     * @param replacementProperties map of attribute names to description that should be replaced in the parent entity
+     * @param placeholderProperties map of placeholder property names to description used throughout the template
      * @param additionalProperties additional properties about the template
      * @param methodName calling method
      * @throws InvalidParameterException Template classification not available in the repositories
@@ -343,6 +345,8 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
     public void setTemplate(String              userId,
                             String              name,
                             String              description,
+                            Map<String, String> replacementProperties,
+                            Map<String, String> placeholderProperties,
                             Map<String, String> additionalProperties,
                             String              methodName) throws InvalidParameterException
     {
@@ -359,6 +363,8 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                                                                   null,
                                                                                   getTemplateProperties(name,
                                                                                                         description,
+                                                                                                        replacementProperties,
+                                                                                                        placeholderProperties,
                                                                                                         additionalProperties,
                                                                                                         methodName));
             newClassifications.put(classification.getName(), classification);
@@ -375,12 +381,16 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
      *
      * @param name template name
      * @param description template description
+     * @param replacementProperties map of attribute names to description that should be replaced in the parent entity
+     * @param placeholderProperties map of placeholder property names to description used throughout the template
      * @param additionalProperties additional properties about the template
      * @param methodName name of the calling method
      * @return InstanceProperties object
      */
     InstanceProperties getTemplateProperties(String              name,
                                              String              description,
+                                             Map<String, String> replacementProperties,
+                                             Map<String, String> placeholderProperties,
                                              Map<String, String> additionalProperties,
                                              String              methodName)
     {
@@ -397,6 +407,18 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                                                   OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
+
+        properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                     properties,
+                                                                     OpenMetadataProperty.REPLACEMENT_PROPERTIES.name,
+                                                                     replacementProperties,
+                                                                     methodName);
+
+        properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                     properties,
+                                                                     OpenMetadataProperty.PLACEHOLDER_PROPERTIES.name,
+                                                                     placeholderProperties,
+                                                                     methodName);
 
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                      properties,

@@ -34,7 +34,7 @@ import java.util.*;
 
 /**
  * GovernanceConfigurationHandler provides the open metadata server side implementation of
- * GovernanceConfigurationServer which is part of the Open Governance Framework (ODF).
+ * GovernanceConfigurationServer which is part of the Governance Action Framework (GAF).
  */
 public class GovernanceConfigurationHandler
 {

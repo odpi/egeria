@@ -318,6 +318,8 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                                           serviceName,
                                                                           serverName);
 
+        builder.setAnchors(userId, null, OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME, methodName);
+
         return this.createBeanFromTemplate(userId,
                                            externalSourceGUID,
                                            externalSourceName,
@@ -325,7 +327,6 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                            templateGUIDParameterName,
                                            OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
                                            OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
-                                           true,
                                            qualifiedName,
                                            OpenMetadataProperty.QUALIFIED_NAME.name,
                                            builder,

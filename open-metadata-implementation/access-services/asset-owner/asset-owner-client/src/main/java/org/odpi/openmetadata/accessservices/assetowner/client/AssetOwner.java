@@ -2535,16 +2535,21 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
      * @param assetGUID unique identifier of the asset to classify
      * @param name name of the template
      * @param description description of when, where and how to use the template
+     * @param replacementProperties map of attribute names to description that should be replaced in the parent entity
+     * @param placeholderProperties map of placeholder property names to description used throughout the template
      * @param additionalProperties any additional properties
      *
      * @throws InvalidParameterException asset or element not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void addTemplateClassification(String              userId,
                                           String              assetGUID,
                                           String              name,
                                           String              description,
+                                          Map<String, String> replacementProperties,
+                                          Map<String, String> placeholderProperties,
                                           Map<String, String> additionalProperties) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
@@ -2561,6 +2566,8 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
 
         requestBody.setName(name);
         requestBody.setDescription(description);
+        requestBody.setReplacementProperties(replacementProperties);
+        requestBody.setPlaceholderProperties(placeholderProperties);
         requestBody.setAdditionalProperties(additionalProperties);
 
         restClient.callVoidPostRESTCall(methodName,

@@ -1334,23 +1334,23 @@ public class OpenMetadataStoreRESTServices
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createMetadataElementFromTemplate(userId,
-                                                                      requestBody.getExternalSourceGUID(),
-                                                                      requestBody.getExternalSourceName(),
-                                                                      requestBody.getTypeName(),
-                                                                      requestBody.getAnchorGUID(),
-                                                                      requestBody.getIsOwnAnchor(),
-                                                                      requestBody.getEffectiveFrom(),
-                                                                      requestBody.getEffectiveTo(),
-                                                                      requestBody.getTemplateGUID(),
-                                                                      requestBody.getTemplateProperties(),
-                                                                      requestBody.getPlaceholderProperties(),
-                                                                      requestBody.getParentGUID(),
-                                                                      requestBody.getParentRelationshipTypeName(),
-                                                                      requestBody.getParentRelationshipProperties(),
-                                                                      requestBody.getParentAtEnd1(),
-                                                                      instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                      requestBody.getEffectiveTime(),
-                                                                      methodName));
+                                                                           requestBody.getExternalSourceGUID(),
+                                                                           requestBody.getExternalSourceName(),
+                                                                           requestBody.getTypeName(),
+                                                                           requestBody.getAnchorGUID(),
+                                                                           requestBody.getIsOwnAnchor(),
+                                                                           requestBody.getEffectiveFrom(),
+                                                                           requestBody.getEffectiveTo(),
+                                                                           requestBody.getTemplateGUID(),
+                                                                           requestBody.getTemplateProperties(),
+                                                                           requestBody.getPlaceholderPropertyValues(),
+                                                                           requestBody.getParentGUID(),
+                                                                           requestBody.getParentRelationshipTypeName(),
+                                                                           requestBody.getParentRelationshipProperties(),
+                                                                           requestBody.getParentAtEnd1(),
+                                                                           instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                           requestBody.getEffectiveTime(),
+                                                                           methodName));
             }
             else
             {
