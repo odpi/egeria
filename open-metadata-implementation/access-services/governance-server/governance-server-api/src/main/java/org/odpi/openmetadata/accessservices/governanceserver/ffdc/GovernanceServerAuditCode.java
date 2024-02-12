@@ -114,7 +114,7 @@ public enum GovernanceServerAuditCode implements AuditLogMessageSet
                         "The Governance Server Open Metadata Access Service (OMAS) is no longer publishing events to topic {0}",
                         "The local administrator has requested shut down of an Governance Server OMAS instance.  " +
                                 "No more configuration events will be published to the named topic.",
-                        "This is part of the normal shutdown of the service.   No action is required if this is service" +
+                        "This is part of the normal shutdown of the service.   No action is required if this is service " +
                                 "shutdown was intentional."),
 
     /**

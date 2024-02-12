@@ -1486,7 +1486,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         requestBody.setEffectiveTo(effectiveTo);
         requestBody.setTemplateGUID(templateGUID);
         requestBody.setTemplateProperties(templateProperties);
-        requestBody.setPlaceholderProperties(placeholderProperties);
+        requestBody.setPlaceholderPropertyValues(placeholderProperties);
         requestBody.setParentGUID(parentGUID);
         requestBody.setParentRelationshipTypeName(parentRelationshipTypeName);
         requestBody.setParentRelationshipProperties(parentRelationshipProperties);

@@ -34,7 +34,7 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
     private Date                           effectiveTo                  = null;
     private String                         templateGUID                 = null;
     private ElementProperties              templateProperties           = null;
-    private Map<String, String>            placeholderProperties        = null;
+    private Map<String, String>            placeholderPropertyValues    = null;
     private String                         parentGUID                   = null;
     private String                         parentRelationshipTypeName   = null;
     private ElementProperties              parentRelationshipProperties = null;
@@ -71,8 +71,8 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
             effectiveTo        = template.getEffectiveTo();
             templateProperties = template.getTemplateProperties();
             templateGUID       = template.getTemplateGUID();
-            parentGUID = template.getParentGUID();
-            placeholderProperties = template.getPlaceholderProperties();
+            parentGUID                 = template.getParentGUID();
+            placeholderPropertyValues  = template.getPlaceholderPropertyValues();
             parentRelationshipTypeName = template.getParentRelationshipTypeName();
             parentRelationshipProperties = template.getParentRelationshipProperties();
             parentAtEnd1 = template.getParentAtEnd1();
@@ -286,20 +286,20 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
      *
      * @return map of property name to property value
      */
-    public Map<String, String> getPlaceholderProperties()
+    public Map<String, String> getPlaceholderPropertyValues()
     {
-        return placeholderProperties;
+        return placeholderPropertyValues;
     }
 
 
     /**
      * Set up the property values to replace placeholders in the template.
      *
-     * @param placeholderProperties map of property name to property value
+     * @param placeholderPropertyValues map of property name to property value
      */
-    public void setPlaceholderProperties(Map<String, String> placeholderProperties)
+    public void setPlaceholderPropertyValues(Map<String, String> placeholderPropertyValues)
     {
-        this.placeholderProperties = placeholderProperties;
+        this.placeholderPropertyValues = placeholderPropertyValues;
     }
 
 
@@ -433,7 +433,7 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
                        ", effectiveTo=" + effectiveTo +
                        ", templateGUID='" + templateGUID + '\'' +
                        ", templateProperties=" + templateProperties +
-                       ", placeholderProperties=" + placeholderProperties +
+                       ", placeholderProperties=" + placeholderPropertyValues +
                        ", parentGUID='" + parentGUID + '\'' +
                        ", parentRelationshipTypeName='" + parentRelationshipTypeName + '\'' +
                        ", parentRelationshipProperties=" + parentRelationshipProperties +
@@ -475,7 +475,7 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
                        Objects.equals(effectiveFrom, that.effectiveFrom) &&
                        Objects.equals(effectiveTo, that.effectiveTo) &&
                        Objects.equals(templateProperties, that.templateProperties) &&
-                       Objects.equals(placeholderProperties, that.placeholderProperties) &&
+                       Objects.equals(placeholderPropertyValues, that.placeholderPropertyValues) &&
                        Objects.equals(templateGUID, that.templateGUID) &&
                        Objects.equals(parentGUID, that.parentGUID) &&
                        Objects.equals(parentRelationshipTypeName, that.parentRelationshipTypeName) &&
@@ -493,6 +493,6 @@ public class TemplateRequestBody extends MetadataSourceRequestBody
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), typeName, initialStatus, initialClassifications, anchorGUID, isOwnAnchor, effectiveFrom, effectiveTo, templateProperties,
-                            templateGUID, placeholderProperties, parentGUID, parentRelationshipTypeName, parentRelationshipProperties, parentAtEnd1, effectiveTime);
+                            templateGUID, placeholderPropertyValues, parentGUID, parentRelationshipTypeName, parentRelationshipProperties, parentAtEnd1, effectiveTime);
     }
 }

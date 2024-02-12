@@ -1104,7 +1104,6 @@ public class OMAGServerAdminForEngineHostServices
     {
         final String methodName                     = "setEngineHostServicesConfig";
         final String serviceConfigParameterName     = "servicesConfig";
-        final String engineServicesParameterName    = "servicesConfig.engineServices";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1118,13 +1117,18 @@ public class OMAGServerAdminForEngineHostServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
             errorHandler.validatePropertyNotNull(servicesConfig, serviceConfigParameterName, serverName, methodName);
-            errorHandler.validateOMAGServerClientConfig(serverName, servicesConfig, methodName);
-            errorHandler.validatePropertyNotNull(servicesConfig.getEngineServiceConfigs(), engineServicesParameterName, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             if (serverConfig != null)
             {
+                if (serverConfig.getRepositoryServicesConfig() == null)
+                {
+                    OMRSConfigurationFactory omrsConfigurationFactory = new OMRSConfigurationFactory();
+
+                    serverConfig.setRepositoryServicesConfig(omrsConfigurationFactory.getDefaultRepositoryServicesConfig());
+                }
+
                 serverConfig.setEngineHostServicesConfig(servicesConfig);
 
                 this.configStore.saveServerConfig(serverName, methodName, serverConfig);
@@ -1147,7 +1151,6 @@ public class OMAGServerAdminForEngineHostServices
 
         return response;
     }
-
 
 
     /**

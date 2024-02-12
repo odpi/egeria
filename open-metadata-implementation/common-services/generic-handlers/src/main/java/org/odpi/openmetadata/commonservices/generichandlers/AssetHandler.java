@@ -648,6 +648,19 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                 serviceName,
                                                 serverName);
 
+        EntityDetail templateEntity = this.getEntityFromRepository(userId,
+                                                                   templateGUID,
+                                                                   templateGUIDParameterName,
+                                                                   OpenMetadataType.ASSET.typeName,
+                                                                   null,
+                                                                   null,
+                                                                   forLineage,
+                                                                   forDuplicateProcessing,
+                                                                   effectiveTime,
+                                                                   methodName);
+
+        builder.setAnchors(userId, null, templateEntity.getType().getTypeDefName(), methodName);
+
         String assetGUID = this.createBeanFromTemplate(userId,
                                                        externalSourceGUID,
                                                        externalSourceName,
@@ -655,7 +668,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                        templateGUIDParameterName,
                                                        expectedTypeGUID,
                                                        expectedTypeName,
-                                                       true,
                                                        qualifiedName,
                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
                                                        builder,

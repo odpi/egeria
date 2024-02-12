@@ -186,6 +186,7 @@ public class OpenMetadataAPIGenericBuilder
      * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
      * @param externalSourceName name of the software capability entity that represented the external source
      * @param templateClassifications list of classifications from the template
+     * @param placeholderProperties map of placeholder names to placeholder values to substitute into the template properties
      * @param methodName calling method
      * @throws InvalidParameterException the type of one of the classifications is not supported
      */
@@ -193,6 +194,7 @@ public class OpenMetadataAPIGenericBuilder
                                            String                externalSourceGUID,
                                            String                externalSourceName,
                                            List<Classification>  templateClassifications,
+                                           Map<String, String>   placeholderProperties,
                                            String                methodName) throws InvalidParameterException
     {
         if (templateClassifications == null)
@@ -210,11 +212,23 @@ public class OpenMetadataAPIGenericBuilder
 
             for (Classification templateClassification : templateClassifications)
             {
+                /*
+                 * The anchor classification from the template is skipped because the new entity may have a
+                 * different anchor.  The anchor classification is therefore set up explicitly.
+                 */
                 if ((templateClassification != null) && (! OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(templateClassification.getName())))
                 {
                     try
                     {
                         Classification classification;
+
+                        InstanceProperties classificationProperties = templateClassification.getProperties();
+
+                        if (classificationProperties != null)
+                        {
+                            classificationProperties = replaceStringPropertiesWithPlaceholders(classificationProperties,
+                                                                                               placeholderProperties);
+                        }
 
                         if (templateClassification.getInstanceProvenanceType() == InstanceProvenanceType.LOCAL_COHORT)
                         {
@@ -227,7 +241,7 @@ public class OpenMetadataAPIGenericBuilder
                                                                                    typeName,
                                                                                    ClassificationOrigin.ASSIGNED,
                                                                                    null,
-                                                                                   templateClassification.getProperties());
+                                                                                   classificationProperties);
                         }
                         else
                         {
@@ -240,7 +254,7 @@ public class OpenMetadataAPIGenericBuilder
                                                                                    typeName,
                                                                                    ClassificationOrigin.ASSIGNED,
                                                                                    null,
-                                                                                   templateClassification.getProperties());
+                                                                                   classificationProperties);
                         }
 
                         this.newClassifications.put(classification.getName(), classification);
@@ -403,8 +417,8 @@ public class OpenMetadataAPIGenericBuilder
      *                              properties
      * @return updated instance properties
      */
-    private InstanceProperties replaceStringPropertiesWithPlaceholders(InstanceProperties  templateProperties,
-                                                                       Map<String, String> placeholderProperties)
+    InstanceProperties replaceStringPropertiesWithPlaceholders(InstanceProperties  templateProperties,
+                                                               Map<String, String> placeholderProperties)
     {
         final String methodName = "replaceStringPropertiesWithPlaceholders";
 

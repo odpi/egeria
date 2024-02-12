@@ -8,6 +8,7 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.Z
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
 import org.odpi.openmetadata.frameworks.governanceaction.actiontargettype.ActionTargetType;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.ResourceUse;
 import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
 
@@ -32,14 +33,6 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
     private static final String                  archiveName        = "CocoGovernanceEngineDefinitions";
     private static final String                  archiveDescription = "Governance Engines for Coco Pharmaceuticals.";
 
-    /*
-     * Specific values for initializing TypeDefs
-     */
-    private static final String GOVERNANCE_ACTION_ENGINE_TYPE_NAME  = "GovernanceActionEngine";
-    private static final String GOVERNANCE_ACTION_SERVICE_TYPE_NAME = "GovernanceActionService";
-
-    private static final String OPEN_DISCOVERY_ENGINE_TYPE_NAME  = "OpenDiscoveryEngine";
-    private static final String OPEN_DISCOVERY_SERVICE_TYPE_NAME = "OpenDiscoveryService";
 
     /**
      * Default constructor initializes the archive.
@@ -66,7 +59,7 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
         final String assetGovernanceEngineDisplayName = "AssetGovernance Governance Action Engine";
         final String assetGovernanceEngineDescription = "Monitors, validates and enriches metadata relating to assets.";
 
-        return archiveHelper.addGovernanceEngine(GOVERNANCE_ACTION_ENGINE_TYPE_NAME,
+        return archiveHelper.addGovernanceEngine(OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
                                                  assetGovernanceEngineName,
                                                  assetGovernanceEngineDisplayName,
                                                  assetGovernanceEngineDescription,
@@ -87,10 +80,10 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
     private String getAssetDiscoveryEngine()
     {
         final String assetDiscoveryEngineName        = "AssetDiscovery";
-        final String assetDiscoveryEngineDisplayName = "AssetDiscovery Open Discovery Engine";
+        final String assetDiscoveryEngineDisplayName = "AssetDiscovery Survey Action Engine";
         final String assetDiscoveryEngineDescription = "Extracts metadata about a digital resource and attach it to its asset description.";
 
-        return archiveHelper.addGovernanceEngine(OPEN_DISCOVERY_ENGINE_TYPE_NAME,
+        return archiveHelper.addGovernanceEngine(OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
                                                  assetDiscoveryEngineName,
                                                  assetDiscoveryEngineDisplayName,
                                                  assetDiscoveryEngineDescription,
@@ -111,10 +104,10 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
     private String getAssetQualityEngine()
     {
         final String assetQualityEngineName        = "AssetQuality";
-        final String assetQualityEngineDisplayName = "AssetQuality Open Discovery Engine";
+        final String assetQualityEngineDisplayName = "AssetQuality Survey Action Engine";
         final String assetQualityEngineDescription = "Assess the quality of a digital resource identified by the asset in the request.";
 
-        return archiveHelper.addGovernanceEngine(OPEN_DISCOVERY_ENGINE_TYPE_NAME,
+        return archiveHelper.addGovernanceEngine(OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
                                                  assetQualityEngineName,
                                                  assetQualityEngineDisplayName,
                                                  assetQualityEngineDescription,
@@ -140,13 +133,12 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
                 "The request parameters define the source file and destination, along with lineage options";
         final String ftpGovernanceServiceProviderClassName = MoveCopyFileGovernanceActionProvider.class.getName();
 
-        return archiveHelper.addGovernanceService(GOVERNANCE_ACTION_SERVICE_TYPE_NAME,
+        return archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                                                   ftpGovernanceServiceProviderClassName,
                                                   null,
                                                   governanceServiceName,
                                                   governanceServiceDisplayName,
                                                   governanceServiceDescription,
-                                                  null,
                                                   null);
     }
 
@@ -163,13 +155,12 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
         final String governanceServiceDescription = "Initiates a governance action process when a new weekly measurements file arrives.";
         final String governanceServiceProviderClassName = GenericFolderWatchdogGovernanceActionProvider.class.getName();
 
-        return archiveHelper.addGovernanceService(GOVERNANCE_ACTION_SERVICE_TYPE_NAME,
+        return archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                                                   governanceServiceProviderClassName,
                                                   null,
                                                   governanceServiceName,
                                                   governanceServiceDisplayName,
                                                   governanceServiceDescription,
-                                                  null,
                                                   null);
     }
 
@@ -187,13 +178,12 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
         final String governanceServiceDescription = "Set up the zone membership for one or more assets supplied as action targets.";
         final String governanceServiceProviderClassName = ZonePublisherGovernanceActionProvider.class.getName();
 
-        return archiveHelper.addGovernanceService(GOVERNANCE_ACTION_SERVICE_TYPE_NAME,
+        return archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                                                   governanceServiceProviderClassName,
                                                   null,
                                                   governanceServiceName,
                                                   governanceServiceDisplayName,
                                                   governanceServiceDescription,
-                                                  null,
                                                   null);
     }
 
@@ -210,13 +200,12 @@ public class CocoGovernanceEnginesArchiveWriter extends CocoBaseArchiveWriter
         final String governanceServiceDescription = "Navigates back through the lineage relationships to locate the origin classification(s) from the source(s) and sets it on the requested asset if the origin is unique.";
         final String governanceServiceProviderClassName = OriginSeekerGovernanceActionProvider.class.getName();
 
-        return archiveHelper.addGovernanceService(GOVERNANCE_ACTION_SERVICE_TYPE_NAME,
+        return archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                                                   governanceServiceProviderClassName,
                                                   null,
                                                   governanceServiceName,
                                                   governanceServiceDisplayName,
                                                   governanceServiceDescription,
-                                                  null,
                                                   null);
     }
 

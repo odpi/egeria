@@ -537,6 +537,28 @@ public class OpenMetadataTypesArchive
                                                                  end2Cardinality);
         relationshipDef.setEndDef2(relationshipEndDef);
 
+        return relationshipDef;
+
+    }
+
+
+    /**
+     * Add new properties to TemplateClassification to describe the replacement properties and the
+     * placeholder properties.
+     *
+     * @return  patch
+     */
+    private TypeDefPatch updateTemplateClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName;
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
 
         /*
          * Build the attributes
@@ -544,12 +566,6 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.TEMPLATE_NAME.name;
-        final String attribute1Description     = OpenMetadataProperty.TEMPLATE_NAME.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.TEMPLATE_NAME.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.TEMPLATE_DESCRIPTION.name;
-        final String attribute2Description     = OpenMetadataProperty.TEMPLATE_DESCRIPTION.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.TEMPLATE_DESCRIPTION.descriptionGUID;
         final String attribute3Name            = OpenMetadataProperty.REPLACEMENT_PROPERTIES.name;
         final String attribute3Description     = OpenMetadataProperty.REPLACEMENT_PROPERTIES.description;
         final String attribute3DescriptionGUID = OpenMetadataProperty.REPLACEMENT_PROPERTIES.descriptionGUID;
@@ -557,14 +573,6 @@ public class OpenMetadataTypesArchive
         final String attribute4Description     = OpenMetadataProperty.PLACEHOLDER_PROPERTIES.description;
         final String attribute4DescriptionGUID = OpenMetadataProperty.PLACEHOLDER_PROPERTIES.descriptionGUID;
 
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
         property = archiveHelper.getMapStringStringTypeDefAttribute(attribute3Name,
                                                                     attribute3Description,
                                                                     attribute3DescriptionGUID);
@@ -574,10 +582,9 @@ public class OpenMetadataTypesArchive
                                                                     attribute4DescriptionGUID);
         properties.add(property);
 
-        relationshipDef.setPropertiesDefinition(properties);
+        typeDefPatch.setPropertyDefinitions(properties);
 
-        return relationshipDef;
-
+        return typeDefPatch;
     }
 
 

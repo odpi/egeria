@@ -10,7 +10,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.converters.Governan
 import org.odpi.openmetadata.accessservices.governanceengine.converters.MetadataElementConverter;
 import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngineErrorCode;
 import org.odpi.openmetadata.accessservices.governanceengine.handlers.GovernanceConfigurationHandler;
-import org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler;
+import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionTypeElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessElement;

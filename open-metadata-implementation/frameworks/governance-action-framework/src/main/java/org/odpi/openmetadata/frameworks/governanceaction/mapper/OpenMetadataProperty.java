@@ -209,16 +209,6 @@ public enum OpenMetadataProperty
     ACTION_DESCRIPTION("actionDescription", "string", "Description of the activity.", "2f0a4467-7b72-4dba-a345-d80959d8a3d5"),
 
     /**
-     * The display name for the template to help requester choose the template to use.
-     */
-    TEMPLATE_NAME("templateName", "string", "The display name for the template to help requester choose the template to use.", "32c4a43e-cc81-4d85-af2e-97bd492a8893"),
-
-    /**
-     * The description of the template to help requester choose the template to use.
-     */
-    TEMPLATE_DESCRIPTION("templateDescription", "string", "The description of the template to help requester choose the template to use.", "1c537e66-a43e-42bc-94f7-055af7696c86"),
-
-    /**
      * Map of attribute names to values that should be replaced in the template.  These attributes map to the root entity of the template, or, the first occurrence of the attribute in attached relationships, classifications or entities.
      */
     REPLACEMENT_PROPERTIES("replacementProperties", "map<string,string>", "Map of attribute names to values that should be replaced in the template.  These attributes map to the root entity of the template, or, the first occurrence of the attribute in attached relationships, classifications or entities.", "e4bc87ae-b15d-4fd6-ba33-2ed85f699244"),

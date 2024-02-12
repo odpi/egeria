@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.outtopic;
 
 import org.odpi.openmetadata.accessservices.governanceengine.converters.GovernanceEngineOMASConverter;
 import org.odpi.openmetadata.accessservices.governanceengine.ffdc.GovernanceEngineAuditCode;
-import org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler;
+import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.MetadataElement;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -404,6 +404,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                                                                                  entity.getGUID(),
                                                                                                  true,
                                                                                                  false,
+                                                                                                 metadataElementHandler.getSupportedZones(),
                                                                                                  null,
                                                                                                  methodName));
 
@@ -413,6 +414,7 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                                                                                                              previousEntity.getGUID(),
                                                                                                              true,
                                                                                                              false,
+                                                                                                             metadataElementHandler.getSupportedZones(),
                                                                                                              null,
                                                                                                              methodName));
                 }
@@ -465,7 +467,12 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                 WatchdogClassificationEvent watchdogEvent = new WatchdogClassificationEvent();
 
                 watchdogEvent.setEventType(eventType);
-                watchdogEvent.setMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId, entity.getGUID(), true, false, null, methodName));
+                watchdogEvent.setMetadataElement(metadataElementHandler.getMetadataElementByGUID(userId, entity.getGUID(),
+                                                                                                 true,
+                                                                                                 false,
+                                                                                                 metadataElementHandler.getSupportedZones(),
+                                                                                                 null,
+                                                                                                 methodName));
                 watchdogEvent.setChangedClassification(this.getClassification(classification));
 
                 if (previousClassification != null)
@@ -519,8 +526,20 @@ public class GovernanceEngineOMRSTopicListener extends OMRSTopicListenerBase
                 /*
                  * Validate that the relationship is visible to this service
                  */
-                metadataElementHandler.getMetadataElementByGUID(userId, relationship.getEntityOneProxy().getGUID(), true, false, null, methodName);
-                metadataElementHandler.getMetadataElementByGUID(userId, relationship.getEntityTwoProxy().getGUID(), true, false, null, methodName);
+                metadataElementHandler.getMetadataElementByGUID(userId,
+                                                                relationship.getEntityOneProxy().getGUID(),
+                                                                true,
+                                                                false,
+                                                                metadataElementHandler.getSupportedZones(),
+                                                                null,
+                                                                methodName);
+                metadataElementHandler.getMetadataElementByGUID(userId,
+                                                                relationship.getEntityTwoProxy().getGUID(),
+                                                                true,
+                                                                false,
+                                                                metadataElementHandler.getSupportedZones(),
+                                                                null,
+                                                                methodName);
 
                 /*
                  * OK to publish relationship

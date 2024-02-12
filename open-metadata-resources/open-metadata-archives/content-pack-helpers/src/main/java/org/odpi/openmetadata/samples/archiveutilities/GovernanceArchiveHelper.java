@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 
@@ -94,36 +95,27 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
 
 
+
     /**
-     * Create a governance service entity.
+     * Create an integration connector entity.
      *
-     * @param typeName name of governance service subtype to use - default is GovernanceService
-     * @param connectorProviderName name of the connector provider for the governance service
-     * @param configurationProperties configuration properties for the governance service (goes in the connection)
-     * @param qualifiedName unique name for the governance service
-     * @param displayName display name for the governance service
-     * @param description description about the governance service
+     * @param connectorProviderName name of the connector provider for the integration connector
+     * @param configurationProperties configuration properties for the integration connector (goes in the connection)
+     * @param qualifiedName unique name for the integration connector
+     * @param displayName display name for the integration connector
+     * @param description description about the integration connector
      * @param additionalProperties any other properties
-     * @param extendedProperties additional properties defined in the subtype
      *
-     * @return id for the governance service
+     * @return id for the integration connector
      */
-    public String addGovernanceService(String              typeName,
-                                       String              connectorProviderName,
-                                       Map<String, Object> configurationProperties,
-                                       String              qualifiedName,
-                                       String              displayName,
-                                       String              description,
-                                       Map<String, String> additionalProperties,
-                                       Map<String, Object> extendedProperties)
+    public String addIntegrationConnector(String              connectorProviderName,
+                                          Map<String, Object> configurationProperties,
+                                          String              qualifiedName,
+                                          String              displayName,
+                                          String              description,
+                                          String              endpointAddress,
+                                          Map<String, String> additionalProperties)
     {
-        String serviceTypeName = OpenMetadataType.GOVERNANCE_SERVICE.typeName;
-
-        if (typeName != null)
-        {
-            serviceTypeName = typeName;
-        }
-
         try
         {
             Class<?>   connectorProviderClass = Class.forName(connectorProviderName);
@@ -153,7 +145,196 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                               connectorType.getRecognizedAdditionalProperties(),
                                                               connectorType.getAdditionalProperties());
 
-            String serviceGUID = super.addAsset(serviceTypeName, qualifiedName, displayName, description, additionalProperties, extendedProperties);
+            Map<String, Object> extendedProperties = new HashMap<>();
+
+            extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                   DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType());
+
+            String connectorGUID = super.addAsset(DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                                  qualifiedName,
+                                                  displayName,
+                                                  description,
+                                                  additionalProperties,
+                                                  extendedProperties);
+
+            String endpointGUID = null;
+            if (endpointAddress != null)
+            {
+                endpointGUID = super.addEndpoint(connectorGUID,
+                                                 DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                                 qualifiedName + "_endpoint",
+                                                 displayName + "'s first catalog target",
+                                                 "Endpoint for integration connector: " + qualifiedName,
+                                                 endpointAddress,
+                                                 null,
+                                                 null);
+            }
+
+            String connectionGUID = super.addConnection(qualifiedName + "_implementation",
+                                                        displayName + " Integration Connector Provider Implementation",
+                                                        "Connection for integration connector: " + qualifiedName,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        configurationProperties,
+                                                        null,
+                                                        connectorTypeGUID,
+                                                        endpointGUID,
+                                                        connectorGUID,
+                                                        DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName());
+
+            if ((connectorGUID != null) && (connectionGUID != null))
+            {
+                super.addConnectionForAsset(connectorGUID, null, connectionGUID);
+            }
+
+            return connectorGUID;
+        }
+        catch (Exception error)
+        {
+            System.out.println("Invalid connector type " + connectorProviderName + " for integration connector.  Exception " + error.getClass().getName() + " with message " + error.getMessage());
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Create a software capability entity for an integration group.
+     *
+     * @param qualifiedName unique name for the group
+     * @param displayName display name for the group
+     * @param description description about the group
+     * @param capabilityVersion version
+     * @param patchLevel patch level
+     * @param source source
+     * @param additionalProperties any other properties
+     * @param extendedProperties properties for subtype
+     *
+     * @return id for the capability
+     */
+    public String addIntegrationGroup(String              qualifiedName,
+                                      String              displayName,
+                                      String              description,
+                                      String              capabilityVersion,
+                                      String              patchLevel,
+                                      String              source,
+                                      Map<String, String> additionalProperties,
+                                      Map<String, Object> extendedProperties)
+    {
+        return super.addSoftwareCapability(DeployedImplementationType.INTEGRATION_GROUP.getAssociatedTypeName(),
+                                           qualifiedName,
+                                           displayName,
+                                           description,
+                                           DeployedImplementationType.INTEGRATION_GROUP.getDeployedImplementationType(),
+                                           capabilityVersion,
+                                           patchLevel,
+                                           source,
+                                           additionalProperties,
+                                           extendedProperties);
+    }
+
+
+    /**
+     * Create the relationship between a governance engine and one of its supported governance services.
+     *
+     * @param integrationGroupGUID unique identifier of the integration group
+     * @param connectorName name of the connector used in messages and REST calls
+     * @param connectorUserId  userId for the connector to use (overrides the server's userId)
+     * @param metadataSourceQualifiedName unique name of the metadata collection for anything catalogued by this connector
+     * @param refreshTimeInterval how long (in minutes) between each refresh of the connector
+     * @param integrationConnectorGUID unique identifier of the integration connector
+     */
+    public void addRegisteredIntegrationConnector(String              integrationGroupGUID,
+                                                  String              connectorName,
+                                                  String              connectorUserId,
+                                                  String              metadataSourceQualifiedName,
+                                                  long                refreshTimeInterval,
+                                                  String              integrationConnectorGUID)
+    {
+        final String methodName = "addRegisteredIntegrationConnector";
+
+        EntityDetail groupEntity = archiveBuilder.getEntity(integrationGroupGUID);
+        EntityDetail connectorEntity = archiveBuilder.getEntity(integrationConnectorGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(groupEntity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(connectorEntity);
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.CONNECTOR_NAME_PROPERTY_NAME, connectorName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.CONNECTOR_USER_ID_PROPERTY_NAME, connectorUserId, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME, metadataSourceQualifiedName, methodName);
+        properties = archiveHelper.addLongPropertyToInstance(archiveRootName, properties, OpenMetadataType.REFRESH_TIME_INTERVAL_PROPERTY_NAME, refreshTimeInterval, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(integrationGroupGUID + "_to_" + integrationConnectorGUID + "_" + connectorName + "_registered_integration_connector_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+    /**
+     * Create a governance service entity.
+     *
+     * @param deployedImplementationType name of governance service subtype to use - default is GovernanceService
+     * @param connectorProviderName name of the connector provider for the governance service
+     * @param configurationProperties configuration properties for the governance service (goes in the connection)
+     * @param qualifiedName unique name for the governance service
+     * @param displayName display name for the governance service
+     * @param description description about the governance service
+     * @param additionalProperties any other properties
+     *
+     * @return id for the governance service
+     */
+    public String addGovernanceService(DeployedImplementationType deployedImplementationType,
+                                       String                     connectorProviderName,
+                                       Map<String, Object>        configurationProperties,
+                                       String                     qualifiedName,
+                                       String                     displayName,
+                                       String                     description,
+                                       Map<String, String>        additionalProperties)
+    {
+        try
+        {
+            Class<?>   connectorProviderClass = Class.forName(connectorProviderName);
+            Object     potentialConnectorProvider = connectorProviderClass.getDeclaredConstructor().newInstance();
+
+            ConnectorProviderBase serviceProvider = (ConnectorProviderBase)potentialConnectorProvider;
+            ConnectorType         connectorType   = serviceProvider.getConnectorType();
+
+            String connectorTypeGUID = super.addConnectorType(null,
+                                                              connectorType.getGUID(),
+                                                              connectorType.getQualifiedName(),
+                                                              connectorType.getDisplayName(),
+                                                              connectorType.getDescription(),
+                                                              connectorType.getDeployedImplementationType(),
+                                                              connectorType.getSupportedAssetTypeName(),
+                                                              connectorType.getExpectedDataFormat(),
+                                                              connectorType.getConnectorProviderClassName(),
+                                                              connectorType.getConnectorFrameworkName(),
+                                                              connectorType.getConnectorInterfaceLanguage(),
+                                                              connectorType.getConnectorInterfaces(),
+                                                              connectorType.getTargetTechnologySource(),
+                                                              connectorType.getTargetTechnologyName(),
+                                                              connectorType.getTargetTechnologyInterfaces(),
+                                                              connectorType.getTargetTechnologyVersions(),
+                                                              connectorType.getRecognizedSecuredProperties(),
+                                                              connectorType.getRecognizedConfigurationProperties(),
+                                                              connectorType.getRecognizedAdditionalProperties(),
+                                                              connectorType.getAdditionalProperties());
+
+            Map<String, Object> extendedProperties = new HashMap<>();
+
+            extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                   deployedImplementationType.getDeployedImplementationType());
+
+            String serviceGUID = super.addAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                qualifiedName,
+                                                displayName,
+                                                description,
+                                                additionalProperties,
+                                                extendedProperties);
 
             String connectionGUID = super.addConnection(qualifiedName + "_implementation",
                                                        displayName + " Governance Service Provider Implementation",
@@ -167,7 +348,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                        connectorTypeGUID,
                                                        null,
                                                         serviceGUID,
-                                                        serviceTypeName);
+                                                        deployedImplementationType.getAssociatedTypeName());
 
             if ((serviceGUID != null) && (connectionGUID != null))
             {
@@ -186,7 +367,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
 
     /**
-     * Create a software capability entity got s governance engine.
+     * Create a software capability entity for a governance engine.
      *
      * @param typeName name of software capability subtype to use - default is SoftwareCapability
      * @param qualifiedName unique name for the capability

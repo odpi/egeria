@@ -459,6 +459,8 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                                 serviceName,
                                                                 serverName);
 
+        builder.setAnchors(userId, null, OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME, methodName);
+
         return this.createBeanFromTemplate(userId,
                                            externalSourceGUID,
                                            externalSourceName,
@@ -470,6 +472,9 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataProperty.QUALIFIED_NAME.name,
                                            builder,
                                            supportedZones,
+                                           true,
+                                           false,
+                                           null,
                                            methodName);
     }
 
