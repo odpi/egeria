@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * PrimitiveTypePropertyValue stores a single primitive property.  This is stored in the specific Java class
- * for the property value's type although it is stored as an object.
+ * for the property value's type, although it is stored as an object.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

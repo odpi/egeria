@@ -696,9 +696,9 @@ public class AssetLookUp
         final String interactiveMode = "interactive";
         final String endInteractiveMode = "exit";
 
-        String  serverName = "mds1";
+        String  serverName = "active-metadata-store";
         String  platformURLRoot = "https://localhost:9443";
-        String  clientUserId = "garygeeke";
+        String  clientUserId = "erinoverview";
         String  mode = interactiveMode;
 
         if (args.length > 0)

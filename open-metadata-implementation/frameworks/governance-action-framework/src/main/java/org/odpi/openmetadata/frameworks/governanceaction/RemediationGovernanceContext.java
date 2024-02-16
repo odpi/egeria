@@ -15,7 +15,6 @@ import java.util.List;
 /**
  * RemediationGovernanceContext provides access to the remediation request along with access to the
  * metadata store and APIs to enable changes to a wide range of metadata elements.
- *
  * A remediation service is typically making updates to the actionTargetElements. It may use
  * information from the requestSourceElements to make the changes.  For example,
  * a remediation service that is correcting the schema elements for an asset element could find the
@@ -32,11 +31,8 @@ public interface RemediationGovernanceContext extends GovernanceContext
      *
      * @param metadataElementTypeName type name of the new metadata element
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
-     *                     connection etc)
      *
      * @return unique identifier of the new metadata element
-     *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
      * @throws PropertyServerException there is a problem with the metadata store
@@ -60,7 +56,6 @@ public interface RemediationGovernanceContext extends GovernanceContext
      * @param properties properties of the new metadata element
      *
      * @return unique identifier of the new metadata element
-     *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
      * @throws PropertyServerException there is a problem with the metadata store

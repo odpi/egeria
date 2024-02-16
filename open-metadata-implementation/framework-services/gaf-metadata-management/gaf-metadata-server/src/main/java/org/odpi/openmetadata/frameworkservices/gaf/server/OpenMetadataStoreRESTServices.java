@@ -514,7 +514,6 @@ public class OpenMetadataStoreRESTServices
                                                               String    guid)
     {
         final String methodName = "getAttributeTypeDefByGUID";
-        final String guidParameterName = "guid";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -527,7 +526,6 @@ public class OpenMetadataStoreRESTServices
             OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
 
             AttributeTypeDef attributeTypeDef = repositoryHelper.getAttributeTypeDef(instanceHandler.getServiceName(serviceURLMarker),
-                                                                                     guidParameterName,
                                                                                      guid,
                                                                                      methodName);
             response.setAttributeTypeDef(this.getAttributeTypeDef(attributeTypeDef));
@@ -1059,7 +1057,7 @@ public class OpenMetadataStoreRESTServices
 
                 response.setElementList(handler.findMetadataElements(userId,
                                                                      requestBody.getMetadataElementTypeName(),
-                                                                     requestBody.getMetadataElementSubtypeName(),
+                                                                     requestBody.getMetadataElementSubtypeNames(),
                                                                      requestBody.getSearchProperties(),
                                                                      requestBody.getLimitResultsByStatus(),
                                                                      requestBody.getMatchClassifications(),
@@ -1115,7 +1113,7 @@ public class OpenMetadataStoreRESTServices
                                                                                         long            effectiveTime,
                                                                                         int             startFrom,
                                                                                         int             pageSize,
-                                                                                        FindRequestBody requestBody)
+                                                                                        FindRelationshipRequestBody requestBody)
     {
         final String methodName = "findRelationshipsBetweenMetadataElements";
 
@@ -1133,7 +1131,7 @@ public class OpenMetadataStoreRESTServices
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
                 response.setElementList(handler.findRelationshipsBetweenMetadataElements(userId,
-                                                                                         requestBody.getMetadataElementTypeName(),
+                                                                                         requestBody.getRelationshipTypeName(),
                                                                                          requestBody.getSearchProperties(),
                                                                                          requestBody.getLimitResultsByStatus(),
                                                                                          requestBody.getAsOfTime(),
@@ -1930,7 +1928,7 @@ public class OpenMetadataStoreRESTServices
             {
                 MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
 
-                handler.unclassifyMetadataElementInStore(userId,
+                handler.declassifyMetadataElementInStore(userId,
                                                          requestBody.getExternalSourceGUID(),
                                                          requestBody.getExternalSourceName(),
                                                          metadataElementGUID,
@@ -4431,6 +4429,8 @@ public class OpenMetadataStoreRESTServices
             openMetadataAttributeTypeDef.setDescriptionGUID(attributeTypeDef.getDescriptionGUID());
             openMetadataAttributeTypeDef.setVersion(attributeTypeDef.getVersion());
             openMetadataAttributeTypeDef.setVersionName(attributeTypeDef.getVersionName());
+
+            return openMetadataAttributeTypeDef;
         }
 
         return null;

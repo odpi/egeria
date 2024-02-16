@@ -595,7 +595,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      *                           include in the search results. Null means all subtypes.
      * @param searchProperties Optional list of entity property conditions to match.
      * @param limitResultsByStatus By default, entities in all statuses (other than DELETE) are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
      * @param searchClassifications Optional list of classifications to match.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
@@ -1223,7 +1223,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param relationshipTypeName relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
      * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all status values.
+     *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
      * @param searchProperties Optional list of relationship property conditions to match.
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
@@ -2244,7 +2244,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the governance action service is not authorized to remove this classification
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public  void unclassifyMetadataElementInStore(String       userId,
+    public  void declassifyMetadataElementInStore(String       userId,
                                                   String       externalSourceGUID,
                                                   String       externalSourceName,
                                                   String       metadataElementGUID,

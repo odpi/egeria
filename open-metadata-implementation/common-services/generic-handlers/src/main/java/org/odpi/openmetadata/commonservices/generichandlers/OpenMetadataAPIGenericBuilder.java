@@ -214,9 +214,13 @@ public class OpenMetadataAPIGenericBuilder
             {
                 /*
                  * The anchor classification from the template is skipped because the new entity may have a
-                 * different anchor.  The anchor classification is therefore set up explicitly.
+                 * different anchor.  The anchor classification is therefore set up explicitly. The Template
+                 * classification is also skipped because hte new element will not be a template because the
+                 * placeholders have been resolved.
                  */
-                if ((templateClassification != null) && (! OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(templateClassification.getName())))
+                if ((templateClassification != null) &&
+                        (! OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(templateClassification.getName())) &&
+                        (! OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName.equals(templateClassification.getName())))
                 {
                     try
                     {
@@ -455,7 +459,7 @@ public class OpenMetadataAPIGenericBuilder
                     else if (instancePropertyValue instanceof ArrayPropertyValue arrayPropertyValue)
                     {
                         arrayPropertyValue.setArrayValues(this.replaceStringPropertiesWithPlaceholders(arrayPropertyValue.getArrayValues(),
-                                                                                                          placeholderProperties));
+                                                                                                       placeholderProperties));
 
                         newTemplateProperties.setProperty(propertyName, arrayPropertyValue);
                     }
@@ -466,6 +470,8 @@ public class OpenMetadataAPIGenericBuilder
                         newTemplateProperties.setProperty(propertyName, mapPropertyValue);
                     }
                 }
+
+                return newTemplateProperties;
             }
         }
 
@@ -486,34 +492,63 @@ public class OpenMetadataAPIGenericBuilder
     {
         String propertyValue = primitivePropertyValue.valueAsString();
 
+        if ((propertyValue == null) || (! propertyValue.contains("{{")))
+        {
+            /*
+             * No placeholders in property.
+             */
+            return propertyValue;
+        }
+
         if ((placeholderProperties != null) && (! placeholderProperties.isEmpty()))
         {
             for (String placeholderName : placeholderProperties.keySet())
             {
-                String regExMatchString = Pattern.quote("{{"+ placeholderName + "}}");
-                String[] configBits = primitivePropertyValue.valueAsString().split(regExMatchString);
+                String placeholderMatchString = "{{"+ placeholderName + "}}";
 
-                if (configBits.length > 1)
+                if (propertyValue.equals(placeholderMatchString))
                 {
-                    StringBuilder newConfigString = new StringBuilder();
-                    boolean       firstPart       = true;
+                    propertyValue = placeholderProperties.get(placeholderName);
+                }
+                else
+                {
+                    String regExMatchString = Pattern.quote(placeholderMatchString);
+                    String[] configBits = propertyValue.split(regExMatchString);
 
-                    for (String configBit : configBits)
+                    if (configBits.length == 1)
                     {
-                        if (! firstPart)
+                        if (! propertyValue.equals(configBits[0]))
+                        {
+                            propertyValue = configBits[0] + placeholderProperties.get(placeholderName);
+                        }
+                    }
+                    else if (configBits.length > 1)
+                    {
+                        StringBuilder newConfigString = new StringBuilder();
+                        boolean       firstPart       = true;
+
+                        for (String configBit : configBits)
+                        {
+                            if (! firstPart)
+                            {
+                                newConfigString.append(placeholderProperties.get(placeholderName));
+                            }
+
+                            firstPart = false;
+
+                            if (configBit != null)
+                            {
+                                newConfigString.append(configBit);
+                            }
+                        }
+
+                        if (propertyValue.endsWith(placeholderMatchString))
                         {
                             newConfigString.append(placeholderProperties.get(placeholderName));
                         }
 
-                        firstPart = false;
-
-                        if (configBit != null)
-                        {
-                            newConfigString.append(configBit);
-                        }
+                        propertyValue = newConfigString.toString();
                     }
-
-                    propertyValue = newConfigString.toString();
                 }
             }
         }

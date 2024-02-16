@@ -18,6 +18,7 @@ dependencies {
     compileOnly project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-client')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
+    runtimeOnly project(':open-metadata-implementation:user-security:token-manager')
 
 }
 

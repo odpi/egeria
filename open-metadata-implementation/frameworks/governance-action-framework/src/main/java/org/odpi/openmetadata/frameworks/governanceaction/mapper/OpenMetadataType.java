@@ -4078,6 +4078,9 @@ public enum OpenMetadataType
     public static final String LICENSEE_PROPERTY_NAME                  = "licensee";               /* from License relationship */
     public static final String LICENSEE_TYPE_NAME_PROPERTY_NAME        = "licenseeTypeName";       /* from License relationship */
     public static final String LICENSEE_PROPERTY_NAME_PROPERTY_NAME    = "licenseePropertyName";   /* from License relationship */
+    public static final String ENTITLEMENTS_PROPERTY_NAME              = "entitlements";   /* from License relationship */
+    public static final String RESTRICTIONS_PROPERTY_NAME              = "restrictions";   /* from License relationship */
+    public static final String OBLIGATIONS_PROPERTY_NAME               = "obligations";   /* from License relationship */
 
 
     /* ============================================================================================================================*/

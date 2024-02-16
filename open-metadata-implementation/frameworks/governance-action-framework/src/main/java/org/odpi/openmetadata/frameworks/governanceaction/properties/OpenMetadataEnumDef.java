@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenMetadataEnumDef extends OpenMetadataAttributeTypeDef
 {
-    private static final long    serialVersionUID = 1L;
-
     private List<OpenMetadataEnumElementDef> elementDefs  = null;
     private OpenMetadataEnumElementDef       defaultValue = null;
 

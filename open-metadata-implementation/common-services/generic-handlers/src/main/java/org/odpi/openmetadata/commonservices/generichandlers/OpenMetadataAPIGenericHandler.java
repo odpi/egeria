@@ -1198,8 +1198,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param beanEntity entity potentially containing the classification
      * @param classificationTypeName unique name of classification type
      */
-    Classification getExistingClassification(EntityDetail beanEntity,
-                                             String classificationTypeName)
+    Classification getExistingClassification(EntitySummary beanEntity,
+                                             String        classificationTypeName)
     {
         Classification  existingClassification  = null;
 
@@ -1472,8 +1472,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param methodName calling method
      * @return anchorGUID or null
      */
-    public AnchorIdentifiers getAnchorGUIDFromAnchorsClassification(EntityDetail connectToEntity,
-                                                                    String       methodName)
+    public AnchorIdentifiers getAnchorGUIDFromAnchorsClassification(EntitySummary connectToEntity,
+                                                                    String        methodName)
     {
         /*
          * Metadata maintained by Egeria Access Service modules should have the Anchors classification.
@@ -5522,6 +5522,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                                methodName);
 
         List<Relationship> results = new ArrayList<>();
+        List<String>       validatedAnchorGUIDs = new ArrayList<>();
 
         while ((iterator.moreToReceive()) && ((queryPageSize == 0) || (results.size() < queryPageSize)))
         {
@@ -5534,24 +5535,20 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                     final String entityOneParameterName = "relationship.getEntityOneProxy().getGUID()";
                     final String entityTwoParameterName = "relationship.getEntityTwoProxy().getGUID()";
 
-                    this.validateAnchorEntity(userId,
-                                              relationship.getEntityOneProxy().getGUID(),
+                    validateEntityProxyAnchor(userId,
+                                              relationship.getEntityOneProxy(),
                                               entityOneParameterName,
-                                              OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                              false,
-                                              false,
+                                              validatedAnchorGUIDs,
                                               forLineage,
                                               forDuplicateProcessing,
                                               serviceSupportedZones,
                                               effectiveTime,
                                               methodName);
 
-                    this.validateAnchorEntity(userId,
-                                              relationship.getEntityTwoProxy().getGUID(),
+                    validateEntityProxyAnchor(userId,
+                                              relationship.getEntityTwoProxy(),
                                               entityTwoParameterName,
-                                              OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                              false,
-                                              false,
+                                              validatedAnchorGUIDs,
                                               forLineage,
                                               forDuplicateProcessing,
                                               serviceSupportedZones,
@@ -5573,6 +5570,79 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         }
 
         return null;
+    }
+
+
+    private void validateEntityProxyAnchor(String       userId,
+                                           EntityProxy  entityProxy,
+                                           String       entityProxyParameterName,
+                                           List<String> validatedAnchorGUIDs,
+                                           boolean      forLineage,
+                                           boolean      forDuplicateProcessing,
+                                           List<String> serviceSupportedZones,
+                                           Date         effectiveTime,
+                                           String       methodName) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
+    {
+        AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entityProxy, methodName);
+
+        if (anchorIdentifiers == null)
+        {
+            EntityDetail connectToEntity = repositoryHandler.getEntityByGUID(userId,
+                                                                             entityProxy.getGUID(),
+                                                                             entityProxyParameterName,
+                                                                             OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                             forLineage,
+                                                                             forDuplicateProcessing,
+                                                                             effectiveTime,
+                                                                             methodName);
+
+            anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entityProxy, methodName);
+
+            if ((anchorIdentifiers == null) || (anchorIdentifiers.anchorGUID == null) || (! validatedAnchorGUIDs.contains(anchorIdentifiers.anchorGUID)))
+            {
+                this.validateAnchorEntity(userId,
+                                          entityProxy.getGUID(),
+                                          entityProxyParameterName,
+                                          connectToEntity,
+                                          OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                          false,
+                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          serviceSupportedZones,
+                                          effectiveTime,
+                                          methodName);
+
+                if ((anchorIdentifiers != null) && (anchorIdentifiers.anchorGUID != null))
+                {
+                    validatedAnchorGUIDs.add(anchorIdentifiers.anchorGUID);
+                }
+            }
+        }
+        else
+        {
+            if ((anchorIdentifiers.anchorGUID == null) || (! validatedAnchorGUIDs.contains(anchorIdentifiers.anchorGUID)))
+            {
+                this.validateAnchorEntity(userId,
+                                          entityProxy.getGUID(),
+                                          entityProxyParameterName,
+                                          OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                          false,
+                                          false,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          serviceSupportedZones,
+                                          effectiveTime,
+                                          methodName);
+
+                if (anchorIdentifiers.anchorGUID != null)
+                {
+                    validatedAnchorGUIDs.add(anchorIdentifiers.anchorGUID);
+                }
+            }
+        }
     }
 
 
@@ -9410,6 +9480,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param exactValueMatch should the value be treated as a literal or a RegEx?
      * @param caseInsensitive set to true to have a case-insensitive exact match regular expression
      * @param sequencingPropertyName should the results be sequenced?
+     * @param limitResultsByStatus only return elements that have the requested status (null means all statuses
+     * @param limitResultsByClassification only return elements that have the requested classification(s)
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startFrom  index of the list to start from (0 for start)
@@ -9418,20 +9490,22 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param methodName calling method
      * @return configured iterator
      */
-    RepositoryIteratorForEntities getEntitySearchIterator(String       userId,
-                                                          String       searchString,
-                                                          String       resultTypeGUID,
-                                                          String       resultTypeName,
-                                                          List<String> specificMatchPropertyNames,
-                                                          boolean      exactValueMatch,
-                                                          boolean      caseInsensitive,
-                                                          String       sequencingPropertyName,
-                                                          boolean      forLineage,
-                                                          boolean      forDuplicateProcessing,
-                                                          int          startFrom,
-                                                          int          queryPageSize,
-                                                          Date         effectiveTime,
-                                                          String       methodName) throws InvalidParameterException
+    RepositoryIteratorForEntities getEntitySearchIterator(String               userId,
+                                                          String               searchString,
+                                                          String               resultTypeGUID,
+                                                          String               resultTypeName,
+                                                          List<String>         specificMatchPropertyNames,
+                                                          boolean              exactValueMatch,
+                                                          boolean              caseInsensitive,
+                                                          String               sequencingPropertyName,
+                                                          List<InstanceStatus> limitResultsByStatus,
+                                                          List<String>         limitResultsByClassification,
+                                                          boolean              forLineage,
+                                                          boolean              forDuplicateProcessing,
+                                                          int                  startFrom,
+                                                          int                  queryPageSize,
+                                                          Date                 effectiveTime,
+                                                          String               methodName) throws InvalidParameterException
     {
         RepositoryIteratorForEntities iterator;
 
@@ -9455,6 +9529,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                   resultTypeGUID,
                                                                   searchValue,
                                                                   sequencingPropertyName,
+                                                                  limitResultsByStatus,
+                                                                  limitResultsByClassification,
                                                                   forLineage,
                                                                   forDuplicateProcessing,
                                                                   startFrom,
@@ -9474,6 +9550,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                   this.getSearchInstanceProperties(searchValue, specificMatchPropertyNames, methodName),
                                                                   MatchCriteria.ANY,
                                                                   sequencingPropertyName,
+                                                                  limitResultsByStatus,
+                                                                  limitResultsByClassification,
                                                                   forLineage,
                                                                   forDuplicateProcessing,
                                                                   startFrom,
@@ -9493,6 +9571,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                       resultTypeGUID,
                                                       resultTypeName,
                                                       sequencingPropertyName,
+                                                      limitResultsByStatus,
+                                                      limitResultsByClassification,
                                                       forLineage,
                                                       forDuplicateProcessing,
                                                       startFrom,
@@ -9602,6 +9682,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                          propertyNames,
                                                                          true,
                                                                          false,
+                                                                         null,
+                                                                         null,
                                                                          null,
                                                                          forLineage,
                                                                          forDuplicateProcessing,
@@ -9773,6 +9855,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                          propertyNames,
                                                                          true,
                                                                          false,
+                                                                         null,
+                                                                         null,
                                                                          null,
                                                                          forLineage,
                                                                          forDuplicateProcessing,
@@ -10369,7 +10453,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                      effectiveTime,
                                                                                      methodName);
 
-        List<EntityDetail> results = new ArrayList<>();
+        List<EntityDetail> results              = new ArrayList<>();
+        List<String>       validatedAnchorGUIDs = new ArrayList<>();
 
         while ((iterator.moreToReceive()) && ((queryPageSize == 0) || (results.size() < queryPageSize)))
         {
@@ -10377,18 +10462,29 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
             if (entity != null)
             {
-                this.validateAnchorEntity(userId,
-                                          entity.getGUID(),
-                                          entity.getType().getTypeDefName(),
-                                          entity,
-                                          entityGUIDParameterName,
-                                          false,
-                                          false,
-                                          forLineage,
-                                          forDuplicateProcessing,
-                                          serviceSupportedZones,
-                                          effectiveTime,
-                                          methodName);
+                AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
+
+                if ((anchorIdentifiers == null) || (anchorIdentifiers.anchorGUID == null) || (! validatedAnchorGUIDs.contains(anchorIdentifiers.anchorGUID)))
+                {
+                    this.validateAnchorEntity(userId,
+                                              entity.getGUID(),
+                                              entity.getType().getTypeDefName(),
+                                              entity,
+                                              entityGUIDParameterName,
+                                              false,
+                                              false,
+                                              forLineage,
+                                              forDuplicateProcessing,
+                                              serviceSupportedZones,
+                                              effectiveTime,
+                                              methodName);
+
+                    if ((anchorIdentifiers != null) && (anchorIdentifiers.anchorGUID != null))
+                    {
+                        validatedAnchorGUIDs.add(anchorIdentifiers.anchorGUID);
+                    }
+                }
+
                 results.add(entity);
             }
         }
@@ -10723,6 +10819,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                          false,
                                                                          false,
                                                                          sequencingPropertyName,
+                                                                         null,
+                                                                         null,
                                                                          forLineage,
                                                                          forDuplicateProcessing,
                                                                          0,
@@ -11040,6 +11138,15 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
+        List<String> limitResultsByClassification = null;
+
+        if (requiredClassificationName != null)
+        {
+            limitResultsByClassification = new ArrayList<>();
+
+            limitResultsByClassification.add(requiredClassificationName);
+        }
+
         RepositoryIteratorForEntities iterator = new RepositorySelectedEntitiesIterator(repositoryHandler,
                                                                                         invalidParameterHandler,
                                                                                         userId,
@@ -11047,6 +11154,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                         repositoryHelper.addIntPropertyToInstance(serviceName, null, propertyName, value, methodName),
                                                                                         MatchCriteria.ANY,
                                                                                         sequencingPropertyName,
+                                                                                        null,
+                                                                                        limitResultsByClassification,
                                                                                         forLineage,
                                                                                         forDuplicateProcessing,
                                                                                         0,
@@ -11058,7 +11167,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                   iterator,
                                   entityParameterName,
                                   resultTypeName,
-                                  requiredClassificationName,
                                   omittedClassificationName,
                                   forLineage,
                                   forDuplicateProcessing,
@@ -11189,6 +11297,15 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
         int queryPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
+        List<String> limitResultsByClassifications = null;
+
+        if (requiredClassificationName != null)
+        {
+            limitResultsByClassifications = new ArrayList<>();
+
+            limitResultsByClassifications.add(requiredClassificationName);
+        }
+
         /*
          * Notice that the startFrom is 0 - it allows the filtering process to skip over the right number of
          * elements.
@@ -11201,6 +11318,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                          exactValueMatch,
                                                                          caseInsensitive,
                                                                          sequencingPropertyName,
+                                                                         null,
+                                                                         limitResultsByClassifications,
                                                                          forLineage,
                                                                          forDuplicateProcessing,
                                                                          0,
@@ -11214,7 +11333,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                   iterator,
                                   entityParameterName,
                                   resultTypeName,
-                                  requiredClassificationName,
                                   omittedClassificationName,
                                   forLineage,
                                   forDuplicateProcessing,
@@ -11233,7 +11351,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param iterator mechanism for search
      * @param entityParameterName parameter description
      * @param resultTypeName unique value of the type that the results should match with
-     * @param requiredClassificationName  String the name of the classification that must be on the attached entity
      * @param omittedClassificationName   String the name of a classification that must not be on the attached entity
      * @param forLineage                   boolean indicating whether the entity is being retrieved for a lineage request or not
      * @param forDuplicateProcessing       the query is for duplicate processing and so must not deduplicate
@@ -11252,7 +11369,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                  RepositoryIteratorForEntities iterator,
                                                  String                        entityParameterName,
                                                  String                        resultTypeName,
-                                                 String                        requiredClassificationName,
                                                  String                        omittedClassificationName,
                                                  boolean                       forLineage,
                                                  boolean                       forDuplicateProcessing,
@@ -11269,6 +11385,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
          * Once they are filtered out, more entities need to be retrieved to fill the gaps.
          */
         List<EntityDetail> results = new ArrayList<>();
+        List<String>       validatedAnchorEntities = new ArrayList<>();
         int                skippedValues = 0;
 
         while (iterator.moreToReceive() && ((queryPageSize == 0) || (results.size() < queryPageSize)))
@@ -11281,38 +11398,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
                 try
                 {
-                    validateAnchorEntity(userId,
-                                         entity.getGUID(),
-                                         resultTypeName,
-                                         entity,
-                                         entityParameterName,
-                                         false,
-                                         false,
-                                         forLineage,
-                                         forDuplicateProcessing,
-                                         serviceSupportedZones,
-                                         effectiveTime,
-                                         methodName);
-
-
-                    if (requiredClassificationName != null)
-                    {
-                        try
-                        {
-                            if (repositoryHelper.getClassificationFromEntity(serviceName, entity, requiredClassificationName, methodName) == null)
-                            {
-                                beanValid = false;
-                            }
-                        }
-                        catch (ClassificationErrorException error)
-                        {
-                            /*
-                             * Since this classification is not supported, it can not be attached to the entity
-                             */
-                            beanValid = false;
-                        }
-                    }
-
                     if (omittedClassificationName != null)
                     {
                         try
@@ -11327,6 +11412,30 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                             // ok - don't care
                         }
                     }
+
+                    AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
+
+                    if ((anchorIdentifiers == null) || (anchorIdentifiers.anchorGUID == null) || (! validatedAnchorEntities.contains(anchorIdentifiers.anchorGUID)))
+                    {
+                        validateAnchorEntity(userId,
+                                             entity.getGUID(),
+                                             resultTypeName,
+                                             entity,
+                                             entityParameterName,
+                                             false,
+                                             false,
+                                             forLineage,
+                                             forDuplicateProcessing,
+                                             serviceSupportedZones,
+                                             effectiveTime,
+                                             methodName);
+
+                        if ((anchorIdentifiers != null) && (anchorIdentifiers.anchorGUID != null))
+                        {
+                            validatedAnchorEntities.add(anchorIdentifiers.anchorGUID);
+                        }
+                    }
+
                 }
                 catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException invisibleEntity)
                 {
@@ -11735,6 +11844,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                          exactValueMatch,
                                                                          false,
                                                                          sequencingPropertyName,
+                                                                         null,
+                                                                         null,
                                                                          forLineage,
                                                                          forDuplicateProcessing,
                                                                          0,
@@ -12036,6 +12147,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                          false,
                                                                          false,
                                                                          sequencingPropertyName,
+                                                                         null,
+                                                                         null,
                                                                          forLineage,
                                                                          forDuplicateProcessing,
                                                                          0,
@@ -14957,7 +15070,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         EntityDetail entityDetail = this.getEntityFromRepository(userId,
                                                                  guid,
                                                                  guidParameterName,
-                                                                 entityTypeName,
+                                                                 OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                  null,
                                                                  null,
                                                                  forLineage,
