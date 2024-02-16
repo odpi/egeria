@@ -177,6 +177,7 @@ public class CocoSustainabilityArchiveWriter extends CocoBaseArchiveWriter
                                                             false,
                                                             null,
                                                             null,
+                                                            null,
                                                             null);
 
             if (glossaryTermDefinition.getCategory() != null)

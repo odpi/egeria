@@ -1109,6 +1109,7 @@ public class SimpleCatalogArchiveHelper
      * @param contactMethodValue name/account/url used to contact the individual
      */
     public  void addContactDetails(String  profileGUID,
+                                   String  profileTypeName,
                                    String  name,
                                    String  contactType,
                                    int     contactMethodType,
@@ -1127,11 +1128,15 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.CONTACT_METHOD_SERVICE_PROPERTY_NAME, contactMethodService, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.CONTACT_METHOD_VALUE_PROPERTY_NAME, contactMethodValue, methodName);
 
+        List<Classification> classifications = new ArrayList<>();
+
+        classifications.add(this.getAnchorClassification(profileGUID, profileTypeName, methodName));
+
         EntityDetail contactDetails = archiveHelper.getEntityDetail(OpenMetadataType.CONTACT_DETAILS_TYPE_NAME,
                                                                     idToGUIDMap.getGUID(contactMethodValue),
                                                                     properties,
                                                                     InstanceStatus.ACTIVE,
-                                                                    null);
+                                                                    classifications);
 
         archiveBuilder.addEntity(contactDetails);
 
@@ -1194,6 +1199,9 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 
+        List<Classification> classifications = new ArrayList<>();
+
+        classifications.add(this.getAnchorClassification(null, typeName, methodName));
         EntityDetail role = archiveHelper.getEntityDetail(typeName,
                                                           idToGUIDMap.getGUID(qualifiedName),
                                                           properties,
@@ -1377,11 +1385,15 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.IS_PUBLIC.name, isPublic, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
 
+        List<Classification> classifications = new ArrayList<>();
+
+        classifications.add(this.getAnchorClassification(null, OpenMetadataType.PERSON_TYPE_NAME, methodName));
+
         EntityDetail person = archiveHelper.getEntityDetail(OpenMetadataType.PERSON_TYPE_NAME,
                                                             idToGUIDMap.getGUID(qualifiedName),
                                                             properties,
                                                             InstanceStatus.ACTIVE,
-                                                            null);
+                                                            classifications);
 
         archiveBuilder.addEntity(person);
 
@@ -1424,11 +1436,15 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.IDENTIFIER_PROPERTY_NAME, identifier, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
 
+        List<Classification> classifications = new ArrayList<>();
+
+        classifications.add(this.getAnchorClassification(null, typeName, methodName));
+
         EntityDetail profile = archiveHelper.getEntityDetail(typeName,
                                                             idToGUIDMap.getGUID(qualifiedName),
                                                             properties,
                                                             InstanceStatus.ACTIVE,
-                                                            null);
+                                                            classifications);
 
         archiveBuilder.addEntity(profile);
 
@@ -2101,11 +2117,15 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 
+        List<Classification> classifications = new ArrayList<>();
+
+        classifications.add(getAnchorClassification(null, typeName, methodName));
+
         EntityDetail newEntity = archiveHelper.getEntityDetail(typeName,
                                                                idToGUIDMap.getGUID(qualifiedName),
                                                                properties,
                                                                InstanceStatus.ACTIVE,
-                                                               null);
+                                                               classifications);
 
         archiveBuilder.addEntity(newEntity);
 
@@ -2296,6 +2316,77 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
+     * Return the asset origin classification.
+     *
+     * @param organization organization GUID/name
+     * @param organizationPropertyName property name used to id the organization
+     * @param businessCapability business capability GUID/name
+     * @param businessCapabilityPropertyName property name used to id the business capability
+     * @param otherOriginValues map of other values
+     * @return classification
+     */
+    public Classification getAssetOriginClassification(String              organization,
+                                                       String              organizationPropertyName,
+                                                       String              businessCapability,
+                                                       String              businessCapabilityPropertyName,
+                                                       Map<String, String> otherOriginValues)
+    {
+        final String methodName = "getAssetOriginClassification";
+
+        InstanceProperties classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                                                null,
+                                                                                                OpenMetadataType.ORGANIZATION_PROPERTY_NAME,
+                                                                                                organization,
+                                                                                                methodName);
+        classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                             classificationProperties,
+                                                                             OpenMetadataType.ORGANIZATION_PROPERTY_NAME_PROPERTY_NAME,
+                                                                             organizationPropertyName,
+                                                                             methodName);
+
+        classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                             classificationProperties,
+                                                                             OpenMetadataType.BUSINESS_CAPABILITY_PROPERTY_NAME,
+                                                                             businessCapability,
+                                                                             methodName);
+
+        classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                             classificationProperties,
+                                                                             OpenMetadataType.BUSINESS_CAPABILITY_PROPERTY_NAME_PROPERTY_NAME,
+                                                                             businessCapabilityPropertyName,
+                                                                             methodName);
+
+        classificationProperties = archiveHelper.addStringMapPropertyToInstance(archiveRootName,
+                                                                                classificationProperties,
+                                                                                OpenMetadataType.OTHER_ORIGIN_VALUES_PROPERTY_NAME,
+                                                                                otherOriginValues,
+                                                                                methodName);
+
+        return archiveHelper.getClassification(OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_NAME,
+                                               classificationProperties,
+                                               InstanceStatus.ACTIVE);
+    }
+
+    /**
+     * Return the asset zone membership classification.
+     *
+     * @param zones list of zones that the asset is a member of.
+     */
+    public Classification getAssetZoneMembershipClassification(List<String> zones)
+    {
+        final String methodName = "getAssetZoneMembershipClassification";
+
+        return archiveHelper.getClassification(OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME,
+                                               archiveHelper.addStringArrayPropertyToInstance(archiveRootName,
+                                                                                              null,
+                                                                                              OpenMetadataType.ZONE_MEMBERSHIP_PROPERTY_NAME,
+                                                                                              zones,
+                                                                                              methodName),
+                                               InstanceStatus.ACTIVE);
+    }
+
+
+    /**
      * Add the asset zone membership classification to the requested asset.
      *
      * @param assetGUID unique identifier of the asset to classify
@@ -2304,18 +2395,10 @@ public class SimpleCatalogArchiveHelper
     public void addAssetZoneMembershipClassification(String       assetGUID,
                                                      List<String> zones)
     {
-        final String methodName = "addAssetZoneMembershipClassification";
-
         EntityDetail assetEntity = archiveBuilder.getEntity(assetGUID);
         EntityProxy  entityProxy = archiveHelper.getEntityProxy(assetEntity);
 
-        Classification  classification = archiveHelper.getClassification(OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME,
-                                                                         archiveHelper.addStringArrayPropertyToInstance(archiveRootName,
-                                                                                                                        null,
-                                                                                                                        OpenMetadataType.ZONE_MEMBERSHIP_PROPERTY_NAME,
-                                                                                                                        zones,
-                                                                                                                        methodName),
-                                                                         InstanceStatus.ACTIVE);
+        Classification  classification = this.getAssetZoneMembershipClassification(zones);
 
         archiveBuilder.addClassification(archiveHelper.getClassificationEntityExtension(entityProxy, classification));
     }
@@ -2450,11 +2533,15 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataType.BUSINESS_CAPABILITY_TYPE_PROPERTY_NAME, businessCapabilityTypeEnum.getOrdinal(), businessCapabilityTypeEnum.getValue(), businessCapabilityTypeEnum.getDescription(), methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
 
+        List<Classification> classifications = new ArrayList<>();
+
+        classifications.add(this.getAnchorClassification(null, OpenMetadataType.BUSINESS_CAPABILITY_TYPE_NAME, methodName));
+
         EntityDetail newEntity = archiveHelper.getEntityDetail(OpenMetadataType.BUSINESS_CAPABILITY_TYPE_NAME,
                                                                idToGUIDMap.getGUID(qualifiedName),
                                                                properties,
                                                                InstanceStatus.ACTIVE,
-                                                               null);
+                                                               classifications);
 
         archiveBuilder.addEntity(newEntity);
 
@@ -3196,6 +3283,7 @@ public class SimpleCatalogArchiveHelper
      * @return id for the schemaType
      */
     public String addTopLevelSchemaType(String              assetGUID,
+                                        String              assetTypeName,
                                         String              typeName,
                                         String              qualifiedName,
                                         String              displayName,
@@ -3216,11 +3304,19 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
 
+        List<Classification> classifications = null;
+
+        if (assetGUID != null)
+        {
+            classifications = new ArrayList<>();
+
+            classifications.add(this.getAnchorClassification(assetGUID, assetTypeName, methodName));
+        }
         EntityDetail schemaTypeEntity = archiveHelper.getEntityDetail(schemaTypeTypeName,
                                                                       idToGUIDMap.getGUID(qualifiedName),
                                                                       properties,
                                                                       InstanceStatus.ACTIVE,
-                                                                      null);
+                                                                      classifications);
 
         archiveBuilder.addEntity(schemaTypeEntity);
 
@@ -3241,6 +3337,52 @@ public class SimpleCatalogArchiveHelper
 
         return schemaTypeEntity.getGUID();
     }
+
+
+
+    public String addSchemaType(String              assetGUID,
+                                String              assetTypeName,
+                                String              typeName,
+                                String              qualifiedName,
+                                String              displayName,
+                                String              description,
+                                Map<String, String> additionalProperties)
+    {
+        final String methodName = "addSchemaType";
+
+        String schemaTypeTypeName = OpenMetadataType.SCHEMA_TYPE_TYPE_NAME;
+
+        if (typeName != null)
+        {
+            schemaTypeTypeName = typeName;
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
+
+        List<Classification> classifications = null;
+
+        if (assetGUID != null)
+        {
+            classifications = new ArrayList<>();
+
+            classifications.add(this.getAnchorClassification(assetGUID, assetTypeName, methodName));
+        }
+        EntityDetail schemaTypeEntity = archiveHelper.getEntityDetail(schemaTypeTypeName,
+                                                                      idToGUIDMap.getGUID(qualifiedName),
+                                                                      properties,
+                                                                      InstanceStatus.ACTIVE,
+                                                                      classifications);
+
+        archiveBuilder.addEntity(schemaTypeEntity);
+
+        return schemaTypeEntity.getGUID();
+    }
+
+
+
 
 
     /**
@@ -3532,6 +3674,52 @@ public class SimpleCatalogArchiveHelper
                                      int                 position,
                                      Map<String, String> additionalProperties)
     {
+        return this.addSchemaAttribute(null,
+                                       null,
+                                       typeName,
+                                       schemaTypeName,
+                                       qualifiedName,
+                                       displayName,
+                                       description,
+                                       dataType,
+                                       length,
+                                       position,
+                                       null,
+                                       additionalProperties);
+    }
+
+
+    /**
+     * Create a schema attribute with a TypeEmbeddedAttribute classification.
+     *
+     * @param assetGUID anchor GUID (optional)
+     * @param assetTypeName anchorTypeName (needed if assetGUID is set)
+     * @param typeName name of schema attribute subtype to use - default is SchemaAttribute
+     * @param schemaTypeName name of schema type subtype to use - default is PrimitiveSchemaType
+     * @param qualifiedName unique name for the schema attribute
+     * @param displayName display name for the schema attribute
+     * @param description description about the schema attribute
+     * @param dataType data type for the schema attribute
+     * @param length length of the storage used by the schema attribute
+     * @param position position in the schema at this level
+     * @param encodingStandard encoding standard
+     * @param additionalProperties any other properties.
+     *
+     * @return id for the schema attribute
+     */
+    public String addSchemaAttribute(String              assetGUID,
+                                     String              assetTypeName,
+                                     String              typeName,
+                                     String              schemaTypeName,
+                                     String              qualifiedName,
+                                     String              displayName,
+                                     String              description,
+                                     String              dataType,
+                                     int                 length,
+                                     int                 position,
+                                     String              encodingStandard,
+                                     Map<String, String> additionalProperties)
+    {
         final String methodName = "addSchemaAttribute";
 
         String schemaAttributeTypeName = OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME;
@@ -3551,18 +3739,24 @@ public class SimpleCatalogArchiveHelper
         InstanceProperties entityProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         entityProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, entityProperties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
         entityProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, entityProperties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        entityProperties = archiveHelper.addIntPropertyToInstance(archiveRootName, entityProperties, OpenMetadataType.LENGTH_PROPERTY_NAME, length, methodName);
         entityProperties = archiveHelper.addIntPropertyToInstance(archiveRootName, entityProperties, OpenMetadataType.POSITION_PROPERTY_NAME, position, methodName);
         entityProperties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, entityProperties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
 
         InstanceProperties classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.SCHEMA_TYPE_NAME_PROPERTY_NAME, schemaTypeTypeName, methodName);
         classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, classificationProperties, OpenMetadataType.DATA_TYPE_PROPERTY_NAME, dataType, methodName);
-        classificationProperties = archiveHelper.addIntPropertyToInstance(archiveRootName, classificationProperties, OpenMetadataType.LENGTH_PROPERTY_NAME, length, methodName);
+        classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, classificationProperties, OpenMetadataType.ENCODING_STANDARD_PROPERTY_NAME, encodingStandard, methodName);
 
         Classification classification = archiveHelper.getClassification(OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME, classificationProperties, InstanceStatus.ACTIVE);
 
         List<Classification> classifications = new ArrayList<>();
 
         classifications.add(classification);
+
+        if (assetGUID != null)
+        {
+            classifications.add(this.getAnchorClassification(assetGUID, assetTypeName, methodName));
+        }
 
         EntityDetail schemaAttributeEntity = archiveHelper.getEntityDetail(schemaAttributeTypeName,
                                                                            idToGUIDMap.getGUID(qualifiedName),
@@ -4086,6 +4280,124 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
+     * Create a Template classification to add to an entity as it is created.
+     *
+     * @param templateName name of template
+     * @param templateDescription description of template
+     * @param versionIdentifier identifier of the template
+     * @param replacementProperties properties to replace in the primary entity
+     * @param placeholderProperties placeholder properties and descriptions
+     * @param additionalProperties additional properties
+     * @param methodName calling method
+     * @return classification object
+     */
+    public Classification getTemplateClassification(String              templateName,
+                                                    String              templateDescription,
+                                                    String              versionIdentifier,
+                                                    Map<String, String> replacementProperties,
+                                                    Map<String, String> placeholderProperties,
+                                                    Map<String, String> additionalProperties,
+                                                    String              methodName)
+    {
+        InstanceProperties classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null,
+                                                                                                OpenMetadataProperty.NAME.name,
+                                                                                                templateName, methodName);
+
+        classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, classificationProperties,
+                                                                             OpenMetadataProperty.DESCRIPTION.name,
+                                                                             templateDescription, methodName);
+
+        classificationProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, classificationProperties,
+                                                                             OpenMetadataProperty.VERSION_IDENTIFIER.name,
+                                                                             versionIdentifier, methodName);
+
+        classificationProperties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, classificationProperties,
+                                                                             OpenMetadataProperty.REPLACEMENT_PROPERTIES.name,
+                                                                             replacementProperties, methodName);
+
+        classificationProperties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, classificationProperties,
+                                                                                OpenMetadataProperty.PLACEHOLDER_PROPERTIES.name,
+                                                                                placeholderProperties, methodName);
+
+        classificationProperties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, classificationProperties,
+                                                                                OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                                additionalProperties, methodName);
+
+        return archiveHelper.getClassification(OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName,
+                                               classificationProperties, InstanceStatus.ACTIVE);
+    }
+
+
+    /**
+     * Return the TemplateSubstitute classification.
+     *
+     * @return classification
+     */
+    public Classification getTemplateSubstituteClassification()
+    {
+        return archiveHelper.getClassification(OpenMetadataType.TEMPLATE_SUBSTITUTE_CLASSIFICATION.typeName,
+                                               null, InstanceStatus.ACTIVE);
+    }
+
+
+    /**
+     * Create a sourced from relationship.
+     *
+     * @param resultingElementGUID the element created
+     * @param sourceVersionNumber the version of the template used for the creation
+     * @param templateElementGUID the template used
+     * @param methodName calling method
+     */
+    public void addSourcedFromRelationship(String resultingElementGUID,
+                                           long   sourceVersionNumber,
+                                           String templateElementGUID,
+                                           String methodName)
+    {
+        InstanceProperties relationshipProperties = archiveHelper.addLongPropertyToInstance(archiveRootName,
+                                                                                            null,
+                                                                                            OpenMetadataProperty.SOURCE_VERSION_NUMBER.name,
+                                                                                            sourceVersionNumber,
+                                                                                            methodName);
+        EntityDetail end1Entity = archiveBuilder.getEntity(resultingElementGUID);
+        EntityDetail end2Entity = archiveBuilder.getEntity(templateElementGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(end1Entity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(end2Entity);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(resultingElementGUID + "_to_" + templateElementGUID + "_sourced_from_relationship"),
+                                                                     relationshipProperties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Create a catalog template relationship.
+     *
+     * @param owningElementGUID the element to catalog
+     * @param templateElementGUID the template to use
+     */
+    public void addCatalogTemplateRelationship(String owningElementGUID,
+                                               String templateElementGUID)
+    {
+        EntityDetail end1Entity = archiveBuilder.getEntity(owningElementGUID);
+        EntityDetail end2Entity = archiveBuilder.getEntity(templateElementGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(end1Entity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(end2Entity);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.CATALOG_TEMPLATE_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(owningElementGUID + "_to_" + templateElementGUID + "_catalog_template_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
      * Create a endpoint entity.
      *
      * @param qualifiedName unique name for the endpoint
@@ -4395,7 +4707,7 @@ public class SimpleCatalogArchiveHelper
                           String       displayName,
                           String       description)
     {
-        return addTerm(glossaryGUID, categoryGUIDs, false, qualifiedName, displayName, null, description, null, null,null, false, false, false, null, null, null);
+        return addTerm(glossaryGUID, categoryGUIDs, false, qualifiedName, displayName, null, description, null, null,null, false, false, false, null, null, null, null);
     }
 
 
@@ -4418,25 +4730,27 @@ public class SimpleCatalogArchiveHelper
      * @param contextDescription description to add to the ContextDefinition classification
      * @param contextScope scope to add to the context classification
      * @param additionalProperties any other properties.
+     * @param additionalClassifications classifications provided by the caller
      *
      * @return unique identifier of the term
      */
-    public String addTerm(String              glossaryGUID,
-                          List<String>        categoryIds,
-                          boolean             categoriesAsNames,
-                          String              qualifiedName,
-                          String              displayName,
-                          String              summary,
-                          String              description,
-                          String              examples,
-                          String              abbreviation,
-                          String              usage,
-                          boolean             isSpineObject,
-                          boolean             isSpineAttribute,
-                          boolean             isContext,
-                          String              contextDescription,
-                          String              contextScope,
-                          Map<String, String> additionalProperties)
+    public String addTerm(String               glossaryGUID,
+                          List<String>         categoryIds,
+                          boolean              categoriesAsNames,
+                          String               qualifiedName,
+                          String               displayName,
+                          String               summary,
+                          String               description,
+                          String               examples,
+                          String               abbreviation,
+                          String               usage,
+                          boolean              isSpineObject,
+                          boolean              isSpineAttribute,
+                          boolean              isContext,
+                          String               contextDescription,
+                          String               contextScope,
+                          Map<String, String>  additionalProperties,
+                          List<Classification> additionalClassifications)
     {
         final String methodName = "addTerm";
 
@@ -4454,7 +4768,12 @@ public class SimpleCatalogArchiveHelper
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.EXAMPLES_PROPERTY_NAME, examples, methodName);
         }
 
-        List<Classification> classifications = new ArrayList<>();
+        List<Classification> classifications = additionalClassifications;
+
+        if (classifications == null)
+        {
+            classifications = new ArrayList<>();
+        }
 
         if (isSpineObject)
         {
@@ -4559,6 +4878,28 @@ public class SimpleCatalogArchiveHelper
                                                                      end1,
                                                                      end2));
     }
+
+
+    /**
+     * Link a data element to a glossary term.
+     *
+     * @param dataGUID unique identifier for the element linked to the semantic assignment
+     * @param glossaryTermGUID unique identifier for the term
+     */
+    public void addSemanticAssignment(String  dataGUID,
+                                      String  glossaryTermGUID)
+    {
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(dataGUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(glossaryTermGUID));
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(dataGUID + "_to_" + glossaryTermGUID + "_semantic_assignment_relationship"),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
 
 
     /**
@@ -4768,6 +5109,165 @@ public class SimpleCatalogArchiveHelper
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(describedElementId + "_to_" + describerElementId + "_more_information_relationship"),
                                                                      null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    /**
+     * Create a licence relationship.
+     *
+     * @param licensedElementGUID unique identifier for the element that is licensed.
+     * @param licenseGUID - unique identifier of the license
+     * @param startDate start date for the license
+     * @param endDate end date for the license
+     * @param conditions conditions
+     * @param licensedBy identity of source
+     * @param licensedByTypeName type of identity of source
+     * @param licensedByPropertyName property name use to identify source
+     * @param custodian identity of person responsible for overseeing use
+     * @param custodianTypeName type name of custodian
+     * @param custodianPropertyName property name used to identify custodian
+     * @param licensee identity of person receiving
+     * @param licenseeTypeName type of person element
+     * @param licenseePropertyName property name use to identify licensee
+     * @param entitlements entitlements
+     * @param restrictions restrictions
+     * @param obligations obligations
+     * @param notes notes
+     * @param licenseTypeGUID unique identifier for the license type.
+     */
+    public void addLicense(String              licensedElementGUID,
+                           String              licenseGUID,
+                           Date                startDate,
+                           Date                endDate,
+                           String              conditions,
+                           String              licensedBy,
+                           String              licensedByTypeName,
+                           String              licensedByPropertyName,
+                           String              custodian,
+                           String              custodianTypeName,
+                           String              custodianPropertyName,
+                           String              licensee,
+                           String              licenseeTypeName,
+                           String              licenseePropertyName,
+                           Map<String, String> entitlements,
+                           Map<String, String> restrictions,
+                           Map<String, String> obligations,
+                           String              notes,
+                           String              licenseTypeGUID)
+    {
+        final String methodName = "addLicense";
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(licensedElementGUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(licenseTypeGUID));
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                                  null,
+                                                                                  OpenMetadataType.LICENSE_GUID_PROPERTY_NAME,
+                                                                                  licenseGUID,
+                                                                                  methodName);
+
+        properties = archiveHelper.addDatePropertyToInstance(archiveRootName,
+                                                             properties,
+                                                             OpenMetadataType.START_PROPERTY_NAME,
+                                                             startDate,
+                                                             methodName);
+
+        properties = archiveHelper.addDatePropertyToInstance(archiveRootName,
+                                                             properties,
+                                                             OpenMetadataType.END_PROPERTY_NAME,
+                                                             endDate,
+                                                             methodName);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataType.CONDITIONS_PROPERTY_NAME,
+                                                               conditions,
+                                                               methodName);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataType.LICENSED_BY_PROPERTY_NAME,
+                                                               licensedBy,
+                                                               methodName);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataType.LICENSED_BY_TYPE_NAME_PROPERTY_NAME,
+                                                               licensedByTypeName,
+                                                               methodName);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataType.LICENSED_BY_PROPERTY_NAME_PROPERTY_NAME,
+                                                               licensedByPropertyName,
+                                                               methodName);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataType.CUSTODIAN_PROPERTY_NAME,
+                                                               custodian,
+                                                               methodName);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataType.CUSTODIAN_TYPE_NAME_PROPERTY_NAME,
+                                                               custodianTypeName,
+                                                               methodName);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataType.CUSTODIAN_PROPERTY_NAME_PROPERTY_NAME,
+                                                               custodianPropertyName,
+                                                               methodName);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataType.LICENSEE_PROPERTY_NAME,
+                                                               licensee,
+                                                               methodName);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataType.LICENSEE_TYPE_NAME_PROPERTY_NAME,
+                                                               licenseeTypeName,
+                                                               methodName);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataType.LICENSEE_PROPERTY_NAME_PROPERTY_NAME,
+                                                               licenseePropertyName,
+                                                               methodName);
+
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName,
+                                                                  properties,
+                                                                  OpenMetadataType.ENTITLEMENTS_PROPERTY_NAME,
+                                                                  entitlements,
+                                                                  methodName);
+
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName,
+                                                                  properties,
+                                                                  OpenMetadataType.RESTRICTIONS_PROPERTY_NAME,
+                                                                  restrictions,
+                                                                  methodName);
+
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName,
+                                                                  properties,
+                                                                  OpenMetadataType.OBLIGATIONS_PROPERTY_NAME,
+                                                                  obligations,
+                                                                  methodName);
+
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                               properties,
+                                                               OpenMetadataType.NOTES_PROPERTY_NAME,
+                                                               notes,
+                                                               methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.LICENSE_OF_REFERENCEABLE_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(licensedElementGUID + "_to_" + licenseTypeGUID + "_license_relationship"),
+                                                                     properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));

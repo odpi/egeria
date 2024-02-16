@@ -962,7 +962,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         FindRequestBody requestBody = new FindRequestBody();
 
         requestBody.setMetadataElementTypeName(metadataElementTypeName);
-        requestBody.setMetadataElementSubtypeName(metadataElementSubtypeNames);
+        requestBody.setMetadataElementSubtypeNames(metadataElementSubtypeNames);
         requestBody.setSearchProperties(searchProperties);
         requestBody.setLimitResultsByStatus(limitResultsByStatus);
         requestBody.setMatchClassifications(matchClassifications);
@@ -1022,13 +1022,13 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                                                     PropertyServerException
     {
         final String methodName = "findRelationshipsBetweenMetadataElements";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/related-elements/by-search-specification?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}&startFrom={6}&pageSize={7}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/relationships/by-search-specification?forLineage={3}&forDuplicateProcessing={4}&effectiveTime={5}&startFrom={6}&pageSize={7}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        FindRequestBody requestBody = new FindRequestBody();
+        FindRelationshipRequestBody requestBody = new FindRelationshipRequestBody();
 
-        requestBody.setMetadataElementTypeName(relationshipTypeName);
+        requestBody.setRelationshipTypeName(relationshipTypeName);
         requestBody.setSearchProperties(searchProperties);
         requestBody.setSequencingProperty(sequencingProperty);
         requestBody.setSequencingOrder(sequencingOrder);
@@ -1073,7 +1073,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
     {
         final String methodName = "getRelationshipByGUID";
         final String guidParameterName = "relationshipGUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/related-elements/relationship/{3}?forLineage={4}&forDuplicateProcessing={5}&effectiveTime={6}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/relationships/by-guid/{3}?forLineage={4}&forDuplicateProcessing={5}&effectiveTime={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(relationshipGUID, guidParameterName, methodName);

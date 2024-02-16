@@ -2833,6 +2833,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                  resultTypeGUID,
                                                                                  resultTypeName,
                                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                 null,
+                                                                                 null,
                                                                                  forLineage,
                                                                                  forDuplicateProcessing,
                                                                                  startFrom,

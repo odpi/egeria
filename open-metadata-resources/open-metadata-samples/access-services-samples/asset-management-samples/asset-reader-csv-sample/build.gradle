@@ -19,6 +19,7 @@ dependencies {
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
+    runtimeOnly project(':open-metadata-implementation:user-security:token-manager')
 
 }
 

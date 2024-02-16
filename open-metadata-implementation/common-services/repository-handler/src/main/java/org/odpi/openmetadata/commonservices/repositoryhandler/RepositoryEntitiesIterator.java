@@ -7,16 +7,17 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /**
  * RepositoryEntitiesIterator is an iterator class for iteratively retrieving entities (possibly restricting
  * the type of entities returned).  It is used where the caller needs to filter the results coming from the repository and may need to
  * make more than one call to the repository in order to accumulate the number of requested results.
- *
  * Note this class is intended for a single request's use - it is not thread-safe.
  */
 public class RepositoryEntitiesIterator extends RepositoryIteratorForEntities
@@ -30,6 +31,8 @@ public class RepositoryEntitiesIterator extends RepositoryIteratorForEntities
      * @param entityTypeGUID  identifier for the relationship to follow
      * @param entityTypeName  type name for the relationship to follow
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param limitResultsByStatus only return elements that have the requested status (null means all statuses
+     * @param limitResultsByClassification only return elements that have the requested classification(s)
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
@@ -44,6 +47,8 @@ public class RepositoryEntitiesIterator extends RepositoryIteratorForEntities
                                       String                  entityTypeGUID,
                                       String                  entityTypeName,
                                       String                  sequencingPropertyName,
+                                      List<InstanceStatus>    limitResultsByStatus,
+                                      List<String>            limitResultsByClassification,
                                       boolean                 forLineage,
                                       boolean                 forDuplicateProcessing,
                                       int                     startingFrom,
@@ -57,6 +62,8 @@ public class RepositoryEntitiesIterator extends RepositoryIteratorForEntities
               entityTypeGUID,
               entityTypeName,
               sequencingPropertyName,
+              limitResultsByStatus,
+              limitResultsByClassification,
               forLineage,
               forDuplicateProcessing,
               startingFrom,
@@ -92,6 +99,8 @@ public class RepositoryEntitiesIterator extends RepositoryIteratorForEntities
                 entitiesCache = repositoryHandler.getEntitiesForType(userId,
                                                                      entityTypeGUID,
                                                                      entityTypeName,
+                                                                     limitResultsByStatus,
+                                                                     limitResultsByClassification,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
                                                                      startingFrom,

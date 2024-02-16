@@ -8,6 +8,7 @@
 description = 'JDBC Resource Connector for Egeria'
 
 dependencies {
+    runtimeOnly 'org.postgresql:postgresql'
     compileOnly 'org.slf4j:slf4j-api'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')

@@ -28,6 +28,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     runtimeOnly 'ch.qos.logback:logback-classic'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    runtimeOnly project(':open-metadata-implementation:user-security:token-manager')
 }
 
 description = 'Creates sample data asset catalog entry using different client APIs.'

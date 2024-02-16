@@ -51,6 +51,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
     public void getArchiveContent()
     {
         writeDomains();
+        writeLicenseTypes();
         writeZones();
         writeSubjectAreaDefinitions();
         writeCommunities();
@@ -118,6 +119,35 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
             }
         }
     }
+
+
+    /**
+     * Creates LicenceType definitions.
+     */
+    private void writeLicenseTypes()
+    {
+        for (LicenseTypeDefinition licenseTypeDefinition : LicenseTypeDefinition.values())
+        {
+            Map<String, Object> extendedProperties = new HashMap<>();
+
+            extendedProperties.put(OpenMetadataType.DETAILS_PROPERTY_NAME, licenseTypeDefinition.getDetails());
+
+            archiveHelper.addGovernanceDefinition(OpenMetadataType.LICENSE_TYPE_TYPE_NAME,
+                                                  licenseTypeDefinition.getQualifiedName(),
+                                                  licenseTypeDefinition.getTitle(),
+                                                  licenseTypeDefinition.getSummary(),
+                                                  licenseTypeDefinition.getScope().getPreferredValue(),
+                                                  licenseTypeDefinition.getDescription(),
+                                                  0,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  extendedProperties);
+        }
+    }
+
 
 
 

@@ -476,6 +476,7 @@ public class OpenMetadataTypesArchive
     private void update0011UpdateTemplates()
     {
         this.archiveBuilder.addRelationshipDef(addCatalogTemplateRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateTemplateClassification());
     }
 
 
@@ -566,6 +567,9 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
+        final String attribute1Name            = OpenMetadataProperty.VERSION_IDENTIFIER.name;
+        final String attribute1Description     = OpenMetadataProperty.VERSION_IDENTIFIER.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.VERSION_IDENTIFIER.descriptionGUID;
         final String attribute3Name            = OpenMetadataProperty.REPLACEMENT_PROPERTIES.name;
         final String attribute3Description     = OpenMetadataProperty.REPLACEMENT_PROPERTIES.description;
         final String attribute3DescriptionGUID = OpenMetadataProperty.REPLACEMENT_PROPERTIES.descriptionGUID;
@@ -573,6 +577,10 @@ public class OpenMetadataTypesArchive
         final String attribute4Description     = OpenMetadataProperty.PLACEHOLDER_PROPERTIES.description;
         final String attribute4DescriptionGUID = OpenMetadataProperty.PLACEHOLDER_PROPERTIES.descriptionGUID;
 
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
         property = archiveHelper.getMapStringStringTypeDefAttribute(attribute3Name,
                                                                     attribute3Description,
                                                                     attribute3DescriptionGUID);

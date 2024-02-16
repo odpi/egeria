@@ -104,7 +104,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     /**
      * Default constructor initializes the archive.
      */
-    private OpenConnectorArchiveWriter()
+    public OpenConnectorArchiveWriter()
     {
         List<OpenMetadataArchive> dependentOpenMetadataArchives = new ArrayList<>();
 
@@ -138,7 +138,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      *
      * @return populated open metadata archive object
      */
-    private OpenMetadataArchive getOpenMetadataArchive()
+    public OpenMetadataArchive getOpenMetadataArchive()
     {
         String connectorDirectoryTypeGUID = archiveHelper.addConnectorTypeDirectory(connectorTypeDirectoryQualifiedName,
                                                                                     connectorTypeDirectoryDisplayName,

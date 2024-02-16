@@ -144,18 +144,20 @@ public class SimpleEventCatalogArchiveBuilder
                                                   null);
 
         String eventTypeListGUID = archiveHelper.addTopLevelSchemaType(assetGUID,
+                                                                       topicAssetTypeName,
                                                                        eventTypeListTypeName,
                                                                        customerChangeQualifiedName + "_event_type_list",
                                                                        customerChangeDisplayName + " Event Type List",
                                                                        null,
                                                                        null);
 
-        String eventTypeGUID  = archiveHelper.addTopLevelSchemaType(null,
-                                                                    eventTypeTypeName,
-                                                                    newCustomerStatusQualifiedName,
-                                                                    newCustomerStatusDisplayName,
-                                                                    newCustomerStatusDescription,
-                                                                    null);
+        String eventTypeGUID  = archiveHelper.addSchemaType(assetGUID,
+                                                            topicAssetTypeName,
+                                                            eventTypeTypeName,
+                                                            newCustomerStatusQualifiedName,
+                                                            newCustomerStatusDisplayName,
+                                                            newCustomerStatusDescription,
+                                                            null);
 
         archiveHelper.addSchemaTypeOption(eventTypeListGUID, eventTypeGUID);
 

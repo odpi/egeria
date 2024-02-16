@@ -39,10 +39,10 @@ public class CocoArchivesWriter
             CocoSustainabilityArchiveWriter    sustainabilityArchiveWriter  = new CocoSustainabilityArchiveWriter();
 
             typesArchiveWriter.writeOpenMetadataArchive();
-            clinicalTrialsArchiveWriter.writeOpenMetadataArchive();
             governanceEnginesArchiveWriter.writeOpenMetadataArchive();
             organizationArchiveWriter.writeOpenMetadataArchive();
             cocoGovernanceProgramArchiveWriter.writeOpenMetadataArchive();
+            clinicalTrialsArchiveWriter.writeOpenMetadataArchive();
             sustainabilityArchiveWriter.writeOpenMetadataArchive();
             businessSystemsArchiveWriter.writeOpenMetadataArchive();
         }

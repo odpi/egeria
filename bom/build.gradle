@@ -80,6 +80,7 @@ ext {
     // TODO: Held as data engine breaks
     mockitoVersion = '4.11.0'
     plexusVersion = '4.0.0'
+    postgresVersion = '42.7.1'
     prometheusVersion = '1.12.0'
     nettyVersion = '4.1.106.Final'
     quartzVersion = '2.3.2'
@@ -201,6 +202,7 @@ dependencies {
         api("org.janusgraph:janusgraph-inmemory:${janusVersion}")
         api("org.janusgraph:janusgraph-driver:${janusVersion}")
         api("org.javassist:${javassistVersion}")
+        api("org.postgresql:postgresql:${postgresVersion}")
         api("org.quartz-scheduler:quartz:${quartzVersion}")
         api("org.reflections:reflections:${reflectionsVersion}")
         api("org.slf4j:jcl-over-slf4j:${slf4jVersion}")

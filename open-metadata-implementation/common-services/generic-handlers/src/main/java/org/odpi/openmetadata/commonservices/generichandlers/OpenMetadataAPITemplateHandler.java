@@ -290,7 +290,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                                         effectiveTime,
                                                                         methodName);
 
-        if (templateEntity != null)
+        if ((firstIteration) && (templateEntity != null))
         {
             /*
              * If the element is a template substitute then use the entity that it is sourced from.
@@ -311,7 +311,7 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                                                    OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeGUID,
                                                    OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName,
                                                    entityTypeName,
-                                                   1,
+                                                   2,
                                                    forLineage,
                                                    forDuplicateProcessing,
                                                    serviceSupportedZones,
@@ -585,14 +585,6 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
         {
             Relationship relationship = iterator.getNext();
             EntityProxy  entityProxy  = relationship.getEntityOneProxy();
-            Date         effectiveFrom = null;
-            Date         effectiveTo   = null;
-
-            if (relationship.getProperties() != null)
-            {
-                effectiveFrom = relationship.getProperties().getEffectiveFromTime();
-                effectiveTo   = relationship.getProperties().getEffectiveToTime();
-            }
 
             if (templateGUID.equals(entityProxy.getGUID()))
             {
@@ -609,6 +601,45 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
              */
             if (! repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName))
             {
+                /*
+                 * If the element is a template substitute then use the entity that it is sourced from.
+                 */
+                Classification templateSubstituteClassification = this.getExistingClassification(entityProxy, OpenMetadataType.TEMPLATE_SUBSTITUTE_CLASSIFICATION.typeName);
+
+                if (templateSubstituteClassification != null)
+                {
+                    if (log.isDebugEnabled())
+                    {
+                        log.debug("Template entity " + entityProxy.getGUID() + " is a template substitute - retrieving real template.");
+                    }
+
+                    List<Relationship> realRelationships = getAttachmentLinks(userId,
+                                                                              entityProxy.getGUID(),
+                                                                              nextTemplateEntityGUIDParameterName,
+                                                                              entityProxy.getType().getTypeDefName(),
+                                                                              OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeGUID,
+                                                                              OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName,
+                                                                              null,
+                                                                              entityProxy.getType().getTypeDefName(),
+                                                                              2,
+                                                                              forLineage,
+                                                                              forDuplicateProcessing,
+                                                                              serviceSupportedZones,
+                                                                              0, 0,
+                                                                              effectiveTime,
+                                                                              methodName);
+                    if (realRelationships != null)
+                    {
+                        for (Relationship realRelationship : realRelationships)
+                        {
+                            if (realRelationship != null)
+                            {
+                                entityProxy = realRelationship.getEntityTwoProxy();
+                            }
+                        }
+                    }
+                }
+
                 /*
                  * Is this a new relationship?
                  */
@@ -671,7 +702,10 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                              */
                             OpenMetadataAPIGenericBuilder builder;
                             String                        nextQualifiedName = null;
-                            if (repositoryHelper.isTypeOf(serviceName, nextTemplateEntityTypeName, OpenMetadataType.REFERENCEABLE.typeName))
+                            if ((qualifiedName != null) &&
+                                    (repositoryHelper.isTypeOf(serviceName,
+                                                               nextTemplateEntityTypeName,
+                                                               OpenMetadataType.REFERENCEABLE.typeName)))
                             {
                                 /*
                                  * This entity may be a nested anchor itself.  We can not tell until processing attachments to it later in the
@@ -763,49 +797,45 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
                         {
                             final String startingGUIDParameterName = "templateRelationshipEnd1.getGUID()";
 
-                            this.linkElementToElement(userId,
-                                                      externalSourceGUID,
-                                                      externalSourceName,
-                                                      startingGUID,
-                                                      startingGUIDParameterName,
-                                                      expectedTypeName,
-                                                      nextBeanEntityGUID,
-                                                      nextBeanEntityGUIDParameterName,
-                                                      nextTemplateEntityTypeName,
-                                                      forLineage,
-                                                      forDuplicateProcessing,
-                                                      serviceSupportedZones,
-                                                      relationship.getType().getTypeDefGUID(),
-                                                      relationship.getType().getTypeDefName(),
-                                                      relationshipProperties,
-                                                      effectiveFrom,
-                                                      effectiveTo,
-                                                      effectiveTime,
-                                                      methodName);
+                            this.uncheckedLinkElementToElement(userId,
+                                                               externalSourceGUID,
+                                                               externalSourceName,
+                                                               startingGUID,
+                                                               startingGUIDParameterName,
+                                                               expectedTypeName,
+                                                               nextBeanEntityGUID,
+                                                               nextBeanEntityGUIDParameterName,
+                                                               nextTemplateEntityTypeName,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               serviceSupportedZones,
+                                                               relationship.getType().getTypeDefGUID(),
+                                                               relationship.getType().getTypeDefName(),
+                                                               relationshipProperties,
+                                                               effectiveTime,
+                                                               methodName);
                         }
                         else
                         {
                             final String startingGUIDParameterName = "templateRelationshipEnd2.getGUID()";
 
-                            this.linkElementToElement(userId,
-                                                      externalSourceGUID,
-                                                      externalSourceName,
-                                                      nextBeanEntityGUID,
-                                                      nextBeanEntityGUIDParameterName,
-                                                      nextTemplateEntityTypeName,
-                                                      startingGUID,
-                                                      startingGUIDParameterName,
-                                                      expectedTypeName,
-                                                      forLineage,
-                                                      forDuplicateProcessing,
-                                                      serviceSupportedZones,
-                                                      relationship.getType().getTypeDefGUID(),
-                                                      relationship.getType().getTypeDefName(),
-                                                      relationshipProperties,
-                                                      effectiveFrom,
-                                                      effectiveTo,
-                                                      effectiveTime,
-                                                      methodName);
+                            this.uncheckedLinkElementToElement(userId,
+                                                               externalSourceGUID,
+                                                               externalSourceName,
+                                                               nextBeanEntityGUID,
+                                                               nextBeanEntityGUIDParameterName,
+                                                               nextTemplateEntityTypeName,
+                                                               startingGUID,
+                                                               startingGUIDParameterName,
+                                                               expectedTypeName,
+                                                               forLineage,
+                                                               forDuplicateProcessing,
+                                                               serviceSupportedZones,
+                                                               relationship.getType().getTypeDefGUID(),
+                                                               relationship.getType().getTypeDefName(),
+                                                               relationshipProperties,
+                                                               effectiveTime,
+                                                               methodName);
                         }
                     }
                 }
