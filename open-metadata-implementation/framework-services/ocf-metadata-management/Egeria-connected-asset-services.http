@@ -21,6 +21,9 @@ GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURL
 GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/via-connection/{{guid}}
 
 ###
+@assetGUID=90e35d5a-cc22-4b5e-9762-7845daaced0e
+@serviceURLName=asset-consumer
+###
 # @name Get Asset Summary
 GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}
 

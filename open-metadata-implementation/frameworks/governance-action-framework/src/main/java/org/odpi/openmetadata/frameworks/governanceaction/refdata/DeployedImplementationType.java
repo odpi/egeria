@@ -154,7 +154,7 @@ public enum DeployedImplementationType
     /**
      * A data catalog for the Hadoop ecosystem.
      */
-    APACHE_ATLAS("Apache Atlas",
+    APACHE_ATLAS("Apache Atlas Server",
                  DeployedImplementationType.SOFTWARE_SERVER,
                  OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME,
                  null,

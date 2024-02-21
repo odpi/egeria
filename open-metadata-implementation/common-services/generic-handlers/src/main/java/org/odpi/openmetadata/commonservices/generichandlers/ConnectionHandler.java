@@ -2021,42 +2021,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Count the number of connections attached to a supplied asset.
-     *
-     * @param userId     calling user
-     * @param assetGUID identifier for the asset
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     * @return count of attached objects
-     * @throws InvalidParameterException  the parameters are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public int countConnections(String  userId,
-                                String  assetGUID,
-                                boolean forLineage,
-                                boolean forDuplicateProcessing,
-                                Date    effectiveTime,
-                                String  methodName) throws InvalidParameterException,
-                                                           PropertyServerException,
-                                                           UserNotAuthorizedException
-    {
-        return this.countAttachments(userId,
-                                     assetGUID,
-                                     OpenMetadataType.ASSET.typeName,
-                                     OpenMetadataType.ASSET_TO_CONNECTION_TYPE_GUID,
-                                     OpenMetadataType.ASSET_TO_CONNECTION_TYPE_NAME,
-                                     1,
-                                     forLineage,
-                                     forDuplicateProcessing,
-                                     effectiveTime,
-                                     methodName);
-    }
-
-
-    /**
      * Retrieve the list of connection objects attached to the requested asset object.
      * This includes the endpoint and connector type.
      *

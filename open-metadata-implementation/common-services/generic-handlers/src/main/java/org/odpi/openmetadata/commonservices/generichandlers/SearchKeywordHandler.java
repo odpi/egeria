@@ -261,43 +261,6 @@ public class SearchKeywordHandler<B> extends OpenMetadataAPIGenericHandler<B>
     }
 
 
-
-    /**
-     * Count the number of informal keywords attached to a supplied entity.
-     *
-     * @param userId     calling user
-     * @param elementGUID identifier for the entity that the object is attached to
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     * @return count of attached objects
-     * @throws InvalidParameterException  the parameters are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public int countKeywords(String  userId,
-                             String  elementGUID,
-                             boolean forLineage,
-                             boolean forDuplicateProcessing,
-                             Date    effectiveTime,
-                             String  methodName) throws InvalidParameterException,
-                                                        PropertyServerException,
-                                                        UserNotAuthorizedException
-    {
-        return this.countAttachments(userId,
-                                     elementGUID,
-                                     OpenMetadataType.REFERENCEABLE.typeName,
-                                     OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeGUID,
-                                     OpenMetadataType.SEARCH_KEYWORD_LINK_RELATIONSHIP.typeName,
-                                     2,
-                                     forLineage,
-                                     forDuplicateProcessing,
-                                     effectiveTime,
-                                     methodName);
-    }
-
-
     /**
      * Return the keywords attached to a supplied entity.
      *

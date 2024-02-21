@@ -70,42 +70,6 @@ public class NoteHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Count the number of notes attached to an anchor note log.
-     *
-     * @param userId     calling user
-     * @param elementGUID identifier for the entity that the object is attached to
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     * @return count of the attached objects
-     * @throws InvalidParameterException  the parameters are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public int countAttachedNotes(String   userId,
-                                  String   elementGUID,
-                                  boolean  forLineage,
-                                  boolean  forDuplicateProcessing,
-                                  Date     effectiveTime,
-                                  String   methodName) throws InvalidParameterException,
-                                                              PropertyServerException,
-                                                              UserNotAuthorizedException
-    {
-        return super.countAttachments(userId,
-                                      elementGUID,
-                                      OpenMetadataType.REFERENCEABLE.typeName,
-                                      OpenMetadataType.NOTE_TYPE_GUID,
-                                      OpenMetadataType.NOTE_TYPE_NAME,
-                                      2,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      effectiveTime,
-                                      methodName);
-    }
-
-
-    /**
      * Adds a note and link it to the supplied parent entity.
      *
      * @param userId        String - userId of user making request.

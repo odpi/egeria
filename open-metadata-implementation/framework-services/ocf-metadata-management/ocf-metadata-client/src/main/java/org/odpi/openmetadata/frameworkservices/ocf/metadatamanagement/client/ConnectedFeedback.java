@@ -20,10 +20,6 @@ public class ConnectedFeedback extends AssetFeedback
      * @param userId user id to use on server calls.
      * @param platformURLRoot url root of the server to use.
      * @param assetGUID unique identifier of the asset.
-     * @param commentCount the total number of comments to process.  A negative value is converted to 0.
-     * @param likeCount the total number of likes to process.  A negative value is converted to 0.
-     * @param ratingCount the total number of ratings to process.  A negative value is converted to 0.
-     * @param tagCount the total number of comments to process.  A negative value is converted to 0.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      * @param restClient client to call REST API
@@ -33,62 +29,41 @@ public class ConnectedFeedback extends AssetFeedback
                       String                 userId,
                       String                 platformURLRoot,
                       String                 assetGUID,
-                      int                    commentCount,
-                      int                    likeCount,
-                      int                    ratingCount,
-                      int                    tagCount,
                       int                    maxCacheSize,
                       OCFRESTClient          restClient)
     {
         super();
 
-        if (commentCount > 0)
-        {
-            super.comments = new ConnectedComments(serviceName,
-                                                   serverName,
-                                                   userId,
-                                                   platformURLRoot,
-                                                   assetGUID,
-                                                   commentCount,
-                                                   maxCacheSize,
-                                                   restClient);
-        }
+        super.comments = new ConnectedComments(serviceName,
+                                               serverName,
+                                               userId,
+                                               platformURLRoot,
+                                               assetGUID,
+                                               maxCacheSize,
+                                               restClient);
 
+        super.likes = new ConnectedLikes(serviceName,
+                                         serverName,
+                                         userId,
+                                         platformURLRoot,
+                                         assetGUID,
+                                         maxCacheSize,
+                                         restClient);
 
-        if (likeCount > 0)
-        {
-            super.likes = new ConnectedLikes(serviceName,
-                                             serverName,
-                                             userId,
-                                             platformURLRoot,
-                                             assetGUID,
-                                             likeCount,
-                                             maxCacheSize,
-                                             restClient);
-        }
+        super.ratings = new ConnectedAssetRatings(serviceName,
+                                                  serverName,
+                                                  userId,
+                                                  platformURLRoot,
+                                                  assetGUID,
+                                                  maxCacheSize,
+                                                  restClient);
 
-        if (ratingCount > 0)
-        {
-            super.ratings = new ConnectedAssetRatings(serviceName,
-                                                      serverName,
-                                                      userId,
-                                                      platformURLRoot,
-                                                      assetGUID,
-                                                      ratingCount,
-                                                      maxCacheSize,
-                                                      restClient);
-        }
-
-        if (tagCount > 0)
-        {
-            super.informalTags = new ConnectedInformalTags(serviceName,
-                                                           serverName,
-                                                           userId,
-                                                           platformURLRoot,
-                                                           assetGUID,
-                                                           tagCount,
-                                                           maxCacheSize,
-                                                           restClient);
-        }
+        super.informalTags = new ConnectedInformalTags(serviceName,
+                                                       serverName,
+                                                       userId,
+                                                       platformURLRoot,
+                                                       assetGUID,
+                                                       maxCacheSize,
+                                                       restClient);
     }
 }

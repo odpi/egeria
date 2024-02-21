@@ -602,7 +602,8 @@ public class OMAGServerAdminStoreServices
                                             String  serverName,
                                             boolean adminCall,
                                             String  methodName) throws OMAGInvalidParameterException,
-                                                                       OMAGNotAuthorizedException, InvalidParameterException
+                                                                       OMAGNotAuthorizedException,
+                                                                       InvalidParameterException
     {
         OMAGServerConfigStore   serverConfigStore = getServerConfigStore(serverName, methodName);
         OMAGServerConfig        serverConfig      = null;

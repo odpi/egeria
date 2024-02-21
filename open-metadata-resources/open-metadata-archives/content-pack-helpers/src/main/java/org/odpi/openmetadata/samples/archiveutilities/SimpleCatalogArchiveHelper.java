@@ -1202,11 +1202,12 @@ public class SimpleCatalogArchiveHelper
         List<Classification> classifications = new ArrayList<>();
 
         classifications.add(this.getAnchorClassification(null, typeName, methodName));
+
         EntityDetail role = archiveHelper.getEntityDetail(typeName,
                                                           idToGUIDMap.getGUID(qualifiedName),
                                                           properties,
                                                           InstanceStatus.ACTIVE,
-                                                          null);
+                                                          classifications);
 
         archiveBuilder.addEntity(role);
 

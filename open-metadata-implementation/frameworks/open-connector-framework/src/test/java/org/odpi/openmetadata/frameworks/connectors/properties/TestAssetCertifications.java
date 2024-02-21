@@ -48,28 +48,6 @@ public class TestAssetCertifications
 
 
     /**
-     * Validate that a clone can be created
-     */
-    @Test public void  testClonedIterator()
-    {
-        Certifications propertyIterator = getPropertyIterator(10, 100);
-
-        propertyIterator.next();
-
-        Certifications propertyIteratorClone = new MockAssetCertifications( propertyIterator);
-
-        int elementCount = 0;
-        while (propertyIteratorClone.hasNext())
-        {
-            assertTrue(propertyIteratorClone.next() != null);
-            elementCount ++;
-        }
-
-        assertTrue(elementCount == 10);
-    }
-
-
-    /**
      * Test that the iterator works well if there are no elements
      */
     @Test public void testEmptyIterator()
@@ -115,21 +93,6 @@ public class TestAssetCertifications
     {
         validatePropertyIterator(30,
                                  10);
-    }
-
-
-    /**
-     * Validate that element count is set.
-     */
-    @Test public void testElementCount()
-    {
-        Certifications  propertyIterator = getPropertyIterator(30, 10);
-
-        assertTrue(propertyIterator.getElementCount() == 30);
-
-        Certifications  clonedPropertyIterator = new MockAssetCertifications( propertyIterator);
-
-        assertTrue(clonedPropertyIterator.getElementCount() == 30);
     }
 
 

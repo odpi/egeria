@@ -72,7 +72,6 @@ public enum GlossaryTermDefinition
      * @param summary   name for the enum
      * @param description   description of the use of this value
      * @param abbreviation optional abbreviation
-     * @param url optional url for the term
      * @param category optional category for the term
      */
     GlossaryTermDefinition(String                     name,

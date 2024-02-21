@@ -60,7 +60,7 @@ public class ComponentIdReport
     private static final String openLineageEventReceiverIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageEventReceiverIntegrationProvider";
     private static final String envVarSecretsStoreProviderClassName = "org.odpi.openmetadata.adapters.connectors.secretsstore.envar.EnvVarSecretsStoreProvider";
     private static final String apacheAtlasRESTConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTProvider";
-    private static final String apacheAtlasDiscoveryServiceProviderClassName = "org.odpi.openmetadata.adapters.connectors.discoveryservices.discoveratlas.DiscoverApacheAtlasProvider";
+    private static final String apacheAtlasDiscoveryServiceProviderClassName = "org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.DiscoverApacheAtlasProvider";
     private static final String sequentialSurveyPipelineProviderClassName = "org.odpi.openmetadata.adapters.connectors.surveyaction.SequentialSurveyPipelineProvider";
     private static final String folderSurveyActionProviderClassName = "org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyServiceProvider";
     private static final String fileSurveyActionProviderClassName = "org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileSurveyServiceProvider";

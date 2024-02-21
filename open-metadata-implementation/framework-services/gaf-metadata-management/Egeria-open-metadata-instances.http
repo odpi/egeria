@@ -28,7 +28,7 @@ Content-Type: application/json
     "contactName" : "Robbie Records",
     "contactDept" : "Drop Foot Research Centre",
     "dateReceived" : "14th February 2024",
-    "pathName" : "/landing-area/week2.csv",
-    "fileName" : "week2.csv"
+    "pathName" : "/landing-area/week1.csv",
+    "fileName" : "week1.csv"
   }
 }

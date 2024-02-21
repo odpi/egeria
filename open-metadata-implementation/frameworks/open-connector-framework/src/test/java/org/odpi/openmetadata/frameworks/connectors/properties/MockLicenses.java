@@ -5,16 +5,20 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.License;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
 
 /**
- * MockLicenses implements the abstract methods for Licenses so it can be tested.
+ * MockLicenses implements the abstract methods for Licenses, so it can be tested.
  */
 public class MockLicenses extends Licenses
 {
-    private static final long     serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    int totalElementCount = 0;
 
     /**
      * Typical Constructor creates an iterator with the supplied list of elements.
@@ -26,7 +30,9 @@ public class MockLicenses extends Licenses
     public MockLicenses(int             totalElementCount,
                         int             maxCacheSize)
     {
-        super(totalElementCount, maxCacheSize);
+        super(maxCacheSize);
+
+        this.totalElementCount = totalElementCount;
     }
 
 
@@ -35,9 +41,11 @@ public class MockLicenses extends Licenses
      *
      * @param template - type-specific iterator to copy; null to create an empty iterator
      */
-    public MockLicenses(Licenses template)
+    public MockLicenses(MockLicenses template)
     {
         super(template);
+
+        this.totalElementCount = template.totalElementCount;
     }
 
 
@@ -65,13 +73,18 @@ public class MockLicenses extends Licenses
         int                            numberOfEntries;
         List<ElementBase>        propertyList = new ArrayList<>();
 
-        if (cacheStartPointer + maximumSize > super.pagingIterator.getElementCount())
+        if (cacheStartPointer + maximumSize > totalElementCount)
         {
-            numberOfEntries = super.pagingIterator.getElementCount() - cacheStartPointer;
+            numberOfEntries = totalElementCount - cacheStartPointer;
         }
         else
         {
             numberOfEntries = maximumSize;
+        }
+
+        if (numberOfEntries <= 0)
+        {
+            return null;
         }
 
         for (int i=0; i< numberOfEntries ; i++)

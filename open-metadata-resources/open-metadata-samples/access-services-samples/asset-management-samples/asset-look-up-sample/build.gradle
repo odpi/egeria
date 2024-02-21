@@ -28,6 +28,6 @@ java {
 }
 
 shadowJar {
-    mainClassName = 'org.odpi.openmetadata.accessservices.assetconsumer.sample.assetlookup.AssetLookUp'
+    mainClassName = 'org.odpi.openmetadata.accessservices.assetconsumer.samples.assetlookup.AssetLookUp'
     archiveClassifier = 'jar-with-dependencies'
 }

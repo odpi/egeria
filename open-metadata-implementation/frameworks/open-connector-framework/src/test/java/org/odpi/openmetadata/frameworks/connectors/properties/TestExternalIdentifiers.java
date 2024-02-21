@@ -47,27 +47,6 @@ public class TestExternalIdentifiers
     }
 
 
-    /**
-     * Validate that a clone can be created
-     */
-    @Test public void  testClonedIterator()
-    {
-        ExternalIdentifiers propertyIterator = getPropertyIterator(10, 100);
-
-        propertyIterator.next();
-
-        ExternalIdentifiers propertyIteratorClone = new MockExternalIdentifiers( propertyIterator);
-
-        int elementCount = 0;
-        while (propertyIteratorClone.hasNext())
-        {
-            assertTrue(propertyIteratorClone.next() != null);
-            elementCount ++;
-        }
-
-        assertTrue(elementCount == 10);
-    }
-
 
     /**
      * Test that the iterator works well if there are no elements
@@ -115,25 +94,6 @@ public class TestExternalIdentifiers
     {
         validatePropertyIterator(30,
                                  10);
-    }
-
-
-    /**
-     * Validate that element count is set.
-     */
-    @Test public void testElementCount()
-    {
-        ExternalIdentifiers propertyIterator = getPropertyIterator(30, 10);
-
-        assertTrue(propertyIterator.getElementCount() == 30);
-
-        ExternalIdentifiers clonedPropertyIterator = new MockExternalIdentifiers( propertyIterator);
-
-        assertTrue(clonedPropertyIterator.getElementCount() == 30);
-
-        clonedPropertyIterator = new MockExternalIdentifiers( null);
-
-        assertTrue(clonedPropertyIterator.getElementCount() == 0);
     }
 
 
