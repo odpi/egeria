@@ -30,6 +30,6 @@ java {
 }
 
 shadowJar {
-    mainClassName = 'org.odpi.openmetadata.accessservices.assetowner.samples.readcsvfile.CSVFileReaderSample'
+    mainClassName = 'org.odpi.openmetadata.accessservices.assetconsumer.samples.readcsvfile.CSVFileReaderSample'
     archiveClassifier = 'jar-with-dependencies'
 }

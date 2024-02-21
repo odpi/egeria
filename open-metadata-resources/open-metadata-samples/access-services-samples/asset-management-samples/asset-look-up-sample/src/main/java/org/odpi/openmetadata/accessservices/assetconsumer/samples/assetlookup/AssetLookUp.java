@@ -148,9 +148,9 @@ public class AssetLookUp
                 }
             }
 
-            String[] commandWords = this.getUserInput("Enter 'more' to retrieve next page ... or just return to go back to the main menu");
+            String[] commandWords = this.getUserInput("Enter 'more' to retrieve next page ... or 'return' to return to go back to the main menu");
 
-            return ((commandWords == null) || (commandWords.length == 0) || (! "more".equals(commandWords[0])));
+            return ((commandWords != null) && (commandWords.length != 0) && ("more".equals(commandWords[0])));
         }
 
         return false;
@@ -169,12 +169,12 @@ public class AssetLookUp
     {
         try
         {
-            boolean firstPage = true;
             boolean receiveAgain = false;
             int startFrom = 0;
 
             do
             {
+                boolean firstPage = true;
                 List<String> assetGUIDPage = null;
 
                 if (command.equals("get-assets-by-term"))
@@ -187,7 +187,7 @@ public class AssetLookUp
 
                         for (MeaningElement meaning : meanings)
                         {
-                            System.out.println("   meaning element: " + meaning.getElementHeader().getGUID());
+                            System.out.println("   Attached to meaning element: " + meaning.getElementHeader().getGUID());
                             assetGUIDPage = client.getAssetsByMeaning(clientUserId, meaning.getElementHeader().getGUID(), 0, 0);
 
                             if (assetGUIDPage != null)
@@ -196,6 +196,10 @@ public class AssetLookUp
 
                                 receiveAgain = getRequestForMore(assetGUIDPage, firstPage);
                                 firstPage = false;
+                            }
+                            else
+                            {
+                                System.out.println("     no assets");
                             }
                         }
                     }
@@ -228,7 +232,6 @@ public class AssetLookUp
                         startFrom = startFrom + assetGUIDPage.size();
 
                         receiveAgain = getRequestForMore(assetGUIDPage, firstPage);
-                        firstPage = false;
                     }
                 }
             } while (receiveAgain);
@@ -323,8 +326,8 @@ public class AssetLookUp
         {
             if (firstAsset)
             {
-                System.out.println("| Unique identifier (GUID)         | Unique name (qualifiedName) | Display name       | Description                  |");
-                System.out.println("|----------------------------------+-----------------------------+--------------------+------------------------------|");
+                System.out.println("| Unique identifier (GUID)         | Display name       | Description                  | Unique name (qualifiedName) |");
+                System.out.println("|----------------------------------+--------------------+------------------------------+-----------------------------|");
             }
 
             client = new AssetConsumer(serverName, platformURLRoot);
@@ -334,9 +337,9 @@ public class AssetLookUp
             if (assetUniverse != null)
             {
                 System.out.print("| " + assetUniverse.getGUID());
-                System.out.print(" | " + assetUniverse.getQualifiedName());
                 System.out.print(" | " + assetUniverse.getDisplayName());
                 System.out.print(" | " + assetUniverse.getResourceDescription());
+                System.out.print(" | " + assetUniverse.getQualifiedName());
                 System.out.println(" |");
             }
         }
@@ -358,7 +361,7 @@ public class AssetLookUp
         {
             client = new AssetConsumer(serverName, platformURLRoot);
 
-            client.addLikeToAsset(clientUserId, assetGUID, true);
+            //client.addLikeToAsset(clientUserId, assetGUID, true);
 
             AssetUniverse assetUniverse = client.getAssetProperties(clientUserId, assetGUID);
 

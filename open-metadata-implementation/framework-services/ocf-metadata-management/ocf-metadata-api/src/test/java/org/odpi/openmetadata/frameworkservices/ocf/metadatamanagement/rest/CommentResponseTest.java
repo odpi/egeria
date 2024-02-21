@@ -37,7 +37,6 @@ public class CommentResponseTest
         CommentResponse testObject = new CommentResponse();
 
         testObject.setComment(commentBean);
-        testObject.setReplyCount(5);
 
         return testObject;
     }
@@ -51,7 +50,6 @@ public class CommentResponseTest
     private void validateResultObject(CommentResponse  resultObject)
     {
         assertTrue(resultObject.getComment().equals(commentBean));
-        assertTrue(resultObject.getReplyCount() == 5);
     }
 
 
@@ -64,12 +62,10 @@ public class CommentResponseTest
 
 
         assertTrue(nullObject.getComment() == null);
-        assertTrue(nullObject.getReplyCount() == 0);
 
         nullObject = new CommentResponse(null);
 
         assertTrue(nullObject.getComment() == null);
-        assertTrue(nullObject.getReplyCount() == 0);
     }
 
 
@@ -85,10 +81,6 @@ public class CommentResponseTest
 
         CommentResponse  sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
-
-        CommentResponse  differentObject = getTestObject();
-        differentObject.setReplyCount(8);
-        assertFalse(getTestObject().equals(differentObject));
     }
 
 

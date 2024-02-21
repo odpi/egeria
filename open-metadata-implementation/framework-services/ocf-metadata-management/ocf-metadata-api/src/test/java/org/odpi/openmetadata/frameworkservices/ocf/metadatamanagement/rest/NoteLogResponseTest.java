@@ -110,7 +110,6 @@ public class NoteLogResponseTest
         assertTrue(nullObject.getNotes() == null);
 
         nullObject = new NoteLogResponse();
-        nullObject.setNotes(new ArrayList<>());
 
         assertTrue(nullObject.getRelatedHTTPCode() == 200);
         assertTrue(nullObject.getExceptionClassName() == null);
@@ -184,8 +183,6 @@ public class NoteLogResponseTest
         assertTrue(getTestObject().hashCode() == getTestObject().hashCode());
 
         NoteLogResponse  testObject = getTestObject();
-
-        testObject.setNotes(null);
 
         assertTrue(testObject.hashCode() != 0);
     }

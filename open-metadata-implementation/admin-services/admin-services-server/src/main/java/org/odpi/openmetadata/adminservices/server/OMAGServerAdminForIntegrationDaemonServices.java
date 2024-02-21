@@ -185,7 +185,7 @@ public class OMAGServerAdminForIntegrationDaemonServices
                 {
                     if (existingConfig != null)
                     {
-                        if (existingConfig.getIntegrationGroupQualifiedName().equals(integrationGroupConfig.getIntegrationGroupQualifiedName()))
+                        if (! existingConfig.getIntegrationGroupQualifiedName().equals(integrationGroupConfig.getIntegrationGroupQualifiedName()))
                         {
                             newList.add(existingConfig);
                         }

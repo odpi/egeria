@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.SchemaAttributes;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
+import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ArchiveProperties;
@@ -501,12 +502,12 @@ public class CSVSurveyService extends AuditableSurveyService
      * @throws PropertyServerException repository not working
      * @throws UserNotAuthorizedException insufficient security
      */
-    private String addSchemaAttributeToSchemaType(SurveyOpenMetadataStore openMetadataStore,
-                                                  AssetUniverse           assetUniverse,
-                                                  String                  schemaTypeGUID,
-                                                  DataField               dataField) throws InvalidParameterException,
-                                                                                            PropertyServerException,
-                                                                                            UserNotAuthorizedException
+    private String addSchemaAttributeToSchemaType(OpenMetadataStore openMetadataStore,
+                                                  AssetUniverse     assetUniverse,
+                                                  String            schemaTypeGUID,
+                                                  DataField         dataField) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
     {
         ElementProperties elementProperties = propertyHelper.addStringProperty(null,
                                                                                OpenMetadataProperty.QUALIFIED_NAME.name,

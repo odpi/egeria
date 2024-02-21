@@ -28,7 +28,6 @@ public class CommentsResponseTest
      */
     public CommentsResponseTest()
     {
-        responseObject.setReplyCount(10);
         responseList.add(responseObject);
     }
 

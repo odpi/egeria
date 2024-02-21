@@ -91,8 +91,6 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
      * @param requestSourceElements metadata elements associated with the request to the governance action service
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
      *
-     * @return service handler for this request
-     *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the governance action engine.

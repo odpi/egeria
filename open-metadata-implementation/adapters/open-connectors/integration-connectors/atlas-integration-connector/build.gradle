@@ -9,8 +9,6 @@ dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     compileOnly project(':open-metadata-implementation:frameworks:governance-action-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-integration-framework')
-    compileOnly project(':open-metadata-implementation:access-services:asset-manager:asset-manager-api')
-    compileOnly project(':open-metadata-implementation:integration-services:catalog-integrator:catalog-integrator-api')
     compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-connectors-api')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-factory')

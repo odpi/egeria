@@ -21,9 +21,6 @@ the open metadata configuration.
 * **[data-store-connectors](data-store-connectors)** contains OCF connectors to data stores on different
 data platforms.
 
-* **[discovery-service-connectors](discovery-service-connectors)** implementations of open discovery services
-from the [Open Discovery Framework (ODF)](../../frameworks/open-discovery-framework).
-
 * **[dynamic-archiver-connectors](dynamic-archiver-connectors)** implementations of archive services
 that run in the [Repository Governance OMES](../../engine-services/repository-governance).
 

@@ -29,6 +29,6 @@ java {
 }
 
 shadowJar {
-    mainClassName = 'org.odpi.openmetadata.accessservices.assetowner.samples.readavrofile.AvroFileReaderSample'
+    mainClassName = 'org.odpi.openmetadata.accessservices.assetconsumer.samples.readavrofile.AvroFileReaderSample'
     archiveClassifier = 'jar-with-dependencies'
 }

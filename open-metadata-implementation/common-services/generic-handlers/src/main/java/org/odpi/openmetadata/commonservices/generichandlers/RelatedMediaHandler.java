@@ -69,47 +69,6 @@ public class RelatedMediaHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Count the number of related media attached to an anchor entity.
-     *
-     * @param userId     calling user
-     * @param elementGUID identifier for the entity that the object is attached to
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param methodName calling method
-     * @return unique identifier of the object or null
-     * @throws InvalidParameterException  the parameters are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public int countRelatedMedia(String  userId,
-                                 String  elementGUID,
-                                 boolean forLineage,
-                                 boolean forDuplicateProcessing,
-                                 Date    effectiveTime,
-                                 String  methodName) throws InvalidParameterException,
-                                                            PropertyServerException,
-                                                            UserNotAuthorizedException
-    {
-        final String guidParameterName = "elementGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
-
-        return repositoryHandler.countAttachedRelationshipsByType(userId,
-                                                                  elementGUID,
-                                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                                  OpenMetadataType.REFERENCEABLE_TO_RELATED_MEDIA_TYPE_GUID,
-                                                                  OpenMetadataType.REFERENCEABLE_TO_RELATED_MEDIA_TYPE_NAME,
-                                                                  2,
-                                                                  forLineage,
-                                                                  forDuplicateProcessing,
-                                                                  effectiveTime,
-                                                                  methodName);
-    }
-
-
-    /**
      * Return the related media attached to an anchor entity.
      *
      * @param userId     calling user

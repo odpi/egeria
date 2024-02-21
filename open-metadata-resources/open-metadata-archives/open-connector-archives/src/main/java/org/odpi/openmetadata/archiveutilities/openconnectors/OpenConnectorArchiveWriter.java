@@ -6,12 +6,12 @@ import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileSt
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
-import org.odpi.openmetadata.adapters.connectors.discoveryservices.discoveratlas.DiscoverApacheAtlasProvider;
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.OriginSeekerGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.ZonePublisherGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter.CSVLineageImporterProvider;
@@ -21,7 +21,7 @@ import org.odpi.openmetadata.adapters.connectors.integration.kafka.KafkaMonitorI
 import org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.DistributeAuditEventsFromKafkaProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.OpenAPIMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.*;
-import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTProvider;
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTProvider;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
 import org.odpi.openmetadata.adapters.connectors.secretsstore.envar.EnvVarSecretsStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv.CSVSurveyServiceProvider;
@@ -1421,7 +1421,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         final String discoveryServiceName = "apache-atlas-discovery-service";
         final String discoveryServiceDisplayName = "Apache Atlas Discovery Service";
         final String discoveryServiceDescription = "Discovers the types and instances found in an Apache Atlas server.";
-        final String discoveryServiceProviderClassName = DiscoverApacheAtlasProvider.class.getName();
+        final String discoveryServiceProviderClassName = SurveyApacheAtlasProvider.class.getName();
 
         GovernanceActionDescription governanceActionDescription = new GovernanceActionDescription();
 

@@ -40,7 +40,6 @@ class ConnectedNestedSchemaType extends NestedSchemaType
                                                                userId,
                                                                platformRootURL,
                                                                this.getGUID(),
-                                                               this.getAttributeCount(),
                                                                maxCacheSize,
                                                                restClient);
 

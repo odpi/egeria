@@ -4,10 +4,8 @@ package org.odpi.openmetadata.viewservices.dino.handlers;
 
 import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceEngineElement;
-import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceServiceElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredGovernanceServiceElement;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceServiceProperties;
-import org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredGovernanceService;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredGovernanceServiceProperties;
 import org.odpi.openmetadata.adminservices.client.EngineHostConfigurationClient;
 import org.odpi.openmetadata.adminservices.client.IntegrationDaemonConfigurationClient;
@@ -1281,7 +1279,7 @@ public class DinoViewHandler {
              */
             OMAGServerConfigurationClient adminServicesClient = this.getOMAGServerConfigurationClient(userId, serverName, platformRootURL);
 
-            return adminServicesClient.getServerClassification();
+            return adminServicesClient.getServerTypeClassification();
 
         }
         catch (OMAGInvalidParameterException e) {

@@ -73,66 +73,6 @@ public class RelatedAssetHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Return the count of related assets.
-     *
-     * @param userId     calling user
-     * @param elementGUID identifier for the asset that the related assets are attached to
-     * @param elementGUIDParameterName parameter passing the elementGUID
-     * @param elementTypeName name of the type of the starting element
-     * @param relationshipTypeGUID unique identifier for relationship type
-     * @param relationshipTypeName unique name for relationship type
-     * @param serviceSupportedZones override the default supported zones.
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     * @return unique identifier of the object or null
-     * @throws InvalidParameterException  the endpoint bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public int getRelatedAssetCount(String       userId,
-                                    String       elementGUID,
-                                    String       elementGUIDParameterName,
-                                    String       elementTypeName,
-                                    String       relationshipTypeGUID,
-                                    String       relationshipTypeName,
-                                    List<String> serviceSupportedZones,
-                                    boolean      forLineage,
-                                    boolean      forDuplicateProcessing,
-                                    Date         effectiveTime,
-                                    String       methodName) throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException
-    {
-        List<B>  relatedAssets = this.getRelatedAssets(userId,
-                                                       elementGUID,
-                                                       elementGUIDParameterName,
-                                                       elementTypeName,
-                                                       relationshipTypeGUID,
-                                                       relationshipTypeName,
-                                                       OpenMetadataType.ASSET.typeName,
-                                                       serviceSupportedZones,
-                                                       0,
-                                                       0,
-                                                       invalidParameterHandler.getMaxPagingSize(),
-                                                       forLineage,
-                                                       forDuplicateProcessing,
-                                                       effectiveTime,
-                                                       methodName);
-
-        if (relatedAssets == null)
-        {
-            return 0;
-        }
-        else
-        {
-            return relatedAssets.size();
-        }
-    }
-
-
-    /**
      * Return the assets and relationship properties attached to an element by the specified relationship type.
      * If all related assets are required then specify null for the relationship type GUID and name.
      *

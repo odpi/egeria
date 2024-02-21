@@ -28,7 +28,6 @@ public class NoteLogsResponseTest
      */
     public NoteLogsResponseTest()
     {
-        responseObject.setNoteCount(9);
         responseList.add(responseObject);
     }
 

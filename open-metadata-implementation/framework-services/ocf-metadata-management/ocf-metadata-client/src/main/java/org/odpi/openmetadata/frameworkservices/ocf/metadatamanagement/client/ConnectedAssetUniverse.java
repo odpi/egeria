@@ -68,6 +68,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                   assetResponse);
     }
 
+
     /**
      * Static factory method used for creating a ConnectedAssetUniverse object
      * without authentication.
@@ -271,113 +272,69 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                        OCFRESTClient    restClient,
                                        AssetResponse    assetResponse)
     {
-        if (assetResponse.getExternalIdentifierCount() > 0)
-        {
-            super.externalIdentifiers = new ConnectedExternalIdentifiers(serviceName,
-                                                                         remoteServerName,
-                                                                         userId,
-                                                                         platformURLRoot,
-                                                                         assetGUID,
-                                                                         assetResponse.getExternalIdentifierCount(),
-                                                                         MAX_CACHE_SIZE,
-                                                                         restClient);
-        }
+        super.externalIdentifiers = new ConnectedExternalIdentifiers(serviceName,
+                                                                     remoteServerName,
+                                                                     userId,
+                                                                     platformURLRoot,
+                                                                     assetGUID,
+                                                                     MAX_CACHE_SIZE,
+                                                                     restClient);
 
-        if (assetResponse.getRelatedMediaReferenceCount() > 0)
-        {
-            super.relatedMediaReferences = new ConnectedRelatedMediaReferences(serviceName,
-                                                                               remoteServerName,
-                                                                               userId,
-                                                                               platformURLRoot,
-                                                                               assetGUID,
-                                                                               assetResponse.getRelatedMediaReferenceCount(),
-                                                                               MAX_CACHE_SIZE,
-                                                                               restClient);
-        }
+        super.relatedMediaReferences = new ConnectedRelatedMediaReferences(serviceName,
+                                                                           remoteServerName,
+                                                                           userId,
+                                                                           platformURLRoot,
+                                                                           assetGUID,
+                                                                           MAX_CACHE_SIZE,
+                                                                           restClient);
 
-        if (assetResponse.getNoteLogsCount() > 0)
-        {
-            super.noteLogs = new ConnectedNoteLogs(serviceName,
-                                                   remoteServerName,
-                                                   userId,
-                                                   platformURLRoot,
-                                                   assetGUID,
-                                                   assetResponse.getNoteLogsCount(),
-                                                   MAX_CACHE_SIZE,
-                                                   restClient);
-        }
+        super.noteLogs = new ConnectedNoteLogs(serviceName,
+                                               remoteServerName,
+                                               userId,
+                                               platformURLRoot,
+                                               assetGUID,
+                                               MAX_CACHE_SIZE,
+                                               restClient);
 
-        if (assetResponse.getExternalReferencesCount() > 0)
-        {
-            super.externalReferences = new ConnectedExternalReferences(serviceName,
-                                                                       remoteServerName,
-                                                                       userId,
-                                                                       platformURLRoot,
-                                                                       assetGUID,
-                                                                       assetResponse.getExternalReferencesCount(),
-                                                                       MAX_CACHE_SIZE,
-                                                                       restClient);
-        }
+        super.externalReferences = new ConnectedExternalReferences(serviceName,
+                                                                   remoteServerName,
+                                                                   userId,
+                                                                   platformURLRoot,
+                                                                   assetGUID,
+                                                                   MAX_CACHE_SIZE,
+                                                                   restClient);
 
-        if (assetResponse.getConnectionCount() > 0)
-        {
-            super.connections = new ConnectedConnections(serviceName,
-                                                         remoteServerName,
-                                                         userId,
-                                                         platformURLRoot,
-                                                         assetGUID,
-                                                         assetResponse.getConnectionCount(),
-                                                         MAX_CACHE_SIZE,
-                                                         restClient);
-        }
+        super.connections = new ConnectedConnections(serviceName,
+                                                     remoteServerName,
+                                                     userId,
+                                                     platformURLRoot,
+                                                     assetGUID,
+                                                     MAX_CACHE_SIZE,
+                                                     restClient);
 
-        if (assetResponse.getLicenseCount() > 0)
-        {
-            super.licenses = new ConnectedLicenses(serviceName,
-                                                   remoteServerName,
-                                                   userId,
-                                                   platformURLRoot,
-                                                   assetGUID,
-                                                   assetResponse.getLicenseCount(),
-                                                   MAX_CACHE_SIZE,
-                                                   restClient);
-        }
+        super.licenses = new ConnectedLicenses(serviceName,
+                                               remoteServerName,
+                                               userId,
+                                               platformURLRoot,
+                                               assetGUID,
+                                               MAX_CACHE_SIZE,
+                                               restClient);
 
-        if (assetResponse.getCertificationCount() > 0)
-        {
-            super.certifications = new ConnectedCertifications(serviceName,
-                                                               remoteServerName,
-                                                               userId,
-                                                               platformURLRoot,
-                                                               assetGUID,
-                                                               assetResponse.getCertificationCount(),
-                                                               MAX_CACHE_SIZE,
-                                                               restClient);
-        }
+        super.certifications = new ConnectedCertifications(serviceName,
+                                                           remoteServerName,
+                                                           userId,
+                                                           platformURLRoot,
+                                                           assetGUID,
+                                                           MAX_CACHE_SIZE,
+                                                           restClient);
 
         super.feedback = new ConnectedFeedback(serviceName,
                                                remoteServerName,
                                                userId,
                                                platformURLRoot,
                                                assetGUID,
-                                               assetResponse.getCommentCount(),
-                                               assetResponse.getLikeCount(),
-                                               assetResponse.getRatingsCount(),
-                                               assetResponse.getInformalTagCount(),
                                                MAX_CACHE_SIZE,
                                                restClient);
-
-        if (assetResponse.getKnownLocationsCount() > 0)
-        {
-            super.knownLocations = new ConnectedLocations(serviceName,
-                                                          remoteServerName,
-                                                          userId,
-                                                          platformURLRoot,
-                                                          assetGUID,
-                                                          assetResponse.getKnownLocationsCount(),
-                                                          MAX_CACHE_SIZE,
-                                                          restClient);
-        }
 
         super.lineage = new ConnectedAssetLineage(serviceName,
                                                   remoteServerName,
@@ -386,18 +343,6 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                                   assetGUID,
                                                   MAX_CACHE_SIZE,
                                                   restClient);
-
-        if (assetResponse.getRelatedAssetCount() > 0)
-        {
-            super.relatedAssets = new ConnectedRelatedAssets(serviceName,
-                                                             remoteServerName,
-                                                             userId,
-                                                             platformURLRoot,
-                                                             assetGUID,
-                                                             assetResponse.getRelatedAssetCount(),
-                                                             MAX_CACHE_SIZE,
-                                                             restClient);
-        }
 
         if (assetResponse.getSchemaType() != null)
         {

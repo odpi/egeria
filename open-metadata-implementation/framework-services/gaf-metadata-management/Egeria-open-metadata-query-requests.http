@@ -6,7 +6,7 @@
 
 ###
 # Working with entities
-@elementGUID=90e35d5a-cc22-4b5e-9762-7845daaced0e
+@elementGUID=2864a998-61f6-4251-a619-c73e85559fd5
 
 
 ###
@@ -90,7 +90,7 @@ Content-Type: application/json
 ###
 # Navigating the relationships to related elements
 
-@relationshipTypeName=AssetSchemaType
+@relationshipTypeName=ConnectionToAsset
 
 
 ###
