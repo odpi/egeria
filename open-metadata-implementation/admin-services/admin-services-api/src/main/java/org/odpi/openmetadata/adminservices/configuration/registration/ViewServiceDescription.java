@@ -122,13 +122,25 @@ public enum ViewServiceDescription
      * Build collections of asset and other metadata.
      */
     COLLECTION_MANAGER  (809,
-                         ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                         ComponentDevelopmentStatus.IN_DEVELOPMENT,
                          "Collection Manager",
                          "Collection Manager OMVS",
                          "collection-manager",
                          "Build collections of asset and other metadata.",
                          "https://egeria-project.org/services/omvs/collection-manager/overview/",
                          AccessServiceDescription.DIGITAL_SERVICE_OMAS.getAccessServiceFullName()),
+
+    /**
+     * Manage Egeria's automation services.
+     */
+    AUTOMATED_CURATION  (809,
+                         ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                         "Automated Curation",
+                         "Automated Curation OMVS",
+                         "automated-curation",
+                         "Manage Egeria's automation services.",
+                         "https://egeria-project.org/services/omvs/automated-curation/overview/",
+                         AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceFullName()),
     ;
 
 

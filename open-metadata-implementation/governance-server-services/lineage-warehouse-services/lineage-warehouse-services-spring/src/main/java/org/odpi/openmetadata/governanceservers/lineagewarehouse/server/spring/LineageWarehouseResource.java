@@ -4,6 +4,7 @@ package org.odpi.openmetadata.governanceservers.lineagewarehouse.server.spring;
 
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.governanceservers.lineagewarehouse.model.LineageQueryParameters;
 import org.odpi.openmetadata.governanceservers.lineagewarehouse.requests.ElementHierarchyRequest;
@@ -25,18 +26,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * * The OpenLineageResource provides the server-side interface of the Lineage Warehouse Services governance server.
+ * The OpenLineageResource provides the server-side interface of the Lineage Warehouse Services governance server.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/lineage-warehouse/users/{userId}")
 
 @Tag(name="Lineage Warehouse Services",
-     description="The Lineage Warehouse Services provides a historic reporting warehouse for lineage. It listens to events that are sent out by the Asset Lineage OMAS, and stores lineage data in a database. ",
+     description="The Lineage Warehouse Services provides a historic reporting warehouse for lineage. It listens to events that are sent out by the Asset Lineage OMAS, and stores lineage data in its own lineage warehouse store.",
      externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/services/lineage-warehouse-services/"))
 
 public class LineageWarehouseResource
 {
-
     private final LineageWarehouseRESTServices restAPI = new LineageWarehouseRESTServices();
 
     /**
@@ -50,16 +50,25 @@ public class LineageWarehouseResource
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
     @PostMapping(path = "/lineage/entities/{guid}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public LineageResponse lineage(
-            @PathVariable("serverName") String serverName,
-            @PathVariable("userId") String userId,
-            @PathVariable("guid") String guid,
-            @RequestBody LineageQueryParameters params) {
+
+    @Operation(summary="lineage",
+            description="Returns the graph that the user will initially see when querying lineage. In the future, this method will be " +
+                    "extended to condense large paths to prevent cluttering of the users screen. The user will be able to extended " +
+                    "the condensed path by querying a different method.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/lineage-warehouse/"))
+
+    public LineageResponse lineage(@PathVariable("serverName") String serverName,
+                                   @PathVariable("userId") String userId,
+                                   @PathVariable("guid") String guid,
+                                   @RequestBody LineageQueryParameters params)
+    {
         return restAPI.lineage(serverName, userId, params.getScope(), guid, params.isIncludeProcesses());
     }
 
+
     /**
-     * Gets entity details.
+     * Gets details of a specific entity from the lineage repository.
      *
      * @param serverName the server name
      * @param userId     the user id
@@ -67,10 +76,16 @@ public class LineageWarehouseResource
      * @return the entity details
      */
     @GetMapping(path = "/lineage/entities/{guid}/details", produces = MediaType.APPLICATION_JSON_VALUE)
-    public LineageVertexResponse getEntityDetails(
-            @PathVariable("serverName") String serverName,
-            @PathVariable("userId") String userId,
-            @PathVariable("guid") String guid) {
+
+    @Operation(summary="getEntityDetails",
+            description="Gets details of a specific entity from the lineage repository.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/lineage-warehouse/"))
+
+    public LineageVertexResponse getEntityDetails(@PathVariable("serverName") String serverName,
+                                                  @PathVariable("userId") String userId,
+                                                  @PathVariable("guid") String guid)
+    {
         return restAPI.getEntityDetails(serverName, userId, guid);
     }
 
@@ -82,9 +97,15 @@ public class LineageWarehouseResource
      * @return the available entities types from lineage repository
      */
     @GetMapping(path = "/lineage/types", produces = MediaType.APPLICATION_JSON_VALUE)
-    public LineageTypesResponse getTypes(
-            @PathVariable("serverName") String serverName,
-            @PathVariable("userId") String userId) {
+
+    @Operation(summary="getTypes",
+            description="Gets available entities types from lineage repository.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/lineage-warehouse/"))
+
+    public LineageTypesResponse getTypes(@PathVariable("serverName") String serverName,
+                                         @PathVariable("userId")     String userId)
+    {
         return restAPI.getTypes(serverName, userId);
     }
 
@@ -95,29 +116,44 @@ public class LineageWarehouseResource
      * @param serverName  the server name
      * @param userId      the user id
      * @param type        the type of the nodes name to search for
-     * @param searchValue the string to be contained in the display name of the node - case insensitive
+     * @param searchValue the string to be contained in the display name of the node - case-insensitive
      * @param limit       the maximum number of node names to retrieve
      * @return the node names that match criteria
      */
     @GetMapping(path = "/lineage/nodes", produces = MediaType.APPLICATION_JSON_VALUE)
-    public LineageNodeNamesResponse getNodes(
-            @PathVariable("serverName") String serverName,
-            @PathVariable("userId") String userId,
-            @RequestParam("type") String type,
-            @RequestParam("name") String searchValue,
-            @RequestParam("limit") int limit) {
+
+    @Operation(summary="getNodes",
+            description="Gets nodes names of certain type with display name containing a certain value.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/lineage-warehouse/"))
+
+    public LineageNodeNamesResponse getNodes(@PathVariable("serverName") String serverName,
+                                             @PathVariable("userId") String userId,
+                                             @RequestParam("type") String type,
+                                             @RequestParam("name") String searchValue,
+                                             @RequestParam("limit") int limit)
+    {
         return restAPI.getNodes(serverName, userId, new NodeNamesSearchCriteria(type, searchValue, limit));
     }
 
+
     @PostMapping(path = "lineage/search", produces = MediaType.APPLICATION_JSON_VALUE)
-    public LineageSearchResponse getSearchResults(@PathVariable("serverName") String serverName,
-                                                  @PathVariable("userId") String userId,
-                                                  @RequestBody LineageSearchRequest lineageSearchRequest) {
+
+    @Operation(summary="getSearchResults",
+            description="Request lineage results based on search request.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/lineage-warehouse/"))
+
+    public LineageSearchResponse getSearchResults(@PathVariable("serverName") String               serverName,
+                                                  @PathVariable("userId")     String               userId,
+                                                  @RequestBody                LineageSearchRequest lineageSearchRequest)
+    {
         return restAPI.search(serverName, userId, lineageSearchRequest);
     }
 
+
     /**
-     * Returns a subraph representing the hierarchy of a certain node, based on the request
+     * Returns a subgraph representing the hierarchy of a certain node, based on the request
      *
      * @param userId                  calling user.
      * @param serverName              name of the server instance to connect to.
@@ -126,9 +162,16 @@ public class LineageWarehouseResource
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
     @PostMapping(path = "elements/hierarchy", produces = MediaType.APPLICATION_JSON_VALUE)
-    public LineageResponse getElementHierarchy(@PathVariable("serverName") String serverName,
-                                               @PathVariable("userId") String userId,
-                                               @RequestBody ElementHierarchyRequest elementHierarchyRequest) {
+
+    @Operation(summary="getElementHierarchy",
+            description="Returns a subgraph representing the hierarchy of a certain node, based on the request.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/lineage-warehouse/"))
+
+    public LineageResponse getElementHierarchy(@PathVariable("serverName") String                  serverName,
+                                               @PathVariable("userId")     String                  userId,
+                                               @RequestBody                ElementHierarchyRequest elementHierarchyRequest)
+    {
         return restAPI.getElementHierarchy(serverName, userId, elementHierarchyRequest);
     }
 }

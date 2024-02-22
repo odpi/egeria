@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.PropertiesResponse;
@@ -32,7 +33,7 @@ public class IntegrationDaemonResource
 
 
     /**
-     * Return a summary of each of the integration services' and integration groups' status.
+     * Return the status of each of the integration services and integration groups running in the integration daemon.
      *
      * @param serverName integration daemon name
      * @param userId calling user
@@ -43,6 +44,11 @@ public class IntegrationDaemonResource
      */
     @GetMapping(path = "/status")
 
+    @Operation(summary="getIntegrationDaemonStatus",
+            description="Return the status of each of the integration services and integration groups running in the integration daemon.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-daemon/"))
+
     public IntegrationDaemonStatusResponse getIntegrationDaemonStatus(@PathVariable String   serverName,
                                                                       @PathVariable String   userId)
     {
@@ -51,7 +57,7 @@ public class IntegrationDaemonResource
 
 
     /**
-     * Retrieve the configuration properties of the named connector.
+     * Retrieve the configuration properties of the named integration connector running in the integration daemon.
      *
      * @param serverName integration daemon server name
      * @param userId calling user
@@ -64,6 +70,11 @@ public class IntegrationDaemonResource
      */
     @GetMapping(path = "/integration-connectors/{connectorName}/configuration-properties")
 
+    @Operation(summary="getConfigurationProperties",
+            description="Retrieve the configuration properties of the named integration connector running in the integration daemon.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-connector/"))
+
     public PropertiesResponse getConfigurationProperties(@PathVariable String serverName,
                                                          @PathVariable String userId,
                                                          @PathVariable String connectorName)
@@ -73,7 +84,8 @@ public class IntegrationDaemonResource
 
 
     /**
-     * Update the configuration properties of the connectors, or specific connector if a connector name is supplied.
+     * Update the configuration properties of the integration connectors, or specific integration connector if a
+     * connector name is supplied.  This update is in memory and will not persist over a server restart.
      *
      * @param serverName integration daemon server name
      * @param userId calling user
@@ -86,6 +98,11 @@ public class IntegrationDaemonResource
      */
     @PostMapping(path = "/integration-connectors/configuration-properties")
 
+    @Operation(summary="updateConfigurationProperties",
+            description="Update the configuration properties of the integration connectors, or specific integration connector if a connector name is supplied.  This update is in memory and will not persist over a server restart.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-connector/"))
+
     public  VoidResponse updateConfigurationProperties(@PathVariable String                               serverName,
                                                        @PathVariable String                               userId,
                                                        @RequestBody  ConnectorConfigPropertiesRequestBody requestBody)
@@ -96,6 +113,7 @@ public class IntegrationDaemonResource
 
     /**
      * Update the endpoint network address for a specific integration connector.
+     * This update is in memory and will not persist over a server restart.
      *
      * @param serverName integration daemon server name
      * @param userId calling user
@@ -109,6 +127,11 @@ public class IntegrationDaemonResource
      */
     @PostMapping(path = "/integration-connectors/{connectorName}/endpoint-network-address")
 
+    @Operation(summary="updateEndpointNetworkAddress",
+            description="Update the endpoint network address for a specific integration connector.  This update is in memory and will not persist over a server restart.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-connector/"))
+
     public  VoidResponse updateEndpointNetworkAddress(@PathVariable String            serverName,
                                                       @PathVariable String            userId,
                                                       @PathVariable String            connectorName,
@@ -120,6 +143,7 @@ public class IntegrationDaemonResource
 
     /**
      * Update the connection for a specific integration connector.
+     * This update is in memory and will not persist over a server restart.
      *
      * @param serverName integration daemon server name
      * @param userId calling user
@@ -132,6 +156,11 @@ public class IntegrationDaemonResource
      *  PropertyServerException there was a problem detected by the integration service.
      */
     @PostMapping(path = "/integration-connectors/{connectorName}/connection")
+
+    @Operation(summary="updateConnectorConnection",
+            description="Update the connection for a specific integration connector.  This update is in memory and will not persist over a server restart.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-connector/"))
 
     public  VoidResponse updateConnectorConnection(@PathVariable String     serverName,
                                                    @PathVariable String     userId,
@@ -157,6 +186,11 @@ public class IntegrationDaemonResource
      */
     @PostMapping(path = "/integration-connectors/refresh")
 
+    @Operation(summary="refreshConnectors",
+            description="Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-daemon/"))
+
     public VoidResponse refreshConnectors(@PathVariable                  String          serverName,
                                           @PathVariable                  String          userId,
                                           @RequestBody(required = false) NameRequestBody requestBody)
@@ -166,7 +200,7 @@ public class IntegrationDaemonResource
 
 
     /**
-     * Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.
+     * Restart all connectors running in the integration daemon, or restart a specific connector if the connector name is specified.
      *
      * @param serverName integration daemon server name
      * @param userId calling user
@@ -179,6 +213,11 @@ public class IntegrationDaemonResource
      *  PropertyServerException there was a problem detected by the integration daemon.
      */
     @PostMapping(path = "/integration-connectors/restart")
+
+    @Operation(summary="restartConnectors",
+            description="Restart all connectors running in the integration daemon, or restart a specific connector if the connector name is specified.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-daemon/"))
 
     public VoidResponse restartConnectors(@PathVariable                  String          serverName,
                                           @PathVariable                  String          userId,
@@ -204,6 +243,11 @@ public class IntegrationDaemonResource
      */
     @PostMapping(path = "/integration-services/{serviceURLMarker}/refresh")
 
+    @Operation(summary="refreshService",
+            description="Process a refresh request.  This calls refresh on all connectors within the integration service.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-daemon/"))
+
     public VoidResponse refreshService(@PathVariable                  String          serverName,
                                        @PathVariable                  String          userId,
                                        @PathVariable                  String          serviceURLMarker,
@@ -214,7 +258,7 @@ public class IntegrationDaemonResource
 
 
     /**
-     * Request that the integration service shutdown and recreate its integration connectors.
+     * Request that the integration service shutdown and restart its integration connectors.
      *
      * @param serverName name of the integration daemon
      * @param userId identifier of calling user
@@ -228,6 +272,11 @@ public class IntegrationDaemonResource
      */
     @PostMapping(path = "/integration-services/{serviceURLMarker}/restart")
 
+    @Operation(summary="restartService",
+            description="Request that the integration service shutdown and restart its integration connectors.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-daemon/"))
+
     public  VoidResponse restartService(@PathVariable                  String          serverName,
                                         @PathVariable                  String          userId,
                                         @PathVariable                  String          serviceURLMarker,
@@ -235,8 +284,6 @@ public class IntegrationDaemonResource
     {
         return restAPI.restartService(serverName, userId, serviceURLMarker, requestBody);
     }
-
-
 
 
     /**
@@ -250,6 +297,11 @@ public class IntegrationDaemonResource
      *  PropertyServerException there was a problem detected by the integration daemon.
      */
     @GetMapping(path = "/integration-services/summary")
+
+    @Operation(summary="getIntegrationServicesSummaries",
+            description="Return a summary of each of the integration services' status.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-daemon/"))
 
     public IntegrationServiceSummaryResponse getIntegrationServicesSummaries(@PathVariable String   serverName,
                                                                              @PathVariable String   userId)
@@ -270,13 +322,17 @@ public class IntegrationDaemonResource
      */
     @GetMapping(path = "/integration-groups/{integrationGroupName}/summary")
 
+    @Operation(summary="getIntegrationGroupSummary",
+            description="Retrieve the description and status of the requested integration group.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-daemon/"))
+
     public IntegrationGroupSummaryResponse getIntegrationGroupSummary(@PathVariable String serverName,
                                                                       @PathVariable String userId,
                                                                       @PathVariable String integrationGroupName)
     {
         return restAPI.getIntegrationGroupSummary(serverName, userId, integrationGroupName);
     }
-
 
 
     /**
@@ -290,6 +346,11 @@ public class IntegrationDaemonResource
      */
     @GetMapping(path = "/integration-groups/summary")
 
+    @Operation(summary="getIntegrationGroupSummaries",
+            description="Return a summary of each of the integration groups running in the integration daemon.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-daemon/"))
+
     public IntegrationGroupSummariesResponse getIntegrationGroupSummaries(@PathVariable String serverName,
                                                                           @PathVariable String userId)
     {
@@ -298,9 +359,9 @@ public class IntegrationDaemonResource
 
 
     /**
-     * Request that the integration group refresh its configuration by calling the metadata server.
+     * Request that the integration group refresh its configuration by calling the metadata access server.
      * Changes to the connector configuration will result in the affected connectors being restarted.
-     * This request is useful if the metadata server has an outage, particularly while the
+     * This request is useful if the metadata access server has an outage, particularly while the
      * integration daemon is initializing.  This request just ensures that the latest configuration
      * is in use.
      *
@@ -314,6 +375,15 @@ public class IntegrationDaemonResource
      *  IntegrationGroupException there was a problem detected by the integration group.
      */
     @GetMapping(path = "/integration-groups/{integrationGroupName}/refresh-config")
+
+    @Operation(summary="refreshIntegrationGroupConfig",
+            description="Request that the integration group refresh its configuration by calling the metadata access server. " +
+                    "Changes to the connector configuration will result in the affected connectors being restarted. " +
+                    "This request is useful if the metadata access server has an outage, particularly while the " +
+                    "integration daemon is initializing.  This request just ensures that the latest configuration " +
+                    "is in use.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/integration-group/"))
 
     public  VoidResponse refreshIntegrationGroupConfig(@PathVariable String serverName,
                                                        @PathVariable String userId,

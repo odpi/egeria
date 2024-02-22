@@ -1,11 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetowner.client;
+package org.odpi.openmetadata.accessservices.governanceserver.client;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworkservices.gaf.client.OpenGovernanceClientBase;
-import org.odpi.openmetadata.frameworkservices.gaf.client.OpenMetadataClientBase;
 
 /**
  * OpenGovernanceClient provides an interface to the services that build, monitor and trigger governance actions.
@@ -13,7 +12,7 @@ import org.odpi.openmetadata.frameworkservices.gaf.client.OpenMetadataClientBase
  */
 public class OpenGovernanceClient extends OpenGovernanceClientBase
 {
-    private final static String serviceURLMarker = AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceURLMarker();
+    private final static String serviceURLMarker = AccessServiceDescription.GOVERNANCE_SERVER_OMAS.getAccessServiceURLMarker();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.

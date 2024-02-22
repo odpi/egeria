@@ -422,6 +422,16 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                      "retry the governance action by updating its status back to REQUESTED status."),
 
     /**
+     * ENGINE-HOST-SERVICES-0035 - Failed to retrieve active engine actions.  The exception was {0} with error message {1}
+     */
+    ENGINE_ACTION_SCAN_FAILED("ENGINE-HOST-SERVICES-0035",
+                         AuditLogRecordSeverityLevel.EXCEPTION,
+                         "Failed to retrieve active engine actions.  The exception was {0} with error message {1}",
+                         "The engine host is unable to retrieve the active engine actions from the metadata access server as part of its regular scan for work.",
+                         "Review the error messages and resolve the cause of the problem.  Once resolved, the engine host should retry its scan as part of its normal refresh processing. " +
+                                      "However, if the problem was in hte engine host, you may need to restart it to clear the problem."),
+
+    /**
      * ENGINE-HOST-SERVICES-0150 - {0} in server {1} is not configured with the platform URL root for the {2}
      */
     NO_OMAS_SERVER_URL("ENGINE-HOST-SERVICES-0150",

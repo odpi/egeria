@@ -5,6 +5,7 @@ package org.odpi.openmetadata.governanceservers.enginehostservices.server;
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceServerEventClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.OpenGovernanceClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineHostServicesConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.*;
@@ -127,13 +128,16 @@ public class EngineHostOperationalServices
              * clients.
              */
             GAFRESTClient restClient;
+            OpenGovernanceClient openGovernanceClient;
             if (localServerPassword == null)
             {
                 restClient = new GAFRESTClient(accessServiceServerName, accessServiceRootURL, auditLog);
+                openGovernanceClient = new OpenGovernanceClient(accessServiceServerName, accessServiceRootURL);
             }
             else
             {
                 restClient = new GAFRESTClient(accessServiceServerName, accessServiceRootURL, localServerUserId, localServerUserId, auditLog);
+                openGovernanceClient = new OpenGovernanceClient(accessServiceServerName, accessServiceRootURL, localServerUserId, localServerUserId);
             }
 
             /*
@@ -162,6 +166,8 @@ public class EngineHostOperationalServices
                                                                                      accessServiceRootURL,
                                                                                      restClient,
                                                                                      maxPageSize);
+
+
 
             /*
              * Initialize each of the integration services and accumulate the integration connector handlers for the
@@ -220,6 +226,7 @@ public class EngineHostOperationalServices
              */
             EngineConfigurationRefreshThread configurationRefreshThread = new EngineConfigurationRefreshThread(governanceEngineHandlers,
                                                                                                                eventClient,
+                                                                                                               openGovernanceClient,
                                                                                                                auditLog,
                                                                                                                localServerUserId,
                                                                                                                localServerName,

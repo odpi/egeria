@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.governanceservers.dataengineproxy;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.model.ProcessLoadResponse;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.rest.DataEngineProxyRestService;
@@ -23,8 +24,15 @@ public class DataEngineProxyServicesResource {
     DataEngineProxyRestService dataEngineProxyRestService = new DataEngineProxyRestService();
 
     @GetMapping("/load")
+
+    @Operation(summary="load",
+            description="Force an explicit load of metadata from the connected Data Engine",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/data-engine-proxy/"))
+
     public ProcessLoadResponse load(@PathVariable("serverName") String serverName,
-                                           @PathVariable("userId") String userId) {
+                                    @PathVariable("userId") String userId)
+    {
         return dataEngineProxyRestService.load(serverName, userId);
     }
 

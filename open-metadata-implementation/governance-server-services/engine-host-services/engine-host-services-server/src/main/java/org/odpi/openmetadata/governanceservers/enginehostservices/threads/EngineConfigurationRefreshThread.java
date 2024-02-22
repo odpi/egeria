@@ -4,8 +4,11 @@
 package org.odpi.openmetadata.governanceservers.enginehostservices.threads;
 
 import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceServerEventClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.OpenGovernanceClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
 import org.odpi.openmetadata.governanceservers.enginehostservices.ffdc.EngineHostServicesAuditCode;
@@ -25,6 +28,7 @@ public class EngineConfigurationRefreshThread implements Runnable
 {
     private final GovernanceEngineMap         engineHandlers;
     private final GovernanceServerEventClient eventClient;
+    private final OpenGovernanceClient        openGovernanceClient;
     private final AuditLog                    auditLog;
     private final String                      localServerUserId;
     private final String                      localServerName;
@@ -41,7 +45,8 @@ public class EngineConfigurationRefreshThread implements Runnable
      * needed to log errors if the metadata server is not available.
      *
      * @param engineHandlers list of governance engine handlers running locally mapped to their names
-     * @param eventClient client for accessing the Governance Engine OMAS OutTopic
+     * @param eventClient client for accessing the Governance Server OMAS OutTopic
+     * @param openGovernanceClient client for working with engine actions
      * @param auditLog logging destination
      * @param localServerUserId userId for configuration requests
      * @param localServerName this server's name
@@ -50,6 +55,7 @@ public class EngineConfigurationRefreshThread implements Runnable
      */
     public EngineConfigurationRefreshThread(GovernanceEngineMap                  engineHandlers,
                                             GovernanceServerEventClient          eventClient,
+                                            OpenGovernanceClient                 openGovernanceClient,
                                             AuditLog                             auditLog,
                                             String                               localServerUserId,
                                             String                               localServerName,
@@ -58,6 +64,7 @@ public class EngineConfigurationRefreshThread implements Runnable
     {
         this.engineHandlers          = engineHandlers;
         this.eventClient             = eventClient;
+        this.openGovernanceClient    = openGovernanceClient;
         this.auditLog                = auditLog;
         this.localServerUserId       = localServerUserId;
         this.localServerName         = localServerName;
@@ -155,6 +162,56 @@ public class EngineConfigurationRefreshThread implements Runnable
                 configToRetrieve = configFailed;
 
                 waitToRetry();
+            }
+
+            int startFrom = 0;
+            int pageSize  = 10;
+
+            try
+            {
+                List<EngineActionElement> activeEngineActions = openGovernanceClient.getActiveEngineActions(localServerUserId,
+                                                                                                            startFrom,
+                                                                                                            pageSize);
+
+                while (activeEngineActions != null)
+                {
+                    for (EngineActionElement engineActionElement : activeEngineActions)
+                    {
+                        if ((engineActionElement != null) && (engineActionElement.getActionStatus() == EngineActionStatus.APPROVED))
+                        {
+                            GovernanceEngineHandler governanceEngineHandler = engineHandlers.getGovernanceEngineHandler(engineActionElement.getGovernanceEngineName());
+
+                            if (governanceEngineHandler != null)
+                            {
+                                try
+                                {
+                                    governanceEngineHandler.executeEngineAction(engineActionElement.getElementHeader().getGUID());
+                                }
+                                catch (Exception error)
+                                {
+                                    auditLog.logException(actionDescription,
+                                                          EngineHostServicesAuditCode.ENGINE_ACTION_FAILED.getMessageDefinition(engineActionElement.getGovernanceEngineName(),
+                                                                                                                                error.getClass().getName(),
+                                                                                                                                error.getMessage()),
+                                                          engineActionElement.toString(),
+                                                          error);
+                                }
+                            }
+                        }
+                    }
+
+                    startFrom = startFrom + pageSize;
+                    activeEngineActions = openGovernanceClient.getActiveEngineActions(localServerUserId,
+                                                                                      startFrom,
+                                                                                      pageSize);
+                }
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(actionDescription,
+                                      EngineHostServicesAuditCode.ENGINE_ACTION_SCAN_FAILED.getMessageDefinition(error.getClass().getName(),
+                                                                                                                 error.getMessage()),
+                                      error);
             }
 
             waitToRetry();

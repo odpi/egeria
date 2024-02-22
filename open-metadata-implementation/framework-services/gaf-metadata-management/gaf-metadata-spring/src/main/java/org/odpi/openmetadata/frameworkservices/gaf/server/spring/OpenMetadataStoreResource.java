@@ -334,6 +334,11 @@ public class OpenMetadataStoreResource
      */
     @GetMapping(path = "/metadata-elements/{elementGUID}")
 
+    @Operation(summary="getMetadataElementByGUID",
+            description="Retrieve the metadata element using its unique identifier.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
     public OpenMetadataElementResponse getMetadataElementByGUID(@PathVariable String  serverName,
                                                                 @PathVariable String  serviceURLMarker,
                                                                 @PathVariable String  userId,
@@ -366,6 +371,11 @@ public class OpenMetadataStoreResource
      */
     @PostMapping(path = "/metadata-elements/by-unique-name")
 
+    @Operation(summary="getMetadataElementByUniqueName",
+            description="Retrieve the metadata element using its unique name (typically the qualified name, but it is possible to specify a different property name in the request body as long as it is unique).  If multiple matching instances are found, and exception is thrown.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
     public OpenMetadataElementResponse getMetadataElementByUniqueName(@PathVariable String          serverName,
                                                                       @PathVariable String          serviceURLMarker,
                                                                       @PathVariable String          userId,
@@ -395,6 +405,11 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/guid-by-unique-name")
+
+    @Operation(summary="getMetadataElementGUIDByUniqueName",
+            description="Retrieve the metadata element GUID using its unique name (typically the qualified name, but it is possible to specify a different property name in the request body as long as it is unique).  If multiple matching instances are found, and exception is thrown.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
 
     public GUIDResponse getMetadataElementGUIDByUniqueName(@PathVariable String          serverName,
                                                            @PathVariable String          serviceURLMarker,
@@ -427,6 +442,11 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/by-search-string")
+
+    @Operation(summary="findMetadataElementsWithString",
+            description="Retrieve the metadata elements that contain the requested string.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
 
     public OpenMetadataElementsResponse findMetadataElementsWithString(@PathVariable String                  serverName,
                                                                        @PathVariable String                  serviceURLMarker,
@@ -465,6 +485,11 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @GetMapping(path = "/related-elements/{elementGUID}/any-type")
+
+    @Operation(summary="getAllRelatedMetadataElements",
+            description="Retrieve the metadata elements connected to the supplied element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
 
     public RelatedMetadataElementListResponse getAllRelatedMetadataElements(@PathVariable String  serverName,
                                                                             @PathVariable String  serviceURLMarker,
