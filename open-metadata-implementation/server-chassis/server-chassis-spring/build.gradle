@@ -45,6 +45,8 @@ dependencies {
     runtimeOnly project(':open-metadata-implementation:server-operations:server-operations-spring')
 
     if (!project.hasProperty("adminChassisOnly")) {
+        runtimeOnly project(':open-metadata-implementation:view-services:automated-curation:automated-curation-spring')
+        runtimeOnly project(':open-metadata-implementation:view-services:collection-manager:collection-manager-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:server-author-view:server-author-view-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:glossary-author-view:glossary-author-view-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:glossary-browser:glossary-browser-spring')

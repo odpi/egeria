@@ -384,6 +384,16 @@ distributions {
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/framework-services/gaf-metadata-management" }
                         { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/my-profile" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/automated-curation" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/asset-catalog" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/glossary-browser" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/glossary-workflow" }
+                        { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-conformance-suite" }
                         { include 'Egeria*.http' }
                 fileMode = 0755

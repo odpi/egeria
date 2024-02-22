@@ -251,6 +251,8 @@ include(':open-metadata-implementation:view-services:dino-view:dino-view-server'
 include(':open-metadata-implementation:view-services:dino-view:dino-view-spring')
 include(':open-metadata-implementation:view-services:asset-catalog:asset-catalog-server')
 include(':open-metadata-implementation:view-services:asset-catalog:asset-catalog-spring')
+include(':open-metadata-implementation:view-services:automated-curation:automated-curation-server')
+include(':open-metadata-implementation:view-services:automated-curation:automated-curation-spring')
 include(':open-metadata-implementation:view-services:collection-manager:collection-manager-server')
 include(':open-metadata-implementation:view-services:collection-manager:collection-manager-spring')
 include(':open-metadata-implementation:view-services:glossary-browser:glossary-browser-server')
