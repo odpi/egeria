@@ -38,7 +38,7 @@ public class GovernanceServerOutTopicListener extends GovernanceServerEventListe
 
 
     /**
-     * Process an event that was published by the Governance Engine OMAS.  The events cover all defined governance engines and actions.
+     * Process an event that was published by the Governance Server OMAS.  The events cover all defined governance engines and actions.
      * This method only needs to pass on the information to those governance engines hosted in this server.
      * Events relating to other governance engines can be ignored.  So can events that are for capabilities not supported by these engine
      * services.
@@ -52,7 +52,28 @@ public class GovernanceServerOutTopicListener extends GovernanceServerEventListe
 
         if (event != null)
         {
-            if (event instanceof GovernanceServiceConfigurationEvent governanceServiceEvent)
+            if (event instanceof EngineActionEvent engineActionEvent)
+            {
+                GovernanceEngineHandler governanceEngineHandler = governanceEngineHandlers.getGovernanceEngineHandler(engineActionEvent.getGovernanceEngineName());
+
+                if (governanceEngineHandler != null)
+                {
+                    try
+                    {
+                        governanceEngineHandler.executeEngineAction(engineActionEvent.getEngineActionGUID());
+                    }
+                    catch (Exception error)
+                    {
+                        auditLog.logException(actionDescription,
+                                              EngineHostServicesAuditCode.ENGINE_ACTION_FAILED.getMessageDefinition(engineActionEvent.getGovernanceEngineName(),
+                                                                                                                    error.getClass().getName(),
+                                                                                                                    error.getMessage()),
+                                              engineActionEvent.toString(),
+                                              error);
+                    }
+                }
+            }
+            else if (event instanceof GovernanceServiceConfigurationEvent governanceServiceEvent)
             {
                 GovernanceEngineHandler governanceEngineHandler = governanceEngineHandlers.getGovernanceEngineHandler(governanceServiceEvent.getGovernanceEngineName());
 
@@ -93,27 +114,6 @@ public class GovernanceServerOutTopicListener extends GovernanceServerEventListe
                                                                                                                            error.getClass().getName(),
                                                                                                                            error.getMessage()),
                                               governanceEngineEvent.toString(),
-                                              error);
-                    }
-                }
-            }
-            else if (event instanceof EngineActionEvent engineActionEvent)
-            {
-                GovernanceEngineHandler governanceEngineHandler = governanceEngineHandlers.getGovernanceEngineHandler(engineActionEvent.getGovernanceEngineName());
-
-                if (governanceEngineHandler != null)
-                {
-                    try
-                    {
-                        governanceEngineHandler.executeEngineAction(engineActionEvent.getEngineActionGUID());
-                    }
-                    catch (Exception error)
-                    {
-                        auditLog.logException(actionDescription,
-                                              EngineHostServicesAuditCode.ENGINE_ACTION_FAILED.getMessageDefinition(engineActionEvent.getGovernanceEngineName(),
-                                                                                                                    error.getClass().getName(),
-                                                                                                                    error.getMessage()),
-                                              engineActionEvent.toString(),
                                               error);
                     }
                 }

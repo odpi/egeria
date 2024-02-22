@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.engineservices.assetanalysis.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.governanceservers.enginehostservices.rest.GovernanceEngineSummariesResponse;
@@ -42,6 +43,11 @@ public class EngineHostServicesResource
      */
     @GetMapping(path = "/governance-engines/{governanceEngineName}/summary")
 
+    @Operation(summary="getGovernanceEngineSummary",
+            description="Retrieve the description and status of the requested governance engine.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-engine/"))
+
     public GovernanceEngineSummaryResponse getGovernanceEngineSummary(@PathVariable String serverName,
                                                                       @PathVariable String userId,
                                                                       @PathVariable String governanceEngineName)
@@ -52,7 +58,7 @@ public class EngineHostServicesResource
 
 
     /**
-     * Return a summary of each of the governance engines running in the Engine Host Server.
+     * Return a summary of each of the governance engines running in the Engine Host.
      *
      * @param serverName engine host server name
      * @param userId calling user
@@ -61,6 +67,11 @@ public class EngineHostServicesResource
      *  UserNotAuthorizedException user not authorized to issue this request or
      */
     @GetMapping(path = "/governance-engines/summary")
+
+    @Operation(summary="getGovernanceEngineSummaries",
+            description="Return a summary of each of the governance engines running in the Engine Host.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-engine/"))
 
     public GovernanceEngineSummariesResponse getGovernanceEngineSummaries(@PathVariable String serverName,
                                                                           @PathVariable String userId)
@@ -80,6 +91,11 @@ public class EngineHostServicesResource
      *  UserNotAuthorizedException user not authorized to issue this request or
      */
     @GetMapping(path = "/engine-service/{serviceURLMarker}/governance-engines/summary")
+
+    @Operation(summary="getGovernanceEngineSummaries",
+            description="Retrieve the description and status of each governance engine assigned to a specific Open Metadata Engine Service (OMES).",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-engine/"))
 
     public GovernanceEngineSummariesResponse getGovernanceEngineSummaries(@PathVariable String serverName,
                                                                           @PathVariable String userId,
@@ -105,6 +121,14 @@ public class EngineHostServicesResource
      *  GovernanceEngineException there was a problem detected by the governance engine.
      */
     @GetMapping(path = "/governance-engines/{governanceEngineName}/refresh-config")
+
+    @Operation(summary="refreshConfig",
+            description="Request that the governance engine refresh its configuration by calling the metadata server. " +
+                    "This request is useful if the metadata server has an outage, particularly while the " +
+                    "governance server is initializing.  This request just ensures that the latest configuration " +
+                    "is in use.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-engine-definition/"))
 
     public  VoidResponse refreshConfig(@PathVariable String                       serverName,
                                        @PathVariable String                       userId,
