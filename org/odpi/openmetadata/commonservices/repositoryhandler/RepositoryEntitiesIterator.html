@@ -85,7 +85,6 @@ loadScripts(document, 'script');</script>
 <div class="block">RepositoryEntitiesIterator is an iterator class for iteratively retrieving entities (possibly restricting
  the type of entities returned).  It is used where the caller needs to filter the results coming from the repository and may need to
  make more than one call to the repository in order to accumulate the number of requested results.
-
  Note this class is intended for a single request's use - it is not thread-safe.</div>
 </section>
 <section class="summary">
@@ -96,7 +95,7 @@ loadScripts(document, 'script');</script>
 <h2>Field Summary</h2>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryIteratorForEntities">Fields inherited from class&nbsp;org.odpi.openmetadata.commonservices.repositoryhandler.<a href="RepositoryIteratorForEntities.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryIteratorForEntities</a></h3>
-<code><a href="RepositoryIteratorForEntities.html#entitiesCache">entitiesCache</a>, <a href="RepositoryIteratorForEntities.html#entityTypeGUID">entityTypeGUID</a>, <a href="RepositoryIteratorForEntities.html#entityTypeName">entityTypeName</a>, <a href="RepositoryIteratorForEntities.html#sequencingPropertyName">sequencingPropertyName</a></code></div>
+<code><a href="RepositoryIteratorForEntities.html#entitiesCache">entitiesCache</a>, <a href="RepositoryIteratorForEntities.html#entityTypeGUID">entityTypeGUID</a>, <a href="RepositoryIteratorForEntities.html#entityTypeName">entityTypeName</a>, <a href="RepositoryIteratorForEntities.html#limitResultsByClassification">limitResultsByClassification</a>, <a href="RepositoryIteratorForEntities.html#limitResultsByStatus">limitResultsByStatus</a>, <a href="RepositoryIteratorForEntities.html#sequencingPropertyName">sequencingPropertyName</a></code></div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryIterator">Fields inherited from class&nbsp;org.odpi.openmetadata.commonservices.repositoryhandler.<a href="RepositoryIterator.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryIterator</a></h3>
 <code><a href="RepositoryIterator.html#effectiveTime">effectiveTime</a>, <a href="RepositoryIterator.html#forDuplicateProcessing">forDuplicateProcessing</a>, <a href="RepositoryIterator.html#forLineage">forLineage</a>, <a href="RepositoryIterator.html#invalidParameterHandler">invalidParameterHandler</a>, <a href="RepositoryIterator.html#MAX_PAGE_SIZE">MAX_PAGE_SIZE</a>, <a href="RepositoryIterator.html#methodName">methodName</a>, <a href="RepositoryIterator.html#pageSize">pageSize</a>, <a href="RepositoryIterator.html#repositoryHandler">repositoryHandler</a>, <a href="RepositoryIterator.html#startingFrom">startingFrom</a>, <a href="RepositoryIterator.html#userId">userId</a></code></div>
@@ -110,12 +109,14 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler,org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,int,int,java.util.Date,java.lang.String)" class="member-name-link">RepositoryEntitiesIterator</a><wbr>(<a href="RepositoryHandler.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandler</a>&nbsp;repositoryHandler,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler,org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.List,boolean,boolean,int,int,java.util.Date,java.lang.String)" class="member-name-link">RepositoryEntitiesIterator</a><wbr>(<a href="RepositoryHandler.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandler</a>&nbsp;repositoryHandler,
  <a href="../ffdc/InvalidParameterHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">InvalidParameterHandler</a>&nbsp;invalidParameterHandler,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sequencingPropertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;&nbsp;limitResultsByStatus,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;limitResultsByClassification,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  int&nbsp;startingFrom,
@@ -165,7 +166,7 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler,org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,int,int,java.util.Date,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler,org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.List,boolean,boolean,int,int,java.util.Date,java.lang.String)">
 <h3>RepositoryEntitiesIterator</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">RepositoryEntitiesIterator</span><wbr><span class="parameters">(<a href="RepositoryHandler.html" title="class in org.odpi.openmetadata.commonservices.repositoryhandler">RepositoryHandler</a>&nbsp;repositoryHandler,
  <a href="../ffdc/InvalidParameterHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">InvalidParameterHandler</a>&nbsp;invalidParameterHandler,
@@ -173,6 +174,8 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sequencingPropertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceStatus.html" title="enum class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceStatus</a>&gt;&nbsp;limitResultsByStatus,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;limitResultsByClassification,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  int&nbsp;startingFrom,
@@ -189,6 +192,8 @@ loadScripts(document, 'script');</script>
 <dd><code>entityTypeGUID</code> - identifier for the relationship to follow</dd>
 <dd><code>entityTypeName</code> - type name for the relationship to follow</dd>
 <dd><code>sequencingPropertyName</code> - name of property used to sequence the results - null means no sequencing</dd>
+<dd><code>limitResultsByStatus</code> - only return elements that have the requested status (null means all statuses</dd>
+<dd><code>limitResultsByClassification</code> - only return elements that have the requested classification(s)</dd>
 <dd><code>forLineage</code> - the request is to support lineage retrieval this means entities with the Memento classification can be returned</dd>
 <dd><code>forDuplicateProcessing</code> - the request is for duplicate processing and so must not deduplicate</dd>
 <dd><code>startingFrom</code> - initial position in the stored list.</dd>

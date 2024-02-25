@@ -160,7 +160,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/AssetCatalogSupportedTypes.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetCatalogSupportedTypes</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSupportedTypes(java.lang.String)" class="member-name-link">getSupportedTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the list with supported types for search, including the subtypes supported</div>
+<div class="block">Returns the list with supported types for search, including the subtypes supported.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/LineageTypesResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageTypesResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypes(java.lang.String)" class="member-name-link">getTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
@@ -184,7 +184,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/AssetListResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetListResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#searchAssets(java.lang.String,java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder,boolean,boolean,java.lang.Integer,java.lang.Integer)" class="member-name-link">searchAssets</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchCriteria,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;types,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;typeNames,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sequencingProperty,
  <a href="../../../frameworks/governanceaction/search/SequencingOrder.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">SequencingOrder</a>&nbsp;sequencingOrder,
  boolean&nbsp;caseSensitive,
@@ -250,11 +250,28 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="getSupportedTypes(java.lang.String)">
+<h3>getSupportedTypes</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/AssetCatalogSupportedTypes.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetCatalogSupportedTypes</a></span>&nbsp;<span class="element-name">getSupportedTypes</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
+<div class="block">Returns the list with supported types for search, including the subtypes supported.
+ The list is deduplicated.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server to route the request to</dd>
+<dt>Returns:</dt>
+<dd>the supported types from Asset Consumer OMAS or
+ PropertyServerException if a configuration on the backend
+ InvalidParameterException if parameter validation fails
+ UserNotAuthorizedException security access problem</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="searchAssets(java.lang.String,java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder,boolean,boolean,java.lang.Integer,java.lang.Integer)">
 <h3>searchAssets</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/AssetListResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetListResponse</a></span>&nbsp;<span class="element-name">searchAssets</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchCriteria,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;types,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;typeNames,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sequencingProperty,
  <a href="../../../frameworks/governanceaction/search/SequencingOrder.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">SequencingOrder</a>&nbsp;sequencingOrder,
  boolean&nbsp;caseSensitive,
@@ -266,7 +283,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server to route the request to</dd>
 <dd><code>searchCriteria</code> - the query parameter with the search phrase</dd>
-<dd><code>types</code> - OM types list to search for</dd>
+<dd><code>typeNames</code> - OM types list to search for</dd>
 <dd><code>sequencingProperty</code> - name of the property based on which to sort the result</dd>
 <dd><code>sequencingOrder</code> - PROPERTY_ASCENDING or PROPERTY_DESCENDING</dd>
 <dd><code>caseSensitive</code> - set case sensitive flag</dd>
@@ -316,22 +333,6 @@ loadScripts(document, 'script');</script>
  PropertyServerException if a configuration on the backend
  UserNotAuthorizedException security access problem
  InvalidParameterException if parameter validation fails</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getSupportedTypes(java.lang.String)">
-<h3>getSupportedTypes</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/AssetCatalogSupportedTypes.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetCatalogSupportedTypes</a></span>&nbsp;<span class="element-name">getSupportedTypes</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
-<div class="block">Returns the list with supported types for search, including the subtypes supported</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server to route the request to</dd>
-<dt>Returns:</dt>
-<dd>the supported types from Asset Consumer OMAS or
- PropertyServerException if a configuration on the backend
- InvalidParameterException if parameter validation fails
- UserNotAuthorizedException security access problem</dd>
 </dl>
 </section>
 </li>

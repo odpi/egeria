@@ -110,11 +110,10 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler,org.odpi.openmetadata.commonservices.generichandlers.EngineActionHandler,org.odpi.openmetadata.accessservices.governanceengine.outtopic.GovernanceEngineOutTopicPublisher,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">GovernanceEngineOMRSTopicListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler,org.odpi.openmetadata.accessservices.governanceengine.outtopic.GovernanceEngineOutTopicPublisher,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">GovernanceEngineOMRSTopicListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../handlers/MetadataElementHandler.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.handlers">MetadataElementHandler</a>&lt;<a href="../../../frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&gt;&nbsp;metadataElementHandler,
- <a href="../../../commonservices/generichandlers/EngineActionHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">EngineActionHandler</a>&lt;<a href="../metadataelements/GovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceActionElement</a>&gt;&nbsp;engineActionHandler,
+ <a href="../../../frameworkservices/gaf/handlers/MetadataElementHandler.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.handlers">MetadataElementHandler</a>&lt;<a href="../../../frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&gt;&nbsp;metadataElementHandler,
  <a href="GovernanceEngineOutTopicPublisher.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.outtopic">GovernanceEngineOutTopicPublisher</a>&nbsp;eventPublisher,
  <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
@@ -464,13 +463,12 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.governanceengine.handlers.MetadataElementHandler,org.odpi.openmetadata.commonservices.generichandlers.EngineActionHandler,org.odpi.openmetadata.accessservices.governanceengine.outtopic.GovernanceEngineOutTopicPublisher,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler,org.odpi.openmetadata.accessservices.governanceengine.outtopic.GovernanceEngineOutTopicPublisher,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>GovernanceEngineOMRSTopicListener</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">GovernanceEngineOMRSTopicListener</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../handlers/MetadataElementHandler.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.handlers">MetadataElementHandler</a>&lt;<a href="../../../frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&gt;&nbsp;metadataElementHandler,
- <a href="../../../commonservices/generichandlers/EngineActionHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">EngineActionHandler</a>&lt;<a href="../metadataelements/GovernanceActionElement.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.metadataelements">GovernanceActionElement</a>&gt;&nbsp;engineActionHandler,
+ <a href="../../../frameworkservices/gaf/handlers/MetadataElementHandler.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.handlers">MetadataElementHandler</a>&lt;<a href="../../../frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a>&gt;&nbsp;metadataElementHandler,
  <a href="GovernanceEngineOutTopicPublisher.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.outtopic">GovernanceEngineOutTopicPublisher</a>&nbsp;eventPublisher,
  <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a>&nbsp;repositoryHelper,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span></div>
@@ -481,7 +479,6 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of this server</dd>
 <dd><code>userId</code> - local server userId for issuing requests to the repository services</dd>
 <dd><code>metadataElementHandler</code> - handler for working with GAF objects</dd>
-<dd><code>engineActionHandler</code> - handler for working with governance actions</dd>
 <dd><code>eventPublisher</code> - this is the out topic publisher.</dd>
 <dd><code>repositoryHelper</code> - repository helper</dd>
 <dd><code>auditLog</code> - logging destination</dd>
@@ -859,7 +856,6 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;originatorOrganizationName,
  <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;entity)</span></div>
 <div class="block">An existing entity has been deleted and purged in a single action.
-
  All relationships to the entity are also deleted and purged and will no longer be usable.  These deleted relationships
  will be notified through separate events.</div>
 <dl class="notes">

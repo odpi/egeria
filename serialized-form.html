@@ -629,117 +629,6 @@ loadScripts(document, 'script');</script>
 </li>
 <li>
 <section class="serialized-package-container">
-<h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/accessservices/assetlineage/event/package-summary.html">org.odpi.openmetadata.accessservices.assetlineage.event</a></h2>
-<ul class="block-list">
-<li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/assetlineage/event/AssetLineageEventHeader.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.event">org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventHeader</a></h3>
-<div class="type-signature">class AssetLineageEventHeader extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>assetLineageEventType</h5>
-<pre><a href="org/odpi/openmetadata/accessservices/assetlineage/event/AssetLineageEventType.html" title="enum class in org.odpi.openmetadata.accessservices.assetlineage.event">AssetLineageEventType</a> assetLineageEventType</pre>
-</li>
-<li class="block-list">
-<h5>eventVersionId</h5>
-<pre>long eventVersionId</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/assetlineage/event/LineageEntityEvent.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.event">org.odpi.openmetadata.accessservices.assetlineage.event.LineageEntityEvent</a></h3>
-<div class="type-signature">class LineageEntityEvent extends <a href="org/odpi/openmetadata/accessservices/assetlineage/event/AssetLineageEventHeader.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.event">AssetLineageEventHeader</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>lineageEntity</h5>
-<pre><a href="org/odpi/openmetadata/accessservices/assetlineage/model/LineageEntity.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.model">LineageEntity</a> lineageEntity</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/assetlineage/event/LineageRelationshipEvent.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.event">org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipEvent</a></h3>
-<div class="type-signature">class LineageRelationshipEvent extends <a href="org/odpi/openmetadata/accessservices/assetlineage/event/AssetLineageEventHeader.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.event">AssetLineageEventHeader</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>lineageRelationship</h5>
-<pre><a href="org/odpi/openmetadata/accessservices/assetlineage/model/LineageRelationship.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.model">LineageRelationship</a> lineageRelationship</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/assetlineage/event/LineageRelationshipsEvent.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.event">org.odpi.openmetadata.accessservices.assetlineage.event.LineageRelationshipsEvent</a></h3>
-<div class="type-signature">class LineageRelationshipsEvent extends <a href="org/odpi/openmetadata/accessservices/assetlineage/event/AssetLineageEventHeader.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.event">AssetLineageEventHeader</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>relationshipsContext</h5>
-<pre><a href="org/odpi/openmetadata/accessservices/assetlineage/model/RelationshipsContext.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.model">RelationshipsContext</a> relationshipsContext</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.assetlineage.event.LineageSyncEvent">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/assetlineage/event/LineageSyncEvent.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.event">org.odpi.openmetadata.accessservices.assetlineage.event.LineageSyncEvent</a></h3>
-<div class="type-signature">class LineageSyncEvent extends <a href="org/odpi/openmetadata/accessservices/assetlineage/event/AssetLineageEventHeader.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.event">AssetLineageEventHeader</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>publishSummary</h5>
-<pre><a href="org/odpi/openmetadata/accessservices/assetlineage/model/LineagePublishSummary.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.model">LineagePublishSummary</a> publishSummary</pre>
-<div class="block">LineagePublishSummary is used to describe summary as result of AssetLineage lineagePublish activity that completed.</div>
-</li>
-<li class="block-list">
-<h5>syncUpdateContext</h5>
-<pre><a href="org/odpi/openmetadata/accessservices/assetlineage/model/LineageSyncUpdateContext.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.model">LineageSyncUpdateContext</a> syncUpdateContext</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
-<section class="serialized-package-container">
 <h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/accessservices/assetlineage/ffdc/exception/package-summary.html">org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception</a></h2>
 <ul class="block-list">
 <li>
@@ -750,19 +639,6 @@ loadScripts(document, 'script');</script>
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
 </dl>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
-<section class="serialized-package-container">
-<h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/accessservices/assetlineage/model/package-summary.html">org.odpi.openmetadata.accessservices.assetlineage.model</a></h2>
-<ul class="block-list">
-<li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.assetlineage.model.GenericStub">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/assetlineage/model/GenericStub.html" title="class in org.odpi.openmetadata.accessservices.assetlineage.model">org.odpi.openmetadata.accessservices.assetlineage.model.GenericStub</a></h3>
-<div class="type-signature">class GenericStub extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 </section>
 </li>
 </ul>
@@ -9947,29 +9823,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.discoveryengine.rest.DeleteRequestBody">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/discoveryengine/rest/DeleteRequestBody.html" title="class in org.odpi.openmetadata.accessservices.discoveryengine.rest">org.odpi.openmetadata.accessservices.discoveryengine.rest.DeleteRequestBody</a></h3>
-<div class="type-signature">class DeleteRequestBody extends <a href="org/odpi/openmetadata/accessservices/discoveryengine/rest/ODFOMASAPIRequestBody.html" title="class in org.odpi.openmetadata.accessservices.discoveryengine.rest">ODFOMASAPIRequestBody</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<dl class="name-value">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>qualifiedName</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> qualifiedName</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
 <section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.discoveryengine.rest.DiscoveryAnalysisReportRequestBody">
 <h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/discoveryengine/rest/DiscoveryAnalysisReportRequestBody.html" title="class in org.odpi.openmetadata.accessservices.discoveryengine.rest">org.odpi.openmetadata.accessservices.discoveryengine.rest.DiscoveryAnalysisReportRequestBody</a></h3>
 <div class="type-signature">class DiscoveryAnalysisReportRequestBody extends <a href="org/odpi/openmetadata/accessservices/discoveryengine/rest/ReferenceableRequestBody.html" title="class in org.odpi.openmetadata.accessservices.discoveryengine.rest">ReferenceableRequestBody</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
@@ -10311,39 +10164,6 @@ loadScripts(document, 'script');</script>
 <h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/accessservices/governanceengine/events/package-summary.html">org.odpi.openmetadata.accessservices.governanceengine.events</a></h2>
 <ul class="block-list">
 <li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.governanceengine.events.EngineActionEvent">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/governanceengine/events/EngineActionEvent.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.events">org.odpi.openmetadata.accessservices.governanceengine.events.EngineActionEvent</a></h3>
-<div class="type-signature">class EngineActionEvent extends <a href="org/odpi/openmetadata/accessservices/governanceengine/events/GovernanceEngineEvent.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.events">GovernanceEngineEvent</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<dl class="name-value">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>engineActionGUID</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> engineActionGUID</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.governanceengine.events.GovernanceEngineConfigurationEvent">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/governanceengine/events/GovernanceEngineConfigurationEvent.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.events">org.odpi.openmetadata.accessservices.governanceengine.events.GovernanceEngineConfigurationEvent</a></h3>
-<div class="type-signature">class GovernanceEngineConfigurationEvent extends <a href="org/odpi/openmetadata/accessservices/governanceengine/events/GovernanceEngineEvent.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.events">GovernanceEngineEvent</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<dl class="name-value">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.governanceengine.events.GovernanceEngineEvent">
 <h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/governanceengine/events/GovernanceEngineEvent.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.events">org.odpi.openmetadata.accessservices.governanceengine.events.GovernanceEngineEvent</a></h3>
 <div class="type-signature">class GovernanceEngineEvent extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
@@ -10371,37 +10191,6 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>governanceEngineName</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> governanceEngineName</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.governanceengine.events.GovernanceServiceConfigurationEvent">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/governanceengine/events/GovernanceServiceConfigurationEvent.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.events">org.odpi.openmetadata.accessservices.governanceengine.events.GovernanceServiceConfigurationEvent</a></h3>
-<div class="type-signature">class GovernanceServiceConfigurationEvent extends <a href="org/odpi/openmetadata/accessservices/governanceengine/events/GovernanceEngineEvent.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.events">GovernanceEngineEvent</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<dl class="name-value">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>registeredGovernanceServiceGUID</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> registeredGovernanceServiceGUID</pre>
-</li>
-<li class="block-list">
-<h5>requestParameters</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; requestParameters</pre>
-</li>
-<li class="block-list">
-<h5>requestType</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> requestType</pre>
 </li>
 </ul>
 </section>
@@ -10790,29 +10579,6 @@ loadScripts(document, 'script');</script>
 <h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/accessservices/governanceengine/rest/package-summary.html">org.odpi.openmetadata.accessservices.governanceengine.rest</a></h2>
 <ul class="block-list">
 <li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.governanceengine.rest.DeleteRequestBody">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/governanceengine/rest/DeleteRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">org.odpi.openmetadata.accessservices.governanceengine.rest.DeleteRequestBody</a></h3>
-<div class="type-signature">class DeleteRequestBody extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<dl class="name-value">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>qualifiedName</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> qualifiedName</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
 <section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.governanceengine.rest.FindRequestBody">
 <h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/governanceengine/rest/FindRequestBody.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.rest">org.odpi.openmetadata.accessservices.governanceengine.rest.FindRequestBody</a></h3>
 <div class="type-signature">class FindRequestBody extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
@@ -11034,6 +10800,7 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>status</h5>
 <pre><a href="org/odpi/openmetadata/frameworks/governanceaction/properties/GovernanceActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionStatus</a> status</pre>
+<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
 </li>
 </ul>
 </section>
@@ -14166,6 +13933,175 @@ loadScripts(document, 'script');</script>
 </li>
 <li>
 <section class="serialized-package-container">
+<h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/accessservices/governanceserver/events/package-summary.html">org.odpi.openmetadata.accessservices.governanceserver.events</a></h2>
+<ul class="block-list">
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.governanceserver.events.EngineActionEvent">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/governanceserver/events/EngineActionEvent.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.events">org.odpi.openmetadata.accessservices.governanceserver.events.EngineActionEvent</a></h3>
+<div class="type-signature">class EngineActionEvent extends <a href="org/odpi/openmetadata/accessservices/governanceserver/events/GovernanceEngineConfigurationEvent.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.events">GovernanceEngineConfigurationEvent</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>engineActionGUID</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> engineActionGUID</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.governanceserver.events.GovernanceEngineConfigurationEvent">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/governanceserver/events/GovernanceEngineConfigurationEvent.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.events">org.odpi.openmetadata.accessservices.governanceserver.events.GovernanceEngineConfigurationEvent</a></h3>
+<div class="type-signature">class GovernanceEngineConfigurationEvent extends <a href="org/odpi/openmetadata/accessservices/governanceserver/events/GovernanceServerEvent.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.events">GovernanceServerEvent</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>governanceEngineGUID</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> governanceEngineGUID</pre>
+</li>
+<li class="block-list">
+<h5>governanceEngineName</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> governanceEngineName</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.governanceserver.events.GovernanceServerEvent">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/governanceserver/events/GovernanceServerEvent.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.events">org.odpi.openmetadata.accessservices.governanceserver.events.GovernanceServerEvent</a></h3>
+<div class="type-signature">class GovernanceServerEvent extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>eventType</h5>
+<pre><a href="org/odpi/openmetadata/accessservices/governanceserver/events/GovernanceServerEventType.html" title="enum class in org.odpi.openmetadata.accessservices.governanceserver.events">GovernanceServerEventType</a> eventType</pre>
+</li>
+<li class="block-list">
+<h5>eventVersionId</h5>
+<pre>long eventVersionId</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.governanceserver.events.GovernanceServiceConfigurationEvent">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/governanceserver/events/GovernanceServiceConfigurationEvent.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.events">org.odpi.openmetadata.accessservices.governanceserver.events.GovernanceServiceConfigurationEvent</a></h3>
+<div class="type-signature">class GovernanceServiceConfigurationEvent extends <a href="org/odpi/openmetadata/accessservices/governanceserver/events/GovernanceEngineConfigurationEvent.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.events">GovernanceEngineConfigurationEvent</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>registeredGovernanceServiceGUID</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> registeredGovernanceServiceGUID</pre>
+</li>
+<li class="block-list">
+<h5>requestParameters</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; requestParameters</pre>
+</li>
+<li class="block-list">
+<h5>requestType</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> requestType</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.governanceserver.events.IntegrationConnectorConfigurationEvent">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/governanceserver/events/IntegrationConnectorConfigurationEvent.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.events">org.odpi.openmetadata.accessservices.governanceserver.events.IntegrationConnectorConfigurationEvent</a></h3>
+<div class="type-signature">class IntegrationConnectorConfigurationEvent extends <a href="org/odpi/openmetadata/accessservices/governanceserver/events/GovernanceServerEvent.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.events">GovernanceServerEvent</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>integrationConnectorGUID</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> integrationConnectorGUID</pre>
+</li>
+<li class="block-list">
+<h5>integrationConnectorName</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> integrationConnectorName</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.governanceserver.events.IntegrationGroupConfigurationEvent">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/accessservices/governanceserver/events/IntegrationGroupConfigurationEvent.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.events">org.odpi.openmetadata.accessservices.governanceserver.events.IntegrationGroupConfigurationEvent</a></h3>
+<div class="type-signature">class IntegrationGroupConfigurationEvent extends <a href="org/odpi/openmetadata/accessservices/governanceserver/events/GovernanceServerEvent.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.events">GovernanceServerEvent</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>integrationGroupGUID</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> integrationGroupGUID</pre>
+</li>
+<li class="block-list">
+<h5>integrationGroupName</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> integrationGroupName</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-package-container">
 <h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/accessservices/itinfrastructure/events/package-summary.html">org.odpi.openmetadata.accessservices.itinfrastructure.events</a></h2>
 <ul class="block-list">
 <li>
@@ -15833,6 +15769,10 @@ loadScripts(document, 'script');</script>
 <h4>Serialized Fields</h4>
 <ul class="block-list">
 <li class="block-list">
+<h5>deployedImplementationType</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> deployedImplementationType</pre>
+</li>
+<li class="block-list">
 <h5>description</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> description</pre>
 </li>
@@ -15847,10 +15787,6 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>source</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> source</pre>
-</li>
-<li class="block-list">
-<h5>typeDescription</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> typeDescription</pre>
 </li>
 <li class="block-list">
 <h5>version</h5>
@@ -18796,6 +18732,10 @@ loadScripts(document, 'script');</script>
 <h4>Serialized Fields</h4>
 <ul class="block-list">
 <li class="block-list">
+<h5>deployedImplementationType</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> deployedImplementationType</pre>
+</li>
+<li class="block-list">
 <h5>description</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> description</pre>
 </li>
@@ -18810,10 +18750,6 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>source</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> source</pre>
-</li>
-<li class="block-list">
-<h5>typeDescription</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> typeDescription</pre>
 </li>
 <li class="block-list">
 <h5>version</h5>
@@ -20354,6 +20290,10 @@ loadScripts(document, 'script');</script>
 <section class="serialized-class-details" id="org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException">
 <h3>Exception&nbsp;<a href="org/odpi/openmetadata/accessservices/subjectarea/ffdc/exceptions/InvalidParameterException.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions">org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException</a></h3>
 <div class="type-signature">class InvalidParameterException extends <a href="org/odpi/openmetadata/accessservices/subjectarea/ffdc/exceptions/SubjectAreaCheckedException.html" title="class in org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions">SubjectAreaCheckedException</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
 <ul class="block-list">
 <li>
 <section class="detail">
@@ -22536,12 +22476,33 @@ loadScripts(document, 'script');</script>
 </li>
 <li>
 <section class="serialized-package-container">
+<h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/adapters/connectors/apacheatlas/resource/ffdc/package-summary.html">org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ffdc</a></h2>
+<ul class="block-list">
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ffdc.NameConflictException">
+<h3>Exception&nbsp;<a href="org/odpi/openmetadata/adapters/connectors/apacheatlas/resource/ffdc/NameConflictException.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ffdc">org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ffdc.NameConflictException</a></h3>
+<div class="type-signature">class NameConflictException extends <a href="org/odpi/openmetadata/frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-package-container">
 <h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/adapters/connectors/datastore/basicfile/ffdc/exception/package-summary.html">org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception</a></h2>
 <ul class="block-list">
 <li>
 <section class="serialized-class-details" id="org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileException">
 <h3>Exception&nbsp;<a href="org/odpi/openmetadata/adapters/connectors/datastore/basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileException</a></h3>
 <div class="type-signature">class FileException extends <a href="org/odpi/openmetadata/frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
 <ul class="block-list">
 <li>
 <section class="detail">
@@ -22569,6 +22530,10 @@ loadScripts(document, 'script');</script>
 <section class="serialized-class-details" id="org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.exception.FileReadException">
 <h3>Exception&nbsp;<a href="org/odpi/openmetadata/adapters/connectors/datastore/csvfile/ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.exception">org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.exception.FileReadException</a></h3>
 <div class="type-signature">class FileReadException extends <a href="org/odpi/openmetadata/frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
 <ul class="block-list">
 <li>
 <section class="detail">
@@ -22642,23 +22607,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 </ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
-<section class="serialized-package-container">
-<h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/adapters/connectors/resource/apacheatlas/ffdc/package-summary.html">org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ffdc</a></h2>
-<ul class="block-list">
-<li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ffdc.NameConflictException">
-<h3>Exception&nbsp;<a href="org/odpi/openmetadata/adapters/connectors/resource/apacheatlas/ffdc/NameConflictException.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ffdc">org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ffdc.NameConflictException</a></h3>
-<div class="type-signature">class NameConflictException extends <a href="org/odpi/openmetadata/frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<dl class="name-value">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
 </section>
 </li>
 </ul>
@@ -24323,6 +24271,36 @@ loadScripts(document, 'script');</script>
 </li>
 <li>
 <section class="serialized-package-container">
+<h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/commonservices/ffdc/rest/package-summary.html">org.odpi.openmetadata.commonservices.ffdc.rest</a></h2>
+<ul class="block-list">
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/commonservices/ffdc/rest/DeleteRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody</a></h3>
+<div class="type-signature">class DeleteRequestBody extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>qualifiedName</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> qualifiedName</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-package-container">
 <h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/commonservices/multitenant/ffdc/exceptions/package-summary.html">org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions</a></h2>
 <ul class="block-list">
 <li>
@@ -25866,26 +25844,27 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>cachedElementList</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementBase</a>&gt; cachedElementList</pre>
+<div class="block">Elements retrieved from the repository</div>
 </li>
 <li class="block-list">
 <h5>cachedElementPointer</h5>
 <pre>int cachedElementPointer</pre>
+<div class="block">Pointer in the cached list to the next item to return.</div>
 </li>
 <li class="block-list">
 <h5>cachedElementStart</h5>
 <pre>int cachedElementStart</pre>
+<div class="block">StartFrom used on calls to the repository</div>
 </li>
 <li class="block-list">
 <h5>iterator</h5>
 <pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/PropertyIteratorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">PropertyIteratorBase</a> iterator</pre>
+<div class="block">Implementation that retrieves values from the repository.</div>
 </li>
 <li class="block-list">
 <h5>maxCacheSize</h5>
 <pre>int maxCacheSize</pre>
-</li>
-<li class="block-list">
-<h5>totalElementCount</h5>
-<pre>int totalElementCount</pre>
+<div class="block">Maximum that can be returned on each retrieve</div>
 </li>
 </ul>
 </section>
@@ -29189,16 +29168,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceActionEngineException">
-<h3>Exception&nbsp;<a href="org/odpi/openmetadata/frameworks/governanceaction/ffdc/GovernanceActionEngineException.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceActionEngineException</a></h3>
-<div class="type-signature">class GovernanceActionEngineException extends <a href="org/odpi/openmetadata/frameworks/connectors/ffdc/OCFCheckedExceptionBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFCheckedExceptionBase</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<dl class="name-value">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException">
 <h3>Exception&nbsp;<a href="org/odpi/openmetadata/frameworks/governanceaction/ffdc/GovernanceServiceException.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.ffdc">org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException</a></h3>
 <div class="type-signature">class GovernanceServiceException extends <a href="org/odpi/openmetadata/frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
@@ -29215,45 +29184,6 @@ loadScripts(document, 'script');</script>
 <section class="serialized-package-container">
 <h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/package-summary.html">org.odpi.openmetadata.frameworks.governanceaction.properties</a></h2>
 <ul class="block-list">
-<li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/ActionTargetElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement</a></h3>
-<div class="type-signature">class ActionTargetElement extends <a href="org/odpi/openmetadata/frameworks/governanceaction/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NewActionTarget</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<dl class="name-value">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>completionDate</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a> completionDate</pre>
-</li>
-<li class="block-list">
-<h5>completionMessage</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> completionMessage</pre>
-</li>
-<li class="block-list">
-<h5>startDate</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a> startDate</pre>
-</li>
-<li class="block-list">
-<h5>status</h5>
-<pre><a href="org/odpi/openmetadata/frameworks/governanceaction/properties/EngineActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionStatus</a> status</pre>
-</li>
-<li class="block-list">
-<h5>targetElement</h5>
-<pre><a href="org/odpi/openmetadata/frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">OpenMetadataElement</a> targetElement</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
 <li>
 <section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.governanceaction.properties.ArchiveProperties">
 <h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/ArchiveProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">org.odpi.openmetadata.frameworks.governanceaction.properties.ArchiveProperties</a></h3>
@@ -29321,129 +29251,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/EngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement</a></h3>
-<div class="type-signature">class EngineActionElement extends <a href="org/odpi/openmetadata/frameworks/governanceaction/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ReferenceableProperties</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<dl class="name-value">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>actionStatus</h5>
-<pre><a href="org/odpi/openmetadata/frameworks/governanceaction/properties/EngineActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionStatus</a> actionStatus</pre>
-</li>
-<li class="block-list">
-<h5>actionTargetElements</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/ActionTargetElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ActionTargetElement</a>&gt; actionTargetElements</pre>
-</li>
-<li class="block-list">
-<h5>completionGuards</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; completionGuards</pre>
-</li>
-<li class="block-list">
-<h5>completionMessage</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> completionMessage</pre>
-</li>
-<li class="block-list">
-<h5>completionTime</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a> completionTime</pre>
-</li>
-<li class="block-list">
-<h5>description</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> description</pre>
-</li>
-<li class="block-list">
-<h5>displayName</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> displayName</pre>
-</li>
-<li class="block-list">
-<h5>domainIdentifier</h5>
-<pre>int domainIdentifier</pre>
-</li>
-<li class="block-list">
-<h5>elementHeader</h5>
-<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a> elementHeader</pre>
-</li>
-<li class="block-list">
-<h5>followOnActions</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/RelatedEngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedEngineActionElement</a>&gt; followOnActions</pre>
-</li>
-<li class="block-list">
-<h5>governanceActionTypeGUID</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> governanceActionTypeGUID</pre>
-</li>
-<li class="block-list">
-<h5>governanceActionTypeName</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> governanceActionTypeName</pre>
-</li>
-<li class="block-list">
-<h5>governanceEngineGUID</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> governanceEngineGUID</pre>
-</li>
-<li class="block-list">
-<h5>governanceEngineName</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> governanceEngineName</pre>
-</li>
-<li class="block-list">
-<h5>mandatoryGuards</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; mandatoryGuards</pre>
-</li>
-<li class="block-list">
-<h5>previousActions</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/RelatedEngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RelatedEngineActionElement</a>&gt; previousActions</pre>
-</li>
-<li class="block-list">
-<h5>processingEngineUserId</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> processingEngineUserId</pre>
-</li>
-<li class="block-list">
-<h5>processName</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> processName</pre>
-</li>
-<li class="block-list">
-<h5>processStepGUID</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> processStepGUID</pre>
-</li>
-<li class="block-list">
-<h5>processStepName</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> processStepName</pre>
-</li>
-<li class="block-list">
-<h5>receivedGuards</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; receivedGuards</pre>
-</li>
-<li class="block-list">
-<h5>requestedTime</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a> requestedTime</pre>
-</li>
-<li class="block-list">
-<h5>requestParameters</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; requestParameters</pre>
-</li>
-<li class="block-list">
-<h5>requestSourceElements</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/RequestSourceElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RequestSourceElement</a>&gt; requestSourceElements</pre>
-</li>
-<li class="block-list">
-<h5>requestType</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> requestType</pre>
-</li>
-<li class="block-list">
-<h5>startTime</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a> startTime</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
 <section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessElement">
 <h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/GovernanceActionProcessElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessElement</a></h3>
 <div class="type-signature">class GovernanceActionProcessElement extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
@@ -29463,65 +29270,6 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>processProperties</h5>
 <pre><a href="org/odpi/openmetadata/frameworks/governanceaction/properties/GovernanceActionProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessProperties</a> processProperties</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/GovernanceActionProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties</a></h3>
-<div class="type-signature">class GovernanceActionProcessProperties extends <a href="org/odpi/openmetadata/frameworks/governanceaction/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ReferenceableProperties</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<dl class="name-value">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>abbreviation</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> abbreviation</pre>
-</li>
-<li class="block-list">
-<h5>description</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> description</pre>
-</li>
-<li class="block-list">
-<h5>displayName</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> displayName</pre>
-</li>
-<li class="block-list">
-<h5>formula</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> formula</pre>
-</li>
-<li class="block-list">
-<h5>implementationLanguage</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> implementationLanguage</pre>
-</li>
-<li class="block-list">
-<h5>summary</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> summary</pre>
-</li>
-<li class="block-list">
-<h5>technicalDescription</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> technicalDescription</pre>
-</li>
-<li class="block-list">
-<h5>technicalName</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> technicalName</pre>
-</li>
-<li class="block-list">
-<h5>usage</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> usage</pre>
-</li>
-<li class="block-list">
-<h5>versionIdentifier</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> versionIdentifier</pre>
 </li>
 </ul>
 </section>
@@ -29557,29 +29305,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/GovernanceActionProcessStepProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties</a></h3>
-<div class="type-signature">class GovernanceActionProcessStepProperties extends <a href="org/odpi/openmetadata/frameworks/governanceaction/properties/GovernanceActionTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionTypeProperties</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<dl class="name-value">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>ignoreMultipleTriggers</h5>
-<pre>boolean ignoreMultipleTriggers</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
 <section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionTypeElement">
 <h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/GovernanceActionTypeElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionTypeElement</a></h3>
 <div class="type-signature">class GovernanceActionTypeElement extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
@@ -29607,9 +29332,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionTypeProperties">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/GovernanceActionTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionTypeProperties</a></h3>
-<div class="type-signature">class GovernanceActionTypeProperties extends <a href="org/odpi/openmetadata/frameworks/governanceaction/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">ReferenceableProperties</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceEngineElement">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/GovernanceEngineElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceEngineElement</a></h3>
+<div class="type-signature">class GovernanceEngineElement extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 <dl class="name-value">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -29620,36 +29345,39 @@ loadScripts(document, 'script');</script>
 <h4>Serialized Fields</h4>
 <ul class="block-list">
 <li class="block-list">
-<h5>description</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> description</pre>
+<h5>elementHeader</h5>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a> elementHeader</pre>
 </li>
 <li class="block-list">
-<h5>displayName</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> displayName</pre>
+<h5>properties</h5>
+<pre><a href="org/odpi/openmetadata/frameworks/governanceaction/properties/GovernanceEngineProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceEngineProperties</a> properties</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceServiceElement">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/GovernanceServiceElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceServiceElement</a></h3>
+<div class="type-signature">class GovernanceServiceElement extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>elementHeader</h5>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a> elementHeader</pre>
 </li>
 <li class="block-list">
-<h5>domainIdentifier</h5>
-<pre>int domainIdentifier</pre>
-</li>
-<li class="block-list">
-<h5>governanceEngineGUID</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> governanceEngineGUID</pre>
-</li>
-<li class="block-list">
-<h5>requestParameters</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; requestParameters</pre>
-</li>
-<li class="block-list">
-<h5>requestType</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> requestType</pre>
-</li>
-<li class="block-list">
-<h5>supportedGuards</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; supportedGuards</pre>
-</li>
-<li class="block-list">
-<h5>waitTime</h5>
-<pre>int waitTime</pre>
+<h5>properties</h5>
+<pre><a href="org/odpi/openmetadata/frameworks/governanceaction/properties/GovernanceServiceProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceServiceProperties</a> properties</pre>
 </li>
 </ul>
 </section>
@@ -29712,33 +29440,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget</a></h3>
-<div class="type-signature">class NewActionTarget extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<dl class="name-value">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>actionTargetGUID</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> actionTargetGUID</pre>
-</li>
-<li class="block-list">
-<h5>actionTargetName</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> actionTargetName</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
 <section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement">
 <h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/OpenMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement</a></h3>
 <div class="type-signature">class OpenMetadataElement extends <a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementControlHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementControlHeader</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
@@ -29778,9 +29479,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.governanceaction.properties.ReferenceableProperties">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">org.odpi.openmetadata.frameworks.governanceaction.properties.ReferenceableProperties</a></h3>
-<div class="type-signature">class ReferenceableProperties extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredGovernanceServiceElement">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/governanceaction/properties/RegisteredGovernanceServiceElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredGovernanceServiceElement</a></h3>
+<div class="type-signature">class RegisteredGovernanceServiceElement extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 <dl class="name-value">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -29791,12 +29492,12 @@ loadScripts(document, 'script');</script>
 <h4>Serialized Fields</h4>
 <ul class="block-list">
 <li class="block-list">
-<h5>additionalProperties</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; additionalProperties</pre>
+<h5>elementHeader</h5>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a> elementHeader</pre>
 </li>
 <li class="block-list">
-<h5>qualifiedName</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> qualifiedName</pre>
+<h5>properties</h5>
+<pre><a href="org/odpi/openmetadata/frameworks/governanceaction/properties/RegisteredGovernanceService.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">RegisteredGovernanceService</a> properties</pre>
 </li>
 </ul>
 </section>
@@ -30035,6 +29736,64 @@ loadScripts(document, 'script');</script>
 <h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/frameworks/integration/properties/package-summary.html">org.odpi.openmetadata.frameworks.integration.properties</a></h2>
 <ul class="block-list">
 <li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.integration.properties.IntegrationConnectorElement">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/integration/properties/IntegrationConnectorElement.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">org.odpi.openmetadata.frameworks.integration.properties.IntegrationConnectorElement</a></h3>
+<div class="type-signature">class IntegrationConnectorElement extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>catalogTargets</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/frameworks/integration/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">CatalogTarget</a>&gt; catalogTargets</pre>
+</li>
+<li class="block-list">
+<h5>elementHeader</h5>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a> elementHeader</pre>
+</li>
+<li class="block-list">
+<h5>properties</h5>
+<pre><a href="org/odpi/openmetadata/frameworks/integration/properties/IntegrationConnectorProperties.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">IntegrationConnectorProperties</a> properties</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.integration.properties.IntegrationGroupElement">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/integration/properties/IntegrationGroupElement.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">org.odpi.openmetadata.frameworks.integration.properties.IntegrationGroupElement</a></h3>
+<div class="type-signature">class IntegrationGroupElement extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>elementHeader</h5>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a> elementHeader</pre>
+</li>
+<li class="block-list">
+<h5>properties</h5>
+<pre><a href="org/odpi/openmetadata/frameworks/integration/properties/IntegrationGroupProperties.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">IntegrationGroupProperties</a> properties</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
 <section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.integration.properties.IntegrationReport">
 <h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/integration/properties/IntegrationReport.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">org.odpi.openmetadata.frameworks.integration.properties.IntegrationReport</a></h3>
 <div class="type-signature">class IntegrationReport extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
@@ -30109,6 +29868,33 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>updatedElements</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; updatedElements</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.frameworks.integration.properties.RegisteredIntegrationConnectorElement">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworks/integration/properties/RegisteredIntegrationConnectorElement.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">org.odpi.openmetadata.frameworks.integration.properties.RegisteredIntegrationConnectorElement</a></h3>
+<div class="type-signature">class RegisteredIntegrationConnectorElement extends <a href="org/odpi/openmetadata/frameworks/integration/properties/IntegrationConnectorElement.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">IntegrationConnectorElement</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>connectorId</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> connectorId</pre>
+</li>
+<li class="block-list">
+<h5>registrationProperties</h5>
+<pre><a href="org/odpi/openmetadata/frameworks/integration/properties/RegisteredIntegrationConnectorProperties.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RegisteredIntegrationConnectorProperties</a> registrationProperties</pre>
 </li>
 </ul>
 </section>
@@ -30679,9 +30465,9 @@ loadScripts(document, 'script');</script>
 <h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/frameworkservices/gaf/rest/package-summary.html">org.odpi.openmetadata.frameworkservices.gaf.rest</a></h2>
 <ul class="block-list">
 <li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.frameworkservices.gaf.rest.NewGovernanceActionProcessRequestBody">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworkservices/gaf/rest/NewGovernanceActionProcessRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">org.odpi.openmetadata.frameworkservices.gaf.rest.NewGovernanceActionProcessRequestBody</a></h3>
-<div class="type-signature">class NewGovernanceActionProcessRequestBody extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<section class="serialized-class-details" id="org.odpi.openmetadata.frameworkservices.gaf.rest.GovernanceServiceRegistrationRequestBody">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworkservices/gaf/rest/GovernanceServiceRegistrationRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">org.odpi.openmetadata.frameworkservices.gaf.rest.GovernanceServiceRegistrationRequestBody</a></h3>
+<div class="type-signature">class GovernanceServiceRegistrationRequestBody extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 <dl class="name-value">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -30692,12 +30478,86 @@ loadScripts(document, 'script');</script>
 <h4>Serialized Fields</h4>
 <ul class="block-list">
 <li class="block-list">
-<h5>processStatus</h5>
-<pre><a href="org/odpi/openmetadata/frameworks/governanceaction/properties/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">ProcessStatus</a> processStatus</pre>
+<h5>governanceServiceGUID</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> governanceServiceGUID</pre>
 </li>
 <li class="block-list">
-<h5>properties</h5>
-<pre><a href="org/odpi/openmetadata/frameworks/governanceaction/properties/GovernanceActionProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessProperties</a> properties</pre>
+<h5>requestParameters</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; requestParameters</pre>
+</li>
+<li class="block-list">
+<h5>requestType</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> requestType</pre>
+</li>
+<li class="block-list">
+<h5>serviceRequestType</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> serviceRequestType</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.frameworkservices.gaf.rest.NewGovernanceEngineRequestBody">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworkservices/gaf/rest/NewGovernanceEngineRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">org.odpi.openmetadata.frameworkservices.gaf.rest.NewGovernanceEngineRequestBody</a></h3>
+<div class="type-signature">class NewGovernanceEngineRequestBody extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>description</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> description</pre>
+</li>
+<li class="block-list">
+<h5>displayName</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> displayName</pre>
+</li>
+<li class="block-list">
+<h5>qualifiedName</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> qualifiedName</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.frameworkservices.gaf.rest.NewGovernanceServiceRequestBody">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworkservices/gaf/rest/NewGovernanceServiceRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">org.odpi.openmetadata.frameworkservices.gaf.rest.NewGovernanceServiceRequestBody</a></h3>
+<div class="type-signature">class NewGovernanceServiceRequestBody extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>connection</h5>
+<pre><a href="org/odpi/openmetadata/frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a> connection</pre>
+</li>
+<li class="block-list">
+<h5>description</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> description</pre>
+</li>
+<li class="block-list">
+<h5>displayName</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> displayName</pre>
+</li>
+<li class="block-list">
+<h5>qualifiedName</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> qualifiedName</pre>
 </li>
 </ul>
 </section>
@@ -30779,9 +30639,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateGovernanceActionProcessRequestBody">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworkservices/gaf/rest/UpdateGovernanceActionProcessRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateGovernanceActionProcessRequestBody</a></h3>
-<div class="type-signature">class UpdateGovernanceActionProcessRequestBody extends <a href="org/odpi/openmetadata/frameworkservices/gaf/rest/NewGovernanceActionProcessRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">NewGovernanceActionProcessRequestBody</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<section class="serialized-class-details" id="org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateGovernanceEngineRequestBody">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworkservices/gaf/rest/UpdateGovernanceEngineRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateGovernanceEngineRequestBody</a></h3>
+<div class="type-signature">class UpdateGovernanceEngineRequestBody extends <a href="org/odpi/openmetadata/frameworkservices/gaf/rest/NewGovernanceEngineRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">NewGovernanceEngineRequestBody</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 <dl class="name-value">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -30792,8 +30652,55 @@ loadScripts(document, 'script');</script>
 <h4>Serialized Fields</h4>
 <ul class="block-list">
 <li class="block-list">
-<h5>mergeUpdate</h5>
-<pre>boolean mergeUpdate</pre>
+<h5>additionalProperties</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; additionalProperties</pre>
+</li>
+<li class="block-list">
+<h5>extendedProperties</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt; extendedProperties</pre>
+</li>
+<li class="block-list">
+<h5>patchLevel</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> patchLevel</pre>
+</li>
+<li class="block-list">
+<h5>source</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> source</pre>
+</li>
+<li class="block-list">
+<h5>typeDescription</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> typeDescription</pre>
+</li>
+<li class="block-list">
+<h5>version</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> version</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateGovernanceServiceRequestBody">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/frameworkservices/gaf/rest/UpdateGovernanceServiceRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateGovernanceServiceRequestBody</a></h3>
+<div class="type-signature">class UpdateGovernanceServiceRequestBody extends <a href="org/odpi/openmetadata/frameworkservices/gaf/rest/NewGovernanceServiceRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">NewGovernanceServiceRequestBody</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>additionalProperties</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; additionalProperties</pre>
+</li>
+<li class="block-list">
+<h5>extendedProperties</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt; extendedProperties</pre>
 </li>
 </ul>
 </section>
@@ -32170,6 +32077,10 @@ loadScripts(document, 'script');</script>
 <section class="serialized-class-details" id="org.odpi.openmetadata.governanceservers.lineagewarehouse.ffdc.LineageWarehouseException">
 <h3>Exception&nbsp;<a href="org/odpi/openmetadata/governanceservers/lineagewarehouse/ffdc/LineageWarehouseException.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.ffdc">org.odpi.openmetadata.governanceservers.lineagewarehouse.ffdc.LineageWarehouseException</a></h3>
 <div class="type-signature">class LineageWarehouseException extends <a href="org/odpi/openmetadata/frameworks/connectors/ffdc/OCFCheckedExceptionBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFCheckedExceptionBase</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
 </section>
 </li>
 </ul>
@@ -32207,6 +32118,37 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>sourceNodeID</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> sourceNodeID</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="org.odpi.openmetadata.governanceservers.lineagewarehouse.model.LineageQueryParameters">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/governanceservers/lineagewarehouse/model/LineageQueryParameters.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.model">org.odpi.openmetadata.governanceservers.lineagewarehouse.model.LineageQueryParameters</a></h3>
+<div class="type-signature">class LineageQueryParameters extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>displayNameMustContain</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> displayNameMustContain</pre>
+</li>
+<li class="block-list">
+<h5>includeProcesses</h5>
+<pre>boolean includeProcesses</pre>
+</li>
+<li class="block-list">
+<h5>scope</h5>
+<pre><a href="org/odpi/openmetadata/governanceservers/lineagewarehouse/model/Scope.html" title="enum class in org.odpi.openmetadata.governanceservers.lineagewarehouse.model">Scope</a> scope</pre>
 </li>
 </ul>
 </section>
@@ -32288,17 +32230,10 @@ loadScripts(document, 'script');</script>
 </ul>
 </section>
 </li>
-</ul>
-</section>
-</li>
 <li>
-<section class="serialized-package-container">
-<h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/governanceservers/lineagewarehouse/requests/package-summary.html">org.odpi.openmetadata.governanceservers.lineagewarehouse.requests</a></h2>
-<ul class="block-list">
-<li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.governanceservers.lineagewarehouse.requests.ElementHierarchyRequest">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/governanceservers/lineagewarehouse/requests/ElementHierarchyRequest.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.requests">org.odpi.openmetadata.governanceservers.lineagewarehouse.requests.ElementHierarchyRequest</a></h3>
-<div class="type-signature">class ElementHierarchyRequest extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<section class="serialized-class-details" id="org.odpi.openmetadata.governanceservers.lineagewarehouse.model.NodeNamesSearchCriteria">
+<h3>Class&nbsp;<a href="org/odpi/openmetadata/governanceservers/lineagewarehouse/model/NodeNamesSearchCriteria.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.model">org.odpi.openmetadata.governanceservers.lineagewarehouse.model.NodeNamesSearchCriteria</a></h3>
+<div class="type-signature">class NodeNamesSearchCriteria extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 <dl class="name-value">
 <dt>serialVersionUID:</dt>
 <dd>1L</dd>
@@ -32309,103 +32244,16 @@ loadScripts(document, 'script');</script>
 <h4>Serialized Fields</h4>
 <ul class="block-list">
 <li class="block-list">
-<h5>guid</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> guid</pre>
+<h5>limit</h5>
+<pre>int limit</pre>
 </li>
 <li class="block-list">
-<h5>hierarchyType</h5>
-<pre><a href="org/odpi/openmetadata/governanceservers/lineagewarehouse/requests/HierarchyType.html" title="enum class in org.odpi.openmetadata.governanceservers.lineagewarehouse.requests">HierarchyType</a> hierarchyType</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.governanceservers.lineagewarehouse.requests.LineageSearchRequest">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/governanceservers/lineagewarehouse/requests/LineageSearchRequest.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.requests">org.odpi.openmetadata.governanceservers.lineagewarehouse.requests.LineageSearchRequest</a></h3>
-<div class="type-signature">class LineageSearchRequest extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>queriedNode</h5>
-<pre><a href="org/odpi/openmetadata/governanceservers/lineagewarehouse/requests/Node.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.requests">Node</a> queriedNode</pre>
+<h5>searchValue</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> searchValue</pre>
 </li>
 <li class="block-list">
-<h5>relatedNodes</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="org/odpi/openmetadata/governanceservers/lineagewarehouse/requests/Node.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.requests">Node</a>&gt; relatedNodes</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
-<section class="serialized-package-container">
-<h2 title="Package">Package&nbsp;<a href="org/odpi/openmetadata/governanceservers/lineagewarehouse/responses/package-summary.html">org.odpi.openmetadata.governanceservers.lineagewarehouse.responses</a></h2>
-<ul class="block-list">
-<li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.governanceservers.lineagewarehouse.responses.LineageNodeNamesResponse">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/governanceservers/lineagewarehouse/responses/LineageNodeNamesResponse.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.responses">org.odpi.openmetadata.governanceservers.lineagewarehouse.responses.LineageNodeNamesResponse</a></h3>
-<div class="type-signature">class LineageNodeNamesResponse extends <a href="org/odpi/openmetadata/commonservices/ffdc/rest/FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponseBase</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>names</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; names</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.governanceservers.lineagewarehouse.responses.LineageResponse">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/governanceservers/lineagewarehouse/responses/LineageResponse.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.responses">org.odpi.openmetadata.governanceservers.lineagewarehouse.responses.LineageResponse</a></h3>
-<div class="type-signature">class LineageResponse extends <a href="org/odpi/openmetadata/commonservices/ffdc/rest/FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponseBase</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<dl class="name-value">
-<dt>serialVersionUID:</dt>
-<dd>1L</dd>
-</dl>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>lineageVerticesAndEdges</h5>
-<pre><a href="org/odpi/openmetadata/governanceservers/lineagewarehouse/model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.model">LineageVerticesAndEdges</a> lineageVerticesAndEdges</pre>
-</li>
-</ul>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<li>
-<section class="serialized-class-details" id="org.odpi.openmetadata.governanceservers.lineagewarehouse.responses.LineageTypesResponse">
-<h3>Class&nbsp;<a href="org/odpi/openmetadata/governanceservers/lineagewarehouse/responses/LineageTypesResponse.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.responses">org.odpi.openmetadata.governanceservers.lineagewarehouse.responses.LineageTypesResponse</a></h3>
-<div class="type-signature">class LineageTypesResponse extends <a href="org/odpi/openmetadata/commonservices/ffdc/rest/FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponseBase</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-<ul class="block-list">
-<li>
-<section class="detail">
-<h4>Serialized Fields</h4>
-<ul class="block-list">
-<li class="block-list">
-<h5>types</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; types</pre>
+<h5>type</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> type</pre>
 </li>
 </ul>
 </section>
@@ -37020,6 +36868,10 @@ loadScripts(document, 'script');</script>
 <section class="serialized-class-details" id="org.odpi.openmetadata.viewservices.dino.api.ffdc.DinoViewServiceException">
 <h3>Exception&nbsp;<a href="org/odpi/openmetadata/viewservices/dino/api/ffdc/DinoViewServiceException.html" title="class in org.odpi.openmetadata.viewservices.dino.api.ffdc">org.odpi.openmetadata.viewservices.dino.api.ffdc.DinoViewServiceException</a></h3>
 <div class="type-signature">class DinoViewServiceException extends <a href="org/odpi/openmetadata/frameworks/connectors/ffdc/OCFCheckedExceptionBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFCheckedExceptionBase</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
 </section>
 </li>
 </ul>
@@ -37046,6 +36898,10 @@ loadScripts(document, 'script');</script>
 <section class="serialized-class-details" id="org.odpi.openmetadata.viewservices.rex.api.ffdc.RexViewServiceException">
 <h3>Exception&nbsp;<a href="org/odpi/openmetadata/viewservices/rex/api/ffdc/RexViewServiceException.html" title="class in org.odpi.openmetadata.viewservices.rex.api.ffdc">org.odpi.openmetadata.viewservices.rex.api.ffdc.RexViewServiceException</a></h3>
 <div class="type-signature">class RexViewServiceException extends <a href="org/odpi/openmetadata/frameworks/connectors/ffdc/OCFCheckedExceptionBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFCheckedExceptionBase</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
 </section>
 </li>
 </ul>
@@ -37059,6 +36915,10 @@ loadScripts(document, 'script');</script>
 <section class="serialized-class-details" id="org.odpi.openmetadata.viewservices.serverauthor.api.ffdc.ServerAuthorViewServiceException">
 <h3>Exception&nbsp;<a href="org/odpi/openmetadata/viewservices/serverauthor/api/ffdc/ServerAuthorViewServiceException.html" title="class in org.odpi.openmetadata.viewservices.serverauthor.api.ffdc">org.odpi.openmetadata.viewservices.serverauthor.api.ffdc.ServerAuthorViewServiceException</a></h3>
 <div class="type-signature">class ServerAuthorViewServiceException extends <a href="org/odpi/openmetadata/frameworks/connectors/ffdc/OCFCheckedExceptionBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFCheckedExceptionBase</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
 </section>
 </li>
 </ul>
@@ -37072,6 +36932,10 @@ loadScripts(document, 'script');</script>
 <section class="serialized-class-details" id="org.odpi.openmetadata.viewservices.tex.api.ffdc.TexViewServiceException">
 <h3>Exception&nbsp;<a href="org/odpi/openmetadata/viewservices/tex/api/ffdc/TexViewServiceException.html" title="class in org.odpi.openmetadata.viewservices.tex.api.ffdc">org.odpi.openmetadata.viewservices.tex.api.ffdc.TexViewServiceException</a></h3>
 <div class="type-signature">class TexViewServiceException extends <a href="org/odpi/openmetadata/frameworks/connectors/ffdc/OCFCheckedExceptionBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">OCFCheckedExceptionBase</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<dl class="name-value">
+<dt>serialVersionUID:</dt>
+<dd>1L</dd>
+</dl>
 </section>
 </li>
 </ul>

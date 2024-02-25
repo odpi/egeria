@@ -136,14 +136,22 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="col-last even-row-color">
 <div class="block">ENGINE-HOST-SERVICES-0027 - The engine host services has registered the configuration listener for server {0}.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#ENGINE_ACTION_FAILED" class="member-name-link">ENGINE_ACTION_FAILED</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#ENGINE_ACTION_CANCELLED" class="member-name-link">ENGINE_ACTION_CANCELLED</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">ENGINE-HOST-SERVICES-0036 - Governance engine {0} is cancelling running governance service for engine action {1}; thread name is {2}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#ENGINE_ACTION_FAILED" class="member-name-link">ENGINE_ACTION_FAILED</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">ENGINE-HOST-SERVICES-0034 - Failed to execute engine action for governance engine {0}.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#ENGINE_ACTION_RECORD_COMPLETION" class="member-name-link">ENGINE_ACTION_RECORD_COMPLETION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#ENGINE_ACTION_RECORD_COMPLETION" class="member-name-link">ENGINE_ACTION_RECORD_COMPLETION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">ENGINE-HOST-SERVICES-0033 - Engine action {0} running governance service {1} for governance engine {2} with request type {3}
  has recorded completion status of {4} and output guards of {5}.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#ENGINE_ACTION_SCAN_FAILED" class="member-name-link">ENGINE_ACTION_SCAN_FAILED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">ENGINE-HOST-SERVICES-0035 - Failed to retrieve active engine actions.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#ENGINE_ACTION_TARGET_COMPLETION" class="member-name-link">ENGINE_ACTION_TARGET_COMPLETION</a></code></div>
 <div class="col-last odd-row-color">
@@ -232,42 +240,50 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="block">ENGINE-HOST-SERVICES-0023 - Governance engine {0} in engine host server {1} is not able to retrieve its configured governance request types from the
  Governance Engine OMAS running in server {2} on OMAG Server Platform {3}.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SERVER_INITIALIZED" class="member-name-link">SERVER_INITIALIZED</a></code></div>
+<div class="col-first even-row-color"><code><a href="#RESTART_SERVICE_ERROR" class="member-name-link">RESTART_SERVICE_ERROR</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">ENGINE-HOST-SERVICES-2000 - {0} caught an exception {1} while processing governance action {2}; the error message was {3}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SERVER_INITIALIZED" class="member-name-link">SERVER_INITIALIZED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">ENGINE-HOST-SERVICES-0002 - The engine host {0} has initialized</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SERVER_INITIALIZING" class="member-name-link">SERVER_INITIALIZING</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SERVER_INITIALIZING" class="member-name-link">SERVER_INITIALIZING</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">ENGINE-HOST-SERVICES-0001 - The engine host services are initializing in server {0}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SERVER_NOT_AUTHORIZED" class="member-name-link">SERVER_NOT_AUTHORIZED</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SERVER_NOT_AUTHORIZED" class="member-name-link">SERVER_NOT_AUTHORIZED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">ENGINE-HOST-SERVICES-0019 - Engine host server {0} is not authorized to call the Governance Engine
  OMAS running in server {1} on OMAG Server Platform {2} with userId {3}.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SERVER_SHUTDOWN" class="member-name-link">SERVER_SHUTDOWN</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SERVER_SHUTDOWN" class="member-name-link">SERVER_SHUTDOWN</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">ENGINE-HOST-SERVICES-0018 - The engine host {0} has completed shut down</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SERVER_SHUTTING_DOWN" class="member-name-link">SERVER_SHUTTING_DOWN</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SERVER_SHUTTING_DOWN" class="member-name-link">SERVER_SHUTTING_DOWN</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">ENGINE-HOST-SERVICES-0017 - The engine host {0} is shutting down</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SERVICE_INSTANCE_FAILURE" class="member-name-link">SERVICE_INSTANCE_FAILURE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SERVICE_INSTANCE_FAILURE" class="member-name-link">SERVICE_INSTANCE_FAILURE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">ENGINE-HOST-SERVICES-0003 - The engine host services are unable to initialize a new instance of engine host {0}; exception {1} with message {2}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SKIPPING_ENGINE_SERVICE" class="member-name-link">SKIPPING_ENGINE_SERVICE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SKIPPING_ENGINE_SERVICE" class="member-name-link">SKIPPING_ENGINE_SERVICE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">ENGINE-HOST-SERVICES-0016 - The {0} engine service is disabled and will not be started</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#STARTING_ENGINE_SERVICES" class="member-name-link">STARTING_ENGINE_SERVICES</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#STARTING_ENGINE_SERVICES" class="member-name-link">STARTING_ENGINE_SERVICES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">ENGINE-HOST-SERVICES-0012 - The Open Metadata Engine Services (OMESs) are initializing in server {0}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SUPPORTED_REQUEST_TYPE" class="member-name-link">SUPPORTED_REQUEST_TYPE</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SUPPORTED_REQUEST_TYPE" class="member-name-link">SUPPORTED_REQUEST_TYPE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">ENGINE-HOST-SERVICES-0021 - Governance engine {0} in engine host server {1} is configured to process governance requests of type {2}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION_DURING_RESTART" class="member-name-link">UNEXPECTED_EXCEPTION_DURING_RESTART</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">ENGINE-HOST-SERVICES-2002 - {0} caught an exception {1} while restarting incomplete engine actions; the error message was {2}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#UNKNOWN_GOVERNANCE_ENGINE_NAME" class="member-name-link">UNKNOWN_GOVERNANCE_ENGINE_NAME</a></code></div>
 <div class="col-last odd-row-color">
@@ -582,6 +598,20 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="ENGINE_ACTION_SCAN_FAILED">
+<h3>ENGINE_ACTION_SCAN_FAILED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">ENGINE_ACTION_SCAN_FAILED</span></div>
+<div class="block">ENGINE-HOST-SERVICES-0035 - Failed to retrieve active engine actions.  The exception was {0} with error message {1}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ENGINE_ACTION_CANCELLED">
+<h3>ENGINE_ACTION_CANCELLED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">ENGINE_ACTION_CANCELLED</span></div>
+<div class="block">ENGINE-HOST-SERVICES-0036 - Governance engine {0} is cancelling running governance service for engine action {1}; thread name is {2}</div>
+</section>
+</li>
+<li>
 <section class="detail" id="NO_OMAS_SERVER_URL">
 <h3>NO_OMAS_SERVER_URL</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">NO_OMAS_SERVER_URL</span></div>
@@ -607,6 +637,20 @@ the order they are declared.</div>
 <h3>ACTION_PROCESSING_ERROR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">ACTION_PROCESSING_ERROR</span></div>
 <div class="block">ENGINE-HOST-SERVICES-2000 - {0} caught an exception {1} while processing governance action {2}; the error message was {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="RESTART_SERVICE_ERROR">
+<h3>RESTART_SERVICE_ERROR</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">RESTART_SERVICE_ERROR</span></div>
+<div class="block">ENGINE-HOST-SERVICES-2000 - {0} caught an exception {1} while processing governance action {2}; the error message was {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNEXPECTED_EXCEPTION_DURING_RESTART">
+<h3>UNEXPECTED_EXCEPTION_DURING_RESTART</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="EngineHostServicesAuditCode.html" title="enum class in org.odpi.openmetadata.governanceservers.enginehostservices.ffdc">EngineHostServicesAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION_DURING_RESTART</span></div>
+<div class="block">ENGINE-HOST-SERVICES-2002 - {0} caught an exception {1} while restarting incomplete engine actions; the error message was {2}</div>
 </section>
 </li>
 </ul>

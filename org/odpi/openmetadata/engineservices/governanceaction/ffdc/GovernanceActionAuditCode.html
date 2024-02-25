@@ -166,10 +166,14 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 </div>
 <div class="col-first even-row-color"><code><a href="#SERVICE_INSTANCE_FAILURE" class="member-name-link">SERVICE_INSTANCE_FAILURE</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">OMES-GOVERNANCE-ACTION-0012 - The Governance Action OMES is unable to initialize a new instance of itself in server {0}; error message is {1}</div>
+<div class="block">OMES-GOVERNANCE-ACTION-0002 - The Governance Action OMES is unable to initialize a new instance of itself in server {0}; error message is {1}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNKNOWN_GOVERNANCE_ACTION_SERVICE" class="member-name-link">UNKNOWN_GOVERNANCE_ACTION_SERVICE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">OMES-GOVERNANCE-ACTION-0033 - The Governance Action OMES has received an unexpected {0} exception during method {1}; the error message was: {2}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UNKNOWN_GOVERNANCE_ACTION_SERVICE" class="member-name-link">UNKNOWN_GOVERNANCE_ACTION_SERVICE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMES-GOVERNANCE-ACTION-0030 - The governance action service {0} linked to request type {1} can not be started because the Governance 
  Action OMES does not support the {2} type of governance action service.</div>
 </div>
@@ -244,7 +248,7 @@ the order they are declared.</div>
 <section class="detail" id="SERVICE_INSTANCE_FAILURE">
 <h3>SERVICE_INSTANCE_FAILURE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_INSTANCE_FAILURE</span></div>
-<div class="block">OMES-GOVERNANCE-ACTION-0012 - The Governance Action OMES is unable to initialize a new instance of itself in server {0}; error message is {1}</div>
+<div class="block">OMES-GOVERNANCE-ACTION-0002 - The Governance Action OMES is unable to initialize a new instance of itself in server {0}; error message is {1}</div>
 </section>
 </li>
 <li>
@@ -332,6 +336,13 @@ the order they are declared.</div>
 <h3>GOVERNANCE_ACTION_INITIALIZED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">GOVERNANCE_ACTION_INITIALIZED</span></div>
 <div class="block">OMES-GOVERNANCE-ACTION-0032 - {0} governance service ({1}) with request type {2} has initialized in governance engine {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNEXPECTED_EXCEPTION">
+<h3>UNEXPECTED_EXCEPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.governanceaction.ffdc">GovernanceActionAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
+<div class="block">OMES-GOVERNANCE-ACTION-0033 - The Governance Action OMES has received an unexpected {0} exception during method {1}; the error message was: {2}</div>
 </section>
 </li>
 </ul>

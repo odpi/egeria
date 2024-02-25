@@ -126,8 +126,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(int,int)" class="member-name-link">SchemaAttributes</a><wbr>(int&nbsp;totalElementCount,
- int&nbsp;maxCacheSize)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(int)" class="member-name-link">SchemaAttributes</a><wbr>(int&nbsp;maxCacheSize)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Typical Constructor creates an iterator with the supplied list of elements.</div>
 </div>
@@ -184,7 +183,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.PropertyIteratorBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.<a href="PropertyIteratorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">PropertyIteratorBase</a></h3>
-<code><a href="PropertyIteratorBase.html#getCachedList(int,int)">getCachedList</a>, <a href="PropertyIteratorBase.html#getElementCount()">getElementCount</a></code></div>
+<code><a href="PropertyIteratorBase.html#getCachedList(int,int)">getCachedList</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.<a href="beans/PropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">PropertyBase</a></h3>
 <code><a href="beans/PropertyBase.html#equals(java.lang.Object)">equals</a>, <a href="beans/PropertyBase.html#getHeaderVersion()">getHeaderVersion</a>, <a href="beans/PropertyBase.html#hashCode()">hashCode</a>, <a href="beans/PropertyBase.html#setHeaderVersion(long)">setHeaderVersion</a></code></div>
@@ -206,14 +205,12 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(int,int)">
+<section class="detail" id="&lt;init&gt;(int)">
 <h3>SchemaAttributes</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SchemaAttributes</span><wbr><span class="parameters">(int&nbsp;totalElementCount,
- int&nbsp;maxCacheSize)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SchemaAttributes</span><wbr><span class="parameters">(int&nbsp;maxCacheSize)</span></div>
 <div class="block">Typical Constructor creates an iterator with the supplied list of elements.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>totalElementCount</code> - the total number of elements to process.  A negative value is converted to 0.</dd>
 <dd><code>maxCacheSize</code> - maximum number of elements that should be retrieved from the property server and
                      cached in the element list at any one time.  If a number less than one is supplied, 1 is used.</dd>
 </dl>

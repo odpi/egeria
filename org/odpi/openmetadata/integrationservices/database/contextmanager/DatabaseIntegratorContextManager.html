@@ -148,18 +148,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the context in the supplied connector.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUpMetadataSource(java.lang.String)" class="member-name-link">setUpMetadataSource</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceQualifiedName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the metadata source's unique identifier (GUID) or if it is not defined, create the software server capability
- for this integrator.</div>
-</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.contextmanager.<a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.frameworks.integration.contextmanager">IntegrationContextManager</a></h3>
-<code><a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html#setUpMetadataSource(java.lang.String,java.lang.String,java.lang.String)">setUpMetadataSource</a></code></div>
+<code><a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html#setUpMetadataSource(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">setUpMetadataSource</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -225,27 +219,6 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html#createClients()">createClients</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.frameworks.integration.contextmanager">IntegrationContextManager</a></code></dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the subclass is not able to create one of its clients</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setUpMetadataSource(java.lang.String)">
-<h3>setUpMetadataSource</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">setUpMetadataSource</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceQualifiedName)</span>
-                              throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-<a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
-<a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
-<div class="block">Retrieve the metadata source's unique identifier (GUID) or if it is not defined, create the software server capability
- for this integrator.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>metadataSourceQualifiedName</code> - unique name of the software server capability that represents this integration service</dd>
-<dt>Returns:</dt>
-<dd>unique identifier of the metadata source</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters passed (probably on initialize) is invalid</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the integration daemon's userId does not have access to the partner OMAS</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem in the remote server running the partner OMAS</dd>
 </dl>
 </section>
 </li>

@@ -77,12 +77,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../../../../../governanceservers/lineagewarehouse/LineageWarehouseQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse">LineageWarehouseQueryService</a></code></dd>
+<dd><code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.connector">LineageWarehouseQueryService</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">LineageGraphQueryService</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="../../../../../governanceservers/lineagewarehouse/LineageWarehouseQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse">LineageWarehouseQueryService</a></span></div>
+implements <a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.connector">LineageWarehouseQueryService</a></span></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -205,7 +205,7 @@ implements <a href="../../../../../governanceservers/lineagewarehouse/LineageWar
 <div class="block">Retrieve lineage starting from the entity identified by the guid</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../../governanceservers/lineagewarehouse/LineageWarehouseQueryService.html#lineage(org.odpi.openmetadata.governanceservers.lineagewarehouse.model.Scope,java.lang.String,boolean)">lineage</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/LineageWarehouseQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse">LineageWarehouseQueryService</a></code></dd>
+<dd><code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseQueryService.html#lineage(org.odpi.openmetadata.governanceservers.lineagewarehouse.model.Scope,java.lang.String,boolean)">lineage</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.connector">LineageWarehouseQueryService</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>scope</code> - the type of lineage to retrieve</dd>
 <dd><code>guid</code> - the guid of the entity from which to start</dd>
@@ -285,7 +285,7 @@ implements <a href="../../../../../governanceservers/lineagewarehouse/LineageWar
 <div class="block">Gets entity details.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../../governanceservers/lineagewarehouse/LineageWarehouseQueryService.html#getEntityDetails(java.lang.String)">getEntityDetails</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/LineageWarehouseQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse">LineageWarehouseQueryService</a></code></dd>
+<dd><code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseQueryService.html#getEntityDetails(java.lang.String)">getEntityDetails</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.connector">LineageWarehouseQueryService</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>guid</code> - the guid</dd>
 <dt>Returns:</dt>
@@ -300,7 +300,7 @@ implements <a href="../../../../../governanceservers/lineagewarehouse/LineageWar
 <div class="block">Gets available entities types from lineage repository.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../../governanceservers/lineagewarehouse/LineageWarehouseQueryService.html#getTypes()">getTypes</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/LineageWarehouseQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse">LineageWarehouseQueryService</a></code></dd>
+<dd><code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseQueryService.html#getTypes()">getTypes</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.connector">LineageWarehouseQueryService</a></code></dd>
 <dt>Returns:</dt>
 <dd>the available entities types</dd>
 </dl>
@@ -313,7 +313,7 @@ implements <a href="../../../../../governanceservers/lineagewarehouse/LineageWar
 <div class="block">Gets nodes names of certain type with display name containing a certain value - case insensitive</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../../governanceservers/lineagewarehouse/LineageWarehouseQueryService.html#getNodes(org.odpi.openmetadata.governanceservers.lineagewarehouse.model.NodeNamesSearchCriteria)">getNodes</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/LineageWarehouseQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse">LineageWarehouseQueryService</a></code></dd>
+<dd><code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseQueryService.html#getNodes(org.odpi.openmetadata.governanceservers.lineagewarehouse.model.NodeNamesSearchCriteria)">getNodes</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.connector">LineageWarehouseQueryService</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>searchCriteria</code> - contains the type of the node names to search for, a search string being part
                       of the display name of the nodes, the maximum number of node names to retrieve</dd>
@@ -326,11 +326,11 @@ implements <a href="../../../../../governanceservers/lineagewarehouse/LineageWar
 <section class="detail" id="getElementHierarchy(org.odpi.openmetadata.governanceservers.lineagewarehouse.requests.ElementHierarchyRequest)">
 <h3>getElementHierarchy</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../../governanceservers/lineagewarehouse/responses/LineageResponse.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.responses">LineageResponse</a></span>&nbsp;<span class="element-name">getElementHierarchy</span><wbr><span class="parameters">(<a href="../../../../../governanceservers/lineagewarehouse/requests/ElementHierarchyRequest.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.requests">ElementHierarchyRequest</a>&nbsp;elementHierarchyRequest)</span></div>
-<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/LineageWarehouseQueryService.html#getElementHierarchy(org.odpi.openmetadata.governanceservers.lineagewarehouse.requests.ElementHierarchyRequest)">LineageWarehouseQueryService</a></code></span></div>
+<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseQueryService.html#getElementHierarchy(org.odpi.openmetadata.governanceservers.lineagewarehouse.requests.ElementHierarchyRequest)">LineageWarehouseQueryService</a></code></span></div>
 <div class="block">Retrieve hierarchy starting from the entity identified by the guid</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../../governanceservers/lineagewarehouse/LineageWarehouseQueryService.html#getElementHierarchy(org.odpi.openmetadata.governanceservers.lineagewarehouse.requests.ElementHierarchyRequest)">getElementHierarchy</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/LineageWarehouseQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse">LineageWarehouseQueryService</a></code></dd>
+<dd><code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseQueryService.html#getElementHierarchy(org.odpi.openmetadata.governanceservers.lineagewarehouse.requests.ElementHierarchyRequest)">getElementHierarchy</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.connector">LineageWarehouseQueryService</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>elementHierarchyRequest</code> - contains the guid of the queried node and the hierarchyType
                                 of the display name of the nodes, the maximum number of node names to retrieve</dd>
@@ -346,7 +346,7 @@ implements <a href="../../../../../governanceservers/lineagewarehouse/LineageWar
 <div class="block">Search the database for entities matching the search request</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../../governanceservers/lineagewarehouse/LineageWarehouseQueryService.html#search(org.odpi.openmetadata.governanceservers.lineagewarehouse.requests.LineageSearchRequest)">search</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/LineageWarehouseQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse">LineageWarehouseQueryService</a></code></dd>
+<dd><code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseQueryService.html#search(org.odpi.openmetadata.governanceservers.lineagewarehouse.requests.LineageSearchRequest)">search</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseQueryService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.connector">LineageWarehouseQueryService</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>lineageSearchRequest</code> - the criteria for the search</dd>
 <dt>Returns:</dt>

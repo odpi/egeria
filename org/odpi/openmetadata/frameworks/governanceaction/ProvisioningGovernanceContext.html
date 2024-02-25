@@ -183,11 +183,10 @@ extends <a href="GovernanceContext.html" title="interface in org.odpi.openmetada
 <div class="block">Create a lineage relationship between a source and target element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createPort(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.PortType,java.lang.String)" class="member-name-link">createPort</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createPort(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.PortType)" class="member-name-link">createPort</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName,
- <a href="properties/PortType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">PortType</a>&nbsp;portType,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID)</code></div>
+ <a href="properties/PortType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">PortType</a>&nbsp;portType)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Add a port to a process.</div>
 </div>
@@ -565,13 +564,12 @@ extends <a href="GovernanceContext.html" title="interface in org.odpi.openmetada
 </section>
 </li>
 <li>
-<section class="detail" id="createPort(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.PortType,java.lang.String)">
+<section class="detail" id="createPort(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.PortType)">
 <h3>createPort</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createPort</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName,
- <a href="properties/PortType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">PortType</a>&nbsp;portType,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID)</span>
+ <a href="properties/PortType.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">PortType</a>&nbsp;portType)</span>
            throws <span class="exceptions"><a href="../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -582,7 +580,6 @@ extends <a href="GovernanceContext.html" title="interface in org.odpi.openmetada
 <dd><code>qualifiedName</code> - unique name for the port</dd>
 <dd><code>displayName</code> - display name for the port</dd>
 <dd><code>portType</code> - type of port (direction of data flow)</dd>
-<dd><code>templateGUID</code> - optional unique identifier of a template port to copy</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the new port</dd>
 <dt>Throws:</dt>

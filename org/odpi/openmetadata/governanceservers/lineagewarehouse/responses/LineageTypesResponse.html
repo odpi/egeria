@@ -79,20 +79,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="../../../commonservices/ffdc/rest/FFDCResponse.html" title="interface in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponse</a></code></dd>
+<dd><code><a href="../../../commonservices/ffdc/rest/FFDCResponse.html" title="interface in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponse</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">LineageTypesResponse</span>
-<span class="extends-implements">extends <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponseBase</a>
-implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../serialized-form.html#org.odpi.openmetadata.governanceservers.lineagewarehouse.responses.LineageTypesResponse">Serialized Form</a></li>
-</ul>
-</dd>
-</dl>
+<span class="extends-implements">extends <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponseBase</a></span></div>
+<div class="block">Return lineage types.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -105,7 +97,13 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">LineageTypesResponse</a>()</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Default constructor</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.util.List)" class="member-name-link">LineageTypesResponse</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;types)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Set up bean constructor</div>
+</div>
 </div>
 </section>
 </li>
@@ -120,28 +118,25 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#canEqual(java.lang.Object)" class="member-name-link">canEqual</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;other)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return comparison result based on the content of the properties.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypes()" class="member-name-link">getTypes</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypes()" class="member-name-link">getTypes</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return hash code for this object</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTypes(java.util.List)" class="member-name-link">setTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;types)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTypes(java.util.List)" class="member-name-link">setTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;types)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">JSON-like toString</div>
 </div>
 </div>
@@ -168,6 +163,14 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="&lt;init&gt;()">
 <h3>LineageTypesResponse</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">LineageTypesResponse</span>()</div>
+<div class="block">Default constructor</div>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(java.util.List)">
+<h3>LineageTypesResponse</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">LineageTypesResponse</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;types)</span></div>
+<div class="block">Set up bean constructor</div>
 </section>
 </li>
 </ul>
@@ -191,52 +194,43 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 </section>
 </li>
 <li>
-<section class="detail" id="equals(java.lang.Object)">
-<h3>equals</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equals</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</span></div>
-<div class="block"><span class="descfrm-type-label">Description copied from class:&nbsp;<code><a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#equals(java.lang.Object)">FFDCResponseBase</a></code></span></div>
-<div class="block">Return comparison result based on the content of the properties.</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code><a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponseBase</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>o</code> - test object</dd>
-<dt>Returns:</dt>
-<dd>result of comparison</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="canEqual(java.lang.Object)">
-<h3>canEqual</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">canEqual</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;other)</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="hashCode()">
-<h3>hashCode</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">hashCode</span>()</div>
-<div class="block"><span class="descfrm-type-label">Description copied from class:&nbsp;<code><a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#hashCode()">FFDCResponseBase</a></code></span></div>
-<div class="block">Return hash code for this object</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code><a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponseBase</a></code></dd>
-<dt>Returns:</dt>
-<dd>int hash code</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
-<div class="block"><span class="descfrm-type-label">Description copied from class:&nbsp;<code><a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#toString()">FFDCResponseBase</a></code></span></div>
 <div class="block">JSON-like toString</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponseBase</a></code></dd>
 <dt>Returns:</dt>
 <dd>string containing the property names and values</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="equals(java.lang.Object)">
+<h3>equals</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equals</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</span></div>
+<div class="block">Return comparison result based on the content of the properties.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponseBase</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>objectToCompare</code> - test object</dd>
+<dt>Returns:</dt>
+<dd>result of comparison</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="hashCode()">
+<h3>hashCode</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">hashCode</span>()</div>
+<div class="block">Return hash code for this object</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponseBase</a></code></dd>
+<dt>Returns:</dt>
+<dd>int hash code</dd>
 </dl>
 </section>
 </li>

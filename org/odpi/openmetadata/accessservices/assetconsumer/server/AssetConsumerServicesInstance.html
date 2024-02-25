@@ -112,10 +112,11 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector,java.util.List,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,int,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">AssetConsumerServicesInstance</a><wbr>(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryConnector</a>&nbsp;repositoryConnector,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector,java.util.List,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.util.List,int,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">AssetConsumerServicesInstance</a><wbr>(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryConnector</a>&nbsp;repositoryConnector,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedZones,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedTypesForSearch,
  int&nbsp;maxPageSize,
  <a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;outTopicEventBusConnection)</code></div>
 <div class="col-last even-row-color">
@@ -167,22 +168,25 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector,java.util.List,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,int,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector,java.util.List,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.util.List,int,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
 <h3>AssetConsumerServicesInstance</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AssetConsumerServicesInstance</span><wbr><span class="parameters">(<a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryConnector.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryConnector</a>&nbsp;repositoryConnector,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedZones,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;supportedTypesForSearch,
  int&nbsp;maxPageSize,
  <a href="../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;outTopicEventBusConnection)</span>
                               throws <span class="exceptions"><a href="../../../commonservices/multitenant/ffdc/exceptions/NewInstanceException.html" title="class in org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions">NewInstanceException</a></span></div>
-<div class="block">Set up the handlers for this server.</div>
+<div class="block">Set up the handlers for this server.  They reflect the range of open metadata elements returned
+ by this OMAS.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>repositoryConnector</code> - link to the repository responsible for servicing the REST calls.</dd>
 <dd><code>supportedZones</code> - list of zones that AssetConsumer is allowed to serve Assets from.</dd>
 <dd><code>auditLog</code> - destination for audit log events.</dd>
 <dd><code>localServerUserId</code> - userId used for server initiated actions</dd>
+<dd><code>supportedTypesForSearch</code> - affects the list of supported asset types seen by the caller</dd>
 <dd><code>maxPageSize</code> - maximum number of results that can be returned on a single call</dd>
 <dd><code>outTopicEventBusConnection</code> - inner event bus connection to use to build topic connection to send to client if they which
                                    to listen on the out topic.</dd>

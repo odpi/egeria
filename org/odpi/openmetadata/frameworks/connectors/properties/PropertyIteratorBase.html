@@ -128,8 +128,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>protected </code></div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(int,int)" class="member-name-link">PropertyIteratorBase</a><wbr>(int&nbsp;totalElementCount,
- int&nbsp;maxCacheSize)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(int)" class="member-name-link">PropertyIteratorBase</a><wbr>(int&nbsp;maxCacheSize)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Typical Constructor creates an iterator with the supplied list of comments.</div>
 </div>
@@ -146,7 +145,7 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel">
 <div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
 <div class="table-header col-first">Modifier and Type</div>
@@ -162,11 +161,6 @@ loadScripts(document, 'script');</script>
  int&nbsp;maximumSize)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Method implemented by subclass to retrieve the next cached list of elements.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementCount()" class="member-name-link">getElementCount</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the number of elements in the list.</div>
 </div>
 </div>
 </div>
@@ -203,14 +197,12 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(int,int)">
+<section class="detail" id="&lt;init&gt;(int)">
 <h3>PropertyIteratorBase</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="element-name">PropertyIteratorBase</span><wbr><span class="parameters">(int&nbsp;totalElementCount,
- int&nbsp;maxCacheSize)</span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="element-name">PropertyIteratorBase</span><wbr><span class="parameters">(int&nbsp;maxCacheSize)</span></div>
 <div class="block">Typical Constructor creates an iterator with the supplied list of comments.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>totalElementCount</code> - the total number of elements to process.  A negative value is converted to 0.</dd>
 <dd><code>maxCacheSize</code> - maximum number of elements that should be retrieved from the property server and
                      cached in the element list at any one time.  If a number less than one is supplied, 1 is used.</dd>
 </dl>
@@ -235,17 +227,6 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="getElementCount()">
-<h3>getElementCount</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getElementCount</span>()</div>
-<div class="block">Return the number of elements in the list.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>elementCount</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="cloneElement(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase)">
 <h3>cloneElement</h3>

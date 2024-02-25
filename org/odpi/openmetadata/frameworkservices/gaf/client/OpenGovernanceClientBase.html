@@ -81,7 +81,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="GovernanceContextClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceContextClientBase</a></code>, <code><a href="../../../accessservices/assetmanager/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/assetowner/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/assetconsumer/client/OpenGovernanceServiceClient.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.client">OpenGovernanceServiceClient</a></code>, <code><a href="../../../accessservices/digitalservice/client/OpenGovernanceServiceClient.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.client">OpenGovernanceServiceClient</a></code></dd>
+<dd><code><a href="GovernanceContextClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceContextClientBase</a></code>, <code><a href="../../../accessservices/assetmanager/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/assetowner/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/governanceserver/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/assetconsumer/client/OpenGovernanceServiceClient.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.client">OpenGovernanceServiceClient</a></code>, <code><a href="../../../accessservices/digitalservice/client/OpenGovernanceServiceClient.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.client">OpenGovernanceServiceClient</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenGovernanceClientBase</span>
@@ -179,104 +179,117 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGovernanceActionProcess(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties,org.odpi.openmetadata.frameworks.governanceaction.properties.ProcessStatus)" class="member-name-link">createGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessProperties</a>&nbsp;processProperties,
- <a href="../../../frameworks/governanceaction/properties/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">ProcessStatus</a>&nbsp;initialStatus)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a new metadata element to represent a governance action process.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGovernanceActionProcessStep(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties)" class="member-name-link">createGovernanceActionProcessStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessStepProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessStepProperties</a>&nbsp;processStepProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a new metadata element to represent a governance action process step.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGovernanceActionType(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionTypeProperties)" class="member-name-link">createGovernanceActionType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../../../frameworks/governanceaction/properties/GovernanceActionTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionTypeProperties</a>&nbsp;properties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a new metadata element to represent a governance action type.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/EngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findEngineActions(java.lang.String,java.lang.String,int,int)" class="member-name-link">findEngineActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the list of engine action metadata elements that contain the search string.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findGovernanceActionProcesses(java.lang.String,java.lang.String,int,int)" class="member-name-link">findGovernanceActionProcesses</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the list of governance action process metadata elements that contain the search string.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessStepElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessStepElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findGovernanceActionProcessSteps(java.lang.String,java.lang.String,int,int)" class="member-name-link">findGovernanceActionProcessSteps</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the list of governance action process step metadata elements that contain the search string.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/GovernanceActionTypeElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionTypeElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findGovernanceActionTypes(java.lang.String,java.lang.String,int,int)" class="member-name-link">findGovernanceActionTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the list of governance action type metadata elements that contain the search string.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/EngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActiveEngineActions(java.lang.String,int,int)" class="member-name-link">getActiveEngineActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the engine actions that are still in process.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/governanceaction/properties/EngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionElement</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineAction(java.lang.String,java.lang.String)" class="member-name-link">getEngineAction</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#cancelEngineAction(java.lang.String,java.lang.String)" class="member-name-link">cancelEngineAction</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineActionGUID)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Request the status of an executing engine action request.</div>
+<div class="block">Request that execution of an engine action is stopped.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/EngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineActions(java.lang.String,int,int)" class="member-name-link">getEngineActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGovernanceActionProcess(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties,org.odpi.openmetadata.frameworks.governanceaction.properties.ProcessStatus)" class="member-name-link">createGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessProperties</a>&nbsp;processProperties,
+ <a href="../../../frameworks/governanceaction/properties/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">ProcessStatus</a>&nbsp;initialStatus)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the engine actions known to the server.</div>
+<div class="block">Create a new metadata element to represent a governance action process.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGovernanceActionProcessStep(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties)" class="member-name-link">createGovernanceActionProcessStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessStepProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessStepProperties</a>&nbsp;processStepProperties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create a new metadata element to represent a governance action process step.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createGovernanceActionType(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionTypeProperties)" class="member-name-link">createGovernanceActionType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="../../../frameworks/governanceaction/properties/GovernanceActionTypeProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionTypeProperties</a>&nbsp;properties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create a new metadata element to represent a governance action type.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/EngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineActionsByName(java.lang.String,java.lang.String,int,int)" class="member-name-link">getEngineActionsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findEngineActions(java.lang.String,java.lang.String,int,int)" class="member-name-link">findEngineActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the list of engine action metadata elements with a matching qualified or display name.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessStepElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessStepElement</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFirstActionProcessStep(java.lang.String,java.lang.String)" class="member-name-link">getFirstActionProcessStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the governance action process step that is the first step in a governance action process.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessElement</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionProcessByGUID(java.lang.String,java.lang.String)" class="member-name-link">getGovernanceActionProcessByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the governance action process metadata element with the supplied unique identifier.</div>
+<div class="block">Retrieve the list of engine action metadata elements that contain the search string.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionProcessesByName(java.lang.String,java.lang.String,int,int)" class="member-name-link">getGovernanceActionProcessesByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findGovernanceActionProcesses(java.lang.String,java.lang.String,int,int)" class="member-name-link">findGovernanceActionProcesses</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the list of governance action process metadata elements that contain the search string.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessStepElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessStepElement</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findGovernanceActionProcessSteps(java.lang.String,java.lang.String,int,int)" class="member-name-link">findGovernanceActionProcessSteps</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the list of governance action process step metadata elements that contain the search string.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/GovernanceActionTypeElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionTypeElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findGovernanceActionTypes(java.lang.String,java.lang.String,int,int)" class="member-name-link">findGovernanceActionTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the list of governance action type metadata elements that contain the search string.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/EngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionElement</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActiveEngineActions(java.lang.String,int,int)" class="member-name-link">getActiveEngineActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the engine actions that are still in process.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/governanceaction/properties/EngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionElement</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineAction(java.lang.String,java.lang.String)" class="member-name-link">getEngineAction</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineActionGUID)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Request the status of an executing engine action request.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/EngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionElement</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineActions(java.lang.String,int,int)" class="member-name-link">getEngineActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the engine actions known to the server.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/EngineActionElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEngineActionsByName(java.lang.String,java.lang.String,int,int)" class="member-name-link">getEngineActionsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the list of engine action metadata elements with a matching qualified or display name.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/governanceaction/properties/FirstGovernanceActionProcessStepElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">FirstGovernanceActionProcessStepElement</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFirstActionProcessStep(java.lang.String,java.lang.String)" class="member-name-link">getFirstActionProcessStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the governance action process step that is the first step in a governance action process.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessElement</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionProcessByGUID(java.lang.String,java.lang.String)" class="member-name-link">getGovernanceActionProcessByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the governance action process metadata element with the supplied unique identifier.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessElement</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionProcessesByName(java.lang.String,java.lang.String,int,int)" class="member-name-link">getGovernanceActionProcessesByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of governance action process metadata elements with a matching qualified or display name.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessGraph.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessGraph</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionProcessGraph(java.lang.String,java.lang.String)" class="member-name-link">getGovernanceActionProcessGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the governance action process metadata element with the supplied unique identifier
+ along with its process flow implementation.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessStepElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessStepElement</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionProcessStepByGUID(java.lang.String,java.lang.String)" class="member-name-link">getGovernanceActionProcessStepByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -801,6 +814,28 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <dd><code>engineActionGUID</code> - identifier of the engine action request.</dd>
 <dt>Returns:</dt>
 <dd>status enum</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there was a problem detected by the metadata store.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="cancelEngineAction(java.lang.String,java.lang.String)">
+<h3>cancelEngineAction</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">cancelEngineAction</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineActionGUID)</span>
+                        throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Request that execution of an engine action is stopped.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/governanceaction/client/ActionControlInterface.html#cancelEngineAction(java.lang.String,java.lang.String)">cancelEngineAction</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/ActionControlInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">ActionControlInterface</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>userId</code> - identifier of calling user</dd>
+<dd><code>engineActionGUID</code> - identifier of the engine action request.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
@@ -1358,6 +1393,32 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 </section>
 </li>
 <li>
+<section class="detail" id="getGovernanceActionProcessGraph(java.lang.String,java.lang.String)">
+<h3>getGovernanceActionProcessGraph</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessGraph.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessGraph</a></span>&nbsp;<span class="element-name">getGovernanceActionProcessGraph</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID)</span>
+                                                             throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Retrieve the governance action process metadata element with the supplied unique identifier
+ along with its process flow implementation.  This includes the process steps and the links
+ between them</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html#getGovernanceActionProcessGraph(java.lang.String,java.lang.String)">getGovernanceActionProcessGraph</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/governanceaction/client/GovernanceActionProcessInterface.html" title="interface in org.odpi.openmetadata.frameworks.governanceaction.client">GovernanceActionProcessInterface</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>processGUID</code> - unique identifier of the requested metadata element</dd>
+<dt>Returns:</dt>
+<dd>requested metadata element</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="createGovernanceActionProcessStep(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties)">
 <h3>createGovernanceActionProcessStep</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createGovernanceActionProcessStep</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -1541,9 +1602,9 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <li>
 <section class="detail" id="getFirstActionProcessStep(java.lang.String,java.lang.String)">
 <h3>getFirstActionProcessStep</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/governanceaction/properties/GovernanceActionProcessStepElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessStepElement</a></span>&nbsp;<span class="element-name">getFirstActionProcessStep</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/governanceaction/properties/FirstGovernanceActionProcessStepElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">FirstGovernanceActionProcessStepElement</a></span>&nbsp;<span class="element-name">getFirstActionProcessStep</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID)</span>
-                                                             throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                                  throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Return the governance action process step that is the first step in a governance action process.</div>
@@ -1554,7 +1615,7 @@ implements <a href="../../../frameworks/governanceaction/client/ActionControlInt
 <dd><code>userId</code> - calling user</dd>
 <dd><code>processGUID</code> - unique identifier of the governance action process</dd>
 <dt>Returns:</dt>
-<dd>properties of the governance action process step</dd>
+<dd>properties of the first governance action process step</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>

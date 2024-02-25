@@ -123,13 +123,22 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="col-last odd-row-color">
 <div class="block">OMES-SURVEY-ACTION-0021 - Survey action engine {0} is unable to update the status for survey action service {1}.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#INVALID_SURVEY_ACTION_SERVICE" class="member-name-link">INVALID_SURVEY_ACTION_SERVICE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#IGNORING_ASSETS" class="member-name-link">IGNORING_ASSETS</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">OMES-SURVEY-ACTION-0030 - The survey action service {0} linked to request type {1} is processing asset {2} and ignoring the following asset action targets: {3}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#INVALID_SURVEY_ACTION_SERVICE" class="member-name-link">INVALID_SURVEY_ACTION_SERVICE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMES-SURVEY-ACTION-0029 - The survey action service {0} linked to request type {1} can not be started.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NO_SURVEY_ACTION_ENGINES_STARTED" class="member-name-link">NO_SURVEY_ACTION_ENGINES_STARTED</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NO_SURVEY_ACTION_ENGINES_STARTED" class="member-name-link">NO_SURVEY_ACTION_ENGINES_STARTED</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMES-SURVEY-ACTION-0020 - Survey Action OMES in server {0} is unable to start any survey action engines</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NULL_SURVEY_SERVICE" class="member-name-link">NULL_SURVEY_SERVICE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OMES-SURVEY-ACTION-0022 - Method {0} can not execute in the survey action engine {1} hosted by Survey Action OMES in server {2} because the associated " +
+                                 "survey action service properties are null</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#SERVER_SHUTDOWN" class="member-name-link">SERVER_SHUTDOWN</a></code></div>
 <div class="col-last even-row-color">
@@ -286,11 +295,26 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="NULL_SURVEY_SERVICE">
+<h3>NULL_SURVEY_SERVICE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.surveyaction.ffdc">SurveyActionAuditCode</a></span>&nbsp;<span class="element-name">NULL_SURVEY_SERVICE</span></div>
+<div class="block">OMES-SURVEY-ACTION-0022 - Method {0} can not execute in the survey action engine {1} hosted by Survey Action OMES in server {2} because the associated " +
+                                 "survey action service properties are null</div>
+</section>
+</li>
+<li>
 <section class="detail" id="INVALID_SURVEY_ACTION_SERVICE">
 <h3>INVALID_SURVEY_ACTION_SERVICE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.surveyaction.ffdc">SurveyActionAuditCode</a></span>&nbsp;<span class="element-name">INVALID_SURVEY_ACTION_SERVICE</span></div>
 <div class="block">OMES-SURVEY-ACTION-0029 - The survey action service {0} linked to request type {1} can not be started.
  The {2} exception was returned with message {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="IGNORING_ASSETS">
+<h3>IGNORING_ASSETS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="SurveyActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.surveyaction.ffdc">SurveyActionAuditCode</a></span>&nbsp;<span class="element-name">IGNORING_ASSETS</span></div>
+<div class="block">OMES-SURVEY-ACTION-0030 - The survey action service {0} linked to request type {1} is processing asset {2} and ignoring the following asset action targets: {3}</div>
 </section>
 </li>
 </ul>

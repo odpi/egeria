@@ -144,14 +144,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the open metadata server's name from the configuration.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#initialize(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,int,org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient,org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient,org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig,org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap)" class="member-name-link">initialize</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#initialize(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,int,org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceEngineConfigurationClient,org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig,org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap)" class="member-name-link">initialize</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerPassword,
  int&nbsp;maxPageSize,
- <a href="../../../accessservices/governanceengine/client/GovernanceEngineConfigurationClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client">GovernanceEngineConfigurationClient</a>&nbsp;configurationClient,
- <a href="../../../accessservices/governanceengine/client/GovernanceContextClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client">GovernanceContextClient</a>&nbsp;governanceActionClient,
+ <a href="../../../accessservices/governanceserver/client/GovernanceEngineConfigurationClient.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.client">GovernanceEngineConfigurationClient</a>&nbsp;configurationClient,
  <a href="../../../adminservices/configuration/properties/EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&nbsp;engineServiceConfig,
  <a href="../enginemap/GovernanceEngineMap.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.enginemap">GovernanceEngineMap</a>&nbsp;governanceEngineMap)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
@@ -225,7 +224,7 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="initialize(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,int,org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient,org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient,org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig,org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap)">
+<section class="detail" id="initialize(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,java.lang.String,int,org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceEngineConfigurationClient,org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig,org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap)">
 <h3>initialize</h3>
 <div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initialize</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
@@ -233,8 +232,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerUserId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerPassword,
  int&nbsp;maxPageSize,
- <a href="../../../accessservices/governanceengine/client/GovernanceEngineConfigurationClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client">GovernanceEngineConfigurationClient</a>&nbsp;configurationClient,
- <a href="../../../accessservices/governanceengine/client/GovernanceContextClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client">GovernanceContextClient</a>&nbsp;governanceActionClient,
+ <a href="../../../accessservices/governanceserver/client/GovernanceEngineConfigurationClient.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.client">GovernanceEngineConfigurationClient</a>&nbsp;configurationClient,
  <a href="../../../adminservices/configuration/properties/EngineServiceConfig.html" title="class in org.odpi.openmetadata.adminservices.configuration.properties">EngineServiceConfig</a>&nbsp;engineServiceConfig,
  <a href="../enginemap/GovernanceEngineMap.html" title="class in org.odpi.openmetadata.governanceservers.enginehostservices.enginemap">GovernanceEngineMap</a>&nbsp;governanceEngineMap)</span>
                          throws <span class="exceptions"><a href="../../../adminservices/ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></span></div>
@@ -248,7 +246,6 @@ loadScripts(document, 'script');</script>
 <dd><code>localServerPassword</code> - password for this server to use if sending REST requests</dd>
 <dd><code>maxPageSize</code> - maximum number of records that can be requested on the pageSize parameter</dd>
 <dd><code>configurationClient</code> - client used to connect to the Governance Engine OMAS to retrieve the governance engine definitions</dd>
-<dd><code>governanceActionClient</code> - client used to connect to the Governance Engine OMAS to manage governance actions</dd>
 <dd><code>engineServiceConfig</code> - details of the options and the engines to run</dd>
 <dd><code>governanceEngineMap</code> - map of configured engines</dd>
 <dt>Throws:</dt>

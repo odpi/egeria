@@ -80,7 +80,7 @@ loadScripts(document, 'script');</script>
 @RequestMapping("/servers/{serverName}/open-metadata/lineage-warehouse/users/{userId}")
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">LineageWarehouseResource</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">* The OpenLineageResource provides the server-side interface of the Lineage Warehouse Services governance server.</div>
+<div class="block">The OpenLineageResource provides the server-side interface of the Lineage Warehouse Services governance server.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -113,14 +113,14 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../requests/ElementHierarchyRequest.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.requests">ElementHierarchyRequest</a>&nbsp;elementHierarchyRequest)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns a subraph representing the hierarchy of a certain node, based on the request</div>
+<div class="block">Returns a subgraph representing the hierarchy of a certain node, based on the request</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../responses/LineageVertexResponse.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.responses">LineageVertexResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntityDetails(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getEntityDetails</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Gets entity details.</div>
+<div class="block">Gets details of a specific entity from the lineage repository.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../responses/LineageNodeNamesResponse.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.responses">LineageNodeNamesResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNodes(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int)" class="member-name-link">getNodes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -218,7 +218,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @PathVariable("guid")
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</span></div>
-<div class="block">Gets entity details.</div>
+<div class="block">Gets details of a specific entity from the lineage repository.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - the server name</dd>
@@ -269,7 +269,7 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - the server name</dd>
 <dd><code>userId</code> - the user id</dd>
 <dd><code>type</code> - the type of the nodes name to search for</dd>
-<dd><code>searchValue</code> - the string to be contained in the display name of the node - case insensitive</dd>
+<dd><code>searchValue</code> - the string to be contained in the display name of the node - case-insensitive</dd>
 <dd><code>limit</code> - the maximum number of node names to retrieve</dd>
 <dt>Returns:</dt>
 <dd>the node names that match criteria</dd>
@@ -300,7 +300,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @RequestBody
  <a href="../../requests/ElementHierarchyRequest.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.requests">ElementHierarchyRequest</a>&nbsp;elementHierarchyRequest)</span></div>
-<div class="block">Returns a subraph representing the hierarchy of a certain node, based on the request</div>
+<div class="block">Returns a subgraph representing the hierarchy of a certain node, based on the request</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user.</dd>

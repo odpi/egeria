@@ -79,20 +79,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="../../../commonservices/ffdc/rest/FFDCResponse.html" title="interface in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponse</a></code></dd>
+<dd><code><a href="../../../commonservices/ffdc/rest/FFDCResponse.html" title="interface in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponse</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">LineageResponse</span>
-<span class="extends-implements">extends <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponseBase</a>
-implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../serialized-form.html#org.odpi.openmetadata.governanceservers.lineagewarehouse.responses.LineageResponse">Serialized Form</a></li>
-</ul>
-</dd>
-</dl>
+<span class="extends-implements">extends <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponseBase</a></span></div>
+<div class="block">Return a lineage graph</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -122,31 +114,37 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#canEqual(java.lang.Object)" class="member-name-link">canEqual</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;other)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return comparison result based on the content of the properties.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.model">LineageVerticesAndEdges</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLineageVerticesAndEdges()" class="member-name-link">getLineageVerticesAndEdges</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.model">LineageVerticesAndEdges</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLineageVerticesAndEdges()" class="member-name-link">getLineageVerticesAndEdges</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the graph</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return hash code for this object</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLineageVerticesAndEdges(org.odpi.openmetadata.governanceservers.lineagewarehouse.model.LineageVerticesAndEdges)" class="member-name-link">setLineageVerticesAndEdges</a><wbr>(<a href="../model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.model">LineageVerticesAndEdges</a>&nbsp;lineageVerticesAndEdges)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLineageVerticesAndEdges(org.odpi.openmetadata.governanceservers.lineagewarehouse.model.LineageVerticesAndEdges)" class="member-name-link">setLineageVerticesAndEdges</a><wbr>(<a href="../model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.model">LineageVerticesAndEdges</a>&nbsp;lineageVerticesAndEdges)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the graph structure</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">JSON-like toString</div>
+</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase">Methods inherited from class&nbsp;org.odpi.openmetadata.commonservices.ffdc.rest.<a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponseBase</a></h3>
-<code><a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#getActionDescription()">getActionDescription</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#getExceptionCausedBy()">getExceptionCausedBy</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#getExceptionClassName()">getExceptionClassName</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#getExceptionErrorMessage()">getExceptionErrorMessage</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#getExceptionErrorMessageId()">getExceptionErrorMessageId</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#getExceptionErrorMessageParameters()">getExceptionErrorMessageParameters</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#getExceptionProperties()">getExceptionProperties</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#getExceptionSystemAction()">getExceptionSystemAction</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#getExceptionUserAction()">getExceptionUserAction</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#getRelatedHTTPCode()">getRelatedHTTPCode</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#setActionDescription(java.lang.String)">setActionDescription</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#setExceptionCausedBy(java.lang.String)">setExceptionCausedBy</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#setExceptionClassName(java.lang.String)">setExceptionClassName</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#setExceptionErrorMessage(java.lang.String)">setExceptionErrorMessage</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#setExceptionErrorMessageId(java.lang.String)">setExceptionErrorMessageId</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#setExceptionErrorMessageParameters(java.lang.String%5B%5D)">setExceptionErrorMessageParameters</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#setExceptionProperties(java.util.Map)">setExceptionProperties</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#setExceptionSystemAction(java.lang.String)">setExceptionSystemAction</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#setExceptionUserAction(java.lang.String)">setExceptionUserAction</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#setRelatedHTTPCode(int)">setRelatedHTTPCode</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#toString()">toString</a></code></div>
+<code><a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#getActionDescription()">getActionDescription</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#getExceptionCausedBy()">getExceptionCausedBy</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#getExceptionClassName()">getExceptionClassName</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#getExceptionErrorMessage()">getExceptionErrorMessage</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#getExceptionErrorMessageId()">getExceptionErrorMessageId</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#getExceptionErrorMessageParameters()">getExceptionErrorMessageParameters</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#getExceptionProperties()">getExceptionProperties</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#getExceptionSystemAction()">getExceptionSystemAction</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#getExceptionUserAction()">getExceptionUserAction</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#getRelatedHTTPCode()">getRelatedHTTPCode</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#setActionDescription(java.lang.String)">setActionDescription</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#setExceptionCausedBy(java.lang.String)">setExceptionCausedBy</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#setExceptionClassName(java.lang.String)">setExceptionClassName</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#setExceptionErrorMessage(java.lang.String)">setExceptionErrorMessage</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#setExceptionErrorMessageId(java.lang.String)">setExceptionErrorMessageId</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#setExceptionErrorMessageParameters(java.lang.String%5B%5D)">setExceptionErrorMessageParameters</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#setExceptionProperties(java.util.Map)">setExceptionProperties</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#setExceptionSystemAction(java.lang.String)">setExceptionSystemAction</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#setExceptionUserAction(java.lang.String)">setExceptionUserAction</a>, <a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#setRelatedHTTPCode(int)">setRelatedHTTPCode</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -185,41 +183,56 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="getLineageVerticesAndEdges()">
 <h3>getLineageVerticesAndEdges</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.model">LineageVerticesAndEdges</a></span>&nbsp;<span class="element-name">getLineageVerticesAndEdges</span>()</div>
+<div class="block">Return the graph</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>graph structure</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="setLineageVerticesAndEdges(org.odpi.openmetadata.governanceservers.lineagewarehouse.model.LineageVerticesAndEdges)">
 <h3>setLineageVerticesAndEdges</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLineageVerticesAndEdges</span><wbr><span class="parameters">(<a href="../model/LineageVerticesAndEdges.html" title="class in org.odpi.openmetadata.governanceservers.lineagewarehouse.model">LineageVerticesAndEdges</a>&nbsp;lineageVerticesAndEdges)</span></div>
+<div class="block">Set up the graph structure</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>lineageVerticesAndEdges</code> - graph structure</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="toString()">
+<h3>toString</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
+<div class="block">JSON-like toString</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponseBase</a></code></dd>
+<dt>Returns:</dt>
+<dd>string containing the property names and values</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="equals(java.lang.Object)">
 <h3>equals</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equals</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</span></div>
-<div class="block"><span class="descfrm-type-label">Description copied from class:&nbsp;<code><a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#equals(java.lang.Object)">FFDCResponseBase</a></code></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equals</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</span></div>
 <div class="block">Return comparison result based on the content of the properties.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FFDCResponseBase</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>o</code> - test object</dd>
+<dd><code>objectToCompare</code> - test object</dd>
 <dt>Returns:</dt>
 <dd>result of comparison</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="canEqual(java.lang.Object)">
-<h3>canEqual</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">canEqual</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;other)</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="hashCode()">
 <h3>hashCode</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">hashCode</span>()</div>
-<div class="block"><span class="descfrm-type-label">Description copied from class:&nbsp;<code><a href="../../../commonservices/ffdc/rest/FFDCResponseBase.html#hashCode()">FFDCResponseBase</a></code></span></div>
 <div class="block">Return hash code for this object</div>
 <dl class="notes">
 <dt>Overrides:</dt>

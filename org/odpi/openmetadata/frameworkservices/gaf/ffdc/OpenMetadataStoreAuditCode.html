@@ -145,8 +145,12 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="block">OPEN-METADATA-STORE-0008 - The Open Metadata Store Services detected an unexpected {0} exception during the initialization of its services;
  error message is {1}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#WATCHDOG_LISTENER_EXCEPTION" class="member-name-link">WATCHDOG_LISTENER_EXCEPTION</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#WATCHDOG_EVENT_FAILURE" class="member-name-link">WATCHDOG_EVENT_FAILURE</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">OMES-GOVERNANCE-ACTION-0015 - The Governance Action Framework received an {0} exception from the {1} governance action service while it was processing a watchdog event of type {2}; error message is {3}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#WATCHDOG_LISTENER_EXCEPTION" class="member-name-link">WATCHDOG_LISTENER_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OPEN-METADATA-STORE-0021 - Failed to publish watchdog event to Watchdog Governance Action Service for governance engine {0}.</div>
 </div>
 </div>
@@ -250,6 +254,13 @@ the order they are declared.</div>
 <h3>SERVICE_SHUTDOWN</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataStoreAuditCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.gaf.ffdc">OpenMetadataStoreAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_SHUTDOWN</span></div>
 <div class="block">OPEN-METADATA-STORE-0012 - The Open Metadata Store Services are shutting down its instance for server {0}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="WATCHDOG_EVENT_FAILURE">
+<h3>WATCHDOG_EVENT_FAILURE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataStoreAuditCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.gaf.ffdc">OpenMetadataStoreAuditCode</a></span>&nbsp;<span class="element-name">WATCHDOG_EVENT_FAILURE</span></div>
+<div class="block">OMES-GOVERNANCE-ACTION-0015 - The Governance Action Framework received an {0} exception from the {1} governance action service while it was processing a watchdog event of type {2}; error message is {3}</div>
 </section>
 </li>
 <li>

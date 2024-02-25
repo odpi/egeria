@@ -75,9 +75,23 @@ loadScripts(document, 'script');</script>
 <div class="inheritance">org.odpi.openmetadata.governanceservers.lineagewarehouse.model.LineageQueryParameters</div>
 </div>
 <section class="class-description" id="class-description">
+<dl class="notes">
+<dt>All Implemented Interfaces:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code></dd>
+</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">LineageQueryParameters</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
+implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
+<div class="block">The values that define the</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../../serialized-form.html#org.odpi.openmetadata.governanceservers.lineagewarehouse.model.LineageQueryParameters">Serialized Form</a></li>
+</ul>
+</dd>
+</dl>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -90,10 +104,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">LineageQueryParameters</a>()</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Default constructor used by Jackson</div>
+</div>
 <div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.governanceservers.lineagewarehouse.model.Scope,boolean)" class="member-name-link">LineageQueryParameters</a><wbr>(<a href="Scope.html" title="enum class in org.odpi.openmetadata.governanceservers.lineagewarehouse.model">Scope</a>&nbsp;scope,
  boolean&nbsp;includeProcesses)</code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Constructor to set up the bean in one go.</div>
+</div>
 </div>
 </section>
 </li>
@@ -128,7 +146,9 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Standard toString method.</div>
+</div>
 </div>
 </div>
 </div>
@@ -150,6 +170,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;()">
 <h3>LineageQueryParameters</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">LineageQueryParameters</span>()</div>
+<div class="block">Default constructor used by Jackson</div>
 </section>
 </li>
 <li>
@@ -157,6 +178,12 @@ loadScripts(document, 'script');</script>
 <h3>LineageQueryParameters</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">LineageQueryParameters</span><wbr><span class="parameters">(<a href="Scope.html" title="enum class in org.odpi.openmetadata.governanceservers.lineagewarehouse.model">Scope</a>&nbsp;scope,
  boolean&nbsp;includeProcesses)</span></div>
+<div class="block">Constructor to set up the bean in one go.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>scope</code> - scope of the request</dd>
+<dd><code>includeProcesses</code> - should processes be returned?</dd>
+</dl>
 </section>
 </li>
 </ul>
@@ -207,9 +234,12 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
+<div class="block">Standard toString method.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dt>Returns:</dt>
+<dd>print out of variables in a JSON-style</dd>
 </dl>
 </section>
 </li>

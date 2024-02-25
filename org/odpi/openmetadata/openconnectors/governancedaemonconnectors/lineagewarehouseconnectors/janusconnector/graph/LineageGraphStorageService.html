@@ -77,12 +77,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.graph">LineageGraph</a></code></dd>
+<dd><code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.connector">LineageWarehouseGraphStorageService</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">LineageGraphStorageService</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.graph">LineageGraph</a></span></div>
+implements <a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.connector">LineageWarehouseGraphStorageService</a></span></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -120,8 +120,7 @@ implements <a href="../../../../../governanceservers/lineagewarehouse/graph/Line
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteEntity(java.lang.String,java.lang.Object)" class="member-name-link">deleteEntity</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;version)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">/**
- Deletes a vertex in the graph</div>
+<div class="block">Deletes a vertex in the graph</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteRelationship(java.lang.String)" class="member-name-link">deleteRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
@@ -216,7 +215,7 @@ implements <a href="../../../../../governanceservers/lineagewarehouse/graph/Line
 <div class="block">Creates vertices and the relationships between them</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html#storeToGraph(java.util.Set)">storeToGraph</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.graph">LineageGraph</a></code></dd>
+<dd><code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html#storeToGraph(java.util.Set)">storeToGraph</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.connector">LineageWarehouseGraphStorageService</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>graphContext</code> - - graph Collection that contains vertices and edges to be stored</dd>
 </dl>
@@ -231,7 +230,9 @@ implements <a href="../../../../../governanceservers/lineagewarehouse/graph/Line
  SyncUpdateContext contains the context for syncing the relationships of a node after an update.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html#updateNeighbours(org.odpi.openmetadata.accessservices.assetlineage.model.LineageSyncUpdateContext)">updateNeighbours</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.graph">LineageGraph</a></code></dd>
+<dd><code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html#updateNeighbours(org.odpi.openmetadata.accessservices.assetlineage.model.LineageSyncUpdateContext)">updateNeighbours</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.connector">LineageWarehouseGraphStorageService</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>syncUpdateContext</code> - contains the context for syncing the relationships of a node after an update.</dd>
 </dl>
 </section>
 </li>
@@ -242,7 +243,7 @@ implements <a href="../../../../../governanceservers/lineagewarehouse/graph/Line
 <div class="block">Updates the properties of a vertex</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html#updateEntity(org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity)">updateEntity</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.graph">LineageGraph</a></code></dd>
+<dd><code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html#updateEntity(org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity)">updateEntity</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.connector">LineageWarehouseGraphStorageService</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>lineageEntity</code> - - LineageEntity object that has the updated values</dd>
 </dl>
@@ -256,7 +257,7 @@ implements <a href="../../../../../governanceservers/lineagewarehouse/graph/Line
  In case the vertexes are not created, they are firstly created</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html#upsertRelationship(org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship)">upsertRelationship</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.graph">LineageGraph</a></code></dd>
+<dd><code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html#upsertRelationship(org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship)">upsertRelationship</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.connector">LineageWarehouseGraphStorageService</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>lineageRelationship</code> - relationship to be updated or created</dd>
 </dl>
@@ -269,7 +270,7 @@ implements <a href="../../../../../governanceservers/lineagewarehouse/graph/Line
 <div class="block">Updates the properties of an edge</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html#updateRelationship(org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship)">updateRelationship</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.graph">LineageGraph</a></code></dd>
+<dd><code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html#updateRelationship(org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship)">updateRelationship</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.connector">LineageWarehouseGraphStorageService</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>lineageRelationship</code> - - lineageRelationship object that has the updated values</dd>
 </dl>
@@ -282,7 +283,7 @@ implements <a href="../../../../../governanceservers/lineagewarehouse/graph/Line
 <div class="block">Updates the classification of a vertex</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html#updateClassification(java.util.Set)">updateClassification</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.graph">LineageGraph</a></code></dd>
+<dd><code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html#updateClassification(java.util.Set)">updateClassification</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.connector">LineageWarehouseGraphStorageService</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>classificationContext</code> - - LineageEntity object that has the updated values</dd>
 </dl>
@@ -295,7 +296,7 @@ implements <a href="../../../../../governanceservers/lineagewarehouse/graph/Line
 <div class="block">Deletes a classification of a vertex</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html#deleteClassification(java.util.Set)">deleteClassification</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.graph">LineageGraph</a></code></dd>
+<dd><code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html#deleteClassification(java.util.Set)">deleteClassification</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.connector">LineageWarehouseGraphStorageService</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>classificationContext</code> - - any remaining classifications, empty map if none</dd>
 </dl>
@@ -305,11 +306,11 @@ implements <a href="../../../../../governanceservers/lineagewarehouse/graph/Line
 <section class="detail" id="deleteRelationship(java.lang.String)">
 <h3>deleteRelationship</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deleteRelationship</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</span></div>
-<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html#deleteRelationship(java.lang.String)">LineageGraph</a></code></span></div>
+<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html#deleteRelationship(java.lang.String)">LineageWarehouseGraphStorageService</a></code></span></div>
 <div class="block">Deletes a relationship in the graph</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html#deleteRelationship(java.lang.String)">deleteRelationship</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.graph">LineageGraph</a></code></dd>
+<dd><code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html#deleteRelationship(java.lang.String)">deleteRelationship</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.connector">LineageWarehouseGraphStorageService</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>guid</code> - unique identifier of the entity to be deleted</dd>
 </dl>
@@ -320,12 +321,11 @@ implements <a href="../../../../../governanceservers/lineagewarehouse/graph/Line
 <h3>deleteEntity</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deleteEntity</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;version)</span></div>
-<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html#deleteEntity(java.lang.String,java.lang.Object)">LineageGraph</a></code></span></div>
-<div class="block">/**
- Deletes a vertex in the graph</div>
+<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html#deleteEntity(java.lang.String,java.lang.Object)">LineageWarehouseGraphStorageService</a></code></span></div>
+<div class="block">Deletes a vertex in the graph</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html#deleteEntity(java.lang.String,java.lang.Object)">deleteEntity</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.graph">LineageGraph</a></code></dd>
+<dd><code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html#deleteEntity(java.lang.String,java.lang.Object)">deleteEntity</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.connector">LineageWarehouseGraphStorageService</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>guid</code> - unique identifier of the entity to be deleted</dd>
 <dd><code>version</code> - version of the entity to be deleted</dd>
@@ -336,11 +336,11 @@ implements <a href="../../../../../governanceservers/lineagewarehouse/graph/Line
 <section class="detail" id="saveAssetLineageUpdateTime(java.lang.Long)">
 <h3>saveAssetLineageUpdateTime</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">saveAssetLineageUpdateTime</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;lastUpdateTime)</span></div>
-<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html#saveAssetLineageUpdateTime(java.lang.Long)">LineageGraph</a></code></span></div>
+<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html#saveAssetLineageUpdateTime(java.lang.Long)">LineageWarehouseGraphStorageService</a></code></span></div>
 <div class="block">Save last asset lineage update time in the graph</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html#saveAssetLineageUpdateTime(java.lang.Long)">saveAssetLineageUpdateTime</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.graph">LineageGraph</a></code></dd>
+<dd><code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html#saveAssetLineageUpdateTime(java.lang.Long)">saveAssetLineageUpdateTime</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.connector">LineageWarehouseGraphStorageService</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>lastUpdateTime</code> - the standard epoch time in milliseconds</dd>
 </dl>
@@ -356,11 +356,11 @@ implements <a href="../../../../../governanceservers/lineagewarehouse/graph/Line
 <section class="detail" id="getAssetLineageUpdateTime()">
 <h3>getAssetLineageUpdateTime</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Optional.html" title="class or interface in java.util" class="external-link">Optional</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&gt;</span>&nbsp;<span class="element-name">getAssetLineageUpdateTime</span>()</div>
-<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html#getAssetLineageUpdateTime()">LineageGraph</a></code></span></div>
+<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html#getAssetLineageUpdateTime()">LineageWarehouseGraphStorageService</a></code></span></div>
 <div class="block">Gets last asset lineage update time from the graph</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html#getAssetLineageUpdateTime()">getAssetLineageUpdateTime</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.graph">LineageGraph</a></code></dd>
+<dd><code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html#getAssetLineageUpdateTime()">getAssetLineageUpdateTime</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.connector">LineageWarehouseGraphStorageService</a></code></dd>
 <dt>Returns:</dt>
 <dd>last update time represented as epoch time milliseconds</dd>
 </dl>
@@ -373,7 +373,7 @@ implements <a href="../../../../../governanceservers/lineagewarehouse/graph/Line
 <div class="block">Returns whether an entity exists in the graph or not</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html#isEntityInGraph(java.lang.String)">isEntityInGraph</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/graph/LineageGraph.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.graph">LineageGraph</a></code></dd>
+<dd><code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html#isEntityInGraph(java.lang.String)">isEntityInGraph</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../governanceservers/lineagewarehouse/connector/LineageWarehouseGraphStorageService.html" title="interface in org.odpi.openmetadata.governanceservers.lineagewarehouse.connector">LineageWarehouseGraphStorageService</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>guid</code> - the lineage entity guid</dd>
 <dt>Returns:</dt>

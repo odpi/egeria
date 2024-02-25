@@ -97,22 +97,32 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#adminUserId" class="member-name-link">adminUserId</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Callers user id to pass on each request to the config document store.</div>
+</div>
 <div class="col-first odd-row-color"><code>protected <a href="../../commonservices/ffdc/InvalidParameterHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">InvalidParameterHandler</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#invalidParameterHandler" class="member-name-link">invalidParameterHandler</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Handler for validating parameters passed on requests.</div>
+</div>
 <div class="col-first even-row-color"><code>protected <a href="../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a></code></div>
 <div class="col-second even-row-color"><code><a href="#nullRequestBody" class="member-name-link">nullRequestBody</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>protected <a href="rest/AdminServicesRESTClient.html" title="class in org.odpi.openmetadata.adminservices.client.rest">AdminServicesRESTClient</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#restClient" class="member-name-link">restClient</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">REST client for calling the Administration Services on the platform.</div>
+</div>
 <div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#serverName" class="member-name-link">serverName</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Name of the server being configured.</div>
+</div>
 <div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#serverPlatformRootURL" class="member-name-link">serverPlatformRootURL</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">URL of the platform that can pass on administration requests to the configuration document store.</div>
+</div>
 </div>
 </section>
 </li>
@@ -230,15 +240,15 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the complete set of configuration properties in use by a running instance of the server.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/ServerTypeClassificationSummary.html" title="class in org.odpi.openmetadata.adminservices.rest">ServerTypeClassificationSummary</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerClassification()" class="member-name-link">getServerClassification</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerSecurityConnection()" class="member-name-link">getServerSecurityConnection</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the derived server type that is classified based on the configuration values.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerSecurityConnection()" class="member-name-link">getServerSecurityConnection</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the connection object for the server security connector.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/ServerTypeClassificationSummary.html" title="class in org.odpi.openmetadata.adminservices.rest">ServerTypeClassificationSummary</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServerTypeClassification()" class="member-name-link">getServerTypeClassification</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the derived server type that is classified based on the configuration values.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLogDestinations(java.util.List)" class="member-name-link">setAuditLogDestinations</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&gt;&nbsp;auditLogDestinations)</code></div>
@@ -342,30 +352,35 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="adminUserId">
 <h3>adminUserId</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">adminUserId</span></div>
+<div class="block">Callers user id to pass on each request to the config document store.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="serverName">
 <h3>serverName</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">serverName</span></div>
+<div class="block">Name of the server being configured.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="serverPlatformRootURL">
 <h3>serverPlatformRootURL</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">serverPlatformRootURL</span></div>
+<div class="block">URL of the platform that can pass on administration requests to the configuration document store.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="invalidParameterHandler">
 <h3>invalidParameterHandler</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../commonservices/ffdc/InvalidParameterHandler.html" title="class in org.odpi.openmetadata.commonservices.ffdc">InvalidParameterHandler</a></span>&nbsp;<span class="element-name">invalidParameterHandler</span></div>
+<div class="block">Handler for validating parameters passed on requests.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="restClient">
 <h3>restClient</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="rest/AdminServicesRESTClient.html" title="class in org.odpi.openmetadata.adminservices.client.rest">AdminServicesRESTClient</a></span>&nbsp;<span class="element-name">restClient</span></div>
+<div class="block">REST client for calling the Administration Services on the platform.</div>
 </section>
 </li>
 <li>
@@ -450,10 +465,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getServerClassification()">
-<h3>getServerClassification</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/ServerTypeClassificationSummary.html" title="class in org.odpi.openmetadata.adminservices.rest">ServerTypeClassificationSummary</a></span>&nbsp;<span class="element-name">getServerClassification</span>()
-                                                        throws <span class="exceptions"><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
+<section class="detail" id="getServerTypeClassification()">
+<h3>getServerTypeClassification</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/ServerTypeClassificationSummary.html" title="class in org.odpi.openmetadata.adminservices.rest">ServerTypeClassificationSummary</a></span>&nbsp;<span class="element-name">getServerTypeClassification</span>()
+                                                            throws <span class="exceptions"><a href="../ffdc/exception/OMAGNotAuthorizedException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGNotAuthorizedException</a>,
 <a href="../ffdc/exception/OMAGInvalidParameterException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGInvalidParameterException</a>,
 <a href="../ffdc/exception/OMAGConfigurationErrorException.html" title="class in org.odpi.openmetadata.adminservices.ffdc.exception">OMAGConfigurationErrorException</a></span></div>
 <div class="block">Return the derived server type that is classified based on the configuration values.</div>

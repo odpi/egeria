@@ -74,7 +74,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Known Implementing Classes:</dt>
-<dd><code><a href="../../../accessservices/governanceengine/client/GovernanceContextClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client">GovernanceContextClient</a></code>, <code><a href="../../../frameworkservices/gaf/client/GovernanceContextClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceContextClientBase</a></code>, <code><a href="../../../accessservices/assetmanager/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/assetowner/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client">OpenGovernanceClient</a></code>, <code><a href="../../../frameworkservices/gaf/client/OpenGovernanceClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">OpenGovernanceClientBase</a></code>, <code><a href="../../../accessservices/assetconsumer/client/OpenGovernanceServiceClient.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.client">OpenGovernanceServiceClient</a></code>, <code><a href="../../../accessservices/digitalservice/client/OpenGovernanceServiceClient.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.client">OpenGovernanceServiceClient</a></code></dd>
+<dd><code><a href="../../../accessservices/governanceengine/client/GovernanceContextClient.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.client">GovernanceContextClient</a></code>, <code><a href="../../../accessservices/governanceserver/client/GovernanceContextClient.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.client">GovernanceContextClient</a></code>, <code><a href="../../../frameworkservices/gaf/client/GovernanceContextClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">GovernanceContextClientBase</a></code>, <code><a href="../../../accessservices/assetmanager/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/assetowner/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client">OpenGovernanceClient</a></code>, <code><a href="../../../accessservices/governanceserver/client/OpenGovernanceClient.html" title="class in org.odpi.openmetadata.accessservices.governanceserver.client">OpenGovernanceClient</a></code>, <code><a href="../../../frameworkservices/gaf/client/OpenGovernanceClientBase.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.client">OpenGovernanceClientBase</a></code>, <code><a href="../../../accessservices/assetconsumer/client/OpenGovernanceServiceClient.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.client">OpenGovernanceServiceClient</a></code>, <code><a href="../../../accessservices/digitalservice/client/OpenGovernanceServiceClient.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.client">OpenGovernanceServiceClient</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">GovernanceActionProcessInterface</span></div>
@@ -122,7 +122,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Retrieve the list of governance action process step metadata elements that contain the search string.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="../properties/GovernanceActionProcessStepElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessStepElement</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="../properties/FirstGovernanceActionProcessStepElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">FirstGovernanceActionProcessStepElement</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getFirstActionProcessStep(java.lang.String,java.lang.String)" class="member-name-link">getFirstActionProcessStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
@@ -142,108 +142,115 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Retrieve the list of governance action process metadata elements with a matching qualified or display name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="../properties/GovernanceActionProcessStepElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessStepElement</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getGovernanceActionProcessStepByGUID(java.lang.String,java.lang.String)" class="member-name-link">getGovernanceActionProcessStepByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processStepGUID)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="../properties/GovernanceActionProcessGraph.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessGraph</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getGovernanceActionProcessGraph(java.lang.String,java.lang.String)" class="member-name-link">getGovernanceActionProcessGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Retrieve the governance action process metadata element with the supplied unique identifier
+ along with its process flow implementation.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="../properties/GovernanceActionProcessStepElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessStepElement</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getGovernanceActionProcessStepByGUID(java.lang.String,java.lang.String)" class="member-name-link">getGovernanceActionProcessStepByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processStepGUID)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Retrieve the governance action process step metadata element with the supplied unique identifier.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/GovernanceActionProcessStepElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessStepElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getGovernanceActionProcessStepsByName(java.lang.String,java.lang.String,int,int)" class="member-name-link">getGovernanceActionProcessStepsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/GovernanceActionProcessStepElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessStepElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getGovernanceActionProcessStepsByName(java.lang.String,java.lang.String,int,int)" class="member-name-link">getGovernanceActionProcessStepsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Retrieve the list of governance action process step metadata elements with a matching qualified or display name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/NextGovernanceActionProcessStepElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NextGovernanceActionProcessStepElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getNextGovernanceActionProcessSteps(java.lang.String,java.lang.String,int,int)" class="member-name-link">getNextGovernanceActionProcessSteps</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/NextGovernanceActionProcessStepElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">NextGovernanceActionProcessStepElement</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getNextGovernanceActionProcessSteps(java.lang.String,java.lang.String,int,int)" class="member-name-link">getNextGovernanceActionProcessSteps</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processStepGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return the list of next process step defined for the governance action process.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#publishGovernanceActionProcess(java.lang.String,java.lang.String)" class="member-name-link">publishGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#publishGovernanceActionProcess(java.lang.String,java.lang.String)" class="member-name-link">publishGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Update the zones for the asset so that it becomes visible to consumers.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeFirstActionProcessStep(java.lang.String,java.lang.String)" class="member-name-link">removeFirstActionProcessStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeFirstActionProcessStep(java.lang.String,java.lang.String)" class="member-name-link">removeFirstActionProcessStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Remove the link between a governance process and that governance action process step that defines its first step.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeGovernanceActionProcess(java.lang.String,java.lang.String)" class="member-name-link">removeGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeGovernanceActionProcess(java.lang.String,java.lang.String)" class="member-name-link">removeGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Remove the metadata element representing a governance action process.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeGovernanceActionProcessStep(java.lang.String,java.lang.String)" class="member-name-link">removeGovernanceActionProcessStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeGovernanceActionProcessStep(java.lang.String,java.lang.String)" class="member-name-link">removeGovernanceActionProcessStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processStepGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Remove the metadata element representing a governance action process step.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeNextActionProcessStep(java.lang.String,java.lang.String)" class="member-name-link">removeNextActionProcessStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#removeNextActionProcessStep(java.lang.String,java.lang.String)" class="member-name-link">removeNextActionProcessStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processStepLinkGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Remove a follow-on step from a governance action process.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setupFirstActionProcessStep(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">setupFirstActionProcessStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setupFirstActionProcessStep(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">setupFirstActionProcessStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processStepGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guard)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Set up a link between a governance action process and a governance action process step.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setupNextActionProcessStep(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean)" class="member-name-link">setupNextActionProcessStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setupNextActionProcessStep(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean)" class="member-name-link">setupNextActionProcessStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentActionProcessStepGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nextActionProcessStepGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guard,
  boolean&nbsp;mandatoryGuard,
  boolean&nbsp;ignoreMultipleTriggers)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Add a link between two governance action process steps to show that one follows on from the other when a governance action process
  is executing.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateGovernanceActionProcess(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.properties.ProcessStatus,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties)" class="member-name-link">updateGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateGovernanceActionProcess(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.properties.ProcessStatus,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties)" class="member-name-link">updateGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID,
  boolean&nbsp;isMergeUpdate,
  <a href="../properties/ProcessStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">ProcessStatus</a>&nbsp;processStatus,
  <a href="../properties/GovernanceActionProcessProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessProperties</a>&nbsp;processProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Update the metadata element representing a governance action process.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateGovernanceActionProcessStep(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties)" class="member-name-link">updateGovernanceActionProcessStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateGovernanceActionProcessStep(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties)" class="member-name-link">updateGovernanceActionProcessStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processStepGUID,
  boolean&nbsp;isMergeUpdate,
  <a href="../properties/GovernanceActionProcessStepProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessStepProperties</a>&nbsp;processStepProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Update the metadata element representing a governance action process step.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateNextActionProcessStep(java.lang.String,java.lang.String,java.lang.String,boolean,boolean)" class="member-name-link">updateNextActionProcessStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateNextActionProcessStep(java.lang.String,java.lang.String,java.lang.String,boolean,boolean)" class="member-name-link">updateNextActionProcessStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nextProcessStepLinkGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guard,
  boolean&nbsp;mandatoryGuard,
  boolean&nbsp;ignoreMultipleTriggers)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Update the properties of the link between two governance action process steps that shows that one follows on from the other when a governance
  action process is executing.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#withdrawGovernanceActionProcess(java.lang.String,java.lang.String)" class="member-name-link">withdrawGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#withdrawGovernanceActionProcess(java.lang.String,java.lang.String)" class="member-name-link">withdrawGovernanceActionProcess</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Update the zones for the asset so that it is no longer visible to consumers.</div>
 </div>
 </div>
@@ -451,6 +458,30 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="getGovernanceActionProcessGraph(java.lang.String,java.lang.String)">
+<h3>getGovernanceActionProcessGraph</h3>
+<div class="member-signature"><span class="return-type"><a href="../properties/GovernanceActionProcessGraph.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessGraph</a></span>&nbsp;<span class="element-name">getGovernanceActionProcessGraph</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID)</span>
+                                                      throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Retrieve the governance action process metadata element with the supplied unique identifier
+ along with its process flow implementation.  This includes the process steps and the links
+ between them</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>userId</code> - calling user</dd>
+<dd><code>processGUID</code> - unique identifier of the requested metadata element</dd>
+<dt>Returns:</dt>
+<dd>requested metadata element</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="createGovernanceActionProcessStep(java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties)">
 <h3>createGovernanceActionProcessStep</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createGovernanceActionProcessStep</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -620,9 +651,9 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getFirstActionProcessStep(java.lang.String,java.lang.String)">
 <h3>getFirstActionProcessStep</h3>
-<div class="member-signature"><span class="return-type"><a href="../properties/GovernanceActionProcessStepElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionProcessStepElement</a></span>&nbsp;<span class="element-name">getFirstActionProcessStep</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="return-type"><a href="../properties/FirstGovernanceActionProcessStepElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">FirstGovernanceActionProcessStepElement</a></span>&nbsp;<span class="element-name">getFirstActionProcessStep</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;processGUID)</span>
-                                                      throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                                           throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
 <div class="block">Return the governance action process step that is the first step in a governance action process.</div>
@@ -631,7 +662,7 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>processGUID</code> - unique identifier of the governance action process</dd>
 <dt>Returns:</dt>
-<dd>properties of the governance action process step</dd>
+<dd>properties of the first governance action process step</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>

@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="AnnotationBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AnnotationBuilder</a></code>, <code><a href="AnnotationReviewBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AnnotationReviewBuilder</a></code>, <code><a href="ContactDetailsBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ContactDetailsBuilder</a></code>, <code><a href="EmbeddedConnectionBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">EmbeddedConnectionBuilder</a></code>, <code><a href="InformalTagBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">InformalTagBuilder</a></code>, <code><a href="../../frameworkservices/oif/builder/IntegrationReportBuilder.html" title="class in org.odpi.openmetadata.frameworkservices.oif.builder">IntegrationReportBuilder</a></code>, <code><a href="ITInfrastructureBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ITInfrastructureBuilder</a></code>, <code><a href="LikeBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">LikeBuilder</a></code>, <code><a href="../../accessservices/governanceengine/handlers/MetadataElementBuilder.html" title="class in org.odpi.openmetadata.accessservices.governanceengine.handlers">MetadataElementBuilder</a></code>, <code><a href="../../frameworkservices/gaf/handlers/MetadataElementBuilder.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.handlers">MetadataElementBuilder</a></code>, <code><a href="RatingBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">RatingBuilder</a></code>, <code><a href="ReferenceableBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ReferenceableBuilder</a></code>, <code><a href="SearchKeywordBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SearchKeywordBuilder</a></code></dd>
+<dd><code><a href="AnnotationBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AnnotationBuilder</a></code>, <code><a href="AnnotationReviewBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AnnotationReviewBuilder</a></code>, <code><a href="ContactDetailsBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ContactDetailsBuilder</a></code>, <code><a href="EmbeddedConnectionBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">EmbeddedConnectionBuilder</a></code>, <code><a href="InformalTagBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">InformalTagBuilder</a></code>, <code><a href="../../frameworkservices/oif/builder/IntegrationReportBuilder.html" title="class in org.odpi.openmetadata.frameworkservices.oif.builder">IntegrationReportBuilder</a></code>, <code><a href="ITInfrastructureBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ITInfrastructureBuilder</a></code>, <code><a href="LikeBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">LikeBuilder</a></code>, <code><a href="../../frameworkservices/gaf/handlers/MetadataElementBuilder.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.handlers">MetadataElementBuilder</a></code>, <code><a href="RatingBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">RatingBuilder</a></code>, <code><a href="ReferenceableBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ReferenceableBuilder</a></code>, <code><a href="SearchKeywordBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">SearchKeywordBuilder</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenMetadataAPIGenericBuilder</span>
@@ -190,23 +190,11 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntityClassificationProperties(java.lang.String,java.lang.String)" class="member-name-link">getEntityClassificationProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementClassificationName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntityClassifications()" class="member-name-link">getEntityClassifications</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the requested classification and convert it to the OMRS format.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntityClassifications()" class="member-name-link">getEntityClassifications</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a list of entity classifications that can be stored in the metadata
  repository.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceAuditHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceAuditHeader</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExistingEntityClassificationHeader(java.lang.String,java.lang.String)" class="member-name-link">getExistingEntityClassificationHeader</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementClassificationName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the requested classification and convert it to the OMRS format.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInstanceProperties(java.lang.String)" class="member-name-link">getInstanceProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
@@ -265,39 +253,20 @@ loadScripts(document, 'script');</script>
 <div class="block">Set the supplied effectivity dates into the instance properties.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLatestChange(java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">setLatestChange</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- int&nbsp;latestChangeTargetOrdinal,
- int&nbsp;latestChangeActionOrdinal,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;attachmentGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;attachmentTypeName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionDescription,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the LatestChange classification for an anchor entity.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTemplateClassifications(java.lang.String,java.lang.String,java.lang.String,java.util.List,java.lang.String)" class="member-name-link">setTemplateClassifications</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTemplateClassifications(java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.Map,java.lang.String)" class="member-name-link">setTemplateClassifications</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a>&gt;&nbsp;templateClassifications,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the list of classifications from a template entity.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTemplateSubstitute(java.lang.String,java.lang.String)" class="member-name-link">setTemplateSubstitute</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;placeholderProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the "TemplateSubstitute" classification for this entity.</div>
+<div class="block">Set up the list of classifications from a template entity.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateInstanceProperties(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,java.util.Map,java.lang.String)" class="member-name-link">updateInstanceProperties</a><wbr>(<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;propertyMap,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTemplateSubstitute(java.lang.String,java.lang.String)" class="member-name-link">setTemplateSubstitute</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Add the supplied properties to the supplied instance properties object.</div>
+<div class="block">Set up the "TemplateSubstitute" classification for this entity.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateInstanceProperties(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,java.util.Map)" class="member-name-link">updateInstanceProperties</a><wbr>(<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties,
@@ -431,7 +400,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>typeGUID</code> - type GUID to use for the entity</dd>
 <dd><code>typeName</code> - type name to use for the entity</dd>
-<dd><code>extendedProperties</code> - properties for the sub type (if any)</dd>
+<dd><code>extendedProperties</code> - properties for the sub ype (if any)</dd>
 <dd><code>instanceStatus</code> - status to use on the request</dd>
 <dd><code>existingClassifications</code> - classifications that are currently stored</dd>
 <dd><code>repositoryHelper</code> - helper methods</dd>
@@ -458,7 +427,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>typeGUID</code> - type GUID to use for the entity</dd>
 <dd><code>typeName</code> - type name to use for the entity</dd>
-<dd><code>extendedProperties</code> - properties for the sub type (if any)</dd>
+<dd><code>extendedProperties</code> - properties for the subtype (if any)</dd>
 <dd><code>instanceStatus</code> - status to use on the request</dd>
 <dd><code>effectiveFrom</code> - date to make the element active in the governance program (null for now)</dd>
 <dd><code>effectiveTo</code> - date to remove the element from the governance program (null = until deleted)</dd>
@@ -502,12 +471,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setTemplateClassifications(java.lang.String,java.lang.String,java.lang.String,java.util.List,java.lang.String)">
+<section class="detail" id="setTemplateClassifications(java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.Map,java.lang.String)">
 <h3>setTemplateClassifications</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setTemplateClassifications</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/Classification.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">Classification</a>&gt;&nbsp;templateClassifications,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;placeholderProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
                                 throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Set up the list of classifications from a template entity.</div>
@@ -517,6 +487,7 @@ loadScripts(document, 'script');</script>
 <dd><code>externalSourceGUID</code> - guid of the software capability entity that represented the external source - null for local</dd>
 <dd><code>externalSourceName</code> - name of the software capability entity that represented the external source</dd>
 <dd><code>templateClassifications</code> - list of classifications from the template</dd>
+<dd><code>placeholderProperties</code> - map of placeholder names to placeholder values to substitute into the template properties</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the type of one of the classifications is not supported</dd>
@@ -571,38 +542,6 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>effectiveFrom</code> - date that the element is effective from</dd>
 <dd><code>effectiveTo</code> - date that the element is effective to</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setLatestChange(java.lang.String,int,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
-<h3>setLatestChange</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLatestChange</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- int&nbsp;latestChangeTargetOrdinal,
- int&nbsp;latestChangeActionOrdinal,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;attachmentGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;attachmentTypeName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionDescription,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                     throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Set up the LatestChange classification for an anchor entity.  This is typically used on the create of
- the anchor and other direct update actions on it.  Other updates are made to it through the generic handler
- as attachments are added and changed.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - calling user</dd>
-<dd><code>latestChangeTargetOrdinal</code> - ordinal for the LatestChangeTarget enum value</dd>
-<dd><code>latestChangeActionOrdinal</code> - ordinal for the LatestChangeAction enum value</dd>
-<dd><code>classificationName</code> - name of a changed classification</dd>
-<dd><code>attachmentGUID</code> - unique identifier of an entity attached to the anchor</dd>
-<dd><code>attachmentTypeName</code> - type name of the attached entity</dd>
-<dd><code>relationshipTypeName</code> - relationship used to attach the entity</dd>
-<dd><code>actionDescription</code> - human readable description of the change</dd>
-<dd><code>methodName</code> - calling method</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - this classification is not supported</dd>
 </dl>
 </section>
 </li>
@@ -677,26 +616,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateInstanceProperties(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,java.util.Map,java.lang.String)">
-<h3>updateInstanceProperties</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a></span>&nbsp;<span class="element-name">updateInstanceProperties</span><wbr><span class="parameters">(<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;propertyMap,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                               throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Add the supplied properties to the supplied instance properties object.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>properties</code> - current accumulated properties</dd>
-<dd><code>propertyMap</code> - map of property names to values</dd>
-<dd><code>methodName</code> - calling method</dd>
-<dt>Returns:</dt>
-<dd>repository services properties</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - problem mapping properties</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="updateInstanceProperties(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties,java.util.Map)">
 <h3>updateInstanceProperties</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a></span>&nbsp;<span class="element-name">updateInstanceProperties</span><wbr><span class="parameters">(<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a>&nbsp;properties,
@@ -736,43 +655,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of entity classification objects</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getExistingEntityClassificationHeader(java.lang.String,java.lang.String)">
-<h3>getExistingEntityClassificationHeader</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceAuditHeader.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceAuditHeader</a></span>&nbsp;<span class="element-name">getExistingEntityClassificationHeader</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementClassificationName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                                          throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Retrieve the requested classification and convert it to the OMRS format.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>elementClassificationName</code> - name of the classification to retrieve/convert</dd>
-<dd><code>methodName</code> - calling method</dd>
-<dt>Returns:</dt>
-<dd>null if the classification is not found for an OMRS Classification bean for the named
- classification</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the classification name parameter is null</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getEntityClassificationProperties(java.lang.String,java.lang.String)">
-<h3>getEntityClassificationProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/InstanceProperties.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">InstanceProperties</a></span>&nbsp;<span class="element-name">getEntityClassificationProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementClassificationName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
-                                                     throws <span class="exceptions"><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Retrieve the requested classification and convert it to the OMRS format.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>elementClassificationName</code> - name of the classification to retrieve/convert</dd>
-<dd><code>methodName</code> - calling method</dd>
-<dt>Returns:</dt>
-<dd>null or the appropriate properties</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the classification name parameter is null</dd>
 </dl>
 </section>
 </li>
