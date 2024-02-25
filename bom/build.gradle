@@ -66,7 +66,7 @@ ext {
     junitjupiterVersion = '5.10.0'
     junitplatformVersion = '1.9.2'
     jwtVersion = '9.37.1'
-    jwtApiVersion = '0.11.5'
+    jwtApiVersion = '0.12.5'
     jwtImplVersion = '0.11.5'
     jwtJacksonVersion = '0.11.5'
     kafkaVersion = '3.6.1'
