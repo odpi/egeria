@@ -27,18 +27,20 @@ import java.util.Map;
  */
 public abstract class GovernanceServiceHandler implements Runnable
 {
-    protected GovernanceEngineProperties governanceEngineProperties;
-    protected String                     governanceEngineGUID;
-    protected String                     engineHostUserId;
-    protected String                     governanceServiceGUID;
-    protected String                     governanceServiceName;
+    protected final GovernanceEngineProperties governanceEngineProperties;
+    protected final String                     governanceEngineGUID;
+    protected final String                     engineHostUserId;
+    protected final String                     governanceServiceGUID;
+    protected final String                     governanceServiceName;
+    protected final Connector                  governanceService;
+    protected final String                     engineActionGUID;
+    protected final String                     serviceRequestType;
+    protected final AuditLog                   auditLog;
 
     private final GovernanceContextClient engineActionClient;
+    private final Date                    startDate;
 
-    protected Connector governanceService;
-    protected String    engineActionGUID;
-    protected String    serviceRequestType;
-    protected AuditLog  auditLog;
+
 
 
     /**
@@ -55,6 +57,7 @@ public abstract class GovernanceServiceHandler implements Runnable
      * @param governanceServiceGUID unique identifier of the governance service
      * @param governanceServiceName name of this governance  service - used for message logging
      * @param governanceService implementation of governance service
+     * @param startDate date/time that the governance service should start executing
      * @param auditLog destination for log messages
      */
     protected GovernanceServiceHandler(GovernanceEngineProperties governanceEngineProperties,
@@ -66,6 +69,7 @@ public abstract class GovernanceServiceHandler implements Runnable
                                        String                     governanceServiceGUID,
                                        String                     governanceServiceName,
                                        Connector                  governanceService,
+                                       Date                       startDate,
                                        AuditLog                   auditLog)
     {
         this.governanceEngineProperties = governanceEngineProperties;
@@ -77,6 +81,7 @@ public abstract class GovernanceServiceHandler implements Runnable
         this.engineActionClient         = engineActionClient;
         this.serviceRequestType         = serviceRequestType;
         this.governanceService          = governanceService;
+        this.startDate                  = startDate;
         this.auditLog                   = auditLog;
     }
 
@@ -115,12 +120,33 @@ public abstract class GovernanceServiceHandler implements Runnable
 
 
     /**
+     * If the service request has a start time in the future, wait for the start time.
+     */
+    protected void waitForStartDate()
+    {
+        Date now = new Date();
+
+        while ((startDate != null) && (startDate.after(now)))
+        {
+            try
+            {
+                Thread.sleep(startDate.getTime()-now.getTime());
+            }
+            catch (InterruptedException interruptedException)
+            {
+                now = new Date();
+            }
+        }
+    }
+
+
+    /**
      * Update the status of a specific action target. By default, these values are derived from
-     * the values for the governance action service.  However, if the governance action service has to process name
+     * the values for the governance action service.  However, if the governance service has to process name
      * target elements, then setting the status on each individual target will show the progress of the
      * governance action service.
      *
-     * @param actionTargetGUID unique identifier of the governance action service.
+     * @param actionTargetGUID unique identifier of the action target relationship.
      * @param status status enum to show its progress
      * @param startDate date/time that the governance action service started processing the target
      * @param completionDate date/time that the governance process completed processing this target.

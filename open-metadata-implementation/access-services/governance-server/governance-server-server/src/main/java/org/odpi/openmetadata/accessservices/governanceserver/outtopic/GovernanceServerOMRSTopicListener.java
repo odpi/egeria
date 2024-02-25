@@ -389,7 +389,6 @@ public class GovernanceServerOMRSTopicListener extends OMRSTopicListenerBase
 
                     if (status == EngineActionStatus.APPROVED)
                     {
-
                         String governanceEngineGUID = repositoryHelper.getStringProperty(sourceName,
                                                                                          OpenMetadataType.EXECUTOR_ENGINE_GUID_PROPERTY_NAME,
                                                                                          entity.getProperties(),
@@ -402,6 +401,21 @@ public class GovernanceServerOMRSTopicListener extends OMRSTopicListenerBase
                         eventPublisher.publishNewEngineAction(governanceEngineGUID,
                                                               governanceEngineName,
                                                               entity.getGUID());
+                    }
+                    else if (status == EngineActionStatus.CANCELLED)
+                    {
+                        String governanceEngineGUID = repositoryHelper.getStringProperty(sourceName,
+                                                                                         OpenMetadataType.EXECUTOR_ENGINE_GUID_PROPERTY_NAME,
+                                                                                         entity.getProperties(),
+                                                                                         methodName);
+                        String governanceEngineName = repositoryHelper.getStringProperty(sourceName,
+                                                                                         OpenMetadataType.EXECUTOR_ENGINE_NAME_PROPERTY_NAME,
+                                                                                         entity.getProperties(),
+                                                                                         methodName);
+
+                        eventPublisher.publishCancelledEngineAction(governanceEngineGUID,
+                                                                    governanceEngineName,
+                                                                    entity.getGUID());
                     }
 
                     return true;

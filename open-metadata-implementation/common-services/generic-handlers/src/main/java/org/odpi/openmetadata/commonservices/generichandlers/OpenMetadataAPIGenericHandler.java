@@ -9697,7 +9697,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
          * Once they are filtered out, more entities need to be retrieved to fill the gaps.
          */
         String        guid = null;
-        List<String>  duplicateEntities = new ArrayList<>();
+        Set<String>   duplicateEntities = new HashSet<>();
         String        entityParameterName = "Entity from search of value " + name;
 
         while (iterator.moreToReceive() && ((queryPageSize == 0) || (duplicateEntities.size() < queryPageSize)))
@@ -9870,7 +9870,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
          * Once they are filtered out, more entities need to be retrieved to fill the gaps.
          */
         B            bean = null;
-        List<String> duplicateEntities = new ArrayList<>();
+        Set<String>  duplicateEntities = new HashSet<>();
         String       entityParameterName = "Entity from search of value " + name;
 
         while (iterator.moreToReceive() && ((queryPageSize == 0) || (duplicateEntities.size() < queryPageSize)))

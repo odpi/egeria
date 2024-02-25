@@ -10,11 +10,14 @@ import org.odpi.openmetadata.accessservices.assetowner.client.ConnectedAssetClie
 import org.odpi.openmetadata.accessservices.assetowner.client.SurveyAssetStoreClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
+import org.odpi.openmetadata.engineservices.surveyaction.ffdc.SurveyActionAuditCode;
+import org.odpi.openmetadata.engineservices.surveyaction.ffdc.SurveyActionErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
@@ -22,7 +25,6 @@ import org.odpi.openmetadata.frameworks.surveyaction.SurveyContext;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyOpenMetadataStore;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceCache;
-import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceHandler;
 
 import java.util.*;
 
@@ -84,19 +86,19 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
     /**
      * Run an instance of a survey action service in its own thread and return the handler (for disconnect processing).
      *
-     * @param governanceActionGUID unique identifier of the asset to analyse
+     * @param engineActionGUID unique identifier of engine action to activate
      * @param governanceRequestType governance request type to use when calling the governance engine
      * @param startDate date/time to start the governance action service
      * @param requestParameters name-value properties to control the governance action service
-     * @param requestSourceElements metadata elements associated with the request to the governance action service
-     * @param actionTargetElements metadata elements that need to be worked on by the governance action service
+     * @param requestSourceElements metadata elements associated with the request to the governance  service
+     * @param actionTargetElements metadata elements that need to be worked on by the governance  service
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException there was a problem detected by the governance action engine.
+     * @throws PropertyServerException there was a problem detected by the governance engine.
      */
     @Override
-    public void runGovernanceService(String                     governanceActionGUID,
+    public void runGovernanceService(String                     engineActionGUID,
                                      String                     governanceRequestType,
                                      Date                       startDate,
                                      Map<String, String>        requestParameters,
@@ -111,37 +113,126 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
 
         GovernanceServiceCache governanceServiceCache = super.getServiceCache(governanceRequestType);
 
-        if ((governanceServiceCache != null) && (actionTargetElements != null) && (! actionTargetElements.isEmpty()))
+        if (governanceServiceCache != null)
         {
-            String assetGUID = null;
-
-            for (ActionTargetElement actionTargetElement : actionTargetElements)
+            if ((actionTargetElements != null) && (! actionTargetElements.isEmpty()))
             {
-                if ((actionTargetElement != null)
-                            && (actionTargetElement.getTargetElement() != null)
-                            && (actionTargetElement.getTargetElement().getType() != null))
-                {
-                    String       typeName       = actionTargetElement.getTargetElement().getType().getTypeName();
-                    List<String> superTypeNames = actionTargetElement.getTargetElement().getType().getSuperTypeNames();
+                String assetGUID = getAssetGUIDFromActionTargets(actionTargetElements,
+                                                                 governanceServiceCache.getGovernanceServiceName(),
+                                                                 governanceRequestType,
+                                                                 engineActionGUID);
 
-                    if ((OpenMetadataType.ASSET.typeName.equals(typeName)) || ((superTypeNames != null) && (superTypeNames.contains(OpenMetadataType.ASSET.typeName))))
-                    {
-                        assetGUID = actionTargetElement.getTargetElement().getElementGUID();
-                    }
+                if (assetGUID != null)
+                {
+                    SurveyActionServiceHandler surveyActionServiceHandler = this.getSurveyActionServiceHandler(assetGUID,
+                                                                                                               governanceRequestType,
+                                                                                                               requestParameters,
+                                                                                                               engineActionGUID,
+                                                                                                               startDate,
+                                                                                                               governanceServiceCache);
+
+                    super.startServiceExecutionThread(engineActionGUID,
+                                                      surveyActionServiceHandler,
+                                                      governanceServiceCache.getGovernanceServiceName() + assetGUID + new Date());
+                }
+                else
+                {
+                    throw new InvalidParameterException(SurveyActionErrorCode.NO_TARGET_ASSET.getMessageDefinition(governanceServiceCache.getGovernanceServiceName(),
+                                                                                                                   governanceRequestType,
+                                                                                                                   engineActionGUID),
+                                                        this.getClass().getName(),
+                                                        methodName,
+                                                        "assetGUID");
                 }
             }
-
-            SurveyActionServiceHandler surveyActionServiceHandler = this.getSurveyActionServiceHandler(assetGUID,
-                                                                                                       governanceRequestType,
-                                                                                                       requestParameters,
-                                                                                                       governanceActionGUID,
-                                                                                                       governanceServiceCache);
-
-            Thread thread = new Thread(surveyActionServiceHandler, governanceServiceCache.getGovernanceServiceName() + assetGUID + new Date());
-            thread.start();
+            else
+            {
+                throw new InvalidParameterException(SurveyActionErrorCode.NO_TARGET_ASSET.getMessageDefinition(governanceServiceCache.getGovernanceServiceName(),
+                                                                                                               governanceRequestType,
+                                                                                                               engineActionGUID),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    "assetGUID");
+            }
+        }
+        else
+        {
+            throw new InvalidParameterException(SurveyActionErrorCode.NULL_REQUEST.getMessageDefinition(engineActionGUID),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                "governanceServiceCache");
         }
     }
 
+
+    /**
+     * Extract the asset to survey from the action targets.  If there are multiple
+     * action targets that are assets then the method picks one and logs a message to
+     * say the others are being ignored.
+     *
+     * @param actionTargetElements action target elements
+     * @param governanceServiceName name of the selected governance service
+     * @param governanceRequestType calling request type
+     * @param engineActionGUID unique identifier of the engine action
+     * @return assetGUID or null
+     * @throws InvalidParameterException problem updating action target status
+     * @throws UserNotAuthorizedException problem updating action target status
+     * @throws PropertyServerException problem updating action target status
+     */
+    private String getAssetGUIDFromActionTargets(List<ActionTargetElement> actionTargetElements,
+                                                 String                    governanceServiceName,
+                                                 String                    governanceRequestType,
+                                                 String                    engineActionGUID) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
+    {
+        final String methodName = "getAssetGUIDFromActionTargets";
+
+        String assetGUID = null;
+        List<String> ignoredAssets = new ArrayList<>();
+
+        for (ActionTargetElement actionTargetElement : actionTargetElements)
+        {
+            if ((actionTargetElement != null)
+                    && (actionTargetElement.getTargetElement() != null)
+                    && (actionTargetElement.getTargetElement().getType() != null))
+            {
+                String       typeName       = actionTargetElement.getTargetElement().getType().getTypeName();
+                List<String> superTypeNames = actionTargetElement.getTargetElement().getType().getSuperTypeNames();
+
+                if ((OpenMetadataType.ASSET.typeName.equals(typeName)) ||
+                        ((superTypeNames != null) && (superTypeNames.contains(OpenMetadataType.ASSET.typeName))))
+                {
+                    if (assetGUID == null)
+                    {
+                        assetGUID = actionTargetElement.getTargetElement().getElementGUID();
+                        engineActionClient.updateActionTargetStatus(serverUserId,
+                                                                    actionTargetElement.getActionTargetRelationshipGUID(),
+                                                                    EngineActionStatus.IN_PROGRESS,
+                                                                    new Date(),
+                                                                    null,
+                                                                    null);
+                    }
+                    else
+                    {
+                        ignoredAssets.add(actionTargetElement.getTargetElement().getElementGUID());
+                    }
+                }
+            }
+        }
+
+        if (! ignoredAssets.isEmpty())
+        {
+            auditLog.logMessage(methodName,
+                                SurveyActionAuditCode.IGNORING_ASSETS.getMessageDefinition(governanceServiceName,
+                                                                                           governanceRequestType,
+                                                                                           engineActionGUID,
+                                                                                           assetGUID,
+                                                                                           ignoredAssets.toString()));
+        }
+
+        return assetGUID;
+    }
 
     /**
      * Create an instance of a survey action service handler.
@@ -150,6 +241,7 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
      * @param requestType type of survey
      * @param requestParameters parameters for the survey
      * @param engineActionGUID unique identifier of the associated engine action entity
+     * @param startDate date/time that the governance service should start executing
      * @param governanceServiceCache factory for survey action services
      *
      * @return unique identifier for this request.
@@ -162,6 +254,7 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
                                                                      String                 requestType,
                                                                      Map<String, String>    requestParameters,
                                                                      String                 engineActionGUID,
+                                                                     Date                   startDate,
                                                                      GovernanceServiceCache governanceServiceCache) throws InvalidParameterException,
                                                                                                                            UserNotAuthorizedException,
                                                                                                                            PropertyServerException
@@ -200,11 +293,11 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
                                                                                 null);
 
         SurveyContext surveyContext = new SurveyContext(engineUserId,
-                                                           assetGUID,
-                                                           analysisParameters,
-                                                           assetStore,
-                                                           annotationStore,
-                                                           openMetadataStore);
+                                                        assetGUID,
+                                                        analysisParameters,
+                                                        assetStore,
+                                                        annotationStore,
+                                                        openMetadataStore);
 
         return new SurveyActionServiceHandler(governanceEngineProperties,
                                               governanceEngineGUID,
@@ -216,6 +309,7 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
                                               governanceServiceCache.getGovernanceServiceName(),
                                               governanceServiceCache.getNextGovernanceService(),
                                               surveyContext,
+                                              startDate,
                                               auditLog);
     }
 }

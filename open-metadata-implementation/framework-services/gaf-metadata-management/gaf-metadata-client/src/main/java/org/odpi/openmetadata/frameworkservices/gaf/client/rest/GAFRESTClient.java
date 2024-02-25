@@ -941,6 +941,32 @@ public class GAFRESTClient extends OCFRESTClient
 
 
     /**
+     * Issue a GET REST call that returns a GovernanceProcessStepResponseElementsResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public FirstGovernanceActionProcessStepResponse callFirstGovernanceActionProcessStepGetRESTCall(String    methodName,
+                                                                                                    String    urlTemplate,
+                                                                                                    Object... params) throws InvalidParameterException,
+                                                                                                                   UserNotAuthorizedException,
+                                                                                                                   PropertyServerException
+    {
+        FirstGovernanceActionProcessStepResponse restResult = this.callGetRESTCall(methodName, FirstGovernanceActionProcessStepResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
      * Issue a POST REST call that returns a GovernanceActionProcessStepsResponse object.
      *
      * @param methodName  name of the method being called.
@@ -1029,7 +1055,7 @@ public class GAFRESTClient extends OCFRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a GovernanceActionProcessElementsResponse object.
+     * Issue a GET REST call that returns a GovernanceActionProcessGraphResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.
@@ -1040,13 +1066,13 @@ public class GAFRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public GovernanceActionProcessElementsResponse callGovernanceActionProcessesGetRESTCall(String    methodName,
+    public GovernanceActionProcessGraphResponse callGovernanceActionProcessGraphGetRESTCall(String    methodName,
                                                                                             String    urlTemplate,
                                                                                             Object... params) throws InvalidParameterException,
                                                                                                                      UserNotAuthorizedException,
                                                                                                                      PropertyServerException
     {
-        GovernanceActionProcessElementsResponse restResult = this.callGetRESTCall(methodName, GovernanceActionProcessElementsResponse.class, urlTemplate, params);
+        GovernanceActionProcessGraphResponse restResult = this.callGetRESTCall(methodName, GovernanceActionProcessGraphResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 

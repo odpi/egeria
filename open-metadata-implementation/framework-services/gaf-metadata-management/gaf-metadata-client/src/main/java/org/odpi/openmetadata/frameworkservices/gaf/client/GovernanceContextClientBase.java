@@ -258,7 +258,7 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
 
 
     /**
-     * Retrieve the governance actions that are still in process and that have been claimed by this caller's userId.
+     * Retrieve the engine actions that are still in process and that have been claimed by this caller's userId.
      * This call is used when the caller restarts.
      *
      * @param userId userId of caller

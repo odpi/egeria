@@ -57,7 +57,7 @@ public class AutomatedCurationResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/governance-action-types/new")
+    @PostMapping(path = "/governance-action-types")
     @Operation(summary="createGovernanceActionType",
             description="Create a new metadata element to represent a governance action type.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -124,7 +124,6 @@ public class AutomatedCurationResource
 
     /**
      * Retrieve the list of governance action type metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
      *
      * @param serverName name of the service to route the request to
      * @param startsWith does the value start with the supplied string?
@@ -141,7 +140,7 @@ public class AutomatedCurationResource
      */
     @PostMapping(path = "/governance-action-types/by-search-string")
     @Operation(summary="findGovernanceActionTypes",
-            description="Retrieve the list of governance action type metadata elements that contain the search string. The search string is treated as a regular expression.",
+            description="Retrieve the list of governance action type metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/governance-action-type"))
 
@@ -229,7 +228,7 @@ public class AutomatedCurationResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/governance-action-processes/new")
+    @PostMapping(path = "/governance-action-processes")
     @Operation(summary="createGovernanceActionProcess",
             description="Create a new metadata element to represent a governance action process.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -352,7 +351,6 @@ public class AutomatedCurationResource
 
     /**
      * Retrieve the list of governance action process metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
      *
      * @param serverName name of the service to route the request to
      * @param startsWith does the value start with the supplied string?
@@ -369,7 +367,7 @@ public class AutomatedCurationResource
      */
     @PostMapping(path = "/governance-action-processes/by-search-string")
     @Operation(summary="findGovernanceActionProcesses",
-            description="Retrieve the list of governance action process metadata elements that contain the search string. The search string is treated as a regular expression.",
+            description="Retrieve the list of governance action process metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/governance-action-process"))
 
@@ -442,6 +440,32 @@ public class AutomatedCurationResource
     }
 
 
+    /**
+     * Retrieve the governance action process metadata element with the supplied unique identifier
+     * along with the flow definition describing its implementation.
+     *
+     * @param serverName name of the service to route the request to
+     * @param processGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @GetMapping(path = "/governance-action-processes/{processGUID}/graph")
+    @Operation(summary="getGovernanceActionProcessGraph",
+            description="Retrieve the governance action process metadata element with the supplied " +
+                    "unique identifier along with the flow definition describing its implementation.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-action-process"))
+
+    public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(@PathVariable String serverName,
+                                                                                @PathVariable String processGUID)
+    {
+        return restAPI.getGovernanceActionProcessGraph(serverName, processGUID);
+    }
+
+
     /* =====================================================================================================================
      * A governance action process step describes a step in a governance action process
      */
@@ -457,7 +481,7 @@ public class AutomatedCurationResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/governance-action-process-steps/new")
+    @PostMapping(path = "/governance-action-process-steps")
     @Operation(summary="createGovernanceActionProcessStep",
             description="Create a new metadata element to represent a governance action process step.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -524,7 +548,6 @@ public class AutomatedCurationResource
 
     /**
      * Retrieve the list of governance action process step metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
      *
      * @param serverName name of the service to route the request to
      * @param startsWith does the value start with the supplied string?
@@ -541,7 +564,7 @@ public class AutomatedCurationResource
      */
     @PostMapping(path = "/governance-action-process-steps/by-search-string")
     @Operation(summary="findGovernanceActionProcessSteps",
-            description="Retrieve the list of governance action process step metadata elements that contain the search string. The search string is treated as a regular expression.",
+            description="Retrieve the list of governance action process step metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/governance-action-process"))
 
@@ -627,16 +650,16 @@ public class AutomatedCurationResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/governance-action-processes/{processGUID}/first-process-step/{processStepGUID}/new")
+    @PostMapping(path = "/governance-action-processes/{processGUID}/first-process-step/{processStepGUID}")
     @Operation(summary="setupFirstActionProcessStep",
             description="Set up a link between a governance action process and a governance action process step.  This defines the first step in the process.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/governance-action-process"))
 
-    public VoidResponse setupFirstActionProcessStep(@PathVariable                   String serverName,
-                                                    @PathVariable                   String processGUID,
-                                                    @PathVariable                   String processStepGUID,
-                                                    @RequestBody (required = false) String requestBody)
+    public VoidResponse setupFirstActionProcessStep(@PathVariable                   String            serverName,
+                                                    @PathVariable                   String            processGUID,
+                                                    @PathVariable                   String            processStepGUID,
+                                                    @RequestBody (required = false) StringRequestBody requestBody)
     {
         return restAPI.setupFirstActionProcessStep(serverName, processGUID, processStepGUID, requestBody);
     }
@@ -659,8 +682,8 @@ public class AutomatedCurationResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/governance-action-process"))
 
-    public GovernanceActionProcessStepResponse getFirstActionProcessStep(@PathVariable String serverName,
-                                                                         @PathVariable String processGUID)
+    public FirstGovernanceActionProcessStepResponse getFirstActionProcessStep(@PathVariable String serverName,
+                                                                              @PathVariable String processGUID)
     {
         return restAPI.getFirstActionProcessStep(serverName, processGUID);
     }
@@ -707,7 +730,7 @@ public class AutomatedCurationResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/governance-action-process-steps/{currentProcessStepGUID}/next-process-steps/{nextProcessStepGUID}/new")
+    @PostMapping(path = "/governance-action-process-steps/{currentProcessStepGUID}/next-process-steps/{nextProcessStepGUID}")
     @Operation(summary="removeFirstActionProcessStep",
             description="Remove the link between a governance process and that governance action process step that defines its first step.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -823,9 +846,9 @@ public class AutomatedCurationResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/engine-action"))
 
-    public GUIDResponse initiateEngineAction(@PathVariable String                  serverName,
-                                             @PathVariable String                  governanceEngineName,
-                                             @RequestBody  EngineActionRequestBody requestBody)
+    public GUIDResponse initiateEngineAction(@PathVariable String                          serverName,
+                                             @PathVariable String                          governanceEngineName,
+                                             @RequestBody  InitiateEngineActionRequestBody requestBody)
     {
         return restAPI.initiateEngineAction(serverName, governanceEngineName, requestBody);
     }
@@ -849,7 +872,7 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/governance-action-type"))
 
     public GUIDResponse initiateGovernanceActionType(@PathVariable String                          serverName,
-                                                     @RequestBody  GovernanceActionTypeRequestBody requestBody)
+                                                     @RequestBody InitiateGovernanceActionTypeRequestBody requestBody)
     {
         return restAPI.initiateGovernanceActionType(serverName, requestBody);
     }
@@ -873,7 +896,7 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/governance-action-process"))
 
     public GUIDResponse initiateGovernanceActionProcess(@PathVariable String                             serverName,
-                                                        @RequestBody  GovernanceActionProcessRequestBody requestBody)
+                                                        @RequestBody InitiateGovernanceActionProcessRequestBody requestBody)
     {
         return restAPI.initiateGovernanceActionProcess(serverName, requestBody);
     }
@@ -900,6 +923,31 @@ public class AutomatedCurationResource
                                                        @PathVariable String engineActionGUID)
     {
         return restAPI.getEngineAction(serverName, engineActionGUID);
+    }
+
+
+
+    /**
+     * Request that an engine action request is cancelled and any running governance service is stopped.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param engineActionGUID identifier of the engine action request.
+     *
+     * @return engine action properties and status or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    @GetMapping(path = "/engine-actions/{engineActionGUID}/cancel")
+    @Operation(summary="cancelEngineAction",
+            description="Request that an engine action request is cancelled and any running governance service is stopped.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/engine-action"))
+
+    public VoidResponse cancelEngineAction(@PathVariable String serverName,
+                                           @PathVariable String engineActionGUID)
+    {
+        return restAPI.cancelEngineAction(serverName, engineActionGUID);
     }
 
 
@@ -957,7 +1005,6 @@ public class AutomatedCurationResource
 
     /**
      * Retrieve the list of engine action metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
      *
      * @param serverName name of the service to route the request to
      * @param startsWith does the value start with the supplied string?
@@ -974,7 +1021,7 @@ public class AutomatedCurationResource
      */
     @PostMapping(path = "/engine-actions/by-search-string")
     @Operation(summary="findEngineActions",
-            description="Retrieve the list of engine action metadata elements that contain the search string. The search string is treated as a regular expression.",
+            description="Retrieve the list of engine action metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/engine-action"))
 

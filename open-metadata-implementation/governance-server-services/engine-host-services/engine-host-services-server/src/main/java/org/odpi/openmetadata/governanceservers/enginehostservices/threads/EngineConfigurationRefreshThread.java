@@ -143,6 +143,11 @@ public class EngineConfigurationRefreshThread implements Runnable
                             if (governanceEngineHandler != null)
                             {
                                 governanceEngineHandler.refreshConfig();
+
+                                /*
+                                 * Restart any services that were incomplete when the engine host shutdown.
+                                 */
+                                governanceEngineHandler.restartServices(governanceEngineHandler.getGovernanceEngineElement());
                             }
                         }
                         catch (Exception error)

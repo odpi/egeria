@@ -6,6 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.excep
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
@@ -15,6 +16,9 @@ import java.util.Objects;
  */
 public class FileException extends ConnectorCheckedException
 {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     /**
      * Name of file with error
      */
@@ -252,7 +256,7 @@ public class FileException extends ConnectorCheckedException
         {
             return true;
         }
-        if (!(objectToCompare instanceof FileException))
+        if (!(objectToCompare instanceof FileException that))
         {
             return false;
         }
@@ -260,7 +264,6 @@ public class FileException extends ConnectorCheckedException
         {
             return false;
         }
-        FileException that = (FileException) objectToCompare;
         return Objects.equals(getFileName(), that.getFileName());
     }
 

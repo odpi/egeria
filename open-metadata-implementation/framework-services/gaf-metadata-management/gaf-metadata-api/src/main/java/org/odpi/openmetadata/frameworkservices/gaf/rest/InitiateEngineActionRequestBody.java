@@ -17,12 +17,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * EngineActionRequestBody provides a structure for passing the properties for a new governance action.
+ * EngineActionRequestBody provides a structure for passing the properties for a new engine action.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EngineActionRequestBody
+public class InitiateEngineActionRequestBody
 {
     private String                qualifiedName         = null;
     private int                   domainIdentifier      = 0;
@@ -31,7 +31,7 @@ public class EngineActionRequestBody
     private List<String>          requestSourceGUIDs    = null;
     private List<NewActionTarget> actionTargets         = null;
     private List<String>          receivedGuards        = null;
-    private Date                  startTime             = null;
+    private Date                  startDate             = null;
     private String                requestType           = null;
     private Map<String, String>   requestParameters     = null;
     private String                processName           = null;
@@ -42,7 +42,7 @@ public class EngineActionRequestBody
     /**
      * Default constructor
      */
-    public EngineActionRequestBody()
+    public InitiateEngineActionRequestBody()
     {
         super();
     }
@@ -53,7 +53,7 @@ public class EngineActionRequestBody
      *
      * @param template object to copy
      */
-    public EngineActionRequestBody(EngineActionRequestBody template)
+    public InitiateEngineActionRequestBody(InitiateEngineActionRequestBody template)
     {
         if (template != null)
         {
@@ -64,8 +64,8 @@ public class EngineActionRequestBody
             requestSourceGUIDs = template.getRequestSourceGUIDs();
             actionTargets = template.getActionTargets();
             receivedGuards = template.getReceivedGuards();
-            startTime = template.getStartTime();
-            requestType = template.getRequestType();
+            startDate      = template.getStartDate();
+            requestType    = template.getRequestType();
             requestParameters = template.getRequestParameters();
             processName = template.getProcessName();
             requestSourceName = template.getRequestSourceName();
@@ -253,20 +253,20 @@ public class EngineActionRequestBody
      *
      * @return date object
      */
-    public Date getStartTime()
+    public Date getStartDate()
     {
-        return startTime;
+        return startDate;
     }
 
 
     /**
      * Set up the time that this governance action should start (null means as soon as possible).
      *
-     * @param startTime date object
+     * @param startDate date object
      */
-    public void setStartTime(Date startTime)
+    public void setStartDate(Date startDate)
     {
-        this.startTime = startTime;
+        this.startDate = startDate;
     }
 
 
@@ -420,7 +420,7 @@ public class EngineActionRequestBody
     @Override
     public String toString()
     {
-        return "EngineActionRequestBody{" +
+        return "InitiateEngineActionRequestBody{" +
                        "qualifiedName='" + qualifiedName + '\'' +
                        ", domainIdentifier=" + domainIdentifier +
                        ", displayName='" + displayName + '\'' +
@@ -428,7 +428,7 @@ public class EngineActionRequestBody
                        ", requestSourceGUIDs=" + requestSourceGUIDs +
                        ", actionTargets=" + actionTargets +
                        ", receivedGuards=" + receivedGuards +
-                       ", startTime=" + startTime +
+                       ", startDate=" + startDate +
                        ", requestType='" + requestType + '\'' +
                        ", requestParameters=" + requestParameters +
                        ", processName='" + processName + '\'' +
@@ -456,14 +456,14 @@ public class EngineActionRequestBody
         {
             return false;
         }
-        EngineActionRequestBody that = (EngineActionRequestBody) objectToCompare;
+        InitiateEngineActionRequestBody that = (InitiateEngineActionRequestBody) objectToCompare;
         return domainIdentifier == that.domainIdentifier &&
                        Objects.equals(qualifiedName, that.qualifiedName) &&
                        Objects.equals(displayName, that.displayName) &&
                        Objects.equals(description, that.description) &&
                        Objects.equals(requestSourceGUIDs, that.requestSourceGUIDs) &&
                        Objects.equals(actionTargets, that.actionTargets) &&
-                       Objects.equals(startTime, that.startTime) &&
+                       Objects.equals(startDate, that.startDate) &&
                        Objects.equals(requestType, that.requestType) &&
                        Objects.equals(processName, that.processName) &&
                        Objects.equals(requestSourceName, that.requestSourceName) &&
@@ -481,7 +481,7 @@ public class EngineActionRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, domainIdentifier, displayName, description, requestSourceGUIDs, actionTargets, startTime, requestType,
+        return Objects.hash(qualifiedName, domainIdentifier, displayName, description, requestSourceGUIDs, actionTargets, startDate, requestType,
                             processName, requestSourceName, requestParameters, originatorServiceName, originatorEngineName);
     }
 }

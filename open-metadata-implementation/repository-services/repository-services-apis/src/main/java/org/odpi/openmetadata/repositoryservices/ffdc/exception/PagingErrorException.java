@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.ffdc.exception;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
+import java.io.Serial;
 import java.util.Map;
 
 /**
@@ -12,7 +13,8 @@ import java.util.Map;
  */
 public class PagingErrorException extends OMRSCheckedExceptionBase
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
 
     /**

@@ -432,6 +432,16 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
                                       "However, if the problem was in hte engine host, you may need to restart it to clear the problem."),
 
     /**
+     * ENGINE-HOST-SERVICES-0036 - Governance engine {0} is cancelling running governance service for engine action {1}; thread name is {2}
+     */
+    ENGINE_ACTION_CANCELLED("ENGINE-HOST-SERVICES-0036",
+                         AuditLogRecordSeverityLevel.INFO,
+                         "Governance engine {0} is cancelling running governance service for engine action {1}; thread name is {2}",
+                         "The governance engine has been requested to stop the execution of a governance service by a cancel request issued by an external user.",
+                         "Validate that this request should have been cancelled.  Check it shutdown correctly.  Rerun the request if necessary."),
+
+
+    /**
      * ENGINE-HOST-SERVICES-0150 - {0} in server {1} is not configured with the platform URL root for the {2}
      */
     NO_OMAS_SERVER_URL("ENGINE-HOST-SERVICES-0150",
@@ -467,11 +477,30 @@ public enum EngineHostServicesAuditCode implements AuditLogMessageSet
      */
     ACTION_PROCESSING_ERROR( "ENGINE-HOST-SERVICES-2000",
                              AuditLogRecordSeverityLevel.ERROR,
-                            "{0} caught an exception {1} while processing governance action {2}; the error message was {3}",
-                            "The server is not able to run any services in this engine service.  The engine service fails to start which causes " +
-                                    "the server to fail too.",
-                            "Add the qualified name for at least one engine to the engine service in this server's configuration document " +
-                                    "and then restart the server."),
+                            "{0} caught an exception {1} while processing engine action {2}; the error message was {3}",
+                            "The server is not able to start or complete the requested processing related to the governance service for this engine action.",
+                            "Follow the instructions for the message associated with the exception."),
+
+    /**
+     * ENGINE-HOST-SERVICES-2000 - {0} caught an exception {1} while processing governance action {2}; the error message was {3}
+     */
+    RESTART_SERVICE_ERROR( "ENGINE-HOST-SERVICES-2001",
+                             AuditLogRecordSeverityLevel.ERROR,
+                             "Unable to restart governance service for engine action {0} caught an exception {1} while processing governance action {2}; the error message was {3}",
+                             "The server is not able to run any services in this engine service.  The engine service fails to start which causes " +
+                                     "the server to fail too.",
+                             "Add the qualified name for at least one engine to the engine service in this server's configuration document " +
+                                     "and then restart the server."),
+
+    /**
+     * ENGINE-HOST-SERVICES-2002 - {0} caught an exception {1} while restarting incomplete engine actions; the error message was {2}
+     */
+    UNEXPECTED_EXCEPTION_DURING_RESTART( "ENGINE-HOST-SERVICES-2002",
+                             AuditLogRecordSeverityLevel.ERROR,
+                             "{0} caught an exception {1} while restarting incomplete engine actions; the error message was {2}",
+                             "The server is not able to complete the restart processing.",
+                             "Follow the instructions for the message associated with the exception to resolve the error.  You may need to restart the engine host."),
+
     ;
 
 

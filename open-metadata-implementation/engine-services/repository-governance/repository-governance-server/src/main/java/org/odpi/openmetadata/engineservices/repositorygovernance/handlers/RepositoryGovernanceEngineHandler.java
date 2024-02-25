@@ -12,7 +12,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTarget
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceCache;
-import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceHandler;
 import org.odpi.openmetadata.repositoryservices.clients.EnterpriseRepositoryServicesClient;
 
 import java.util.*;
@@ -98,10 +97,12 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
                                                                                                                                requestSourceElements,
                                                                                                                                actionTargetElements,
                                                                                                                                engineActionGUID,
+                                                                                                                               startDate,
                                                                                                                                governanceServiceCache);
 
-            Thread thread = new Thread(repositoryGovernanceServiceHandler, governanceServiceCache.getGovernanceServiceName() + new Date());
-            thread.start();
+            startServiceExecutionThread(engineActionGUID,
+                                        repositoryGovernanceServiceHandler,
+                                        governanceServiceCache.getGovernanceServiceName() + new Date());
         }
     }
 
@@ -114,7 +115,8 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
      * @param requestParameters name-value properties to control the governance action service
      * @param requestSourceElements metadata elements associated with the request to the governance action service
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
-     * @param governanceActionGUID unique identifier of the associated governance action entity
+     * @param engineActionGUID unique identifier of the associated engine action entity
+     * @param startDate date/time that the governance service should start executing
      * @param governanceServiceCache factory for repository governance services
      *
      * @return unique identifier for this request.
@@ -127,7 +129,8 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
                                                                                      Map<String, String>        requestParameters,
                                                                                      List<RequestSourceElement> requestSourceElements,
                                                                                      List<ActionTargetElement>  actionTargetElements,
-                                                                                     String                     governanceActionGUID,
+                                                                                     String                     engineActionGUID,
+                                                                                     Date                       startDate,
                                                                                      GovernanceServiceCache     governanceServiceCache) throws InvalidParameterException,
                                                                                                                                                PropertyServerException
     {
@@ -142,13 +145,14 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
         RepositoryGovernanceServiceHandler repositoryGovernanceServiceHandler = new RepositoryGovernanceServiceHandler(governanceEngineProperties,
                                                                                                                        governanceEngineGUID,
                                                                                                                        serverUserId,
-                                                                                                                       governanceActionGUID,
+                                                                                                                       engineActionGUID,
                                                                                                                        engineActionClient,
                                                                                                                        repositoryGovernanceRequestType,
                                                                                                                        governanceServiceCache.getGovernanceServiceGUID(),
                                                                                                                        governanceServiceCache.getGovernanceServiceName(),
                                                                                                                        governanceServiceCache.getNextGovernanceService(),
                                                                                                                        repositoryGovernanceContext,
+                                                                                                                       startDate,
                                                                                                                        auditLog);
 
         repositoryGovernanceContext.setRepositoryGovernanceServiceHandler(repositoryGovernanceServiceHandler);

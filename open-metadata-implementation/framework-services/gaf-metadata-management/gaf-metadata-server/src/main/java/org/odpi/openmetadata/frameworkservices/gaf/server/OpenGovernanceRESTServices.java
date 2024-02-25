@@ -12,7 +12,11 @@ import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EngineActionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionProcessStepHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionTypeHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
@@ -51,8 +55,6 @@ public class OpenGovernanceRESTServices
     public OpenGovernanceRESTServices()
     {
     }
-
-
 
 
     /* =====================================================================================================================
@@ -99,7 +101,7 @@ public class OpenGovernanceRESTServices
                                                                     requestBody.getDomainIdentifier(),
                                                                     requestBody.getDisplayName(),
                                                                     requestBody.getDescription(),
-                                                                    requestBody.getSupportedGuards(),
+                                                                    requestBody.getProducedGuards(),
                                                                     requestBody.getAdditionalProperties(),
                                                                     requestBody.getGovernanceEngineGUID(),
                                                                     requestBody.getRequestType(),
@@ -176,7 +178,7 @@ public class OpenGovernanceRESTServices
                                                    properties.getDomainIdentifier(),
                                                    properties.getDisplayName(),
                                                    properties.getDescription(),
-                                                   properties.getSupportedGuards(),
+                                                   properties.getProducedGuards(),
                                                    properties.getAdditionalProperties(),
                                                    properties.getGovernanceEngineGUID(),
                                                    properties.getRequestType(),
@@ -491,7 +493,8 @@ public class OpenGovernanceRESTServices
 
                 Map<String, Object> extendedProperties = new HashMap<>();
                 extendedProperties.put(OpenMetadataProperty.FORMULA.name, processProperties.getFormula());
-                extendedProperties.put(OpenMetadataType.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME, processProperties.getImplementationLanguage());
+                extendedProperties.put(OpenMetadataProperty.FORMULA_TYPE.name, processProperties.getFormulaType());
+                extendedProperties.put(OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME, processProperties.getDomainIdentifier());
 
                 Date effectiveTime = new Date();
 
@@ -499,9 +502,9 @@ public class OpenGovernanceRESTServices
                                                                  null,
                                                                  null,
                                                                  processProperties.getQualifiedName(),
-                                                                 processProperties.getTechnicalName(),
+                                                                 processProperties.getDisplayName(),
                                                                  processProperties.getVersionIdentifier(),
-                                                                 processProperties.getTechnicalDescription(),
+                                                                 processProperties.getDescription(),
                                                                  processProperties.getAdditionalProperties(),
                                                                  OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                                  extendedProperties,
@@ -510,27 +513,6 @@ public class OpenGovernanceRESTServices
                                                                  null,
                                                                  effectiveTime,
                                                                  methodName));
-
-                final String guidParameter = "processGUID";
-
-                if (response.getGUID() != null)
-                {
-                    handler.maintainSupplementaryProperties(userId,
-                                                            response.getGUID(),
-                                                            guidParameter,
-                                                            OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
-                                                            processProperties.getQualifiedName(),
-                                                            processProperties.getDisplayName(),
-                                                            processProperties.getSummary(),
-                                                            processProperties.getDescription(),
-                                                            processProperties.getAbbreviation(),
-                                                            processProperties.getUsage(),
-                                                            false,
-                                                            false,
-                                                            false,
-                                                            effectiveTime,
-                                                            methodName);
-                }
             }
             else
             {
@@ -611,7 +593,8 @@ public class OpenGovernanceRESTServices
 
                 Map<String, Object> extendedProperties = new HashMap<>();
                 extendedProperties.put(OpenMetadataProperty.FORMULA.name, processProperties.getFormula());
-                extendedProperties.put(OpenMetadataType.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME, processProperties.getImplementationLanguage());
+                extendedProperties.put(OpenMetadataProperty.FORMULA_TYPE.name, processProperties.getFormulaType());
+                extendedProperties.put(OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME, processProperties.getDomainIdentifier());
 
                 Date effectiveTime = new Date();
 
@@ -622,8 +605,8 @@ public class OpenGovernanceRESTServices
                                     processGUIDParameterName,
                                     processProperties.getQualifiedName(),
                                     processProperties.getVersionIdentifier(),
-                                    processProperties.getTechnicalName(),
-                                    processProperties.getTechnicalDescription(),
+                                    processProperties.getDisplayName(),
+                                    processProperties.getDescription(),
                                     processProperties.getAdditionalProperties(),
                                     OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
                                     OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
@@ -654,22 +637,6 @@ public class OpenGovernanceRESTServices
                                                          effectiveTime,
                                                          methodName);
                 }
-
-                handler.maintainSupplementaryProperties(userId,
-                                                        processGUID,
-                                                        processGUIDParameterName,
-                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
-                                                        processProperties.getQualifiedName(),
-                                                        processProperties.getDisplayName(),
-                                                        processProperties.getSummary(),
-                                                        processProperties.getDescription(),
-                                                        processProperties.getAbbreviation(),
-                                                        processProperties.getUsage(),
-                                                        requestBody.getMergeUpdate(),
-                                                        false,
-                                                        false,
-                                                        effectiveTime,
-                                                        methodName);
             }
             else
             {
@@ -1047,6 +1014,189 @@ public class OpenGovernanceRESTServices
 
 
 
+    /**
+     * Retrieve the governance action process metadata element with the supplied unique identifier
+     * along with the flow definition describing its implementation.
+     *
+     * @param serverName name of the service to route the request to
+     * @param processGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(String serverName,
+                                                                                String serviceURLMarker,
+                                                                                String userId,
+                                                                                String processGUID)
+    {
+        final String methodName = "getGovernanceActionProcessGraph";
+        final String processGUIDParameterName = "processGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GovernanceActionProcessGraphResponse response = new GovernanceActionProcessGraphResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AssetHandler<GovernanceActionProcessElement> processHandler = instanceHandler.getGovernanceActionProcessHandler(userId, serverName, methodName);
+            GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement>
+                    handler = instanceHandler.getGovernanceActionProcessStepHandler(userId,
+                                                                                    serverName,
+                                                                                    methodName);
+
+            GovernanceActionProcessGraph governanceActionProcessGraph = new GovernanceActionProcessGraph();
+
+            governanceActionProcessGraph.setGovernanceActionProcess(processHandler.getBeanFromRepository(userId,
+                                                                                                         processGUID,
+                                                                                                         processGUIDParameterName,
+                                                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                                                         false,
+                                                                                                         false,
+                                                                                                         instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                                         new Date(),
+                                                                                                         methodName));
+
+
+            governanceActionProcessGraph.setFirstProcessStep(this.getFirstProcessStepElement(serverName,
+                                                                                             serviceURLMarker,
+                                                                                             userId,
+                                                                                             processGUID,
+                                                                                             methodName));
+
+            if (governanceActionProcessGraph.getFirstProcessStep() != null)
+            {
+                getNextProcessSteps(userId,
+                                    handler,
+                                    governanceActionProcessGraph.getFirstProcessStep().getElement().getElementHeader().getGUID(),
+                                    governanceActionProcessGraph,
+                                    new ArrayList<>(),
+                                    instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                    invalidParameterHandler.getMaxPagingSize());
+            }
+
+            response.setElement(governanceActionProcessGraph);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    private void getNextProcessSteps(String                                                                 userId,
+                                     GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement> handler,
+                                     String                                                                 processStepGUID,
+                                     GovernanceActionProcessGraph                                           governanceActionProcessGraph,
+                                     List<String>                                                           processedGUIDs,
+                                     List<String>                                                           supportedZones,
+                                     int                                                                    pageSize) throws InvalidParameterException,
+                                                                                                                             PropertyServerException,
+                                                                                                                             UserNotAuthorizedException
+    {
+        final String methodName = "getNextProcessSteps";
+
+        RepositoryHandler repositoryHandler = handler.getRepositoryHandler();
+
+        int startFrom = 0;
+        List<Relationship> nextProcessStepRelationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                                   processStepGUID,
+                                                                                                   OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                                                   OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_TYPE_GUID,
+                                                                                                   OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                                                   2,
+                                                                                                   false,
+                                                                                                   false,
+                                                                                                   startFrom,
+                                                                                                   pageSize,
+                                                                                                   null,
+                                                                                                   methodName);
+
+        while (nextProcessStepRelationships != null)
+        {
+            for (Relationship relationship : nextProcessStepRelationships)
+            {
+                NextGovernanceActionProcessStepLink processStepLink = new NextGovernanceActionProcessStepLink();
+
+                processStepLink.setPreviousProcessStep(handler.getElementStub(relationship.getEntityOneProxy()));
+                processStepLink.setNextProcessStep(handler.getElementStub(relationship.getEntityTwoProxy()));
+                processStepLink.setNextProcessStepLinkGUID(relationship.getGUID());
+                processStepLink.setGuard(handler.getRepositoryHelper().getStringProperty(handler.getServiceName(),
+                                                                                         OpenMetadataType.GUARD_PROPERTY_NAME,
+                                                                                         relationship.getProperties(),
+                                                                                         methodName));
+                processStepLink.setMandatoryGuard(handler.getRepositoryHelper().getBooleanProperty(handler.getServiceName(),
+                                                                                                   OpenMetadataType.MANDATORY_GUARD_PROPERTY_NAME,
+                                                                                                   relationship.getProperties(),
+                                                                                                   methodName));
+
+                List<NextGovernanceActionProcessStepLink> processStepLinks = governanceActionProcessGraph.getProcessStepLinks();
+
+                if (processStepLinks == null)
+                {
+                    processStepLinks = new ArrayList<>();
+                }
+
+                processStepLinks.add(processStepLink);
+                governanceActionProcessGraph.setProcessStepLinks(processStepLinks);
+
+                if (! processedGUIDs.contains(relationship.getEntityTwoProxy().getGUID()))
+                {
+                    processedGUIDs.add(relationship.getEntityTwoProxy().getGUID());
+
+                    getNextProcessSteps(userId,
+                                        handler,
+                                        relationship.getEntityTwoProxy().getGUID(),
+                                        governanceActionProcessGraph,
+                                        processedGUIDs,
+                                        supportedZones,
+                                        pageSize);
+                }
+                else
+                {
+                    GovernanceActionProcessStepElement processStepElement = handler.getGovernanceActionProcessStepByGUID(userId,
+                                                                                                                         relationship.getEntityTwoProxy().getGUID(),
+                                                                                                                         supportedZones,
+                                                                                                                         null,
+                                                                                                                         methodName);
+
+                    List<GovernanceActionProcessStepElement> processStepElements = governanceActionProcessGraph.getNextProcessSteps();
+
+                    if (processStepElements == null)
+                    {
+                        processStepElements = new ArrayList<>();
+                    }
+
+                    processStepElements.add(processStepElement);
+
+                    governanceActionProcessGraph.setNextProcessSteps(processStepElements);
+                }
+            }
+
+            startFrom = startFrom + pageSize;
+            nextProcessStepRelationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                    processStepGUID,
+                                                                                    OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                                    OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_TYPE_GUID,
+                                                                                    OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                                    2,
+                                                                                    false,
+                                                                                    false,
+                                                                                    startFrom,
+                                                                                    pageSize,
+                                                                                    null,
+                                                                                    methodName);
+        }
+    }
+
+
     /* =====================================================================================================================
      * A governance action process step describes a step in a governance action process
      */
@@ -1091,7 +1241,7 @@ public class OpenGovernanceRESTServices
                                                                            requestBody.getDomainIdentifier(),
                                                                            requestBody.getDisplayName(),
                                                                            requestBody.getDescription(),
-                                                                           requestBody.getSupportedGuards(),
+                                                                           requestBody.getProducedGuards(),
                                                                            requestBody.getAdditionalProperties(),
                                                                            requestBody.getGovernanceEngineGUID(),
                                                                            requestBody.getRequestType(),
@@ -1169,7 +1319,7 @@ public class OpenGovernanceRESTServices
                                                           properties.getDomainIdentifier(),
                                                           properties.getDisplayName(),
                                                           properties.getDescription(),
-                                                          properties.getSupportedGuards(),
+                                                          properties.getProducedGuards(),
                                                           properties.getAdditionalProperties(),
                                                           properties.getGovernanceEngineGUID(),
                                                           properties.getRequestType(),
@@ -1458,7 +1608,6 @@ public class OpenGovernanceRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "unused")
     public VoidResponse setupFirstProcessStep(String serverName,
                                               String serviceURLMarker,
                                               String userId,
@@ -1476,9 +1625,7 @@ public class OpenGovernanceRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId,
-                                                                                                                                                   serverName,
-                                                                                                                                                   methodName);
+            GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId, serverName, methodName);
 
             handler.setupFirstProcessStep(userId,
                                           processGUID,
@@ -1515,31 +1662,27 @@ public class OpenGovernanceRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GovernanceActionProcessStepResponse getFirstProcessStep(String serverName,
-                                                                   String serviceURLMarker,
-                                                                   String userId,
-                                                                   String processGUID)
+    public FirstGovernanceActionProcessStepResponse getFirstProcessStep(String serverName,
+                                                                        String serviceURLMarker,
+                                                                        String userId,
+                                                                        String processGUID)
     {
         final String methodName = "getFirstActionProcessStep";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GovernanceActionProcessStepResponse response = new GovernanceActionProcessStepResponse();
-        AuditLog                            auditLog = null;
+        FirstGovernanceActionProcessStepResponse response = new FirstGovernanceActionProcessStepResponse();
+        AuditLog                                 auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId,
-                                                                                                                                                   serverName,
-                                                                                                                                                   methodName);
 
-            response.setElement(handler.getFirstProcessStep(userId,
-                                                            processGUID,
-                                                            null,
-                                                            instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                            null,
-                                                            methodName));
+            response.setElement(this.getFirstProcessStepElement(serverName,
+                                                                serviceURLMarker,
+                                                                userId,
+                                                                processGUID,
+                                                                methodName));
         }
         catch (Exception error)
         {
@@ -1549,6 +1692,70 @@ public class OpenGovernanceRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+
+
+    /**
+     * Return the first process step element of a governance action process.
+     *
+     * @param serverName name of the service to route the request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId calling user
+     * @param processGUID unique identifier of the governance action process
+     * @param methodName calling method
+     * @return first process step element
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws PropertyServerException the user is not authorized to issue this request
+     * @throws UserNotAuthorizedException there is a problem reported in the open metadata server(s)
+     */
+    private FirstGovernanceActionProcessStepElement getFirstProcessStepElement(String serverName,
+                                                                               String serviceURLMarker,
+                                                                               String userId,
+                                                                               String processGUID,
+                                                                               String methodName) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
+    {
+        GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId, serverName, methodName);
+
+        final String processGUIDParameterName = "processGUID";
+
+        Relationship firstActionProcessStepLink = handler.getUniqueAttachmentLink(userId,
+                                                                                  processGUID,
+                                                                                  processGUIDParameterName,
+                                                                                  OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                                  OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_TYPE_GUID,
+                                                                                  OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_TYPE_NAME,
+                                                                                  null,
+                                                                                  OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                                  0,
+                                                                                  false,
+                                                                                  false,
+                                                                                  instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                  null,
+                                                                                  methodName);
+
+        if ((firstActionProcessStepLink != null) && (firstActionProcessStepLink.getEntityTwoProxy() != null))
+        {
+            FirstGovernanceActionProcessStepElement firstProcessStep = new FirstGovernanceActionProcessStepElement();
+
+            firstProcessStep.setLinkGUID(firstActionProcessStepLink.getGUID());
+            firstProcessStep.setGuard(handler.getRepositoryHelper().getStringProperty(instanceHandler.getServiceName(serviceURLMarker),
+                                                                                      OpenMetadataType.GUARD_PROPERTY_NAME,
+                                                                                      firstActionProcessStepLink.getProperties(),
+                                                                                      methodName));
+
+            firstProcessStep.setElement(handler.getGovernanceActionProcessStepByGUID(userId,
+                                                                                     firstActionProcessStepLink.getEntityTwoProxy().getGUID(),
+                                                                                     instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                     null,
+                                                                                     methodName));
+
+            return firstProcessStep;
+        }
+
+        return null;
+    }
+
 
 
     /**
@@ -2261,6 +2468,56 @@ public class OpenGovernanceRESTServices
     }
 
 
+    /**
+     * Request that execution of an engine action is stopped.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user
+     * @param engineActionGUID identifier of the engine action request
+     * @param requestBody null request body
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    @SuppressWarnings(value = "unused")
+    public VoidResponse cancelEngineAction(String          serverName,
+                                           String          serviceURLMarker,
+                                           String          userId,
+                                           String          engineActionGUID,
+                                           NullRequestBody requestBody)
+    {
+        final String methodName = "cancelEngineAction";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            EngineActionHandler<EngineActionElement> handler = instanceHandler.getEngineActionHandler(userId, serverName, methodName);
+
+            handler.cancelEngineAction(userId,
+                                       engineActionGUID,
+                                       instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                       new Date(),
+                                       methodName);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
 
     /**
      * Update the status of the engine action - providing the caller is permitted.
@@ -2624,7 +2881,7 @@ public class OpenGovernanceRESTServices
                                              String                  serviceURLMarker,
                                              String                  userId,
                                              String                  governanceEngineName,
-                                             EngineActionRequestBody requestBody)
+                                             InitiateEngineActionRequestBody requestBody)
     {
         final String methodName = "initiateGovernanceAction";
 
@@ -2641,6 +2898,13 @@ public class OpenGovernanceRESTServices
             {
                 EngineActionHandler<EngineActionElement> handler = instanceHandler.getEngineActionHandler(userId, serverName, methodName);
 
+                Date startTime = requestBody.getStartDate();
+
+                if (startTime == null)
+                {
+                    startTime = new Date();
+                }
+
                 String engineActionGUID = handler.createEngineAction(userId,
                                                                      requestBody.getQualifiedName(),
                                                                      requestBody.getDomainIdentifier(),
@@ -2650,7 +2914,7 @@ public class OpenGovernanceRESTServices
                                                                      requestBody.getActionTargets(),
                                                                      null,
                                                                      requestBody.getReceivedGuards(),
-                                                                     requestBody.getStartTime(),
+                                                                     startTime,
                                                                      governanceEngineName,
                                                                      requestBody.getRequestType(),
                                                                      requestBody.getRequestParameters(),
@@ -2677,7 +2941,7 @@ public class OpenGovernanceRESTServices
                                                 requestBody.getQualifiedName(),
                                                 null,
                                                 requestBody.getReceivedGuards(),
-                                                requestBody.getStartTime(),
+                                                requestBody.getStartDate(),
                                                 governanceEngineName,
                                                 requestBody.getRequestType(),
                                                 requestBody.getRequestParameters(),
@@ -2720,7 +2984,7 @@ public class OpenGovernanceRESTServices
     public GUIDResponse initiateGovernanceActionType(String                          serverName,
                                                      String                          serviceURLMarker,
                                                      String                          userId,
-                                                     GovernanceActionTypeRequestBody requestBody)
+                                                     InitiateGovernanceActionTypeRequestBody requestBody)
     {
         final String methodName = "initiateGovernanceActionType";
 
@@ -2742,7 +3006,7 @@ public class OpenGovernanceRESTServices
                                                                       requestBody.getRequestSourceGUIDs(),
                                                                       requestBody.getActionTargets(),
                                                                       requestBody.getRequestParameters(),
-                                                                      requestBody.getStartTime(),
+                                                                      requestBody.getStartDate(),
                                                                       requestBody.getOriginatorServiceName(),
                                                                       requestBody.getOriginatorEngineName(),
                                                                       instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
@@ -2779,7 +3043,7 @@ public class OpenGovernanceRESTServices
     public GUIDResponse initiateGovernanceActionProcess(String                             serverName,
                                                         String                             serviceURLMarker,
                                                         String                             userId,
-                                                        GovernanceActionProcessRequestBody requestBody)
+                                                        InitiateGovernanceActionProcessRequestBody requestBody)
     {
         final String methodName = "initiateGovernanceActionProcess";
 
@@ -2801,7 +3065,7 @@ public class OpenGovernanceRESTServices
                                                                          requestBody.getRequestSourceGUIDs(),
                                                                          requestBody.getActionTargets(),
                                                                          requestBody.getRequestParameters(),
-                                                                         requestBody.getStartTime(),
+                                                                         requestBody.getStartDate(),
                                                                          requestBody.getOriginatorServiceName(),
                                                                          requestBody.getOriginatorEngineName(),
                                                                          instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),

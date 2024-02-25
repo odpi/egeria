@@ -199,7 +199,6 @@ public class AutomatedCurationRESTServices extends TokenController
 
     /**
      * Retrieve the list of governance action type metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
      *
      * @param serverName name of the service to route the request to
      * @param startsWith does the value start with the supplied string?
@@ -617,7 +616,6 @@ public class AutomatedCurationRESTServices extends TokenController
 
     /**
      * Retrieve the list of governance action process metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
      *
      * @param serverName name of the service to route the request to
      * @param startsWith does the value start with the supplied string?
@@ -766,6 +764,49 @@ public class AutomatedCurationRESTServices extends TokenController
             OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
             response.setElement(handler.getGovernanceActionProcessByGUID(userId, processGUID));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the governance action process metadata element with the supplied unique identifier
+     * along with the flow definition describing its implementation.
+     *
+     * @param serverName name of the service to route the request to
+     * @param processGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(String serverName,
+                                                                                String processGUID)
+    {
+        final String methodName = "getGovernanceActionProcessGraph";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GovernanceActionProcessGraphResponse response = new GovernanceActionProcessGraphResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
+
+            response.setElement(handler.getGovernanceActionProcessGraph(userId, processGUID));
         }
         catch (Exception error)
         {
@@ -935,7 +976,6 @@ public class AutomatedCurationRESTServices extends TokenController
 
     /**
      * Retrieve the list of governance action process step metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
      *
      * @param serverName name of the service to route the request to
      * @param startsWith does the value start with the supplied string?
@@ -1109,10 +1149,10 @@ public class AutomatedCurationRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setupFirstActionProcessStep(String serverName,
-                                                    String processGUID,
-                                                    String processStepGUID,
-                                                    String requestBody)
+    public VoidResponse setupFirstActionProcessStep(String            serverName,
+                                                    String            processGUID,
+                                                    String            processStepGUID,
+                                                    StringRequestBody requestBody)
     {
         final String methodName = "setupFirstActionProcessStep";
 
@@ -1130,7 +1170,14 @@ public class AutomatedCurationRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
-            handler.setupFirstActionProcessStep(userId, processGUID, processStepGUID, requestBody);
+            if (requestBody != null)
+            {
+                handler.setupFirstActionProcessStep(userId, processGUID, processStepGUID, requestBody.getString());
+            }
+            else
+            {
+                handler.setupFirstActionProcessStep(userId, processGUID, processStepGUID, null);
+            }
         }
         catch (Exception error)
         {
@@ -1153,14 +1200,14 @@ public class AutomatedCurationRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GovernanceActionProcessStepResponse getFirstActionProcessStep(String serverName,
-                                                                         String processGUID)
+    public FirstGovernanceActionProcessStepResponse getFirstActionProcessStep(String serverName,
+                                                                              String processGUID)
     {
         final String methodName = "getFirstActionProcessStep";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        GovernanceActionProcessStepResponse response = new GovernanceActionProcessStepResponse();
+        FirstGovernanceActionProcessStepResponse response = new FirstGovernanceActionProcessStepResponse();
         AuditLog                            auditLog = null;
 
         try
@@ -1486,6 +1533,49 @@ public class AutomatedCurationRESTServices extends TokenController
 
 
     /**
+     * Request that an engine action is stopped.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param engineActionGUID identifier of the engine action request.
+     *
+     * @return engine action properties and status or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    public VoidResponse cancelEngineAction(String serverName,
+                                           String engineActionGUID)
+    {
+        final String methodName = "cancelEngineAction";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        AuditLog auditLog = null;
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
+
+            handler.cancelEngineAction(userId, engineActionGUID);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
      * Retrieve the engine actions that are known to the server.
      *
      * @param serverName     name of server instance to route request to
@@ -1579,7 +1669,6 @@ public class AutomatedCurationRESTServices extends TokenController
 
     /**
      * Retrieve the list of engine action metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
      *
      * @param serverName name of the service to route the request to
      * @param startsWith does the value start with the supplied string?
@@ -1713,7 +1802,7 @@ public class AutomatedCurationRESTServices extends TokenController
      */
     public GUIDResponse initiateEngineAction(String                  serverName,
                                              String                  governanceEngineName,
-                                             EngineActionRequestBody requestBody)
+                                             InitiateEngineActionRequestBody requestBody)
     {
         final String methodName = "initiateEngineAction";
 
@@ -1742,7 +1831,7 @@ public class AutomatedCurationRESTServices extends TokenController
                                                               requestBody.getRequestSourceGUIDs(),
                                                               requestBody.getActionTargets(),
                                                               requestBody.getReceivedGuards(),
-                                                              requestBody.getStartTime(),
+                                                              requestBody.getStartDate(),
                                                               governanceEngineName,
                                                               requestBody.getRequestType(),
                                                               requestBody.getRequestParameters(),
@@ -1778,7 +1867,7 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException there is a problem with the metadata store
      */
     public GUIDResponse initiateGovernanceActionType(String                          serverName,
-                                                     GovernanceActionTypeRequestBody requestBody)
+                                                     InitiateGovernanceActionTypeRequestBody requestBody)
     {
         final String methodName = "initiateGovernanceActionType";
 
@@ -1803,7 +1892,7 @@ public class AutomatedCurationRESTServices extends TokenController
                                                                       requestBody.getGovernanceActionTypeQualifiedName(),
                                                                       requestBody.getRequestSourceGUIDs(),
                                                                       requestBody.getActionTargets(),
-                                                                      requestBody.getStartTime(),
+                                                                      requestBody.getStartDate(),
                                                                       requestBody.getRequestParameters(),
                                                                       requestBody.getOriginatorServiceName(),
                                                                       requestBody.getOriginatorEngineName()));
@@ -1835,7 +1924,7 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException there is a problem with the metadata store
      */
     public GUIDResponse initiateGovernanceActionProcess(String                             serverName,
-                                                        GovernanceActionProcessRequestBody requestBody)
+                                                        InitiateGovernanceActionProcessRequestBody requestBody)
     {
         final String methodName = "initiateGovernanceActionProcess";
 
@@ -1860,7 +1949,7 @@ public class AutomatedCurationRESTServices extends TokenController
                                                                          requestBody.getProcessQualifiedName(),
                                                                          requestBody.getRequestSourceGUIDs(),
                                                                          requestBody.getActionTargets(),
-                                                                         requestBody.getStartTime(),
+                                                                         requestBody.getStartDate(),
                                                                          requestBody.getRequestParameters(),
                                                                          requestBody.getOriginatorServiceName(),
                                                                          requestBody.getOriginatorEngineName()));

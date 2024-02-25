@@ -267,6 +267,17 @@ public enum GovernanceServerAuditCode implements AuditLogMessageSet
                                    "This is not necessarily an error if the server is connected to a cohort where members are also connected to other cohorts, of there is strict security in place that is restricting what this server can see.",
                            "Review the exception to reassure yourself that this is expected behavior."),
 
+    /**
+     * OMAS-GOVERNANCE-SERVER-0023 - The Governance Server Open Metadata Access Service (OMAS) sent notification of a cancelled engine action {0} for Governance Engine {1} ({2})
+     */
+    CANCELLED_ENGINE_ACTION("OMAS-GOVERNANCE-SERVER-0023",
+                      AuditLogRecordSeverityLevel.INFO,
+                      "The Governance Server Open Metadata Access Service (OMAS) sent notification of a cancelled engine action {0} for Governance Engine {1} ({2})",
+                      "The access service sends out notifications about cancelled engine actions to Engine Hosts so " +
+                              "they can stop the execution of the requested governance service.",
+                      "This is part of the normal operation of the service.  No action is required if this action is expected " +
+                              "beyond verifying that the requested action is correctly shutdown."),
+
     ;
 
 

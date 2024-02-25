@@ -48,6 +48,25 @@ public enum SurveyServiceAuditCode implements AuditLogMessageSet
                      "The survey action service {0} is overriding log file {1}",
                      "This message warns the survey team that a particular survey log file is being reused.",
                      "No specific action is required.  The new results are appended to the existing results."),
+
+
+    /**
+     * SURVEY-ACTION-SERVICE-0004 - The survey action service {0} is surveying the {1} folder (directory)
+     */
+    SURVEYING_FOLDER("SURVEY-ACTION-SERVICE-0004",
+                     AuditLogRecordSeverityLevel.INFO,
+                     "The survey action service {0} is surveying the {1} folder (directory)",
+                     "This message shows that the starting folder to survey.",
+                     "No specific action is required.  This message is marking the start of the survey process."),
+
+    /**
+     * SURVEY-ACTION-SERVICE-0003 - The survey action service {0} is has surveyed {1} files and folders (directories)
+     */
+    PROGRESS_REPORT("SURVEY-ACTION-SERVICE-0005",
+                     AuditLogRecordSeverityLevel.INFO,
+                     "The survey action service {0} is has surveyed {1} files and folders (directories)",
+                     "This message shows that the progress of the survey.",
+                     "No specific action is required.  This message is marking the progress of the survey process."),
     ;
 
     private final String                     logMessageId;

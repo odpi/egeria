@@ -49,6 +49,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
      * @param governanceActionServiceConnector connector that does the work
      * @param partnerServerName name of the metadata server used by the governance service
      * @param partnerServerPlatformURLRoot location of the metadata server used by the governance service
+     * @param startDate date/time that the governance service should start executing
      * @param auditLog destination for log messages
      * @throws InvalidParameterException problem with the governance service definitions
      */
@@ -67,6 +68,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                    String                     partnerServerName,
                                    String                     partnerServerPlatformURLRoot,
                                    GovernanceContextClient    governanceContextClient,
+                                   Date                       startDate,
                                    AuditLog                   auditLog) throws InvalidParameterException
     {
         super(governanceActionEngineProperties,
@@ -78,6 +80,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
               governanceActionServiceGUID,
               governanceActionServiceName,
               governanceActionServiceConnector,
+              startDate,
               auditLog);
 
         final String actionDescription = "Initializing GeneralGovernanceActionService";
@@ -208,10 +211,12 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
         Date startTime;
         Date endTime;
 
-        final String actionDescription = "Run governance service";
+        final String actionDescription = "Run governance action service";
 
         try
         {
+            super.waitForStartDate();
+
             auditLog.logMessage(actionDescription,
                                 GovernanceActionAuditCode.GOVERNANCE_ACTION_SERVICE_STARTING.getMessageDefinition(governanceActionServiceType,
                                                                                                                   governanceServiceName,

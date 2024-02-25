@@ -17,18 +17,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * GovernanceActionProcessRequestBody provides a structure for passing the properties for initiating a new instance of a governance action process.
+ * InitiateGovernanceActionProcessRequestBody provides a structure for passing the properties for initiating a new instance of a governance action process.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceActionProcessRequestBody
+public class InitiateGovernanceActionProcessRequestBody
 {
     private String                processQualifiedName  = null;
     private Map<String, String>   requestParameters     = null;
     private List<String>          requestSourceGUIDs    = null;
     private List<NewActionTarget> actionTargets         = null;
-    private Date                  startTime             = null;
+    private Date                  startDate             = null;
     private String                originatorServiceName = null;
     private String                originatorEngineName  = null;
 
@@ -36,7 +36,7 @@ public class GovernanceActionProcessRequestBody
     /**
      * Default constructor
      */
-    public GovernanceActionProcessRequestBody()
+    public InitiateGovernanceActionProcessRequestBody()
     {
         super();
     }
@@ -47,15 +47,15 @@ public class GovernanceActionProcessRequestBody
      *
      * @param template object to copy
      */
-    public GovernanceActionProcessRequestBody(GovernanceActionProcessRequestBody template)
+    public InitiateGovernanceActionProcessRequestBody(InitiateGovernanceActionProcessRequestBody template)
     {
         if (template != null)
         {
             processQualifiedName = template.getProcessQualifiedName();
             requestParameters = template.getRequestParameters();
             requestSourceGUIDs = template.getRequestSourceGUIDs();
-            actionTargets = template.getActionTargets();
-            startTime = template.getStartTime();
+            actionTargets         = template.getActionTargets();
+            startDate             = template.getStartDate();
             originatorServiceName = template.getOriginatorServiceName();
             originatorEngineName = template.getOriginatorEngineName();
         }
@@ -143,7 +143,7 @@ public class GovernanceActionProcessRequestBody
     /**
      * Return the list of elements that the governance action process will work on.
      *
-     * @return map of names to string guids
+     * @return list of names to string guids
      */
     public List<NewActionTarget> getActionTargets()
     {
@@ -154,7 +154,7 @@ public class GovernanceActionProcessRequestBody
     /**
      * Set up the list of elements that the governance action process will work on.
      *
-     * @param actionTargets map of names to string guids
+     * @param actionTargets list of names to string guids
      */
     public void setActionTargets(List<NewActionTarget> actionTargets)
     {
@@ -167,20 +167,20 @@ public class GovernanceActionProcessRequestBody
      *
      * @return date object
      */
-    public Date getStartTime()
+    public Date getStartDate()
     {
-        return startTime;
+        return startDate;
     }
 
 
     /**
      * Set up the time that this process should start (null means as soon as possible).
      *
-     * @param startTime date object
+     * @param startDate date object
      */
-    public void setStartTime(Date startTime)
+    public void setStartDate(Date startDate)
     {
-        this.startTime = startTime;
+        this.startDate = startDate;
     }
 
 
@@ -236,12 +236,12 @@ public class GovernanceActionProcessRequestBody
     @Override
     public String toString()
     {
-        return "GovernanceActionProcessRequestBody{" +
+        return "InitiateGovernanceActionProcessRequestBody{" +
                        "processQualifiedName='" + processQualifiedName + '\'' +
                        ", requestParameters=" + requestParameters +
                        ", requestSourceGUIDs=" + requestSourceGUIDs +
                        ", actionTargets=" + actionTargets +
-                       ", startTime=" + startTime +
+                       ", startDate=" + startDate +
                        ", originatorServiceName='" + originatorServiceName + '\'' +
                        ", originatorEngineName='" + originatorEngineName + '\'' +
                        '}';
@@ -265,14 +265,14 @@ public class GovernanceActionProcessRequestBody
         {
             return false;
         }
-        GovernanceActionProcessRequestBody that = (GovernanceActionProcessRequestBody) objectToCompare;
+        InitiateGovernanceActionProcessRequestBody that = (InitiateGovernanceActionProcessRequestBody) objectToCompare;
         return Objects.equals(processQualifiedName, that.processQualifiedName) &&
                        Objects.equals(requestSourceGUIDs, that.requestSourceGUIDs) &&
                        Objects.equals(requestParameters, that.requestParameters) &&
                        Objects.equals(actionTargets, that.actionTargets) &&
                        Objects.equals(originatorServiceName, that.originatorServiceName) &&
                        Objects.equals(originatorEngineName, that.originatorEngineName) &&
-                       Objects.equals(startTime, that.startTime);
+                       Objects.equals(startDate, that.startDate);
     }
 
 
@@ -284,7 +284,7 @@ public class GovernanceActionProcessRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(processQualifiedName, requestSourceGUIDs, requestParameters, actionTargets, startTime,
+        return Objects.hash(processQualifiedName, requestSourceGUIDs, requestParameters, actionTargets, startDate,
                             originatorServiceName, originatorEngineName);
     }
 }

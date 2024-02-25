@@ -72,7 +72,7 @@ public class AssetCatalogAdmin extends ViewServiceAdmin
                                                                                             auditLog));
 
             auditLog.logMessage(actionDescription,
-                                AssetCatalogAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
+                                AssetCatalogAuditCode.SERVICE_INITIALIZED.getMessageDefinition(),
                                 viewServiceConfig.toString());
 
         }

@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serial;
 import java.util.Date;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -19,14 +21,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ActionTargetElement extends NewActionTarget
 {
-    private static final long      serialVersionUID  = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-    private EngineActionStatus status    = null;
-    private Date               startDate = null;
-    private Date                   completionDate    = null;
-    private String                 completionMessage = null;
+    private String             actionTargetRelationshipGUID = null;
+    private EngineActionStatus status                       = null;
+    private Date               startDate                    = null;
+    private Date               completionDate               = null;
+    private String             completionMessage            = null;
 
-    private OpenMetadataElement    targetElement     = null;
+    private OpenMetadataElement targetElement = null;
 
 
     /**
@@ -49,6 +53,7 @@ public class ActionTargetElement extends NewActionTarget
 
         if (template != null)
         {
+            actionTargetRelationshipGUID = template.getActionTargetRelationshipGUID();
             status = template.getStatus();
             startDate = template.getStartDate();
             completionDate = template.getCompletionDate();
@@ -59,8 +64,29 @@ public class ActionTargetElement extends NewActionTarget
 
 
     /**
+     * Return the unique identifier of the ActionTarget relationship.
+     *
+     * @return guid
+     */
+    public String getActionTargetRelationshipGUID()
+    {
+        return actionTargetRelationshipGUID;
+    }
+
+
+    /**
+     * Set up the unique identifier of the ActionTarget relationship.
+     *
+     * @param actionTargetRelationshipGUID guid
+     */
+    public void setActionTargetRelationshipGUID(String actionTargetRelationshipGUID)
+    {
+        this.actionTargetRelationshipGUID = actionTargetRelationshipGUID;
+    }
+
+    /**
      * Return the current status of the action target.  The default value is the status is derived from
-     * the governance action service.  However, if it has to process many target elements, then these values can
+     * the engine action.  However, if it has to process many target elements, then these values can
      * be used to show progress.
      *
      * @return status enum
@@ -190,6 +216,7 @@ public class ActionTargetElement extends NewActionTarget
     {
         return "ActionTargetElement{" +
                        "status=" + status +
+                       ", relationshipGUID=" + actionTargetRelationshipGUID +
                        ", startDate=" + startDate +
                        ", completionDate=" + completionDate +
                        ", completionMessage='" + completionMessage + '\'' +
@@ -209,40 +236,17 @@ public class ActionTargetElement extends NewActionTarget
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (! (objectToCompare instanceof ActionTargetElement))
-        {
-            return false;
-        }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         ActionTargetElement that = (ActionTargetElement) objectToCompare;
-
-        if (status != that.status)
-        {
-            return false;
-        }
-        if (startDate != null ? ! startDate.equals(that.startDate) : that.startDate != null)
-        {
-            return false;
-        }
-        if (completionDate != null ? ! completionDate.equals(that.completionDate) : that.completionDate != null)
-        {
-            return false;
-        }
-        if (completionMessage != null ? ! completionMessage.equals(that.completionMessage) : that.completionMessage != null)
-        {
-            return false;
-        }
-        return targetElement != null ? targetElement.equals(that.targetElement) : that.targetElement == null;
+        return Objects.equals(actionTargetRelationshipGUID, that.actionTargetRelationshipGUID) &&
+                status == that.status &&
+                Objects.equals(startDate, that.startDate) &&
+                Objects.equals(completionDate, that.completionDate) &&
+                Objects.equals(completionMessage, that.completionMessage) &&
+                Objects.equals(targetElement, that.targetElement);
     }
-
 
     /**
      * Create a hash code for this element type.
@@ -252,12 +256,6 @@ public class ActionTargetElement extends NewActionTarget
     @Override
     public int hashCode()
     {
-        int result = super.hashCode();
-        result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
-        result = 31 * result + (completionDate != null ? completionDate.hashCode() : 0);
-        result = 31 * result + (completionMessage != null ? completionMessage.hashCode() : 0);
-        result = 31 * result + (targetElement != null ? targetElement.hashCode() : 0);
-        return result;
+        return Objects.hash(super.hashCode(), actionTargetRelationshipGUID, status, startDate, completionDate, completionMessage, targetElement);
     }
 }

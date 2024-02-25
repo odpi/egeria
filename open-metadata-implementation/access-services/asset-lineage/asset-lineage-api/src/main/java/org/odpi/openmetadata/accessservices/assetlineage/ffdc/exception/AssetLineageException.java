@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 
+import java.io.Serial;
 import java.util.Map;
 
 /**
@@ -12,6 +13,7 @@ import java.util.Map;
  * the Asset Lineage OMAS services.
  */
 public class AssetLineageException extends OCFCheckedExceptionBase {
+    @Serial
     private static final long serialVersionUID = 1L;
 
 

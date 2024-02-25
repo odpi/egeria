@@ -249,7 +249,46 @@ public class GovernanceServerOutTopicPublisher
     }
 
 
+    /**
+     * Publish an event to notify listeners that there is an engine action has been cancelled.
+     *
+     * @param governanceEngineGUID unique identifier for the Governance Engine
+     * @param governanceEngineName unique name for the Governance Engine
+     * @param engineActionGUID element to execute
+     */
+    void publishCancelledEngineAction(String governanceEngineGUID,
+                                      String governanceEngineName,
+                                      String engineActionGUID)
+    {
+        final String methodName = "publishCancelledEngineAction";
 
+        if (outTopicServerConnector != null)
+        {
+            try
+            {
+                EngineActionEvent newEvent = new EngineActionEvent();
+
+                newEvent.setEventType(GovernanceServerEventType.CANCELLED_ENGINE_ACTION_EVENT);
+                newEvent.setGovernanceEngineGUID(governanceEngineGUID);
+                newEvent.setGovernanceEngineName(governanceEngineName);
+                newEvent.setEngineActionGUID(engineActionGUID);
+
+                outTopicServerConnector.sendEvent(newEvent);
+
+                if (outTopicAuditLog != null)
+                {
+                    outTopicAuditLog.logMessage(actionDescription,
+                                                GovernanceServerAuditCode.CANCELLED_ENGINE_ACTION.getMessageDefinition(engineActionGUID,
+                                                                                                                       governanceEngineName,
+                                                                                                                       governanceEngineGUID));
+                }
+            }
+            catch (Exception error)
+            {
+                logUnexpectedPublishingException(error, methodName);
+            }
+        }
+    }
 
     /**
      * Log any exceptions that have come from the publishing process.

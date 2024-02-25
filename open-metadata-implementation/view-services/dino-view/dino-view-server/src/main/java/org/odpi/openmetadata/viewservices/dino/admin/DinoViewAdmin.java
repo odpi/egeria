@@ -117,7 +117,7 @@ public class DinoViewAdmin extends ViewServiceAdmin {
             this.serverName        = serverName;
 
             auditLog.logMessage(actionDescription,
-                                DinoViewAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
+                                DinoViewAuditCode.SERVICE_INITIALIZED.getMessageDefinition(),
                                 viewServiceConfig.toString());
 
             if (log.isDebugEnabled()) {

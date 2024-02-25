@@ -44,7 +44,7 @@ public class GovernanceEngineConfigurationResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the governance engine definition.
      */
-    @PostMapping(path = "/governance-engines/{typeName}/new")
+    @PostMapping(path = "/governance-engines/{typeName}")
 
     @Operation(summary="createGovernanceEngine",
                description="Create a new governance engine definition.",
@@ -238,7 +238,7 @@ public class GovernanceEngineConfigurationResource
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the governance engine definition.
      */
-    @PostMapping(path = "/governance-services/new/{typeName}")
+    @PostMapping(path = "/governance-services/types/{typeName}")
 
     @Operation(summary="createGovernanceService",
                description="Create a governance service definition.  The same governance service can be associated with multiple" +

@@ -3888,11 +3888,13 @@ public enum OpenMetadataType
     public static final int    REQUESTED_EA_STATUS_ORDINAL         = 0;
     public static final int    APPROVED_EA_STATUS_ORDINAL          = 1;
     public static final int    WAITING_EA_STATUS_ORDINAL           = 2;
+    public static final int    ACTIVATING_EA_STATUS_ORDINAL        = 3;
     public static final int    IN_PROGRESS_EA_STATUS_ORDINAL       = 4;
     public static final int    ACTIONED_EA_STATUS_ORDINAL          = 10;
     public static final int    INVALID_EA_STATUS_ORDINAL           = 11;
     public static final int    IGNORED_EA_STATUS_ORDINAL           = 12;
     public static final int    FAILED_EA_STATUS_ORDINAL            = 13;
+    public static final int    CANCELLED_EA_STATUS_ORDINAL         = 14;
     public static final int    OTHER_EA_STATUS_ORDINAL             = 99;
 
     public static final String ENGINE_ACTION_TYPE_GUID = "c976d88a-2b11-4b40-b972-c38d41bfc6be";

@@ -6,6 +6,7 @@ import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderConnector;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.AuditableSurveyService;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc.SurveyServiceAuditCode;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -141,7 +142,12 @@ public class FolderSurveyService extends AuditableSurveyService
             /*
              * Scan the folder (and sub-folders) and count up its contents
              */
-            profileFolder(openMetadataStore, rootFolder);
+            auditLog.logMessage(methodName, SurveyServiceAuditCode.SURVEYING_FOLDER.getMessageDefinition(surveyActionServiceName,
+                                                                                                         rootFolder.getAbsolutePath()));
+
+            LogFileProgress logFileProgress = new LogFileProgress(auditLog, surveyActionServiceName);
+
+            profileFolder(openMetadataStore, rootFolder, logFileProgress);
 
             DataProfileAnnotation dataProfile = new DataProfileAnnotation();
 
@@ -285,50 +291,105 @@ public class FolderSurveyService extends AuditableSurveyService
      *
      * @param openMetadataStore open metadata client
      * @param fileFolder folder to profile
+     * @param logFileProgress progressBar
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException problem connecting to the open metadata repositories
      * @throws UserNotAuthorizedException insufficient access
      */
     private void profileFolder(SurveyOpenMetadataStore openMetadataStore,
-                               File                    fileFolder) throws InvalidParameterException,
-                                                                          PropertyServerException,
-                                                                          UserNotAuthorizedException
+                               File                    fileFolder,
+                               LogFileProgress         logFileProgress) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
     {
-        if ((fileFolder != null) && (fileFolder.listFiles() != null))
+        if (fileFolder != null)
         {
-            for (File nestedFile : Objects.requireNonNull(fileFolder.listFiles()))
+            if (fileFolder.listFiles() != null)
             {
-                if (nestedFile.isDirectory())
+                for (File nestedFile : Objects.requireNonNull(fileFolder.listFiles()))
                 {
-                    folderCount++;
-                    profileFolder(openMetadataStore, nestedFile);
+                    if (nestedFile.isDirectory())
+                    {
+                        folderCount++;
+                        logFileProgress.logFilesProcessed();
+
+                        profileFolder(openMetadataStore, nestedFile, logFileProgress);
+                    }
+                    else
+                    {
+                        fileCount++;
+                        logFileProgress.logFilesProcessed();
+
+                        FileClassifier fileClassifier = new FileClassifier(openMetadataStore, nestedFile);
+
+                        updateValueCount(fileExtensionCounts, fileClassifier.getFileExtension());
+                        updateValueCount(fileNameCounts, fileClassifier.getFileName());
+                        updateValueCount(fileTypeCounts, fileClassifier.getFileType());
+                        updateValueCount(deployedImplementationTypeCounts, fileClassifier.getDeployedImplementationType());
+                        updateValueCount(assetTypeCounts, fileClassifier.getAssetTypeName());
+
+                        if (fileClassifier.isCanRead())
+                        {
+                            canReadCount++;
+                        }
+
+                        if (fileClassifier.isCanWrite())
+                        {
+                            canWriteCount++;
+                        }
+
+                        if (fileClassifier.isCanExecute())
+                        {
+                            canExecuteCount++;
+                        }
+                    }
                 }
-                else
-                {
-                    fileCount++;
-                    FileClassifier fileClassifier = new FileClassifier(openMetadataStore, nestedFile);
+            }
+        }
+    }
 
-                    updateValueCount(fileExtensionCounts, fileClassifier.getFileExtension());
-                    updateValueCount(fileNameCounts, fileClassifier.getFileName());
-                    updateValueCount(fileTypeCounts, fileClassifier.getFileType());
-                    updateValueCount(deployedImplementationTypeCounts, fileClassifier.getDeployedImplementationType());
-                    updateValueCount(assetTypeCounts, fileClassifier.getAssetTypeName());
 
-                    if (fileClassifier.isCanRead())
-                    {
-                        canReadCount++;
-                    }
+    /**
+     * Provide a periodic progress report for the survey process.
+     */
+    static class LogFileProgress
+    {
+        private long fileLogPointer = 0;
+        private long fileCount      = 0;
 
-                    if (fileClassifier.isCanWrite())
-                    {
-                        canWriteCount++;
-                    }
+        private final AuditLog auditLog;
+        private final String   surveyActionServiceName;
 
-                    if (fileClassifier.isCanExecute())
-                    {
-                        canExecuteCount++;
-                    }
-                }
+        /**
+         * Constructor
+         * @param auditLog logging destination
+         * @param surveyActionServiceName name of this survey
+         */
+        public LogFileProgress(AuditLog auditLog,
+                               String   surveyActionServiceName)
+        {
+            this.auditLog = auditLog;
+            this.surveyActionServiceName = surveyActionServiceName;
+        }
+
+
+        /**
+         * Log a message every 5000 files.
+         */
+        public void logFilesProcessed()
+        {
+            final String methodName   = "logFilesProcessed";
+            final long   fileLogLimit = 5000;
+
+            fileCount++;
+            fileLogPointer++;
+
+            if (fileLogPointer == fileLogLimit)
+            {
+                fileLogPointer = 0;
+
+                auditLog.logMessage(methodName, SurveyServiceAuditCode.PROGRESS_REPORT.getMessageDefinition(surveyActionServiceName,
+                                                                                                            Long.toString(fileCount)));
             }
         }
     }

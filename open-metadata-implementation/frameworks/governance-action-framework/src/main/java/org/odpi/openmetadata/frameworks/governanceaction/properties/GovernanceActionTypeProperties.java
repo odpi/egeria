@@ -26,7 +26,7 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
     private String              displayName          = null;
     private String              description          = null;
 
-    private List<String>        supportedGuards      = null;
+    private List<String>        producedGuards = null;
 
     private String              governanceEngineGUID = null;
     private String              requestType          = null;
@@ -59,7 +59,7 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
             displayName = template.getDisplayName();
             description = template.getDescription();
 
-            supportedGuards = template.getSupportedGuards();
+            producedGuards = template.getProducedGuards();
 
             governanceEngineGUID = template.getGovernanceEngineGUID();
             requestType = template.getRequestType();
@@ -141,20 +141,20 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
      *
      * @return list of guards
      */
-    public List<String> getSupportedGuards()
+    public List<String> getProducedGuards()
     {
-        return supportedGuards;
+        return producedGuards;
     }
 
 
     /**
      * Set up the list of guards provided by the previous governance service.
      *
-     * @param supportedGuards list of guards
+     * @param producedGuards list of guards
      */
-    public void setSupportedGuards(List<String> supportedGuards)
+    public void setProducedGuards(List<String> producedGuards)
     {
-        this.supportedGuards = supportedGuards;
+        this.producedGuards = producedGuards;
     }
 
 
@@ -268,7 +268,7 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
                        "domainIdentifier=" + domainIdentifier +
                        ", displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
-                       ", supportedGuards=" + supportedGuards +
+                       ", producedGuards=" + producedGuards +
                        ", governanceEngineGUID='" + governanceEngineGUID + '\'' +
                        ", requestType='" + requestType + '\'' +
                        ", requestParameters=" + requestParameters +
@@ -305,7 +305,7 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
                        Objects.equals(displayName, that.displayName) &&
                        Objects.equals(description, that.description) &&
                        waitTime == that.waitTime &&
-                       Objects.equals(supportedGuards, that.supportedGuards) &&
+                       Objects.equals(producedGuards, that.producedGuards) &&
                        Objects.equals(governanceEngineGUID, that.governanceEngineGUID) &&
                        Objects.equals(requestType, that.requestType) &&
                        Objects.equals(requestParameters, that.requestParameters);
@@ -321,6 +321,6 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), domainIdentifier, displayName, description,
-                            supportedGuards, governanceEngineGUID, requestType, requestParameters, waitTime);
+                            producedGuards, governanceEngineGUID, requestType, requestParameters, waitTime);
     }
 }

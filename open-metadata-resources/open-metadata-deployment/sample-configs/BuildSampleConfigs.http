@@ -147,8 +147,8 @@ Content-Type: application/json
     },
     {
       "class": "EngineConfig",
-      "engineId": "1a86651a-c9c1-4aee-8a83-4c028d89f774",
-      "engineQualifiedName": "AssetGovernance",
+      "engineId": "6a86651a-c9c1-4aee-8a83-4c028d89f775",
+      "engineQualifiedName": "AssetOnboarding",
       "engineUserId": "generalnpa"
     }
   ],

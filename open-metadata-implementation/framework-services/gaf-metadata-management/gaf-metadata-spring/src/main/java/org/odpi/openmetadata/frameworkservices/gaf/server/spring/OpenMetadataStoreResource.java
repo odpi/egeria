@@ -809,7 +809,7 @@ public class OpenMetadataStoreResource
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of element
      *  PropertyServerException there is a problem with the metadata store
      */
-    @PostMapping(path = "/metadata-elements/new")
+    @PostMapping(path = "/metadata-elements")
 
     public GUIDResponse createMetadataElementInStore(@PathVariable String                        serverName,
                                                      @PathVariable String                        serviceURLMarker,
@@ -997,7 +997,7 @@ public class OpenMetadataStoreResource
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
      */
-    @PostMapping(path = "/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/new")
+    @PostMapping(path = "/metadata-elements/{metadataElementGUID}/classifications/{classificationName}")
 
     public VoidResponse classifyMetadataElementInStore(@PathVariable String                       serverName,
                                                        @PathVariable String                       serviceURLMarker,
@@ -1111,7 +1111,7 @@ public class OpenMetadataStoreResource
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
      *  PropertyServerException there is a problem with the metadata store
      */
-    @PostMapping(path = "/related-elements/new")
+    @PostMapping(path = "/related-elements")
 
     public GUIDResponse createRelatedElementsInStore(@PathVariable String                        serverName,
                                                      @PathVariable String                        serviceURLMarker,

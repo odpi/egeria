@@ -175,6 +175,8 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                             actionTarget.setActionTargetGUID(end1GUID);
                             actionTargets.add(actionTarget);
 
+                            actionTarget = new NewActionTarget();
+
                             actionTarget.setActionTargetName(actionTargetTwoName);
                             actionTarget.setActionTargetGUID(end2GUID);
                             actionTargets.add(actionTarget);
