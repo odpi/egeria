@@ -246,6 +246,8 @@ public class EngineHostOperationalServices
                                                         configurationRefreshThread,
                                                         governanceEngineHandlers);
 
+
+
             auditLog.logMessage(actionDescription, EngineHostServicesAuditCode.SERVER_INITIALIZED.getMessageDefinition(localServerName));
 
             return activatedServiceList;

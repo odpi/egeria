@@ -98,7 +98,7 @@ public class GovernanceActionTypeConverter<B> extends OpenMetadataStoreConverter
                     actionTypeProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
                     actionTypeProperties.setDisplayName(this.removeDisplayName(instanceProperties));
                     actionTypeProperties.setDescription(this.removeDescription(instanceProperties));
-                    actionTypeProperties.setSupportedGuards(this.removeProducedGuards(instanceProperties));
+                    actionTypeProperties.setProducedGuards(this.removeProducedGuards(instanceProperties));
                     actionTypeProperties.setWaitTime(this.removeWaitTime(instanceProperties));
                 }
                 else

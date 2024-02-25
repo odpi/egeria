@@ -4,12 +4,15 @@ package org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 
+import java.io.Serial;
+
 /**
  * DataEngineProxyException provides a checked exception for reporting errors found when using
  * the Data Engine Proxy.
  */
 public class DataEngineProxyException extends OCFCheckedExceptionBase {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
     /**
      * @param httpCode          - http response code to use if this exception flows over a rest call
      * @param className         - name of class reporting error

@@ -72,8 +72,12 @@ public class GovernanceActionProcessConverter<B> extends OpenMetadataStoreConver
 
                     processProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     processProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    processProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
                     processProperties.setDisplayName(this.removeName(instanceProperties));
                     processProperties.setDescription(this.removeDescription(instanceProperties));
+                    processProperties.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
+                    processProperties.setFormula(this.removeFormula(instanceProperties));
+                    processProperties.setFormulaType(this.removeFormulaType(instanceProperties));
 
                     bean.setProcessProperties(processProperties);
                 }

@@ -1302,7 +1302,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
     {
         final String methodName               = "createMetadataElementInStore";
         final String elementTypeParameterName = "metadataElementTypeName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/new";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(metadataElementTypeName, elementTypeParameterName, methodName);
@@ -1360,7 +1360,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *                     connection etc)
      * @param templateProperties properties of the new metadata element.  These override the template values
      * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
-     *                              template element - and their anchored elements, which are also copied as part of this operaiton.
+     *                              template element - and their anchored elements, which are also copied as part of this operation.
      * @param parentGUID unique identifier of optional parent entity
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
@@ -1428,7 +1428,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      *                     connection etc)
      * @param templateProperties properties of the new metadata element.  These override the template values
      * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
-     *                              template element - and their anchored elements, which are also copied as part of this operaiton.
+     *                              template element - and their anchored elements, which are also copied as part of this operation.
      * @param parentGUID unique identifier of optional parent entity
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
@@ -2048,7 +2048,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         final String methodName                  = "classifyMetadataElementInStore";
         final String guidParameterName           = "metadataElementGUID";
         final String classificationParameterName = "classificationName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/classifications/{4}/new";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/{3}/classifications/{4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(metadataElementGUID, guidParameterName, methodName);
@@ -2472,7 +2472,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         final String elementTypeParameterName = "relationshipTypeName";
         final String end1ParameterName        = "metadataElement1GUID";
         final String end2ParameterName        = "metadataElement2GUID";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/related-elements/new";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/related-elements";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(relationshipTypeName, elementTypeParameterName, methodName);
@@ -2816,12 +2816,12 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(processQualifiedName, qualifiedNameParameterName, methodName);
 
-        GovernanceActionProcessRequestBody requestBody = new GovernanceActionProcessRequestBody();
+        InitiateGovernanceActionProcessRequestBody requestBody = new InitiateGovernanceActionProcessRequestBody();
 
         requestBody.setProcessQualifiedName(processQualifiedName);
         requestBody.setRequestSourceGUIDs(requestSourceGUIDs);
         requestBody.setActionTargets(actionTargets);
-        requestBody.setStartTime(startTime);
+        requestBody.setStartDate(startTime);
         requestBody.setRequestParameters(requestParameters);
         requestBody.setOriginatorServiceName(originatorServiceName);
         requestBody.setOriginatorEngineName(originatorEngineName);

@@ -68,7 +68,7 @@ public class AutomatedCurationAdmin extends ViewServiceAdmin
                                                           viewServiceConfig.getOMAGServerPlatformRootURL());
 
             auditLog.logMessage(actionDescription,
-                                AutomatedCurationAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
+                                AutomatedCurationAuditCode.SERVICE_INITIALIZED.getMessageDefinition(),
                                 viewServiceConfig.toString());
 
         }

@@ -13,7 +13,9 @@ import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataVali
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Manages different types of classifications for a single file.
@@ -33,6 +35,185 @@ public class FileClassifier
 
     private final static String folderDivider = "/";
     private final static String fileExtensionDivider = "\\.";
+
+    private final static Map<String, FileReferenceDataCache> fileNameReferenceDataCache = new HashMap<>();
+    private final static Map<String, FileReferenceDataCache> fileExtensionReferenceDataCache = new HashMap<>();
+
+
+    /**
+     * Retrieve the reference data for a particular type of file.
+     *
+     * @param fileName name of the file
+     * @param fileExtension file extension
+     * @param openMetadataStore client for retrieving
+     * @return file reference data
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException problem connecting to the open metadata repositories
+     * @throws UserNotAuthorizedException insufficient access
+     */
+    static synchronized FileReferenceDataCache getFileReferenceDataCache(String            fileName,
+                                                                         String            fileExtension,
+                                                                         OpenMetadataStore openMetadataStore) throws InvalidParameterException,
+                                                                                                                     PropertyServerException,
+                                                                                                                     UserNotAuthorizedException
+    {
+        FileReferenceDataCache fileReferenceDataCache = fileNameReferenceDataCache.get(fileName);
+
+        if (fileReferenceDataCache == null)
+        {
+            fileReferenceDataCache = fileExtensionReferenceDataCache.get(fileExtension);
+        }
+
+        if (fileReferenceDataCache == null)
+        {
+            fileReferenceDataCache = lookupFileReferenceData(fileName, fileExtension, openMetadataStore);
+        }
+
+        return fileReferenceDataCache;
+    }
+
+
+    /**
+     * Retrieve the reference data for a particular type of file.
+     *
+     * @param fileName name of the file
+     * @param fileExtension file extension
+     * @param openMetadataStore client for retrieving
+     * @return file reference data
+     * @throws InvalidParameterException invalid parameter
+     * @throws PropertyServerException problem connecting to the open metadata repositories
+     * @throws UserNotAuthorizedException insufficient access
+     */
+    static private FileReferenceDataCache lookupFileReferenceData(String            fileName,
+                                                                  String            fileExtension,
+                                                                  OpenMetadataStore openMetadataStore) throws InvalidParameterException,
+                                                                                                              PropertyServerException,
+                                                                                                              UserNotAuthorizedException
+    {
+        FileReferenceDataCache fileReferenceDataCache = new FileReferenceDataCache();
+        boolean                fileNameMatched        = false;
+        boolean                fileExtensionMatched   = false;
+
+        /*
+         * Is the file name or file extension recognized?
+         */
+        ValidMetadataValue validMetadataValue;
+        try
+        {
+            validMetadataValue = openMetadataStore.getValidMetadataValue(OpenMetadataType.DATA_FILE.typeName,
+                                                                         OpenMetadataProperty.FILE_NAME.name,
+                                                                         fileName);
+        }
+        catch (InvalidParameterException notKnown)
+        {
+            validMetadataValue = null;
+        }
+
+        List<ValidMetadataValue> consistentValues = null;
+
+        if (validMetadataValue != null)
+        {
+            consistentValues = openMetadataStore.getConsistentMetadataValues(OpenMetadataType.DATA_FILE.typeName,
+                                                                             OpenMetadataProperty.FILE_NAME.name,
+                                                                             null,
+                                                                             validMetadataValue.getPreferredValue(),
+                                                                             0,
+                                                                             5);
+            fileNameMatched = true;
+        }
+        else
+        {
+            if (fileExtension != null)
+            {
+                try
+                {
+                    validMetadataValue = openMetadataStore.getValidMetadataValue(OpenMetadataType.DATA_FILE.typeName,
+                                                                                 OpenMetadataProperty.FILE_EXTENSION.name,
+                                                                                 fileExtension);
+                }
+                catch (InvalidParameterException notKnown)
+                {
+                    // validMetadataValue = null - already set
+                }
+
+                if (validMetadataValue != null)
+                {
+                    consistentValues = openMetadataStore.getConsistentMetadataValues(OpenMetadataType.DATA_FILE.typeName,
+                                                                                     OpenMetadataProperty.FILE_EXTENSION.name,
+                                                                                     null,
+                                                                                     validMetadataValue.getPreferredValue(),
+                                                                                     0,
+                                                                                     5);
+
+                    fileExtensionMatched = true;
+                }
+            }
+        }
+
+
+        /*
+         * The fileType valid metadata value links to the deployed implementation type.
+         */
+        if (consistentValues != null)
+        {
+            for (ValidMetadataValue consistentValue : consistentValues)
+            {
+                if (consistentValue != null)
+                {
+                    if (fileTypeCategory.equals(consistentValue.getCategory()))
+                    {
+                        fileReferenceDataCache.fileType = consistentValue.getPreferredValue();
+
+                        if (consistentValue.getAdditionalProperties() != null)
+                        {
+                            if (consistentValue.getAdditionalProperties().get(OpenMetadataValidValues.ASSET_SUB_TYPE_NAME) != null)
+                            {
+                                fileReferenceDataCache.assetTypeName = consistentValue.getAdditionalProperties().get(OpenMetadataValidValues.ASSET_SUB_TYPE_NAME);
+                            }
+
+                            if (consistentValue.getAdditionalProperties().get(OpenMetadataProperty.ENCODING.name) != null)
+                            {
+                                fileReferenceDataCache.encoding = consistentValue.getAdditionalProperties().get(OpenMetadataProperty.ENCODING.name);
+                            }
+                        }
+
+                        List<ValidMetadataValue> consistentFileTypeValues =
+                                openMetadataStore.getConsistentMetadataValues(OpenMetadataType.DATA_FILE.typeName,
+                                                                              OpenMetadataProperty.FILE_TYPE.name,
+                                                                              null,
+                                                                              consistentValue.getPreferredValue(),
+                                                                              0,
+                                                                              5);
+
+                        if (consistentFileTypeValues != null)
+                        {
+                            for (ValidMetadataValue consistentFileTypeValue : consistentFileTypeValues)
+                            {
+                                if (consistentFileTypeValue != null)
+                                {
+                                    if (deployedImplementationTypeCategory.equals(consistentFileTypeValue.getCategory()))
+                                    {
+                                        fileReferenceDataCache.deployedImplementationType = consistentFileTypeValue.getPreferredValue();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (fileNameMatched)
+        {
+            fileNameReferenceDataCache.put(fileName, fileReferenceDataCache);
+        }
+        if (fileExtensionMatched)
+        {
+            fileExtensionReferenceDataCache.put(fileExtension, fileReferenceDataCache);
+        }
+
+        return fileReferenceDataCache;
+    }
 
 
     /**
@@ -72,10 +253,17 @@ public class FileClassifier
     }
 
 
+    /**
+     * Construct the name used to find the file type reference value
+     */
     private static final String fileTypeCategory =
             OpenMetadataValidValues.constructValidValueCategory(OpenMetadataType.DATA_FILE.typeName,
                                                                 OpenMetadataProperty.FILE_TYPE.name,
                                                                 null);
+
+    /**
+     * Construct the name used to find the deployed implementation type reference value
+     */
     private static final String deployedImplementationTypeCategory =
             OpenMetadataValidValues.constructValidValueCategory(OpenMetadataType.DATA_FILE.typeName,
                                                                 OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
@@ -103,111 +291,15 @@ public class FileClassifier
         this.canWrite      = file.canWrite();
         this.canExecute    = file.canExecute();
 
-        /*
-         * Is the file name or file extension recognized?
-         */
-        ValidMetadataValue validMetadataValue;
-        try
-        {
-            validMetadataValue = openMetadataStore.getValidMetadataValue(OpenMetadataType.DATA_FILE.typeName,
-                                                                         OpenMetadataProperty.FILE_NAME.name,
-                                                                         file.getName());
-        }
-        catch (InvalidParameterException notKnown)
-        {
-            validMetadataValue = null;
-        }
+        FileReferenceDataCache fileReferenceDataCache = getFileReferenceDataCache(fileName,
+                                                                                  fileExtension,
+                                                                                  openMetadataStore);
 
-        List<ValidMetadataValue> consistentValues = null;
+        this.fileType                   = fileReferenceDataCache.fileType;
+        this.encoding                   = fileReferenceDataCache.encoding;
+        this.assetTypeName              = fileReferenceDataCache.assetTypeName;
+        this.deployedImplementationType = fileReferenceDataCache.deployedImplementationType;
 
-        if (validMetadataValue != null)
-        {
-            consistentValues = openMetadataStore.getConsistentMetadataValues(OpenMetadataType.DATA_FILE.typeName,
-                                                                             OpenMetadataProperty.FILE_NAME.name,
-                                                                             null,
-                                                                             validMetadataValue.getPreferredValue(),
-                                                                             0,
-                                                                             5);
-        }
-        else
-        {
-            if (this.fileExtension != null)
-            {
-                try
-                {
-                    validMetadataValue = openMetadataStore.getValidMetadataValue(OpenMetadataType.DATA_FILE.typeName,
-                                                                                 OpenMetadataProperty.FILE_EXTENSION.name,
-                                                                                 this.fileExtension);
-                }
-                catch (InvalidParameterException notKnown)
-                {
-                    // validMetadataValue = null - already set
-                }
-
-                if (validMetadataValue != null)
-                {
-                    consistentValues = openMetadataStore.getConsistentMetadataValues(OpenMetadataType.DATA_FILE.typeName,
-                                                                                     OpenMetadataProperty.FILE_EXTENSION.name,
-                                                                                     null,
-                                                                                     validMetadataValue.getPreferredValue(),
-                                                                                     0,
-                                                                                     5);
-                }
-            }
-        }
-
-
-        /*
-         * The fileType valid metadata value links to the deployed implementation type.
-         */
-        if (consistentValues != null)
-        {
-            for (ValidMetadataValue consistentValue : consistentValues)
-            {
-                if (consistentValue != null)
-                {
-                    if (fileTypeCategory.equals(consistentValue.getCategory()))
-                    {
-                        this.fileType = consistentValue.getPreferredValue();
-
-                        if (consistentValue.getAdditionalProperties() != null)
-                        {
-                            if (consistentValue.getAdditionalProperties().get(OpenMetadataValidValues.ASSET_SUB_TYPE_NAME) != null)
-                            {
-                                this.assetTypeName = consistentValue.getAdditionalProperties().get(OpenMetadataValidValues.ASSET_SUB_TYPE_NAME);
-                            }
-
-                            if (consistentValue.getAdditionalProperties().get(OpenMetadataProperty.ENCODING.name) != null)
-                            {
-                                this.encoding = consistentValue.getAdditionalProperties().get(OpenMetadataProperty.ENCODING.name);
-                            }
-                        }
-
-                        List<ValidMetadataValue> consistentFileTypeValues =
-                                openMetadataStore.getConsistentMetadataValues(OpenMetadataType.DATA_FILE.typeName,
-                                                                              OpenMetadataProperty.FILE_TYPE.name,
-                                                                              null,
-                                                                              consistentValue.getPreferredValue(),
-                                                                              0,
-                                                                              5);
-
-                        if (consistentFileTypeValues != null)
-                        {
-                            for (ValidMetadataValue consistentFileTypeValue : consistentFileTypeValues)
-                            {
-                                if (consistentFileTypeValue != null)
-                                {
-                                    if (deployedImplementationTypeCategory.equals(consistentFileTypeValue.getCategory()))
-                                    {
-                                        this.deployedImplementationType = consistentFileTypeValue.getPreferredValue();
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 
 
@@ -320,4 +412,15 @@ public class FileClassifier
         return canExecute;
     }
 
+
+    /**
+     * Supports the caching of file reference data.
+     */
+    static class FileReferenceDataCache
+    {
+        String fileType;
+        String assetTypeName;
+        String encoding;
+        String deployedImplementationType;
+    }
 }

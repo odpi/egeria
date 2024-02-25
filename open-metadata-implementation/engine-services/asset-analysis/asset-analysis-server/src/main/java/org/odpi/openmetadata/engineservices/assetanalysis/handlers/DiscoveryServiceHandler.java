@@ -69,11 +69,11 @@ public class DiscoveryServiceHandler extends GovernanceServiceHandler
               discoveryServiceGUID,
               discoveryServiceName,
               discoveryServiceConnector,
+              null,
               auditLog);
 
         this.discoveryContext     = discoveryContext;
         this.discoveryReportGUID  = discoveryReportGUID;
-        this.auditLog             = auditLog;
 
         try
         {

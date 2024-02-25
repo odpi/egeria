@@ -177,7 +177,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
     /**
      * Run an instance of a discovery service in its own thread and return the handler (for disconnect processing).
      *
-     * @param governanceActionGUID unique identifier of the asset to analyse
+     * @param engineActionGUID unique identifier of the asset to analyse
      * @param governanceRequestType governance request type to use when calling the governance engine
      * @param startDate date/time to start the governance action service
      * @param requestParameters name-value properties to control the governance action service
@@ -189,7 +189,7 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
      * @throws PropertyServerException there was a problem detected by the governance action engine.
      */
     @Override
-    public void runGovernanceService(String                     governanceActionGUID,
+    public void runGovernanceService(String                     engineActionGUID,
                                      String                     governanceRequestType,
                                      Date                       startDate,
                                      Map<String, String>        requestParameters,
@@ -229,11 +229,12 @@ public class DiscoveryEngineHandler extends GovernanceEngineHandler
                                                                                               requestParameters,
                                                                                               null,
                                                                                               null,
-                                                                                              governanceActionGUID,
+                                                                                              engineActionGUID,
                                                                                               governanceServiceCache);
 
-            Thread thread = new Thread(discoveryServiceHandler, governanceServiceCache.getGovernanceServiceName() + assetGUID + new Date());
-            thread.start();
+            super.startServiceExecutionThread(engineActionGUID,
+                                              discoveryServiceHandler,
+                                              governanceServiceCache.getGovernanceServiceName() + assetGUID + new Date());
         }
     }
 

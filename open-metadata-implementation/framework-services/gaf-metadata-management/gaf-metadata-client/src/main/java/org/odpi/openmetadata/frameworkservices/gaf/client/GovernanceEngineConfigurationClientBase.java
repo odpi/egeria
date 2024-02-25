@@ -156,7 +156,7 @@ public class GovernanceEngineConfigurationClientBase extends GovernanceEngineCon
         final String methodName = "createGovernanceEngine";
         final String engineTypeParameterName = "governanceEngineType";
         final String nameParameterName = "qualifiedName";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/governance-engine-configuration-service/users/{2}/governance-engines/{3}/new";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/governance-engine-configuration-service/users/{2}/governance-engines/{3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(governanceEngineType, engineTypeParameterName, methodName);
@@ -432,7 +432,7 @@ public class GovernanceEngineConfigurationClientBase extends GovernanceEngineCon
         final String serviceTypeParameterName = "governanceServiceType";
         final String nameParameterName = "qualifiedName";
         final String connectionParameterName = "connection";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/governance-engine-configuration-service/users/{2}/governance-services/new/{3}";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/governance-engine-configuration-service/users/{2}/governance-services/types/{3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(governanceServiceType, serviceTypeParameterName, methodName);

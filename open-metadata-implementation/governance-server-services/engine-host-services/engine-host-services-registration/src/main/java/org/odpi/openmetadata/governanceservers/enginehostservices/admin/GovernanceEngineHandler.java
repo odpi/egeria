@@ -33,11 +33,13 @@ public abstract class GovernanceEngineHandler
     protected String                     governanceEngineName;   /* Initialized in constructor */
     protected String                     governanceEngineGUID       = null;
     protected GovernanceEngineProperties governanceEngineProperties = null;
-    private   GovernanceEngineElement    governanceEngineElement    = null;
+    private   GovernanceEngineElement governanceEngineElement = null;
+    private   boolean                 servicesToRestart       = true;
 
     private String        governanceEngineTypeName = null;
     private List<String>  governanceEngineSuperTypeNames = null;
 
+    private final Map<String, Thread> engineActionThreadMap = new HashMap<>();
 
     private final GovernanceEngineConfigurationClient configurationClient;        /* Initialized in constructor */
 
@@ -61,7 +63,7 @@ public abstract class GovernanceEngineHandler
                                    String                              serverUserId,
                                    String                              engineServiceName,
                                    GovernanceEngineConfigurationClient configurationClient,
-                                   GovernanceContextClient engineActionClient,
+                                   GovernanceContextClient             engineActionClient,
                                    AuditLog                            auditLog,
                                    int                                 maxPageSize)
     {
@@ -77,7 +79,7 @@ public abstract class GovernanceEngineHandler
         this.configurationClient = configurationClient;
         this.engineActionClient  = engineActionClient;
         this.auditLog            = auditLog;
-        this.maxPageSize = maxPageSize;
+        this.maxPageSize         = maxPageSize;
     }
 
 
@@ -89,6 +91,18 @@ public abstract class GovernanceEngineHandler
     public String getGovernanceEngineName()
     {
         return governanceEngineName;
+    }
+
+
+    /**
+     * Return the governance engine element - used to determine if the governance
+     * engine is configured.
+     *
+     * @return governance engine element
+     */
+    public GovernanceEngineElement getGovernanceEngineElement()
+    {
+        return governanceEngineElement;
     }
 
 
@@ -357,6 +371,56 @@ public abstract class GovernanceEngineHandler
 
 
     /**
+     * Restart any services that were running when the engine host shut down.
+     *
+     * @param governanceEngineElement governance engine description
+     */
+    public void restartServices(GovernanceEngineElement governanceEngineElement)
+    {
+        final String methodName = "restartServices";
+
+        if ((servicesToRestart) && (governanceEngineElement != null))
+        {
+            try
+            {
+                int startFrom = 0;
+
+                List<EngineActionElement> engineActionElements = engineActionClient.getActiveClaimedEngineActions(serverUserId,
+                                                                                                                  governanceEngineElement.getElementHeader().getGUID(),
+                                                                                                                  startFrom,
+                                                                                                                  maxPageSize);
+
+                servicesToRestart = false;
+                while (engineActionElements != null)
+                {
+                    for (EngineActionElement engineActionElement : engineActionElements)
+                    {
+                        if (engineActionElement != null)
+                        {
+                            restartGovernanceService(engineActionElement);
+                        }
+                    }
+
+                    startFrom            = startFrom + maxPageSize;
+                    engineActionElements = engineActionClient.getActiveClaimedEngineActions(serverUserId,
+                                                                                            governanceEngineElement.getElementHeader().getGUID(),
+                                                                                            startFrom,
+                                                                                            maxPageSize);
+                }
+            }
+            catch (Exception error)
+            {
+                auditLog.logException(methodName,
+                                      EngineHostServicesAuditCode.UNEXPECTED_EXCEPTION_DURING_RESTART.getMessageDefinition(methodName,
+                                                                                                                           error.getClass().getName(),
+                                                                                                                           error.getMessage()),
+                                      error);
+            }
+        }
+    }
+
+
+    /**
      * Retrieve the governance service for the requested type.
      *
      * @param governanceRequestType governance request type.
@@ -427,7 +491,7 @@ public abstract class GovernanceEngineHandler
 
 
     /**
-     * Execute the requested governance action on or after the start time.
+     * Execute the requested engine action on or after the start time.
      *
      * @param engineActionGUID unique identifier of potential governance action to run.
      */
@@ -443,7 +507,6 @@ public abstract class GovernanceEngineHandler
             {
                 engineActionClient.claimEngineAction(serverUserId, engineActionGUID);
 
-
                 engineActionClient.updateEngineActionStatus(serverUserId, engineActionGUID, EngineActionStatus.IN_PROGRESS);
 
                 runGovernanceService(engineActionGUID,
@@ -452,6 +515,11 @@ public abstract class GovernanceEngineHandler
                                      latestEngineActionElement.getRequestParameters(),
                                      latestEngineActionElement.getRequestSourceElements(),
                                      latestEngineActionElement.getActionTargetElements());
+            }
+            else if ((latestEngineActionElement.getActionStatus() == EngineActionStatus.CANCELLED) &&
+                    (serverUserId.equals(latestEngineActionElement.getProcessingEngineUserId())))
+            {
+                cancelGovernanceService(engineActionGUID);
             }
         }
         catch (Exception error)
@@ -467,7 +535,7 @@ public abstract class GovernanceEngineHandler
 
 
     /**
-     * Run an instance of a governance service in its own thread and return the handler (for disconnect processing).
+     * Run an instance of a governance service in its own thread and register the handler (for disconnect processing).
      *
      * @param engineActionGUID unique identifier of the engine action
      * @param governanceRequestType governance request type to use when calling the governance engine
@@ -488,6 +556,85 @@ public abstract class GovernanceEngineHandler
                                               List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,
                                                                                                       UserNotAuthorizedException,
                                                                                                       PropertyServerException;
+
+    /**
+     * Restart an instance of a governance service in its own thread and register the handler (for disconnect processing).
+     * This can be overridden by an engine service if restart needs different logic to the first time
+     * a governance service starts for an engine action.
+     *
+     * @param engineActionElement details of the engine action
+     */
+    public  void restartGovernanceService(EngineActionElement engineActionElement)
+    {
+        final String methodName = "restartGovernanceService";
+
+        try
+        {
+            runGovernanceService(engineActionElement.getElementHeader().getGUID(),
+                                 engineActionElement.getRequestType(),
+                                 engineActionElement.getStartTime(),
+                                 engineActionElement.getRequestParameters(),
+                                 engineActionElement.getRequestSourceElements(),
+                                 engineActionElement.getActionTargetElements());
+        }
+        catch (Exception error)
+        {
+            auditLog.logException(methodName,
+                                  EngineHostServicesAuditCode.ACTION_PROCESSING_ERROR.getMessageDefinition(methodName,
+                                                                                                           error.getClass().getName(),
+                                                                                                           engineActionElement.getElementHeader().getGUID(),
+                                                                                                           error.getMessage()),
+                                  error);
+        }
+    }
+
+
+    /**
+     * Start the execution of the governance service on a new thread.
+     *
+     * @param engineActionGUID unique identifier of the engine action that initiated this request.
+     * @param serviceToRun runnable packed with details of the governance service
+     * @param threadName name of the thread for diagnostic purposes
+     */
+    protected synchronized void startServiceExecutionThread(String    engineActionGUID,
+                                                            Runnable  serviceToRun,
+                                                            String    threadName)
+    {
+        Thread thread = new Thread(serviceToRun, threadName);
+
+        engineActionThreadMap.put(engineActionGUID, thread);
+
+        thread.start();
+    }
+
+
+    /**
+     * Cancelling a running governance service.
+     *
+     * @param engineActionGUID unique identifier of the engine action
+     */
+    private synchronized void cancelGovernanceService(String engineActionGUID)
+    {
+        final String methodName = "cancelGovernanceService";
+
+        Thread governanceServiceThread = engineActionThreadMap.get(engineActionGUID);
+
+        if (governanceServiceThread != null)
+        {
+            auditLog.logMessage(methodName,
+                                EngineHostServicesAuditCode.ENGINE_ACTION_CANCELLED.getMessageDefinition(governanceEngineName,
+                                                                                                      engineActionGUID,
+                                                                                                      governanceServiceThread.getName()));
+
+            /*
+             * This interrupt should cause an exception to be received by the
+             * governance service thread
+             */
+            governanceServiceThread.interrupt();
+        }
+    }
+
+
 
     /**
      * Confirms termination of the governance engine.

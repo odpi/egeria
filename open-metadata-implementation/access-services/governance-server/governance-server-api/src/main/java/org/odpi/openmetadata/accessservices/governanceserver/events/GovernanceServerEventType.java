@@ -63,6 +63,13 @@ public enum GovernanceServerEventType implements Serializable
                                   "Requested Engine Action",
                                   "New request to run a governance service."),
 
+    /**
+     * New request to run a governance service.
+     */
+    CANCELLED_ENGINE_ACTION_EVENT(5,
+                                  "Cancelled Engine Action",
+                                  "Request to stop a governance service."),
+
     ;
 
     private static final long     serialVersionUID = 1L;

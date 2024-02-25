@@ -6,12 +6,15 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDef
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 
+import java.io.Serial;
+
 /**
  * GovernanceServiceException indicates there is a problem with a request to a specific governance engine.  The
  * error codes and messages indicate the cause of the problem and guidance on finding a remedy.
  */
 public class GovernanceServiceException extends ConnectorCheckedException
 {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

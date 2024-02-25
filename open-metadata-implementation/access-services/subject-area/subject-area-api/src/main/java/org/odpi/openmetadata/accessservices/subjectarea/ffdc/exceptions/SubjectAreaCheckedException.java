@@ -6,6 +6,7 @@ import org.odpi.openmetadata.commonservices.ffdc.exceptions.OMAGCheckedException
 import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
+import java.io.Serial;
 import java.util.Map;
 
 /**
@@ -18,7 +19,9 @@ import java.util.Map;
  */
 public class SubjectAreaCheckedException extends OMAGCheckedExceptionBase {
 
+    @Serial
     private static final long serialVersionUID = 1L;
+
 
     /**
      * This is the typical constructor used for creating an SubjectAreaCheckedException.

@@ -689,13 +689,13 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Create an engine action in the metadata store which will trigger the governance service
+     * Move the engine action in the metadata store to Approved which will trigger the governance service
      * associated with the supplied request type.  The engine action remains to act as a record
      * of the actions taken for auditing.
      *
      * @param userId caller's userId
      * @param engineActionGUID unique identifier of the engine action
-     * @param qualifiedName unique identifier to give this governance action
+     * @param qualifiedName unique identifier to give this engine action
      * @param mandatoryGuards list of guards that have to be received
      * @param startTime future start time or null for "as soon as possible"
      * @param governanceEngineName name of the governance engine that should execute the request
@@ -749,7 +749,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
              * There are potential follow-on actions.  Need to loop though each one to evaluate if the output guards
              * permit it to execute.
              */
-
             for (Relationship previousResult : previousResults)
             {
                 /*
@@ -810,12 +809,11 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param serviceSupportedZones supported zones for calling service
      * @param methodName calling method
      *
-     * @return unique identifier of the engine action
      * @throws InvalidParameterException null qualified name
      * @throws UserNotAuthorizedException the caller is not authorized to create an engine action
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public String approveEngineAction(String                userId,
+    public void   approveEngineAction(String                userId,
                                       String                engineActionGUID,
                                       String                qualifiedName,
                                       List<String>          mandatoryGuards,
@@ -898,8 +896,6 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                       serviceSupportedZones,
                                       null,
                                       methodName);
-
-        return engineActionGUID;
     }
 
 
@@ -1635,6 +1631,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                         case 11 -> engineActionStatus = EngineActionStatus.INVALID;
                         case 12 -> engineActionStatus = EngineActionStatus.IGNORED;
                         case 13 -> engineActionStatus = EngineActionStatus.FAILED;
+                        case 14 -> engineActionStatus = EngineActionStatus.CANCELLED;
                     }
                 }
             }
@@ -1732,6 +1729,102 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                       methodName);
                 }
 
+            }
+            else
+            {
+                throw new PropertyServerException(GenericHandlersErrorCode.MISSING_ENGINE_ACTION_PROPERTIES.getMessageDefinition(engineActionGUID,
+                                                                                                                                 guidParameterName,
+                                                                                                                                 serviceName,
+                                                                                                                                 methodName),
+                                                  this.getClass().getName(),
+                                                  methodName);
+            }
+        }
+        else
+        {
+            throw new PropertyServerException(GenericHandlersErrorCode.MISSING_ENGINE_ACTION.getMessageDefinition(engineActionGUID,
+                                                                                                                  guidParameterName,
+                                                                                                                  serviceName,
+                                                                                                                  methodName),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
+    }
+
+
+    /**
+     * Request that execution of an engine action is allocated to the caller.
+     * This is only permitted if no other caller has claimed it.
+     *
+     * @param userId identifier of calling user
+     * @param engineActionGUID identifier of the engine action request
+     * @param effectiveTime             the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param serviceSupportedZones supported zones for calling service
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    public void cancelEngineAction(String       userId,
+                                   String       engineActionGUID,
+                                   List<String> serviceSupportedZones,
+                                   Date         effectiveTime,
+                                   String       methodName) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        final String guidParameterName = "engineActionGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(engineActionGUID, guidParameterName, methodName);
+
+        EntityDetail entity = this.getEntityFromRepository(userId,
+                                                           engineActionGUID,
+                                                           guidParameterName,
+                                                           OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+                                                           null,
+                                                           null,
+                                                           false,
+                                                           false,
+                                                           serviceSupportedZones,
+                                                           effectiveTime,
+                                                           methodName);
+
+        if (entity != null)
+        {
+            InstanceProperties properties = entity.getProperties();
+
+            if (properties != null)
+            {
+                EngineActionStatus status = this.getActionStatus(OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
+                                                                 properties);
+
+                EngineActionBuilder builder = new EngineActionBuilder(OpenMetadataType.CANCELLED_EA_STATUS_ORDINAL,
+                                                                      userId,
+                                                                      repositoryHelper,
+                                                                      serviceName,
+                                                                      serverName);
+
+                updateBeanInRepository(userId,
+                                       null,
+                                       null,
+                                       engineActionGUID,
+                                       guidParameterName,
+                                       OpenMetadataType.ENGINE_ACTION_TYPE_GUID,
+                                       OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+                                       false,
+                                       false,
+                                       serviceSupportedZones,
+                                       builder.getCancelInstanceProperties(methodName),
+                                       true,
+                                       effectiveTime,
+                                       methodName);
+
+                auditLog.logMessage(methodName,
+                                    GenericHandlersAuditCode.ENGINE_ACTION_CANCELLED.getMessageDefinition(engineActionGUID,
+                                                                                                          userId,
+                                                                                                          status.name()));
             }
             else
             {
@@ -1974,73 +2067,87 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                             properties,
                                                                                             methodName);
 
-                if (userId.equals(processingEngineUserId))
+                int storedStatus = repositoryHelper.getEnumPropertyOrdinal(serviceName,
+                                                                           OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
+                                                                           properties,
+                                                                           methodName);
+
+                if ((storedStatus == OpenMetadataType.REQUESTED_EA_STATUS_ORDINAL) ||
+                        (storedStatus == OpenMetadataType.APPROVED_EA_STATUS_ORDINAL) ||
+                        (storedStatus == OpenMetadataType.WAITING_EA_STATUS_ORDINAL) ||
+                        (storedStatus == OpenMetadataType.ACTIVATING_EA_STATUS_ORDINAL) ||
+                        (storedStatus == OpenMetadataType.IN_PROGRESS_EA_STATUS_ORDINAL))
                 {
-                    EngineActionBuilder builder = new EngineActionBuilder(repositoryHelper,
-                                                                          serviceName,
-                                                                          serverName);
-
-                    repositoryHandler.updateEntityProperties(userId,
-                                                             null,
-                                                             null,
-                                                             engineActionGUID,
-                                                             engineActionEntity,
-                                                             OpenMetadataType.ENGINE_ACTION_TYPE_GUID,
-                                                             OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
-                                                             builder.getCompletionInstanceProperties(engineActionEntity.getProperties(),
-                                                                                                     status,
-                                                                                                     new Date(),
-                                                                                                     outputGuards,
-                                                                                                     completionMessage,
-                                                                                                     methodName),
-                                                             methodName);
-
-                    this.markActionTargetsAsComplete(userId,
-                                                     engineActionGUID,
-                                                     serviceSupportedZones,
-                                                     effectiveTime,
-                                                     status);
-
                     /*
-                     * The anchor GUID is set if this is part of a governance action process.  It points to the first engine action entity
-                     * created when the governance action process was initiated.
+                     * Only record completion on an engine action that has not already completed.
                      */
-                    AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(engineActionEntity, methodName);
-
-                    String anchorGUID = null;
-
-                    if (anchorIdentifiers != null)
+                    if (userId.equals(processingEngineUserId))
                     {
-                        anchorGUID = anchorIdentifiers.anchorGUID;
+                        EngineActionBuilder builder = new EngineActionBuilder(repositoryHelper,
+                                                                              serviceName,
+                                                                              serverName);
+
+                        repositoryHandler.updateEntityProperties(userId,
+                                                                 null,
+                                                                 null,
+                                                                 engineActionGUID,
+                                                                 engineActionEntity,
+                                                                 OpenMetadataType.ENGINE_ACTION_TYPE_GUID,
+                                                                 OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+                                                                 builder.getCompletionInstanceProperties(engineActionEntity.getProperties(),
+                                                                                                         status,
+                                                                                                         new Date(),
+                                                                                                         outputGuards,
+                                                                                                         completionMessage,
+                                                                                                         methodName),
+                                                                 methodName);
+
+                        this.markActionTargetsAsComplete(userId,
+                                                         engineActionGUID,
+                                                         serviceSupportedZones,
+                                                         effectiveTime,
+                                                         status);
+
+                        /*
+                         * The anchor GUID is set if this is part of a governance action process.  It points to the first engine action entity
+                         * created when the governance action process was initiated.
+                         */
+                        AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(engineActionEntity, methodName);
+
+                        String anchorGUID = null;
+
+                        if (anchorIdentifiers != null)
+                        {
+                            anchorGUID = anchorIdentifiers.anchorGUID;
+                        }
+
+                        String processName = repositoryHelper.getStringProperty(serviceName,
+                                                                                OpenMetadataProperty.PROCESS_NAME.name,
+                                                                                properties,
+                                                                                methodName);
+                        this.initiateNextEngineActions(userId,
+                                                       engineActionGUID,
+                                                       governanceActionProcessStepGUID,
+                                                       anchorGUID,
+                                                       processName,
+                                                       outputGuards,
+                                                       newActionTargets,
+                                                       callerRequestParameters,
+                                                       serviceSupportedZones,
+                                                       effectiveTime,
+                                                       methodName);
                     }
-
-                    String processName = repositoryHelper.getStringProperty(serviceName,
-                                                                            OpenMetadataProperty.PROCESS_NAME.name,
-                                                                            properties,
-                                                                            methodName);
-                    this.initiateNextEngineActions(userId,
-                                                   engineActionGUID,
-                                                   governanceActionProcessStepGUID,
-                                                   anchorGUID,
-                                                   processName,
-                                                   outputGuards,
-                                                   newActionTargets,
-                                                   callerRequestParameters,
-                                                   serviceSupportedZones,
-                                                   effectiveTime,
-                                                   methodName);
+                    else
+                    {
+                        throw new UserNotAuthorizedException(GenericHandlersErrorCode.INVALID_PROCESSING_USER.getMessageDefinition(userId,
+                                                                                                                                   methodName,
+                                                                                                                                   engineActionGUID,
+                                                                                                                                   processingEngineUserId),
+                                                             this.getClass().getName(),
+                                                             methodName,
+                                                             userId);
+                    }
                 }
-                else
-                {
-                    throw new UserNotAuthorizedException(GenericHandlersErrorCode.INVALID_PROCESSING_USER.getMessageDefinition(userId,
-                                                                                                                               methodName,
-                                                                                                                               engineActionGUID,
-                                                                                                                               processingEngineUserId),
-                                                         this.getClass().getName(),
-                                                         methodName,
-                                                         userId);
-                }
-
             }
             else
             {
@@ -2475,7 +2582,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
             if (entityCount > startFrom)
             {
                 int status = repositoryHelper.getEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataType.STATUS_PROPERTY_NAME,
+                                                                     OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
                                                                      nextEngineAction.getProperties(),
                                                                      methodName);
 
@@ -2566,11 +2673,16 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
             if (entityCount > startFrom)
             {
                 int status = repositoryHelper.getEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataType.STATUS_PROPERTY_NAME,
+                                                                     OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
                                                                      nextEngineAction.getProperties(),
                                                                      methodName);
 
-                if ((status == OpenMetadataType.WAITING_EA_STATUS_ORDINAL) || (status == OpenMetadataType.IN_PROGRESS_EA_STATUS_ORDINAL))
+                String engineActionGovernanceEngineGUID = repositoryHelper.getStringProperty(serviceName,
+                                                                                             OpenMetadataType.EXECUTOR_ENGINE_GUID_PROPERTY_NAME,
+                                                                                             nextEngineAction.getProperties(),
+                                                                                             methodName);
+                if ((governanceEngineGUID.equals(engineActionGovernanceEngineGUID) &&
+                    ((status == OpenMetadataType.WAITING_EA_STATUS_ORDINAL) || (status == OpenMetadataType.IN_PROGRESS_EA_STATUS_ORDINAL))))
                 {
                     B bean = this.getEngineAction(userId, nextEngineAction, serviceSupportedZones, effectiveTime, methodName);
 

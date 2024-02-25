@@ -7,8 +7,11 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -158,6 +161,21 @@ public class OpenMetadataAPIRootHandler<B>
     public RepositoryHandler getRepositoryHandler()
     {
         return repositoryHandler;
+    }
+
+
+    /**
+     * Convert an entity proxy into an element stub.
+     *
+     * @param entityProxy proxy to convert
+     * @return element stub
+     * @throws PropertyServerException null entity proxy
+     */
+    public ElementStub getElementStub(EntityProxy entityProxy) throws PropertyServerException
+    {
+        final String methodName = "getElementStub";
+
+        return converter.getElementStub(beanClass, entityProxy, methodName);
     }
 
 

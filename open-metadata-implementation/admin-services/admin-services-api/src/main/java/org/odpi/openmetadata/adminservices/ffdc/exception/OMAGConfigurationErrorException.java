@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adminservices.ffdc.exception;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 
+import java.io.Serial;
 import java.util.Map;
 
 /**
@@ -13,8 +14,8 @@ import java.util.Map;
  */
 public class OMAGConfigurationErrorException extends OMAGCheckedExceptionBase
 {
-    private static final long    serialVersionUID = 1L;
-
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * This is the typical constructor used for creating an OCFCheckedException.

@@ -338,20 +338,50 @@ public class EngineActionBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataType.ACTIVITY_TYPE_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataType.ACTION_STATUS_PROPERTY_NAME);
         }
-
-        properties = repositoryHelper.addDatePropertyToInstance(serviceName,
-                                                                properties,
-                                                                OpenMetadataType.START_DATE_PROPERTY_NAME,
-                                                                startDate,
-                                                                methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataType.PROCESSING_ENGINE_USER_ID_PROPERTY_NAME,
                                                                   processingEngineUserId,
                                                                   methodName);
+
+        return properties;
+    }
+
+
+    /**
+     * Return the supplied bean properties in an InstanceProperties object.
+     *
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     * @throws InvalidParameterException there is a problem with the properties
+     */
+    InstanceProperties getCancelInstanceProperties(String  methodName) throws InvalidParameterException
+    {
+        InstanceProperties properties = super.getInstanceProperties(methodName);
+
+        try
+        {
+            properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                    properties,
+                                                                    OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
+                                                                    OpenMetadataType.ENGINE_ACTION_STATUS_ENUM_TYPE_GUID,
+                                                                    OpenMetadataType.ENGINE_ACTION_STATUS_ENUM_TYPE_NAME,
+                                                                    actionStatus,
+                                                                    methodName);
+        }
+        catch (TypeErrorException error)
+        {
+            throw new InvalidParameterException(error, OpenMetadataType.ACTION_STATUS_PROPERTY_NAME);
+        }
+
+        properties = repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                properties,
+                                                                OpenMetadataType.COMPLETION_DATE_PROPERTY_NAME,
+                                                                new Date(),
+                                                                methodName);
 
         return properties;
     }

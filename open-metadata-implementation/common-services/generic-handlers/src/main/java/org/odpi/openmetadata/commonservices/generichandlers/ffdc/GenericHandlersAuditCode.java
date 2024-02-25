@@ -176,7 +176,7 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
      * OMAG-GENERIC-HANDLERS-0025 - Status changed from {0} to {1} for engine action {2} by governance engine with {3} userId
      */
     ENGINE_ACTION_STATUS_CHANGE("OMAG-GENERIC-HANDLERS-0025",
-                                AuditLogRecordSeverityLevel.STARTUP,
+                                AuditLogRecordSeverityLevel.INFO,
                                 "Status changed from {0} to {1} for engine action {2} by governance engine with {3} userId",
                                 "The engine action's status has been updated as requested.",
                                 "Validate that the status change is valid."),
@@ -190,6 +190,16 @@ public enum GenericHandlersAuditCode implements AuditLogMessageSet
                           "User {0} created {1} asset {2} during operation {3} of service {4}",
                           "This message is used to capture user requests to create an asset.",
                           "No action is required, but this message can be used to capture user activity information related to asset creation."),
+
+    /**
+     * OMAG-GENERIC-HANDLERS-0024 - Governance engine with {0} userId has successfully claimed engine action {1}
+     */
+    ENGINE_ACTION_CANCELLED("OMAG-GENERIC-HANDLERS-0027",
+                            AuditLogRecordSeverityLevel.SHUTDOWN,
+                            "Engine action {0} has been cancelled by user {1}, it was in {2} status before the cancel request",
+                            "The engine action is updated to show that it was cancelled.  If a governance service is running in an engine host," +
+                                    " it is informed and it will attempt to stop the service as fast as possible.",
+                            "Monitor the shutdown of the request in the engine host."),
 
     ;
 

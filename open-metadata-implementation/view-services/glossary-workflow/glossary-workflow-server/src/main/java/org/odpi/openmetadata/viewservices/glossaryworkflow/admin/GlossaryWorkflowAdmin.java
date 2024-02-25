@@ -29,7 +29,7 @@ public class GlossaryWorkflowAdmin extends ViewServiceAdmin
 
 
     /**
-     * Initialize the Glossary Workflowview service.
+     * Initialize the Glossary Workflow view service.
      *
      * @param serverName                         name of the local server
      * @param viewServiceConfig                  specific configuration properties for this view service.
@@ -68,7 +68,7 @@ public class GlossaryWorkflowAdmin extends ViewServiceAdmin
                                                          viewServiceConfig.getOMAGServerPlatformRootURL());
 
             auditLog.logMessage(actionDescription,
-                                GlossaryWorkflowAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
+                                GlossaryWorkflowAuditCode.SERVICE_INITIALIZED.getMessageDefinition(),
                                 viewServiceConfig.toString());
 
         }

@@ -1464,6 +1464,17 @@ public class OpenMetadataTypesArchive2_6
                                                      element8DescriptionGUID);
         elementDefs.add(elementDef);
 
+        final int    element10Ordinal         = 14;
+        final String element10Value           = "Cancelled";
+        final String element10Description     = "The engine action was cancelled by an external caller.";
+        final String element10DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element10Ordinal,
+                                                     element10Value,
+                                                     element10Description,
+                                                     element10DescriptionGUID);
+        elementDefs.add(elementDef);
+
         final int    element99Ordinal         = 99;
         final String element99Value           = "Other";
         final String element99Description     = "Undefined or unknown governance engine status.";

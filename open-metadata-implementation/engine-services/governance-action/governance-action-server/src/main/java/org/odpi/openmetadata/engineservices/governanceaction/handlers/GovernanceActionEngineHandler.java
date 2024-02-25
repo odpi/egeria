@@ -13,7 +13,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTarget
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceCache;
-import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceHandler;
 
 import java.util.*;
 
@@ -128,7 +127,6 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
              * Need to combine the request parameters from the SupportedGovernanceService relationship with any from the caller.
              * The caller's request parameters take precedence.  This is done in the governanceServiceCache.
              */
-
             GovernanceActionServiceHandler governanceActionServiceHandler = new GovernanceActionServiceHandler(governanceEngineProperties,
                                                                                                                governanceEngineGUID,
                                                                                                                serverUserId,
@@ -144,10 +142,12 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
                                                                                                                partnerServerName,
                                                                                                                partnerURLRoot,
                                                                                                                governanceContextClient,
+                                                                                                               startDate,
                                                                                                                auditLog);
 
-            Thread thread = new Thread(governanceActionServiceHandler, governanceServiceCache.getGovernanceServiceName() + engineActionGUID + new Date());
-            thread.start();
+            super.startServiceExecutionThread(engineActionGUID,
+                                              governanceActionServiceHandler,
+                                              governanceServiceCache.getGovernanceServiceName() + engineActionGUID + new Date());
         }
     }
 }

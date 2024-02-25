@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.excepti
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
@@ -15,6 +16,9 @@ import java.util.Objects;
  */
 public class FileReadException extends ConnectorCheckedException
 {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     /**
      * Name of the file in error.
      */

@@ -6,12 +6,6 @@ package org.odpi.openmetadata.frameworkservices.gaf.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -23,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 @Deprecated
-public class GovernanceActionRequestBody extends EngineActionRequestBody
+public class GovernanceActionRequestBody extends InitiateEngineActionRequestBody
 {
     /**
      * JSON-style toString.
@@ -41,7 +35,7 @@ public class GovernanceActionRequestBody extends EngineActionRequestBody
                        ", requestSourceGUIDs=" + getRequestSourceGUIDs() +
                        ", actionTargets=" + getActionTargets() +
                        ", receivedGuards=" + getReceivedGuards() +
-                       ", startTime=" + getStartTime() +
+                       ", startTime=" + getStartDate() +
                        ", requestType='" + getRequestType() + '\'' +
                        ", requestParameters=" + getRequestParameters() +
                        ", processName='" + getProcessName() + '\'' +

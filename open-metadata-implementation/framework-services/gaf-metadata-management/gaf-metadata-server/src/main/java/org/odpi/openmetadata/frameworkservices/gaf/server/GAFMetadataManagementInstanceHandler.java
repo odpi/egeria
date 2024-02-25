@@ -113,7 +113,6 @@ public class GAFMetadataManagementInstanceHandler extends OMASServiceInstanceHan
     }
 
 
-
     /**
      * Retrieve the specific handler for the access service.
      *
@@ -142,7 +141,6 @@ public class GAFMetadataManagementInstanceHandler extends OMASServiceInstanceHan
     }
 
 
-
     /**
      * Retrieve the specific handler for the access service.
      *
@@ -169,6 +167,7 @@ public class GAFMetadataManagementInstanceHandler extends OMASServiceInstanceHan
 
         return null;
     }
+
 
     /**
      * Retrieve the specific handler for the access service.

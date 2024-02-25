@@ -23,13 +23,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceActionTypeRequestBody
+public class InitiateGovernanceActionTypeRequestBody
 {
     private String                governanceActionTypeQualifiedName = null;
     private Map<String, String>   requestParameters                 = null;
     private List<String>          requestSourceGUIDs                = null;
     private List<NewActionTarget> actionTargets                     = null;
-    private Date                  startTime                         = null;
+    private Date                  startDate                         = null;
     private String                originatorServiceName             = null;
     private String                originatorEngineName              = null;
 
@@ -37,7 +37,7 @@ public class GovernanceActionTypeRequestBody
     /**
      * Default constructor
      */
-    public GovernanceActionTypeRequestBody()
+    public InitiateGovernanceActionTypeRequestBody()
     {
         super();
     }
@@ -48,16 +48,16 @@ public class GovernanceActionTypeRequestBody
      *
      * @param template object to copy
      */
-    public GovernanceActionTypeRequestBody(GovernanceActionTypeRequestBody template)
+    public InitiateGovernanceActionTypeRequestBody(InitiateGovernanceActionTypeRequestBody template)
     {
         if (template != null)
         {
             governanceActionTypeQualifiedName = template.getGovernanceActionTypeQualifiedName();
             requestParameters                 = template.getRequestParameters();
             requestSourceGUIDs                = template.getRequestSourceGUIDs();
-            actionTargets                     = template.getActionTargets();
-            startTime                         = template.getStartTime();
-            originatorServiceName             = template.getOriginatorServiceName();
+            actionTargets         = template.getActionTargets();
+            startDate             = template.getStartDate();
+            originatorServiceName = template.getOriginatorServiceName();
             originatorEngineName              = template.getOriginatorEngineName();
         }
     }
@@ -144,7 +144,7 @@ public class GovernanceActionTypeRequestBody
     /**
      * Return the list of elements that the governance service will work on.
      *
-     * @return map of names to string guids
+     * @return list of names to string guids
      */
     public List<NewActionTarget> getActionTargets()
     {
@@ -155,7 +155,7 @@ public class GovernanceActionTypeRequestBody
     /**
      * Set up the list of elements that the governance service will work on.
      *
-     * @param actionTargets map of names to string guids
+     * @param actionTargets list of names to string guids
      */
     public void setActionTargets(List<NewActionTarget> actionTargets)
     {
@@ -168,20 +168,20 @@ public class GovernanceActionTypeRequestBody
      *
      * @return date object
      */
-    public Date getStartTime()
+    public Date getStartDate()
     {
-        return startTime;
+        return startDate;
     }
 
 
     /**
      * Set up the time that this engine action should start (null means as soon as possible).
      *
-     * @param startTime date object
+     * @param startDate date object
      */
-    public void setStartTime(Date startTime)
+    public void setStartDate(Date startDate)
     {
-        this.startTime = startTime;
+        this.startDate = startDate;
     }
 
 
@@ -237,12 +237,12 @@ public class GovernanceActionTypeRequestBody
     @Override
     public String toString()
     {
-        return "GovernanceActionTypeRequestBody{" +
+        return "InitiateGovernanceActionTypeRequestBody{" +
                        "governanceActionTypeQualifiedName='" + governanceActionTypeQualifiedName + '\'' +
                        ", requestParameters=" + requestParameters +
                        ", requestSourceGUIDs=" + requestSourceGUIDs +
                        ", actionTargets=" + actionTargets +
-                       ", startTime=" + startTime +
+                       ", startDate=" + startDate +
                        ", originatorServiceName='" + originatorServiceName + '\'' +
                        ", originatorEngineName='" + originatorEngineName + '\'' +
                        '}';
@@ -266,14 +266,14 @@ public class GovernanceActionTypeRequestBody
         {
             return false;
         }
-        GovernanceActionTypeRequestBody that = (GovernanceActionTypeRequestBody) objectToCompare;
+        InitiateGovernanceActionTypeRequestBody that = (InitiateGovernanceActionTypeRequestBody) objectToCompare;
         return Objects.equals(governanceActionTypeQualifiedName, that.governanceActionTypeQualifiedName) &&
                        Objects.equals(requestSourceGUIDs, that.requestSourceGUIDs) &&
                        Objects.equals(requestParameters, that.requestParameters) &&
                        Objects.equals(actionTargets, that.actionTargets) &&
                        Objects.equals(originatorServiceName, that.originatorServiceName) &&
                        Objects.equals(originatorEngineName, that.originatorEngineName) &&
-                       Objects.equals(startTime, that.startTime);
+                       Objects.equals(startDate, that.startDate);
     }
 
 
@@ -285,7 +285,7 @@ public class GovernanceActionTypeRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(governanceActionTypeQualifiedName, requestSourceGUIDs, requestParameters, actionTargets, startTime,
+        return Objects.hash(governanceActionTypeQualifiedName, requestSourceGUIDs, requestParameters, actionTargets, startDate,
                             originatorServiceName, originatorEngineName);
     }
 }

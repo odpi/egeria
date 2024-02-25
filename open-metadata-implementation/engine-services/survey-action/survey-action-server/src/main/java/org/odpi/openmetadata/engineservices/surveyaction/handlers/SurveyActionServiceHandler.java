@@ -40,6 +40,7 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
      * @param surveyActionServiceName name of this survey action service - used for message logging
      * @param surveyActionServiceConnector connector that does the work
      * @param surveyContext context for the connector
+     * @param startDate date/time that the service should start
      * @param auditLog destination for log messages
      */
     SurveyActionServiceHandler(GovernanceEngineProperties surveyActionEngineProperties,
@@ -52,6 +53,7 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
                                String                     surveyActionServiceName,
                                Connector                  surveyActionServiceConnector,
                                SurveyContext              surveyContext,
+                               Date                       startDate,
                                AuditLog                   auditLog) throws InvalidParameterException
     {
         super(surveyActionEngineProperties,
@@ -63,10 +65,10 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
               surveyActionServiceGUID,
               surveyActionServiceName,
               surveyActionServiceConnector,
+              startDate,
               auditLog);
 
-        this.surveyContext    = surveyContext;
-        this.auditLog         = auditLog;
+        this.surveyContext = surveyContext;
 
         try
         {
@@ -83,10 +85,10 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
                                                                                                            error.getClass().getName(),
                                                                                                            error.getMessage()),
                                   error);
-            throw new InvalidParameterException(SurveyActionErrorCode.INVALID_DISCOVERY_SERVICE.getMessageDefinition(surveyActionServiceName,
-                                                                                                                      serviceRequestType,
-                                                                                                                      error.getClass().getName(),
-                                                                                                                      error.getMessage()),
+            throw new InvalidParameterException(SurveyActionErrorCode.INVALID_SURVEY_SERVICE.getMessageDefinition(surveyActionServiceName,
+                                                                                                                  serviceRequestType,
+                                                                                                                  error.getClass().getName(),
+                                                                                                                  error.getMessage()),
                                                 this.getClass().getName(),
                                                 actionDescription,
                                                 error,
@@ -106,10 +108,12 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
         String surveyReportGUID = null;
 
 
-        final String actionDescription = "Analyse an Asset";
+        final String actionDescription = "Survey an Asset";
 
         try
         {
+            super.waitForStartDate();
+
             surveyReportGUID = surveyContext.getAnnotationStore().getSurveyReportGUID();
             auditLog.logMessage(actionDescription,
                                 SurveyActionAuditCode.SURVEY_ACTION_SERVICE_STARTING.getMessageDefinition(governanceServiceName,
@@ -137,7 +141,7 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
             super.disconnect();
             surveyActionService.setSurveyContext(null);
 
-            super.recordCompletionStatus(CompletionStatus.ACTIONED, null, null, null, null);
+            super.recordCompletionStatus(CompletionStatus.ACTIONED, null, null, null, "SUCCESS");
         }
         catch (Exception  error)
         {
@@ -147,6 +151,7 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
                  * Try to log the completion message - may not work
                  */
                 surveyContext.getAnnotationStore().setCompletionMessage(error.getMessage());
+                super.recordCompletionStatus(CompletionStatus.FAILED, null, null, null, error.getMessage());
             }
             catch (Exception ignore)
             {

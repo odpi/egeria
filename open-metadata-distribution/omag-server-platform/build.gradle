@@ -394,6 +394,8 @@ distributions {
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/glossary-workflow" }
                         { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/user-security/user-authn" }
+                        { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-conformance-suite" }
                         { include 'Egeria*.http' }
                 fileMode = 0755
