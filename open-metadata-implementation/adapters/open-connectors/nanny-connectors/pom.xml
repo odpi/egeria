@@ -30,7 +30,7 @@
 
         <slf4j.version>1.7.32</slf4j.version>
         <logback.version>1.2.6</logback.version>
-        <jackson.version>2.13.0</jackson.version>
+        <jackson.version>2.13.4.2</jackson.version>
         <jackson.databind.version>2.10.0</jackson.databind.version>
 
         <!-- Level of Java  -->
