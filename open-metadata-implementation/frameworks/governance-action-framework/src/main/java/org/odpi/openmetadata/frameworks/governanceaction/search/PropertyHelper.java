@@ -89,7 +89,7 @@ public class PropertyHelper
                 typeList = new ArrayList<>();
             }
 
-            typeList.add(expectedType);
+            typeList.add(elementControlHeader.getType().getTypeName());
 
             return typeList.contains(expectedType);
         }

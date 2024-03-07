@@ -155,6 +155,7 @@ public class ValidValueConverter<B> extends AssetOwnerOMASConverter<B>
             validValueProperties.setUsage(this.removeUsage(instanceProperties));
             validValueProperties.setScope(this.removeScope(instanceProperties));
             validValueProperties.setPreferredValue(this.removePreferredValue(instanceProperties));
+            validValueProperties.setDataType(this.removeDataType(instanceProperties));
             validValueProperties.setIsDeprecated(this.removeIsDeprecated(instanceProperties));
             validValueProperties.setIsCaseSensitive(this.removeIsCaseSensitive(instanceProperties));
 

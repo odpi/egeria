@@ -9,6 +9,10 @@
 # Metadata Assess Store: simple-metadata-store
 #
 ###
+# Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simple-metadata-store/server-user-id?id=simplenpa
+
+###
 # Set up the local repository to use the in-memory implementation.
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simple-metadata-store/local-repository/mode/in-memory-repository
 
@@ -20,6 +24,9 @@ POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simp
 # ---------------------------------------------
 # Metadata Assess Store: active-metadata-store
 #
+###
+# Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/server-user-id?id=activenpa
 
 ###
 # Set up the local repository to use the XTDB KV implementation.
@@ -57,6 +64,9 @@ content-packs/OpenConnectorsArchive.omarchive
 # -------------------------
 # View Server: view-server
 #
+###
+# Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/view-server/server-user-id?id=viewnpa
 
 ###
 # Set up all of the registered, undeprecated Open Metadata View Services (OMVSs).  The request body lists the platforms
@@ -123,6 +133,9 @@ Content-Type: application/json
 # -------------------------
 # Engine Host: engine-host
 #
+###
+# Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/engine-host/server-user-id?id=enginenpa
 
 ###
 # Set up the address of the active-metadata-store that will supply the engine host with metadata along with the
@@ -150,6 +163,12 @@ Content-Type: application/json
       "engineId": "6a86651a-c9c1-4aee-8a83-4c028d89f775",
       "engineQualifiedName": "AssetOnboarding",
       "engineUserId": "generalnpa"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "947248ee-a6eb-4f99-8376-7ff488b6281e",
+      "engineQualifiedName": "Stewardship",
+      "engineUserId": "generalnpa"
     }
   ],
   "omagserverPlatformRootURL": "{{baseURL}}",
@@ -160,6 +179,9 @@ Content-Type: application/json
 # ---------------------------------------
 # Integration Daemon: integration-daemon
 #
+###
+# Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/integration-daemon/server-user-id?id=daemonnpa
 
 ###
 # Set up the qualified name of the integration group that this server supports and the location of the

@@ -98,7 +98,6 @@ public class GovernanceActionTypeConverter<B> extends OpenMetadataStoreConverter
                     actionTypeProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
                     actionTypeProperties.setDisplayName(this.removeDisplayName(instanceProperties));
                     actionTypeProperties.setDescription(this.removeDescription(instanceProperties));
-                    actionTypeProperties.setProducedGuards(this.removeProducedGuards(instanceProperties));
                     actionTypeProperties.setWaitTime(this.removeWaitTime(instanceProperties));
                 }
                 else
@@ -111,7 +110,7 @@ public class GovernanceActionTypeConverter<B> extends OpenMetadataStoreConverter
                     InstanceProperties instanceProperties = new InstanceProperties(relationship.getProperties());
 
                     actionTypeProperties.setRequestType(this.removeRequestType(instanceProperties));
-                    actionTypeProperties.setRequestParameters(this.removeRequestParameters(instanceProperties));
+                    actionTypeProperties.setFixedRequestParameters(this.removeRequestParameters(instanceProperties));
 
                     EntityProxy entityProxy = relationship.getEntityTwoProxy();
 

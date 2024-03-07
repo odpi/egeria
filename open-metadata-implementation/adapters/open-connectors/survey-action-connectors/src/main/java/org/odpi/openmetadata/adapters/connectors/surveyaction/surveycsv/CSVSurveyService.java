@@ -24,6 +24,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyOpenMetadataStore;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.DataProfileAnnotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.DataSourcePhysicalStatusAnnotation;
@@ -174,6 +175,8 @@ public class CSVSurveyService extends AuditableSurveyService
             SurveyOpenMetadataStore  openMetadataStore = surveyContext.getOpenMetadataStore();
             SurveyAssetStore         assetStore        = surveyContext.getAssetStore();
 
+            annotationStore.setAnalysisStep(AnalysisStep.CHECK_ASSET.getName());
+
             /*
              * Before performing any real work, check the type of the asset.
              */
@@ -254,6 +257,8 @@ public class CSVSurveyService extends AuditableSurveyService
 
             CSVFileStoreConnector    assetConnector    = (CSVFileStoreConnector)connector;
 
+            annotationStore.setAnalysisStep(AnalysisStep.SCHEMA_EXTRACTION.getName());
+
             long                     recordCount     = assetConnector.getRecordCount();
             List<String>             columnNames     = assetConnector.getColumnNames();
 
@@ -285,6 +290,8 @@ public class CSVSurveyService extends AuditableSurveyService
 
             annotationStore.addAnnotation(schemaAnnotation, schemaTypeGUID);
 
+            annotationStore.setAnalysisStep(AnalysisStep.MEASURE_RESOURCE.getName());
+
             DataSourcePhysicalStatusAnnotation measurementAnnotation = new DataSourcePhysicalStatusAnnotation();
             Map<String, String>                measurementProperties = new HashMap<>();
 
@@ -299,6 +306,8 @@ public class CSVSurveyService extends AuditableSurveyService
             measurementAnnotation.setSize(assetConnector.getFile().length());
 
             annotationStore.addAnnotation(measurementAnnotation, surveyContext.getAssetGUID());
+
+            annotationStore.setAnalysisStep(AnalysisStep.PROFILE_DATA.getName());
 
             /*
              * Perform the analysis on the store.

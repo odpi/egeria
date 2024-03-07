@@ -280,7 +280,6 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
                                                               requestType,
                                                               engineActionGUID);
 
-
         SurveyAssetStore assetStore = new SurveyAssetStoreClient(assetGUID,
                                                                  engineUserId,
                                                                  connectedAssetClient,
@@ -297,7 +296,9 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
                                                         analysisParameters,
                                                         assetStore,
                                                         annotationStore,
-                                                        openMetadataStore);
+                                                        openMetadataStore,
+                                                        governanceServiceCache.getGovernanceServiceName(),
+                                                        auditLog);
 
         return new SurveyActionServiceHandler(governanceEngineProperties,
                                               governanceEngineGUID,

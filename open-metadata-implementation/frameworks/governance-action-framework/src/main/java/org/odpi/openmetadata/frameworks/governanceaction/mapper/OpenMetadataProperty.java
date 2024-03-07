@@ -248,6 +248,7 @@ public enum OpenMetadataProperty
      */
     REQUEST_TYPE("requestType", "string", "The request type used to call the service.", "be22cf20-f704-459e-823f-bdd8f7ef003b"),
 
+
     /**
      * Properties that configure the governance service for this type of request.
      */

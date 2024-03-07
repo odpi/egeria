@@ -33,7 +33,7 @@ public class ApacheAtlasRESTProvider extends ConnectorProviderBase
     private static final String connectorQualifiedName = "Egeria:ResourceConnector:System:ApacheAtlas";
     private static final String connectorDisplayName   = "Apache Atlas REST Connector";
     private static final String connectorDescription   = "Connector that provides a Java API to Apache Atlas.";
-    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/resource/apache-atlas-rest-connector/";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/apache-atlas/apache-atlas-rest-connector/";
 
     /**
      * The configuration property name used to supply the name of the Apache Atlas server.  This name is used in messages

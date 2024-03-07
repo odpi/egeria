@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.actiontargettype.ActionTargetType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
 
@@ -37,6 +37,7 @@ public class FolderSurveyServiceProvider extends SurveyActionServiceProvider
     private static final String connectorClass = "org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyService";
 
     static final String  FILE_TARGET_PROPERTY = "fileToSurvey";
+    static final String  FILE_TARGET_PROPERTY_DESCRIPTION = "A FileFolder asset representing the directory on the file system to survey.";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -55,20 +56,19 @@ public class FolderSurveyServiceProvider extends SurveyActionServiceProvider
         connectorType.setDisplayName(connectorTypeName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
-        connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
+        connectorType.setSupportedAssetTypeName(SurveyActionServiceProvider.supportedAssetTypeName);
 
         super.connectorTypeBean = connectorType;
 
-        supportedTargetActionNames = new ArrayList<>();
-        supportedTargetActionNames.add(FILE_TARGET_PROPERTY);
-
-        actionTargetTypes = new HashMap<>();
+        supportedActionTargetTypes = new ArrayList<>();
         ActionTargetType actionTargetType = new ActionTargetType();
 
+        actionTargetType.setName(FILE_TARGET_PROPERTY);
+        actionTargetType.setDescription(FILE_TARGET_PROPERTY_DESCRIPTION);
         actionTargetType.setTypeName(DeployedImplementationType.FILE_FOLDER.getAssociatedTypeName());
         actionTargetType.setDeployedImplementationType(DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType());
 
-        super.actionTargetTypes.put(FILE_TARGET_PROPERTY, actionTargetType);
+        super.supportedActionTargetTypes.add(actionTargetType);
 
         /*
          * Set up the component description used in the connector's audit log messages.

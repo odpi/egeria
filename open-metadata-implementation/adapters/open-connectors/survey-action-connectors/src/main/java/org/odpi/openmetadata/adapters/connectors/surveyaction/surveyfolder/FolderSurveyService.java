@@ -13,16 +13,14 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
+import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyOpenMetadataStore;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.AnnotationStatus;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.DataProfileAnnotation;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.DataProfileLogAnnotation;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.DataSourceMeasurementAnnotation;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,11 +44,12 @@ public class FolderSurveyService extends AuditableSurveyService
     private long canExecuteCount = 0L;
 
 
-    private final Map<String, Integer> fileExtensionCounts = new HashMap<>();
-    private final Map<String, Integer> fileTypeCounts = new HashMap<>();
-    private final Map<String, Integer> fileNameCounts = new HashMap<>();
-    private final Map<String, Integer> assetTypeCounts = new HashMap<>();
-    private final Map<String, Integer> deployedImplementationTypeCounts = new HashMap<>();
+    private final Map<String, Integer>     fileExtensionCounts              = new HashMap<>();
+    private final Map<String, Integer>     fileTypeCounts                   = new HashMap<>();
+    private final Map<String, Integer>     fileNameCounts                   = new HashMap<>();
+    private final Map<String, Integer>     assetTypeCounts                  = new HashMap<>();
+    private final Map<String, Integer>     deployedImplementationTypeCounts = new HashMap<>();
+    private final List<FileClassification> missingReferenceData             = new ArrayList<>();
 
 
     /**
@@ -88,9 +87,10 @@ public class FolderSurveyService extends AuditableSurveyService
 
         try
         {
-            AnnotationStore          annotationStore   = surveyContext.getAnnotationStore();
-            SurveyOpenMetadataStore  openMetadataStore = surveyContext.getOpenMetadataStore();
+            AnnotationStore          annotationStore   = getSurveyContext().getAnnotationStore();
             SurveyAssetStore         assetStore        = surveyContext.getAssetStore();
+
+            annotationStore.setAnalysisStep(AnalysisStep.CHECK_ASSET.getName());
 
             /*
              * Before performing any real work, check the type of the asset.
@@ -145,72 +145,63 @@ public class FolderSurveyService extends AuditableSurveyService
             auditLog.logMessage(methodName, SurveyServiceAuditCode.SURVEYING_FOLDER.getMessageDefinition(surveyActionServiceName,
                                                                                                          rootFolder.getAbsolutePath()));
 
+            annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
+
+
             LogFileProgress logFileProgress = new LogFileProgress(auditLog, surveyActionServiceName);
 
-            profileFolder(openMetadataStore, rootFolder, logFileProgress);
+            profileFolder(rootFolder, logFileProgress);
 
             DataProfileAnnotation dataProfile = new DataProfileAnnotation();
 
-            dataProfile.setAnnotationType("Profile File Extensions");
-            dataProfile.setAnnotationStatus(AnnotationStatus.NEW_ANNOTATION);
-            dataProfile.setSummary("Iterate through files under a directory (folder) and count the occurrences of each file extension.");
+            setUpAnnotation(dataProfile, SurveyFolderAnnotationType.PROFILE_FILE_EXTENSIONS);
             dataProfile.setValueCount(fileExtensionCounts);
-            annotationStore.addAnnotation(dataProfile, null);
-
-            dataProfile = new DataProfileAnnotation();
-
-            dataProfile.setAnnotationType("Profile File Names");
-            dataProfile.setAnnotationStatus(AnnotationStatus.NEW_ANNOTATION);
-            dataProfile.setSummary("Iterate through files under a directory (folder) and count the occurrences of each file name.");
-            dataProfile.setValueCount(fileNameCounts);
             annotationStore.addAnnotation(dataProfile, null);
 
             DataProfileLogAnnotation dataProfileLog = new DataProfileLogAnnotation();
 
-            dataProfileLog.setAnnotationType("Profile File Names to External Log");
-            dataProfileLog.setAnnotationStatus(AnnotationStatus.NEW_ANNOTATION);
-            dataProfileLog.setSummary("Iterate through files under a directory (folder) and count the occurrences of each file name.");
+            setUpAnnotation(dataProfileLog, SurveyFolderAnnotationType.PROFILE_FILE_NAMES);
             List<String> dataProfileDataGUIDs = new ArrayList<>();
             dataProfileDataGUIDs.add(setUpExternalLogFile(annotationStore.getSurveyReportGUID(), fileNameCounts));
             dataProfileLog.setDataProfileLogGUIDs(dataProfileDataGUIDs);
             annotationStore.addAnnotation(dataProfileLog, null);
 
+            RequestForActionAnnotation requestForActionAnnotation = new RequestForActionAnnotation();
+
+            setUpAnnotation(requestForActionAnnotation, SurveyFolderAnnotationType.MISSING_REF_DATA);
+            List<String> requestForActionTargetGUIDs = new ArrayList<>();
+            requestForActionTargetGUIDs.add(setUpExternalLogFile(annotationStore.getSurveyReportGUID(), missingReferenceData));
+            requestForActionAnnotation.setActionTargetGUIDs(requestForActionTargetGUIDs);
+            annotationStore.addAnnotation(requestForActionAnnotation, null);
+
             dataProfile = new DataProfileAnnotation();
 
-            dataProfile.setAnnotationType("Profile File Types");
-            dataProfile.setAnnotationStatus(AnnotationStatus.NEW_ANNOTATION);
-            dataProfile.setSummary("Iterate through files under a directory (folder) and count the occurrences of each file type.");
+            setUpAnnotation(dataProfile, SurveyFolderAnnotationType.PROFILE_FILE_TYPES);
             dataProfile.setValueCount(fileTypeCounts);
             annotationStore.addAnnotation(dataProfile, null);
 
             dataProfile = new DataProfileAnnotation();
 
-            dataProfile.setAnnotationType("Profile Asset Types");
-            dataProfile.setAnnotationStatus(AnnotationStatus.NEW_ANNOTATION);
-            dataProfile.setSummary("Iterate through files under a directory (folder) and count each potential asset type if they were to be catalogued in open metadata.");
+            setUpAnnotation(dataProfile, SurveyFolderAnnotationType.PROFILE_ASSET_TYPES);
             dataProfile.setValueCount(assetTypeCounts);
             annotationStore.addAnnotation(dataProfile, null);
 
             dataProfile = new DataProfileAnnotation();
 
-            dataProfile.setAnnotationType("Profile Deployed Implementation Types");
-            dataProfile.setAnnotationStatus(AnnotationStatus.NEW_ANNOTATION);
-            dataProfile.setSummary("Iterate through files under a directory (folder) and count each potential deployed implementation type if they were to be catalogued in open metadata.");
+            setUpAnnotation(dataProfile, SurveyFolderAnnotationType.PROFILE_DEP_IMPL_TYPES);
             dataProfile.setValueCount(deployedImplementationTypeCounts);
             annotationStore.addAnnotation(dataProfile, null);
 
             DataSourceMeasurementAnnotation dataSourceMeasurementAnnotation = new DataSourceMeasurementAnnotation();
 
-            dataSourceMeasurementAnnotation.setAnnotationType("Capture File Counts");
-            dataSourceMeasurementAnnotation.setAnnotationStatus(AnnotationStatus.NEW_ANNOTATION);
-            dataSourceMeasurementAnnotation.setSummary("Count the number of directories and files under the starting directory.");
+            setUpAnnotation(dataSourceMeasurementAnnotation, SurveyFolderAnnotationType.MEASUREMENTS);
 
             Map<String, String> fileCountProperties = new HashMap<>();
-            fileCountProperties.put("Number of Files", Long.toString(fileCount));
-            fileCountProperties.put("Number of Subdirectories (folders)", Long.toString(folderCount));
-            fileCountProperties.put("Readable files/directories", Long.toString(canReadCount));
-            fileCountProperties.put("Writable files/directories", Long.toString(canWriteCount));
-            fileCountProperties.put("Executable files/directories", Long.toString(canExecuteCount));
+            fileCountProperties.put(FolderMetric.FILE_COUNT.getName(), Long.toString(fileCount));
+            fileCountProperties.put(FolderMetric.SUB_DIRECTORY_COUNT.getName(), Long.toString(folderCount));
+            fileCountProperties.put(FolderMetric.READABLE_FILE_COUNT.getName(), Long.toString(canReadCount));
+            fileCountProperties.put(FolderMetric.WRITEABLE_FILE_COUNT.getName(), Long.toString(canWriteCount));
+            fileCountProperties.put(FolderMetric.EXECUTABLE_FILE_COUNT.getName(), Long.toString(canExecuteCount));
             dataSourceMeasurementAnnotation.setDataSourceProperties(fileCountProperties);
 
             annotationStore.addAnnotation(dataSourceMeasurementAnnotation, null);
@@ -227,6 +218,21 @@ public class FolderSurveyService extends AuditableSurveyService
 
 
     /**
+     * Transfer common properties into the annotation.
+     *
+     * @param annotation output annotation
+     * @param annotationType annotation type definition
+     */
+    private void setUpAnnotation(Annotation                 annotation,
+                                 SurveyFolderAnnotationType annotationType)
+    {
+        annotation.setAnnotationType(annotationType.getName());
+        annotation.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
+        annotation.setSummary(annotationType.getSummary());
+        annotation.setExplanation(annotationType.getExplanation());
+    }
+
+    /**
      * Create and catalog a CSV file to store data about the file names.
      *
      * @param surveyReportGUID identifier of the survey report
@@ -236,12 +242,14 @@ public class FolderSurveyService extends AuditableSurveyService
      * @throws InvalidParameterException problem creating CSV file asset
      * @throws PropertyServerException repository problem creating CSV file asset
      * @throws UserNotAuthorizedException authorization problem creating CSV file asset
+     * @throws ConnectorCheckedException exception thrown if connector is no longer active
      */
     private String setUpExternalLogFile(String               surveyReportGUID,
                                         Map<String, Integer> fileNameCounts) throws IOException,
-                                                                            InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException
+                                                                                    InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    ConnectorCheckedException
     {
         final String methodName = "setUpExternalLogFile";
 
@@ -287,20 +295,97 @@ public class FolderSurveyService extends AuditableSurveyService
 
 
     /**
+     * Create and catalog a CSV file to store data about the file names.
+     *
+     * @param surveyReportGUID identifier of the survey report
+     * @param missingReferenceData list of incompletely classified files
+     * @return unique identifier of the GUID for the CSV asset
+     * @throws IOException problem writing file
+     * @throws InvalidParameterException problem creating CSV file asset
+     * @throws PropertyServerException repository problem creating CSV file asset
+     * @throws UserNotAuthorizedException authorization problem creating CSV file asset
+     * @throws ConnectorCheckedException exception thrown if connector is no longer active
+     */
+    private String setUpExternalLogFile(String                   surveyReportGUID,
+                                        List<FileClassification> missingReferenceData) throws IOException,
+                                                                                              InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              ConnectorCheckedException
+    {
+        final String methodName = "setUpExternalLogFile";
+
+        String           logFileName = "surveys/report-" + surveyReportGUID + "-missingReferenceData.csv";
+        SurveyAssetStore assetStore = surveyContext.getAssetStore();
+
+        String assetGUID = assetStore.addCSVFileToCatalog("Missing reference data for survey report " + surveyReportGUID,
+                                                          "Shows the files that could not be correctly classified from the reference data.",
+                                                          logFileName,
+                                                          null,
+                                                          ',',
+                                                          '"');
+
+        File logFile = new File(logFileName);
+
+        try
+        {
+            FileUtils.sizeOf(logFile);
+            auditLog.logMessage(methodName,
+                                SurveyServiceAuditCode.REUSING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
+                                                                                             logFileName));
+        }
+        catch (IllegalArgumentException notFound)
+        {
+            auditLog.logMessage(methodName,
+                                SurveyServiceAuditCode.CREATING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
+                                                                                              logFileName,
+                                                                                              assetGUID));
+
+            FileUtils.writeStringToFile(logFile, "FileName,FileExtension,PathName,FileType,AssetTypeName,DeployedImplementationType,Encoding\n", (String)null, false);
+        }
+
+
+        for (FileClassification fileClassification : missingReferenceData)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            stringBuilder.append(fileClassification.getFileName());
+            stringBuilder.append(",");
+            stringBuilder.append(fileClassification.getFileExtension());
+            stringBuilder.append(",");
+            stringBuilder.append(fileClassification.getPathName());
+            stringBuilder.append(",");
+            stringBuilder.append(fileClassification.getFileType());
+            stringBuilder.append(",");
+            stringBuilder.append(fileClassification.getAssetTypeName());
+            stringBuilder.append(",");
+            stringBuilder.append(fileClassification.getDeployedImplementationType());
+            stringBuilder.append(",");
+            stringBuilder.append(fileClassification.getEncoding());
+            stringBuilder.append("\n");
+
+            FileUtils.writeStringToFile(logFile, stringBuilder.toString(), (String)null, true);
+        }
+
+        return assetGUID;
+    }
+
+
+    /**
      * Profile a single folder.
      *
-     * @param openMetadataStore open metadata client
      * @param fileFolder folder to profile
      * @param logFileProgress progressBar
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException problem connecting to the open metadata repositories
      * @throws UserNotAuthorizedException insufficient access
+     * @throws ConnectorCheckedException exception thrown if connector is no longer active
      */
-    private void profileFolder(SurveyOpenMetadataStore openMetadataStore,
-                               File                    fileFolder,
+    private void profileFolder(File                    fileFolder,
                                LogFileProgress         logFileProgress) throws InvalidParameterException,
                                                                                PropertyServerException,
-                                                                               UserNotAuthorizedException
+                                                                               UserNotAuthorizedException,
+                                                                               ConnectorCheckedException
     {
         if (fileFolder != null)
         {
@@ -313,32 +398,43 @@ public class FolderSurveyService extends AuditableSurveyService
                         folderCount++;
                         logFileProgress.logFilesProcessed();
 
-                        profileFolder(openMetadataStore, nestedFile, logFileProgress);
+                        if (! FileUtils.isSymlink(nestedFile))
+                        {
+                            profileFolder(nestedFile, logFileProgress);
+                        }
                     }
-                    else
+                    else if (nestedFile.isFile())
                     {
                         fileCount++;
                         logFileProgress.logFilesProcessed();
 
-                        FileClassifier fileClassifier = new FileClassifier(openMetadataStore, nestedFile);
+                        FileClassifier fileClassifier = surveyContext.getFileClassifier();
+                        FileClassification fileClassification = fileClassifier.classifyFile(nestedFile);
 
-                        updateValueCount(fileExtensionCounts, fileClassifier.getFileExtension());
-                        updateValueCount(fileNameCounts, fileClassifier.getFileName());
-                        updateValueCount(fileTypeCounts, fileClassifier.getFileType());
-                        updateValueCount(deployedImplementationTypeCounts, fileClassifier.getDeployedImplementationType());
-                        updateValueCount(assetTypeCounts, fileClassifier.getAssetTypeName());
+                        if ((fileClassification.getFileType() == null) ||
+                                fileClassification.getAssetTypeName() == null ||
+                                fileClassification.getDeployedImplementationType() == null)
+                        {
+                            missingReferenceData.add(fileClassification);
+                        }
 
-                        if (fileClassifier.isCanRead())
+                        updateValueCount(fileExtensionCounts, fileClassification.getFileExtension());
+                        updateValueCount(fileNameCounts, fileClassification.getFileName());
+                        updateValueCount(fileTypeCounts, fileClassification.getFileType());
+                        updateValueCount(deployedImplementationTypeCounts, fileClassification.getDeployedImplementationType());
+                        updateValueCount(assetTypeCounts, fileClassification.getAssetTypeName());
+
+                        if (fileClassification.isCanRead())
                         {
                             canReadCount++;
                         }
 
-                        if (fileClassifier.isCanWrite())
+                        if (fileClassification.isCanWrite())
                         {
                             canWriteCount++;
                         }
 
-                        if (fileClassifier.isCanExecute())
+                        if (fileClassification.isCanExecute())
                         {
                             canExecuteCount++;
                         }

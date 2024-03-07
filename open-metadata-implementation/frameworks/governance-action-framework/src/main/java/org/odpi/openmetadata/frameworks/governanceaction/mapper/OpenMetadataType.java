@@ -658,13 +658,22 @@ public enum OpenMetadataType
                                   "A set of summary properties about the physical status of an Asset."),
 
     /**
-     * A request for a stewardship action to be initiated against an Asset.
+     * A request for a stewardship action to be initiated against an element.
      */
     REQUEST_FOR_ACTION_ANNOTATION("f45765a9-f3ae-4686-983f-602c348e020d",
-                                  "RequestForActionAnnotation",
+                                  "RequestForAction",
                                   OpenMetadataWikiPages.MODEL_0690_REQUEST_FOR_ACTION,
                                   "2a94d1d6-ead8-4d57-a419-90c8704a27a2",
-                                  "A request for a stewardship action to be initiated against an Asset."),
+                                  "A request for a stewardship action to be initiated against an element."),
+
+    /**
+     * A link to the element that should be acted upon by the resulting action.
+     */
+    REQUEST_FOR_ACTION_TARGET("b6943670-93aa-4ce5-a00a-a50581de997d",
+                                  "RequestForActionTarget",
+                                  OpenMetadataWikiPages.MODEL_0690_REQUEST_FOR_ACTION,
+                                  "c2d0f01b-25f8-412f-abb1-2e88c9fba1e4",
+                                  "A link to the element that should be acted upon by the resulting action."),
 
     /**
      * Link to the external data resource containing the data profile data..
@@ -1942,6 +1951,17 @@ public enum OpenMetadataType
      */
     public static final String PERSONAL_PROJECT_TYPE_NAME = "PersonalProject";   /* from Area 1 */
 
+
+    /**
+     * e68ae56a-7567-4c6a-9bff-04076bcc0b3b
+     */
+    public static final String STUDY_PROJECT_TYPE_GUID = "e68ae56a-7567-4c6a-9bff-04076bcc0b3b";
+
+    /**
+     * Study
+     */
+    public static final String STUDY_PROJECT_TYPE_NAME = "StudyProject";   /* from Area 1 */
+
     public static final String PROJECT_STATUS_PROPERTY_NAME     = "projectStatus";                     /* from Area 1 */
     public static final String TEAM_ROLE_PROPERTY_NAME          = "teamRole";                          /* from Area 1 */
     public static final String DEPENDENCY_SUMMARY_PROPERTY_NAME = "dependencySummary";                 /* from Area 1 */
@@ -2015,6 +2035,12 @@ public enum OpenMetadataType
      */
     public static final String CREATION_TIME_PROPERTY_NAME = "creationTime";                      /* from Area 1 */
 
+
+    /**
+     * toDoType
+     */
+    public static final String TO_DO_TYPE_PROPERTY_NAME = "toDoType";                      /* from Area 1 */
+
     /**
      * priority
      */
@@ -2024,6 +2050,11 @@ public enum OpenMetadataType
      * dueTime
      */
     public static final String DUE_TIME_PROPERTY_NAME = "dueTime";                           /* from Area 1 */
+
+    /**
+     * lastReviewTime
+     */
+    public static final String LAST_REVIEW_TIME_PROPERTY_NAME = "lastReviewTime";           /* from Area 1 */
 
     /**
      * completionTime
@@ -3864,7 +3895,12 @@ public enum OpenMetadataType
     /* GovernanceActionType */
 
 
-    public static final String PRODUCED_GUARDS_PROPERTY_NAME = "producedGuards";     /* from GovernanceActionType entity */
+    public static final String SUPPORTED_GUARDS_PROPERTY_NAME            = "supportedGuards";             /* from GovernanceActionType entity */
+    public static final String REQUIRED_REQUEST_PARAMETERS_PROPERTY_NAME = "requiredRequestParameters";   /* from GovernanceActionType entity */
+    public static final String REQUIRED_ACTION_TARGETS_PROPERTY_NAME     = "requiredActionTargets";       /* from GovernanceActionType entity */
+    public static final String PRODUCED_REQUEST_PARAMETERS_PROPERTY_NAME = "producedRequestParameters";   /* from GovernanceActionType entity */
+    public static final String PRODUCED_ACTION_TARGETS_PROPERTY_NAME     = "producedActionTargets";       /* from GovernanceActionType entity */
+    public static final String PRODUCED_GUARDS_PROPERTY_NAME             = "producedGuards";              /* from GovernanceActionType entity */
 
     public static final String GOVERNANCE_ACTION_EXECUTOR_TYPE_GUID = "f672245f-35b5-4ca7-b645-014cf61d5b75";
     public static final String GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME = "GovernanceActionExecutor";

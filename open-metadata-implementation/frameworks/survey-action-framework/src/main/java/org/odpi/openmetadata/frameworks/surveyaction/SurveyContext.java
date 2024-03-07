@@ -2,7 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.surveyaction;
 
-import java.util.Date;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
+import org.odpi.openmetadata.frameworks.surveyaction.ffdc.SAFAuditCode;
+import org.odpi.openmetadata.frameworks.surveyaction.ffdc.SAFErrorCode;
+
 import java.util.Map;
 import java.util.Objects;
 
@@ -19,6 +24,10 @@ public class SurveyContext
     private final SurveyAssetStore        assetStore;
     private final AnnotationStore         annotationStore;
     private final SurveyOpenMetadataStore openMetadataStore;
+    private final String                  surveyActionServiceName;
+    private final AuditLog                auditLog;
+    private final FileClassifier          fileClassifier;
+    private       boolean                 isActive = true;
 
 
     /**
@@ -30,20 +39,28 @@ public class SurveyContext
      * @param assetStore survey asset store for the survey action service
      * @param annotationStore annotation store for the survey action service
      * @param openMetadataStore generic metadata API from the Governance Action Framework (GAF)
+     * @param surveyActionServiceName name of the running service
+     * @param auditLog logging destination
      */
     public SurveyContext(String                     userId,
                          String                     assetGUID,
                          Map<String, String>        requestParameters,
                          SurveyAssetStore           assetStore,
                          AnnotationStore            annotationStore,
-                         SurveyOpenMetadataStore    openMetadataStore)
+                         SurveyOpenMetadataStore    openMetadataStore,
+                         String                     surveyActionServiceName,
+                         AuditLog                   auditLog)
     {
-        this.userId            = userId;
-        this.assetGUID         = assetGUID;
-        this.requestParameters = requestParameters;
-        this.assetStore        = assetStore;
-        this.annotationStore   = annotationStore;
-        this.openMetadataStore = openMetadataStore;
+        this.userId                  = userId;
+        this.assetGUID               = assetGUID;
+        this.requestParameters       = requestParameters;
+        this.assetStore              = assetStore;
+        this.annotationStore         = annotationStore;
+        this.openMetadataStore       = openMetadataStore;
+        this.surveyActionServiceName = surveyActionServiceName;
+        this.auditLog                = auditLog;
+
+        this.fileClassifier          = new FileClassifier(openMetadataStore);
     }
 
 
@@ -51,9 +68,14 @@ public class SurveyContext
      * Return the unique identifier of the asset being discovered.
      *
      * @return string guid
+     * @throws ConnectorCheckedException exception thrown if connector is no longer active
      */
-    public String getAssetGUID()
+    public String getAssetGUID() throws ConnectorCheckedException
     {
+        final String methodName = "getAssetGUID";
+
+        validateIsActive(methodName);
+
         return assetGUID;
     }
 
@@ -62,9 +84,14 @@ public class SurveyContext
      * Return the properties that hold the parameters used to drive the survey action service's analysis.
      *
      * @return AdditionalProperties object storing the analysis parameters
+     * @throws ConnectorCheckedException exception thrown if connector is no longer active
      */
-    public Map<String, String> getRequestParameters()
+    public Map<String, String> getRequestParameters() throws ConnectorCheckedException
     {
+        final String methodName = "getRequestParameters";
+
+        validateIsActive(methodName);
+
         return requestParameters;
     }
 
@@ -74,9 +101,14 @@ public class SurveyContext
      * configured with the properties of the asset from a property server.
      *
      * @return asset store
+     * @throws ConnectorCheckedException exception thrown if connector is no longer active
      */
-    public SurveyAssetStore getAssetStore()
+    public SurveyAssetStore getAssetStore() throws ConnectorCheckedException
     {
+        final String methodName = "getAssetStore";
+
+        validateIsActive(methodName);
+
         return assetStore;
     }
 
@@ -86,9 +118,14 @@ public class SurveyContext
      * retrieved from.
      *
      * @return annotation store
+     * @throws ConnectorCheckedException exception thrown if connector is no longer active
      */
-    public AnnotationStore getAnnotationStore()
+    public AnnotationStore getAnnotationStore() throws ConnectorCheckedException
     {
+        final String methodName = "getAnnotationStore";
+
+        validateIsActive(methodName);
+
         return annotationStore;
     }
 
@@ -97,10 +134,63 @@ public class SurveyContext
      * Return a generic interface for accessing and updating open metadata elements, classifications and relationships.
      *
      * @return open metadata store
+     * @throws ConnectorCheckedException exception thrown if connector is no longer active
      */
-    public SurveyOpenMetadataStore getOpenMetadataStore()
+    public SurveyOpenMetadataStore getOpenMetadataStore() throws ConnectorCheckedException
     {
+        final String methodName = "getOpenMetadataStore";
+
+        validateIsActive(methodName);
+
         return openMetadataStore;
+    }
+
+
+    /**
+     * Return the file classifier that retrieves file reference data from the open metadata repositories.
+     *
+     * @return file classifier
+     * @throws ConnectorCheckedException exception thrown if connector is no longer active
+     */
+    public FileClassifier getFileClassifier() throws ConnectorCheckedException
+    {
+        final String methodName = "getFileClassifier";
+
+        validateIsActive(methodName);
+
+        return fileClassifier;
+    }
+
+
+    /**
+     * Free up any resources held since the connector is no longer needed.
+     */
+    public void disconnect() throws ConnectorCheckedException
+    {
+        isActive = false;
+    }
+
+
+    /**
+     * Verify that the connector is still active.
+     *
+     * @param methodName calling method
+     * @throws ConnectorCheckedException exception thrown if no longer active
+     */
+    private void validateIsActive(String methodName) throws ConnectorCheckedException
+    {
+        if (! isActive)
+        {
+            if (auditLog != null)
+            {
+                auditLog.logMessage(methodName,
+                                    SAFAuditCode.DISCONNECT_DETECTED.getMessageDefinition(surveyActionServiceName));
+            }
+
+            throw new ConnectorCheckedException(SAFErrorCode.DISCONNECT_DETECTED.getMessageDefinition(surveyActionServiceName),
+                                                this.getClass().getName(),
+                                                methodName);
+        }
     }
 
 

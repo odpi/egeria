@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.actiontargettype.ActionTargetType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
 
@@ -38,6 +38,7 @@ public class FileSurveyServiceProvider extends SurveyActionServiceProvider
 
 
     static final String  FILE_TARGET_PROPERTY = "fileToSurvey";
+    static final String  FILE_TARGET_PROPERTY_DESCRIPTION = "The DataFile asset that describes the physical file to survey.";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -60,16 +61,17 @@ public class FileSurveyServiceProvider extends SurveyActionServiceProvider
 
         super.connectorTypeBean = connectorType;
 
-        supportedTargetActionNames = new ArrayList<>();
-        supportedTargetActionNames.add(FILE_TARGET_PROPERTY);
-
-        actionTargetTypes = new HashMap<>();
+        supportedActionTargetTypes = new ArrayList<>();
         ActionTargetType actionTargetType = new ActionTargetType();
 
-        actionTargetType.setTypeName(DeployedImplementationType.FILE_FOLDER.getAssociatedTypeName());
-        actionTargetType.setDeployedImplementationType(DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType());
+        actionTargetType.setName(FILE_TARGET_PROPERTY);
+        actionTargetType.setDescription(FILE_TARGET_PROPERTY_DESCRIPTION);
+        actionTargetType.setTypeName(DeployedImplementationType.DATA_FILE.getAssociatedTypeName());
+        actionTargetType.setDeployedImplementationType(DeployedImplementationType.DATA_FILE.getDeployedImplementationType());
 
-        super.actionTargetTypes.put(FILE_TARGET_PROPERTY, actionTargetType);
+        super.supportedActionTargetTypes.add(actionTargetType);
+
+        super.supportedAnnotationTypes = SurveyFileAnnotationType.getAnnotationTypeTypes();
 
         /*
          * Set up the component description used in the connector's audit log messages.

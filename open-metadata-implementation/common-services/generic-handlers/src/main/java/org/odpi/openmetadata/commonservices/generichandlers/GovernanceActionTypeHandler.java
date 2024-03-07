@@ -82,11 +82,10 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      * @param domainIdentifier governance domain for this governance action
      * @param displayName short display name for the governance action
      * @param description description of the governance action
-     * @param supportedGuards list of guards that triggered this governance action
      * @param additionalProperties additional properties for a governance action
      * @param governanceEngineGUID unique identifier of governance engine to execute the request
-     * @param requestType type of request
-     * @param requestParameters properties for the request type
+     * @param calledRequestType type of request
+     * @param fixedRequestParameters properties for the request type
      * @param waitTime minimum number of minutes to wait before running the governance action
      * @param effectiveFrom starting time for this relationship (null for all time)
      * @param effectiveTo ending time for this relationship
@@ -102,26 +101,25 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createGovernanceActionType(String               userId,
-                                             String               qualifiedName,
-                                             int                  domainIdentifier,
-                                             String               displayName,
-                                             String               description,
-                                             List<String>         supportedGuards,
-                                             Map<String, String>  additionalProperties,
-                                             String               governanceEngineGUID,
-                                             String               requestType,
-                                             Map<String, String>  requestParameters,
-                                             int                  waitTime,
-                                             Date                 effectiveFrom,
-                                             Date                 effectiveTo,
-                                             boolean              forLineage,
-                                             boolean              forDuplicateProcessing,
-                                             List<String>         serviceSupportedZones,
-                                             Date                 effectiveTime,
-                                             String               methodName) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public String createGovernanceActionType(String                     userId,
+                                             String                     qualifiedName,
+                                             int                        domainIdentifier,
+                                             String                     displayName,
+                                             String                     description,
+                                             Map<String, String>        additionalProperties,
+                                             String                     governanceEngineGUID,
+                                             String                     calledRequestType,
+                                             Map<String, String>        fixedRequestParameters,
+                                             int                        waitTime,
+                                             Date                       effectiveFrom,
+                                             Date                       effectiveTo,
+                                             boolean                    forLineage,
+                                             boolean                    forDuplicateProcessing,
+                                             List<String>               serviceSupportedZones,
+                                             Date                       effectiveTime,
+                                             String                     methodName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
         final String qualifiedNameParameterName = "properties.getQualifiedName";
 
@@ -132,7 +130,6 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                                                               domainIdentifier,
                                                                               displayName,
                                                                               description,
-                                                                              supportedGuards,
                                                                               waitTime,
                                                                               additionalProperties,
                                                                               repositoryHelper,
@@ -155,8 +152,8 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
             this.linkGovernanceActionExecutor(userId,
                                               governanceActionTypeGUID,
                                               governanceEngineGUID,
-                                              requestType,
-                                              requestParameters,
+                                              calledRequestType,
+                                              fixedRequestParameters,
                                               effectiveFrom,
                                               effectiveTo,
                                               forLineage,
@@ -252,7 +249,6 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
      * @param domainIdentifier governance domain for this governance action
      * @param displayName short display name for the governance action
      * @param description description of the governance action
-     * @param supportedGuards list of guards that triggered this governance action
      * @param additionalProperties additional properties for a governance action
      * @param governanceEngineGUID unique identifier of governance engine to execute the request
      * @param requestType type of request
@@ -277,7 +273,6 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                            int                 domainIdentifier,
                                            String              displayName,
                                            String              description,
-                                           List<String>        supportedGuards,
                                            Map<String, String> additionalProperties,
                                            String              governanceEngineGUID,
                                            String              requestType,
@@ -420,7 +415,6 @@ public class GovernanceActionTypeHandler<B> extends OpenMetadataAPIGenericHandle
                                                                               domainIdentifier,
                                                                               displayName,
                                                                               description,
-                                                                              supportedGuards,
                                                                               waitTime,
                                                                               additionalProperties,
                                                                               repositoryHelper,

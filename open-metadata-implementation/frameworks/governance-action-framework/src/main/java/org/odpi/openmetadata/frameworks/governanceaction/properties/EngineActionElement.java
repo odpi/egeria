@@ -50,9 +50,9 @@ public class EngineActionElement extends ReferenceableProperties
     private String                               processingEngineUserId   = null;
     private Date                                 completionTime           = null;
     private List<String>                         completionGuards         = null;
-    private String                           completionMessage = null;
-    private List<RelatedEngineActionElement> previousActions   = null;
-    private List<RelatedEngineActionElement> followOnActions   = null;
+    private String                               completionMessage        = null;
+    private List<RelatedEngineActionElement>     previousActions          = null;
+    private List<RelatedEngineActionElement>     followOnActions          = null;
 
 
     /**

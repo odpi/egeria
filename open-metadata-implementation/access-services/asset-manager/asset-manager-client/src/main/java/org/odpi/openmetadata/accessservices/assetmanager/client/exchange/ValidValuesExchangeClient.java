@@ -1301,6 +1301,10 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                  validValueProperties.getPreferredValue());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataType.DATA_TYPE_PROPERTY_NAME,
+                                                                 validValueProperties.getDataType());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                  OpenMetadataType.SCOPE_PROPERTY_NAME,
                                                                  validValueProperties.getScope());
 

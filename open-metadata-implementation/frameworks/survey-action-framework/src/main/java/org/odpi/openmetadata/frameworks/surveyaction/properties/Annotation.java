@@ -47,7 +47,7 @@ public class Annotation extends PropertyBase
     /*
      * Details from the latest AnnotationReview entity.
      */
-    private AnnotationStatus annotationStatus = null;
+    private AnnotationStatus annotationStatus = AnnotationStatus.NEW_ANNOTATION;
     private Date             reviewDate       = null;
     private String           steward          = null;
     private String           reviewComment    = null;

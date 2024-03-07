@@ -24537,11 +24537,12 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getRequestForActionAnnotationEntity()
     {
-        final String guid = "f45765a9-f3ae-4686-983f-602c348e020d";
+        final String guid = OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.typeGUID;
 
-        final String name            = "RequestForAction";
-        final String description     = "A request for a stewardship action to be initiated against an Asset.";
-        final String descriptionGUID = null;
+        final String name            = OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.typeName;
+        final String description     = OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.description;
+        final String descriptionGUID = OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.descriptionGUID;
+        final String wikiURL         = OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.wikiURL;
 
         final String superTypeName = OpenMetadataType.DATA_FIELD_ANNOTATION.typeName;
 
@@ -24549,7 +24550,8 @@ public class OpenMetadataTypesArchive1_2
                                                                 name,
                                                                 this.archiveBuilder.getEntityDef(superTypeName),
                                                                 description,
-                                                                descriptionGUID);
+                                                                descriptionGUID,
+                                                                wikiURL);
 
         /*
          * Build the attributes

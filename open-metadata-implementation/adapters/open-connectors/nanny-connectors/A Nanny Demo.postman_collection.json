@@ -1,0 +1,2245 @@
+{
+	"info": {
+		"_postman_id": "8a012cd8-78eb-4a92-9527-cf84dbca091b",
+		"name": "A Nanny Demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28623075",
+		"_collection_link": "https://orange-capsule-904564.postman.co/workspace/Nanny-Workspace~ba9736a3-741a-457d-8f2c-75ddf0517bb6/collection/28623075-8a012cd8-78eb-4a92-9527-cf84dbca091b?action=share&source=collection_link&creator=28623075"
+	},
+	"item": [
+		{
+			"name": "Configure nanny-store",
+			"item": [
+				{
+					"name": "Set local server URL root",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\": \"URLRequestBody\",\n    \"urlRoot\": \"{{omagURL}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyStore}}/server-url-root-for-caller",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{nannyStore}}",
+								"server-url-root-for-caller"
+							]
+						},
+						"description": "Update the URL root that other servers that are also members any open metadata repository cohort that the server belongs to should use to make calls to this local server. This value is sent when the server registers with the cohort.  If the server is not going to join a cohort then this value is not needed.\n\nThis value should be set to the URL of the OMAG Server Platform where the server will run.  If the server is deployed to many servers in an HA cluster configuration, it should be set to a DNS name that will disperse requests across the server cluster."
+					},
+					"response": []
+				},
+				{
+					"name": "Set local server user Id",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyStore}}/server-user-id?id=nannystorenpa",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{nannyStore}}",
+								"server-user-id"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "nannystorenpa"
+								}
+							]
+						},
+						"description": "Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use)."
+					},
+					"response": []
+				},
+				{
+					"name": "Set up event bus",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"producer\": {\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    },\n    \"consumer\":{\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyStore}}/event-bus",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{nannyStore}}",
+								"event-bus"
+							]
+						},
+						"description": "Set up the common properties needed to call your event bus.  These properties are passed in the request body.\nThis request just sets up the defaults that will be incorporated into any future configuration that includes an event bus topic."
+					},
+					"response": []
+				},
+				{
+					"name": "Enable the in-memory repository",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyStore}}/local-repository/mode/in-memory-repository",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{nannyStore}}",
+								"local-repository",
+								"mode",
+								"in-memory-repository"
+							]
+						},
+						"description": "Set up the local reposiotry to use the in-memory implementation."
+					},
+					"response": []
+				},
+				{
+					"name": "Enable the Asset Manager OMAS",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyStore}}/access-services/asset-manager",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{nannyStore}}",
+								"access-services",
+								"asset-manager"
+							]
+						},
+						"description": "Turn on a specific registered Open Metadata Access Services (OMAS).\n\nChange the value of the {{access-service}} variable in the environment to be the URL version of the name.  Typically this is done by taking the access service name, dropping \"OMAS\", change to lower-case and link two words with a dash \"-\".  For example, Asset Owner OMAS, would have a url name of asset-owner."
+					},
+					"response": []
+				},
+				{
+					"name": "Get nanny-store's configuration document",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyStore}}/configuration",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{nannyStore}}",
+								"configuration"
+							]
+						},
+						"description": "Retrieve the configuration document for the named server."
+					},
+					"response": []
+				}
+			],
+			"description": "This folder contains the commands to configure the Metadata Access Store called nanny-store. This contains metadata catalogued by the nanny-harvester."
+		},
+		{
+			"name": "Configure nanny-monitor",
+			"item": [
+				{
+					"name": "Set local server user Id",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyMonitor}}/server-user-id?id=nannymonitornpa",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{nannyMonitor}}",
+								"server-user-id"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "nannymonitornpa"
+								}
+							]
+						},
+						"description": "Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use)."
+					},
+					"response": []
+				},
+				{
+					"name": "Configure the LoadObservationsByEgeria integration connector",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\": \"IntegrationServiceRequestBody\",\n    \"omagserverPlatformRootURL\": \"{{omagURL}}\",\n    \"omagserverName\": \"{{nannyStore}}\",\n    \"integrationConnectorConfigs\": [\n        {\n            \"class\": \"IntegrationConnectorConfig\",\n            \"connectorName\": \"LoadObservationsByEgeria\",\n            \"connectorUserId\": \"loadobnpa\",\n            \"connection\": {\n                \"class\": \"Connection\",\n                \"connectorType\": {\n                    \"class\": \"ConnectorType\",\n                    \"connectorProviderClassName\": \"org.odpi.openmetadata.adapters.connectors.nannyconnectors.loadobservations.LoadObservationsByEgeriaProvider\"\n                },\n                \"endpoint\": {\n                    \"class\": \"Endpoint\",\n                    \"address\": \"{{atlasNannyDB}}\"\n                },\n                \"userId\" : \"pdr\",\n                \"clearPassword\" : \"pdr4egeria\",\n                \"configurationProperties\" : {\n                    \"jdbcDriverManagerClassName\" : \"org.postgresql.Driver\",\n                    \"jdbcConnectionTimeout\" : \"10\",\n                    \"jdbcDatabaseName\" : \"AtlasObservationsByEgeria\"\n                }\n            },\n            \"refreshTimeInterval\": \"10\",\n            \"usesBlockingCalls\": \"false\",\n            \"permittedSynchronization\": \"TO_THIRD_PARTY\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyMonitor}}/integration-services/catalog-integrator",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{nannyMonitor}}",
+								"integration-services",
+								"catalog-integrator"
+							]
+						},
+						"description": "Add details of the metadata server to call and the connectors to run."
+					},
+					"response": []
+				},
+				{
+					"name": "Get nanny-monitor's configuration document",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyMonitor}}/configuration",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{nannyMonitor}}",
+								"configuration"
+							]
+						},
+						"description": "Retrieve the configuration document for the named server."
+					},
+					"response": []
+				}
+			],
+			"description": "This folder describes how to set up the nanny-monitor server that monitors open metadata from the nanny-harvester and populates the ObservationsByEgeria database.\n\nThis server is an Integration Daemon running the LoadObservationsByEgeria integration connector. It is connected to the nanny-store."
+		},
+		{
+			"name": "Configure nanny-harvester",
+			"item": [
+				{
+					"name": "Set local server user Id",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyHarvester}}/server-user-id?id=nannyharvesternpa",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{nannyHarvester}}",
+								"server-user-id"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "nannyharvesternpa"
+								}
+							]
+						},
+						"description": "Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use)."
+					},
+					"response": []
+				},
+				{
+					"name": "Configure the connections to third party catalogs",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\": \"IntegrationServiceRequestBody\",\n    \"omagserverPlatformRootURL\": \"{{omagURL}}\",\n    \"omagserverName\": \"{{nannyStore}}\",\n    \"integrationConnectorConfigs\": [\n        {\n            \"class\": \"IntegrationConnectorConfig\",\n            \"connectorName\": \"AtlasIntegrator\",\n            \"connectorUserId\": \"atlasintgnpa\",\n            \"connection\": {\n                \"class\": \"Connection\",\n                \"connectorType\": {\n                    \"class\": \"ConnectorType\",\n                    \"connectorProviderClassName\": \"org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationProvider\"\n                },\n                \"endpoint\": {\n                    \"class\": \"Endpoint\",\n                    \"address\": \"http://wolfsonnet.me:21000\"\n                },\n                \"userId\" : \"admin\",\n                \"clearPassword\" : \"admin\"\n            },\n            \"metadataSourceQualifiedName\": \"ApacheAtlasDL01\",\n            \"refreshTimeInterval\": \"15\",\n            \"usesBlockingCalls\": \"false\",\n            \"permittedSynchronization\": \"BOTH_DIRECTIONS\"\n        },\n        {\n            \"class\": \"IntegrationConnectorConfig\",\n            \"connectorName\": \"AtlasIntegrator(local)\",\n            \"connectorUserId\": \"atlaslocalnpa\",\n            \"connection\": {\n                \"class\": \"Connection\",\n                \"connectorType\": {\n                    \"class\": \"ConnectorType\",\n                    \"connectorProviderClassName\": \"org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationProvider\"\n                },\n                \"endpoint\": {\n                    \"class\": \"Endpoint\",\n                    \"address\": \"http://localhost:21000\"\n                },\n                \"userId\" : \"admin\",\n                \"clearPassword\" : \"admin\"\n            },\n            \"metadataSourceQualifiedName\": \"ApacheAtlasDL02\",\n            \"refreshTimeInterval\": \"15\",\n            \"usesBlockingCalls\": \"false\",\n            \"permittedSynchronization\": \"BOTH_DIRECTIONS\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyHarvester}}/integration-services/catalog-integrator",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{nannyHarvester}}",
+								"integration-services",
+								"catalog-integrator"
+							]
+						},
+						"description": "Add details of the metadata server to call and the connectors to run."
+					},
+					"response": []
+				},
+				{
+					"name": "Get nanny-harvester's configuration document",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyHarvester}}/configuration",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{nannyHarvester}}",
+								"configuration"
+							]
+						},
+						"description": "Retrieve the configuration document for the named server."
+					},
+					"response": []
+				}
+			],
+			"description": "This folder describes how to set up the nanny server. This is an integration daemon and runs the nanny connectors."
+		},
+		{
+			"name": "Configure ecosystem-monitor",
+			"item": [
+				{
+					"name": "Set max page size",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ecosystemMonitor}}/max-page-size?limit={{max_page_size}}",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{ecosystemMonitor}}",
+								"max-page-size"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "{{max_page_size}}"
+								}
+							]
+						},
+						"description": "Set up the maximum number of results that can be returned on an open metadata request."
+					},
+					"response": []
+				},
+				{
+					"name": "Set local server user Id",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ecosystemMonitor}}/server-user-id?id=ecosystemmonitornpa",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{ecosystemMonitor}}",
+								"server-user-id"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "ecosystemmonitornpa"
+								}
+							]
+						},
+						"description": "Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use)."
+					},
+					"response": []
+				},
+				{
+					"name": "Configure the LoadObservationsByEgeria and DistributeAuditLogEvents integration connectors",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\": \"IntegrationServiceRequestBody\",\n    \"omagserverPlatformRootURL\": \"{{coreURL}}\",\n    \"omagserverName\": \"{{server}}\",\n    \"integrationConnectorConfigs\": [\n        {\n            \"class\": \"IntegrationConnectorConfig\",\n            \"connectorName\": \"LoadObservationsByEgeria\",\n            \"connectorUserId\": \"loadobnpa\",\n            \"connection\": {\n                \"class\": \"Connection\",\n                \"connectorType\": {\n                    \"class\": \"ConnectorType\",\n                    \"connectorProviderClassName\": \"org.odpi.openmetadata.adapters.connectors.nannyconnectors.loadobservations.LoadObservationsByEgeriaProvider\"\n                },\n                \"endpoint\": {\n                    \"class\": \"Endpoint\",\n                    \"address\": \"{{nannyDB}}\"\n                },\n                \"userId\" : \"pdr\",\n                \"clearPassword\" : \"pdr4egeria\",\n                \"configurationProperties\" : {\n                    \"jdbcDriverManagerClass\" : \"org.postgresql.Driver\",\n                    \"jdbcConnectionTimeout\" : \"10\",\n                    \"jdbcDatabaseName\" : \"ObservationsByEgeria\"\n                }\n            },\n            \"refreshTimeInterval\": \"10\",\n            \"usesBlockingCalls\": \"false\",\n            \"permittedSynchronization\": \"TO_THIRD_PARTY\"\n        },\n        {\n            \"class\": \"IntegrationConnectorConfig\",\n            \"connectorName\": \"DistributeAuditLogEvents\",\n            \"connectorUserId\": \"distaauditnpa\",\n            \"connection\": {\n                \"class\": \"VirtualConnection\",\n                \"connectorType\": {\n                    \"class\": \"ConnectorType\",\n                    \"connectorProviderClassName\": \"org.odpi.openmetadata.adapters.connectors.nannyconnectors.kafkaaudit.DistributeAuditEventsFromKafkaProvider\"\n                },\n                \"embeddedConnections\": [\n                    {\n                        \"class\": \"EmbeddedConnection\",\n                        \"embeddedConnection\": {\n                            \"class\": \"Connection\",\n                            \"connectorType\": {\n                                \"class\": \"ConnectorType\",\n                                \"connectorProviderClassName\": \"org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider\"\n                            },\n                            \"endpoint\": {\n                                \"class\": \"Endpoint\",\n                                \"address\": \"egeria.omag.egeriaAuditLogs\"\n                            },\n                            \"configurationProperties\": {\n                                \"producer\": {\n                                    \"bootstrap.servers\": \"localhost:9092\"\n                                },\n                                \"local.server.id\": \"{{ecosystemMonitor}}\",\n                                \"consumer\": {\n                                    \"bootstrap.servers\": \"localhost:9092\"\n                                },\n                                \"eventDirection\": \"inOut\"\n                            }\n                        }\n                    },\n                    {\n                        \"class\": \"EmbeddedConnection\",\n                        \"embeddedConnection\": {\n                            \"class\": \"Connection\",\n                            \"connectorType\": {\n                                \"class\": \"ConnectorType\",\n                                \"connectorProviderClassName\": \"org.odpi.openmetadata.adapters.connectors.nannyconnectors.loadaudit.JDBCAuditLogDestinationProvider\"\n                            },\n                            \"endpoint\": {\n                                \"class\": \"Endpoint\",\n                                \"address\": \"{{nannyDB}}\"\n                            },\n                            \"userId\" : \"pdr\",\n                            \"clearPassword\" : \"pdr4egeria\",\n                            \"configurationProperties\" : {\n                                \"jdbcDriverManagerClassName\" : \"org.postgresql.Driver\",\n                                \"jdbcConnectionTimeout\" : \"10\",\n                                \"jdbcDatabaseName\" : \"ObservationsByEgeria\"\n                            }\n                        }\n                    }\n                ]\n            },\n            \"refreshTimeInterval\": \"2000\",\n            \"usesBlockingCalls\": \"false\",\n            \"permittedSynchronization\": \"TO_THIRD_PARTY\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ecosystemMonitor}}/integration-services/catalog-integrator",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{ecosystemMonitor}}",
+								"integration-services",
+								"catalog-integrator"
+							]
+						},
+						"description": "Add details of the metadata server to call and the connectors to run."
+					},
+					"response": []
+				},
+				{
+					"name": "Get ecosystem-monitor's configuration document",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ecosystemMonitor}}/configuration",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{ecosystemMonitor}}",
+								"configuration"
+							]
+						},
+						"description": "Retrieve the configuration document for the named server."
+					},
+					"response": []
+				}
+			],
+			"description": "This folder describes how to set up the ecosystem-monitor. This is an integration daemon and runs the LoadObservationsByEgeria and DistributeAuditEventsFromKafka integration connectors. This server connects to a Metadata Access Server running in the open metadata ecosystem under observation."
+		},
+		{
+			"name": "Configure Coco Servers (ecosystem monitor only)",
+			"item": [
+				{
+					"name": "Get ecosystem-monitor's configuration document",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ecosystemMonitor}}/configuration",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"{{ecosystemMonitor}}",
+								"configuration"
+							]
+						},
+						"description": "Retrieve the configuration document for the named server."
+					},
+					"response": []
+				},
+				{
+					"name": "Enable the Asset Manager OMAS in cocoMDS2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/cocoMDS2/access-services/asset-manager",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"cocoMDS2",
+								"access-services",
+								"asset-manager"
+							]
+						},
+						"description": "Turn on a specific registered Open Metadata Access Services (OMAS).\n\nChange the value of the {{access-service}} variable in the environment to be the URL version of the name.  Typically this is done by taking the access service name, dropping \"OMAS\", change to lower-case and link two words with a dash \"-\".  For example, Asset Owner OMAS, would have a url name of asset-owner."
+					},
+					"response": []
+				},
+				{
+					"name": "Add topic audit log destination to cocoMDS1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/cocoMDS1/audit-log-destinations/event-topic?topicName={{nannyAuditLogTopic}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"cocoMDS1",
+								"audit-log-destinations",
+								"event-topic"
+							],
+							"query": [
+								{
+									"key": "topicName",
+									"value": "{{nannyAuditLogTopic}}"
+								}
+							]
+						},
+						"description": "Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
+					},
+					"response": []
+				},
+				{
+					"name": "Add topic audit log destination to cocoMDS2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/cocoMDS2/audit-log-destinations/event-topic?topicName={{nannyAuditLogTopic}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"cocoMDS2",
+								"audit-log-destinations",
+								"event-topic"
+							],
+							"query": [
+								{
+									"key": "topicName",
+									"value": "{{nannyAuditLogTopic}}"
+								}
+							]
+						},
+						"description": "Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
+					},
+					"response": []
+				},
+				{
+					"name": "Add topic audit log destination to cocoMDS3",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/cocoMDS3/audit-log-destinations/event-topic?topicName={{nannyAuditLogTopic}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"cocoMDS3",
+								"audit-log-destinations",
+								"event-topic"
+							],
+							"query": [
+								{
+									"key": "topicName",
+									"value": "{{nannyAuditLogTopic}}"
+								}
+							]
+						},
+						"description": "Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
+					},
+					"response": []
+				},
+				{
+					"name": "Add topic audit log destination to cocoMDS4",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/cocoMDS4/audit-log-destinations/event-topic?topicName={{nannyAuditLogTopic}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"cocoMDS4",
+								"audit-log-destinations",
+								"event-topic"
+							],
+							"query": [
+								{
+									"key": "topicName",
+									"value": "{{nannyAuditLogTopic}}"
+								}
+							]
+						},
+						"description": "Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
+					},
+					"response": []
+				},
+				{
+					"name": "Add topic audit log destination to cocoMDS5",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/cocoMDS5/audit-log-destinations/event-topic?topicName={{nannyAuditLogTopic}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"cocoMDS5",
+								"audit-log-destinations",
+								"event-topic"
+							],
+							"query": [
+								{
+									"key": "topicName",
+									"value": "{{nannyAuditLogTopic}}"
+								}
+							]
+						},
+						"description": "Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
+					},
+					"response": []
+				},
+				{
+					"name": "Add topic audit log destination to cocoMDS6",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/cocoMDS6/audit-log-destinations/event-topic?topicName={{nannyAuditLogTopic}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"cocoMDS6",
+								"audit-log-destinations",
+								"event-topic"
+							],
+							"query": [
+								{
+									"key": "topicName",
+									"value": "{{nannyAuditLogTopic}}"
+								}
+							]
+						},
+						"description": "Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
+					},
+					"response": []
+				},
+				{
+					"name": "Add topic audit log destination to cocoMDSx",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/cocoMDSx/audit-log-destinations/event-topic?topicName={{nannyAuditLogTopic}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"cocoMDSx",
+								"audit-log-destinations",
+								"event-topic"
+							],
+							"query": [
+								{
+									"key": "topicName",
+									"value": "{{nannyAuditLogTopic}}"
+								}
+							]
+						},
+						"description": "Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
+					},
+					"response": []
+				},
+				{
+					"name": "Add topic audit log destination to cocoOLS1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/cocoOLS1/audit-log-destinations/event-topic?topicName={{nannyAuditLogTopic}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"cocoOLS1",
+								"audit-log-destinations",
+								"event-topic"
+							],
+							"query": [
+								{
+									"key": "topicName",
+									"value": "{{nannyAuditLogTopic}}"
+								}
+							]
+						},
+						"description": "Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
+					},
+					"response": []
+				},
+				{
+					"name": "Add topic audit log destination to cocoView1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/cocoView1/audit-log-destinations/event-topic?topicName={{nannyAuditLogTopic}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"cocoView1",
+								"audit-log-destinations",
+								"event-topic"
+							],
+							"query": [
+								{
+									"key": "topicName",
+									"value": "{{nannyAuditLogTopic}}"
+								}
+							]
+						},
+						"description": "Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
+					},
+					"response": []
+				},
+				{
+					"name": "Set up event bus in exchangeDL01",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"producer\": {\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    },\n    \"consumer\":{\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/exchangeDL01/event-bus",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"exchangeDL01",
+								"event-bus"
+							]
+						},
+						"description": "Set up the common properties needed to call your event bus.  These properties are passed in the request body.\nThis request just sets up the defaults that will be incorporated into any future configuration that includes an event bus topic."
+					},
+					"response": []
+				},
+				{
+					"name": "Add topic audit log destination to exchangeDL01",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/exchangeDL01/audit-log-destinations/event-topic?topicName={{nannyAuditLogTopic}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"exchangeDL01",
+								"audit-log-destinations",
+								"event-topic"
+							],
+							"query": [
+								{
+									"key": "topicName",
+									"value": "{{nannyAuditLogTopic}}"
+								}
+							]
+						},
+						"description": "Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
+					},
+					"response": []
+				},
+				{
+					"name": "Set up event bus in governDL01",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"producer\": {\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    },\n    \"consumer\":{\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/governDL01/event-bus",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"governDL01",
+								"event-bus"
+							]
+						},
+						"description": "Set up the common properties needed to call your event bus.  These properties are passed in the request body.\nThis request just sets up the defaults that will be incorporated into any future configuration that includes an event bus topic."
+					},
+					"response": []
+				},
+				{
+					"name": "Add topic audit log destination to governDL01",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/governDL01/audit-log-destinations/event-topic?topicName={{nannyAuditLogTopic}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"governDL01",
+								"audit-log-destinations",
+								"event-topic"
+							],
+							"query": [
+								{
+									"key": "topicName",
+									"value": "{{nannyAuditLogTopic}}"
+								}
+							]
+						},
+						"description": "Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
+					},
+					"response": []
+				},
+				{
+					"name": "Set up event bus in monitorDev01",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"producer\": {\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    },\n    \"consumer\":{\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/monitorDev01/event-bus",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"monitorDev01",
+								"event-bus"
+							]
+						},
+						"description": "Set up the common properties needed to call your event bus.  These properties are passed in the request body.\nThis request just sets up the defaults that will be incorporated into any future configuration that includes an event bus topic."
+					},
+					"response": []
+				},
+				{
+					"name": "Add topic audit log destination to monitorDev01",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/monitorDev01/audit-log-destinations/event-topic?topicName={{nannyAuditLogTopic}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"monitorDev01",
+								"audit-log-destinations",
+								"event-topic"
+							],
+							"query": [
+								{
+									"key": "topicName",
+									"value": "{{nannyAuditLogTopic}}"
+								}
+							]
+						},
+						"description": "Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
+					},
+					"response": []
+				},
+				{
+					"name": "Set up event bus in monitorGov01",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"producer\": {\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    },\n    \"consumer\":{\n        \"bootstrap.servers\": \"{{kafkaep}}\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/monitorGov01/event-bus",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"monitorGov01",
+								"event-bus"
+							]
+						},
+						"description": "Set up the common properties needed to call your event bus.  These properties are passed in the request body.\nThis request just sets up the defaults that will be incorporated into any future configuration that includes an event bus topic."
+					},
+					"response": []
+				},
+				{
+					"name": "Add topic audit log destination to monitorGov01",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/monitorGov01/audit-log-destinations/event-topic?topicName={{nannyAuditLogTopic}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"admin-services",
+								"users",
+								"{{adminUserId}}",
+								"servers",
+								"monitorGov01",
+								"audit-log-destinations",
+								"event-topic"
+							],
+							"query": [
+								{
+									"key": "topicName",
+									"value": "{{nannyAuditLogTopic}}"
+								}
+							]
+						},
+						"description": "Add the event topic audit log destination to the server's configuration document.  The list of severities that are sent to this destination are passed on the request body.  An empty list means all severities.\n\nThe server may have multiple audit log destinations configured.  Typically each destination has a different subset of the severities configured."
+					},
+					"response": []
+				}
+			],
+			"description": "The requests in this folder enhance the configuration of the Egeria servers running in the open metadata ecosystem so that they write their audit log messages to the Kafka topic used by the ecosystem-monitor."
+		},
+		{
+			"name": "Start Nanny Servers",
+			"item": [
+				{
+					"name": "Start nanny-store server",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{nannyURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{nannyStore}}/instance",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"platform-services",
+								"users",
+								"{{adminUserId}}",
+								"server-platform",
+								"servers",
+								"{{nannyStore}}",
+								"instance"
+							]
+						},
+						"description": "Activate a server on the OMAG Server Platform.  Use the configuration document found in the configuration document store."
+					},
+					"response": []
+				},
+				{
+					"name": "Start nanny-monitor server",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{nannyURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{nannyMonitor}}/instance",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"platform-services",
+								"users",
+								"{{adminUserId}}",
+								"server-platform",
+								"servers",
+								"{{nannyMonitor}}",
+								"instance"
+							]
+						},
+						"description": "Activate a server on the OMAG Server Platform.  Use the configuration document found in the configuration document store."
+					},
+					"response": []
+				},
+				{
+					"name": "Start nanny-harvester server",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{nannyURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{nannyHarvester}}/instance",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"platform-services",
+								"users",
+								"{{adminUserId}}",
+								"server-platform",
+								"servers",
+								"{{nannyHarvester}}",
+								"instance"
+							]
+						},
+						"description": "Activate a server on the OMAG Server Platform.  Use the configuration document found in the configuration document store."
+					},
+					"response": []
+				},
+				{
+					"name": "Start ecosystem-monitor server",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{nannyURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{ecosystemMonitor}}/instance",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"platform-services",
+								"users",
+								"{{adminUserId}}",
+								"server-platform",
+								"servers",
+								"{{ecosystemMonitor}}",
+								"instance"
+							]
+						},
+						"description": "Activate a server on the OMAG Server Platform.  Use the configuration document found in the configuration document store."
+					},
+					"response": []
+				}
+			],
+			"description": "These are the commands to start up the nanny servers."
+		},
+		{
+			"name": "Check Status for Nanny Servers",
+			"item": [
+				{
+					"name": "Get nanny-monitor status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nannyURL}}/servers/{{nannyMonitor}}/open-metadata/integration-daemon/users/{{user}}/status",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"servers",
+								"{{nannyMonitor}}",
+								"open-metadata",
+								"integration-daemon",
+								"users",
+								"{{user}}",
+								"status"
+							]
+						},
+						"description": "Retrieves the status of the connectors running in the Integration Daemon"
+					},
+					"response": []
+				},
+				{
+					"name": "Get nanny-harvester status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nannyURL}}/servers/{{nannyHarvester}}/open-metadata/integration-daemon/users/{{user}}/status",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"servers",
+								"{{nannyHarvester}}",
+								"open-metadata",
+								"integration-daemon",
+								"users",
+								"{{user}}",
+								"status"
+							]
+						},
+						"description": "Retrieves the status of the connectors running in the Integration Daemon"
+					},
+					"response": []
+				},
+				{
+					"name": "Get ecosystem-monitor status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{nannyURL}}/servers/{{ecosystemMonitor}}/open-metadata/integration-daemon/users/{{user}}/status",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"servers",
+								"{{ecosystemMonitor}}",
+								"open-metadata",
+								"integration-daemon",
+								"users",
+								"{{user}}",
+								"status"
+							]
+						},
+						"description": "Retrieves the status of the connectors running in the Integration Daemon"
+					},
+					"response": []
+				},
+				{
+					"name": "Restart wolfsonnet Atlas Harvester",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\" : \"NameRequestBody\",\n    \"name\" : \"AtlasIntegrator\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nannyURL}}/servers/{{nannyHarvester}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/restart",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"servers",
+								"{{nannyHarvester}}",
+								"open-metadata",
+								"integration-daemon",
+								"users",
+								"{{user}}",
+								"integration-connectors",
+								"restart"
+							]
+						},
+						"description": "Refreshes all Integration Connectors running in an integration daemon"
+					},
+					"response": []
+				},
+				{
+					"name": "Restart localhost Atlas Harvester",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\" : \"NameRequestBody\",\n    \"name\" : \"AtlasIntegrator(local)\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nannyURL}}/servers/{{nannyHarvester}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/restart",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"servers",
+								"{{nannyHarvester}}",
+								"open-metadata",
+								"integration-daemon",
+								"users",
+								"{{user}}",
+								"integration-connectors",
+								"restart"
+							]
+						},
+						"description": "Refreshes all Integration Connectors running in an integration daemon"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Nanny Harvester connectors",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{nannyURL}}/servers/{{nannyHarvester}}/open-metadata/integration-daemon/users/{{user}}/integration-services/catalog-integrator/refresh",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"servers",
+								"{{nannyHarvester}}",
+								"open-metadata",
+								"integration-daemon",
+								"users",
+								"{{user}}",
+								"integration-services",
+								"catalog-integrator",
+								"refresh"
+							]
+						},
+						"description": "Restarts the requested Integration Service"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Ecosystem Monitor connectors",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{nannyURL}}/servers/{{ecosystemMonitor}}/open-metadata/integration-daemon/users/{{user}}/integration-services/catalog-integrator/refresh",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"servers",
+								"{{ecosystemMonitor}}",
+								"open-metadata",
+								"integration-daemon",
+								"users",
+								"{{user}}",
+								"integration-services",
+								"catalog-integrator",
+								"refresh"
+							]
+						},
+						"description": "Restarts the requested Integration Service"
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve ALL the glossary terms for a glossary in nanny-store",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\" : \"AssetManagerIdentifiersRequestBody\",\n    \"assetManagerGUID\" : \"ba69fd95-c4d6-451f-9411-b9239cd1b9f8\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nannyURL}}/servers/{{nannyStore}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/{{glossaryGUID}}/terms/retrieve?startFrom=0&pageSize=0",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"servers",
+								"{{nannyStore}}",
+								"open-metadata",
+								"access-services",
+								"asset-manager",
+								"users",
+								"{{user}}",
+								"glossaries",
+								"{{glossaryGUID}}",
+								"terms",
+								"retrieve"
+							],
+							"query": [
+								{
+									"key": "startFrom",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve ALL the glossary categories for a glossary in nanny-store",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{nannyURL}}/servers/{{nannyStore}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/{{glossaryGUID}}/categories/retrieve?startFrom=0&pageSize=0",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"servers",
+								"{{nannyStore}}",
+								"open-metadata",
+								"access-services",
+								"asset-manager",
+								"users",
+								"{{user}}",
+								"glossaries",
+								"{{glossaryGUID}}",
+								"categories",
+								"retrieve"
+							],
+							"query": [
+								{
+									"key": "startFrom",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve a glossary term from nanny-store",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{nannyURL}}/servers/{{nannyStore}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/terms/{{glossaryTermGUID}}/retrieve",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"servers",
+								"{{nannyStore}}",
+								"open-metadata",
+								"access-services",
+								"asset-manager",
+								"users",
+								"{{user}}",
+								"glossaries",
+								"terms",
+								"{{glossaryTermGUID}}",
+								"retrieve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve ALL the processes from nanny-store",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\" : \"SearchStringRequestBody\",\n    \"searchString\" : \".*\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nannyURL}}/servers/{{nannyStore}}/open-metadata/access-services/asset-manager/users/{{user}}/processes/by-search-string?startFrom=0&pageSize=0",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"servers",
+								"{{nannyStore}}",
+								"open-metadata",
+								"access-services",
+								"asset-manager",
+								"users",
+								"{{user}}",
+								"processes",
+								"by-search-string"
+							],
+							"query": [
+								{
+									"key": "startFrom",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve ALL the data assets from nanny-store",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\" : \"SearchStringRequestBody\",\n    \"searchString\" : \".*\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nannyURL}}/servers/{{nannyStore}}open-metadata/access-services/asset-manager/users/{{user}}/data-assets/by-search-string?startFrom=0&pageSize=0",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"servers",
+								"{{nannyStore}}open-metadata",
+								"access-services",
+								"asset-manager",
+								"users",
+								"{{user}}",
+								"data-assets",
+								"by-search-string"
+							],
+							"query": [
+								{
+									"key": "startFrom",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Retrieve ALL the data assets from Egeria -Friday",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"class\" : \"SearchStringRequestBody\",\n    \"searchString\" : \".*\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL}}/servers/metadata-store/open-metadata/access-services/asset-manager/users/{{user}}/data-assets/by-search-string?startFrom=0&pageSize=0",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"servers",
+										"metadata-store",
+										"open-metadata",
+										"access-services",
+										"asset-manager",
+										"users",
+										"{{user}}",
+										"data-assets",
+										"by-search-string"
+									],
+									"query": [
+										{
+											"key": "startFrom",
+											"value": "0"
+										},
+										{
+											"key": "pageSize",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 04 Aug 2023 16:36:16 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"class\": \"DataAssetElementsResponse\",\n    \"relatedHTTPCode\": 200,\n    \"elementList\": [\n        {\n            \"dataAssetProperties\": {\n                \"class\": \"DataAssetProperties\",\n                \"qualifiedName\": \"Apache Atlas:Table:logging_fact_monthly_mv@cl1\",\n                \"additionalProperties\": {\n                    \"owner\": \"Tim ETL\",\n                    \"temporary\": \"false\",\n                    \"tableType\": \"Managed\",\n                    \"lastAccessTime\": \"1689792523294\",\n                    \"createTime\": \"1689792523294\",\n                    \"retention\": \"1689792523294\"\n                },\n                \"typeName\": \"DataSet\",\n                \"technicalName\": \"logging_fact_monthly_mv\",\n                \"technicalDescription\": \"logging fact monthly materialized view\",\n                \"isReferenceAsset\": false\n            },\n            \"correlationHeaders\": [\n                {\n                    \"synchronizationDirection\": \"FROM_THIRD_PARTY\",\n                    \"externalIdentifier\": \"103a6ae6-ea3f-4e31-832a-1618a2f9f6c4\",\n                    \"externalIdentifierName\": \"atlasGUID\",\n                    \"externalIdentifierSource\": \"AtlasIntegrator\",\n                    \"keyPattern\": \"LOCAL_KEY\",\n                    \"externalInstanceCreatedBy\": \"admin\",\n                    \"externalInstanceCreationTime\": \"2023-07-19T18:48:43.297+00:00\",\n                    \"externalInstanceLastUpdatedBy\": \"admin\",\n                    \"externalInstanceLastUpdateTime\": \"2023-07-19T18:48:45.313+00:00\",\n                    \"externalInstanceVersion\": 0,\n                    \"mappingProperties\": {\n                        \"originator\": \"AtlasIntegrator:Apache Atlas Lineage Integration Module\",\n                        \"atlasType\": \"Table\"\n                    },\n                    \"assetManagerGUID\": \"654fde37-e1ef-490d-9d27-2f113b4e7905\",\n                    \"assetManagerName\": \"ApacheAtlasDL01\",\n                    \"lastSynchronized\": \"2023-08-04T16:20:48.786+00:00\"\n                }\n            ],\n            \"elementHeader\": {\n                \"class\": \"ElementHeader\",\n                \"headerVersion\": 0,\n                \"status\": \"ACTIVE\",\n                \"type\": {\n                    \"typeId\": \"1449911c-4f44-4c22-abc0-7540154feefb\",\n                    \"typeName\": \"DataSet\",\n                    \"superTypeNames\": [\n                        \"Asset\",\n                        \"Referenceable\",\n                        \"OpenMetadataRoot\"\n                    ],\n                    \"typeVersion\": 4,\n                    \"typeDescription\": \"Collection of related data.\"\n                },\n                \"origin\": {\n                    \"sourceServer\": \"metadata-store\",\n                    \"originCategory\": \"EXTERNAL_SOURCE\",\n                    \"homeMetadataCollectionId\": \"654fde37-e1ef-490d-9d27-2f113b4e7905\",\n                    \"homeMetadataCollectionName\": \"ApacheAtlasDL01\"\n                },\n                \"versions\": {\n                    \"createdBy\": \"generalnpa\",\n                    \"createTime\": \"2023-08-04T16:20:48.782+00:00\",\n                    \"version\": 1\n                },\n                \"guid\": \"5825bf0c-aafd-429d-ac4f-99d06147862b\",\n                \"classifications\": [\n                    {\n                        \"class\": \"ElementClassification\",\n                        \"headerVersion\": 0,\n                        \"status\": \"ACTIVE\",\n                        \"type\": {\n                            \"typeId\": \"8139a911-a4bd-432b-a9f4-f6d11c511abe\",\n                            \"typeName\": \"Ownership\",\n                            \"typeVersion\": 1,\n                            \"typeDescription\": \"Who is responsible for making decisions on the management and governance of this element.\"\n                        },\n                        \"origin\": {\n                            \"sourceServer\": \"metadata-store\",\n                            \"originCategory\": \"LOCAL_COHORT\",\n                            \"homeMetadataCollectionId\": \"e82356af-336d-4842-aa64-f7994144a668\",\n                            \"homeMetadataCollectionName\": \"metadata-store\"\n                        },\n                        \"versions\": {\n                            \"createdBy\": \"generalnpa\",\n                            \"createTime\": \"2023-08-04T16:20:49.208+00:00\",\n                            \"version\": 1\n                        },\n                        \"classificationOrigin\": \"ASSIGNED\",\n                        \"classificationName\": \"Ownership\",\n                        \"classificationProperties\": {\n                            \"owner\": \"Tim ETL\",\n                            \"ownerTypeName\": \"UserIdentity\",\n                            \"ownerPropertyName\": \"userId\"\n                        }\n                    },\n                    {\n                        \"class\": \"ElementClassification\",\n                        \"headerVersion\": 0,\n                        \"status\": \"ACTIVE\",\n                        \"type\": {\n                            \"typeId\": \"adce83ac-10f1-4279-8a35-346976e94466\",\n                            \"typeName\": \"LatestChange\",\n                            \"typeVersion\": 1,\n                            \"typeDescription\": \"Defines the latest change to an anchor entity and its associated attachments.\"\n                        },\n                        \"origin\": {\n                            \"sourceServer\": \"metadata-store\",\n                            \"originCategory\": \"LOCAL_COHORT\",\n                            \"homeMetadataCollectionId\": \"e82356af-336d-4842-aa64-f7994144a668\",\n                            \"homeMetadataCollectionName\": \"metadata-store\"\n                        },\n                        \"versions\": {\n                            \"createdBy\": \"OMAGServer\",\n                            \"updatedBy\": \"OMAGServer\",\n                            \"maintainedBy\": [\n                                \"OMAGServer\"\n                            ],\n                            \"createTime\": \"2023-08-04T16:20:48.787+00:00\",\n                            \"updateTime\": \"2023-08-04T16:20:49.209+00:00\",\n                            \"version\": 3\n                        },\n                        \"classificationOrigin\": \"ASSIGNED\",\n                        \"classificationName\": \"LatestChange\",\n                        \"classificationProperties\": {\n                            \"changeTarget\": \"EntityClassification\",\n                            \"description\": \"Adding Ownership classification to Referenceable 5825bf0c-aafd-429d-ac4f-99d06147862b\",\n                            \"user\": \"generalnpa\",\n                            \"classificationName\": \"Ownership\",\n                            \"changeAction\": \"Created\"\n                        }\n                    }\n                ]\n            }\n        },\n        {\n            \"dataAssetProperties\": {\n                \"class\": \"DataAssetProperties\",\n                \"qualifiedName\": \"Apache Atlas:LoadProcess:loadSalesDaily@cl1\",\n                \"additionalProperties\": {\n                    \"queryGraph\": \"graph\",\n                    \"queryText\": \"create table as select \",\n                    \"startTime\": \"1689792524336\",\n                    \"queryPlan\": \"plan\",\n                    \"endTime\": \"1689792534336\",\n                    \"queryId\": \"id\"\n                },\n                \"typeName\": \"DeployedSoftwareComponent\",\n                \"technicalName\": \"loadSalesDaily\",\n                \"technicalDescription\": \"hive query for daily summary\",\n                \"isReferenceAsset\": false\n            },\n            \"correlationHeaders\": [\n                {\n                    \"synchronizationDirection\": \"FROM_THIRD_PARTY\",\n                    \"externalIdentifier\": \"f8fbd201-7845-4b07-b428-c5ef399cbf9b\",\n                    \"externalIdentifierName\": \"atlasGUID\",\n                    \"externalIdentifierSource\": \"AtlasIntegrator\",\n                    \"keyPattern\": \"LOCAL_KEY\",\n                    \"externalInstanceCreatedBy\": \"admin\",\n                    \"externalInstanceCreationTime\": \"2023-07-19T18:48:44.338+00:00\",\n                    \"externalInstanceLastUpdatedBy\": \"admin\",\n                    \"externalInstanceLastUpdateTime\": \"2023-07-19T18:48:44.690+00:00\",\n                    \"externalInstanceVersion\": 0,\n                    \"mappingProperties\": {\n                        \"originator\": \"AtlasIntegrator:Apache Atlas Lineage Integration Module\",\n                        \"atlasType\": \"LoadProcess\"\n                    },\n                    \"assetManagerGUID\": \"654fde37-e1ef-490d-9d27-2f113b4e7905\",\n                    \"assetManagerName\": \"ApacheAtlasDL01\",\n                    \"lastSynchronized\": \"2023-08-04T16:20:42.311+00:00\"\n                }\n            ],\n            \"elementHeader\": {\n                \"class\": \"ElementHeader\",\n                \"headerVersion\": 0,\n                \"status\": \"ACTIVE\",\n                \"type\": {\n                    \"typeId\": \"486af62c-dcfd-4859-ab24-eab2e380ecfd\",\n                    \"typeName\": \"DeployedSoftwareComponent\",\n                    \"superTypeNames\": [\n                        \"Process\",\n                        \"Asset\",\n                        \"Referenceable\",\n                        \"OpenMetadataRoot\"\n                    ],\n                    \"typeVersion\": 2,\n                    \"typeDescription\": \"A packaged and deployed software component supporting a well-defined function.\"\n                },\n                \"origin\": {\n                    \"sourceServer\": \"metadata-store\",\n                    \"originCategory\": \"EXTERNAL_SOURCE\",\n                    \"homeMetadataCollectionId\": \"654fde37-e1ef-490d-9d27-2f113b4e7905\",\n                    \"homeMetadataCollectionName\": \"ApacheAtlasDL01\"\n                },\n                \"versions\": {\n                    \"createdBy\": \"generalnpa\",\n                    \"createTime\": \"2023-08-04T16:20:42.272+00:00\",\n                    \"version\": 1\n                },\n                \"guid\": \"746d4b30-f1f1-404d-b907-1893b78a9d3a\",\n                \"classifications\": [\n                    {\n                        \"class\": \"ElementClassification\",\n                        \"headerVersion\": 0,\n                        \"status\": \"ACTIVE\",\n                        \"type\": {\n                            \"typeId\": \"adce83ac-10f1-4279-8a35-346976e94466\",\n                            \"typeName\": \"LatestChange\",\n                            \"typeVersion\": 1,\n                            \"typeDescription\": \"Defines the latest change to an anchor entity and its associated attachments.\"\n                        },\n                        \"origin\": {\n                            \"sourceServer\": \"metadata-store\",\n                            \"originCategory\": \"LOCAL_COHORT\",\n                            \"homeMetadataCollectionId\": \"e82356af-336d-4842-aa64-f7994144a668\",\n                            \"homeMetadataCollectionName\": \"metadata-store\"\n                        },\n                        \"versions\": {\n                            \"createdBy\": \"OMAGServer\",\n                            \"createTime\": \"2023-08-04T16:20:42.315+00:00\",\n                            \"version\": 1\n                        },\n                        \"classificationOrigin\": \"ASSIGNED\",\n                        \"classificationName\": \"LatestChange\",\n                        \"classificationProperties\": {\n                            \"relationshipType\": \"ExternalIdLink\",\n                            \"attachmentType\": \"ExternalId\",\n                            \"changeTarget\": \"EntityRelationship\",\n                            \"description\": \"Linking Process 746d4b30-f1f1-404d-b907-1893b78a9d3a to ExternalId 572f7215-ede1-46c3-ad76-325746aefd19\",\n                            \"attachmentGUID\": \"572f7215-ede1-46c3-ad76-325746aefd19\",\n                            \"user\": \"generalnpa\",\n                            \"changeAction\": \"Created\"\n                        }\n                    }\n                ]\n            }\n        },\n        {\n            \"dataAssetProperties\": {\n                \"class\": \"DataAssetProperties\",\n                \"qualifiedName\": \"Apache Atlas:Table:log_fact_daily_mv@cl1\",\n                \"additionalProperties\": {\n                    \"owner\": \"Tim ETL\",\n                    \"temporary\": \"false\",\n                    \"tableType\": \"Managed\",\n                    \"lastAccessTime\": \"1689792523034\",\n                    \"createTime\": \"1689792523034\",\n                    \"retention\": \"1689792523034\"\n                },\n                \"typeName\": \"DataSet\",\n                \"technicalName\": \"log_fact_daily_mv\",\n                \"technicalDescription\": \"log fact daily materialized view\",\n                \"isReferenceAsset\": false\n            },\n            \"correlationHeaders\": [\n                {\n                    \"synchronizationDirection\": \"FROM_THIRD_PARTY\",\n                    \"externalIdentifier\": \"9683d60c-f991-4d15-af1a-3a44159c0bc5\",\n                    \"externalIdentifierName\": \"atlasGUID\",\n                    \"externalIdentifierSource\": \"AtlasIntegrator\",\n                    \"keyPattern\": \"LOCAL_KEY\",\n                    \"externalInstanceCreatedBy\": \"admin\",\n                    \"externalInstanceCreationTime\": \"2023-07-19T18:48:43.038+00:00\",\n                    \"externalInstanceLastUpdatedBy\": \"admin\",\n                    \"externalInstanceLastUpdateTime\": \"2023-07-19T18:48:45.313+00:00\",\n                    \"externalInstanceVersion\": 0,\n                    \"mappingProperties\": {\n                        \"originator\": \"AtlasIntegrator:Apache Atlas Lineage Integration Module\",\n                        \"atlasType\": \"Table\"\n                    },\n                    \"assetManagerGUID\": \"654fde37-e1ef-490d-9d27-2f113b4e7905\",\n                    \"assetManagerName\": \"ApacheAtlasDL01\",\n                    \"lastSynchronized\": \"2023-08-04T16:20:47.720+00:00\"\n                }\n            ],\n            \"elementHeader\": {\n                \"class\": \"ElementHeader\",\n                \"headerVersion\": 0,\n                \"status\": \"ACTIVE\",\n                \"type\": {\n                    \"typeId\": \"1449911c-4f44-4c22-abc0-7540154feefb\",\n                    \"typeName\": \"DataSet\",\n                    \"superTypeNames\": [\n                        \"Asset\",\n                        \"Referenceable\",\n                        \"OpenMetadataRoot\"\n                    ],\n                    \"typeVersion\": 4,\n                    \"typeDescription\": \"Collection of related data.\"\n                },\n                \"origin\": {\n                    \"sourceServer\": \"metadata-store\",\n                    \"originCategory\": \"EXTERNAL_SOURCE\",\n                    \"homeMetadataCollectionId\": \"654fde37-e1ef-490d-9d27-2f113b4e7905\",\n                    \"homeMetadataCollectionName\": \"ApacheAtlasDL01\"\n                },\n                \"versions\": {\n                    \"createdBy\": \"generalnpa\",\n                    \"createTime\": \"2023-08-04T16:20:47.717+00:00\",\n                    \"version\": 1\n                },\n                \"guid\": \"d88b8388-7efc-451d-a64b-6c66ee2571d5\",\n                \"classifications\": [\n                    {\n                        \"class\": \"ElementClassification\",\n                        \"headerVersion\": 0,\n                        \"status\": \"ACTIVE\",\n                        \"type\": {\n                            \"typeId\": \"8139a911-a4bd-432b-a9f4-f6d11c511abe\",\n                            \"typeName\": \"Ownership\",\n                            \"typeVersion\": 1,\n                            \"typeDescription\": \"Who is responsible for making decisions on the management and governance of this element.\"\n                        },\n                        \"origin\": {\n                            \"sourceServer\": \"metadata-store\",\n                            \"originCategory\": \"LOCAL_COHORT\",\n                            \"homeMetadataCollectionId\": \"e82356af-336d-4842-aa64-f7994144a668\",\n                            \"homeMetadataCollectionName\": \"metadata-store\"\n                        },\n                        \"versions\": {\n                            \"createdBy\": \"generalnpa\",\n                            \"createTime\": \"2023-08-04T16:20:48.146+00:00\",\n                            \"version\": 1\n                        },\n                        \"classificationOrigin\": \"ASSIGNED\",\n                        \"classificationName\": \"Ownership\",\n                        \"classificationProperties\": {\n                            \"owner\": \"Tim ETL\",\n                            \"ownerTypeName\": \"UserIdentity\",\n                            \"ownerPropertyName\": \"userId\"\n                        }\n                    },\n                    {\n                        \"class\": \"ElementClassification\",\n                        \"headerVersion\": 0,\n                        \"status\": \"ACTIVE\",\n                        \"type\": {\n                            \"typeId\": \"adce83ac-10f1-4279-8a35-346976e94466\",\n                            \"typeName\": \"LatestChange\",\n                            \"typeVersion\": 1,\n                            \"typeDescription\": \"Defines the latest change to an anchor entity and its associated attachments.\"\n                        },\n                        \"origin\": {\n                            \"sourceServer\": \"metadata-store\",\n                            \"originCategory\": \"LOCAL_COHORT\",\n                            \"homeMetadataCollectionId\": \"e82356af-336d-4842-aa64-f7994144a668\",\n                            \"homeMetadataCollectionName\": \"metadata-store\"\n                        },\n                        \"versions\": {\n                            \"createdBy\": \"OMAGServer\",\n                            \"updatedBy\": \"OMAGServer\",\n                            \"maintainedBy\": [\n                                \"OMAGServer\"\n                            ],\n                            \"createTime\": \"2023-08-04T16:20:47.721+00:00\",\n                            \"updateTime\": \"2023-08-04T16:20:48.146+00:00\",\n                            \"version\": 3\n                        },\n                        \"classificationOrigin\": \"ASSIGNED\",\n                        \"classificationName\": \"LatestChange\",\n                        \"classificationProperties\": {\n                            \"changeTarget\": \"EntityClassification\",\n                            \"description\": \"Adding Ownership classification to Referenceable d88b8388-7efc-451d-a64b-6c66ee2571d5\",\n                            \"user\": \"generalnpa\",\n                            \"classificationName\": \"Ownership\",\n                            \"changeAction\": \"Created\"\n                        }\n                    }\n                ]\n            }\n        },\n        {\n            \"dataAssetProperties\": {\n                \"class\": \"DataAssetProperties\",\n                \"qualifiedName\": \"Apache Atlas:LoadProcess:loadSalesMonthly@cl1\",\n                \"additionalProperties\": {\n                    \"queryGraph\": \"graph\",\n                    \"queryText\": \"create table as select \",\n                    \"startTime\": \"1689792524845\",\n                    \"queryPlan\": \"plan\",\n                    \"endTime\": \"1689792534845\",\n                    \"queryId\": \"id\"\n                },\n                \"typeName\": \"DeployedSoftwareComponent\",\n                \"technicalName\": \"loadSalesMonthly\",\n                \"technicalDescription\": \"hive query for monthly summary\",\n                \"isReferenceAsset\": false\n            },\n            \"correlationHeaders\": [\n                {\n                    \"synchronizationDirection\": \"FROM_THIRD_PARTY\",\n                    \"externalIdentifier\": \"6e889e9a-a656-4b78-a4ea-000397f032a7\",\n                    \"externalIdentifierName\": \"atlasGUID\",\n                    \"externalIdentifierSource\": \"AtlasIntegrator\",\n                    \"keyPattern\": \"LOCAL_KEY\",\n                    \"externalInstanceCreatedBy\": \"admin\",\n                    \"externalInstanceCreationTime\": \"2023-07-19T18:48:44.847+00:00\",\n                    \"externalInstanceLastUpdatedBy\": \"admin\",\n                    \"externalInstanceLastUpdateTime\": \"2023-07-19T18:48:45.156+00:00\",\n                    \"externalInstanceVersion\": 0,\n                    \"mappingProperties\": {\n                        \"originator\": \"AtlasIntegrator:Apache Atlas Lineage Integration Module\",\n                        \"atlasType\": \"LoadProcess\"\n                    },\n                    \"assetManagerGUID\": \"654fde37-e1ef-490d-9d27-2f113b4e7905\",\n                    \"assetManagerName\": \"ApacheAtlasDL01\",\n                    \"lastSynchronized\": \"2023-08-04T16:20:49.843+00:00\"\n                }\n            ],\n            \"elementHeader\": {\n                \"class\": \"ElementHeader\",\n                \"headerVersion\": 0,\n                \"status\": \"ACTIVE\",\n                \"type\": {\n                    \"typeId\": \"486af62c-dcfd-4859-ab24-eab2e380ecfd\",\n                    \"typeName\": \"DeployedSoftwareComponent\",\n                    \"superTypeNames\": [\n                        \"Process\",\n                        \"Asset\",\n                        \"Referenceable\",\n                        \"OpenMetadataRoot\"\n                    ],\n                    \"typeVersion\": 2,\n                    \"typeDescription\": \"A packaged and deployed software component supporting a well-defined function.\"\n                },\n                \"origin\": {\n                    \"sourceServer\": \"metadata-store\",\n                    \"originCategory\": \"EXTERNAL_SOURCE\",\n                    \"homeMetadataCollectionId\": \"654fde37-e1ef-490d-9d27-2f113b4e7905\",\n                    \"homeMetadataCollectionName\": \"ApacheAtlasDL01\"\n                },\n                \"versions\": {\n                    \"createdBy\": \"generalnpa\",\n                    \"createTime\": \"2023-08-04T16:20:49.840+00:00\",\n                    \"version\": 1\n                },\n                \"guid\": \"3044f314-a897-4149-a972-744861e189b0\",\n                \"classifications\": [\n                    {\n                        \"class\": \"ElementClassification\",\n                        \"headerVersion\": 0,\n                        \"status\": \"ACTIVE\",\n                        \"type\": {\n                            \"typeId\": \"adce83ac-10f1-4279-8a35-346976e94466\",\n                            \"typeName\": \"LatestChange\",\n                            \"typeVersion\": 1,\n                            \"typeDescription\": \"Defines the latest change to an anchor entity and its associated attachments.\"\n                        },\n                        \"origin\": {\n                            \"sourceServer\": \"metadata-store\",\n                            \"originCategory\": \"LOCAL_COHORT\",\n                            \"homeMetadataCollectionId\": \"e82356af-336d-4842-aa64-f7994144a668\",\n                            \"homeMetadataCollectionName\": \"metadata-store\"\n                        },\n                        \"versions\": {\n                            \"createdBy\": \"OMAGServer\",\n                            \"createTime\": \"2023-08-04T16:20:49.844+00:00\",\n                            \"version\": 1\n                        },\n                        \"classificationOrigin\": \"ASSIGNED\",\n                        \"classificationName\": \"LatestChange\",\n                        \"classificationProperties\": {\n                            \"relationshipType\": \"ExternalIdLink\",\n                            \"attachmentType\": \"ExternalId\",\n                            \"changeTarget\": \"EntityRelationship\",\n                            \"description\": \"Linking Process 3044f314-a897-4149-a972-744861e189b0 to ExternalId 31a5acfb-0d13-44f0-b92c-7646dd1952a9\",\n                            \"attachmentGUID\": \"31a5acfb-0d13-44f0-b92c-7646dd1952a9\",\n                            \"user\": \"generalnpa\",\n                            \"changeAction\": \"Created\"\n                        }\n                    }\n                ]\n            }\n        },\n        {\n            \"dataAssetProperties\": {\n                \"class\": \"DataAssetProperties\",\n                \"qualifiedName\": \"Apache Atlas:Table:sales_fact@cl1\",\n                \"additionalProperties\": {\n                    \"owner\": \"Joe\",\n                    \"temporary\": \"false\",\n                    \"tableType\": \"Managed\",\n                    \"lastAccessTime\": \"1689792521060\",\n                    \"createTime\": \"1689792521060\",\n                    \"retention\": \"1689792521060\"\n                },\n                \"typeName\": \"DataSet\",\n                \"technicalName\": \"sales_fact\",\n                \"technicalDescription\": \"sales fact table\",\n                \"isReferenceAsset\": false\n            },\n            \"correlationHeaders\": [\n                {\n                    \"synchronizationDirection\": \"FROM_THIRD_PARTY\",\n                    \"externalIdentifier\": \"4bd3d02f-4ce8-4984-8ae8-34d386e04162\",\n                    \"externalIdentifierName\": \"atlasGUID\",\n                    \"externalIdentifierSource\": \"AtlasIntegrator\",\n                    \"keyPattern\": \"LOCAL_KEY\",\n                    \"externalInstanceCreatedBy\": \"admin\",\n                    \"externalInstanceCreationTime\": \"2023-07-19T18:48:41.074+00:00\",\n                    \"externalInstanceLastUpdatedBy\": \"admin\",\n                    \"externalInstanceLastUpdateTime\": \"2023-07-19T18:48:44.338+00:00\",\n                    \"externalInstanceVersion\": 0,\n                    \"mappingProperties\": {\n                        \"originator\": \"AtlasIntegrator:Apache Atlas Lineage Integration Module\",\n                        \"atlasType\": \"Table\"\n                    },\n                    \"assetManagerGUID\": \"654fde37-e1ef-490d-9d27-2f113b4e7905\",\n                    \"assetManagerName\": \"ApacheAtlasDL01\",\n                    \"lastSynchronized\": \"2023-08-04T16:20:43.578+00:00\"\n                }\n            ],\n            \"elementHeader\": {\n                \"class\": \"ElementHeader\",\n                \"headerVersion\": 0,\n                \"status\": \"ACTIVE\",\n                \"type\": {\n                    \"typeId\": \"1449911c-4f44-4c22-abc0-7540154feefb\",\n                    \"typeName\": \"DataSet\",\n                    \"superTypeNames\": [\n                        \"Asset\",\n                        \"Referenceable\",\n                        \"OpenMetadataRoot\"\n                    ],\n                    \"typeVersion\": 4,\n                    \"typeDescription\": \"Collection of related data.\"\n                },\n                \"origin\": {\n                    \"sourceServer\": \"metadata-store\",\n                    \"originCategory\": \"EXTERNAL_SOURCE\",\n                    \"homeMetadataCollectionId\": \"654fde37-e1ef-490d-9d27-2f113b4e7905\",\n                    \"homeMetadataCollectionName\": \"ApacheAtlasDL01\"\n                },\n                \"versions\": {\n                    \"createdBy\": \"generalnpa\",\n                    \"createTime\": \"2023-08-04T16:20:43.565+00:00\",\n                    \"version\": 1\n                },\n                \"guid\": \"4e752be4-1936-4a24-9ff3-90d5129fcfd5\",\n                \"classifications\": [\n                    {\n                        \"class\": \"ElementClassification\",\n                        \"headerVersion\": 0,\n                        \"status\": \"ACTIVE\",\n                        \"type\": {\n                            \"typeId\": \"8139a911-a4bd-432b-a9f4-f6d11c511abe\",\n                            \"typeName\": \"Ownership\",\n                            \"typeVersion\": 1,\n                            \"typeDescription\": \"Who is responsible for making decisions on the management and governance of this element.\"\n                        },\n                        \"origin\": {\n                            \"sourceServer\": \"metadata-store\",\n                            \"originCategory\": \"LOCAL_COHORT\",\n                            \"homeMetadataCollectionId\": \"e82356af-336d-4842-aa64-f7994144a668\",\n                            \"homeMetadataCollectionName\": \"metadata-store\"\n                        },\n                        \"versions\": {\n                            \"createdBy\": \"generalnpa\",\n                            \"createTime\": \"2023-08-04T16:20:44.019+00:00\",\n                            \"version\": 1\n                        },\n                        \"classificationOrigin\": \"ASSIGNED\",\n                        \"classificationName\": \"Ownership\",\n                        \"classificationProperties\": {\n                            \"owner\": \"Joe\",\n                            \"ownerTypeName\": \"UserIdentity\",\n                            \"ownerPropertyName\": \"userId\"\n                        }\n                    },\n                    {\n                        \"class\": \"ElementClassification\",\n                        \"headerVersion\": 0,\n                        \"status\": \"ACTIVE\",\n                        \"type\": {\n                            \"typeId\": \"adce83ac-10f1-4279-8a35-346976e94466\",\n                            \"typeName\": \"LatestChange\",\n                            \"typeVersion\": 1,\n                            \"typeDescription\": \"Defines the latest change to an anchor entity and its associated attachments.\"\n                        },\n                        \"origin\": {\n                            \"sourceServer\": \"metadata-store\",\n                            \"originCategory\": \"LOCAL_COHORT\",\n                            \"homeMetadataCollectionId\": \"e82356af-336d-4842-aa64-f7994144a668\",\n                            \"homeMetadataCollectionName\": \"metadata-store\"\n                        },\n                        \"versions\": {\n                            \"createdBy\": \"OMAGServer\",\n                            \"updatedBy\": \"OMAGServer\",\n                            \"maintainedBy\": [\n                                \"OMAGServer\"\n                            ],\n                            \"createTime\": \"2023-08-04T16:20:43.583+00:00\",\n                            \"updateTime\": \"2023-08-04T16:20:44.020+00:00\",\n                            \"version\": 3\n                        },\n                        \"classificationOrigin\": \"ASSIGNED\",\n                        \"classificationName\": \"LatestChange\",\n                        \"classificationProperties\": {\n                            \"changeTarget\": \"EntityClassification\",\n                            \"description\": \"Adding Ownership classification to Referenceable 4e752be4-1936-4a24-9ff3-90d5129fcfd5\",\n                            \"user\": \"generalnpa\",\n                            \"classificationName\": \"Ownership\",\n                            \"changeAction\": \"Created\"\n                        }\n                    }\n                ]\n            }\n        },\n        {\n            \"dataAssetProperties\": {\n                \"class\": \"DataAssetProperties\",\n                \"qualifiedName\": \"Apache Atlas:Table:sales_fact_daily_mv@cl1\",\n                \"additionalProperties\": {\n                    \"owner\": \"Joe BI\",\n                    \"temporary\": \"false\",\n                    \"tableType\": \"Managed\",\n                    \"lastAccessTime\": \"1689792523531\",\n                    \"createTime\": \"1689792523531\",\n                    \"retention\": \"1689792523531\"\n                },\n                \"typeName\": \"DataSet\",\n                \"technicalName\": \"sales_fact_daily_mv\",\n                \"technicalDescription\": \"sales fact daily materialized view\",\n                \"isReferenceAsset\": false\n            },\n            \"correlationHeaders\": [\n                {\n                    \"synchronizationDirection\": \"FROM_THIRD_PARTY\",\n                    \"externalIdentifier\": \"f9da9d70-164b-48e5-972e-f22003b49650\",\n                    \"externalIdentifierName\": \"atlasGUID\",\n                    \"externalIdentifierSource\": \"AtlasIntegrator\",\n                    \"keyPattern\": \"LOCAL_KEY\",\n                    \"externalInstanceCreatedBy\": \"admin\",\n                    \"externalInstanceCreationTime\": \"2023-07-19T18:48:43.534+00:00\",\n                    \"externalInstanceLastUpdatedBy\": \"admin\",\n                    \"externalInstanceLastUpdateTime\": \"2023-07-19T18:48:44.847+00:00\",\n                    \"externalInstanceVersion\": 0,\n                    \"mappingProperties\": {\n                        \"originator\": \"AtlasIntegrator:Apache Atlas Lineage Integration Module\",\n                        \"atlasType\": \"Table\"\n                    },\n                    \"assetManagerGUID\": \"654fde37-e1ef-490d-9d27-2f113b4e7905\",\n                    \"assetManagerName\": \"ApacheAtlasDL01\",\n                    \"lastSynchronized\": \"2023-08-04T16:20:45.606+00:00\"\n                }\n            ],\n            \"elementHeader\": {\n                \"class\": \"ElementHeader\",\n                \"headerVersion\": 0,\n                \"status\": \"ACTIVE\",\n                \"type\": {\n                    \"typeId\": \"1449911c-4f44-4c22-abc0-7540154feefb\",\n                    \"typeName\": \"DataSet\",\n                    \"superTypeNames\": [\n                        \"Asset\",\n                        \"Referenceable\",\n                        \"OpenMetadataRoot\"\n                    ],\n                    \"typeVersion\": 4,\n                    \"typeDescription\": \"Collection of related data.\"\n                },\n                \"origin\": {\n                    \"sourceServer\": \"metadata-store\",\n                    \"originCategory\": \"EXTERNAL_SOURCE\",\n                    \"homeMetadataCollectionId\": \"654fde37-e1ef-490d-9d27-2f113b4e7905\",\n                    \"homeMetadataCollectionName\": \"ApacheAtlasDL01\"\n                },\n                \"versions\": {\n                    \"createdBy\": \"generalnpa\",\n                    \"createTime\": \"2023-08-04T16:20:45.602+00:00\",\n                    \"version\": 1\n                },\n                \"guid\": \"150c527a-0129-4cd8-99dc-fc5e95b38d0a\",\n                \"classifications\": [\n                    {\n                        \"class\": \"ElementClassification\",\n                        \"headerVersion\": 0,\n                        \"status\": \"ACTIVE\",\n                        \"type\": {\n                            \"typeId\": \"8139a911-a4bd-432b-a9f4-f6d11c511abe\",\n                            \"typeName\": \"Ownership\",\n                            \"typeVersion\": 1,\n                            \"typeDescription\": \"Who is responsible for making decisions on the management and governance of this element.\"\n                        },\n                        \"origin\": {\n                            \"sourceServer\": \"metadata-store\",\n                            \"originCategory\": \"LOCAL_COHORT\",\n                            \"homeMetadataCollectionId\": \"e82356af-336d-4842-aa64-f7994144a668\",\n                            \"homeMetadataCollectionName\": \"metadata-store\"\n                        },\n                        \"versions\": {\n                            \"createdBy\": \"generalnpa\",\n                            \"createTime\": \"2023-08-04T16:20:46.032+00:00\",\n                            \"version\": 1\n                        },\n                        \"classificationOrigin\": \"ASSIGNED\",\n                        \"classificationName\": \"Ownership\",\n                        \"classificationProperties\": {\n                            \"owner\": \"Joe BI\",\n                            \"ownerTypeName\": \"UserIdentity\",\n                            \"ownerPropertyName\": \"userId\"\n                        }\n                    },\n                    {\n                        \"class\": \"ElementClassification\",\n                        \"headerVersion\": 0,\n                        \"status\": \"ACTIVE\",\n                        \"type\": {\n                            \"typeId\": \"adce83ac-10f1-4279-8a35-346976e94466\",\n                            \"typeName\": \"LatestChange\",\n                            \"typeVersion\": 1,\n                            \"typeDescription\": \"Defines the latest change to an anchor entity and its associated attachments.\"\n                        },\n                        \"origin\": {\n                            \"sourceServer\": \"metadata-store\",\n                            \"originCategory\": \"LOCAL_COHORT\",\n                            \"homeMetadataCollectionId\": \"e82356af-336d-4842-aa64-f7994144a668\",\n                            \"homeMetadataCollectionName\": \"metadata-store\"\n                        },\n                        \"versions\": {\n                            \"createdBy\": \"OMAGServer\",\n                            \"updatedBy\": \"OMAGServer\",\n                            \"maintainedBy\": [\n                                \"OMAGServer\"\n                            ],\n                            \"createTime\": \"2023-08-04T16:20:45.607+00:00\",\n                            \"updateTime\": \"2023-08-04T16:20:46.033+00:00\",\n                            \"version\": 3\n                        },\n                        \"classificationOrigin\": \"ASSIGNED\",\n                        \"classificationName\": \"LatestChange\",\n                        \"classificationProperties\": {\n                            \"changeTarget\": \"EntityClassification\",\n                            \"description\": \"Adding Ownership classification to Referenceable 150c527a-0129-4cd8-99dc-fc5e95b38d0a\",\n                            \"user\": \"generalnpa\",\n                            \"classificationName\": \"Ownership\",\n                            \"changeAction\": \"Created\"\n                        }\n                    }\n                ]\n            }\n        },\n        {\n            \"dataAssetProperties\": {\n                \"class\": \"DataAssetProperties\",\n                \"qualifiedName\": \"Apache Atlas:Table:time_dim@cl1\",\n                \"additionalProperties\": {\n                    \"owner\": \"John Doe\",\n                    \"temporary\": \"false\",\n                    \"tableType\": \"External\",\n                    \"lastAccessTime\": \"1689792522138\",\n                    \"createTime\": \"1689792522138\",\n                    \"retention\": \"1689792522138\"\n                },\n                \"typeName\": \"DataSet\",\n                \"technicalName\": \"time_dim\",\n                \"technicalDescription\": \"time dimension table\",\n                \"isReferenceAsset\": false\n            },\n            \"correlationHeaders\": [\n                {\n                    \"synchronizationDirection\": \"FROM_THIRD_PARTY\",\n                    \"externalIdentifier\": \"bdcb8598-b40f-4a93-97d5-89452f28090e\",\n                    \"externalIdentifierName\": \"atlasGUID\",\n                    \"externalIdentifierSource\": \"AtlasIntegrator\",\n                    \"keyPattern\": \"LOCAL_KEY\",\n                    \"externalInstanceCreatedBy\": \"admin\",\n                    \"externalInstanceCreationTime\": \"2023-07-19T18:48:42.141+00:00\",\n                    \"externalInstanceLastUpdatedBy\": \"admin\",\n                    \"externalInstanceLastUpdateTime\": \"2023-07-19T18:48:44.338+00:00\",\n                    \"externalInstanceVersion\": 0,\n                    \"mappingProperties\": {\n                        \"originator\": \"AtlasIntegrator:Apache Atlas Lineage Integration Module\",\n                        \"atlasType\": \"Table\"\n                    },\n                    \"assetManagerGUID\": \"654fde37-e1ef-490d-9d27-2f113b4e7905\",\n                    \"assetManagerName\": \"ApacheAtlasDL01\",\n                    \"lastSynchronized\": \"2023-08-04T16:20:44.515+00:00\"\n                }\n            ],\n            \"elementHeader\": {\n                \"class\": \"ElementHeader\",\n                \"headerVersion\": 0,\n                \"status\": \"ACTIVE\",\n                \"type\": {\n                    \"typeId\": \"1449911c-4f44-4c22-abc0-7540154feefb\",\n                    \"typeName\": \"DataSet\",\n                    \"superTypeNames\": [\n                        \"Asset\",\n                        \"Referenceable\",\n                        \"OpenMetadataRoot\"\n                    ],\n                    \"typeVersion\": 4,\n                    \"typeDescription\": \"Collection of related data.\"\n                },\n                \"origin\": {\n                    \"sourceServer\": \"metadata-store\",\n                    \"originCategory\": \"EXTERNAL_SOURCE\",\n                    \"homeMetadataCollectionId\": \"654fde37-e1ef-490d-9d27-2f113b4e7905\",\n                    \"homeMetadataCollectionName\": \"ApacheAtlasDL01\"\n                },\n                \"versions\": {\n                    \"createdBy\": \"generalnpa\",\n                    \"createTime\": \"2023-08-04T16:20:44.512+00:00\",\n                    \"version\": 1\n                },\n                \"guid\": \"43384a96-e047-4f59-9ef0-32cf542edb7b\",\n                \"classifications\": [\n                    {\n                        \"class\": \"ElementClassification\",\n                        \"headerVersion\": 0,\n                        \"status\": \"ACTIVE\",\n                        \"type\": {\n                            \"typeId\": \"8139a911-a4bd-432b-a9f4-f6d11c511abe\",\n                            \"typeName\": \"Ownership\",\n                            \"typeVersion\": 1,\n                            \"typeDescription\": \"Who is responsible for making decisions on the management and governance of this element.\"\n                        },\n                        \"origin\": {\n                            \"sourceServer\": \"metadata-store\",\n                            \"originCategory\": \"LOCAL_COHORT\",\n                            \"homeMetadataCollectionId\": \"e82356af-336d-4842-aa64-f7994144a668\",\n                            \"homeMetadataCollectionName\": \"metadata-store\"\n                        },\n                        \"versions\": {\n                            \"createdBy\": \"generalnpa\",\n                            \"createTime\": \"2023-08-04T16:20:44.937+00:00\",\n                            \"version\": 1\n                        },\n                        \"classificationOrigin\": \"ASSIGNED\",\n                        \"classificationName\": \"Ownership\",\n                        \"classificationProperties\": {\n                            \"owner\": \"John Doe\",\n                            \"ownerTypeName\": \"UserIdentity\",\n                            \"ownerPropertyName\": \"userId\"\n                        }\n                    },\n                    {\n                        \"class\": \"ElementClassification\",\n                        \"headerVersion\": 0,\n                        \"status\": \"ACTIVE\",\n                        \"type\": {\n                            \"typeId\": \"adce83ac-10f1-4279-8a35-346976e94466\",\n                            \"typeName\": \"LatestChange\",\n                            \"typeVersion\": 1,\n                            \"typeDescription\": \"Defines the latest change to an anchor entity and its associated attachments.\"\n                        },\n                        \"origin\": {\n                            \"sourceServer\": \"metadata-store\",\n                            \"originCategory\": \"LOCAL_COHORT\",\n                            \"homeMetadataCollectionId\": \"e82356af-336d-4842-aa64-f7994144a668\",\n                            \"homeMetadataCollectionName\": \"metadata-store\"\n                        },\n                        \"versions\": {\n                            \"createdBy\": \"OMAGServer\",\n                            \"updatedBy\": \"OMAGServer\",\n                            \"maintainedBy\": [\n                                \"OMAGServer\"\n                            ],\n                            \"createTime\": \"2023-08-04T16:20:44.517+00:00\",\n                            \"updateTime\": \"2023-08-04T16:20:44.938+00:00\",\n                            \"version\": 3\n                        },\n                        \"classificationOrigin\": \"ASSIGNED\",\n                        \"classificationName\": \"LatestChange\",\n                        \"classificationProperties\": {\n                            \"changeTarget\": \"EntityClassification\",\n                            \"description\": \"Adding Ownership classification to Referenceable 43384a96-e047-4f59-9ef0-32cf542edb7b\",\n                            \"user\": \"generalnpa\",\n                            \"classificationName\": \"Ownership\",\n                            \"changeAction\": \"Created\"\n                        }\n                    }\n                ]\n            }\n        },\n        {\n            \"dataAssetProperties\": {\n                \"class\": \"DataAssetProperties\",\n                \"qualifiedName\": \"Apache Atlas:LoadProcess:loadLogsMonthly@cl1\",\n                \"additionalProperties\": {\n                    \"queryGraph\": \"graph\",\n                    \"queryText\": \"create table as select \",\n                    \"startTime\": \"1689792525310\",\n                    \"queryPlan\": \"plan\",\n                    \"endTime\": \"1689792535310\",\n                    \"queryId\": \"id\"\n                },\n                \"typeName\": \"DeployedSoftwareComponent\",\n                \"technicalName\": \"loadLogsMonthly\",\n                \"technicalDescription\": \"hive query for monthly summary\",\n                \"isReferenceAsset\": false\n            },\n            \"correlationHeaders\": [\n                {\n                    \"synchronizationDirection\": \"FROM_THIRD_PARTY\",\n                    \"externalIdentifier\": \"64faa08b-b586-40fe-8f28-a4c799dfbbd4\",\n                    \"externalIdentifierName\": \"atlasGUID\",\n                    \"externalIdentifierSource\": \"AtlasIntegrator\",\n                    \"keyPattern\": \"LOCAL_KEY\",\n                    \"externalInstanceCreatedBy\": \"admin\",\n                    \"externalInstanceCreationTime\": \"2023-07-19T18:48:45.313+00:00\",\n                    \"externalInstanceLastUpdatedBy\": \"admin\",\n                    \"externalInstanceLastUpdateTime\": \"2023-07-19T18:48:45.687+00:00\",\n                    \"externalInstanceVersion\": 0,\n                    \"mappingProperties\": {\n                        \"originator\": \"AtlasIntegrator:Apache Atlas Lineage Integration Module\",\n                        \"atlasType\": \"LoadProcess\"\n                    },\n                    \"assetManagerGUID\": \"654fde37-e1ef-490d-9d27-2f113b4e7905\",\n                    \"assetManagerName\": \"ApacheAtlasDL01\",\n                    \"lastSynchronized\": \"2023-08-04T16:20:46.667+00:00\"\n                }\n            ],\n            \"elementHeader\": {\n                \"class\": \"ElementHeader\",\n                \"headerVersion\": 0,\n                \"status\": \"ACTIVE\",\n                \"type\": {\n                    \"typeId\": \"486af62c-dcfd-4859-ab24-eab2e380ecfd\",\n                    \"typeName\": \"DeployedSoftwareComponent\",\n                    \"superTypeNames\": [\n                        \"Process\",\n                        \"Asset\",\n                        \"Referenceable\",\n                        \"OpenMetadataRoot\"\n                    ],\n                    \"typeVersion\": 2,\n                    \"typeDescription\": \"A packaged and deployed software component supporting a well-defined function.\"\n                },\n                \"origin\": {\n                    \"sourceServer\": \"metadata-store\",\n                    \"originCategory\": \"EXTERNAL_SOURCE\",\n                    \"homeMetadataCollectionId\": \"654fde37-e1ef-490d-9d27-2f113b4e7905\",\n                    \"homeMetadataCollectionName\": \"ApacheAtlasDL01\"\n                },\n                \"versions\": {\n                    \"createdBy\": \"generalnpa\",\n                    \"createTime\": \"2023-08-04T16:20:46.665+00:00\",\n                    \"version\": 1\n                },\n                \"guid\": \"fd4a0adc-5271-4421-8ca8-6123ec75cd60\",\n                \"classifications\": [\n                    {\n                        \"class\": \"ElementClassification\",\n                        \"headerVersion\": 0,\n                        \"status\": \"ACTIVE\",\n                        \"type\": {\n                            \"typeId\": \"adce83ac-10f1-4279-8a35-346976e94466\",\n                            \"typeName\": \"LatestChange\",\n                            \"typeVersion\": 1,\n                            \"typeDescription\": \"Defines the latest change to an anchor entity and its associated attachments.\"\n                        },\n                        \"origin\": {\n                            \"sourceServer\": \"metadata-store\",\n                            \"originCategory\": \"LOCAL_COHORT\",\n                            \"homeMetadataCollectionId\": \"e82356af-336d-4842-aa64-f7994144a668\",\n                            \"homeMetadataCollectionName\": \"metadata-store\"\n                        },\n                        \"versions\": {\n                            \"createdBy\": \"OMAGServer\",\n                            \"createTime\": \"2023-08-04T16:20:46.668+00:00\",\n                            \"version\": 1\n                        },\n                        \"classificationOrigin\": \"ASSIGNED\",\n                        \"classificationName\": \"LatestChange\",\n                        \"classificationProperties\": {\n                            \"relationshipType\": \"ExternalIdLink\",\n                            \"attachmentType\": \"ExternalId\",\n                            \"changeTarget\": \"EntityRelationship\",\n                            \"description\": \"Linking Process fd4a0adc-5271-4421-8ca8-6123ec75cd60 to ExternalId 656e932c-d957-4211-b454-0786c04cfb23\",\n                            \"attachmentGUID\": \"656e932c-d957-4211-b454-0786c04cfb23\",\n                            \"user\": \"generalnpa\",\n                            \"changeAction\": \"Created\"\n                        }\n                    }\n                ]\n            }\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Load open metadata archive file into nanny-store",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "text/plain"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "content-packs/CloudInformationModel.json",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{nannyURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{nannyStore}}/instance/open-metadata-archives/file",
+							"host": [
+								"{{nannyURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"platform-services",
+								"users",
+								"{{adminUserId}}",
+								"server-platform",
+								"servers",
+								"{{nannyStore}}",
+								"instance",
+								"open-metadata-archives",
+								"file"
+							]
+						},
+						"description": "Load a file that contains open metadata types and instances."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Work with open metadata ecosystem",
+			"item": [
+				{
+					"name": "Load open metadata archive file into open metadata ecosystem",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "text/plain"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "content-packs/CocoComboArchive.json",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{server}}/instance/open-metadata-archives/file",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"open-metadata",
+								"platform-services",
+								"users",
+								"{{adminUserId}}",
+								"server-platform",
+								"servers",
+								"{{server}}",
+								"instance",
+								"open-metadata-archives",
+								"file"
+							]
+						},
+						"description": "Load a file that contains open metadata types and instances."
+					},
+					"response": []
+				},
+				{
+					"name": "Find all glossaries in open metadata ecosystem",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t \"class\" : \"SearchStringRequestBody\",\n\t \"searchString\" : \".*\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/by-search-string?startFrom=0&pageSize=0",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"access-services",
+								"asset-manager",
+								"users",
+								"{{user}}",
+								"glossaries",
+								"by-search-string"
+							],
+							"query": [
+								{
+									"key": "startFrom",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "0"
+								}
+							]
+						},
+						"description": "This call retrieves the details of the Abu Dhabi glossary and checks the adGlossaryGUID is set up properly."
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve ALL the glossary terms for a glossary in open metadata ecosystem",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\" : \"AssetManagerIdentifiersRequestBody\",\n    \"assetManagerGUID\" : \"ba69fd95-c4d6-451f-9411-b9239cd1b9f8\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/{{glossaryGUID}}/terms/retrieve?startFrom=0&pageSize=0",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"access-services",
+								"asset-manager",
+								"users",
+								"{{user}}",
+								"glossaries",
+								"{{glossaryGUID}}",
+								"terms",
+								"retrieve"
+							],
+							"query": [
+								{
+									"key": "startFrom",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve ALL the glossary categories for a glossary in open metadata ecosystem",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/{{glossaryGUID}}/categories/retrieve?startFrom=0&pageSize=0",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"access-services",
+								"asset-manager",
+								"users",
+								"{{user}}",
+								"glossaries",
+								"{{glossaryGUID}}",
+								"categories",
+								"retrieve"
+							],
+							"query": [
+								{
+									"key": "startFrom",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve a glossary term from open metadata ecosystem",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/terms/{{glossaryTermGUID}}/retrieve",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"access-services",
+								"asset-manager",
+								"users",
+								"{{user}}",
+								"glossaries",
+								"terms",
+								"{{glossaryTermGUID}}",
+								"retrieve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve ALL the processes from open metadata ecosystem",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\" : \"SearchStringRequestBody\",\n    \"searchString\" : \".*\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/processes/by-search-string?startFrom=0&pageSize=0",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"access-services",
+								"asset-manager",
+								"users",
+								"{{user}}",
+								"processes",
+								"by-search-string"
+							],
+							"query": [
+								{
+									"key": "startFrom",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve ALL the data assets from open metadata ecosystem",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"class\" : \"SearchStringRequestBody\",\n    \"searchString\" : \".*\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/servers/{{server}}/open-metadata/access-services/asset-manager/users/{{user}}/data-assets/by-search-string?startFrom=0&pageSize=0",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"servers",
+								"{{server}}",
+								"open-metadata",
+								"access-services",
+								"asset-manager",
+								"users",
+								"{{user}}",
+								"data-assets",
+								"by-search-string"
+							],
+							"query": [
+								{
+									"key": "startFrom",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "The nanny connectors can monitor an open metadata ecosystem. They connect to a nominated Metadata Access Server in the open metadata ecosysten that is identified by the {{baseURL}} and {{server}} variables. The requests in this folder are directed as this server."
+		}
+	]
+}

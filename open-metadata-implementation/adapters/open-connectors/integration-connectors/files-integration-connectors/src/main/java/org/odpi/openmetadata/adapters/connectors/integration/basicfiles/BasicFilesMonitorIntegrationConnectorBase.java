@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
+import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.FileFolderElement;
 import org.odpi.openmetadata.accessservices.datamanager.properties.FileFolderProperties;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsAuditCode;
@@ -36,6 +37,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
     String  incidentReportTemplateQualifiedName = null;
     boolean allowCatalogDelete                  = false;
     boolean waitForDirectory                    = false;
+    boolean catalogClassifiedFiles              = true;
 
     /**
      * Directory to monitor caches information about a specific directory that is at the root of the monitoring.
@@ -102,6 +104,11 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
                 allowCatalogDelete = true;
             }
 
+            if (configurationProperties.containsKey(BasicFilesMonitorIntegrationProviderBase.CATALOG_ALL_FILES_CONFIGURATION_PROPERTY))
+            {
+                catalogClassifiedFiles = false;
+            }
+
             if (configurationProperties.containsKey(BasicFilesMonitorIntegrationProviderBase.WAIT_FOR_DIRECTORY_CONFIGURATION_PROPERTY))
             {
                 waitForDirectory = true;
@@ -142,41 +149,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
         {
             endpointNetworkAddress = endpoint.getAddress();
 
-            DirectoryToMonitor directoryToMonitor = new DirectoryToMonitor();
-
-            directoryToMonitor.sourceName = OpenMetadataType.ENDPOINT_TYPE_NAME + ":" + OpenMetadataType.NETWORK_ADDRESS_PROPERTY_NAME;
-            directoryToMonitor.directoryName = endpoint.getAddress();
-            directoryToMonitor.directoryFile = new File(endpoint.getAddress());
-            directoryToMonitor.dataFolderElement = this.getFolderElement(directoryToMonitor.directoryFile);
-
-            if ((! directoryToMonitor.directoryFile.exists()) && (! waitForDirectory))
-            {
-                /*
-                 * The requested directory does not exist and the connector is configured not to wail for it.
-                 */
-                this.throwConfigException(BasicFilesIntegrationConnectorsErrorCode.FILES_LOCATION_NOT_FOUND,
-                                          directoryToMonitor.sourceName,
-                                          endpointNetworkAddress,
-                                          null);
-            }
-
-            if (! directoryToMonitor.directoryFile.isDirectory())
-            {
-                this.throwConfigException(BasicFilesIntegrationConnectorsErrorCode.FILES_LOCATION_NOT_DIRECTORY,
-                                          directoryToMonitor.sourceName,
-                                          endpointNetworkAddress,
-                                          null);
-            }
-
-            if (! directoryToMonitor.directoryFile.canRead())
-            {
-                this.throwConfigException(BasicFilesIntegrationConnectorsErrorCode.FILES_LOCATION_NOT_READABLE,
-                                          directoryToMonitor.sourceName,
-                                          endpointNetworkAddress,
-                                          null);
-            }
-
-            directoriesToMonitor.add(directoryToMonitor);
+            monitorEndpoint();
         }
 
         /*
@@ -194,6 +167,116 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
                                                                                                                       toDoTemplateQualifiedName,
                                                                                                                       incidentReportTemplateQualifiedName));
         }
+    }
+
+
+    /**
+     * Add fixed endpoint to monitoring list
+     *
+     * @throws ConnectorCheckedException connector problem
+     */
+    private void monitorEndpoint() throws ConnectorCheckedException
+    {
+        /*
+         * The first possible catalog target is the endpoint from the connection.  It may be null.
+         */
+        EndpointProperties  endpoint = connectionProperties.getEndpoint();
+
+        if ((endpoint != null) && (endpoint.getAddress() != null))
+        {
+            String endpointNetworkAddress = endpoint.getAddress();
+
+            for (DirectoryToMonitor directoryToMonitor : directoriesToMonitor)
+            {
+                if (endpointNetworkAddress.equals(directoryToMonitor.directoryName))
+                {
+                    /*
+                     * Endpoint already monitored
+                     */
+                    return;
+                }
+            }
+
+            DirectoryToMonitor directoryToMonitor = checkDirectoryToMonitor(OpenMetadataType.ENDPOINT_TYPE_NAME + ":" + OpenMetadataType.NETWORK_ADDRESS_PROPERTY_NAME,
+                                                                            endpoint.getAddress(),
+                                                                            null);
+
+            directoriesToMonitor.add(directoryToMonitor);
+        }
+    }
+
+
+    /**
+     * Validate the supplied pathname and return a Directory to monitor structure.  Any problems, throw exception.
+     *
+     * @param sourceName source of the pathname
+     * @param pathName pathname to the directory
+     * @param catalogTargetGUID optional catalog target GUID
+     * @return directory to monitor structure
+     * @throws ConnectorCheckedException problem with the path name
+     */
+    private DirectoryToMonitor checkDirectoryToMonitor(String sourceName,
+                                                       String pathName,
+                                                       String catalogTargetGUID) throws ConnectorCheckedException
+    {
+        final String methodName = "checkDirectoryToMonitor";
+
+        DirectoryToMonitor directoryToMonitor = new DirectoryToMonitor();
+
+        directoryToMonitor.sourceName = sourceName;
+        directoryToMonitor.directoryName = pathName;
+        directoryToMonitor.directoryFile = new File(pathName);
+        directoryToMonitor.dataFolderElement = this.getFolderElement(directoryToMonitor.directoryFile);
+        directoryToMonitor.catalogTargetGUID = catalogTargetGUID;
+
+        try
+        {
+            /*
+             * Check that the directory exists - IllegalArgumentException thrown if not
+             */
+            FileUtils.sizeOf(directoryToMonitor.directoryFile);
+
+            /*
+             * Get upset if the directory is actually a file
+             */
+            if (! directoryToMonitor.directoryFile.isDirectory())
+            {
+                this.throwConfigException(BasicFilesIntegrationConnectorsErrorCode.FILES_LOCATION_NOT_DIRECTORY,
+                                          directoryToMonitor.sourceName,
+                                          pathName,
+                                          null);
+            }
+
+            /*
+             * Get upset if the location is not readable.
+             */
+            if (! directoryToMonitor.directoryFile.canRead())
+            {
+                this.throwConfigException(BasicFilesIntegrationConnectorsErrorCode.FILES_LOCATION_NOT_READABLE,
+                                          directoryToMonitor.sourceName,
+                                          pathName,
+                                          null);
+            }
+        }
+        catch (IllegalArgumentException notFound)
+        {
+            if (! waitForDirectory)
+            {
+                this.throwConfigException(BasicFilesIntegrationConnectorsErrorCode.FILES_LOCATION_NOT_DIRECTORY,
+                                          directoryToMonitor.sourceName,
+                                          pathName,
+                                          null);
+            }
+            else if (auditLog != null)
+            {
+                auditLog.logMessage(methodName,
+                                    BasicFilesIntegrationConnectorsAuditCode.FILES_LOCATION_NOT_FOUND.getMessageDefinition(pathName,
+                                                                                                                           connectorName,
+                                                                                                                           sourceName));
+            }
+        }
+
+        return directoryToMonitor;
     }
 
 
@@ -240,7 +323,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
                 {
                     directoriesToMonitor.remove(directoryToMonitor);
                 }
-                else if (directoryToMonitor.directoryFile.exists())
+                else
                 {
                     if (directoryToMonitor.dataFolderElement == null)
                     {
@@ -252,7 +335,6 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
                         this.getContext().registerDirectoryTreeListener(this, directoryToMonitor.directoryFile, null);
                         directoryToMonitor.isListening = true;
                     }
-
                 }
             }
 
@@ -342,15 +424,18 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends FilesInt
                 /*
                  * No match so add this catalog target.
                  */
-                DirectoryToMonitor directoryToMonitor = new DirectoryToMonitor();
+                try
+                {
+                    DirectoryToMonitor directoryToMonitor = checkDirectoryToMonitor(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME + ":" + catalogTarget.getRelationshipGUID(),
+                                                                                    fileFolderElement.getFileFolderProperties().getPathName(),
+                                                                                    catalogTarget.getRelationshipGUID());
 
-                directoryToMonitor.sourceName = OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME + ":" + catalogTarget.getRelationshipGUID();
-                directoryToMonitor.directoryFile = pathFile;
-                directoryToMonitor.directoryName = pathFile.getName();
-                directoryToMonitor.dataFolderElement = fileFolderElement;
-                directoryToMonitor.catalogTargetGUID = catalogTarget.getRelationshipGUID();
-
-                directoriesToMonitor.add(directoryToMonitor);
+                    directoriesToMonitor.add(directoryToMonitor);
+                }
+                catch (ConnectorCheckedException exception)
+                {
+                    // Skip directory for now
+                }
             }
         }
     }

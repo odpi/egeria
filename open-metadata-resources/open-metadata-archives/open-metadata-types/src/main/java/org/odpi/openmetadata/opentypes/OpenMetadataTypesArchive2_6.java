@@ -1057,8 +1057,8 @@ public class OpenMetadataTypesArchive2_6
         final String attribute4Name            = "waitTime";
         final String attribute4Description     = "The minimum number of minutes that the governance engine should wait before calling the governance service.";
         final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "producedGuards";
-        final String attribute5Description     = "List of guards that this action type produces.";
+        final String attribute5Name            = "supportedGuards";
+        final String attribute5Description     = "List of guards that this action type supports.";
         final String attribute5DescriptionGUID = null;
 
         property = archiveHelper.getIntTypeDefAttribute(attribute1Name,

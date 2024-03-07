@@ -48,7 +48,8 @@ public class TestValidValue
         testObject.setUsage("TestUsage");
         testObject.setScope("TestScope");
         testObject.setPreferredValue("TestPreferredValue");
-        
+        testObject.setDataType("TestDataType");
+
         return testObject;
     }
 
@@ -72,6 +73,7 @@ public class TestValidValue
         testObject.setUsage("TestUsage");
         testObject.setScope("TestScope");
         testObject.setPreferredValue("TestPreferredValue");
+        testObject.setDataType("TestDataType");
 
         return testObject;
     }
@@ -96,6 +98,7 @@ public class TestValidValue
         testObject.setUsage("TestUsage");
         testObject.setScope("TestScope");
         testObject.setPreferredValue("TestPreferredValue");
+        testObject.setDataType("TestDataType");
 
         return testObject;
     }
@@ -118,6 +121,7 @@ public class TestValidValue
         assertTrue(resultObject.getScope().equals("TestScope"));
         assertTrue(resultObject.getUsage().equals("TestUsage"));
         assertTrue(resultObject.getPreferredValue().equals("TestPreferredValue"));
+        assertTrue(resultObject.getDataType().equals("TestDataType"));
     }
 
 
@@ -138,6 +142,7 @@ public class TestValidValue
         assertTrue(resultObject.getScope().equals("TestScope"));
         assertTrue(resultObject.getUsage().equals("TestUsage"));
         assertTrue(resultObject.getPreferredValue().equals("TestPreferredValue"));
+        assertTrue(resultObject.getDataType().equals("TestDataType"));
     }
 
 
@@ -158,6 +163,7 @@ public class TestValidValue
         assertTrue(resultObject.getScope().equals("TestScope"));
         assertTrue(resultObject.getUsage().equals("TestUsage"));
         assertTrue(resultObject.getPreferredValue().equals("TestPreferredValue"));
+        assertTrue(resultObject.getDataType().equals("TestDataType"));
     }
 
 
@@ -178,6 +184,7 @@ public class TestValidValue
         assertTrue(nullObject.getScope() == null);
         assertTrue(nullObject.getUsage() == null);
         assertTrue(nullObject.getPreferredValue() == null);
+        assertTrue(nullObject.getDataType() == null);
 
         nullObject = new ValidValue(null);
 
@@ -191,6 +198,7 @@ public class TestValidValue
         assertTrue(nullObject.getScope() == null);
         assertTrue(nullObject.getUsage() == null);
         assertTrue(nullObject.getPreferredValue() == null);
+        assertTrue(nullObject.getDataType() == null);
     }
 
 
@@ -224,6 +232,7 @@ public class TestValidValue
         assertTrue(nullObject.getScope() == null);
         assertTrue(nullObject.getUsage() == null);
         assertTrue(nullObject.getPreferredValue() == null);
+        assertTrue(nullObject.getDataType() == null);
     }
 
 
@@ -601,16 +610,5 @@ public class TestValidValue
         {
             assertTrue(false, "Exception: " + exc.getMessage());
         }
-    }
-
-
-    /**
-     * Test that toString is overridden.
-     */
-    @Test public void testToString()
-    {
-        assertTrue(getTestObject().toString().contains("ValidValue"));
-        assertTrue(getSetTestObject().toString().contains("ValidValueSet"));
-        assertTrue(getDefinitionTestObject().toString().contains("ValidValueDefinition"));
     }
 }

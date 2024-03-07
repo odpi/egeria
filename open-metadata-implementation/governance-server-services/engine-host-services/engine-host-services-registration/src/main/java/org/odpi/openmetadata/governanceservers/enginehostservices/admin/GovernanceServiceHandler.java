@@ -121,8 +121,16 @@ public abstract class GovernanceServiceHandler implements Runnable
 
     /**
      * If the service request has a start time in the future, wait for the start time.
+     * Once the service is ready to run, its status is updated to IN_PROGRESS,
+     *
+     * @param serverUserId userId for this server
+     * @throws InvalidParameterException error updating engine action status
+     * @throws PropertyServerException error updating engine action status
+     * @throws UserNotAuthorizedException error updating engine action status
      */
-    protected void waitForStartDate()
+    protected void waitForStartDate(String serverUserId) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
     {
         Date now = new Date();
 
@@ -137,6 +145,11 @@ public abstract class GovernanceServiceHandler implements Runnable
                 now = new Date();
             }
         }
+
+        /*
+         * This update indicates that the service has now started running.
+         */
+        engineActionClient.updateEngineActionStatus(serverUserId, engineActionGUID, EngineActionStatus.IN_PROGRESS);
     }
 
 

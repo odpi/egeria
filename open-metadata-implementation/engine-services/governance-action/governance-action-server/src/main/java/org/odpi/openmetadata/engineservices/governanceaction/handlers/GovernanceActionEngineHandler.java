@@ -104,6 +104,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException access permissions problem
      * @throws PropertyServerException there was a problem detected by the governance action engine.
      */
     @Override
@@ -113,6 +114,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
                                      Map<String, String>        requestParameters,
                                      List<RequestSourceElement> requestSourceElements,
                                      List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
         final String methodName = "runGovernanceService";

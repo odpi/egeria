@@ -5109,22 +5109,114 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
+     * Extract and delete the requiredRequestParameters property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return map of request parameters
+     */
+    protected Map<String, String> removeRequiredRequestParameters(ElementProperties elementProperties)
+
+    {
+        final String methodName = "removeRequiredRequestParameters";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringMapFromProperty(serviceName,
+                                                              OpenMetadataType.REQUIRED_REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                              elementProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the requiredActionTargets property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return map of action targets
+     */
+    protected Map<String, String> removeRequiredActionTargets(ElementProperties elementProperties)
+
+    {
+        final String methodName = "removeRequiredActionTargets";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringMapFromProperty(serviceName,
+                                                              OpenMetadataType.REQUIRED_ACTION_TARGETS_PROPERTY_NAME,
+                                                              elementProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the producedRequestParameters property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return map of request params
+     */
+    protected Map<String, String> removeProducedRequestParameters(ElementProperties elementProperties)
+
+    {
+        final String methodName = "removeProducedRequestParameters";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringMapFromProperty(serviceName,
+                                                              OpenMetadataType.PRODUCED_REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                              elementProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the producedActionTargets property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return map of action targets
+     */
+    protected Map<String, String> removeProducedActionTargets(ElementProperties elementProperties)
+
+    {
+        final String methodName = "removeProducedActionTargets";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringMapFromProperty(serviceName,
+                                                              OpenMetadataType.PRODUCED_ACTION_TARGETS_PROPERTY_NAME,
+                                                              elementProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the producedGuards property from the supplied element properties.
      *
      * @param elementProperties properties from element
-     * @return array of guards
+     * @return map of guards
      */
-    protected List<String> removeProducedGuards(ElementProperties elementProperties)
+    protected Map<String, String> removeProducedGuards(ElementProperties elementProperties)
 
     {
         final String methodName = "removeProducedGuards";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeStringArrayProperty(serviceName,
-                                                            OpenMetadataType.PRODUCED_GUARDS_PROPERTY_NAME,
-                                                            elementProperties,
-                                                            methodName);
+            return propertyHelper.removeStringMapFromProperty(serviceName,
+                                                              OpenMetadataType.PRODUCED_GUARDS_PROPERTY_NAME,
+                                                              elementProperties,
+                                                              methodName);
         }
 
         return null;

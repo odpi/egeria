@@ -3,6 +3,11 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
+plugins {
+    id 'application'
+    id "com.github.johnrengelman.shadow"
+}
+
 // Artifact names are taken from the directory by default, set in settings.gradle to override
 // The 'name' for the maven artifact, and description are set here
 description = 'JDBC Resource Connector for Egeria'
@@ -14,9 +19,14 @@ dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
-    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
-    testImplementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    testCompileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    testCompileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
     testImplementation project(':open-metadata-test:open-metadata-ut')
     testImplementation 'org.testng:testng'
+}
+
+shadowJar {
+    mainClassName = ''
+    archiveClassifier = 'jar-with-dependencies'
 }
 

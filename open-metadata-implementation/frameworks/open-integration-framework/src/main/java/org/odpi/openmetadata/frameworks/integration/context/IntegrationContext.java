@@ -11,7 +11,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface;
@@ -43,6 +45,8 @@ public class IntegrationContext
     protected final String                   connectorName;
     protected final String                   integrationConnectorGUID;
     protected final PermittedSynchronization permittedSynchronization;
+
+    protected final FileClassifier           fileClassifier;
 
     private   final IntegrationGovernanceContext integrationGovernanceContext;
     protected final IntegrationReportWriter      integrationReportWriter;
@@ -94,7 +98,8 @@ public class IntegrationContext
         this.integrationConnectorGUID     = integrationConnectorGUID;
         this.maxPageSize                  = maxPageSize;
 
-        this.listenerManager = new FilesListenerManager(auditLog, connectorName);
+        this.fileClassifier               = new FileClassifier(new OpenMetadataStore(openMetadataStoreClient, userId));
+        this.listenerManager              = new FilesListenerManager(auditLog, connectorName);
 
         if (generateIntegrationReport)
         {
@@ -150,6 +155,17 @@ public class IntegrationContext
         }
 
         return null;
+    }
+
+
+    /**
+     * Return the file classifier that uses reference data to describe a file.
+     *
+     * @return file classifier utility
+     */
+    public FileClassifier getFileClassifier()
+    {
+        return fileClassifier;
     }
 
 

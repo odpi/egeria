@@ -3,10 +3,15 @@
 
 package org.odpi.openmetadata.adapters.connectors.apacheatlas.survey;
 
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.controls.AtlasAnnotationType;
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.controls.AtlasRequestParameter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,33 +38,14 @@ public class SurveyApacheAtlasProvider extends SurveyActionServiceProvider
      */
     private static final String connectorQualifiedName = "Egeria:SurveyActionService:SurveyApacheAtlas";
     private static final String connectorDisplayName   = "Apache Atlas Survey Action Service";
-    private static final String connectorDescription   = "Connector publishes insights about a deployment of Apache Atlas.";
-    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/survey-action/apache-atlas-survey-service/";
+    private static final String connectorDescription   = "Discovers the types and number of instances within an Apache Atlas server.";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/apache-atlas/apache-atlas-survey-action-service/";
 
     /*
      * Class of the connector.
      */
     private static final String connectorClassName     = "org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasConnector";
 
-    /**
-     * Property name to control how much profiling the discovery service does.
-     */
-    public static final String FINAL_ANALYSIS_STEP_PROPERTY_NAME = "finalAnalysisStep";
-
-    /**
-     * Set finalAnalysisStep to STATS to get the basic statistics from Apache Atlas
-     */
-    public static final String ANALYSIS_STEP_NAME_STATS = "STATS";
-
-    /**
-     * Set finalAnalysisStep to SCHEMA to get the basic statistics and schema extracted from Apache Atlas.
-     */
-    public static final String ANALYSIS_STEP_NAME_SCHEMA = "SCHEMA";
-
-    /**
-     * Set finalAnalysisStep to PROFILE to get the basic statistics, schema extracted and the instances from Apache Atlas profiled.
-     */
-    public static final String ANALYSIS_STEP_NAME_PROFILE = "PROFILE";
 
     /**
      * Constructor used to initialize the ConnectorProvider with the Java class name of the specific
@@ -87,10 +73,30 @@ public class SurveyApacheAtlasProvider extends SurveyActionServiceProvider
         connectorType.setSupportedAssetTypeName(SurveyActionServiceProvider.supportedAssetTypeName);
 
         List<String> recognizedConfigurationProperties = new ArrayList<>();
-        recognizedConfigurationProperties.add(FINAL_ANALYSIS_STEP_PROPERTY_NAME);
+        recognizedConfigurationProperties.add(AtlasRequestParameter.FINAL_ANALYSIS_STEP.getName());
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 
         super.connectorTypeBean = connectorType;
+
+        supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
+                AnalysisStep.MEASURE_RESOURCE,
+                AnalysisStep.SCHEMA_EXTRACTION,
+                AnalysisStep.PROFILE_DATA });
+
+        supportedAnnotationTypes = AtlasAnnotationType.getAnnotationTypeTypes();
+
+        supportedRequestParameters = AtlasRequestParameter.getRequestParameterTypes();
+
+        supportedActionTargetTypes = new ArrayList<>();
+        ActionTargetType actionTargetType = new ActionTargetType();
+
+        actionTargetType.setName("*");
+        actionTargetType.setDescription("Any Software Server entity that represents an Apache Atlas server linked to the connection for the Apache Atlas REST API connector.");
+        actionTargetType.setTypeName(DeployedImplementationType.APACHE_ATLAS.getAssociatedTypeName());
+        actionTargetType.setDeployedImplementationType(DeployedImplementationType.APACHE_ATLAS.getDeployedImplementationType());
+
+        super.supportedActionTargetTypes.add(actionTargetType);
+
 
         /*
          * Set up the component description used in the connector's audit log messages.

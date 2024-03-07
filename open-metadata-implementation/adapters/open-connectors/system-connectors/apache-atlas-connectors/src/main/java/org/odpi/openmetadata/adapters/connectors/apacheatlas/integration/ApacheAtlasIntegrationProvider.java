@@ -34,8 +34,8 @@ public class ApacheAtlasIntegrationProvider extends IntegrationConnectorProvider
      */
     private static final String connectorQualifiedName = "Egeria:IntegrationConnector:Catalog:ApacheAtlas";
     private static final String connectorDisplayName   = "Apache Atlas Integration Connector";
-    private static final String connectorDescription   = "Connector publishes active glossary terms to Apache Atlas.";
-    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/integration/apache-atlas-integration-connector/";
+    private static final String connectorDescription   = "Connector extracts data assets and glossary terms from Apache Atlas and, optionally copies governance metadata to Apache Atlas and attaches it to appropriate entities.";
+    private static final String connectorWikiPage      = "https://egeria-project.org/connectors/apache-atlas/apache-atlas-catalog-integration-connector/";
 
     /*
      * Class of the connector.
