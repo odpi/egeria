@@ -23,7 +23,6 @@ import java.util.Map;
  * ReferenceDataManager provides the API operations to create and maintain lists of valid
  * value definitions grouped into a valid value set.  Both valid value definitions and valid value sets have
  * the same attributes and so inherit from ValidValue where all the attributes are defined.
- *
  * A set is just grouping of valid values.   Valid value definitions and set can be nested many times in other
  * valid value sets.
  */
@@ -204,6 +203,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
      * @param description further information.
      * @param usage how/when should this value be used.
      * @param preferredValue the value that should be used in an implementation if possible.
+     * @param dataType the data type of the preferred value.
      * @param additionalProperties additional properties for this definition.
      * @param typeName name of subtype of the definition (or null to use the standard open type)
      * @param extendedProperties properties that need to be populated into a subtype (or null for the standard open type).
@@ -224,6 +224,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
                                               String              usage,
                                               String              scope,
                                               String              preferredValue,
+                                              String              dataType,
                                               Map<String, String> additionalProperties,
                                               String              typeName,
                                               Map<String, Object> extendedProperties) throws InvalidParameterException,
@@ -245,6 +246,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         requestBody.setUsage(usage);
         requestBody.setScope(scope);
         requestBody.setPreferredValue(preferredValue);
+        requestBody.setDataType(dataType);
         requestBody.setAdditionalProperties(additionalProperties);
         requestBody.setTypeName(typeName);
         requestBody.setExtendedProperties(extendedProperties);
@@ -274,6 +276,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
      * @param usage how/when should this value be used.
      * @param scope what is the scope of the values.
      * @param preferredValue the value that should be used in an implementation if possible.
+     * @param dataType the data type of the preferred value.
      * @param isDeprecated is this value deprecated?
      * @param additionalProperties additional properties for this valid value.
      * @param isMergeUpdate should the new properties be merged with existing properties (true) or completely replace them (false)?
@@ -293,6 +296,7 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
                                     String              usage,
                                     String              scope,
                                     String              preferredValue,
+                                    String              dataType,
                                     boolean             isDeprecated,
                                     Map<String, String> additionalProperties,
                                     boolean             isMergeUpdate,
@@ -318,8 +322,10 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
         requestBody.setUsage(usage);
         requestBody.setScope(scope);
         requestBody.setPreferredValue(preferredValue);
+        requestBody.setDataType(dataType);
         requestBody.setIsDeprecated(isDeprecated);
         requestBody.setAdditionalProperties(additionalProperties);
+        requestBody.setTypeName(typeName);
         requestBody.setExtendedProperties(extendedProperties);
 
         restClient.callVoidPostRESTCall(methodName,

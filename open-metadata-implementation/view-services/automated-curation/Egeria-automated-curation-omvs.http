@@ -483,14 +483,14 @@ Content-Type: application/json
 
 ###
 # @name initiateGovernanceActionType
-# Using the named governance action process as a template, initiate a chain of engine actions.
+# Using the named governance action type as a template, initiate a single engine action.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/initiate
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
     "class" : "InitiateGovernanceActionTypeRequestBody",
-    "governanceActionTypeQualifiedName": "Egeria:GovernanceActionType:2adeb8f1-0f59-4970-b6f2-6cc25d4d2402survey-folder",
+    "governanceActionTypeQualifiedName": "Egeria:GovernanceActionProcessStep:2adeb8f1-0f59-4970-b6f2-6cc25d4d2402survey-folder",
     "actionTargets": [
       {
           "class" : "NewActionTarget",
@@ -556,6 +556,13 @@ Content-Type: application/json
 # @name getEngineAction
 # Request the status and properties of an engine action request.
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/engine-actions/{{engineActionGUID}}
+Authorization: Bearer {{token}}
+
+
+###
+# @name cancelEngineAction
+# Request that an engine action request is cancelled and any running governance service is stopped.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/engine-actions/{{engineActionGUID}}/cancel
 Authorization: Bearer {{token}}
 
 

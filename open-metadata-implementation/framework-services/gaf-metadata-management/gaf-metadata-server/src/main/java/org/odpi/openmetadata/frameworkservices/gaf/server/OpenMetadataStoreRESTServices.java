@@ -2208,71 +2208,6 @@ public class OpenMetadataStoreRESTServices
 
 
     /**
-     * Create an incident report to capture the situation detected by this governance action service.
-     * This incident report will be processed by other governance activities.
-     *
-     * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param userId caller's userId
-     * @param requestBody properties for the new incident report
-     *
-     * @return unique identifier of the resulting incident report or
-     *  InvalidParameterException null or non-unique qualified name for the incident report
-     *  UserNotAuthorizedException this governance action service is not authorized to create an incident report
-     *  PropertyServerException there is a problem with the metadata store
-     */
-    public GUIDResponse createIncidentReport(String                    serverName,
-                                             String                    serviceURLMarker,
-                                             String                    userId,
-                                             IncidentReportRequestBody requestBody)
-    {
-        final String methodName = "createIncidentReport";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        AuditLog auditLog = null;
-        GUIDResponse response = new GUIDResponse();
-
-        // todo
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Create a To-Do request for someone to work on.
-     *
-     * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param userId caller's userId
-     * @param requestBody unique name for the to do and other characteristics
-     *
-     * @return unique identifier of new to do element or
-     * InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
-     * UserNotAuthorizedException the governance action service is not authorized to create a to-do
-     * PropertyServerException there is a problem connecting to (or inside) the metadata store
-     */
-    public GUIDResponse openToDo(String          serverName,
-                                 String          serviceURLMarker,
-                                 String          userId,
-                                 ToDoRequestBody requestBody)
-    {
-        final String methodName = "openToDo";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        AuditLog auditLog = null;
-        GUIDResponse response = new GUIDResponse();
-
-        // todo
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
      * Create or update the translation for a particular language/locale for a metadata element.
      *
      * @param serverName     name of server instance to route request to
@@ -2488,6 +2423,7 @@ public class OpenMetadataStoreRESTServices
                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                             null,
+                                            null,
                                             false,
                                             false,
                                             null,
@@ -2633,6 +2569,7 @@ public class OpenMetadataStoreRESTServices
                                          OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
                                          OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                          requestBody.getPreferredValue(),
+                                         requestBody.getDataType(),
                                          requestBody.getIsDeprecated(),
                                          requestBody.getIsCaseSensitive(),
                                          requestBody.getAdditionalProperties(),
@@ -2721,6 +2658,7 @@ public class OpenMetadataStoreRESTServices
                                          OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
                                          OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                          requestBody.getPreferredValue(),
+                                         "string",
                                          requestBody.getIsDeprecated(),
                                          requestBody.getIsCaseSensitive(),
                                          requestBody.getAdditionalProperties(),
@@ -2812,6 +2750,7 @@ public class OpenMetadataStoreRESTServices
                                          OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
                                          OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                          requestBody.getPreferredValue(),
+                                         null,
                                          requestBody.getIsDeprecated(),
                                          requestBody.getIsCaseSensitive(),
                                          requestBody.getAdditionalProperties(),

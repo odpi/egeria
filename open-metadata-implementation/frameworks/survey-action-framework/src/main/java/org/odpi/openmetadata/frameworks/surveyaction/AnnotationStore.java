@@ -713,6 +713,28 @@ public class AnnotationStore
                     }
                 }
 
+                if (builder.getRequestForActionTargetGUIDs() != null)
+                {
+                    for (String requestForActionTargetGUID : builder.getRequestForActionTargetGUIDs())
+                    {
+                        if (requestForActionTargetGUID != null)
+                        {
+                            openMetadataStore.createRelatedElementsInStore(userId,
+                                                                           externalSourceGUID,
+                                                                           externalSourceName,
+                                                                           OpenMetadataType.REQUEST_FOR_ACTION_TARGET.typeName,
+                                                                           annotationGUID,
+                                                                           requestForActionTargetGUID,
+                                                                           forLineage,
+                                                                           forDuplicateProcessing,
+                                                                           null,
+                                                                           null,
+                                                                           null,
+                                                                           this.getEffectiveTime());
+                        }
+                    }
+                }
+
                 if  (associatedElementGUID != null)
                 {
                     openMetadataStore.createRelatedElementsInStore(userId,
@@ -920,7 +942,8 @@ public class AnnotationStore
                 builder.setRequestForActionSubtypeProperties(OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.typeName,
                                                              requestForActionAnnotation.getSurveyActivity(),
                                                              requestForActionAnnotation.getActionRequested(),
-                                                             requestForActionAnnotation.getActionProperties());
+                                                             requestForActionAnnotation.getActionProperties(),
+                                                             requestForActionAnnotation.getActionTargetGUIDs());
             }
             else if (annotation instanceof SchemaAnalysisAnnotation schemaAnalysisAnnotation)
             {
@@ -1133,6 +1156,7 @@ public class AnnotationStore
         private String surveyActivity  = null;
         private String actionRequested = null;
         private Map<String, String> actionProperties  = null;
+        private List<String> requestForActionTargetGUIDs = null;
 
         /*
          * Attributes for the SchemaAnalysisAnnotation
@@ -1433,16 +1457,30 @@ public class AnnotationStore
         void setRequestForActionSubtypeProperties(String              annotationTypeName,
                                                   String              surveyActivity,
                                                   String              actionRequested,
-                                                  Map<String, String> actionProperties)
+                                                  Map<String, String> actionProperties,
+                                                  List<String>        requestForActionTargetGUIDs)
         {
             if (this.openMetadataTypeName == null)
             {
                 this.openMetadataTypeName = annotationTypeName;
             }
-            this.surveyActivity     = surveyActivity;
-            this.actionRequested    = actionRequested;
-            this.actionProperties   = actionProperties;
+            this.surveyActivity              = surveyActivity;
+            this.actionRequested             = actionRequested;
+            this.actionProperties            = actionProperties;
+            this.requestForActionTargetGUIDs = requestForActionTargetGUIDs;
         }
+
+
+        /**
+         * Return the elements that need action.
+         *
+         * @return list of guids
+         */
+        public List<String> getRequestForActionTargetGUIDs()
+        {
+            return requestForActionTargetGUIDs;
+        }
+
 
 
         /**
@@ -2379,6 +2417,28 @@ public class AnnotationStore
                  */
                 annotation.setExtendedProperties(this.getRemainingExtendedProperties(remainingProperties));
 
+                List<String> actionTargetGUIDS = new ArrayList<>();
+
+                if (relationships != null)
+                {
+                    for (RelatedMetadataElement relationship : relationships)
+                    {
+                        if (relationship != null)
+                        {
+                            if (propertyHelper.isTypeOf(relationship, OpenMetadataType.REQUEST_FOR_ACTION_TARGET.typeName))
+                            {
+                                OpenMetadataElement logFile = relationship.getElement();
+
+                                if (logFile != null)
+                                {
+                                    actionTargetGUIDS.add(logFile.getElementGUID());
+                                }
+                            }
+                        }
+                    }
+                }
+
+                annotation.setActionTargetGUIDs(actionTargetGUIDS);
                 return annotation;
             }
             catch (ClassCastException error)

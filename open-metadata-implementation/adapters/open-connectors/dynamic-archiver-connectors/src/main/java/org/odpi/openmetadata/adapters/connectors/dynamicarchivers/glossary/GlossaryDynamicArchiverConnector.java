@@ -41,7 +41,7 @@ public class GlossaryDynamicArchiverConnector extends DynamicArchiveService
          */
         if (configurationProperties != null)
         {
-            Object glossaryNameOption = configurationProperties.get(GlossaryDynamicArchiverProvider.GLOSSARY_NAME_PROPERTY);
+            Object glossaryNameOption = configurationProperties.get(DynamicGlossaryArchiveRequestParameter.GLOSSARY_NAME.getName());
 
             if (glossaryNameOption != null)
             {

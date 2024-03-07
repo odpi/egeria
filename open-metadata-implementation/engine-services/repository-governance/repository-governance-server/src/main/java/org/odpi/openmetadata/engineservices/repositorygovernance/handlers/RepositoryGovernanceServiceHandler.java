@@ -111,13 +111,13 @@ public class RepositoryGovernanceServiceHandler extends GovernanceServiceHandler
 
         try
         {
-            super.waitForStartDate();
+            super.waitForStartDate(engineHostUserId);
 
             auditLog.logMessage(actionDescription,
                                 RepositoryGovernanceAuditCode.REPOSITORY_GOVERNANCE_SERVICE_STARTING.getMessageDefinition(governanceServiceName,
                                                                                                                           serviceRequestType,
-                                                                                                      governanceEngineProperties.getQualifiedName(),
-                                                                                                      governanceEngineGUID));
+                                                                                                                          governanceEngineProperties.getQualifiedName(),
+                                                                                                                          governanceEngineGUID));
 
 
 

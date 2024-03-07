@@ -75,7 +75,7 @@ public enum EngineServiceDescription
                       "event-action",
                       "Executes requested event action services to monitor, assess and maintain context events.",
                       "https://egeria-project.org/services/omes/event-action/overview/",
-                      AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceDescription(),
+                      AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName(),
                       DeployedImplementationType.EVENT_ACTION_ENGINE.getAssociatedTypeName(),
                       DeployedImplementationType.EVENT_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
                       DeployedImplementationType.EVENT_ACTION_ENGINE.getDeployedImplementationType(),

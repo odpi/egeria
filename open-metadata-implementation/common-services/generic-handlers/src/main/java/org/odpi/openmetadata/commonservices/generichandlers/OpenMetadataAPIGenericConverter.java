@@ -5604,22 +5604,115 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract and delete the requiredRequestParameters property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return map of request params
+     */
+    protected Map<String, String> removeRequiredRequestParameters(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeRequiredRequestParameters";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringMapFromProperty(serviceName,
+                                                                OpenMetadataType.REQUIRED_REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                                instanceProperties,
+                                                                methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the requiredActionTargets property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return map of action targets
+     */
+    protected Map<String, String> removeRequiredActionTargets(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeRequiredActionTargets";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringMapFromProperty(serviceName,
+                                                                OpenMetadataType.REQUIRED_ACTION_TARGETS_PROPERTY_NAME,
+                                                                instanceProperties,
+                                                                methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract and delete the producedRequestParameters property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return map of request params
+     */
+    protected Map<String, String> removeProducedRequestParameters(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeProducedRequestParameters";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringMapFromProperty(serviceName,
+                                                                OpenMetadataType.PRODUCED_REQUEST_PARAMETERS_PROPERTY_NAME,
+                                                                instanceProperties,
+                                                                methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the producedActionTargets property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return map of targets
+     */
+    protected Map<String, String> removeProducedActionTargets(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeProducedActionTargets";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringMapFromProperty(serviceName,
+                                                                OpenMetadataType.PRODUCED_ACTION_TARGETS_PROPERTY_NAME,
+                                                                instanceProperties,
+                                                                methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the producedGuards property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
-     * @return list of guards
+     * @return map of guards
      */
-    protected List<String> removeProducedGuards(InstanceProperties instanceProperties)
+    protected Map<String, String> removeProducedGuards(InstanceProperties instanceProperties)
 
     {
         final String methodName = "removeProducedGuards";
 
         if (instanceProperties != null)
         {
-            return repositoryHelper.removeStringArrayProperty(serviceName,
-                                                              OpenMetadataType.PRODUCED_GUARDS_PROPERTY_NAME,
-                                                              instanceProperties,
-                                                              methodName);
+            return repositoryHelper.removeStringMapFromProperty(serviceName,
+                                                                OpenMetadataType.PRODUCED_GUARDS_PROPERTY_NAME,
+                                                                instanceProperties,
+                                                                methodName);
         }
 
         return null;

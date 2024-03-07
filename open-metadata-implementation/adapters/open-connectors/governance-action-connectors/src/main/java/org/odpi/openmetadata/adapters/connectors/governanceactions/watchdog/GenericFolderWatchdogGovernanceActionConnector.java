@@ -8,8 +8,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.events.*;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
@@ -49,7 +49,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
          */
         if (configurationProperties != null)
         {
-            Object folderNameOption = configurationProperties.get(GenericFolderWatchdogGovernanceActionProvider.FOLDER_NAME_PROPERTY);
+            Object folderNameOption = configurationProperties.get(GenericFolderRequestParameter.FOLDER_NAME.getName());
 
             if (folderNameOption != null)
             {
@@ -71,7 +71,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                     /*
                      * The process names and interesting type name will be processed in the super class start method (see getProperty() method).
                      */
-                    if (GenericFolderWatchdogGovernanceActionProvider.FOLDER_NAME_PROPERTY.equals(requestParameterName))
+                    if (GenericFolderRequestParameter.FOLDER_NAME.getName().equals(requestParameterName))
                     {
                         folderName = requestParameters.get(requestParameterName);
                     }
@@ -231,9 +231,13 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                 try
                 {
                     List<String> outputGuards = new ArrayList<>();
-                    outputGuards.add(GenericWatchdogGovernanceActionProvider.MONITORING_FAILED);
+                    outputGuards.add(GenericWatchdogGuard.MONITORING_FAILED.getName());
 
-                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards, null, null, error.getMessage());
+                    governanceContext.recordCompletionStatus(GenericWatchdogGuard.MONITORING_FAILED.getCompletionStatus(),
+                                                             outputGuards,
+                                                             null,
+                                                             null,
+                                                             error.getMessage());
                 }
                 catch (Exception completionError)
                 {
@@ -253,9 +257,9 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                 try
                 {
                     List<String> outputGuards = new ArrayList<>();
-                    outputGuards.add(GenericWatchdogGovernanceActionProvider.MONITORING_STOPPED);
+                    outputGuards.add(GenericWatchdogGuard.MONITORING_STOPPED.getName());
 
-                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards, null, null, null);
+                    governanceContext.recordCompletionStatus(GenericWatchdogGuard.MONITORING_STOPPED.getCompletionStatus(), outputGuards, null, null, null);
                 }
                 catch (Exception error)
                 {
@@ -291,7 +295,10 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
             return true;
         }
 
-        String fullPathName = propertyHelper.getStringProperty(governanceServiceName, "pathName", elementProperties, methodName);
+        String fullPathName = propertyHelper.getStringProperty(governanceServiceName,
+                                                               OpenMetadataProperty.PATH_NAME.name,
+                                                               elementProperties,
+                                                               methodName);
 
         if (fullPathName == null)
         {
@@ -306,14 +313,14 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
             return false;
         }
 
-        if (GenericFolderWatchdogGovernanceActionProvider.NESTED_REQUEST_TYPE.equals(governanceContext.getRequestType()))
+        if (GenericFolderRequestType.NESTED_REQUEST_TYPE.getRequestType().equals(governanceContext.getRequestType()))
         {
             /*
              * The file may be in any subdirectory under the monitored folder.
              */
             return true;
         }
-        else if (GenericFolderWatchdogGovernanceActionProvider.DIRECT_REQUEST_TYPE.equals(governanceContext.getRequestType()))
+        else if (GenericFolderRequestType.DIRECT_REQUEST_TYPE.getRequestType().equals(governanceContext.getRequestType()))
         {
             /*
              * Only looking for files directly in the requested folder. Note: this does not work with MS files.
@@ -342,9 +349,9 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
     {
         try
         {
-            String parentFolderGUID = getFolderGUID(fileGUID, "NestedFile");
+            String parentFolderGUID = getFolderGUID(fileGUID, OpenMetadataType.NESTED_FILE_TYPE_NAME);
 
-            if (GenericFolderWatchdogGovernanceActionProvider.DIRECT_REQUEST_TYPE.equals(governanceContext.getRequestType()))
+            if (GenericFolderRequestType.DIRECT_REQUEST_TYPE.getRequestType().equals(governanceContext.getRequestType()))
             {
                 /*
                  * Only looking for files directly in the requested folder.
@@ -366,7 +373,7 @@ public class GenericFolderWatchdogGovernanceActionConnector extends GenericWatch
                         return true;
                     }
 
-                    parentFolderGUID = getFolderGUID(parentFolderGUID, "FolderHierarchy");
+                    parentFolderGUID = getFolderGUID(parentFolderGUID, OpenMetadataType.FOLDER_HIERARCHY_TYPE_NAME);
                 }
             }
 

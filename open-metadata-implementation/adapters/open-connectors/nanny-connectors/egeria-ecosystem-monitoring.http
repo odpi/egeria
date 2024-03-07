@@ -1,0 +1,159 @@
+# A Nanny Demo
+
+@nannyURL=https://localhost:9446
+@adminUserId=garygeeke
+@user=garygeeke
+@kafkaep=localhost:9092
+@max_page_size=100
+
+@baseURL=https://localhost:9443
+@ecosystemMonitor=ecosystem-monitor
+@nannyAuditLogTopic=egeriaAuditlogs
+@nannyDB=jdbc:postgresql://wolfsonnet.me:5432/observations_base
+
+@ecosystemServer=active-metadata-store
+@glossaryGUID=xxx
+@glossaryTermGUID=xxx
+
+
+###
+# group: Configure ecosystem-monitor
+# @name Set max page size
+# Set up the maximum number of results that can be returned on an open metadata request.
+POST {{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ecosystemMonitor}}/max-page-size?
+    limit={{max_page_size}}
+
+###
+# group: Configure ecosystem-monitor
+# @name Set local server user Id
+# Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
+POST {{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ecosystemMonitor}}/server-user-id?
+    id=ecosystemmonitornpa
+
+###
+# group: Configure ecosystem-monitor
+# @name Configure the LoadObservationsByEgeria and DistributeAuditLogEvents integration connectors
+# Add details of the metadata server to call and the connectors to run.
+POST {{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ecosystemMonitor}}/integration-services/catalog-integrator
+Content-Type: application/json
+
+{
+    "class": "IntegrationServiceRequestBody",
+    "omagserverPlatformRootURL": "{{baseURL}}",
+    "omagserverName": "{{ecosystemServer}}",
+    "integrationConnectorConfigs": [
+        {
+            "class": "IntegrationConnectorConfig",
+            "connectorName": "LoadObservationsByEgeria",
+            "connectorUserId": "loadobnpa",
+            "connection": {
+                "class": "Connection",
+                "connectorType": {
+                    "class": "ConnectorType",
+                    "connectorProviderClassName": "org.odpi.openmetadata.adapters.connectors.nannyconnectors.loadobservations.LoadObservationsByEgeriaProvider"
+                },
+                "endpoint": {
+                    "class": "Endpoint",
+                    "address": "{{nannyDB}}"
+                },
+                "userId" : "pdr",
+                "clearPassword" : "pdr4egeria",
+                "configurationProperties" : {
+                    "jdbcDriverManagerClass" : "org.postgresql.Driver",
+                    "jdbcConnectionTimeout" : "10",
+                    "jdbcDatabaseName" : "ObservationsByEgeria"
+                }
+            },
+            "refreshTimeInterval": "10",
+            "usesBlockingCalls": "false",
+            "permittedSynchronization": "TO_THIRD_PARTY"
+        },
+        {
+            "class": "IntegrationConnectorConfig",
+            "connectorName": "DistributeAuditLogEvents",
+            "connectorUserId": "distaauditnpa",
+            "connection": {
+                "class": "VirtualConnection",
+                "connectorType": {
+                    "class": "ConnectorType",
+                    "connectorProviderClassName": "org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.DistributeAuditEventsFromKafkaProvider"
+                },
+                "embeddedConnections": [
+                    {
+                        "class": "EmbeddedConnection",
+                        "embeddedConnection": {
+                            "class": "Connection",
+                            "connectorType": {
+                                "class": "ConnectorType",
+                                "connectorProviderClassName": "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider"
+                            },
+                            "endpoint": {
+                                "class": "Endpoint",
+                                "address": "egeria.omag.egeriaAuditLogs"
+                            },
+                            "configurationProperties": {
+                                "producer": {
+                                    "bootstrap.servers": "localhost:9092"
+                                },
+                                "local.server.id": "{{ecosystemMonitor}}",
+                                "consumer": {
+                                    "bootstrap.servers": "localhost:9092"
+                                },
+                                "eventDirection": "inOut"
+                            }
+                        }
+                    },
+                    {
+                        "class": "EmbeddedConnection",
+                        "embeddedConnection": {
+                            "class": "Connection",
+                            "connectorType": {
+                                "class": "ConnectorType",
+                                "connectorProviderClassName": "org.odpi.openmetadata.adapters.connectors.nannyconnectors.loadaudit.JDBCAuditLogDestinationProvider"
+                            },
+                            "endpoint": {
+                                "class": "Endpoint",
+                                "address": "{{nannyDB}}"
+                            },
+                            "userId" : "pdr",
+                            "clearPassword" : "pdr4egeria",
+                            "configurationProperties" : {
+                                "jdbcDriverManagerClassName" : "org.postgresql.Driver",
+                                "jdbcConnectionTimeout" : "10",
+                                "jdbcDatabaseName" : "ObservationsByEgeria"
+                            }
+                        }
+                    }
+                ]
+            },
+            "refreshTimeInterval": "2000",
+            "usesBlockingCalls": "false",
+            "permittedSynchronization": "TO_THIRD_PARTY"
+        }
+    ]
+}
+
+###
+# group: Configure ecosystem-monitor
+# @name Get ecosystem-monitor's configuration document
+# Retrieve the configuration document for the named server.
+GET {{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ecosystemMonitor}}/configuration
+
+###
+# group: Start Nanny Servers
+# @name Start ecosystem-monitor server
+# Activate a server on the OMAG Server Platform.  Use the configuration document found in the configuration document store.
+POST {{nannyURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{ecosystemMonitor}}/instance
+
+###
+# group: Check Status for Nanny Servers
+# @name Get ecosystem-monitor status
+# Retrieves the status of the connectors running in the Integration Daemon
+GET {{nannyURL}}/servers/{{ecosystemMonitor}}/open-metadata/integration-daemon/users/{{user}}/status
+
+###
+# group: Check Status for Nanny Servers
+# @name Refresh Ecosystem Monitor connectors
+# Restarts the requested Integration Service
+POST {{nannyURL}}/servers/{{ecosystemMonitor}}/open-metadata/integration-daemon/users/{{user}}/integration-services/catalog-integrator/refresh
+

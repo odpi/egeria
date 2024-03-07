@@ -5443,7 +5443,7 @@ public class SimpleCatalogArchiveHelper
     /**
      * Add a valid value definition/set.
      *
-     * @param suppliedValidValueGUID optional unique identifier for the type
+     * @param suppliedValidValueGUID optional unique identifier for the valid value instance
      * @param setGUID unique identifier of parent set
      * @param anchorGUID unique identifier of the anchor (or null)
      * @param anchorTypeName unique name of type of anchor (or null)
@@ -5719,22 +5719,55 @@ public class SimpleCatalogArchiveHelper
                                                         String stewardPropertyName,
                                                         String notes)
     {
-        final String methodName = "addReferenceValueAssignmentRelationship";
-
         String referenceableId = idToGUIDMap.getGUID(referenceableQName);
         String validValueId = idToGUIDMap.getGUID(validValueQName);
 
-        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(referenceableId));
-        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(validValueId));
+        addReferenceValueAssignmentRelationship(referenceableId,
+                                                validValueId,
+                                                null,
+                                                confidence,
+                                                steward,
+                                                stewardTypeName,
+                                                stewardPropertyName,
+                                                notes);
+    }
+
+
+    /**
+     * Link a referenceable element to a valid value that is acting as a tag.
+     *
+     * @param referenceableGUID unique identifier of referenceable
+     * @param validValueGUID unique identifier of valid value
+     * @param attributeName name of associated attribute
+     * @param confidence how likely is the relationship correct - 0=unlikely; 100=certainty
+     * @param steward who was the steward that made the link
+     * @param stewardTypeName what is the type of the element used to represent the steward?
+     * @param stewardPropertyName what is the name of the property used to represent the steward?
+     * @param notes any notes on the relationship.
+     */
+    public void addReferenceValueAssignmentRelationship(String referenceableGUID,
+                                                        String validValueGUID,
+                                                        String attributeName,
+                                                        int    confidence,
+                                                        String steward,
+                                                        String stewardTypeName,
+                                                        String stewardPropertyName,
+                                                        String notes)
+    {
+        final String methodName = "addReferenceValueAssignmentRelationship";
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(referenceableGUID));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(validValueGUID));
 
         InstanceProperties properties = archiveHelper.addIntPropertyToInstance(archiveRootName, null, OpenMetadataType.CONFIDENCE_PROPERTY_NAME, confidence, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.ATTRIBUTE_NAME_PROPERTY_NAME, attributeName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.STEWARD_PROPERTY_NAME, steward, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME, stewardTypeName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME, stewardPropertyName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.NOTES_PROPERTY_NAME, notes, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
-                                                                     idToGUIDMap.getGUID(referenceableId + "_to_" + validValueId + "_reference_value_assignment_relationship"),
+                                                                     idToGUIDMap.getGUID(referenceableGUID + "_to_" + validValueGUID + "_reference_value_assignment_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,

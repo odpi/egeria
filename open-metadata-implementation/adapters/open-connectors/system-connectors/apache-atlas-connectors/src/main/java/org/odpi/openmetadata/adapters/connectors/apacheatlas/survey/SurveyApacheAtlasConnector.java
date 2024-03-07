@@ -22,6 +22,9 @@ import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasStructDef;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasTypesDef;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.AtlasVersion;
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.controls.AtlasAnnotationType;
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.controls.AtlasMetric;
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.controls.AtlasRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.ffdc.AtlasSurveyAuditCode;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.ffdc.AtlasSurveyErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -42,9 +45,8 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.DataProfileAnnotation;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.DataSourceMeasurementAnnotation;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.SchemaAnalysisAnnotation;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,19 +72,8 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
      * is the last analysis step.  It can be changed through configuration properties or
      * analysis properties passed when this discovery service is called.
      */
-    private String finalAnalysisStep = SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_PROFILE;
+    private String finalAnalysisStep = AnalysisStep.PROFILE_DATA.getName();
 
-    private final static String measurementsAnnotationTypeName                  = "Apache Atlas Server Metrics";
-    private final static String schemaAnalysisAnnotationTypeName                = "Apache Atlas Type Analysis";
-    private final static String attachedEntityTypesAnnotationTypeName           = "Apache Atlas Attached Entity Types";
-    private final static String attachedClassificationTypesAnnotationTypeName   = "Apache Atlas Attached Classification Types";
-    private final static String attachedRelationshipTypesEnd1AnnotationTypeName = "Apache Atlas End 1 Attached Relationship Types";
-    private final static String attachedRelationshipTypesEnd2AnnotationTypeName = "Apache Atlas End 2 Attached Relationship Types";
-    private final static String attachedLabelsAnnotationTypeName                = "Apache Atlas Attached Labels";
-    private final static String attachedBusinessMetadataTypesAnnotationTypeName = "Apache Atlas Attached Business Metadata Types";
-    private final static String attachedEnd1EntityTypesAnnotationTypeName       = "Apache Atlas Attached End 1 Entity Types";
-    private final static String attachedEnd2EntityTypesAnnotationTypeName       = "Apache Atlas Attached End 2 Entity Types";
-    private final static String attachedPairedEntityTypesAnnotationTypeName     = "Apache Atlas Attached Entity Type Pairs";
 
     /**
      * Indicates that the discovery service is completely configured and can begin processing.
@@ -101,14 +92,14 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
         if (connectionProperties.getConfigurationProperties() != null)
         {
-            Object finalAnalysisStepPropertyObject = connectionProperties.getConfigurationProperties().get(SurveyApacheAtlasProvider.FINAL_ANALYSIS_STEP_PROPERTY_NAME);
+            Object finalAnalysisStepPropertyObject = connectionProperties.getConfigurationProperties().get(AtlasRequestParameter.FINAL_ANALYSIS_STEP.getName());
 
             if (finalAnalysisStepPropertyObject != null)
             {
                 String finalAnalysisProperty = finalAnalysisStepPropertyObject.toString();
 
-                if ((finalAnalysisProperty.equals(SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_STATS)) ||
-                    (finalAnalysisProperty.equals(SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_SCHEMA)))
+                if ((finalAnalysisProperty.equals(AnalysisStep.MEASURE_RESOURCE.getName())) ||
+                    (finalAnalysisProperty.equals(AnalysisStep.SCHEMA_EXTRACTION.getName())))
                 {
                     finalAnalysisStep = finalAnalysisProperty;
                 }
@@ -121,10 +112,10 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
          */
         if (surveyContext.getRequestParameters() != null)
         {
-            String finalAnalysisProperty = surveyContext.getRequestParameters().get(SurveyApacheAtlasProvider.FINAL_ANALYSIS_STEP_PROPERTY_NAME);
+            String finalAnalysisProperty = surveyContext.getRequestParameters().get(AtlasRequestParameter.FINAL_ANALYSIS_STEP.getName());
 
-            if ((finalAnalysisProperty.equals(SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_STATS)) ||
-                (finalAnalysisProperty.equals(SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_SCHEMA)))
+            if ((finalAnalysisProperty.equals(AnalysisStep.MEASURE_RESOURCE.getName())) ||
+                (finalAnalysisProperty.equals(AnalysisStep.SCHEMA_EXTRACTION.getName())))
             {
                 finalAnalysisStep = finalAnalysisProperty;
             }
@@ -134,6 +125,8 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
         {
             String           assetGUID  = surveyContext.getAssetGUID();
             SurveyAssetStore assetStore = surveyContext.getAssetStore();
+
+            surveyContext.getAnnotationStore().setAnalysisStep(AnalysisStep.CHECK_ASSET.getName());
 
             Connector connectorToAsset  = assetStore.getConnectorToAsset();
             AssetUniverse assetUniverse = assetStore.getAssetProperties();
@@ -146,7 +139,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                 /*
                  * The STATS analysis step gathers simple statistics from Apache Atlas
                  */
-                annotationStore.setAnalysisStep(SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_STATS);
+                annotationStore.setAnalysisStep(AnalysisStep.MEASURE_RESOURCE.getName());
 
                 AtlasVersion  atlasVersion = atlasConnector.getAtlasVersion();
                 AtlasMetrics  atlasMetrics = atlasConnector.getAtlasMetrics();
@@ -158,23 +151,21 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                     AtlasTypesDef       atlasTypes          = atlasConnector.getAllTypes();
 
                     DataSourceMeasurementAnnotation measurementAnnotation = new DataSourceMeasurementAnnotation();
-                    measurementAnnotation.setAnnotationType(measurementsAnnotationTypeName);
-                    measurementAnnotation.setAnalysisStep(SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_STATS);
-                    measurementAnnotation.setExplanation("Metrics maintained by the Apache Atlas server.");
+                    this.setUpAnnotation(measurementAnnotation, AtlasAnnotationType.MEASUREMENTS);
 
                     Map<String, String> metrics = new HashMap<>();
 
                     if (atlasMetricsGeneral != null)
                     {
-                        metrics.put("entityInstanceCount", Integer.toString(atlasMetricsGeneral.getEntityCount()));
-                        metrics.put("classificationCount", Integer.toString(atlasMetricsGeneral.getTagCount()));
-                        metrics.put("typeUnusedCount", Integer.toString(atlasMetricsGeneral.getTypeUnusedCount()));
-                        metrics.put("typeCount", Integer.toString(atlasMetricsGeneral.getTypeCount()));
+                        metrics.put(AtlasMetric.ENTITY_INSTANCE_COUNT.getName(), Integer.toString(atlasMetricsGeneral.getEntityCount()));
+                        metrics.put(AtlasMetric.CLASSIFICATION_COUNT.getName(), Integer.toString(atlasMetricsGeneral.getTagCount()));
+                        metrics.put(AtlasMetric.TYPE_UNUSED_COUNT.getName(), Integer.toString(atlasMetricsGeneral.getTypeUnusedCount()));
+                        metrics.put(AtlasMetric.TYPE_COUNT.getName(), Integer.toString(atlasMetricsGeneral.getTypeCount()));
                     }
 
                     if ((atlasMetricsTag != null) && (atlasMetricsTag.getTagEntities() != null))
                     {
-                        addMapMetrics(atlasMetricsTag.getTagEntities(), "classifiedEntityCount", metrics);
+                        addMapMetrics(atlasMetricsTag.getTagEntities(), AtlasMetric.CLASSIFIED_ENTITY_COUNT.getName(), metrics);
                     }
 
                     if (atlasMetrics.getData().getEntity() != null)
@@ -185,13 +176,13 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
                     if (atlasTypes != null)
                     {
-                        metrics.put("entityDefs",         Integer.toString(atlasTypes.getEntityDefs().size()));
-                        metrics.put("relationshipDefs",   Integer.toString(atlasTypes.getRelationshipDefs().size()));
-                        metrics.put("classificationDefs", Integer.toString(atlasTypes.getClassificationDefs().size()));
+                        metrics.put(AtlasMetric.ENTITY_DEF_COUNT.getName(), Integer.toString(atlasTypes.getEntityDefs().size()));
+                        metrics.put(AtlasMetric.RELATIONSHIP_DEF_COUNT.getName(), Integer.toString(atlasTypes.getRelationshipDefs().size()));
+                        metrics.put(AtlasMetric.CLASSIFICATION_DEF_COUNT.getName(), Integer.toString(atlasTypes.getClassificationDefs().size()));
 
                         if (atlasTypes.getBusinessMetadataDefs() != null)
                         {
-                            metrics.put("businessMetadataDefs", Integer.toString(atlasTypes.getBusinessMetadataDefs().size()));
+                            metrics.put(AtlasMetric.BUSINESS_METADATA_DEF_COUNT.getName(), Integer.toString(atlasTypes.getBusinessMetadataDefs().size()));
                         }
                     }
 
@@ -200,19 +191,17 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                     annotationStore.addAnnotation(measurementAnnotation, null);
                 }
 
-                if (! SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_STATS.equals(finalAnalysisStep))
+                if (! AnalysisStep.MEASURE_RESOURCE.getName().equals(finalAnalysisStep))
                 {
                     /*
                      * The SCHEMA analysis step is starting now.  It uses the Apache Atlas types to perform a schema analysis that shows how the
                      * Apache Atlas types are linked.
                      */
-                    annotationStore.setAnalysisStep(SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_SCHEMA);
+                    annotationStore.setAnalysisStep(AnalysisStep.SCHEMA_EXTRACTION.getName());
 
                     SchemaAnalysisAnnotation schemaAnalysisAnnotation = new SchemaAnalysisAnnotation();
 
-                    schemaAnalysisAnnotation.setAnnotationType(schemaAnalysisAnnotationTypeName);
-                    schemaAnalysisAnnotation.setAnalysisStep(SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_SCHEMA);
-                    schemaAnalysisAnnotation.setExplanation("Linked data fields describing the types defined in the Apache Atlas Server.");
+                    this.setUpAnnotation(schemaAnalysisAnnotation, AtlasAnnotationType.TYPE_ANALYSIS);
                     schemaAnalysisAnnotation.setSchemaName("Apache Atlas Types: " + atlasVersion.getVersion());
                     schemaAnalysisAnnotation.setSchemaTypeName(atlasVersion.getName());
 
@@ -312,13 +301,13 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                         }
                     }
 
-                    if (SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_PROFILE.equals(finalAnalysisStep))
+                    if (AnalysisStep.SCHEMA_EXTRACTION.getName().equals(finalAnalysisStep))
                     {
                         /*
                          * The final step in the analysis is to retrieve each entity instance from the Apache Atlas repository and
                          * create data profile annotations based on the number of instances of each type discovered.
                          */
-                        annotationStore.setAnalysisStep(SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_PROFILE);
+                        annotationStore.setAnalysisStep(AnalysisStep.PROFILE_DATA.getName());
 
                         Map<String, EntityTypeMetrics>       entityTypeMetricsMap         = new HashMap<>();
                         Map<String, TagTypeMetrics>          classificationTypeMetricsMap = new HashMap<>();
@@ -380,9 +369,8 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                              */
                             DataProfileAnnotation dataProfileAnnotation = new DataProfileAnnotation();
 
-                            dataProfileAnnotation.setAnalysisStep(SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_PROFILE);
-                            dataProfileAnnotation.setAnnotationType(attachedClassificationTypesAnnotationTypeName);
-                            dataProfileAnnotation.setExplanation("Count of classification types attached to this type of entity.");
+                            this.setUpAnnotation(dataProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_CLASSIFICATIONS);
+
                             dataProfileAnnotation.setValueCount(entityTypeMetrics.classificationCount);
                             dataProfileAnnotation.setAdditionalProperties(additionalProperties);
 
@@ -393,9 +381,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                              */
                             dataProfileAnnotation = new DataProfileAnnotation();
 
-                            dataProfileAnnotation.setAnalysisStep(SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_PROFILE);
-                            dataProfileAnnotation.setAnnotationType(attachedRelationshipTypesEnd1AnnotationTypeName);
-                            dataProfileAnnotation.setExplanation("Count of different types of relationships attached to this type of entity at End 1.");
+                            this.setUpAnnotation(dataProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_TO_END1);
                             dataProfileAnnotation.setValueCount(entityTypeMetrics.relationshipEnd1Count);
                             dataProfileAnnotation.setAdditionalProperties(additionalProperties);
 
@@ -406,9 +392,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                              */
                             dataProfileAnnotation = new DataProfileAnnotation();
 
-                            dataProfileAnnotation.setAnalysisStep(SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_PROFILE);
-                            dataProfileAnnotation.setAnnotationType(attachedRelationshipTypesEnd2AnnotationTypeName);
-                            dataProfileAnnotation.setExplanation("Count of different types of relationships attached to this type of entity at End 2.");
+                            this.setUpAnnotation(dataProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_TO_END2);
                             dataProfileAnnotation.setValueCount(entityTypeMetrics.relationshipEnd2Count);
                             dataProfileAnnotation.setAdditionalProperties(additionalProperties);
 
@@ -419,9 +403,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                              */
                             dataProfileAnnotation = new DataProfileAnnotation();
 
-                            dataProfileAnnotation.setAnalysisStep(SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_PROFILE);
-                            dataProfileAnnotation.setAnnotationType(attachedLabelsAnnotationTypeName);
-                            dataProfileAnnotation.setExplanation("Count of the different labels attached to this type of entity.");
+                            this.setUpAnnotation(dataProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_LABELS);
                             dataProfileAnnotation.setValueCount(entityTypeMetrics.labelCount);
                             dataProfileAnnotation.setAdditionalProperties(additionalProperties);
 
@@ -432,9 +414,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                              */
                             dataProfileAnnotation = new DataProfileAnnotation();
 
-                            dataProfileAnnotation.setAnalysisStep(SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_PROFILE);
-                            dataProfileAnnotation.setAnnotationType(attachedBusinessMetadataTypesAnnotationTypeName);
-                            dataProfileAnnotation.setExplanation("Count of the different types of business metadata properties attached to this type of entity.");
+                            this.setUpAnnotation(dataProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_BIZ_METADATA);
                             dataProfileAnnotation.setValueCount(entityTypeMetrics.labelCount);
                             dataProfileAnnotation.setAdditionalProperties(additionalProperties);
 
@@ -450,10 +430,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
                             DataProfileAnnotation dataProfileAnnotation = new DataProfileAnnotation();
 
-                            dataProfileAnnotation.setAnalysisStep(SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_PROFILE);
-                            dataProfileAnnotation.setAnnotationType(attachedEntityTypesAnnotationTypeName);
-                            dataProfileAnnotation.setExplanation("Count of entities by type where this classification is attached, organized by entity type.");
-
+                            this.setUpAnnotation(dataProfileAnnotation, AtlasAnnotationType.CLASSIFICATION_ATTACHED_ENTITIES);
                             dataProfileAnnotation.setValueCount(classificationTypeMetrics.entityCount);
 
                             Map<String, String> additionalProperties = new HashMap<>();
@@ -473,9 +450,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
                             DataProfileAnnotation dataProfileAnnotation = new DataProfileAnnotation();
 
-                            dataProfileAnnotation.setAnalysisStep(SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_PROFILE);
-                            dataProfileAnnotation.setAnnotationType(attachedEntityTypesAnnotationTypeName);
-                            dataProfileAnnotation.setExplanation("Count of entities where this type of business metadata properties are attached, organized by entity type.");
+                            this.setUpAnnotation(dataProfileAnnotation, AtlasAnnotationType.CLASSIFICATION_ATTACHED_ENTITIES);
                             dataProfileAnnotation.setValueCount(businessMetadataMetrics.entityCount);
 
                             Map<String, String> additionalProperties = new HashMap<>();
@@ -503,9 +478,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                              */
                             DataProfileAnnotation dataProfileAnnotation = new DataProfileAnnotation();
 
-                            dataProfileAnnotation.setAnalysisStep(SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_PROFILE);
-                            dataProfileAnnotation.setAnnotationType(attachedEnd1EntityTypesAnnotationTypeName);
-                            dataProfileAnnotation.setExplanation("Count of entity types attached at end 1 of this type of relationship.");
+                            this.setUpAnnotation(dataProfileAnnotation, AtlasAnnotationType.END1_ENTITY_TYPES);
                             dataProfileAnnotation.setValueCount(relationshipTypeMetrics.entityAtEnd1Count);
                             dataProfileAnnotation.setAdditionalProperties(additionalProperties);
 
@@ -516,9 +489,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                              */
                             dataProfileAnnotation = new DataProfileAnnotation();
 
-                            dataProfileAnnotation.setAnalysisStep(SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_PROFILE);
-                            dataProfileAnnotation.setAnnotationType(attachedEnd2EntityTypesAnnotationTypeName);
-                            dataProfileAnnotation.setExplanation("Count of entity types attached at end 2 of this type of relationship.");
+                            this.setUpAnnotation(dataProfileAnnotation, AtlasAnnotationType.END2_ENTITY_TYPES);
                             dataProfileAnnotation.setValueCount(relationshipTypeMetrics.entityAtEnd2Count);
                             dataProfileAnnotation.setAdditionalProperties(additionalProperties);
 
@@ -529,9 +500,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                              */
                             dataProfileAnnotation = new DataProfileAnnotation();
 
-                            dataProfileAnnotation.setAnalysisStep(SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_PROFILE);
-                            dataProfileAnnotation.setAnnotationType(attachedPairedEntityTypesAnnotationTypeName);
-                            dataProfileAnnotation.setExplanation("Count of entity type pairs for this type of relationship.");
+                            this.setUpAnnotation(dataProfileAnnotation, AtlasAnnotationType.PAIRED_ENTITY_TYPES);
                             dataProfileAnnotation.setValueCount(relationshipTypeMetrics.entityPairCount);
                             dataProfileAnnotation.setAdditionalProperties(additionalProperties);
 
@@ -579,6 +548,22 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                                                 this.getClass().getName(),
                                                 methodName);
         }
+    }
+
+
+    /**
+     * Transfer common properties into the annotation.
+     *
+     * @param annotation output annotation
+     * @param atlasAnnotationType annotation type definition
+     */
+    private void setUpAnnotation(Annotation          annotation,
+                                 AtlasAnnotationType atlasAnnotationType)
+    {
+        annotation.setAnnotationType(atlasAnnotationType.getName());
+        annotation.setAnalysisStep(atlasAnnotationType.getAnalysisStep());
+        annotation.setSummary(atlasAnnotationType.getSummary());
+        annotation.setExplanation(atlasAnnotationType.getExplanation());
     }
 
 

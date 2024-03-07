@@ -216,7 +216,7 @@ public class IntegrationConnectorHandler
      *
      * @return status object
      */
-    IntegrationConnectorStatus getIntegrationConnectorStatus()
+    public IntegrationConnectorStatus getIntegrationConnectorStatus()
     {
         return integrationConnectorStatus;
     }
@@ -227,7 +227,7 @@ public class IntegrationConnectorHandler
      *
      * @return timestamp
      */
-    Date getLastStatusChange()
+    public Date getLastStatusChange()
     {
         return lastStatusChange;
     }
@@ -239,7 +239,7 @@ public class IntegrationConnectorHandler
      *
      * @return string message
      */
-    String getFailingExceptionMessage()
+    public String getFailingExceptionMessage()
     {
         return failingExceptionMessage;
     }
@@ -250,7 +250,7 @@ public class IntegrationConnectorHandler
      *
      * @return name value pairs for the statistics
      */
-    Map<String, Object> getStatistics()
+    public Map<String, Object> getStatistics()
     {
         if (genericConnector != null)
         {

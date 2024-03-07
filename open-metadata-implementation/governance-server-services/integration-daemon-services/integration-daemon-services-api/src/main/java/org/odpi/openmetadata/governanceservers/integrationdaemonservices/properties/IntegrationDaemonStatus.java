@@ -5,11 +5,9 @@ package org.odpi.openmetadata.governanceservers.integrationdaemonservices.proper
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,7 +27,8 @@ public class IntegrationDaemonStatus implements Serializable
     private static final long serialVersionUID = 1L;
 
     private List<IntegrationServiceSummary> integrationServiceSummaries = null;
-    private List<IntegrationGroupSummary>   integrationGroupSummaries = null;
+    private List<IntegrationGroupSummary>    integrationGroupSummaries   = null;
+    private List<IntegrationConnectorReport> integrationConnectorReports = null;
 
 
     /**
@@ -51,6 +50,7 @@ public class IntegrationDaemonStatus implements Serializable
         {
             integrationServiceSummaries = template.getIntegrationServiceSummaries();
             integrationGroupSummaries = template.getIntegrationGroupSummaries();
+            integrationConnectorReports = template.getIntegrationConnectorReports();
         }
     }
 
@@ -107,13 +107,44 @@ public class IntegrationDaemonStatus implements Serializable
 
 
     /**
-     * Set up of each integration group running in the integration daemon.
+     * Set up summary of each integration group running in the integration daemon.
      *
      * @param integrationGroupSummaries list of summaries
      */
     public void setIntegrationGroupSummaries(List<IntegrationGroupSummary> integrationGroupSummaries)
     {
         this.integrationGroupSummaries = integrationGroupSummaries;
+    }
+
+
+    /**
+     * Return reports of connectors running in the integration daemon.
+     *
+     * @return list of summaries
+     */
+    public List<IntegrationConnectorReport> getIntegrationConnectorReports()
+    {
+        if (integrationConnectorReports == null)
+        {
+            return null;
+        }
+        else if (integrationConnectorReports.isEmpty())
+        {
+            return null;
+        }
+
+        return integrationConnectorReports;
+    }
+
+
+    /**
+     * Set up reports of connectors running in the integration daemon.
+     *
+     * @param integrationConnectorReports list of connector
+     */
+    public void setIntegrationConnectorReports(List<IntegrationConnectorReport> integrationConnectorReports)
+    {
+        this.integrationConnectorReports = integrationConnectorReports;
     }
 
 
@@ -127,7 +158,7 @@ public class IntegrationDaemonStatus implements Serializable
     {
         return "IntegrationDaemonStatus{" +
                 "integrationServiceSummaries=" + integrationServiceSummaries +
-                ", integrationGroupSummaries=" + integrationGroupSummaries +
+                ", integrationGroupSummaries=" + integrationConnectorReports +
                 '}';
     }
 
@@ -150,7 +181,7 @@ public class IntegrationDaemonStatus implements Serializable
         }
         IntegrationDaemonStatus that = (IntegrationDaemonStatus) objectToCompare;
         return Objects.equals(integrationServiceSummaries, that.integrationServiceSummaries) &&
-                Objects.equals(integrationGroupSummaries, that.integrationGroupSummaries);
+                Objects.equals(integrationConnectorReports, that.integrationConnectorReports);
     }
 
 

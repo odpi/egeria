@@ -101,11 +101,10 @@ public class OpenGovernanceRESTServices
                                                                     requestBody.getDomainIdentifier(),
                                                                     requestBody.getDisplayName(),
                                                                     requestBody.getDescription(),
-                                                                    requestBody.getProducedGuards(),
                                                                     requestBody.getAdditionalProperties(),
                                                                     requestBody.getGovernanceEngineGUID(),
                                                                     requestBody.getRequestType(),
-                                                                    requestBody.getRequestParameters(),
+                                                                    requestBody.getFixedRequestParameters(),
                                                                     requestBody.getWaitTime(),
                                                                     null,
                                                                     null,
@@ -178,11 +177,10 @@ public class OpenGovernanceRESTServices
                                                    properties.getDomainIdentifier(),
                                                    properties.getDisplayName(),
                                                    properties.getDescription(),
-                                                   properties.getProducedGuards(),
                                                    properties.getAdditionalProperties(),
                                                    properties.getGovernanceEngineGUID(),
                                                    properties.getRequestType(),
-                                                   properties.getRequestParameters(),
+                                                   properties.getFixedRequestParameters(),
                                                    properties.getWaitTime(),
                                                    null,
                                                    null,
@@ -1019,6 +1017,8 @@ public class OpenGovernanceRESTServices
      * along with the flow definition describing its implementation.
      *
      * @param serverName name of the service to route the request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId calling user
      * @param processGUID unique identifier of the requested metadata element
      *
      * @return requested metadata element or
@@ -1069,11 +1069,16 @@ public class OpenGovernanceRESTServices
 
             if (governanceActionProcessGraph.getFirstProcessStep() != null)
             {
+                String firstProcessStepGUID = governanceActionProcessGraph.getFirstProcessStep().getElement().getElementHeader().getGUID();
+
+                List<String>  processedGUIDs = new ArrayList<>();
+
+                processedGUIDs.add(firstProcessStepGUID);
                 getNextProcessSteps(userId,
                                     handler,
-                                    governanceActionProcessGraph.getFirstProcessStep().getElement().getElementHeader().getGUID(),
+                                    firstProcessStepGUID,
                                     governanceActionProcessGraph,
-                                    new ArrayList<>(),
+                                    processedGUIDs,
                                     instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
                                     invalidParameterHandler.getMaxPagingSize());
             }
@@ -1090,7 +1095,20 @@ public class OpenGovernanceRESTServices
     }
 
 
-
+    /**
+     * Retrieve the next step in the process.
+     *
+     * @param userId calling user
+     * @param handler access to metadata
+     * @param processStepGUID current step
+     * @param governanceActionProcessGraph current state of the graph
+     * @param processedGUIDs the guids we have processed
+     * @param supportedZones zones for this service
+     * @param pageSize max page size
+     * @throws InvalidParameterException bad property
+     * @throws PropertyServerException repository in error
+     * @throws UserNotAuthorizedException user authorization exception
+     */
     private void getNextProcessSteps(String                                                                 userId,
                                      GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement> handler,
                                      String                                                                 processStepGUID,
@@ -1123,6 +1141,13 @@ public class OpenGovernanceRESTServices
         {
             for (Relationship relationship : nextProcessStepRelationships)
             {
+                this.addProcessStep(userId,
+                                    handler,
+                                    relationship.getEntityOneProxy().getGUID(),
+                                    governanceActionProcessGraph,
+                                    processedGUIDs,
+                                    supportedZones);
+
                 NextGovernanceActionProcessStepLink processStepLink = new NextGovernanceActionProcessStepLink();
 
                 processStepLink.setPreviousProcessStep(handler.getElementStub(relationship.getEntityOneProxy()));
@@ -1149,7 +1174,12 @@ public class OpenGovernanceRESTServices
 
                 if (! processedGUIDs.contains(relationship.getEntityTwoProxy().getGUID()))
                 {
-                    processedGUIDs.add(relationship.getEntityTwoProxy().getGUID());
+                    this.addProcessStep(userId,
+                                        handler,
+                                        relationship.getEntityTwoProxy().getGUID(),
+                                        governanceActionProcessGraph,
+                                        processedGUIDs,
+                                        supportedZones);
 
                     getNextProcessSteps(userId,
                                         handler,
@@ -1197,6 +1227,52 @@ public class OpenGovernanceRESTServices
     }
 
 
+    /**
+     * Save the next step in the process.
+     *
+     * @param userId calling user
+     * @param handler access to metadata
+     * @param processStepGUID current step
+     * @param governanceActionProcessGraph current state of the graph
+     * @param processedGUIDs the guids we have processed
+     * @param supportedZones zones for this service
+     * @throws InvalidParameterException bad property
+     * @throws PropertyServerException repository in error
+     * @throws UserNotAuthorizedException user authorization exception
+     */
+    private void addProcessStep(String                                                                 userId,
+                                GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement> handler,
+                                String                                                                 processStepGUID,
+                                GovernanceActionProcessGraph                                           governanceActionProcessGraph,
+                                List<String>                                                           processedGUIDs,
+                                List<String>                                                           supportedZones) throws InvalidParameterException,
+                                                                                                                              PropertyServerException,
+                                                                                                                              UserNotAuthorizedException
+    {
+        final String methodName = "addProcessStep";
+        if (! processedGUIDs.contains(processStepGUID))
+        {
+            GovernanceActionProcessStepElement processStepElement = handler.getGovernanceActionProcessStepByGUID(userId,
+                                                                                                                 processStepGUID,
+                                                                                                                 supportedZones,
+                                                                                                                 null,
+                                                                                                                 methodName);
+
+            List<GovernanceActionProcessStepElement> processStepElements = governanceActionProcessGraph.getNextProcessSteps();
+
+            if (processStepElements == null)
+            {
+                processStepElements = new ArrayList<>();
+            }
+
+            processStepElements.add(processStepElement);
+
+            governanceActionProcessGraph.setNextProcessSteps(processStepElements);
+
+            processedGUIDs.add(processStepGUID);
+        }
+    }
+
     /* =====================================================================================================================
      * A governance action process step describes a step in a governance action process
      */
@@ -1241,11 +1317,10 @@ public class OpenGovernanceRESTServices
                                                                            requestBody.getDomainIdentifier(),
                                                                            requestBody.getDisplayName(),
                                                                            requestBody.getDescription(),
-                                                                           requestBody.getProducedGuards(),
                                                                            requestBody.getAdditionalProperties(),
                                                                            requestBody.getGovernanceEngineGUID(),
                                                                            requestBody.getRequestType(),
-                                                                           requestBody.getRequestParameters(),
+                                                                           requestBody.getFixedRequestParameters(),
                                                                            requestBody.getIgnoreMultipleTriggers(),
                                                                            requestBody.getWaitTime(),
                                                                            null,
@@ -1319,11 +1394,10 @@ public class OpenGovernanceRESTServices
                                                           properties.getDomainIdentifier(),
                                                           properties.getDisplayName(),
                                                           properties.getDescription(),
-                                                          properties.getProducedGuards(),
                                                           properties.getAdditionalProperties(),
                                                           properties.getGovernanceEngineGUID(),
                                                           properties.getRequestType(),
-                                                          properties.getRequestParameters(),
+                                                          properties.getFixedRequestParameters(),
                                                           properties.getIgnoreMultipleTriggers(),
                                                           properties.getWaitTime(),
                                                           null,

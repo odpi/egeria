@@ -1,0 +1,337 @@
+# A Nanny Demo
+
+@nannyURL=https://localhost:9446
+@adminUserId=garygeeke
+@user=garygeeke
+@kafkaep=localhost:9092
+@max_page_size=100
+
+@baseURL=https://localhost:9443
+@ecosystemMonitor=ecosystem-monitor
+@nannyAuditLogTopic=egeriaAuditlogs
+@nannyDB=jdbc:postgresql://wolfsonnet.me:5432/observations_base
+
+@nannyMonitor=nanny-monitor
+@nannyStore=nanny-store
+@nannyHarvester=nanny-harvester
+@atlasNannyDB=jdbc:postgresql://wolfsonnet.me:5432/observations_base
+
+@ecosystemServer=active-metadata-store
+@glossaryGUID=xxx
+@glossaryTermGUID=xxx
+
+
+###
+# group: Configure nanny-store
+# @name Set local server URL root
+# Update the URL root that other servers that are also members any open metadata repository cohort that the server belongs to should use to make calls to this local server. This value is sent when the server registers with the cohort.  If the server is not going to join a cohort then this value is not needed.
+# This value should be set to the URL of the OMAG Server Platform where the server will run.  If the server is deployed to many servers in an HA cluster configuration, it should be set to a DNS name that will disperse requests across the server cluster.
+POST {{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyStore}}/server-url-root-for-caller
+Content-Type: application/json
+
+{
+    "class": "URLRequestBody",
+    "urlRoot": "{{omagURL}}"
+}
+
+###
+# group: Configure nanny-store
+# @name Set local server user Id
+# Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
+POST {{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyStore}}/server-user-id?
+    id=nannystorenpa
+
+###
+# group: Configure nanny-store
+# @name Set up event bus
+# Set up the common properties needed to call your event bus.  These properties are passed in the request body.
+# This request just sets up the defaults that will be incorporated into any future configuration that includes an event bus topic.
+POST {{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyStore}}/event-bus
+Content-Type: application/json
+
+{
+    "producer": {
+        "bootstrap.servers": "{{kafkaep}}"
+    },
+    "consumer":{
+        "bootstrap.servers": "{{kafkaep}}"
+    }
+}
+
+###
+# group: Configure nanny-store
+# @name Enable the in-memory repository
+# Set up the local reposiotry to use the in-memory implementation.
+POST {{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyStore}}/local-repository/mode/in-memory-repository
+
+###
+# group: Configure nanny-store
+# @name Enable the Asset Manager OMAS
+# Turn on a specific registered Open Metadata Access Services (OMAS).
+# Change the value of the {{access-service}} variable in the environment to be the URL version of the name.  Typically this is done by taking the access service name, dropping "OMAS", change to lower-case and link two words with a dash "-".  For example, Asset Owner OMAS, would have a url name of asset-owner.
+POST {{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyStore}}/access-services/asset-manager
+
+###
+# group: Configure nanny-store
+# @name Get nanny-store's configuration document
+# Retrieve the configuration document for the named server.
+GET {{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyStore}}/configuration
+
+###
+# group: Configure nanny-monitor
+# @name Set local server user Id
+# Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
+POST {{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyMonitor}}/server-user-id?
+    id=nannymonitornpa
+
+###
+# group: Configure nanny-monitor
+# @name Configure the LoadObservationsByEgeria integration connector
+# Add details of the metadata server to call and the connectors to run.
+POST {{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyMonitor}}/integration-services/catalog-integrator
+Content-Type: application/json
+
+{
+    "class": "IntegrationServiceRequestBody",
+    "omagserverPlatformRootURL": "{{omagURL}}",
+    "omagserverName": "{{nannyStore}}",
+    "integrationConnectorConfigs": [
+        {
+            "class": "IntegrationConnectorConfig",
+            "connectorName": "LoadObservationsByEgeria",
+            "connectorUserId": "loadobnpa",
+            "connection": {
+                "class": "Connection",
+                "connectorType": {
+                    "class": "ConnectorType",
+                    "connectorProviderClassName": "org.odpi.openmetadata.adapters.connectors.nannyconnectors.loadobservations.LoadObservationsByEgeriaProvider"
+                },
+                "endpoint": {
+                    "class": "Endpoint",
+                    "address": "{{atlasNannyDB}}"
+                },
+                "userId" : "pdr",
+                "clearPassword" : "pdr4egeria",
+                "configurationProperties" : {
+                    "jdbcDriverManagerClassName" : "org.postgresql.Driver",
+                    "jdbcConnectionTimeout" : "10",
+                    "jdbcDatabaseName" : "AtlasObservationsByEgeria"
+                }
+            },
+            "refreshTimeInterval": "10",
+            "usesBlockingCalls": "false",
+            "permittedSynchronization": "TO_THIRD_PARTY"
+        }
+    ]
+}
+
+###
+# group: Configure nanny-monitor
+# @name Get nanny-monitor's configuration document
+# Retrieve the configuration document for the named server.
+GET {{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyMonitor}}/configuration
+
+###
+# group: Configure nanny-harvester
+# @name Set local server user Id
+# Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
+POST {{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyHarvester}}/server-user-id?
+    id=nannyharvesternpa
+
+###
+# group: Configure nanny-harvester
+# @name Configure the connections to third party catalogs
+# Add details of the metadata server to call and the connectors to run.
+POST {{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyHarvester}}/integration-services/catalog-integrator
+Content-Type: application/json
+
+{
+    "class": "IntegrationServiceRequestBody",
+    "omagserverPlatformRootURL": "{{nannyURL}}",
+    "omagserverName": "{{nannyStore}}",
+    "integrationConnectorConfigs": [
+        {
+            "class": "IntegrationConnectorConfig",
+            "connectorName": "AtlasIntegrator",
+            "connectorUserId": "atlasintgnpa",
+            "connection": {
+                "class": "Connection",
+                "connectorType": {
+                    "class": "ConnectorType",
+                    "connectorProviderClassName": "org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationProvider"
+                },
+                "endpoint": {
+                    "class": "Endpoint",
+                    "address": "http://wolfsonnet.me:21000"
+                },
+                "userId" : "admin",
+                "clearPassword" : "admin"
+            },
+            "metadataSourceQualifiedName": "ApacheAtlasDL01",
+            "refreshTimeInterval": "15",
+            "usesBlockingCalls": "false",
+            "permittedSynchronization": "BOTH_DIRECTIONS"
+        },
+        {
+            "class": "IntegrationConnectorConfig",
+            "connectorName": "AtlasIntegrator(local)",
+            "connectorUserId": "atlaslocalnpa",
+            "connection": {
+                "class": "Connection",
+                "connectorType": {
+                    "class": "ConnectorType",
+                    "connectorProviderClassName": "org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationProvider"
+                },
+                "endpoint": {
+                    "class": "Endpoint",
+                    "address": "http://localhost:21000"
+                },
+                "userId" : "admin",
+                "clearPassword" : "admin"
+            },
+            "metadataSourceQualifiedName": "ApacheAtlasDL02",
+            "refreshTimeInterval": "15",
+            "usesBlockingCalls": "false",
+            "permittedSynchronization": "BOTH_DIRECTIONS"
+        }
+    ]
+}
+
+###
+# group: Configure nanny-harvester
+# @name Get nanny-harvester's configuration document
+# Retrieve the configuration document for the named server.
+GET {{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{nannyHarvester}}/configuration
+
+###
+# group: Configure ecosystem-monitor
+# @name Set max page size
+# Set up the maximum number of results that can be returned on an open metadata request.
+POST {{nannyURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ecosystemMonitor}}/max-page-size?
+    limit={{max_page_size}}
+
+###
+# group: Start Nanny Servers
+# @name Start nanny-store server
+# Activate a server on the OMAG Server Platform.  Use the configuration document found in the configuration document store.
+POST {{nannyURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{nannyStore}}/instance
+
+###
+# group: Start Nanny Servers
+# @name Start nanny-monitor server
+# Activate a server on the OMAG Server Platform.  Use the configuration document found in the configuration document store.
+POST {{nannyURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{nannyMonitor}}/instance
+
+###
+# group: Start Nanny Servers
+# @name Start nanny-harvester server
+# Activate a server on the OMAG Server Platform.  Use the configuration document found in the configuration document store.
+POST {{nannyURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{nannyHarvester}}/instance
+
+###
+# group: Check Status for Nanny Servers
+# @name Get nanny-monitor status
+# Retrieves the status of the connectors running in the Integration Daemon
+GET {{nannyURL}}/servers/{{nannyMonitor}}/open-metadata/integration-daemon/users/{{user}}/status
+
+###
+# group: Check Status for Nanny Servers
+# @name Get nanny-harvester status
+# Retrieves the status of the connectors running in the Integration Daemon
+GET {{nannyURL}}/servers/{{nannyHarvester}}/open-metadata/integration-daemon/users/{{user}}/status
+
+
+###
+# group: Check Status for Nanny Servers
+# @name Restart wolfsonnet Atlas Harvester
+# Refreshes all Integration Connectors running in an integration daemon
+POST {{nannyURL}}/servers/{{nannyHarvester}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/restart
+Content-Type: application/json
+
+{
+    "class" : "NameRequestBody",
+    "name" : "AtlasIntegrator"
+}
+
+###
+# group: Check Status for Nanny Servers
+# @name Restart localhost Atlas Harvester
+# Refreshes all Integration Connectors running in an integration daemon
+POST {{nannyURL}}/servers/{{nannyHarvester}}/open-metadata/integration-daemon/users/{{user}}/integration-connectors/restart
+Content-Type: application/json
+
+{
+    "class" : "NameRequestBody",
+    "name" : "AtlasIntegrator(local)"
+}
+
+###
+# group: Check Status for Nanny Servers
+# @name Refresh Nanny Harvester connectors
+# Restarts the requested Integration Service
+POST {{nannyURL}}/servers/{{nannyHarvester}}/open-metadata/integration-daemon/users/{{user}}/integration-services/catalog-integrator/refresh
+
+###
+# group: Check Status for Nanny Servers
+# @name Retrieve ALL the glossary terms for a glossary in nanny-store
+POST {{nannyURL}}/servers/{{nannyStore}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/{{glossaryGUID}}/terms/retrieve?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+{
+    "class" : "AssetManagerIdentifiersRequestBody",
+    "assetManagerGUID" : "ba69fd95-c4d6-451f-9411-b9239cd1b9f8"
+}
+
+###
+# group: Check Status for Nanny Servers
+# @name Retrieve ALL the glossary categories for a glossary in nanny-store
+POST {{nannyURL}}/servers/{{nannyStore}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/{{glossaryGUID}}/categories/retrieve?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+###
+# group: Check Status for Nanny Servers
+# @name Retrieve a glossary term from nanny-store
+POST {{nannyURL}}/servers/{{nannyStore}}/open-metadata/access-services/asset-manager/users/{{user}}/glossaries/terms/{{glossaryTermGUID}}/retrieve
+Content-Type: application/json
+
+###
+# group: Check Status for Nanny Servers
+# @name Retrieve ALL the processes from nanny-store
+POST {{nannyURL}}/servers/{{nannyStore}}/open-metadata/access-services/asset-manager/users/{{user}}/processes/by-search-string?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+{
+    "class" : "SearchStringRequestBody",
+    "searchString" : ".*"
+}
+
+###
+# group: Check Status for Nanny Servers
+# @name Retrieve ALL the data assets from nanny-store
+POST {{nannyURL}}/servers/{{nannyStore}}open-metadata/access-services/asset-manager/users/{{user}}/data-assets/by-search-string?
+    startFrom=0&
+    pageSize=0
+Content-Type: application/json
+
+{
+    "class" : "SearchStringRequestBody",
+    "searchString" : ".*"
+}
+
+<> ./Retrieve ALL the data assets from Egeria -Friday.200.json
+// {{baseURL}}/servers/metadata-store/open-metadata/access-services/asset-manager/users/{{user}}/data-assets/by-search-string?startFrom=0&pageSize=0
+
+###
+# group: Check Status for Nanny Servers
+# @name Load open metadata archive file into nanny-store
+# Load a file that contains open metadata types and instances.
+POST {{nannyURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/{{nannyStore}}/instance/open-metadata-archives/file
+Content-Type: text/plain
+
+content-packs/CloudInformationModel.json

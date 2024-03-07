@@ -495,6 +495,8 @@ public class IntegrationDaemonRESTServices
 
             integrationDaemonStatus.setIntegrationGroupSummaries(instanceHandler.getIntegrationGroupSummaries(userId, serverName, methodName));
 
+            integrationDaemonStatus.setIntegrationConnectorReports(instanceHandler.getIntegrationConnectors(userId, serverName, methodName));
+
             response.setIntegrationDaemonStatus(integrationDaemonStatus);
         }
         catch (Exception error)

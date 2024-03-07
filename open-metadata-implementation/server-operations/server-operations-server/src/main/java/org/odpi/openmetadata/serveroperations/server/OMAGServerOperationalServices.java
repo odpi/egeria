@@ -548,6 +548,7 @@ public class OMAGServerOperationalServices
                                                                                         configuration.getMaxPageSize());
 
                     instance.setOperationalOCFMetadataServices(operationalOCFMetadataServices);
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.RUNNING);
                     activatedServiceList.add(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName());
 
                     /*
@@ -569,6 +570,7 @@ public class OMAGServerOperationalServices
 
                     instance.setOperationalGAFMetadataServices(operationalGAFMetadataServices);
                     activatedServiceList.add(CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName());
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.RUNNING);
 
                     /*
                      * The enterprise repository services have been requested so OIF metadata management can also be started.
@@ -589,6 +591,7 @@ public class OMAGServerOperationalServices
 
                     instance.setOperationalOIFMetadataServices(operationalOIFMetadataServices);
                     activatedServiceList.add(CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceName());
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.RUNNING);
                 }
 
                 /*
@@ -635,6 +638,7 @@ public class OMAGServerOperationalServices
                                                                            GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceWiki()));
 
                     activatedServiceList.add(GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName());
+                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(), ServerActiveStatus.RUNNING);
                 }
 
                 /*

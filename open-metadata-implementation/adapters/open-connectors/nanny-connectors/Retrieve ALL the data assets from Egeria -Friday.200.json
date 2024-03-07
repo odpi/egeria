@@ -1,0 +1,985 @@
+{
+  "class": "DataAssetElementsResponse",
+  "relatedHTTPCode": 200,
+  "elementList": [
+    {
+      "dataAssetProperties": {
+        "class": "DataAssetProperties",
+        "qualifiedName": "Apache Atlas:Table:logging_fact_monthly_mv@cl1",
+        "additionalProperties": {
+          "owner": "Tim ETL",
+          "temporary": "false",
+          "tableType": "Managed",
+          "lastAccessTime": "1689792523294",
+          "createTime": "1689792523294",
+          "retention": "1689792523294"
+        },
+        "typeName": "DataSet",
+        "technicalName": "logging_fact_monthly_mv",
+        "technicalDescription": "logging fact monthly materialized view",
+        "isReferenceAsset": false
+      },
+      "correlationHeaders": [
+        {
+          "synchronizationDirection": "FROM_THIRD_PARTY",
+          "externalIdentifier": "103a6ae6-ea3f-4e31-832a-1618a2f9f6c4",
+          "externalIdentifierName": "atlasGUID",
+          "externalIdentifierSource": "AtlasIntegrator",
+          "keyPattern": "LOCAL_KEY",
+          "externalInstanceCreatedBy": "admin",
+          "externalInstanceCreationTime": "2023-07-19T18:48:43.297+00:00",
+          "externalInstanceLastUpdatedBy": "admin",
+          "externalInstanceLastUpdateTime": "2023-07-19T18:48:45.313+00:00",
+          "externalInstanceVersion": 0,
+          "mappingProperties": {
+            "originator": "AtlasIntegrator:Apache Atlas Lineage Integration Module",
+            "atlasType": "Table"
+          },
+          "assetManagerGUID": "654fde37-e1ef-490d-9d27-2f113b4e7905",
+          "assetManagerName": "ApacheAtlasDL01",
+          "lastSynchronized": "2023-08-04T16:20:48.786+00:00"
+        }
+      ],
+      "elementHeader": {
+        "class": "ElementHeader",
+        "headerVersion": 0,
+        "status": "ACTIVE",
+        "type": {
+          "typeId": "1449911c-4f44-4c22-abc0-7540154feefb",
+          "typeName": "DataSet",
+          "superTypeNames": [
+            "Asset",
+            "Referenceable",
+            "OpenMetadataRoot"
+          ],
+          "typeVersion": 4,
+          "typeDescription": "Collection of related data."
+        },
+        "origin": {
+          "sourceServer": "metadata-store",
+          "originCategory": "EXTERNAL_SOURCE",
+          "homeMetadataCollectionId": "654fde37-e1ef-490d-9d27-2f113b4e7905",
+          "homeMetadataCollectionName": "ApacheAtlasDL01"
+        },
+        "versions": {
+          "createdBy": "generalnpa",
+          "createTime": "2023-08-04T16:20:48.782+00:00",
+          "version": 1
+        },
+        "guid": "5825bf0c-aafd-429d-ac4f-99d06147862b",
+        "classifications": [
+          {
+            "class": "ElementClassification",
+            "headerVersion": 0,
+            "status": "ACTIVE",
+            "type": {
+              "typeId": "8139a911-a4bd-432b-a9f4-f6d11c511abe",
+              "typeName": "Ownership",
+              "typeVersion": 1,
+              "typeDescription": "Who is responsible for making decisions on the management and governance of this element."
+            },
+            "origin": {
+              "sourceServer": "metadata-store",
+              "originCategory": "LOCAL_COHORT",
+              "homeMetadataCollectionId": "e82356af-336d-4842-aa64-f7994144a668",
+              "homeMetadataCollectionName": "metadata-store"
+            },
+            "versions": {
+              "createdBy": "generalnpa",
+              "createTime": "2023-08-04T16:20:49.208+00:00",
+              "version": 1
+            },
+            "classificationOrigin": "ASSIGNED",
+            "classificationName": "Ownership",
+            "classificationProperties": {
+              "owner": "Tim ETL",
+              "ownerTypeName": "UserIdentity",
+              "ownerPropertyName": "userId"
+            }
+          },
+          {
+            "class": "ElementClassification",
+            "headerVersion": 0,
+            "status": "ACTIVE",
+            "type": {
+              "typeId": "adce83ac-10f1-4279-8a35-346976e94466",
+              "typeName": "LatestChange",
+              "typeVersion": 1,
+              "typeDescription": "Defines the latest change to an anchor entity and its associated attachments."
+            },
+            "origin": {
+              "sourceServer": "metadata-store",
+              "originCategory": "LOCAL_COHORT",
+              "homeMetadataCollectionId": "e82356af-336d-4842-aa64-f7994144a668",
+              "homeMetadataCollectionName": "metadata-store"
+            },
+            "versions": {
+              "createdBy": "OMAGServer",
+              "updatedBy": "OMAGServer",
+              "maintainedBy": [
+                "OMAGServer"
+              ],
+              "createTime": "2023-08-04T16:20:48.787+00:00",
+              "updateTime": "2023-08-04T16:20:49.209+00:00",
+              "version": 3
+            },
+            "classificationOrigin": "ASSIGNED",
+            "classificationName": "LatestChange",
+            "classificationProperties": {
+              "changeTarget": "EntityClassification",
+              "description": "Adding Ownership classification to Referenceable 5825bf0c-aafd-429d-ac4f-99d06147862b",
+              "user": "generalnpa",
+              "classificationName": "Ownership",
+              "changeAction": "Created"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "dataAssetProperties": {
+        "class": "DataAssetProperties",
+        "qualifiedName": "Apache Atlas:LoadProcess:loadSalesDaily@cl1",
+        "additionalProperties": {
+          "queryGraph": "graph",
+          "queryText": "create table as select ",
+          "startTime": "1689792524336",
+          "queryPlan": "plan",
+          "endTime": "1689792534336",
+          "queryId": "id"
+        },
+        "typeName": "DeployedSoftwareComponent",
+        "technicalName": "loadSalesDaily",
+        "technicalDescription": "hive query for daily summary",
+        "isReferenceAsset": false
+      },
+      "correlationHeaders": [
+        {
+          "synchronizationDirection": "FROM_THIRD_PARTY",
+          "externalIdentifier": "f8fbd201-7845-4b07-b428-c5ef399cbf9b",
+          "externalIdentifierName": "atlasGUID",
+          "externalIdentifierSource": "AtlasIntegrator",
+          "keyPattern": "LOCAL_KEY",
+          "externalInstanceCreatedBy": "admin",
+          "externalInstanceCreationTime": "2023-07-19T18:48:44.338+00:00",
+          "externalInstanceLastUpdatedBy": "admin",
+          "externalInstanceLastUpdateTime": "2023-07-19T18:48:44.690+00:00",
+          "externalInstanceVersion": 0,
+          "mappingProperties": {
+            "originator": "AtlasIntegrator:Apache Atlas Lineage Integration Module",
+            "atlasType": "LoadProcess"
+          },
+          "assetManagerGUID": "654fde37-e1ef-490d-9d27-2f113b4e7905",
+          "assetManagerName": "ApacheAtlasDL01",
+          "lastSynchronized": "2023-08-04T16:20:42.311+00:00"
+        }
+      ],
+      "elementHeader": {
+        "class": "ElementHeader",
+        "headerVersion": 0,
+        "status": "ACTIVE",
+        "type": {
+          "typeId": "486af62c-dcfd-4859-ab24-eab2e380ecfd",
+          "typeName": "DeployedSoftwareComponent",
+          "superTypeNames": [
+            "Process",
+            "Asset",
+            "Referenceable",
+            "OpenMetadataRoot"
+          ],
+          "typeVersion": 2,
+          "typeDescription": "A packaged and deployed software component supporting a well-defined function."
+        },
+        "origin": {
+          "sourceServer": "metadata-store",
+          "originCategory": "EXTERNAL_SOURCE",
+          "homeMetadataCollectionId": "654fde37-e1ef-490d-9d27-2f113b4e7905",
+          "homeMetadataCollectionName": "ApacheAtlasDL01"
+        },
+        "versions": {
+          "createdBy": "generalnpa",
+          "createTime": "2023-08-04T16:20:42.272+00:00",
+          "version": 1
+        },
+        "guid": "746d4b30-f1f1-404d-b907-1893b78a9d3a",
+        "classifications": [
+          {
+            "class": "ElementClassification",
+            "headerVersion": 0,
+            "status": "ACTIVE",
+            "type": {
+              "typeId": "adce83ac-10f1-4279-8a35-346976e94466",
+              "typeName": "LatestChange",
+              "typeVersion": 1,
+              "typeDescription": "Defines the latest change to an anchor entity and its associated attachments."
+            },
+            "origin": {
+              "sourceServer": "metadata-store",
+              "originCategory": "LOCAL_COHORT",
+              "homeMetadataCollectionId": "e82356af-336d-4842-aa64-f7994144a668",
+              "homeMetadataCollectionName": "metadata-store"
+            },
+            "versions": {
+              "createdBy": "OMAGServer",
+              "createTime": "2023-08-04T16:20:42.315+00:00",
+              "version": 1
+            },
+            "classificationOrigin": "ASSIGNED",
+            "classificationName": "LatestChange",
+            "classificationProperties": {
+              "relationshipType": "ExternalIdLink",
+              "attachmentType": "ExternalId",
+              "changeTarget": "EntityRelationship",
+              "description": "Linking Process 746d4b30-f1f1-404d-b907-1893b78a9d3a to ExternalId 572f7215-ede1-46c3-ad76-325746aefd19",
+              "attachmentGUID": "572f7215-ede1-46c3-ad76-325746aefd19",
+              "user": "generalnpa",
+              "changeAction": "Created"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "dataAssetProperties": {
+        "class": "DataAssetProperties",
+        "qualifiedName": "Apache Atlas:Table:log_fact_daily_mv@cl1",
+        "additionalProperties": {
+          "owner": "Tim ETL",
+          "temporary": "false",
+          "tableType": "Managed",
+          "lastAccessTime": "1689792523034",
+          "createTime": "1689792523034",
+          "retention": "1689792523034"
+        },
+        "typeName": "DataSet",
+        "technicalName": "log_fact_daily_mv",
+        "technicalDescription": "log fact daily materialized view",
+        "isReferenceAsset": false
+      },
+      "correlationHeaders": [
+        {
+          "synchronizationDirection": "FROM_THIRD_PARTY",
+          "externalIdentifier": "9683d60c-f991-4d15-af1a-3a44159c0bc5",
+          "externalIdentifierName": "atlasGUID",
+          "externalIdentifierSource": "AtlasIntegrator",
+          "keyPattern": "LOCAL_KEY",
+          "externalInstanceCreatedBy": "admin",
+          "externalInstanceCreationTime": "2023-07-19T18:48:43.038+00:00",
+          "externalInstanceLastUpdatedBy": "admin",
+          "externalInstanceLastUpdateTime": "2023-07-19T18:48:45.313+00:00",
+          "externalInstanceVersion": 0,
+          "mappingProperties": {
+            "originator": "AtlasIntegrator:Apache Atlas Lineage Integration Module",
+            "atlasType": "Table"
+          },
+          "assetManagerGUID": "654fde37-e1ef-490d-9d27-2f113b4e7905",
+          "assetManagerName": "ApacheAtlasDL01",
+          "lastSynchronized": "2023-08-04T16:20:47.720+00:00"
+        }
+      ],
+      "elementHeader": {
+        "class": "ElementHeader",
+        "headerVersion": 0,
+        "status": "ACTIVE",
+        "type": {
+          "typeId": "1449911c-4f44-4c22-abc0-7540154feefb",
+          "typeName": "DataSet",
+          "superTypeNames": [
+            "Asset",
+            "Referenceable",
+            "OpenMetadataRoot"
+          ],
+          "typeVersion": 4,
+          "typeDescription": "Collection of related data."
+        },
+        "origin": {
+          "sourceServer": "metadata-store",
+          "originCategory": "EXTERNAL_SOURCE",
+          "homeMetadataCollectionId": "654fde37-e1ef-490d-9d27-2f113b4e7905",
+          "homeMetadataCollectionName": "ApacheAtlasDL01"
+        },
+        "versions": {
+          "createdBy": "generalnpa",
+          "createTime": "2023-08-04T16:20:47.717+00:00",
+          "version": 1
+        },
+        "guid": "d88b8388-7efc-451d-a64b-6c66ee2571d5",
+        "classifications": [
+          {
+            "class": "ElementClassification",
+            "headerVersion": 0,
+            "status": "ACTIVE",
+            "type": {
+              "typeId": "8139a911-a4bd-432b-a9f4-f6d11c511abe",
+              "typeName": "Ownership",
+              "typeVersion": 1,
+              "typeDescription": "Who is responsible for making decisions on the management and governance of this element."
+            },
+            "origin": {
+              "sourceServer": "metadata-store",
+              "originCategory": "LOCAL_COHORT",
+              "homeMetadataCollectionId": "e82356af-336d-4842-aa64-f7994144a668",
+              "homeMetadataCollectionName": "metadata-store"
+            },
+            "versions": {
+              "createdBy": "generalnpa",
+              "createTime": "2023-08-04T16:20:48.146+00:00",
+              "version": 1
+            },
+            "classificationOrigin": "ASSIGNED",
+            "classificationName": "Ownership",
+            "classificationProperties": {
+              "owner": "Tim ETL",
+              "ownerTypeName": "UserIdentity",
+              "ownerPropertyName": "userId"
+            }
+          },
+          {
+            "class": "ElementClassification",
+            "headerVersion": 0,
+            "status": "ACTIVE",
+            "type": {
+              "typeId": "adce83ac-10f1-4279-8a35-346976e94466",
+              "typeName": "LatestChange",
+              "typeVersion": 1,
+              "typeDescription": "Defines the latest change to an anchor entity and its associated attachments."
+            },
+            "origin": {
+              "sourceServer": "metadata-store",
+              "originCategory": "LOCAL_COHORT",
+              "homeMetadataCollectionId": "e82356af-336d-4842-aa64-f7994144a668",
+              "homeMetadataCollectionName": "metadata-store"
+            },
+            "versions": {
+              "createdBy": "OMAGServer",
+              "updatedBy": "OMAGServer",
+              "maintainedBy": [
+                "OMAGServer"
+              ],
+              "createTime": "2023-08-04T16:20:47.721+00:00",
+              "updateTime": "2023-08-04T16:20:48.146+00:00",
+              "version": 3
+            },
+            "classificationOrigin": "ASSIGNED",
+            "classificationName": "LatestChange",
+            "classificationProperties": {
+              "changeTarget": "EntityClassification",
+              "description": "Adding Ownership classification to Referenceable d88b8388-7efc-451d-a64b-6c66ee2571d5",
+              "user": "generalnpa",
+              "classificationName": "Ownership",
+              "changeAction": "Created"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "dataAssetProperties": {
+        "class": "DataAssetProperties",
+        "qualifiedName": "Apache Atlas:LoadProcess:loadSalesMonthly@cl1",
+        "additionalProperties": {
+          "queryGraph": "graph",
+          "queryText": "create table as select ",
+          "startTime": "1689792524845",
+          "queryPlan": "plan",
+          "endTime": "1689792534845",
+          "queryId": "id"
+        },
+        "typeName": "DeployedSoftwareComponent",
+        "technicalName": "loadSalesMonthly",
+        "technicalDescription": "hive query for monthly summary",
+        "isReferenceAsset": false
+      },
+      "correlationHeaders": [
+        {
+          "synchronizationDirection": "FROM_THIRD_PARTY",
+          "externalIdentifier": "6e889e9a-a656-4b78-a4ea-000397f032a7",
+          "externalIdentifierName": "atlasGUID",
+          "externalIdentifierSource": "AtlasIntegrator",
+          "keyPattern": "LOCAL_KEY",
+          "externalInstanceCreatedBy": "admin",
+          "externalInstanceCreationTime": "2023-07-19T18:48:44.847+00:00",
+          "externalInstanceLastUpdatedBy": "admin",
+          "externalInstanceLastUpdateTime": "2023-07-19T18:48:45.156+00:00",
+          "externalInstanceVersion": 0,
+          "mappingProperties": {
+            "originator": "AtlasIntegrator:Apache Atlas Lineage Integration Module",
+            "atlasType": "LoadProcess"
+          },
+          "assetManagerGUID": "654fde37-e1ef-490d-9d27-2f113b4e7905",
+          "assetManagerName": "ApacheAtlasDL01",
+          "lastSynchronized": "2023-08-04T16:20:49.843+00:00"
+        }
+      ],
+      "elementHeader": {
+        "class": "ElementHeader",
+        "headerVersion": 0,
+        "status": "ACTIVE",
+        "type": {
+          "typeId": "486af62c-dcfd-4859-ab24-eab2e380ecfd",
+          "typeName": "DeployedSoftwareComponent",
+          "superTypeNames": [
+            "Process",
+            "Asset",
+            "Referenceable",
+            "OpenMetadataRoot"
+          ],
+          "typeVersion": 2,
+          "typeDescription": "A packaged and deployed software component supporting a well-defined function."
+        },
+        "origin": {
+          "sourceServer": "metadata-store",
+          "originCategory": "EXTERNAL_SOURCE",
+          "homeMetadataCollectionId": "654fde37-e1ef-490d-9d27-2f113b4e7905",
+          "homeMetadataCollectionName": "ApacheAtlasDL01"
+        },
+        "versions": {
+          "createdBy": "generalnpa",
+          "createTime": "2023-08-04T16:20:49.840+00:00",
+          "version": 1
+        },
+        "guid": "3044f314-a897-4149-a972-744861e189b0",
+        "classifications": [
+          {
+            "class": "ElementClassification",
+            "headerVersion": 0,
+            "status": "ACTIVE",
+            "type": {
+              "typeId": "adce83ac-10f1-4279-8a35-346976e94466",
+              "typeName": "LatestChange",
+              "typeVersion": 1,
+              "typeDescription": "Defines the latest change to an anchor entity and its associated attachments."
+            },
+            "origin": {
+              "sourceServer": "metadata-store",
+              "originCategory": "LOCAL_COHORT",
+              "homeMetadataCollectionId": "e82356af-336d-4842-aa64-f7994144a668",
+              "homeMetadataCollectionName": "metadata-store"
+            },
+            "versions": {
+              "createdBy": "OMAGServer",
+              "createTime": "2023-08-04T16:20:49.844+00:00",
+              "version": 1
+            },
+            "classificationOrigin": "ASSIGNED",
+            "classificationName": "LatestChange",
+            "classificationProperties": {
+              "relationshipType": "ExternalIdLink",
+              "attachmentType": "ExternalId",
+              "changeTarget": "EntityRelationship",
+              "description": "Linking Process 3044f314-a897-4149-a972-744861e189b0 to ExternalId 31a5acfb-0d13-44f0-b92c-7646dd1952a9",
+              "attachmentGUID": "31a5acfb-0d13-44f0-b92c-7646dd1952a9",
+              "user": "generalnpa",
+              "changeAction": "Created"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "dataAssetProperties": {
+        "class": "DataAssetProperties",
+        "qualifiedName": "Apache Atlas:Table:sales_fact@cl1",
+        "additionalProperties": {
+          "owner": "Joe",
+          "temporary": "false",
+          "tableType": "Managed",
+          "lastAccessTime": "1689792521060",
+          "createTime": "1689792521060",
+          "retention": "1689792521060"
+        },
+        "typeName": "DataSet",
+        "technicalName": "sales_fact",
+        "technicalDescription": "sales fact table",
+        "isReferenceAsset": false
+      },
+      "correlationHeaders": [
+        {
+          "synchronizationDirection": "FROM_THIRD_PARTY",
+          "externalIdentifier": "4bd3d02f-4ce8-4984-8ae8-34d386e04162",
+          "externalIdentifierName": "atlasGUID",
+          "externalIdentifierSource": "AtlasIntegrator",
+          "keyPattern": "LOCAL_KEY",
+          "externalInstanceCreatedBy": "admin",
+          "externalInstanceCreationTime": "2023-07-19T18:48:41.074+00:00",
+          "externalInstanceLastUpdatedBy": "admin",
+          "externalInstanceLastUpdateTime": "2023-07-19T18:48:44.338+00:00",
+          "externalInstanceVersion": 0,
+          "mappingProperties": {
+            "originator": "AtlasIntegrator:Apache Atlas Lineage Integration Module",
+            "atlasType": "Table"
+          },
+          "assetManagerGUID": "654fde37-e1ef-490d-9d27-2f113b4e7905",
+          "assetManagerName": "ApacheAtlasDL01",
+          "lastSynchronized": "2023-08-04T16:20:43.578+00:00"
+        }
+      ],
+      "elementHeader": {
+        "class": "ElementHeader",
+        "headerVersion": 0,
+        "status": "ACTIVE",
+        "type": {
+          "typeId": "1449911c-4f44-4c22-abc0-7540154feefb",
+          "typeName": "DataSet",
+          "superTypeNames": [
+            "Asset",
+            "Referenceable",
+            "OpenMetadataRoot"
+          ],
+          "typeVersion": 4,
+          "typeDescription": "Collection of related data."
+        },
+        "origin": {
+          "sourceServer": "metadata-store",
+          "originCategory": "EXTERNAL_SOURCE",
+          "homeMetadataCollectionId": "654fde37-e1ef-490d-9d27-2f113b4e7905",
+          "homeMetadataCollectionName": "ApacheAtlasDL01"
+        },
+        "versions": {
+          "createdBy": "generalnpa",
+          "createTime": "2023-08-04T16:20:43.565+00:00",
+          "version": 1
+        },
+        "guid": "4e752be4-1936-4a24-9ff3-90d5129fcfd5",
+        "classifications": [
+          {
+            "class": "ElementClassification",
+            "headerVersion": 0,
+            "status": "ACTIVE",
+            "type": {
+              "typeId": "8139a911-a4bd-432b-a9f4-f6d11c511abe",
+              "typeName": "Ownership",
+              "typeVersion": 1,
+              "typeDescription": "Who is responsible for making decisions on the management and governance of this element."
+            },
+            "origin": {
+              "sourceServer": "metadata-store",
+              "originCategory": "LOCAL_COHORT",
+              "homeMetadataCollectionId": "e82356af-336d-4842-aa64-f7994144a668",
+              "homeMetadataCollectionName": "metadata-store"
+            },
+            "versions": {
+              "createdBy": "generalnpa",
+              "createTime": "2023-08-04T16:20:44.019+00:00",
+              "version": 1
+            },
+            "classificationOrigin": "ASSIGNED",
+            "classificationName": "Ownership",
+            "classificationProperties": {
+              "owner": "Joe",
+              "ownerTypeName": "UserIdentity",
+              "ownerPropertyName": "userId"
+            }
+          },
+          {
+            "class": "ElementClassification",
+            "headerVersion": 0,
+            "status": "ACTIVE",
+            "type": {
+              "typeId": "adce83ac-10f1-4279-8a35-346976e94466",
+              "typeName": "LatestChange",
+              "typeVersion": 1,
+              "typeDescription": "Defines the latest change to an anchor entity and its associated attachments."
+            },
+            "origin": {
+              "sourceServer": "metadata-store",
+              "originCategory": "LOCAL_COHORT",
+              "homeMetadataCollectionId": "e82356af-336d-4842-aa64-f7994144a668",
+              "homeMetadataCollectionName": "metadata-store"
+            },
+            "versions": {
+              "createdBy": "OMAGServer",
+              "updatedBy": "OMAGServer",
+              "maintainedBy": [
+                "OMAGServer"
+              ],
+              "createTime": "2023-08-04T16:20:43.583+00:00",
+              "updateTime": "2023-08-04T16:20:44.020+00:00",
+              "version": 3
+            },
+            "classificationOrigin": "ASSIGNED",
+            "classificationName": "LatestChange",
+            "classificationProperties": {
+              "changeTarget": "EntityClassification",
+              "description": "Adding Ownership classification to Referenceable 4e752be4-1936-4a24-9ff3-90d5129fcfd5",
+              "user": "generalnpa",
+              "classificationName": "Ownership",
+              "changeAction": "Created"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "dataAssetProperties": {
+        "class": "DataAssetProperties",
+        "qualifiedName": "Apache Atlas:Table:sales_fact_daily_mv@cl1",
+        "additionalProperties": {
+          "owner": "Joe BI",
+          "temporary": "false",
+          "tableType": "Managed",
+          "lastAccessTime": "1689792523531",
+          "createTime": "1689792523531",
+          "retention": "1689792523531"
+        },
+        "typeName": "DataSet",
+        "technicalName": "sales_fact_daily_mv",
+        "technicalDescription": "sales fact daily materialized view",
+        "isReferenceAsset": false
+      },
+      "correlationHeaders": [
+        {
+          "synchronizationDirection": "FROM_THIRD_PARTY",
+          "externalIdentifier": "f9da9d70-164b-48e5-972e-f22003b49650",
+          "externalIdentifierName": "atlasGUID",
+          "externalIdentifierSource": "AtlasIntegrator",
+          "keyPattern": "LOCAL_KEY",
+          "externalInstanceCreatedBy": "admin",
+          "externalInstanceCreationTime": "2023-07-19T18:48:43.534+00:00",
+          "externalInstanceLastUpdatedBy": "admin",
+          "externalInstanceLastUpdateTime": "2023-07-19T18:48:44.847+00:00",
+          "externalInstanceVersion": 0,
+          "mappingProperties": {
+            "originator": "AtlasIntegrator:Apache Atlas Lineage Integration Module",
+            "atlasType": "Table"
+          },
+          "assetManagerGUID": "654fde37-e1ef-490d-9d27-2f113b4e7905",
+          "assetManagerName": "ApacheAtlasDL01",
+          "lastSynchronized": "2023-08-04T16:20:45.606+00:00"
+        }
+      ],
+      "elementHeader": {
+        "class": "ElementHeader",
+        "headerVersion": 0,
+        "status": "ACTIVE",
+        "type": {
+          "typeId": "1449911c-4f44-4c22-abc0-7540154feefb",
+          "typeName": "DataSet",
+          "superTypeNames": [
+            "Asset",
+            "Referenceable",
+            "OpenMetadataRoot"
+          ],
+          "typeVersion": 4,
+          "typeDescription": "Collection of related data."
+        },
+        "origin": {
+          "sourceServer": "metadata-store",
+          "originCategory": "EXTERNAL_SOURCE",
+          "homeMetadataCollectionId": "654fde37-e1ef-490d-9d27-2f113b4e7905",
+          "homeMetadataCollectionName": "ApacheAtlasDL01"
+        },
+        "versions": {
+          "createdBy": "generalnpa",
+          "createTime": "2023-08-04T16:20:45.602+00:00",
+          "version": 1
+        },
+        "guid": "150c527a-0129-4cd8-99dc-fc5e95b38d0a",
+        "classifications": [
+          {
+            "class": "ElementClassification",
+            "headerVersion": 0,
+            "status": "ACTIVE",
+            "type": {
+              "typeId": "8139a911-a4bd-432b-a9f4-f6d11c511abe",
+              "typeName": "Ownership",
+              "typeVersion": 1,
+              "typeDescription": "Who is responsible for making decisions on the management and governance of this element."
+            },
+            "origin": {
+              "sourceServer": "metadata-store",
+              "originCategory": "LOCAL_COHORT",
+              "homeMetadataCollectionId": "e82356af-336d-4842-aa64-f7994144a668",
+              "homeMetadataCollectionName": "metadata-store"
+            },
+            "versions": {
+              "createdBy": "generalnpa",
+              "createTime": "2023-08-04T16:20:46.032+00:00",
+              "version": 1
+            },
+            "classificationOrigin": "ASSIGNED",
+            "classificationName": "Ownership",
+            "classificationProperties": {
+              "owner": "Joe BI",
+              "ownerTypeName": "UserIdentity",
+              "ownerPropertyName": "userId"
+            }
+          },
+          {
+            "class": "ElementClassification",
+            "headerVersion": 0,
+            "status": "ACTIVE",
+            "type": {
+              "typeId": "adce83ac-10f1-4279-8a35-346976e94466",
+              "typeName": "LatestChange",
+              "typeVersion": 1,
+              "typeDescription": "Defines the latest change to an anchor entity and its associated attachments."
+            },
+            "origin": {
+              "sourceServer": "metadata-store",
+              "originCategory": "LOCAL_COHORT",
+              "homeMetadataCollectionId": "e82356af-336d-4842-aa64-f7994144a668",
+              "homeMetadataCollectionName": "metadata-store"
+            },
+            "versions": {
+              "createdBy": "OMAGServer",
+              "updatedBy": "OMAGServer",
+              "maintainedBy": [
+                "OMAGServer"
+              ],
+              "createTime": "2023-08-04T16:20:45.607+00:00",
+              "updateTime": "2023-08-04T16:20:46.033+00:00",
+              "version": 3
+            },
+            "classificationOrigin": "ASSIGNED",
+            "classificationName": "LatestChange",
+            "classificationProperties": {
+              "changeTarget": "EntityClassification",
+              "description": "Adding Ownership classification to Referenceable 150c527a-0129-4cd8-99dc-fc5e95b38d0a",
+              "user": "generalnpa",
+              "classificationName": "Ownership",
+              "changeAction": "Created"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "dataAssetProperties": {
+        "class": "DataAssetProperties",
+        "qualifiedName": "Apache Atlas:Table:time_dim@cl1",
+        "additionalProperties": {
+          "owner": "John Doe",
+          "temporary": "false",
+          "tableType": "External",
+          "lastAccessTime": "1689792522138",
+          "createTime": "1689792522138",
+          "retention": "1689792522138"
+        },
+        "typeName": "DataSet",
+        "technicalName": "time_dim",
+        "technicalDescription": "time dimension table",
+        "isReferenceAsset": false
+      },
+      "correlationHeaders": [
+        {
+          "synchronizationDirection": "FROM_THIRD_PARTY",
+          "externalIdentifier": "bdcb8598-b40f-4a93-97d5-89452f28090e",
+          "externalIdentifierName": "atlasGUID",
+          "externalIdentifierSource": "AtlasIntegrator",
+          "keyPattern": "LOCAL_KEY",
+          "externalInstanceCreatedBy": "admin",
+          "externalInstanceCreationTime": "2023-07-19T18:48:42.141+00:00",
+          "externalInstanceLastUpdatedBy": "admin",
+          "externalInstanceLastUpdateTime": "2023-07-19T18:48:44.338+00:00",
+          "externalInstanceVersion": 0,
+          "mappingProperties": {
+            "originator": "AtlasIntegrator:Apache Atlas Lineage Integration Module",
+            "atlasType": "Table"
+          },
+          "assetManagerGUID": "654fde37-e1ef-490d-9d27-2f113b4e7905",
+          "assetManagerName": "ApacheAtlasDL01",
+          "lastSynchronized": "2023-08-04T16:20:44.515+00:00"
+        }
+      ],
+      "elementHeader": {
+        "class": "ElementHeader",
+        "headerVersion": 0,
+        "status": "ACTIVE",
+        "type": {
+          "typeId": "1449911c-4f44-4c22-abc0-7540154feefb",
+          "typeName": "DataSet",
+          "superTypeNames": [
+            "Asset",
+            "Referenceable",
+            "OpenMetadataRoot"
+          ],
+          "typeVersion": 4,
+          "typeDescription": "Collection of related data."
+        },
+        "origin": {
+          "sourceServer": "metadata-store",
+          "originCategory": "EXTERNAL_SOURCE",
+          "homeMetadataCollectionId": "654fde37-e1ef-490d-9d27-2f113b4e7905",
+          "homeMetadataCollectionName": "ApacheAtlasDL01"
+        },
+        "versions": {
+          "createdBy": "generalnpa",
+          "createTime": "2023-08-04T16:20:44.512+00:00",
+          "version": 1
+        },
+        "guid": "43384a96-e047-4f59-9ef0-32cf542edb7b",
+        "classifications": [
+          {
+            "class": "ElementClassification",
+            "headerVersion": 0,
+            "status": "ACTIVE",
+            "type": {
+              "typeId": "8139a911-a4bd-432b-a9f4-f6d11c511abe",
+              "typeName": "Ownership",
+              "typeVersion": 1,
+              "typeDescription": "Who is responsible for making decisions on the management and governance of this element."
+            },
+            "origin": {
+              "sourceServer": "metadata-store",
+              "originCategory": "LOCAL_COHORT",
+              "homeMetadataCollectionId": "e82356af-336d-4842-aa64-f7994144a668",
+              "homeMetadataCollectionName": "metadata-store"
+            },
+            "versions": {
+              "createdBy": "generalnpa",
+              "createTime": "2023-08-04T16:20:44.937+00:00",
+              "version": 1
+            },
+            "classificationOrigin": "ASSIGNED",
+            "classificationName": "Ownership",
+            "classificationProperties": {
+              "owner": "John Doe",
+              "ownerTypeName": "UserIdentity",
+              "ownerPropertyName": "userId"
+            }
+          },
+          {
+            "class": "ElementClassification",
+            "headerVersion": 0,
+            "status": "ACTIVE",
+            "type": {
+              "typeId": "adce83ac-10f1-4279-8a35-346976e94466",
+              "typeName": "LatestChange",
+              "typeVersion": 1,
+              "typeDescription": "Defines the latest change to an anchor entity and its associated attachments."
+            },
+            "origin": {
+              "sourceServer": "metadata-store",
+              "originCategory": "LOCAL_COHORT",
+              "homeMetadataCollectionId": "e82356af-336d-4842-aa64-f7994144a668",
+              "homeMetadataCollectionName": "metadata-store"
+            },
+            "versions": {
+              "createdBy": "OMAGServer",
+              "updatedBy": "OMAGServer",
+              "maintainedBy": [
+                "OMAGServer"
+              ],
+              "createTime": "2023-08-04T16:20:44.517+00:00",
+              "updateTime": "2023-08-04T16:20:44.938+00:00",
+              "version": 3
+            },
+            "classificationOrigin": "ASSIGNED",
+            "classificationName": "LatestChange",
+            "classificationProperties": {
+              "changeTarget": "EntityClassification",
+              "description": "Adding Ownership classification to Referenceable 43384a96-e047-4f59-9ef0-32cf542edb7b",
+              "user": "generalnpa",
+              "classificationName": "Ownership",
+              "changeAction": "Created"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "dataAssetProperties": {
+        "class": "DataAssetProperties",
+        "qualifiedName": "Apache Atlas:LoadProcess:loadLogsMonthly@cl1",
+        "additionalProperties": {
+          "queryGraph": "graph",
+          "queryText": "create table as select ",
+          "startTime": "1689792525310",
+          "queryPlan": "plan",
+          "endTime": "1689792535310",
+          "queryId": "id"
+        },
+        "typeName": "DeployedSoftwareComponent",
+        "technicalName": "loadLogsMonthly",
+        "technicalDescription": "hive query for monthly summary",
+        "isReferenceAsset": false
+      },
+      "correlationHeaders": [
+        {
+          "synchronizationDirection": "FROM_THIRD_PARTY",
+          "externalIdentifier": "64faa08b-b586-40fe-8f28-a4c799dfbbd4",
+          "externalIdentifierName": "atlasGUID",
+          "externalIdentifierSource": "AtlasIntegrator",
+          "keyPattern": "LOCAL_KEY",
+          "externalInstanceCreatedBy": "admin",
+          "externalInstanceCreationTime": "2023-07-19T18:48:45.313+00:00",
+          "externalInstanceLastUpdatedBy": "admin",
+          "externalInstanceLastUpdateTime": "2023-07-19T18:48:45.687+00:00",
+          "externalInstanceVersion": 0,
+          "mappingProperties": {
+            "originator": "AtlasIntegrator:Apache Atlas Lineage Integration Module",
+            "atlasType": "LoadProcess"
+          },
+          "assetManagerGUID": "654fde37-e1ef-490d-9d27-2f113b4e7905",
+          "assetManagerName": "ApacheAtlasDL01",
+          "lastSynchronized": "2023-08-04T16:20:46.667+00:00"
+        }
+      ],
+      "elementHeader": {
+        "class": "ElementHeader",
+        "headerVersion": 0,
+        "status": "ACTIVE",
+        "type": {
+          "typeId": "486af62c-dcfd-4859-ab24-eab2e380ecfd",
+          "typeName": "DeployedSoftwareComponent",
+          "superTypeNames": [
+            "Process",
+            "Asset",
+            "Referenceable",
+            "OpenMetadataRoot"
+          ],
+          "typeVersion": 2,
+          "typeDescription": "A packaged and deployed software component supporting a well-defined function."
+        },
+        "origin": {
+          "sourceServer": "metadata-store",
+          "originCategory": "EXTERNAL_SOURCE",
+          "homeMetadataCollectionId": "654fde37-e1ef-490d-9d27-2f113b4e7905",
+          "homeMetadataCollectionName": "ApacheAtlasDL01"
+        },
+        "versions": {
+          "createdBy": "generalnpa",
+          "createTime": "2023-08-04T16:20:46.665+00:00",
+          "version": 1
+        },
+        "guid": "fd4a0adc-5271-4421-8ca8-6123ec75cd60",
+        "classifications": [
+          {
+            "class": "ElementClassification",
+            "headerVersion": 0,
+            "status": "ACTIVE",
+            "type": {
+              "typeId": "adce83ac-10f1-4279-8a35-346976e94466",
+              "typeName": "LatestChange",
+              "typeVersion": 1,
+              "typeDescription": "Defines the latest change to an anchor entity and its associated attachments."
+            },
+            "origin": {
+              "sourceServer": "metadata-store",
+              "originCategory": "LOCAL_COHORT",
+              "homeMetadataCollectionId": "e82356af-336d-4842-aa64-f7994144a668",
+              "homeMetadataCollectionName": "metadata-store"
+            },
+            "versions": {
+              "createdBy": "OMAGServer",
+              "createTime": "2023-08-04T16:20:46.668+00:00",
+              "version": 1
+            },
+            "classificationOrigin": "ASSIGNED",
+            "classificationName": "LatestChange",
+            "classificationProperties": {
+              "relationshipType": "ExternalIdLink",
+              "attachmentType": "ExternalId",
+              "changeTarget": "EntityRelationship",
+              "description": "Linking Process fd4a0adc-5271-4421-8ca8-6123ec75cd60 to ExternalId 656e932c-d957-4211-b454-0786c04cfb23",
+              "attachmentGUID": "656e932c-d957-4211-b454-0786c04cfb23",
+              "user": "generalnpa",
+              "changeAction": "Created"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

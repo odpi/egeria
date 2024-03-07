@@ -83,6 +83,7 @@ public class ValidMetadataValueDetail extends ValidMetadataValue
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", preferredValue='" + getPreferredValue() + '\'' +
+                       ", dataType='" + getDataType() + '\'' +
                        ", isDeprecated=" + getIsDeprecated() +
                        ", isCaseSensitive=" + getIsCaseSensitive() +
                        ", additionalProperties=" + getAdditionalProperties() +

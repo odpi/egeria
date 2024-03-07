@@ -8,7 +8,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,11 +15,10 @@ import java.util.Map;
  */
 public class GovernanceActionTypeBuilder extends ReferenceableBuilder
 {
-    private final int          domainIdentifier;
-    private final String       displayName;
-    private final String       description;
-    private final List<String> supportedGuards;
-    private final int          waitTime;
+    private final int                 domainIdentifier;
+    private final String              displayName;
+    private final String              description;
+    private final int                 waitTime;
 
     /**
      * Create constructor
@@ -29,7 +27,6 @@ public class GovernanceActionTypeBuilder extends ReferenceableBuilder
      * @param domainIdentifier governance domain for this governance action
      * @param displayName short display name for the governance action
      * @param description description of the governance action
-     * @param supportedGuards list of guards that triggered this governance action
      * @param waitTime minimum number of minutes to wait before running the governance action
      * @param additionalProperties additional properties for a governance action
      * @param repositoryHelper helper methods
@@ -40,7 +37,6 @@ public class GovernanceActionTypeBuilder extends ReferenceableBuilder
                                 int                  domainIdentifier,
                                 String               displayName,
                                 String               description,
-                                List<String>         supportedGuards,
                                 int                  waitTime,
                                 Map<String, String>  additionalProperties,
                                 OMRSRepositoryHelper repositoryHelper,
@@ -56,11 +52,10 @@ public class GovernanceActionTypeBuilder extends ReferenceableBuilder
               serviceName,
               serverName);
 
-        this.domainIdentifier = domainIdentifier;
-        this.displayName = displayName;
-        this.description = description;
-        this.supportedGuards = supportedGuards;
-        this.waitTime = waitTime;
+        this.domainIdentifier          = domainIdentifier;
+        this.displayName               = displayName;
+        this.description               = description;
+        this.waitTime                  = waitTime;
     }
 
 
@@ -93,11 +88,7 @@ public class GovernanceActionTypeBuilder extends ReferenceableBuilder
                                                                   description,
                                                                   methodName);
 
-        properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                                       properties,
-                                                                       OpenMetadataType.PRODUCED_GUARDS_PROPERTY_NAME,
-                                                                       supportedGuards,
-                                                                       methodName);
+
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,

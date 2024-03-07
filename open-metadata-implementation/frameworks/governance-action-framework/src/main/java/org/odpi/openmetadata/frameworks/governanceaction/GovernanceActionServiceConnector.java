@@ -30,7 +30,6 @@ import java.util.List;
  * Each type of governance action service is passed a specialized context that provides it with the metadata methods it needs for its specific role.
  * When you build a governance action service, you extend the governance action service class that matches the purpose of your governance action
  * to ensure your code receives a context with the appropriate interface.
- *
  * In addition, there is a generic governance action service called <b>GeneralGovernanceActionService</b> that combines all the functions of the
  * five specialist types of governance action service.  It is used when if is more efficient to combine the functions into one execution.
  */

@@ -98,7 +98,7 @@ public class IntegrationContextManager
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        if (openIntegrationClient != null)
+        if ((openIntegrationClient != null) && (metadataSourceQualifiedName != null))
         {
             String metadataSourceGUID = openIntegrationClient.getMetadataSourceGUID(localServerUserId, metadataSourceQualifiedName);
 

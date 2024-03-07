@@ -215,7 +215,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
 
         try
         {
-            super.waitForStartDate();
+            super.waitForStartDate(engineHostUserId);
 
             auditLog.logMessage(actionDescription,
                                 GovernanceActionAuditCode.GOVERNANCE_ACTION_SERVICE_STARTING.getMessageDefinition(governanceActionServiceType,

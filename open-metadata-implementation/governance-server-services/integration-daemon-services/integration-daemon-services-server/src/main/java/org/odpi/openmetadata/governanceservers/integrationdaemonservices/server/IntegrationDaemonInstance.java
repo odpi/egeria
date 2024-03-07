@@ -13,6 +13,7 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handler
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationConnectorHandler;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationGroupHandler;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationServiceHandler;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorReport;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationGroupSummary;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.IntegrationDaemonThread;
 
@@ -389,6 +390,44 @@ public class IntegrationDaemonInstance extends GovernanceServerServiceInstance
                                                 actionDescription,
                                                 parameterName);
         }
+    }
+
+
+
+    /**
+     * Retrieve all the connectors.
+     */
+    public List<IntegrationConnectorReport> getConnectorReports()
+    {
+        List<IntegrationConnectorReport> connectorReports = new ArrayList<>();
+
+        for (String connectorId : integrationConnectorCacheMap.getConnectorIds())
+        {
+            if (connectorId != null)
+            {
+                IntegrationConnectorHandler connectorHandler = integrationConnectorCacheMap.getHandlerByConnectorId(connectorId);
+
+                if (connectorHandler != null)
+                {
+                    IntegrationConnectorReport connectorReport = new IntegrationConnectorReport();
+
+                    connectorReport.setConnectorId(connectorHandler.getIntegrationConnectorId());
+                    connectorReport.setConnectorName(connectorHandler.getIntegrationConnectorName());
+                    connectorReport.setConnectorStatus(connectorHandler.getIntegrationConnectorStatus());
+                    connectorReport.setConnection(connectorHandler.getConnection());
+                    connectorReport.setConnectorInstanceId(connectorHandler.getIntegrationConnectorInstanceId());
+                    connectorReport.setFailingExceptionMessage(connectorHandler.getFailingExceptionMessage());
+                    connectorReport.setStatistics(connectorHandler.getStatistics());
+                    connectorReport.setLastStatusChange(connectorHandler.getLastStatusChange());
+                    connectorReport.setLastRefreshTime(connectorHandler.getLastRefreshTime());
+                    connectorReport.setMinMinutesBetweenRefresh(connectorHandler.getMinMinutesBetweenRefresh());
+
+                    connectorReports.add(connectorReport);
+                }
+            }
+        }
+
+        return connectorReports;
     }
 
 

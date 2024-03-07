@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.ProvisioningGovernanceActionService;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.*;
 
@@ -31,7 +32,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
     private final PropertyHelper propertyHelper = new PropertyHelper();
 
-    private String  topLevelProcessName                  = "MoveCopyFileGovernanceActionConnector";
+    private String  topLevelProcessName                  = MoveCopyFileGovernanceActionProvider.DEFAULT_TOP_LEVEL_PROCESS_NAME_PROPERTY;
     private String  destinationFileTemplateQualifiedName = null;
     private String  topLevelProcessTemplateQualifiedName = null;
     private String  destinationFileNamePattern           = "{0}";
@@ -205,11 +206,11 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         CompletionStatus completionStatus;
         String           completionMessage = null;
 
-        if (MoveCopyFileGovernanceActionProvider.MOVE_REQUEST_TYPE.equals(governanceContext.getRequestType()))
+        if (RequestType.MOVE_FILE.requestType.equals(governanceContext.getRequestType()))
         {
             copyFile = false;
         }
-        else if (MoveCopyFileGovernanceActionProvider.DELETE_REQUEST_TYPE.equals(governanceContext.getRequestType()))
+        else if (RequestType.DELETE_FILE.requestType.equals(governanceContext.getRequestType()))
         {
             deleteFile = true;
         }
@@ -221,63 +222,63 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
          */
         if (configurationProperties != null)
         {
-            Object noLineageOption = configurationProperties.get(MoveCopyFileGovernanceActionProvider.NO_LINEAGE_PROPERTY);
+            Object noLineageOption = configurationProperties.get(RequestParameter.NO_LINEAGE.getName());
 
             if (noLineageOption != null)
             {
                 createLineage = false;
             }
 
-            Object processNameOption = configurationProperties.get(MoveCopyFileGovernanceActionProvider.TOP_LEVEL_PROCESS_NAME_PROPERTY);
+            Object processNameOption = configurationProperties.get(RequestParameter.TOP_LEVEL_PROCESS_NAME.getName());
 
             if (processNameOption != null)
             {
                 topLevelProcessName = processNameOption.toString();
             }
 
-            Object templateNameOption = configurationProperties.get(MoveCopyFileGovernanceActionProvider.DESTINATION_TEMPLATE_NAME_PROPERTY);
+            Object templateNameOption = configurationProperties.get(RequestParameter.DESTINATION_TEMPLATE_NAME.getName());
 
             if (templateNameOption != null)
             {
                 destinationFileTemplateQualifiedName = templateNameOption.toString();
             }
 
-            templateNameOption = configurationProperties.get(MoveCopyFileGovernanceActionProvider.TOP_LEVEL_PROCESS_TEMPLATE_NAME_PROPERTY);
+            templateNameOption = configurationProperties.get(RequestParameter.TOP_LEVEL_PROCESS_TEMPLATE_NAME.getName());
 
             if (templateNameOption != null)
             {
                 topLevelProcessTemplateQualifiedName = templateNameOption.toString();
             }
 
-            Object fileNamePatternOption = configurationProperties.get(MoveCopyFileGovernanceActionProvider.TARGET_FILE_NAME_PATTERN_PROPERTY);
+            Object fileNamePatternOption = configurationProperties.get(RequestParameter.TARGET_FILE_NAME_PATTERN.getName());
 
             if (fileNamePatternOption != null)
             {
                 destinationFileNamePattern = fileNamePatternOption.toString();
             }
 
-            Object destinationFolderOption = configurationProperties.get(MoveCopyFileGovernanceActionProvider.DESTINATION_FOLDER_PROPERTY);
+            Object destinationFolderOption = configurationProperties.get(RequestParameter.DESTINATION_DIRECTORY.getName());
 
             if (destinationFolderOption != null)
             {
                 destinationFolderName = destinationFolderOption.toString();
             }
 
-            Object sourceLineageOption = configurationProperties.get(MoveCopyFileGovernanceActionProvider.LINEAGE_FROM_SOURCE_FOLDER_ONLY_PROPERTY);
+            Object sourceLineageOption = configurationProperties.get(RequestParameter.LINEAGE_FROM_SOURCE_FOLDER_ONLY.getName());
 
             if (sourceLineageOption != null)
             {
                 sourceLineageFromFile = false;
             }
 
-            Object destinationLineageOption = configurationProperties.get(MoveCopyFileGovernanceActionProvider.LINEAGE_TO_DESTINATION_FOLDER_ONLY_PROPERTY);
+            Object destinationLineageOption = configurationProperties.get(RequestParameter.LINEAGE_TO_DESTINATION_FOLDER_ONLY.getName());
 
             if (destinationLineageOption != null)
             {
                 destinationLineageToFile = false;
             }
 
-            Object processLineageOption = configurationProperties.get(MoveCopyFileGovernanceActionProvider.TOP_LEVEL_PROCESS_ONLY_LINEAGE_PROPERTY);
+            Object processLineageOption = configurationProperties.get(RequestParameter.TOP_LEVEL_PROCESS_ONLY_LINEAGE.getName());
 
             if (processLineageOption != null)
             {
@@ -295,41 +296,45 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
 
             for (String requestParameterName : requestParameters.keySet())
             {
-                if (requestParameterName != null)
+                if (RequestParameter.SOURCE_FILE.name.equals(requestParameterName))
                 {
-                    switch (requestParameterName)
-                    {
-                        case MoveCopyFileGovernanceActionProvider.SOURCE_FILE_PROPERTY:
-                            sourceFileName = requestParameters.get(requestParameterName);
-                            break;
-                        case MoveCopyFileGovernanceActionProvider.DESTINATION_FOLDER_PROPERTY:
-                            destinationFolderName = requestParameters.get(requestParameterName);
-                            break;
-                        case MoveCopyFileGovernanceActionProvider.DESTINATION_TEMPLATE_NAME_PROPERTY:
-                            destinationFileTemplateQualifiedName = requestParameters.get(requestParameterName);
-                            break;
-                        case MoveCopyFileGovernanceActionProvider.TARGET_FILE_NAME_PATTERN_PROPERTY:
-                            destinationFileNamePattern = requestParameters.get(requestParameterName);
-                            break;
-                        case MoveCopyFileGovernanceActionProvider.NO_LINEAGE_PROPERTY:
-                            createLineage = false;
-                            break;
-                        case MoveCopyFileGovernanceActionProvider.TOP_LEVEL_PROCESS_NAME_PROPERTY:
-                            topLevelProcessName = requestParameters.get(requestParameterName);
-                            break;
-                        case MoveCopyFileGovernanceActionProvider.TOP_LEVEL_PROCESS_TEMPLATE_NAME_PROPERTY:
-                            topLevelProcessTemplateQualifiedName = requestParameters.get(requestParameterName);
-                            break;
-                        case MoveCopyFileGovernanceActionProvider.TOP_LEVEL_PROCESS_ONLY_LINEAGE_PROPERTY:
-                            childProcessLineage = false;
-                            break;
-                        case MoveCopyFileGovernanceActionProvider.LINEAGE_FROM_SOURCE_FOLDER_ONLY_PROPERTY:
-                            sourceLineageFromFile = false;
-                            break;
-                        case MoveCopyFileGovernanceActionProvider.LINEAGE_TO_DESTINATION_FOLDER_ONLY_PROPERTY:
-                            destinationLineageToFile = false;
-                            break;
-                    }
+                    sourceFileName = requestParameters.get(requestParameterName);
+                }
+                else if (RequestParameter.DESTINATION_DIRECTORY.name.equals(requestParameterName))
+                {
+                    destinationFolderName = requestParameters.get(requestParameterName);
+                }
+                else if (RequestParameter.DESTINATION_TEMPLATE_NAME.getName().equals(requestParameterName))
+                {
+                    destinationFileTemplateQualifiedName = requestParameters.get(requestParameterName);
+                }
+                else if (RequestParameter.TARGET_FILE_NAME_PATTERN.getName().equals(requestParameterName))
+                {
+                    destinationFileNamePattern = requestParameters.get(requestParameterName);
+                }
+                else if (RequestParameter.NO_LINEAGE.getName().equals(requestParameterName))
+                {
+                    createLineage = false;
+                }
+                else if (RequestParameter.TOP_LEVEL_PROCESS_NAME.getName().equals(requestParameterName))
+                {
+                    topLevelProcessName = requestParameters.get(requestParameterName);
+                }
+                else if (RequestParameter.TOP_LEVEL_PROCESS_TEMPLATE_NAME.getName().equals(requestParameterName))
+                {
+                    topLevelProcessTemplateQualifiedName = requestParameters.get(requestParameterName);
+                }
+                else if (RequestParameter.TOP_LEVEL_PROCESS_ONLY_LINEAGE.getName().equals(requestParameterName))
+                {
+                    childProcessLineage = false;
+                }
+                else if (RequestParameter.LINEAGE_FROM_SOURCE_FOLDER_ONLY.getName().equals(requestParameterName))
+                {
+                    sourceLineageFromFile = false;
+                }
+                else if (RequestParameter.LINEAGE_TO_DESTINATION_FOLDER_ONLY.getName().equals(requestParameterName))
+                {
+                    destinationLineageToFile = false;
                 }
             }
         }
@@ -391,8 +396,8 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                 File fileToDelete = new File(sourceFileName);
                 FileUtils.forceDelete(fileToDelete);
 
-                outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_COMPLETE_GUARD);
-                completionStatus = CompletionStatus.ACTIONED;
+                outputGuards.add(MoveCopyFileGuard.PROVISIONING_COMPLETE.getName());
+                completionStatus = MoveCopyFileGuard.PROVISIONING_COMPLETE.getCompletionStatus();
             }
             else
             {
@@ -419,17 +424,17 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                         NewActionTarget actionTarget = new NewActionTarget();
 
                         actionTarget.setActionTargetGUID(newActionTargetGUID);
-                        actionTarget.setActionTargetName(MoveCopyFileGovernanceActionProvider.NEW_ASSET_GUID_PROPERTY);
+                        actionTarget.setActionTargetName(MoveCopyFileGovernanceActionProvider.NEW_ASSET_PROPERTY);
                         newActionTargets.add(actionTarget);
                     }
 
-                    outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_COMPLETE_GUARD);
-                    completionStatus = CompletionStatus.ACTIONED;
+                    outputGuards.add(MoveCopyFileGuard.PROVISIONING_COMPLETE.getName());
+                    completionStatus = MoveCopyFileGuard.PROVISIONING_COMPLETE.getCompletionStatus();
                 }
                 else
                 {
-                    outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_FAILED_NO_FILE_NAMES_GUARD);
-                    completionStatus = CompletionStatus.FAILED;
+                    outputGuards.add(MoveCopyFileGuard.PROVISIONING_FAILED_NO_FILE_NAMES.getName());
+                    completionStatus = MoveCopyFileGuard.PROVISIONING_FAILED_NO_FILE_NAMES.getCompletionStatus();
                 }
             }
         }
@@ -447,8 +452,8 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
                                       error);
             }
 
-            outputGuards.add(MoveCopyFileGovernanceActionProvider.PROVISIONING_FAILED_EXCEPTION_GUARD);
-            completionStatus = CompletionStatus.FAILED;
+            outputGuards.add(MoveCopyFileGuard.PROVISIONING_FAILED_EXCEPTION.getName());
+            completionStatus = MoveCopyFileGuard.PROVISIONING_FAILED_EXCEPTION.getCompletionStatus();
             completionMessage = error.getMessage();
         }
 
@@ -807,7 +812,7 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
             {
                 auditLog.logMessage(methodName, GovernanceActionConnectorsAuditCode.MISSING_TEMPLATE.getMessageDefinition(governanceServiceName,
                                                                                                                           destinationFileTemplateQualifiedName,
-                                                                                                                          MoveCopyFileGovernanceActionProvider.DESTINATION_TEMPLATE_NAME_PROPERTY,
+                                                                                                                          RequestParameter.DESTINATION_TEMPLATE_NAME.getName(),
                                                                                                                           newFileGUID));
             }
         }
@@ -820,10 +825,10 @@ public class MoveCopyFileGovernanceActionConnector extends ProvisioningGovernanc
         sourceFileGUID = governanceContext.getOpenMetadataStore().getMetadataElementGUIDByUniqueName(sourceFileName, "pathName");
         if (sourceFileGUID != null)
         {
-            governanceContext.createLineageRelationship("DataFlow", sourceFileGUID, null, null, null, processGUID);
+            governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_TYPE_NAME, sourceFileGUID, null, null, null, processGUID);
         }
 
-        governanceContext.createLineageRelationship("DataFlow", processGUID, null, null, null, newFileGUID);
+        governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_TYPE_NAME, processGUID, null, null, null, newFileGUID);
 
         metadataStore.setForLineage(false);
 

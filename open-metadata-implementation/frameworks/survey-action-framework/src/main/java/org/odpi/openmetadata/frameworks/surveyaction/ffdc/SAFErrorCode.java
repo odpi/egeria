@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.surveyaction.ffdc;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
@@ -52,12 +53,22 @@ public enum SAFErrorCode implements ExceptionMessageSet
             "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action pipeline service or the associated open survey action engine.  Once the cause is resolved, retry the survey action request."),
 
     /**
+     * SAF-CONNECTOR-400-004 - The {0} survey action service has been disconnected - either due to its own actions or a cancel request
+     */
+    DISCONNECT_DETECTED(400, "SAF-CONNECTOR-400-004",
+                        "The {0} survey action service has been disconnected - either due to its own actions or a cancel request",
+                        "The survey action framework will attempt to stop the work of the survey action framework",
+                        "Monitor the shutdown of the survey action service."),
+
+
+    /**
      * SAF-SURVEY-ACTION-SERVICE-500-001 - Unexpected exception in survey action service {0} of type {1} detected by method {2}.  The error message was {3}
      */
     UNEXPECTED_EXCEPTION(500, "SAF-SURVEY-ACTION-SERVICE-500-001",
             "Unexpected exception in survey action service {0} of type {1} detected by method {2}.  The error message was {3}",
             "The survey action service failed during its operation.",
             "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action service.  Once the cause is resolved, retry the survey action request."),
+
     ;
 
     private final int    httpErrorCode;

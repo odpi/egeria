@@ -25,6 +25,7 @@ public class ValidValueSetProperties extends ReferenceableProperties
     private String  usage          = null;
     private String  scope          = null;
     private String  preferredValue = null;
+    private String  dataType       = null;
     private boolean isDeprecated   = false;
     private boolean isCaseSensitive = false;
 
@@ -54,6 +55,7 @@ public class ValidValueSetProperties extends ReferenceableProperties
             usage = template.getUsage();
             scope = template.getScope();
             preferredValue = template.getPreferredValue();
+            dataType = template.getDataType();
             isDeprecated = template.getIsDeprecated();
             isCaseSensitive = template.getIsCaseSensitive();
         }
@@ -195,6 +197,28 @@ public class ValidValueSetProperties extends ReferenceableProperties
 
 
     /**
+     * Returns the data type of the preferred value.
+     *
+     * @return string
+     */
+    public String getDataType()
+    {
+        return dataType;
+    }
+
+
+    /**
+     * Set up the data type of the preferred value.
+     *
+     * @param dataType string
+     */
+    public void setDataType(String dataType)
+    {
+        this.dataType = dataType;
+    }
+
+
+    /**
      * Return whether this valid value is case-sensitive, or will match irrespective of case.
      *
      * @return boolean flag
@@ -252,6 +276,7 @@ public class ValidValueSetProperties extends ReferenceableProperties
                        ", usage='" + usage + '\'' +
                        ", scope='" + scope + '\'' +
                        ", preferredValue='" + preferredValue + '\'' +
+                       ", dataType='" + dataType + '\'' +
                        ", isDeprecated=" + isDeprecated +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
@@ -291,7 +316,8 @@ public class ValidValueSetProperties extends ReferenceableProperties
                 Objects.equals(scope, that.scope) &&
                 Objects.equals(isDeprecated, that.isDeprecated) &&
                 Objects.equals(isCaseSensitive, that.isCaseSensitive) &&
-                Objects.equals(preferredValue, that.preferredValue);
+                Objects.equals(preferredValue, that.preferredValue) &&
+                Objects.equals(dataType, that.dataType);
     }
 
 
@@ -303,6 +329,6 @@ public class ValidValueSetProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, category, usage, scope, preferredValue, isDeprecated, isCaseSensitive);
+        return Objects.hash(super.hashCode(), displayName, description, category, usage, scope, preferredValue, dataType, isDeprecated, isCaseSensitive);
     }
 }

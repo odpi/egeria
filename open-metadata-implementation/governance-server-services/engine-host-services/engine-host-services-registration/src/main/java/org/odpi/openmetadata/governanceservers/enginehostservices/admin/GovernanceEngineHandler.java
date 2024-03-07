@@ -39,7 +39,7 @@ public abstract class GovernanceEngineHandler
     private String        governanceEngineTypeName = null;
     private List<String>  governanceEngineSuperTypeNames = null;
 
-    private final Map<String, Thread> engineActionThreadMap = new HashMap<>();
+    private final Map<String, EngineActionExecution> engineActionThreadMap = new HashMap<>();
 
     private final GovernanceEngineConfigurationClient configurationClient;        /* Initialized in constructor */
 
@@ -507,8 +507,6 @@ public abstract class GovernanceEngineHandler
             {
                 engineActionClient.claimEngineAction(serverUserId, engineActionGUID);
 
-                engineActionClient.updateEngineActionStatus(serverUserId, engineActionGUID, EngineActionStatus.IN_PROGRESS);
-
                 runGovernanceService(engineActionGUID,
                                      latestEngineActionElement.getRequestType(),
                                      latestEngineActionElement.getStartTime(),
@@ -595,45 +593,70 @@ public abstract class GovernanceEngineHandler
      * @param engineActionGUID unique identifier of the engine action that initiated this request.
      * @param serviceToRun runnable packed with details of the governance service
      * @param threadName name of the thread for diagnostic purposes
+     * @throws InvalidParameterException error updating engine action status
+     * @throws PropertyServerException error updating engine action status
+     * @throws UserNotAuthorizedException error updating engine action status
      */
-    protected synchronized void startServiceExecutionThread(String    engineActionGUID,
-                                                            Runnable  serviceToRun,
-                                                            String    threadName)
+    protected synchronized void startServiceExecutionThread(String                    engineActionGUID,
+                                                            GovernanceServiceHandler  serviceToRun,
+                                                            String                    threadName) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
     {
         Thread thread = new Thread(serviceToRun, threadName);
 
-        engineActionThreadMap.put(engineActionGUID, thread);
+        EngineActionExecution engineActionExecution = new EngineActionExecution();
+
+        engineActionExecution.executionThread = thread;
+        engineActionExecution.governanceServiceHandler = serviceToRun;
+
+        engineActionThreadMap.put(engineActionGUID, engineActionExecution);
 
         thread.start();
     }
 
 
     /**
-     * Cancelling a running governance service.
+     * Cancelling a running governance service.  The ability to stop the running service is not guaranteed and
+     * the engine host's platform may need to be restarted.
      *
      * @param engineActionGUID unique identifier of the engine action
      */
-    private synchronized void cancelGovernanceService(String engineActionGUID)
+    private synchronized void cancelGovernanceService(String engineActionGUID) throws ConnectorCheckedException
     {
         final String methodName = "cancelGovernanceService";
 
-        Thread governanceServiceThread = engineActionThreadMap.get(engineActionGUID);
+        EngineActionExecution engineActionExecution = engineActionThreadMap.get(engineActionGUID);
 
-        if (governanceServiceThread != null)
+        if (engineActionExecution.executionThread != null)
         {
             auditLog.logMessage(methodName,
                                 EngineHostServicesAuditCode.ENGINE_ACTION_CANCELLED.getMessageDefinition(governanceEngineName,
-                                                                                                      engineActionGUID,
-                                                                                                      governanceServiceThread.getName()));
+                                                                                                         engineActionGUID,
+                                                                                                         engineActionExecution.executionThread.getName()));
 
             /*
-             * This interrupt should cause an exception to be received by the
-             * governance service thread
+             * Tell the service to shut down.  This will cause exceptions if the service accesses its context.
              */
-            governanceServiceThread.interrupt();
+            engineActionExecution.governanceServiceHandler.disconnect();
+
+            /*
+             * This interrupt should cause an exception to be received by the governance service thread.
+             * However, it is highly unreliable unless the survey service is performing IO like writing to a file.
+             */
+            engineActionExecution.executionThread.interrupt();
         }
     }
 
+
+    /**
+     * A class to capture the execution environment.
+     */
+    static class EngineActionExecution
+    {
+        GovernanceServiceHandler governanceServiceHandler;
+        Thread                   executionThread;
+    }
 
 
     /**

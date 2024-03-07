@@ -62,6 +62,7 @@ public interface AssetOnboardingValidValues
      * @param usage how/when should this value be used.
      * @param scope what is the scope of the values.
      * @param preferredValue the value that should be used in an implementation if possible.
+     * @param dataType the data type of the preferred value.
      * @param additionalProperties additional properties for this definition.
      * @param extendedProperties properties that need to be populated into a subtype.
      *
@@ -80,6 +81,7 @@ public interface AssetOnboardingValidValues
                                        String              usage,
                                        String              scope,
                                        String              preferredValue,
+                                       String              dataType,
                                        Map<String, String> additionalProperties,
                                        Map<String, Object> extendedProperties) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
@@ -99,6 +101,7 @@ public interface AssetOnboardingValidValues
      * @param usage how/when should this value be used.
      * @param scope what is the scope of the values.
      * @param preferredValue the value that should be used in an implementation if possible.
+     * @param dataType the data type of the preferred value.
      * @param isDeprecated is this value deprecated?
      * @param additionalProperties additional properties for this valid value.
      * @param extendedProperties properties that need to be populated into a subtype.
@@ -115,6 +118,7 @@ public interface AssetOnboardingValidValues
                              String              usage,
                              String              scope,
                              String              preferredValue,
+                             String              dataType,
                              boolean             isDeprecated,
                              Map<String, String> additionalProperties,
                              Map<String, Object> extendedProperties) throws InvalidParameterException,

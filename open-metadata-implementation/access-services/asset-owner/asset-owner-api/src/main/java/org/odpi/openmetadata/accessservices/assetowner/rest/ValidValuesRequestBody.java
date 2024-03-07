@@ -34,6 +34,7 @@ public class ValidValuesRequestBody extends AssetOwnerOMASAPIRequestBody
     private String                      usage                = null;
     private String                      scope                = null;
     private String                      preferredValue       = null;
+    private String                      dataType             = null;
     private boolean                     isDeprecated         = false;
 
 
@@ -68,6 +69,7 @@ public class ValidValuesRequestBody extends AssetOwnerOMASAPIRequestBody
             this.usage = template.getUsage();
             this.scope = template.getScope();
             this.preferredValue = template.getPreferredValue();
+            this.dataType = template.getDataType();
             this.isDeprecated = template.getIsDeprecated();
         }
     }
@@ -345,6 +347,28 @@ public class ValidValuesRequestBody extends AssetOwnerOMASAPIRequestBody
 
 
     /**
+     * Returns the data type of the preferred value.
+     *
+     * @return string
+     */
+    public String getDataType()
+    {
+        return dataType;
+    }
+
+
+    /**
+     * Set up the data type of the preferred value.
+     *
+     * @param dataType string
+     */
+    public void setDataType(String dataType)
+    {
+        this.dataType = dataType;
+    }
+
+
+    /**
      * Is the valid value deprecated?
      *
      * @return boolean flag
@@ -386,6 +410,7 @@ public class ValidValuesRequestBody extends AssetOwnerOMASAPIRequestBody
                        ", usage='" + usage + '\'' +
                        ", scope='" + scope + '\'' +
                        ", preferredValue='" + preferredValue + '\'' +
+                       ", dataType='" + dataType + '\'' +
                        ", isDeprecated=" + isDeprecated +
                        '}';
     }
@@ -424,7 +449,8 @@ public class ValidValuesRequestBody extends AssetOwnerOMASAPIRequestBody
                 Objects.equals(usage, that.usage) &&
                 Objects.equals(scope, that.scope) &&
                 Objects.equals(isDeprecated, that.isDeprecated) &&
-                Objects.equals(preferredValue, that.preferredValue);
+                Objects.equals(preferredValue, that.preferredValue) &&
+                Objects.equals(dataType, that.dataType);
     }
 
 
@@ -438,6 +464,6 @@ public class ValidValuesRequestBody extends AssetOwnerOMASAPIRequestBody
     {
         return Objects.hash(super.hashCode(), getTypeName(), getClassifications(), getQualifiedName(),
                             getAdditionalProperties(), getExtendedProperties(),
-                            displayName, description, category, usage, scope, isDeprecated, preferredValue);
+                            displayName, description, category, usage, scope, isDeprecated, preferredValue, dataType);
     }
 }
