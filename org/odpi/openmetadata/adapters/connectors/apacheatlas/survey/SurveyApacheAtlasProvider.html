@@ -47,7 +47,7 @@ loadScripts(document, 'script');</script>
 </ul>
 <ul class="sub-nav-list">
 <li>Detail:&nbsp;</li>
-<li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
+<li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
 <li>Method</li>
 </ul>
@@ -70,7 +70,7 @@ loadScripts(document, 'script');</script>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="../../../../frameworks/connectors/ConnectorProvider.html" title="class in org.odpi.openmetadata.frameworks.connectors">org.odpi.openmetadata.frameworks.connectors.ConnectorProvider</a>
 <div class="inheritance"><a href="../../../../frameworks/connectors/ConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase</a>
-<div class="inheritance"><a href="../../../../frameworks/governanceaction/search/GovernanceServiceProviderBase.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">org.odpi.openmetadata.frameworks.governanceaction.search.GovernanceServiceProviderBase</a>
+<div class="inheritance"><a href="../../../../frameworks/governanceaction/GovernanceServiceProviderBase.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase</a>
 <div class="inheritance"><a href="../../../../frameworks/surveyaction/SurveyActionServiceProvider.html" title="class in org.odpi.openmetadata.frameworks.surveyaction">org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider</a>
 <div class="inheritance">org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasProvider</div>
 </div>
@@ -95,35 +95,12 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
-<div class="caption"><span>Fields</span></div>
-<div class="summary-table three-column-summary">
-<div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Field</div>
-<div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#ANALYSIS_STEP_NAME_PROFILE" class="member-name-link">ANALYSIS_STEP_NAME_PROFILE</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Set finalAnalysisStep to PROFILE to get the basic statistics, schema extracted and the instances from Apache Atlas profiled.</div>
-</div>
-<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#ANALYSIS_STEP_NAME_SCHEMA" class="member-name-link">ANALYSIS_STEP_NAME_SCHEMA</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">Set finalAnalysisStep to SCHEMA to get the basic statistics and schema extracted from Apache Atlas.</div>
-</div>
-<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#ANALYSIS_STEP_NAME_STATS" class="member-name-link">ANALYSIS_STEP_NAME_STATS</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Set finalAnalysisStep to STATS to get the basic statistics from Apache Atlas</div>
-</div>
-<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#FINAL_ANALYSIS_STEP_PROPERTY_NAME" class="member-name-link">FINAL_ANALYSIS_STEP_PROPERTY_NAME</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">Property name to control how much profiling the discovery service does.</div>
-</div>
-</div>
 <div class="inherited-list">
-<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.governanceaction.search.GovernanceServiceProviderBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.governanceaction.search.<a href="../../../../frameworks/governanceaction/search/GovernanceServiceProviderBase.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">GovernanceServiceProviderBase</a></h3>
-<code><a href="../../../../frameworks/governanceaction/search/GovernanceServiceProviderBase.html#actionTargetTypes">actionTargetTypes</a>, <a href="../../../../frameworks/governanceaction/search/GovernanceServiceProviderBase.html#supportedAssetTypeName">supportedAssetTypeName</a>, <a href="../../../../frameworks/governanceaction/search/GovernanceServiceProviderBase.html#supportedGuards">supportedGuards</a>, <a href="../../../../frameworks/governanceaction/search/GovernanceServiceProviderBase.html#supportedRequestParameters">supportedRequestParameters</a>, <a href="../../../../frameworks/governanceaction/search/GovernanceServiceProviderBase.html#supportedRequestSourceNames">supportedRequestSourceNames</a>, <a href="../../../../frameworks/governanceaction/search/GovernanceServiceProviderBase.html#supportedRequestTypes">supportedRequestTypes</a>, <a href="../../../../frameworks/governanceaction/search/GovernanceServiceProviderBase.html#supportedTargetActionNames">supportedTargetActionNames</a></code></div>
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.surveyaction.<a href="../../../../frameworks/surveyaction/SurveyActionServiceProvider.html" title="class in org.odpi.openmetadata.frameworks.surveyaction">SurveyActionServiceProvider</a></h3>
+<code><a href="../../../../frameworks/surveyaction/SurveyActionServiceProvider.html#supportedAnalysisSteps">supportedAnalysisSteps</a>, <a href="../../../../frameworks/surveyaction/SurveyActionServiceProvider.html#supportedAnnotationTypes">supportedAnnotationTypes</a></code></div>
+<div class="inherited-list">
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.governanceaction.<a href="../../../../frameworks/governanceaction/GovernanceServiceProviderBase.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceServiceProviderBase</a></h3>
+<code><a href="../../../../frameworks/governanceaction/GovernanceServiceProviderBase.html#producedActionTargetTypes">producedActionTargetTypes</a>, <a href="../../../../frameworks/governanceaction/GovernanceServiceProviderBase.html#producedGuards">producedGuards</a>, <a href="../../../../frameworks/governanceaction/GovernanceServiceProviderBase.html#producedRequestParameters">producedRequestParameters</a>, <a href="../../../../frameworks/governanceaction/GovernanceServiceProviderBase.html#supportedActionTargetTypes">supportedActionTargetTypes</a>, <a href="../../../../frameworks/governanceaction/GovernanceServiceProviderBase.html#supportedAssetTypeName">supportedAssetTypeName</a>, <a href="../../../../frameworks/governanceaction/GovernanceServiceProviderBase.html#supportedRequestParameters">supportedRequestParameters</a>, <a href="../../../../frameworks/governanceaction/GovernanceServiceProviderBase.html#supportedRequestTypes">supportedRequestTypes</a></code></div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/ConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorProviderBase</a></h3>
 <code><a href="../../../../frameworks/connectors/ConnectorProviderBase.html#auditLog">auditLog</a>, <a href="../../../../frameworks/connectors/ConnectorProviderBase.html#connectorInterfaces">connectorInterfaces</a>, <a href="../../../../frameworks/connectors/ConnectorProviderBase.html#connectorTypeBean">connectorTypeBean</a></code></div>
@@ -150,8 +127,11 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.governanceaction.search.GovernanceServiceProviderBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.governanceaction.search.<a href="../../../../frameworks/governanceaction/search/GovernanceServiceProviderBase.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">GovernanceServiceProviderBase</a></h3>
-<code><a href="../../../../frameworks/governanceaction/search/GovernanceServiceProviderBase.html#getActionTargetTypes()">getActionTargetTypes</a>, <a href="../../../../frameworks/governanceaction/search/GovernanceServiceProviderBase.html#getSupportedActionTargetNames()">getSupportedActionTargetNames</a>, <a href="../../../../frameworks/governanceaction/search/GovernanceServiceProviderBase.html#getSupportedGuards()">getSupportedGuards</a>, <a href="../../../../frameworks/governanceaction/search/GovernanceServiceProviderBase.html#getSupportedRequestParameters()">getSupportedRequestParameters</a>, <a href="../../../../frameworks/governanceaction/search/GovernanceServiceProviderBase.html#getSupportedRequestSourceNames()">getSupportedRequestSourceNames</a>, <a href="../../../../frameworks/governanceaction/search/GovernanceServiceProviderBase.html#getSupportedRequestTypes()">getSupportedRequestTypes</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.surveyaction.<a href="../../../../frameworks/surveyaction/SurveyActionServiceProvider.html" title="class in org.odpi.openmetadata.frameworks.surveyaction">SurveyActionServiceProvider</a></h3>
+<code><a href="../../../../frameworks/surveyaction/SurveyActionServiceProvider.html#getSupportedAnalysisSteps()">getSupportedAnalysisSteps</a>, <a href="../../../../frameworks/surveyaction/SurveyActionServiceProvider.html#getSupportedAnnotationTypes()">getSupportedAnnotationTypes</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.governanceaction.<a href="../../../../frameworks/governanceaction/GovernanceServiceProviderBase.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceServiceProviderBase</a></h3>
+<code><a href="../../../../frameworks/governanceaction/GovernanceServiceProviderBase.html#getProducedActionTargetTypes()">getProducedActionTargetTypes</a>, <a href="../../../../frameworks/governanceaction/GovernanceServiceProviderBase.html#getProducedGuards()">getProducedGuards</a>, <a href="../../../../frameworks/governanceaction/GovernanceServiceProviderBase.html#getProducedRequestParameters()">getProducedRequestParameters</a>, <a href="../../../../frameworks/governanceaction/GovernanceServiceProviderBase.html#getSupportedActionTargetTypes()">getSupportedActionTargetTypes</a>, <a href="../../../../frameworks/governanceaction/GovernanceServiceProviderBase.html#getSupportedRequestParameters()">getSupportedRequestParameters</a>, <a href="../../../../frameworks/governanceaction/GovernanceServiceProviderBase.html#getSupportedRequestTypes()">getSupportedRequestTypes</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/ConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorProviderBase</a></h3>
 <code><a href="../../../../frameworks/connectors/ConnectorProviderBase.html#equals(java.lang.Object)">equals</a>, <a href="../../../../frameworks/connectors/ConnectorProviderBase.html#getConnector(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">getConnector</a>, <a href="../../../../frameworks/connectors/ConnectorProviderBase.html#getConnector(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">getConnector</a>, <a href="../../../../frameworks/connectors/ConnectorProviderBase.html#getConnectorClassName()">getConnectorClassName</a>, <a href="../../../../frameworks/connectors/ConnectorProviderBase.html#getConnectorComponentDescription()">getConnectorComponentDescription</a>, <a href="../../../../frameworks/connectors/ConnectorProviderBase.html#getConnectorType()">getConnectorType</a>, <a href="../../../../frameworks/connectors/ConnectorProviderBase.html#getConnectorTypeProperties()">getConnectorTypeProperties</a>, <a href="../../../../frameworks/connectors/ConnectorProviderBase.html#getNewConnectorGUID()">getNewConnectorGUID</a>, <a href="../../../../frameworks/connectors/ConnectorProviderBase.html#hashCode()">hashCode</a>, <a href="../../../../frameworks/connectors/ConnectorProviderBase.html#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)">setAuditLog</a>, <a href="../../../../frameworks/connectors/ConnectorProviderBase.html#setConnectorClassName(java.lang.String)">setConnectorClassName</a>, <a href="../../../../frameworks/connectors/ConnectorProviderBase.html#setConnectorComponentDescription(org.odpi.openmetadata.frameworks.auditlog.ComponentDescription)">setConnectorComponentDescription</a>, <a href="../../../../frameworks/connectors/ConnectorProviderBase.html#setConnectorTypeProperties(org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType)">setConnectorTypeProperties</a>, <a href="../../../../frameworks/connectors/ConnectorProviderBase.html#toString()">toString</a></code></div>
@@ -164,74 +144,6 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="details">
 <ul class="details-list">
-<!-- ============ FIELD DETAIL =========== -->
-<li>
-<section class="field-details" id="field-detail">
-<h2>Field Details</h2>
-<ul class="member-list">
-<li>
-<section class="detail" id="FINAL_ANALYSIS_STEP_PROPERTY_NAME">
-<h3>FINAL_ANALYSIS_STEP_PROPERTY_NAME</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">FINAL_ANALYSIS_STEP_PROPERTY_NAME</span></div>
-<div class="block">Property name to control how much profiling the discovery service does.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasProvider.FINAL_ANALYSIS_STEP_PROPERTY_NAME">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="ANALYSIS_STEP_NAME_STATS">
-<h3>ANALYSIS_STEP_NAME_STATS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">ANALYSIS_STEP_NAME_STATS</span></div>
-<div class="block">Set finalAnalysisStep to STATS to get the basic statistics from Apache Atlas</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_STATS">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="ANALYSIS_STEP_NAME_SCHEMA">
-<h3>ANALYSIS_STEP_NAME_SCHEMA</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">ANALYSIS_STEP_NAME_SCHEMA</span></div>
-<div class="block">Set finalAnalysisStep to SCHEMA to get the basic statistics and schema extracted from Apache Atlas.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_SCHEMA">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="ANALYSIS_STEP_NAME_PROFILE">
-<h3>ANALYSIS_STEP_NAME_PROFILE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">ANALYSIS_STEP_NAME_PROFILE</span></div>
-<div class="block">Set finalAnalysisStep to PROFILE to get the basic statistics, schema extracted and the instances from Apache Atlas profiled.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasProvider.ANALYSIS_STEP_NAME_PROFILE">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
-</section>
-</li>
-</ul>
-</section>
-</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">

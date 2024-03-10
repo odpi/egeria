@@ -15,7 +15,11 @@
 <script type="text/javascript" src="../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="class-declaration-page">
-<script type="text/javascript">var pathtoroot = "../../../../../";
+<script type="text/javascript">var evenRowColor = "even-row-color";
+var oddRowColor = "odd-row-color";
+var tableTab = "table-tab";
+var activeTableTab = "active-table-tab";
+var pathtoroot = "../../../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -47,9 +51,9 @@ loadScripts(document, 'script');</script>
 </ul>
 <ul class="sub-nav-list">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
-<li>Method</li>
+<li><a href="#method-detail">Method</a></li>
 </ul>
 </div>
 <div class="nav-list-search"><label for="search-input">SEARCH:</label>
@@ -70,7 +74,7 @@ loadScripts(document, 'script');</script>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="../connectors/ConnectorProvider.html" title="class in org.odpi.openmetadata.frameworks.connectors">org.odpi.openmetadata.frameworks.connectors.ConnectorProvider</a>
 <div class="inheritance"><a href="../connectors/ConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase</a>
-<div class="inheritance"><a href="../governanceaction/search/GovernanceServiceProviderBase.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">org.odpi.openmetadata.frameworks.governanceaction.search.GovernanceServiceProviderBase</a>
+<div class="inheritance"><a href="../governanceaction/GovernanceServiceProviderBase.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider</div>
 </div>
 </div>
@@ -87,7 +91,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">SurveyActionServiceProvider</span>
-<span class="extends-implements">extends <a href="../governanceaction/search/GovernanceServiceProviderBase.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">GovernanceServiceProviderBase</a></span></div>
+<span class="extends-implements">extends <a href="../governanceaction/GovernanceServiceProviderBase.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceServiceProviderBase</a></span></div>
 <div class="block">SurveyActionServiceProvider implements the base class for the connector provider for a survey action service.</div>
 </section>
 <section class="summary">
@@ -96,9 +100,21 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
+<div class="caption"><span>Fields</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Field</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/AnalysisStepType.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.controls">AnalysisStepType</a>&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#supportedAnalysisSteps" class="member-name-link">supportedAnalysisSteps</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/AnnotationTypeType.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.controls">AnnotationTypeType</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#supportedAnnotationTypes" class="member-name-link">supportedAnnotationTypes</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+</div>
 <div class="inherited-list">
-<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.governanceaction.search.GovernanceServiceProviderBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.governanceaction.search.<a href="../governanceaction/search/GovernanceServiceProviderBase.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">GovernanceServiceProviderBase</a></h3>
-<code><a href="../governanceaction/search/GovernanceServiceProviderBase.html#actionTargetTypes">actionTargetTypes</a>, <a href="../governanceaction/search/GovernanceServiceProviderBase.html#supportedAssetTypeName">supportedAssetTypeName</a>, <a href="../governanceaction/search/GovernanceServiceProviderBase.html#supportedGuards">supportedGuards</a>, <a href="../governanceaction/search/GovernanceServiceProviderBase.html#supportedRequestParameters">supportedRequestParameters</a>, <a href="../governanceaction/search/GovernanceServiceProviderBase.html#supportedRequestSourceNames">supportedRequestSourceNames</a>, <a href="../governanceaction/search/GovernanceServiceProviderBase.html#supportedRequestTypes">supportedRequestTypes</a>, <a href="../governanceaction/search/GovernanceServiceProviderBase.html#supportedTargetActionNames">supportedTargetActionNames</a></code></div>
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.governanceaction.<a href="../governanceaction/GovernanceServiceProviderBase.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceServiceProviderBase</a></h3>
+<code><a href="../governanceaction/GovernanceServiceProviderBase.html#producedActionTargetTypes">producedActionTargetTypes</a>, <a href="../governanceaction/GovernanceServiceProviderBase.html#producedGuards">producedGuards</a>, <a href="../governanceaction/GovernanceServiceProviderBase.html#producedRequestParameters">producedRequestParameters</a>, <a href="../governanceaction/GovernanceServiceProviderBase.html#supportedActionTargetTypes">supportedActionTargetTypes</a>, <a href="../governanceaction/GovernanceServiceProviderBase.html#supportedAssetTypeName">supportedAssetTypeName</a>, <a href="../governanceaction/GovernanceServiceProviderBase.html#supportedRequestParameters">supportedRequestParameters</a>, <a href="../governanceaction/GovernanceServiceProviderBase.html#supportedRequestTypes">supportedRequestTypes</a></code></div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../connectors/ConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorProviderBase</a></h3>
 <code><a href="../connectors/ConnectorProviderBase.html#auditLog">auditLog</a>, <a href="../connectors/ConnectorProviderBase.html#connectorInterfaces">connectorInterfaces</a>, <a href="../connectors/ConnectorProviderBase.html#connectorTypeBean">connectorTypeBean</a></code></div>
@@ -113,7 +129,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">SurveyActionServiceProvider</a>()</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Base provider for all survey action services.</div>
+</div>
 </div>
 </section>
 </li>
@@ -121,9 +139,29 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
+<div id="method-summary-table">
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div id="method-summary-table.tabpanel" role="tabpanel">
+<div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Method</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/AnalysisStepType.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.controls">AnalysisStepType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSupportedAnalysisSteps()" class="member-name-link">getSupportedAnalysisSteps</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the analysis steps that the service supports.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/AnnotationTypeType.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.controls">AnnotationTypeType</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSupportedAnnotationTypes()" class="member-name-link">getSupportedAnnotationTypes</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the supported annotation types.</div>
+</div>
+</div>
+</div>
+</div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.governanceaction.search.GovernanceServiceProviderBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.governanceaction.search.<a href="../governanceaction/search/GovernanceServiceProviderBase.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">GovernanceServiceProviderBase</a></h3>
-<code><a href="../governanceaction/search/GovernanceServiceProviderBase.html#getActionTargetTypes()">getActionTargetTypes</a>, <a href="../governanceaction/search/GovernanceServiceProviderBase.html#getSupportedActionTargetNames()">getSupportedActionTargetNames</a>, <a href="../governanceaction/search/GovernanceServiceProviderBase.html#getSupportedGuards()">getSupportedGuards</a>, <a href="../governanceaction/search/GovernanceServiceProviderBase.html#getSupportedRequestParameters()">getSupportedRequestParameters</a>, <a href="../governanceaction/search/GovernanceServiceProviderBase.html#getSupportedRequestSourceNames()">getSupportedRequestSourceNames</a>, <a href="../governanceaction/search/GovernanceServiceProviderBase.html#getSupportedRequestTypes()">getSupportedRequestTypes</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.governanceaction.<a href="../governanceaction/GovernanceServiceProviderBase.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">GovernanceServiceProviderBase</a></h3>
+<code><a href="../governanceaction/GovernanceServiceProviderBase.html#getProducedActionTargetTypes()">getProducedActionTargetTypes</a>, <a href="../governanceaction/GovernanceServiceProviderBase.html#getProducedGuards()">getProducedGuards</a>, <a href="../governanceaction/GovernanceServiceProviderBase.html#getProducedRequestParameters()">getProducedRequestParameters</a>, <a href="../governanceaction/GovernanceServiceProviderBase.html#getSupportedActionTargetTypes()">getSupportedActionTargetTypes</a>, <a href="../governanceaction/GovernanceServiceProviderBase.html#getSupportedRequestParameters()">getSupportedRequestParameters</a>, <a href="../governanceaction/GovernanceServiceProviderBase.html#getSupportedRequestTypes()">getSupportedRequestTypes</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../connectors/ConnectorProviderBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorProviderBase</a></h3>
 <code><a href="../connectors/ConnectorProviderBase.html#equals(java.lang.Object)">equals</a>, <a href="../connectors/ConnectorProviderBase.html#getConnector(org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">getConnector</a>, <a href="../connectors/ConnectorProviderBase.html#getConnector(org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties)">getConnector</a>, <a href="../connectors/ConnectorProviderBase.html#getConnectorClassName()">getConnectorClassName</a>, <a href="../connectors/ConnectorProviderBase.html#getConnectorComponentDescription()">getConnectorComponentDescription</a>, <a href="../connectors/ConnectorProviderBase.html#getConnectorType()">getConnectorType</a>, <a href="../connectors/ConnectorProviderBase.html#getConnectorTypeProperties()">getConnectorTypeProperties</a>, <a href="../connectors/ConnectorProviderBase.html#getNewConnectorGUID()">getNewConnectorGUID</a>, <a href="../connectors/ConnectorProviderBase.html#hashCode()">hashCode</a>, <a href="../connectors/ConnectorProviderBase.html#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)">setAuditLog</a>, <a href="../connectors/ConnectorProviderBase.html#setConnectorClassName(java.lang.String)">setConnectorClassName</a>, <a href="../connectors/ConnectorProviderBase.html#setConnectorComponentDescription(org.odpi.openmetadata.frameworks.auditlog.ComponentDescription)">setConnectorComponentDescription</a>, <a href="../connectors/ConnectorProviderBase.html#setConnectorTypeProperties(org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType)">setConnectorTypeProperties</a>, <a href="../connectors/ConnectorProviderBase.html#toString()">toString</a></code></div>
@@ -136,6 +174,26 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="details">
 <ul class="details-list">
+<!-- ============ FIELD DETAIL =========== -->
+<li>
+<section class="field-details" id="field-detail">
+<h2>Field Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="supportedAnalysisSteps">
+<h3>supportedAnalysisSteps</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/AnalysisStepType.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.controls">AnalysisStepType</a>&gt;</span>&nbsp;<span class="element-name">supportedAnalysisSteps</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="supportedAnnotationTypes">
+<h3>supportedAnnotationTypes</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/AnnotationTypeType.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.controls">AnnotationTypeType</a>&gt;</span>&nbsp;<span class="element-name">supportedAnnotationTypes</span></div>
+</section>
+</li>
+</ul>
+</section>
+</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">
@@ -145,6 +203,37 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;()">
 <h3>SurveyActionServiceProvider</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SurveyActionServiceProvider</span>()</div>
+<div class="block">Base provider for all survey action services.</div>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<!-- ============ METHOD DETAIL ========== -->
+<li>
+<section class="method-details" id="method-detail">
+<h2>Method Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="getSupportedAnalysisSteps()">
+<h3>getSupportedAnalysisSteps</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/AnalysisStepType.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.controls">AnalysisStepType</a>&gt;</span>&nbsp;<span class="element-name">getSupportedAnalysisSteps</span>()</div>
+<div class="block">Return the analysis steps that the service supports.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of analysis steps</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSupportedAnnotationTypes()">
+<h3>getSupportedAnnotationTypes</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/AnnotationTypeType.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.controls">AnnotationTypeType</a>&gt;</span>&nbsp;<span class="element-name">getSupportedAnnotationTypes</span>()</div>
+<div class="block">Return the supported annotation types.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of annotation types</dd>
+</dl>
 </section>
 </li>
 </ul>

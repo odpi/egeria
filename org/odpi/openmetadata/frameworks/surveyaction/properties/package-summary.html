@@ -44,7 +44,7 @@ loadScripts(document, 'script');</script>
 <div>
 <ul class="sub-nav-list">
 <li>Package:&nbsp;</li>
-<li>Description&nbsp;|&nbsp;</li>
+<li><a href="#package-description">Description</a>&nbsp;|&nbsp;</li>
 <li><a href="#related-package-summary">Related Packages</a>&nbsp;|&nbsp;</li>
 <li><a href="#class-summary">Classes and Interfaces</a></li>
 </ul>
@@ -64,6 +64,9 @@ loadScripts(document, 'script');</script>
 </div>
 <hr>
 <div class="package-signature">package <span class="element-name">org.odpi.openmetadata.frameworks.surveyaction.properties</span></div>
+<section class="package-description" id="package-description">
+<div class="block">Property beans used on the Survey Action Framework interfaces.</div>
+</section>
 <section class="summary">
 <ul class="summary-list">
 <li>
@@ -73,9 +76,18 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Package</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><a href="../package-summary.html">org.odpi.openmetadata.frameworks.surveyaction</a></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="../ffdc/package-summary.html">org.odpi.openmetadata.frameworks.surveyaction.ffdc</a></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Connectors and interfaces of the Survey Action Framework (SAF).</div>
+</div>
+<div class="col-first odd-row-color"><a href="../controls/package-summary.html">org.odpi.openmetadata.frameworks.surveyaction.controls</a></div>
+<div class="col-last odd-row-color">
+<div class="block">Classes that describe the properties that control the behaviour of an executing
+ survey action service and its role in a governance action process.</div>
+</div>
+<div class="col-first even-row-color"><a href="../ffdc/package-summary.html">org.odpi.openmetadata.frameworks.surveyaction.ffdc</a></div>
+<div class="col-last even-row-color">
+<div class="block">Details of the messages for the Audit Log and Exceptions.</div>
+</div>
 </div>
 </div>
 </li>
@@ -106,23 +118,6 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">DataFieldAnnotation is a common base class for annotations that are attached to a data field.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DataProfileAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">DataProfileAnnotation</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">DataProfileAnnotation holds properties that describe the characteristics of a specific field within a data source.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DataProfileLogAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">DataProfileLogAnnotation</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">DataProfileLogAnnotation is an annotation that is used when the profile data generated is too big to store in the metadata server
- and has been located in log files instead.</div>
-</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DataSourceMeasurementAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">DataSourceMeasurementAnnotation</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
-<div class="block">DataSourceMeasurementAnnotation describes properties that describe the characteristics of the data source as a whole.</div>
-</div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="DataSourcePhysicalStatusAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">DataSourcePhysicalStatusAnnotation</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">DataSourceMeasurementAnnotation describes properties that describe the physical characteristics of a data source.</div>
-</div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="PropertyBase.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">PropertyBase</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">This property header implements any common mechanisms that all property objects need.</div>
@@ -139,6 +134,23 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="RequestForActionAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">RequestForActionAnnotation</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">RequestForActionAnnotation is used to record an issue that has been discovered.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ResourceMeasureAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">ResourceMeasureAnnotation</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">DataSourceMeasurementAnnotation describes properties that describe the characteristics of the data source as a whole.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ResourcePhysicalStatusAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">ResourcePhysicalStatusAnnotation</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">DataSourceMeasurementAnnotation describes properties that describe the physical characteristics of a data source.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ResourceProfileAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">ResourceProfileAnnotation</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">DataProfileAnnotation holds properties that describe the characteristics of a specific field within a data source.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ResourceProfileLogAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">ResourceProfileLogAnnotation</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">DataProfileLogAnnotation is an annotation that is used when the profile data generated is too big to store in the metadata server
+ and has been located in log files instead.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SchemaAnalysisAnnotation.html" title="class in org.odpi.openmetadata.frameworks.surveyaction.properties">SchemaAnalysisAnnotation</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">

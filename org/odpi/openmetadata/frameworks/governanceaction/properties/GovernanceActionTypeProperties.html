@@ -138,25 +138,45 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the identifier of the governance domain that this action belongs to (0=ALL/ANY).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceEngineGUID()" class="member-name-link">getGovernanceEngineGUID</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the unique identifier of governance engine that is processing the governance action.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProducedGuards()" class="member-name-link">getProducedGuards</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of guards provided by the previous governance service.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRequestParameters()" class="member-name-link">getRequestParameters</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFixedRequestParameters()" class="member-name-link">getFixedRequestParameters</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the parameters to pass onto the governance service.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceEngineGUID()" class="member-name-link">getGovernanceEngineGUID</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the unique identifier of governance engine that is processing the governance action.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../controls/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">ActionTargetType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProducedActionTargetTypes()" class="member-name-link">getProducedActionTargetTypes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the action targets that are produced by the governance service.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../controls/GuardType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">GuardType</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProducedGuards()" class="member-name-link">getProducedGuards</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of guards produced by the governance service.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../controls/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">RequestParameterType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProducedRequestParameters()" class="member-name-link">getProducedRequestParameters</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the request parameters that are produced by the governance service.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRequestType()" class="member-name-link">getRequestType</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the request type associated with this governance action.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../controls/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">ActionTargetType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSupportedActionTargetTypes()" class="member-name-link">getSupportedActionTargetTypes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the required action targets to supply when using this governance acton type to initiate an action.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../controls/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">RequestParameterType</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSupportedRequestParameters()" class="member-name-link">getSupportedRequestParameters</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the required request parameters to supply when using this governance acton type to initiate an action.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWaitTime()" class="member-name-link">getWaitTime</a>()</code></div>
@@ -184,24 +204,44 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the identifier of the governance domain that this action belongs to (0=ALL/ANY).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGovernanceEngineGUID(java.lang.String)" class="member-name-link">setGovernanceEngineGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceEngineGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the unique identifier of governance engine that is processing the governance action.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProducedGuards(java.util.List)" class="member-name-link">setProducedGuards</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;producedGuards)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the list of guards provided by the previous governance service.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRequestParameters(java.util.Map)" class="member-name-link">setRequestParameters</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;requestParameters)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setFixedRequestParameters(java.util.Map)" class="member-name-link">setFixedRequestParameters</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;fixedRequestParameters)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the parameters to pass onto the governance service.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setGovernanceEngineGUID(java.lang.String)" class="member-name-link">setGovernanceEngineGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;governanceEngineGUID)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the unique identifier of governance engine that is processing the governance action.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProducedActionTargetTypes(java.util.List)" class="member-name-link">setProducedActionTargetTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../controls/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">ActionTargetType</a>&gt;&nbsp;producedActionTargetTypes)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the action targets that are produced by the governance service.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProducedGuards(java.util.List)" class="member-name-link">setProducedGuards</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../controls/GuardType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">GuardType</a>&gt;&nbsp;producedGuards)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the list of guards produced by the governance service.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProducedRequestParameters(java.util.List)" class="member-name-link">setProducedRequestParameters</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../controls/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">RequestParameterType</a>&gt;&nbsp;producedRequestParameters)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the request parameters that are produced by the governance service.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRequestType(java.lang.String)" class="member-name-link">setRequestType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requestType)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the request type associated with this governance action, used to identify ths governance service to run.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSupportedActionTargetTypes(java.util.List)" class="member-name-link">setSupportedActionTargetTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../controls/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">ActionTargetType</a>&gt;&nbsp;supportedActionTargetTypes)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the required action targets to supply when using this governance acton type to initiate an action.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSupportedRequestParameters(java.util.List)" class="member-name-link">setSupportedRequestParameters</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../controls/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">RequestParameterType</a>&gt;&nbsp;supportedRequestParameters)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the required request parameters to supply when using this governance acton type to initiate an action.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setWaitTime(int)" class="member-name-link">setWaitTime</a><wbr>(int&nbsp;waitTime)</code></div>
@@ -326,10 +366,98 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="getSupportedRequestParameters()">
+<h3>getSupportedRequestParameters</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../controls/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">RequestParameterType</a>&gt;</span>&nbsp;<span class="element-name">getSupportedRequestParameters</span>()</div>
+<div class="block">Return the required request parameters to supply when using this governance acton type to initiate an action.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setSupportedRequestParameters(java.util.List)">
+<h3>setSupportedRequestParameters</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSupportedRequestParameters</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../controls/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">RequestParameterType</a>&gt;&nbsp;supportedRequestParameters)</span></div>
+<div class="block">Set up the required request parameters to supply when using this governance acton type to initiate an action.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>supportedRequestParameters</code> - list</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSupportedActionTargetTypes()">
+<h3>getSupportedActionTargetTypes</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../controls/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">ActionTargetType</a>&gt;</span>&nbsp;<span class="element-name">getSupportedActionTargetTypes</span>()</div>
+<div class="block">Return the required action targets to supply when using this governance acton type to initiate an action.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setSupportedActionTargetTypes(java.util.List)">
+<h3>setSupportedActionTargetTypes</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSupportedActionTargetTypes</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../controls/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">ActionTargetType</a>&gt;&nbsp;supportedActionTargetTypes)</span></div>
+<div class="block">Set up the required action targets to supply when using this governance acton type to initiate an action.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>supportedActionTargetTypes</code> - list</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getProducedRequestParameters()">
+<h3>getProducedRequestParameters</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../controls/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">RequestParameterType</a>&gt;</span>&nbsp;<span class="element-name">getProducedRequestParameters</span>()</div>
+<div class="block">Return the request parameters that are produced by the governance service.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setProducedRequestParameters(java.util.List)">
+<h3>setProducedRequestParameters</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setProducedRequestParameters</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../controls/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">RequestParameterType</a>&gt;&nbsp;producedRequestParameters)</span></div>
+<div class="block">Set up the request parameters that are produced by the governance service.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>producedRequestParameters</code> - list</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getProducedActionTargetTypes()">
+<h3>getProducedActionTargetTypes</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../controls/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">ActionTargetType</a>&gt;</span>&nbsp;<span class="element-name">getProducedActionTargetTypes</span>()</div>
+<div class="block">Return the action targets that are produced by the governance service.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setProducedActionTargetTypes(java.util.List)">
+<h3>setProducedActionTargetTypes</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setProducedActionTargetTypes</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../controls/ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">ActionTargetType</a>&gt;&nbsp;producedActionTargetTypes)</span></div>
+<div class="block">Set up the action targets that are produced by the governance service.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>producedActionTargetTypes</code> - list</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getProducedGuards()">
 <h3>getProducedGuards</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getProducedGuards</span>()</div>
-<div class="block">Return the list of guards provided by the previous governance service.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../controls/GuardType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">GuardType</a>&gt;</span>&nbsp;<span class="element-name">getProducedGuards</span>()</div>
+<div class="block">Return the list of guards produced by the governance service.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of guards</dd>
@@ -339,8 +467,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="setProducedGuards(java.util.List)">
 <h3>setProducedGuards</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setProducedGuards</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;producedGuards)</span></div>
-<div class="block">Set up the list of guards provided by the previous governance service.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setProducedGuards</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../controls/GuardType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">GuardType</a>&gt;&nbsp;producedGuards)</span></div>
+<div class="block">Set up the list of guards produced by the governance service.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>producedGuards</code> - list of guards</dd>
@@ -392,9 +520,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getRequestParameters()">
-<h3>getRequestParameters</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getRequestParameters</span>()</div>
+<section class="detail" id="getFixedRequestParameters()">
+<h3>getFixedRequestParameters</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getFixedRequestParameters</span>()</div>
 <div class="block">Return the parameters to pass onto the governance service.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -403,13 +531,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setRequestParameters(java.util.Map)">
-<h3>setRequestParameters</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRequestParameters</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;requestParameters)</span></div>
+<section class="detail" id="setFixedRequestParameters(java.util.Map)">
+<h3>setFixedRequestParameters</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setFixedRequestParameters</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;fixedRequestParameters)</span></div>
 <div class="block">Set up the parameters to pass onto the governance service.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>requestParameters</code> - map of properties</dd>
+<dd><code>fixedRequestParameters</code> - list of properties</dd>
 </dl>
 </section>
 </li>

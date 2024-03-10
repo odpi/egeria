@@ -81,7 +81,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="CollectionManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">CollectionManagement</a></code>, <code><a href="CommunityManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">CommunityManagement</a></code>, <code><a href="LocationManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">LocationManagement</a></code>, <code><a href="MetadataSourceClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">MetadataSourceClient</a></code>, <code><a href="OrganizationManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">OrganizationManagement</a></code>, <code><a href="SecurityGroupManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">SecurityGroupManagement</a></code>, <code><a href="UserIdentityManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">UserIdentityManagement</a></code>, <code><a href="ValidValueManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">ValidValueManagement</a></code></dd>
+<dd><code><a href="CollectionManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">CollectionManagement</a></code>, <code><a href="CommunityManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">CommunityManagement</a></code>, <code><a href="LocationManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">LocationManagement</a></code>, <code><a href="MetadataSourceClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">MetadataSourceClient</a></code>, <code><a href="OrganizationManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">OrganizationManagement</a></code>, <code><a href="SecurityGroupManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">SecurityGroupManagement</a></code>, <code><a href="ToDoActionManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">ToDoActionManagement</a></code>, <code><a href="UserIdentityManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">UserIdentityManagement</a></code>, <code><a href="ValidValueManagement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">ValidValueManagement</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">CommunityProfileBaseClient</span>
@@ -102,6 +102,12 @@ implements <a href="../api/RelatedElementsManagementInterface.html" title="inter
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>protected static final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#baseURLTemplatePrefix" class="member-name-link">baseURLTemplatePrefix</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected final <a href="OpenMetadataStoreClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">OpenMetadataStoreClient</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#openMetadataStoreClient" class="member-name-link">openMetadataStoreClient</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected final <a href="../../../frameworks/governanceaction/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyHelper</a></code></div>
+<div class="col-second even-row-color"><code><a href="#propertyHelper" class="member-name-link">propertyHelper</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
@@ -344,6 +350,18 @@ implements <a href="../api/RelatedElementsManagementInterface.html" title="inter
 <section class="field-details" id="field-detail">
 <h2>Field Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="propertyHelper">
+<h3>propertyHelper</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../../frameworks/governanceaction/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">PropertyHelper</a></span>&nbsp;<span class="element-name">propertyHelper</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="openMetadataStoreClient">
+<h3>openMetadataStoreClient</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="OpenMetadataStoreClient.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client">OpenMetadataStoreClient</a></span>&nbsp;<span class="element-name">openMetadataStoreClient</span></div>
+</section>
+</li>
 <li>
 <section class="detail" id="baseURLTemplatePrefix">
 <h3>baseURLTemplatePrefix</h3>

@@ -107,6 +107,7 @@ org.odpi.openmetadata.accessservices.assetowner.server.spring
 org.odpi.openmetadata.accessservices.communityprofile.admin
 org.odpi.openmetadata.accessservices.communityprofile.api
 org.odpi.openmetadata.accessservices.communityprofile.client
+org.odpi.openmetadata.accessservices.communityprofile.client.converters
 org.odpi.openmetadata.accessservices.communityprofile.client.rest
 org.odpi.openmetadata.accessservices.communityprofile.connectors.outtopic
 org.odpi.openmetadata.accessservices.communityprofile.converters
@@ -233,20 +234,6 @@ org.odpi.openmetadata.accessservices.digitalservice.properties
 org.odpi.openmetadata.accessservices.digitalservice.rest
 org.odpi.openmetadata.accessservices.digitalservice.server
 org.odpi.openmetadata.accessservices.digitalservice.spring
-org.odpi.openmetadata.accessservices.discoveryengine.admin
-org.odpi.openmetadata.accessservices.discoveryengine.api
-org.odpi.openmetadata.accessservices.discoveryengine.client
-org.odpi.openmetadata.accessservices.discoveryengine.client.rest
-org.odpi.openmetadata.accessservices.discoveryengine.converters
-org.odpi.openmetadata.accessservices.discoveryengine.events
-org.odpi.openmetadata.accessservices.discoveryengine.ffdc
-org.odpi.openmetadata.accessservices.discoveryengine.fvt
-org.odpi.openmetadata.accessservices.discoveryengine.fvt.clientconstructors
-org.odpi.openmetadata.accessservices.discoveryengine.fvt.discovery
-org.odpi.openmetadata.accessservices.discoveryengine.fvt.errorhandling
-org.odpi.openmetadata.accessservices.discoveryengine.rest
-org.odpi.openmetadata.accessservices.discoveryengine.server
-org.odpi.openmetadata.accessservices.discoveryengine.server.spring
 org.odpi.openmetadata.accessservices.glossaryview.client
 org.odpi.openmetadata.accessservices.glossaryview.converters
 org.odpi.openmetadata.accessservices.glossaryview.exception
@@ -437,6 +424,7 @@ org.odpi.openmetadata.adapters.connectors.apacheatlas.resource
 org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ffdc
 org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties
 org.odpi.openmetadata.adapters.connectors.apacheatlas.survey
+org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.controls
 org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.ffdc
 org.odpi.openmetadata.adapters.connectors.datastore.basicfile
 org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc
@@ -452,6 +440,7 @@ org.odpi.openmetadata.adapters.connectors.dynamicarchivers.glossary
 org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc
 org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning
 org.odpi.openmetadata.adapters.connectors.governanceactions.remediation
+org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship
 org.odpi.openmetadata.adapters.connectors.governanceactions.verification
 org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles
@@ -591,13 +580,6 @@ org.odpi.openmetadata.conformance.workbenches.platform
 org.odpi.openmetadata.conformance.workbenches.repository
 org.odpi.openmetadata.conformance.workbenches.repository.connectorconsumer
 org.odpi.openmetadata.conformance.workbenches.repository.listener
-org.odpi.openmetadata.engineservices.assetanalysis.admin
-org.odpi.openmetadata.engineservices.assetanalysis.api
-org.odpi.openmetadata.engineservices.assetanalysis.client
-org.odpi.openmetadata.engineservices.assetanalysis.client.rest
-org.odpi.openmetadata.engineservices.assetanalysis.ffdc
-org.odpi.openmetadata.engineservices.assetanalysis.handlers
-org.odpi.openmetadata.engineservices.assetanalysis.server
 org.odpi.openmetadata.engineservices.assetanalysis.server.spring
 org.odpi.openmetadata.engineservices.governanceaction.admin
 org.odpi.openmetadata.engineservices.governanceaction.api
@@ -635,8 +617,8 @@ org.odpi.openmetadata.frameworks.discovery
 org.odpi.openmetadata.frameworks.discovery.ffdc
 org.odpi.openmetadata.frameworks.discovery.properties
 org.odpi.openmetadata.frameworks.governanceaction
-org.odpi.openmetadata.frameworks.governanceaction.actiontargettype
 org.odpi.openmetadata.frameworks.governanceaction.client
+org.odpi.openmetadata.frameworks.governanceaction.controls
 org.odpi.openmetadata.frameworks.governanceaction.converters
 org.odpi.openmetadata.frameworks.governanceaction.events
 org.odpi.openmetadata.frameworks.governanceaction.ffdc
@@ -655,6 +637,7 @@ org.odpi.openmetadata.frameworks.integration.filelistener
 org.odpi.openmetadata.frameworks.integration.properties
 org.odpi.openmetadata.frameworks.integration.reports
 org.odpi.openmetadata.frameworks.surveyaction
+org.odpi.openmetadata.frameworks.surveyaction.controls
 org.odpi.openmetadata.frameworks.surveyaction.ffdc
 org.odpi.openmetadata.frameworks.surveyaction.properties
 org.odpi.openmetadata.frameworkservices.gaf.admin

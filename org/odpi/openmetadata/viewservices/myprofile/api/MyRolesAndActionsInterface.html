@@ -90,28 +90,21 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/communityprofile/metadataelements/PersonalRoleElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">PersonalRoleElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getMyPersonalRoles(java.lang.String,int,int)" class="member-name-link">getMyPersonalRoles</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/communityprofile/metadataelements/ToDoElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ToDoElement</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getMyToDos(java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus,int,int)" class="member-name-link">getMyToDos</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="../../../accessservices/communityprofile/properties/ToDoStatus.html" title="enum class in org.odpi.openmetadata.accessservices.communityprofile.properties">ToDoStatus</a>&nbsp;status,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Return a list of the personal roles that the calling user is appointed to.</div>
+<div class="block">Return a list of to dos assigned to the calling user.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/communityprofile/metadataelements/ToDoElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ToDoElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getMyToDos(java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus,int,int)" class="member-name-link">getMyToDos</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getMyToDosByActor(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus,int,int)" class="member-name-link">getMyToDosByActor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actorGUID,
  <a href="../../../accessservices/communityprofile/properties/ToDoStatus.html" title="enum class in org.odpi.openmetadata.accessservices.communityprofile.properties">ToDoStatus</a>&nbsp;status,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Return a list of to dos assigned to the calling user.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/communityprofile/metadataelements/ToDoElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ToDoElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getMyToDosByRole(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus,int,int)" class="member-name-link">getMyToDosByRole</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;personalRoleGUID,
- <a href="../../../accessservices/communityprofile/properties/ToDoStatus.html" title="enum class in org.odpi.openmetadata.accessservices.communityprofile.properties">ToDoStatus</a>&nbsp;status,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return a list of to dos assigned to the calling user.</div>
 </div>
 </div>
@@ -128,30 +121,6 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="getMyPersonalRoles(java.lang.String,int,int)">
-<h3>getMyPersonalRoles</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/communityprofile/metadataelements/PersonalRoleElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">PersonalRoleElement</a>&gt;</span>&nbsp;<span class="element-name">getMyPersonalRoles</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</span>
-                                      throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-<a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
-<a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Return a list of the personal roles that the calling user is appointed to.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userId</code> - userId of user making request.</dd>
-<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
-<dd><code>pageSize</code> - maximum number of elements to return.</dd>
-<dt>Returns:</dt>
-<dd>list of personal role details</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
-</dl>
-</section>
-</li>
 <li>
 <section class="detail" id="getMyToDos(java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus,int,int)">
 <h3>getMyToDos</h3>
@@ -179,21 +148,21 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getMyToDosByRole(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus,int,int)">
-<h3>getMyToDosByRole</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/communityprofile/metadataelements/ToDoElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ToDoElement</a>&gt;</span>&nbsp;<span class="element-name">getMyToDosByRole</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;personalRoleGUID,
+<section class="detail" id="getMyToDosByActor(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus,int,int)">
+<h3>getMyToDosByActor</h3>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../accessservices/communityprofile/metadataelements/ToDoElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ToDoElement</a>&gt;</span>&nbsp;<span class="element-name">getMyToDosByActor</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actorGUID,
  <a href="../../../accessservices/communityprofile/properties/ToDoStatus.html" title="enum class in org.odpi.openmetadata.accessservices.communityprofile.properties">ToDoStatus</a>&nbsp;status,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</span>
-                            throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                             throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Return a list of to dos assigned to the calling user.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - userId of user making request.</dd>
-<dd><code>personalRoleGUID</code> - unique identifier of the user's role.</dd>
+<dd><code>actorGUID</code> - unique identifier of the user's actor.</dd>
 <dd><code>status</code> - status of the to do (null means current active)</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
 <dd><code>pageSize</code> - maximum number of elements to return.</dd>

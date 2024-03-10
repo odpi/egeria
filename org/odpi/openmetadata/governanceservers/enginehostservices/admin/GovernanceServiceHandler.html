@@ -81,7 +81,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../../../engineservices/assetanalysis/handlers/DiscoveryServiceHandler.html" title="class in org.odpi.openmetadata.engineservices.assetanalysis.handlers">DiscoveryServiceHandler</a></code>, <code><a href="../../../engineservices/governanceaction/handlers/GovernanceActionServiceHandler.html" title="class in org.odpi.openmetadata.engineservices.governanceaction.handlers">GovernanceActionServiceHandler</a></code>, <code><a href="../../../engineservices/repositorygovernance/handlers/RepositoryGovernanceServiceHandler.html" title="class in org.odpi.openmetadata.engineservices.repositorygovernance.handlers">RepositoryGovernanceServiceHandler</a></code>, <code><a href="../../../engineservices/surveyaction/handlers/SurveyActionServiceHandler.html" title="class in org.odpi.openmetadata.engineservices.surveyaction.handlers">SurveyActionServiceHandler</a></code></dd>
+<dd><code><a href="../../../engineservices/governanceaction/handlers/GovernanceActionServiceHandler.html" title="class in org.odpi.openmetadata.engineservices.governanceaction.handlers">GovernanceActionServiceHandler</a></code>, <code><a href="../../../engineservices/repositorygovernance/handlers/RepositoryGovernanceServiceHandler.html" title="class in org.odpi.openmetadata.engineservices.repositorygovernance.handlers">RepositoryGovernanceServiceHandler</a></code>, <code><a href="../../../engineservices/surveyaction/handlers/SurveyActionServiceHandler.html" title="class in org.odpi.openmetadata.engineservices.surveyaction.handlers">SurveyActionServiceHandler</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">GovernanceServiceHandler</span>
@@ -208,7 +208,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="block">Update the status of a specific action target.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#waitForStartDate()" class="member-name-link">waitForStartDate</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#waitForStartDate(java.lang.String)" class="member-name-link">waitForStartDate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverUserId)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">If the service request has a start time in the future, wait for the start time.</div>
 </div>
@@ -369,10 +369,22 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 </section>
 </li>
 <li>
-<section class="detail" id="waitForStartDate()">
+<section class="detail" id="waitForStartDate(java.lang.String)">
 <h3>waitForStartDate</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">waitForStartDate</span>()</div>
-<div class="block">If the service request has a start time in the future, wait for the start time.</div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">waitForStartDate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverUserId)</span>
+                         throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+<a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">If the service request has a start time in the future, wait for the start time.
+ Once the service is ready to run, its status is updated to IN_PROGRESS,</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverUserId</code> - userId for this server</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - error updating engine action status</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - error updating engine action status</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - error updating engine action status</dd>
+</dl>
 </section>
 </li>
 <li>

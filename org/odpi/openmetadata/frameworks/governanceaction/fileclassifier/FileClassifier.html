@@ -78,7 +78,8 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">FileClassifier</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">Manages different types of classifications for a single file.</div>
+<div class="block">Manages different types of classifications for files.  It retrieves file reference data from
+ the open metadata store and maintains a cache.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -90,10 +91,9 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore,java.io.File)" class="member-name-link">FileClassifier</a><wbr>(<a href="../OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a>&nbsp;openMetadataStore,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore)" class="member-name-link">FileClassifier</a><wbr>(<a href="../OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a>&nbsp;openMetadataStore)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Use the valid values to classify the file.</div>
+<div class="block">Use the valid values to classify files on request.</div>
 </div>
 </div>
 </section>
@@ -103,66 +103,26 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel">
 <div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetTypeName()" class="member-name-link">getAssetTypeName</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="FileClassification.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.fileclassifier">FileClassification</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#classifyFile(java.io.File)" class="member-name-link">classifyFile</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the asset type name.</div>
+<div class="block">Classify the properties of the file represented by the Java File object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDeployedImplementationType()" class="member-name-link">getDeployedImplementationType</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="FileClassification.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.fileclassifier">FileClassification</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#classifyFile(java.lang.String)" class="member-name-link">classifyFile</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pathName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the deployed implementation type.</div>
+<div class="block">Classify the properties of the file  represented by the path name.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEncoding()" class="member-name-link">getEncoding</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFileExtension(java.lang.String)" class="member-name-link">getFileExtension</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the encoding of the file - may be null</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFileExtension()" class="member-name-link">getFileExtension</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the file extension of the file.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getFileExtension(java.lang.String)" class="member-name-link">getFileExtension</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Retrieves the extension from a file name.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFileName()" class="member-name-link">getFileName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the short file name of the file.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFileType()" class="member-name-link">getFileType</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">return the logical file type.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPathName()" class="member-name-link">getPathName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the full pathname of the file.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isCanExecute()" class="member-name-link">isCanExecute</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Is the file executable?</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isCanRead()" class="member-name-link">isCanRead</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Is the file readable?</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isCanWrite()" class="member-name-link">isCanWrite</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Is the file writable?</div>
 </div>
 </div>
 </div>
@@ -182,22 +142,13 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore,java.io.File)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore)">
 <h3>FileClassifier</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">FileClassifier</span><wbr><span class="parameters">(<a href="../OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a>&nbsp;openMetadataStore,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file)</span>
-               throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
-<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
-<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Use the valid values to classify the file.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">FileClassifier</span><wbr><span class="parameters">(<a href="../OpenMetadataStore.html" title="class in org.odpi.openmetadata.frameworks.governanceaction">OpenMetadataStore</a>&nbsp;openMetadataStore)</span></div>
+<div class="block">Use the valid values to classify files on request.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>openMetadataStore</code> - open metadata where the valid values are stored.</dd>
-<dd><code>file</code> - file to analyse</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - invalid parameter</dd>
-<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem connecting to the open metadata repositories</dd>
-<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - insufficient access</dd>
 </dl>
 </section>
 </li>
@@ -210,9 +161,49 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="classifyFile(java.lang.String)">
+<h3>classifyFile</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="FileClassification.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.fileclassifier">FileClassification</a></span>&nbsp;<span class="element-name">classifyFile</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pathName)</span>
+                                throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Classify the properties of the file  represented by the path name.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>pathName</code> - name of the file</dd>
+<dt>Returns:</dt>
+<dd>file classification</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - invalid parameter</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem connecting to the open metadata repositories</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - insufficient access</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="classifyFile(java.io.File)">
+<h3>classifyFile</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="FileClassification.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.fileclassifier">FileClassification</a></span>&nbsp;<span class="element-name">classifyFile</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file)</span>
+                                throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Classify the properties of the file represented by the Java File object.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>file</code> - details of the file</dd>
+<dt>Returns:</dt>
+<dd>file classification</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - invalid parameter</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem connecting to the open metadata repositories</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - insufficient access</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getFileExtension(java.lang.String)">
 <h3>getFileExtension</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getFileExtension</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileName)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getFileExtension</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileName)</span></div>
 <div class="block">Retrieves the extension from a file name.  For example, if the file name is "three.txt", the method
  returns "txt".  If the path name has multiple extensions, such as "my-jar.jar.gz", the final extension is returned (ie "gz").
  Null is returned if there is no file extension in the file name.</div>
@@ -221,116 +212,6 @@ loadScripts(document, 'script');</script>
 <dd><code>fileName</code> - short name</dd>
 <dt>Returns:</dt>
 <dd>file extension</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getFileName()">
-<h3>getFileName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getFileName</span>()</div>
-<div class="block">Return the short file name of the file.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getPathName()">
-<h3>getPathName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getPathName</span>()</div>
-<div class="block">Return the full pathname of the file.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getFileExtension()">
-<h3>getFileExtension</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getFileExtension</span>()</div>
-<div class="block">Return the file extension of the file.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>letters after the "dot"</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getFileType()">
-<h3>getFileType</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getFileType</span>()</div>
-<div class="block">return the logical file type.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getDeployedImplementationType()">
-<h3>getDeployedImplementationType</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDeployedImplementationType</span>()</div>
-<div class="block">Return the deployed implementation type.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getAssetTypeName()">
-<h3>getAssetTypeName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getAssetTypeName</span>()</div>
-<div class="block">Return the asset type name.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getEncoding()">
-<h3>getEncoding</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getEncoding</span>()</div>
-<div class="block">Return the encoding of the file - may be null</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>encoding standard</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="isCanRead()">
-<h3>isCanRead</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isCanRead</span>()</div>
-<div class="block">Is the file readable?</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>boolean</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="isCanWrite()">
-<h3>isCanWrite</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isCanWrite</span>()</div>
-<div class="block">Is the file writable?</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>boolean</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="isCanExecute()">
-<h3>isCanExecute</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isCanExecute</span>()</div>
-<div class="block">Is the file executable?</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>boolean</dd>
 </dl>
 </section>
 </li>
