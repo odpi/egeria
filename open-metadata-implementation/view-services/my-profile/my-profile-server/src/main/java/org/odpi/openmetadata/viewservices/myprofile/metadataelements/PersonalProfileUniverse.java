@@ -6,9 +6,7 @@ package org.odpi.openmetadata.viewservices.myprofile.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContactMethodElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContributionRecordElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ProfileIdentityElement;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 import java.util.List;
@@ -27,13 +25,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PersonalProfileUniverse extends PersonalProfileElement
 {
-    private static final long     serialVersionUID = 1L;
-
     private ContributionRecordElement    contributionRecord = null;
     private List<ProfileIdentityElement> userIdentities     = null;
     private List<ContactMethodElement>   contactMethods     = null;
-    private List<ElementStub>            peers              = null;
-    private List<ElementStub>            roles              = null;
+    private List<ElementStub>            peers = null;
+    private List<PersonRoleElement>      roles = null;
 
     /**
      * Default constructor
@@ -187,7 +183,7 @@ public class PersonalProfileUniverse extends PersonalProfileElement
      *
      * @return list of stubs for linked elements
      */
-    public List<ElementStub> getRoles()
+    public List<PersonRoleElement> getRoles()
     {
         return roles;
     }
@@ -198,7 +194,7 @@ public class PersonalProfileUniverse extends PersonalProfileElement
      *
      * @param roles list of stubs for linked elements
      */
-    public void setRoles(List<ElementStub> roles)
+    public void setRoles(List<PersonRoleElement> roles)
     {
         this.roles = roles;
     }

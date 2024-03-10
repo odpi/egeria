@@ -8,12 +8,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoProperties;
 
-import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
 /**
  * ToDoElement contains the properties and header for a "to do" (informal task) retrieved from the metadata repository.
@@ -21,13 +22,13 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeade
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ToDoElement implements MetadataElement, Serializable
+public class ToDoElement implements MetadataElement
 {
-    private static final long serialVersionUID = 1L;
-
-    private ElementHeader  elementHeader = null;
-    private ToDoProperties properties    = null;
-    private RelatedElement relatedElement = null;
+    private ElementHeader             elementHeader  = null;
+    private ToDoProperties            properties     = null;
+    private RelatedElement            relatedElement = null;
+    private List<ElementStub>         assignedActors = null;
+    private List<ActionTargetElement> actionTargets  = null;
 
     /**
      * Default constructor
@@ -50,6 +51,8 @@ public class ToDoElement implements MetadataElement, Serializable
             elementHeader = template.getElementHeader();
             properties = template.getProperties();
             relatedElement = template.getRelatedElement();
+            assignedActors = template.getAssignedActors();
+            actionTargets = template.getActionTargets();
         }
     }
 
@@ -123,6 +126,49 @@ public class ToDoElement implements MetadataElement, Serializable
         this.relatedElement = relatedElement;
     }
 
+    /**
+     * Return the list of actors assigned to this work item.
+     *
+     * @return list of actors
+     */
+    public List<ElementStub> getAssignedActors()
+    {
+        return assignedActors;
+    }
+
+
+    /**
+     * Set up the list of actors assigned to this work item.
+     *
+     * @param assignedActors list of actors
+     */
+    public void setAssignedActors(List<ElementStub> assignedActors)
+    {
+        this.assignedActors = assignedActors;
+    }
+
+
+    /**
+     * Return the list of action targets to work on.
+     *
+     * @return list
+     */
+    public List<ActionTargetElement> getActionTargets()
+    {
+        return actionTargets;
+    }
+
+
+    /**
+     * Set up the list of action targets to work on.
+     *
+     * @param actionTargets list
+     */
+    public void setActionTargets(List<ActionTargetElement> actionTargets)
+    {
+        this.actionTargets = actionTargets;
+    }
+
 
     /**
      * JSON-style toString
@@ -133,10 +179,12 @@ public class ToDoElement implements MetadataElement, Serializable
     public String toString()
     {
         return "ToDoElement{" +
-                       "elementHeader=" + elementHeader +
-                       ", properties=" + properties +
-                       ", relatedElement=" + relatedElement +
-                       '}';
+                "elementHeader=" + elementHeader +
+                ", properties=" + properties +
+                ", relatedElement=" + relatedElement +
+                ", assignedActors=" + assignedActors +
+                ", actionTargets=" + actionTargets +
+                '}';
     }
 
 
@@ -159,8 +207,10 @@ public class ToDoElement implements MetadataElement, Serializable
         }
         ToDoElement that = (ToDoElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
-                       Objects.equals(properties, that.properties) &&
-                       Objects.equals(relatedElement, that.relatedElement);
+                Objects.equals(properties, that.properties) &&
+                Objects.equals(relatedElement, that.relatedElement) &&
+                Objects.equals(assignedActors, that.assignedActors) &&
+                Objects.equals(actionTargets, that.actionTargets);
     }
 
 
@@ -172,6 +222,6 @@ public class ToDoElement implements MetadataElement, Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, relatedElement);
+        return Objects.hash(super.hashCode(), elementHeader, properties, relatedElement, assignedActors, actionTargets);
     }
 }

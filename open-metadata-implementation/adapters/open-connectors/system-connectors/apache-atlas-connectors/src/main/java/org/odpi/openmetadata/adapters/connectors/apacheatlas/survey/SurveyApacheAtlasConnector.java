@@ -150,7 +150,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                     AtlasMetricsTag     atlasMetricsTag     = atlasMetrics.getData().getTag();
                     AtlasTypesDef       atlasTypes          = atlasConnector.getAllTypes();
 
-                    DataSourceMeasurementAnnotation measurementAnnotation = new DataSourceMeasurementAnnotation();
+                    ResourceMeasureAnnotation measurementAnnotation = new ResourceMeasureAnnotation();
                     this.setUpAnnotation(measurementAnnotation, AtlasAnnotationType.MEASUREMENTS);
 
                     Map<String, String> metrics = new HashMap<>();
@@ -186,7 +186,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                         }
                     }
 
-                    measurementAnnotation.setDataSourceProperties(metrics);
+                    measurementAnnotation.setResourceProperties(metrics);
 
                     annotationStore.addAnnotation(measurementAnnotation, null);
                 }
@@ -367,58 +367,58 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                             /*
                              * Attached classifications
                              */
-                            DataProfileAnnotation dataProfileAnnotation = new DataProfileAnnotation();
+                            ResourceProfileAnnotation resourceProfileAnnotation = new ResourceProfileAnnotation();
 
-                            this.setUpAnnotation(dataProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_CLASSIFICATIONS);
+                            this.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_CLASSIFICATIONS);
 
-                            dataProfileAnnotation.setValueCount(entityTypeMetrics.classificationCount);
-                            dataProfileAnnotation.setAdditionalProperties(additionalProperties);
+                            resourceProfileAnnotation.setValueCount(entityTypeMetrics.classificationCount);
+                            resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
 
-                            annotationStore.addAnnotation(dataProfileAnnotation, dataFieldGUID);
+                            annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
 
                             /*
                              * Attached to Relationship At End 1
                              */
-                            dataProfileAnnotation = new DataProfileAnnotation();
+                            resourceProfileAnnotation = new ResourceProfileAnnotation();
 
-                            this.setUpAnnotation(dataProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_TO_END1);
-                            dataProfileAnnotation.setValueCount(entityTypeMetrics.relationshipEnd1Count);
-                            dataProfileAnnotation.setAdditionalProperties(additionalProperties);
+                            this.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_TO_END1);
+                            resourceProfileAnnotation.setValueCount(entityTypeMetrics.relationshipEnd1Count);
+                            resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
 
-                            annotationStore.addAnnotation(dataProfileAnnotation, dataFieldGUID);
+                            annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
 
                             /*
                              * Attached to Relationship At End 2
                              */
-                            dataProfileAnnotation = new DataProfileAnnotation();
+                            resourceProfileAnnotation = new ResourceProfileAnnotation();
 
-                            this.setUpAnnotation(dataProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_TO_END2);
-                            dataProfileAnnotation.setValueCount(entityTypeMetrics.relationshipEnd2Count);
-                            dataProfileAnnotation.setAdditionalProperties(additionalProperties);
+                            this.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_TO_END2);
+                            resourceProfileAnnotation.setValueCount(entityTypeMetrics.relationshipEnd2Count);
+                            resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
 
-                            annotationStore.addAnnotation(dataProfileAnnotation, dataFieldGUID);
+                            annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
 
                             /*
                              * Attached Labels
                              */
-                            dataProfileAnnotation = new DataProfileAnnotation();
+                            resourceProfileAnnotation = new ResourceProfileAnnotation();
 
-                            this.setUpAnnotation(dataProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_LABELS);
-                            dataProfileAnnotation.setValueCount(entityTypeMetrics.labelCount);
-                            dataProfileAnnotation.setAdditionalProperties(additionalProperties);
+                            this.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_LABELS);
+                            resourceProfileAnnotation.setValueCount(entityTypeMetrics.labelCount);
+                            resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
 
-                            annotationStore.addAnnotation(dataProfileAnnotation, dataFieldGUID);
+                            annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
 
                             /*
                              * Attached Business Metadata
                              */
-                            dataProfileAnnotation = new DataProfileAnnotation();
+                            resourceProfileAnnotation = new ResourceProfileAnnotation();
 
-                            this.setUpAnnotation(dataProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_BIZ_METADATA);
-                            dataProfileAnnotation.setValueCount(entityTypeMetrics.labelCount);
-                            dataProfileAnnotation.setAdditionalProperties(additionalProperties);
+                            this.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_BIZ_METADATA);
+                            resourceProfileAnnotation.setValueCount(entityTypeMetrics.labelCount);
+                            resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
 
-                            annotationStore.addAnnotation(dataProfileAnnotation, dataFieldGUID);
+                            annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
                         }
 
                         /*
@@ -428,16 +428,16 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                         {
                             TagTypeMetrics classificationTypeMetrics = classificationTypeMetricsMap.get(classificationName);
 
-                            DataProfileAnnotation dataProfileAnnotation = new DataProfileAnnotation();
+                            ResourceProfileAnnotation resourceProfileAnnotation = new ResourceProfileAnnotation();
 
-                            this.setUpAnnotation(dataProfileAnnotation, AtlasAnnotationType.CLASSIFICATION_ATTACHED_ENTITIES);
-                            dataProfileAnnotation.setValueCount(classificationTypeMetrics.entityCount);
+                            this.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.CLASSIFICATION_ATTACHED_ENTITIES);
+                            resourceProfileAnnotation.setValueCount(classificationTypeMetrics.entityCount);
 
                             Map<String, String> additionalProperties = new HashMap<>();
                             additionalProperties.put("classificationInstanceCount", Integer.toString(classificationTypeMetrics.instanceCount));
-                            dataProfileAnnotation.setAdditionalProperties(additionalProperties);
+                            resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
 
-                            annotationStore.addAnnotation(dataProfileAnnotation, typeNameToDataFieldGUIDMap.get(classificationName));
+                            annotationStore.addAnnotation(resourceProfileAnnotation, typeNameToDataFieldGUIDMap.get(classificationName));
                         }
 
                         /*
@@ -448,16 +448,16 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                         {
                             TagTypeMetrics businessMetadataMetrics = businessMetadataMetricsMap.get(businessMetadataName);
 
-                            DataProfileAnnotation dataProfileAnnotation = new DataProfileAnnotation();
+                            ResourceProfileAnnotation resourceProfileAnnotation = new ResourceProfileAnnotation();
 
-                            this.setUpAnnotation(dataProfileAnnotation, AtlasAnnotationType.CLASSIFICATION_ATTACHED_ENTITIES);
-                            dataProfileAnnotation.setValueCount(businessMetadataMetrics.entityCount);
+                            this.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.CLASSIFICATION_ATTACHED_ENTITIES);
+                            resourceProfileAnnotation.setValueCount(businessMetadataMetrics.entityCount);
 
                             Map<String, String> additionalProperties = new HashMap<>();
                             additionalProperties.put("businessMetadataInstanceCount", Integer.toString(businessMetadataMetrics.instanceCount));
-                            dataProfileAnnotation.setAdditionalProperties(additionalProperties);
+                            resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
 
-                            annotationStore.addAnnotation(dataProfileAnnotation, typeNameToDataFieldGUIDMap.get(businessMetadataName));
+                            annotationStore.addAnnotation(resourceProfileAnnotation, typeNameToDataFieldGUIDMap.get(businessMetadataName));
                         }
 
                         /*
@@ -476,35 +476,35 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                             /*
                              * End 1
                              */
-                            DataProfileAnnotation dataProfileAnnotation = new DataProfileAnnotation();
+                            ResourceProfileAnnotation resourceProfileAnnotation = new ResourceProfileAnnotation();
 
-                            this.setUpAnnotation(dataProfileAnnotation, AtlasAnnotationType.END1_ENTITY_TYPES);
-                            dataProfileAnnotation.setValueCount(relationshipTypeMetrics.entityAtEnd1Count);
-                            dataProfileAnnotation.setAdditionalProperties(additionalProperties);
+                            this.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.END1_ENTITY_TYPES);
+                            resourceProfileAnnotation.setValueCount(relationshipTypeMetrics.entityAtEnd1Count);
+                            resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
 
-                            annotationStore.addAnnotation(dataProfileAnnotation, dataFieldGUID);
+                            annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
 
                             /*
                              * End 2
                              */
-                            dataProfileAnnotation = new DataProfileAnnotation();
+                            resourceProfileAnnotation = new ResourceProfileAnnotation();
 
-                            this.setUpAnnotation(dataProfileAnnotation, AtlasAnnotationType.END2_ENTITY_TYPES);
-                            dataProfileAnnotation.setValueCount(relationshipTypeMetrics.entityAtEnd2Count);
-                            dataProfileAnnotation.setAdditionalProperties(additionalProperties);
+                            this.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.END2_ENTITY_TYPES);
+                            resourceProfileAnnotation.setValueCount(relationshipTypeMetrics.entityAtEnd2Count);
+                            resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
 
-                            annotationStore.addAnnotation(dataProfileAnnotation, dataFieldGUID);
+                            annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
 
                             /*
                              * Pair
                              */
-                            dataProfileAnnotation = new DataProfileAnnotation();
+                            resourceProfileAnnotation = new ResourceProfileAnnotation();
 
-                            this.setUpAnnotation(dataProfileAnnotation, AtlasAnnotationType.PAIRED_ENTITY_TYPES);
-                            dataProfileAnnotation.setValueCount(relationshipTypeMetrics.entityPairCount);
-                            dataProfileAnnotation.setAdditionalProperties(additionalProperties);
+                            this.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.PAIRED_ENTITY_TYPES);
+                            resourceProfileAnnotation.setValueCount(relationshipTypeMetrics.entityPairCount);
+                            resourceProfileAnnotation.setAdditionalProperties(additionalProperties);
 
-                            annotationStore.addAnnotation(dataProfileAnnotation, dataFieldGUID);
+                            annotationStore.addAnnotation(resourceProfileAnnotation, dataFieldGUID);
                         }
                     }
                 }

@@ -26,8 +26,8 @@ import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyOpenMetadataStore;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.AnnotationStatus;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.DataProfileAnnotation;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.DataSourcePhysicalStatusAnnotation;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceProfileAnnotation;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourcePhysicalStatusAnnotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.SchemaAnalysisAnnotation;
 
 import java.util.*;
@@ -292,8 +292,8 @@ public class CSVSurveyService extends AuditableSurveyService
 
             annotationStore.setAnalysisStep(AnalysisStep.MEASURE_RESOURCE.getName());
 
-            DataSourcePhysicalStatusAnnotation measurementAnnotation = new DataSourcePhysicalStatusAnnotation();
-            Map<String, String>                measurementProperties = new HashMap<>();
+            ResourcePhysicalStatusAnnotation measurementAnnotation = new ResourcePhysicalStatusAnnotation();
+            Map<String, String>              measurementProperties = new HashMap<>();
 
             measurementAnnotation.setAnnotationType("ExtractDataStoreProperties");
             measurementAnnotation.setSummary("Extract properties from the file.");
@@ -302,7 +302,7 @@ public class CSVSurveyService extends AuditableSurveyService
             measurementProperties.put("Record Count", Long.toString(recordCount));
 
             measurementAnnotation.setModifiedTime(assetConnector.getLastUpdateDate());
-            measurementAnnotation.setDataSourceProperties(measurementProperties);
+            measurementAnnotation.setResourceProperties(measurementProperties);
             measurementAnnotation.setSize(assetConnector.getFile().length());
 
             annotationStore.addAnnotation(measurementAnnotation, surveyContext.getAssetGUID());
@@ -327,7 +327,7 @@ public class CSVSurveyService extends AuditableSurveyService
                         dataField.setDataFieldPosition(position);
                         dataField.setDataFieldName(columnName);
 
-                        DataProfileAnnotation dataProfile = dataField.getDataProfileAnnotation();
+                        ResourceProfileAnnotation dataProfile = dataField.getDataProfileAnnotation();
 
                         dataProfile.setAnnotationType("InspectDataValues");
                         dataProfile.setSummary("Iterate through values to determine values present and how often they appear.");
@@ -348,8 +348,8 @@ public class CSVSurveyService extends AuditableSurveyService
 
                         for (String fieldValue : recordValues)
                         {
-                            DataField             dataField   = dataFields.get(columnPosition);
-                            DataProfileAnnotation dataProfile = dataField.getDataProfileAnnotation();
+                            DataField                 dataField   = dataFields.get(columnPosition);
+                            ResourceProfileAnnotation dataProfile = dataField.getDataProfileAnnotation();
 
                             dataField.setDataFieldType(this.getDataFieldType(dataField.getDataFieldType(), fieldValue));
 
@@ -604,9 +604,9 @@ public class CSVSurveyService extends AuditableSurveyService
     {
         private       String                dataFieldName               = null;
         private       String                dataFieldType               = null;
-        private       int                   dataFieldPosition           = 0;
-        private final DataProfileAnnotation dataProfileAnnotation       = new DataProfileAnnotation();
-        private       String                matchingSchemaAttributeGUID = null;
+        private       int                       dataFieldPosition           = 0;
+        private final ResourceProfileAnnotation resourceProfileAnnotation   = new ResourceProfileAnnotation();
+        private       String                    matchingSchemaAttributeGUID = null;
 
 
         /**
@@ -701,9 +701,9 @@ public class CSVSurveyService extends AuditableSurveyService
          *
          * @return data profile annotation
          */
-        public DataProfileAnnotation getDataProfileAnnotation()
+        public ResourceProfileAnnotation getDataProfileAnnotation()
         {
-            return dataProfileAnnotation;
+            return resourceProfileAnnotation;
         }
     }
 

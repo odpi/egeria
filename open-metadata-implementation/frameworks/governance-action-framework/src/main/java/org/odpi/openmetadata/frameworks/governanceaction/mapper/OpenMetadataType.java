@@ -577,31 +577,31 @@ public enum OpenMetadataType
                               "Attached data field level annotations."),
 
     /**
-     * A collection of properties about the values stored in a data field, or number of data fields, in an Asset.
+     * A collection of properties that characterize an aspect of a resource.
      */
-    DATA_PROFILE_ANNOTATION("bff1f694-afd0-4829-ab11-50a9fbaf2f5f",
-                            "DataProfileAnnotation",
-                            OpenMetadataWikiPages.MODEL_0620_DATA_PROFILING,
-                            "e1ba2eb5-bf03-4dc0-ab7e-0d99ba6ece55",
-                            "A collection of properties about the values stored in a data field, or number of data fields, in an Asset."),
+    RESOURCE_PROFILE_ANNOTATION("bff1f694-afd0-4829-ab11-50a9fbaf2f5f",
+                                "ResourceProfileAnnotation",
+                                OpenMetadataWikiPages.MODEL_0620_RESOURCE_PROFILING,
+                                "e1ba2eb5-bf03-4dc0-ab7e-0d99ba6ece55",
+                                "A collection of properties that characterize an aspect of a resource."),
 
     /**
-     * A link to a log file containing properties about the values stored in an Asset.
+     * A link to a log file containing profile measures for a resource.
      */
-    DATA_PROFILE_LOG_ANNOTATION("368e6fb3-7323-4f81-a723-5182491594bd",
-                                "DataProfileLogAnnotation",
-                                OpenMetadataWikiPages.MODEL_0620_DATA_PROFILING,
-                                "016944a4-5a11-4351-9b09-b4e4056d4816",
-                                "A link to a log file containing properties about the values stored in an Asset."),
+    RESOURCE_PROFILE_LOG_ANNOTATION("368e6fb3-7323-4f81-a723-5182491594bd",
+                                    "ResourceProfileLogAnnotation",
+                                    OpenMetadataWikiPages.MODEL_0620_RESOURCE_PROFILING,
+                                    "016944a4-5a11-4351-9b09-b4e4056d4816",
+                                    "A link to a log file containing profile measures for a resource."),
 
     /**
-     * An assessment of the match between a data class and the values stored in a data field, or number of data fields, in an Asset.
+     * An assessment of the match between a data class and the values stored in a data field, or number of data fields, in a resource.
      */
     DATA_CLASS_ANNOTATION("0c8a3673-04ef-406f-899d-e88de67f6176",
                           "DataClassAnnotation",
                           OpenMetadataWikiPages.MODEL_0625_DATA_CLASS_DISCOVERY,
                           "d0c467cf-6be0-4bf0-9260-6a5aeeee1e52",
-                          "An assessment of the match between a data class and the values stored in a data field, or number of data fields, in an Asset."),
+                          "An assessment of the match between a data class and the values stored in a data field, or number of data fields, in a resource."),
 
     /**
      * A recommendation of likely mappings to Glossary Terms for all or part of an Asset.
@@ -613,16 +613,16 @@ public enum OpenMetadataType
                         "A recommendation of likely mappings to Glossary Terms for all or part of an Asset."),
 
     /**
-     * A calculation of the level of quality found in the values stored in an Asset.
+     * A calculation of the level of quality found in the values associated with a resource.
      */
     QUALITY_ANNOTATION("72e6473d-4ce0-4609-80a4-e6e949a7f520",
                        "QualityAnnotation",
                        OpenMetadataWikiPages.MODEL_0640_QUALITY_SCORES,
                        "b9a28f99-3f10-480f-9e00-81a552de69ca",
-                       "A calculation of the level of quality found in the values stored in an Asset."),
+                       "A calculation of the level of quality found in the values associated with a resource."),
 
     /**
-     * A recommendation of the relationships that could be added to all or part of an Asset.
+     * A recommendation of the relationships that could be added to all or part of an asset.
      */
     RELATIONSHIP_ADVICE_ANNOTATION("740f07dc-4ee8-4c2a-baba-efb55c73eb68",
                                    "RelationshipAdviceAnnotation",
@@ -640,22 +640,22 @@ public enum OpenMetadataType
                                          "Annotation relating two referenceables."),
 
     /**
-     * A summary set of measurements for a DataSource asset.
+     * A summary set of measurements for a resource.
      */
-    DATA_SOURCE_MEASUREMENT_ANNOTATION("c85bea73-d7af-46d7-8a7e-cb745910b1d",
-                                       "DataSourceMeasurementAnnotation",
-                                       OpenMetadataWikiPages.MODEL_0660_MEASUREMENTS,
-                                       "dbb4a6af-67af-449d-a5a6-b12bf6933955",
-                                       "A summary set of measurements for a DataSource asset."),
+    RESOURCE_MEASURE_ANNOTATION("c85bea73-d7af-46d7-8a7e-cb745910b1d",
+                                "ResourceMeasureAnnotation",
+                                OpenMetadataWikiPages.MODEL_0660_MEASUREMENTS,
+                                "dbb4a6af-67af-449d-a5a6-b12bf6933955",
+                                "A summary set of measurements for a resource."),
 
     /**
-     * A set of summary properties about the physical status of an Asset.
+     * A set of summary properties about the physical status of a resource.
      */
-    DS_PHYSICAL_STATUS_ANNOTATION("e9ba276e-6d9f-4999-a5a9-9ddaaabfae23",
-                                  "DataSourcePhysicalStatusAnnotation",
-                                  OpenMetadataWikiPages.MODEL_0660_MEASUREMENTS,
-                                  "109a8865-2ead-452e-b72f-9d9e09b2763f",
-                                  "A set of summary properties about the physical status of an Asset."),
+    RESOURCE_PHYSICAL_STATUS_ANNOTATION("e9ba276e-6d9f-4999-a5a9-9ddaaabfae23",
+                                        "ResourcePhysicalStatusAnnotation",
+                                        OpenMetadataWikiPages.MODEL_0660_MEASUREMENTS,
+                                        "109a8865-2ead-452e-b72f-9d9e09b2763f",
+                                        "A set of summary properties about the physical status of a resource."),
 
     /**
      * A request for a stewardship action to be initiated against an element.
@@ -676,13 +676,13 @@ public enum OpenMetadataType
                                   "A link to the element that should be acted upon by the resulting action."),
 
     /**
-     * Link to the external data resource containing the data profile data..
+     * Link to the external data resource containing the surveyed resource's profile data.
      */
-    DATA_PROFILE_DATA_RELATIONSHIP("2ebf2c09-b272-42a1-8fc0-e3eb44df296d",
-                                   "DataProfileData",
-                                   OpenMetadataWikiPages.MODEL_0620_DATA_PROFILING,
-                                   "11050162-ed05-4e5a-8a72-872c50001b5b",
-                                   "Link to the external data resource containing the data profile data."),
+    RESOURCE_PROFILE_DATA_RELATIONSHIP("2ebf2c09-b272-42a1-8fc0-e3eb44df296d",
+                                       "ResourceProfileData",
+                                       OpenMetadataWikiPages.MODEL_0620_RESOURCE_PROFILING,
+                                       "11050162-ed05-4e5a-8a72-872c50001b5b",
+                                       "Link to the external data resource containing the surveyed resource's profile data."),
 
     ;
 

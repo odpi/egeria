@@ -20,11 +20,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
-import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
-import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
-import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.SurveyReport;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
@@ -4879,32 +4879,32 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public DiscoveryAnalysisReportListResponse getDiscoveryAnalysisReports(String  serverName,
-                                                                           String  userId,
-                                                                           String  assetGUID,
-                                                                           int     startingFrom,
-                                                                           int     maxPageSize)
+    public SurveyReportListResponse getSurveyReports(String  serverName,
+                                                     String  userId,
+                                                     String  assetGUID,
+                                                     int     startingFrom,
+                                                     int     maxPageSize)
     {
-        final String   methodName = "getDiscoveryAnalysisReports";
+        final String   methodName = "getSurveyReports";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        DiscoveryAnalysisReportListResponse response = new DiscoveryAnalysisReportListResponse();
-        AuditLog                            auditLog = null;
+        SurveyReportListResponse response = new SurveyReportListResponse();
+        AuditLog                 auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            DiscoveryAnalysisReportHandler<DiscoveryAnalysisReport> handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId, serverName, methodName);
+            SurveyReportHandler<SurveyReport> handler = instanceHandler.getSurveyReportHandler(userId, serverName, methodName);
 
-            response.setDiscoveryAnalysisReports(handler.getDiscoveryAnalysisReports(userId,
-                                                                                     assetGUID,
-                                                                                     startingFrom,
-                                                                                     maxPageSize,
-                                                                                     false,
-                                                                                     false,
-                                                                                     new Date(),
-                                                                                     methodName));
+            response.setSurveyReports(handler.getSurveyReports(userId,
+                                                               assetGUID,
+                                                               startingFrom,
+                                                               maxPageSize,
+                                                               false,
+                                                               false,
+                                                               new Date(),
+                                                               methodName));
         }
         catch (Exception error)
         {
@@ -4921,7 +4921,7 @@ public class AssetOwnerRESTServices
      *
      * @param serverName name of the server instance to connect to
      * @param userId identifier of calling user
-     * @param discoveryReportGUID identifier of the discovery request.
+     * @param surveyReportGUID identifier of the survey report.
      * @param startingFrom initial position in the stored list.
      * @param maximumResults maximum number of definitions to return on this call.
      * @param requestBody status of the desired annotations - null means all statuses.
@@ -4931,12 +4931,12 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public AnnotationListResponse getDiscoveryReportAnnotations(String            serverName,
-                                                                String            userId,
-                                                                String            discoveryReportGUID,
-                                                                int               startingFrom,
-                                                                int               maximumResults,
-                                                                StatusRequestBody requestBody)
+    public AnnotationListResponse getSurveyReportAnnotations(String            serverName,
+                                                             String            userId,
+                                                             String            surveyReportGUID,
+                                                             int               startingFrom,
+                                                             int               maximumResults,
+                                                             StatusRequestBody requestBody)
     {
         final String   methodName = "getDiscoveryReportAnnotations";
 
@@ -4952,18 +4952,18 @@ public class AssetOwnerRESTServices
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
-                int annotationStatus = AnnotationStatus.UNKNOWN_STATUS.getOpenTypeOrdinal();
+                int annotationStatus = AnnotationStatus.UNKNOWN_STATUS.getOrdinal();
 
                 if (requestBody.getAnnotationStatus() != null)
                 {
-                    annotationStatus = requestBody.getAnnotationStatus().getOpenTypeOrdinal();
+                    annotationStatus = requestBody.getAnnotationStatus().getOrdinal();
                 }
-                response.setAnnotations(handler.getDiscoveryReportAnnotations(userId,
-                                                                              discoveryReportGUID,
-                                                                              annotationStatus,
-                                                                              startingFrom,
-                                                                              maximumResults,
-                                                                              methodName));
+                response.setAnnotations(handler.getSurveyReportAnnotations(userId,
+                                                                           surveyReportGUID,
+                                                                           annotationStatus,
+                                                                           startingFrom,
+                                                                           maximumResults,
+                                                                           methodName));
             }
             else
             {
@@ -5023,7 +5023,7 @@ public class AssetOwnerRESTServices
 
             response.setAnnotations(handler.getExtendedAnnotations(userId,
                                                                    annotationGUID,
-                                                                   annotationStatus.getOpenTypeOrdinal(),
+                                                                   annotationStatus.getOrdinal(),
                                                                    startingFrom,
                                                                    maximumResults,
                                                                    methodName));

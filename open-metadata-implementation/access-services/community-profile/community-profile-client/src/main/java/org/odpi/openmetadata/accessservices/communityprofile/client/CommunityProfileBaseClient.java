@@ -24,6 +24,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 
 import java.util.List;
 
@@ -37,6 +38,9 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
 
     final InvalidParameterHandler    invalidParameterHandler = new InvalidParameterHandler();
     final CommunityProfileRESTClient restClient;               /* Initialized in constructor */
+
+    final protected PropertyHelper          propertyHelper = new PropertyHelper();
+    final protected OpenMetadataStoreClient openMetadataStoreClient;   /* Initialized in constructor */
 
     protected static final String baseURLTemplatePrefix     = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}";
     private   static final String elementsURLTemplatePrefix = baseURLTemplatePrefix + "/related-elements";
@@ -63,6 +67,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
 
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot);
         this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, auditLog);
     }
 
@@ -86,6 +91,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
 
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot);
         this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot);
     }
 
@@ -114,6 +120,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
 
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, userId, password);
         this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, userId, password);
     }
 
@@ -144,6 +151,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
 
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, userId, password);
         this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
@@ -159,10 +167,10 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
-    public CommunityProfileBaseClient(String serverName,
-                                      String serverPlatformURLRoot,
+    public CommunityProfileBaseClient(String                     serverName,
+                                      String                     serverPlatformURLRoot,
                                       CommunityProfileRESTClient restClient,
-                                      int maxPageSize) throws InvalidParameterException
+                                      int                        maxPageSize) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
@@ -173,6 +181,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
 
         invalidParameterHandler.setMaxPagingSize(maxPageSize);
 
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot);
         this.restClient = restClient;
     }
 

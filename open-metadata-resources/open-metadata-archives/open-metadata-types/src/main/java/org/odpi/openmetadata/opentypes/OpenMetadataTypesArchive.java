@@ -2472,48 +2472,13 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = OpenMetadataType.SUPPORTED_GUARDS_PROPERTY_NAME;
         final String attribute1Description     = "Deprecated list of produced guards.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = OpenMetadataType.PRODUCED_GUARDS_PROPERTY_NAME;
-        final String attribute2Description     = "Map containing the guards produced by this governance action along with a description of their meaning.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = OpenMetadataType.REQUIRED_REQUEST_PARAMETERS_PROPERTY_NAME;
-        final String attribute3Description     = "Map containing the request parameters that need to be supplied to this governance action, along with a description of their meaning.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = OpenMetadataType.REQUIRED_ACTION_TARGETS_PROPERTY_NAME;
-        final String attribute4Description     = "Map containing the action targets that need to be supplied to this governance action, along with a description of their meaning.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = OpenMetadataType.PRODUCED_REQUEST_PARAMETERS_PROPERTY_NAME;
-        final String attribute5Description     = "Map containing the additional request parameters that are produced by this governance action, along with a description of their meaning.";
-        final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = OpenMetadataType.PRODUCED_ACTION_TARGETS_PROPERTY_NAME;
-        final String attribute6Description     = "Map containing the action targets that are produced by this governance action, along with a description of their meaning.";
-        final String attribute6DescriptionGUID = null;
+
 
         property = archiveHelper.getArrayStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         property.setReplacedByAttribute(OpenMetadataType.PRODUCED_GUARDS_PROPERTY_NAME);
-        properties.add(property);
-
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute2Name,
-                                                                    attribute2Description,
-                                                                    attribute2DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute3Name,
-                                                                    attribute3Description,
-                                                                    attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute4Name,
-                                                                    attribute4Description,
-                                                                    attribute4DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute5Name,
-                                                                    attribute5Description,
-                                                                    attribute5DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute6Name,
-                                                                    attribute6Description,
-                                                                    attribute6DescriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);

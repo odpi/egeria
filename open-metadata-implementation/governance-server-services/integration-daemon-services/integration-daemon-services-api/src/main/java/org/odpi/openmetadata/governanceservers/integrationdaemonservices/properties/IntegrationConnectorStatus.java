@@ -20,11 +20,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public enum IntegrationConnectorStatus implements Serializable
 {
     INITIALIZED       (0,  "Initialized",          "The connector is set up and waiting to start."),
-    RUNNING           (1,  "Running",              "The connector is running."),
-    STOPPED           (2,  "Stopped",              "The connector has been stopped (either because it is configured to stop, or the integration daemon is shutting down)."),
-    INITIALIZE_FAILED (3,  "Initialize Failed",    "The integration daemon is not able to initialize the connector because the metadata server is not available."),
-    CONFIG_FAILED     (4,  "Configuration Failed", "The integration daemon is not able to initialize the connector because the class name or related configuration is invalid."),
-    SHUTDOWN          (5,  "Shutdown",             "The integration daemon is no longer calling the connector because it has been shutdown or replaced."),
+    WAITING           (1,  "Waiting",              "The connector is ready and waiting for its next refresh."),
+    REFRESHING        (2,  "Refreshing",           "The connector is has been called to refresh metadata."),
+    RUNNING           (3,  "Running",              "The connector is running in its own thread."),
+    STOPPED           (4,  "Stopped",              "The connector has been stopped (either because it is configured to stop, or the integration daemon is shutting down)."),
+    INITIALIZE_FAILED (5,  "Initialize Failed",    "The integration daemon is not able to initialize the connector because the metadata server is not available."),
+    CONFIG_FAILED     (6,  "Configuration Failed", "The integration daemon is not able to initialize the connector because the class name or related configuration is invalid."),
+    SHUTDOWN          (7,  "Shutdown",             "The integration daemon is no longer calling the connector because it has been shutdown or replaced."),
     FAILED            (99, "Connector Failed",     "The connector threw an exception and will not be called until it is restarted."),
     ;
 

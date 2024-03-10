@@ -405,6 +405,56 @@ public enum OpenMetadataProperty
     ACTION_TARGET_NAME("actionTargetName", "string", "The name to identify the action target to the actor that processes it.", "3a5d325f-267c-4821-beb2-2c59d89891ed"),
 
     /**
+     * A governance request type that can be used to initiate a call to a governance service via the attached element.
+     */
+    SUPPORTED_REQUEST_TYPE("supportedRequestType", "string", "A governance request type that can be used to initiate a call to a governance service via the attached element.", "1fda19d0-2bb4-4754-8f6a-da28a9848d89"),
+
+    /**
+     * A request parameter that can be used to initiate a call to a governance service via the attached element.  Its data type is part of this definition.
+     */
+    SUPPORTED_REQUEST_PARAMETER("supportedRequestParameter", "object", "A request parameter that can be used to initiate a call to a governance service via the attached element.  Its data type is part of this definition.", "0955004d-0efa-48ff-ab51-ca6127246ecb"),
+
+    /**
+     * The name of an action target element that can be used with a call to initiate a governance service via the attached element.  Its open metadata type is part of this definition.
+     */
+    SUPPORTED_ACTION_TARGET("supportedActionTarget", "entity", "The name of an action target element that can be used with a call to initiate a governance service via the attached element.  Its open metadata type is part of this definition.", "4d81ab06-b7a0-4770-be8d-1c3f9857f0bd"),
+
+    /**
+     * The name of an analysis step that is supported by this survey action service.
+     */
+    SUPPORTED_ANALYSIS_STEP("supportedAnalysisStep", "string", "The name of an analysis step that is supported by this survey action service.", "215bc8f7-154f-447e-91a7-55e63586175f"),
+
+    /**
+     * The name of an annotation type that is supported by this survey action service.
+     */
+    SUPPORTED_ANNOTATION_TYPE("supportedAnnotationType", "string", "The name of an annotation type that is supported by this survey action service.", "84251a2e-8e35-41e4-8708-c22611df6ae9"),
+
+    /**
+     * A guard that is produced by a called a governance service.
+     */
+    PRODUCED_GUARD("producedGuard", "string", "A guard that is produced by a called a governance service.", "17c95d8d-cec1-4ea2-b2c4-fd2200bad5f1"),
+
+    /**
+     * A request parameter that is produced by a called governance service.  Its data type is part of this definition.
+     */
+    PRODUCED_REQUEST_PARAMETER("producedRequestParameter", "object", "A request parameter that is produced by a called governance service.  Its data type is part of this definition.", "2006e107-7c46-44b9-876d-3a1fe1fbd16b"),
+
+    /**
+     * The name of an action target element that is produced by a called governance service.  Its open metadata type is part of this definition.
+     */
+    PRODUCED_ACTION_TARGET("producedActionTarget", "entity", "The name of an action target element that is produced by a called governance service.  Its open metadata type is part of this definition.", "a183c8b3-90f1-45ee-a596-16e4aff5cf8c"),
+
+    /**
+     * An example of the described concept, element or value.
+     */
+    EXAMPLE("example", "string", "An example of the described concept, element or value.", "b207bc5c-b5b5-43f1-94f8-41f4e2902ee5"),
+
+    /**
+     * Is this value required?
+     */
+    REQUIRED("required", "boolean", "Is this value required?", "fb810cde-18a7-46a0-88a3-6a0fb69b2286"),
+
+    /**
      * Message to provide additional information on the results of acting on the target by the actor or the reasons for any failures.
      */
     COMPLETION_MESSAGE("completionMessage", "string", "Message to provide additional information on the results of acting on the target by the actor or the reasons for any failures.", "f7633bda-9a90-4561-8d5a-356126a855ea"),
@@ -587,7 +637,7 @@ public enum OpenMetadataProperty
     /**
      * Discovered properties of the data source.
      */
-    DATA_SOURCE_PROPERTIES("dataSourceProperties", "map<string, string>", "Discovered properties of the data source.", "c187fe2c-cee8-4c4b-99e7-dcb27032a88d"),
+    RESOURCE_PROPERTIES("resourceProperties", "map<string, string>", "Discovered properties of the resource.", "c187fe2c-cee8-4c4b-99e7-dcb27032a88d"),
 
     /**
      * Name of the activity that revealed the need for action.
@@ -607,12 +657,12 @@ public enum OpenMetadataProperty
     /**
      * Creation time of the data store.
      */
-    SOURCE_CREATE_TIME("sourceCreateTime", "date", "Creation time of the data store.", "766d9f17-40f9-44da-a0c8-679002a0cf91"),
+    RESOURCE_CREATE_TIME("resourceCreateTime", "date", "Creation time of the data store.", "766d9f17-40f9-44da-a0c8-679002a0cf91"),
 
     /**
      * Last known modification time.
      */
-    SOURCE_UPDATE_TIME("sourceUpdateTime", "date", "Last known modification time.", "6012bdee-31d7-46d4-9f3b-f4d19c47e662"),
+    RESOURCE_UPDATE_TIME("resourceUpdateTime", "date", "Last known modification time.", "6012bdee-31d7-46d4-9f3b-f4d19c47e662"),
 
     /**
      * Creation time of the data store.

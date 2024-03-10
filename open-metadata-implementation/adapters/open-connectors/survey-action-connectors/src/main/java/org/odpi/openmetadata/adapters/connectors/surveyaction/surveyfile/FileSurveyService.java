@@ -14,7 +14,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.DataSourcePhysicalStatusAnnotation;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourcePhysicalStatusAnnotation;
 
 import java.io.File;
 import java.util.Date;
@@ -84,7 +84,7 @@ public class FileSurveyService extends AuditableSurveyService
             FileClassifier fileClassifier = surveyContext.getFileClassifier();
             FileClassification fileClassification = fileClassifier.classifyFile(file);
 
-            DataSourcePhysicalStatusAnnotation measurementAnnotation = new DataSourcePhysicalStatusAnnotation();
+            ResourcePhysicalStatusAnnotation measurementAnnotation = new ResourcePhysicalStatusAnnotation();
 
             measurementAnnotation.setAnnotationType(SurveyFileAnnotationType.MEASUREMENTS.getName());
             measurementAnnotation.setSummary(SurveyFileAnnotationType.MEASUREMENTS.getSummary());
@@ -107,7 +107,7 @@ public class FileSurveyService extends AuditableSurveyService
             dataSourceProperties.put(FileMetric.IS_SYM_LINK.name, Boolean.toString(fileClassification.isSymLink()));
             dataSourceProperties.put(FileMetric.IS_HIDDEN.name, Boolean.toString(fileClassification.isHidden()));
 
-            measurementAnnotation.setDataSourceProperties(dataSourceProperties);
+            measurementAnnotation.setResourceProperties(dataSourceProperties);
 
             annotationStore.addAnnotation(measurementAnnotation, surveyContext.getAssetGUID());
         }

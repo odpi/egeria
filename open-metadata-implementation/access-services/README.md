@@ -99,11 +99,6 @@ definition and management of a digital service through concept to deployment.
   
   The Digital Service OMAS provides services for a managing the lifecycle of a Digital Service and any associated products.
 
-* **[discovery-engine](discovery-engine)** - manage metadata for metadata discovery services.
-
-  The Discovery Engine OMAS provides an API for a discovery engine to access and store
-metadata about a digital resource, its schema and the data it stores.
-
 * **[governance-engine](governance-engine)** - manage metadata for an operational governance engine.
 
   The Governance Engine OMAS provides APIs and events that retrieve and

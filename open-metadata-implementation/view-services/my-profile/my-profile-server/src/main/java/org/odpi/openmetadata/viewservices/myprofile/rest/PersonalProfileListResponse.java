@@ -123,7 +123,7 @@ public class PersonalProfileListResponse extends CommunityProfileOMASAPIResponse
         {
             return true;
         }
-        if (!(objectToCompare instanceof PersonalProfileListResponse))
+        if (!(objectToCompare instanceof PersonalProfileListResponse that))
         {
             return false;
         }
@@ -131,7 +131,6 @@ public class PersonalProfileListResponse extends CommunityProfileOMASAPIResponse
         {
             return false;
         }
-        PersonalProfileListResponse that = (PersonalProfileListResponse) objectToCompare;
         return Objects.equals(getPersonalProfiles(), that.getPersonalProfiles());
     }
 
