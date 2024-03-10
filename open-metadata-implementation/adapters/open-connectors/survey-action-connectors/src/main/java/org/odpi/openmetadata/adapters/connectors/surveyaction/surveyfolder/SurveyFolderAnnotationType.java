@@ -19,37 +19,37 @@ import java.util.Map;
 public enum SurveyFolderAnnotationType
 {
     MEASUREMENTS("Capture File Counts",
-                 OpenMetadataType.DATA_SOURCE_MEASUREMENT_ANNOTATION.typeName,
+                 OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName,
                  "Count up the number of files and directories under the surveyed directory that have specific characteristics.",
                  "Count the number of directories and files under the starting directory.",
                  FolderMetric.getMetrics()),
 
     PROFILE_FILE_EXTENSIONS("Profile File Extensions",
-                 OpenMetadataType.DATA_PROFILE_ANNOTATION.typeName,
+                 OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
                  "Iterate through files under a directory (folder) and count the occurrences of each file extension.",
                  "The file extension often provides a hint as to the type of file.",
                  null),
 
     PROFILE_FILE_NAMES("Profile File Names to External Log",
-                            OpenMetadataType.DATA_PROFILE_LOG_ANNOTATION.typeName,
+                            OpenMetadataType.RESOURCE_PROFILE_LOG_ANNOTATION.typeName,
                             "Iterate through files under a directory (folder) and count the occurrences of each file name.",
                             "Some file names indicate a file of special type/use.  This profile information is likely to be large so it is logged to a CSV File.",
                             null),
 
     PROFILE_FILE_TYPES("Profile File Types",
-                       OpenMetadataType.DATA_PROFILE_ANNOTATION.typeName,
+                       OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
                        "Iterate through files under a directory (folder) and count the occurrences of each file type.",
                        "The file type is a category of file that describes its use.  The file types are defined as reference data in Egeria.",
                        null),
 
     PROFILE_ASSET_TYPES("Profile Asset Types",
-                       OpenMetadataType.DATA_PROFILE_ANNOTATION.typeName,
+                       OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
                        "Iterate through files under a directory (folder) and count each potential asset type if they were to be catalogued in open metadata.",
                        "The asset type is an open metadata type.  This annotation identifies the numbers of each type of asset that will be created if the files were catalogued in the open metadata ecosystem.",
                        null),
 
     PROFILE_DEP_IMPL_TYPES("Profile Deployed Implementation Types",
-                        OpenMetadataType.DATA_PROFILE_ANNOTATION.typeName,
+                        OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
                         "Iterate through files under a directory (folder) and count each potential deployed implementation type if they were to be catalogued in open metadata.",
                         "The deployed implementation type reflects the technology employed within this resource.  The deployed implementation type is defined as reference data in Egeria.",
                         null),

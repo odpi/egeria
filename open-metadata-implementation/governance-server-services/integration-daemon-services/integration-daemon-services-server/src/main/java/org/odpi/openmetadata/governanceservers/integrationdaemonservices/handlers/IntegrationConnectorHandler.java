@@ -563,7 +563,8 @@ public class IntegrationConnectorHandler
             }
             if (integrationConnectorStatus == IntegrationConnectorStatus.INITIALIZED)
             {
-                this.startConnector(actionDescription);
+                this.startConnector(actionDescription,
+                                    IntegrationConnectorStatus.RUNNING);
             }
             if (integrationConnectorStatus == IntegrationConnectorStatus.RUNNING)
             {
@@ -596,10 +597,12 @@ public class IntegrationConnectorHandler
             }
             if (integrationConnectorStatus == IntegrationConnectorStatus.INITIALIZED)
             {
-                this.startConnector(actionDescription);
+                this.startConnector(actionDescription,
+                                    IntegrationConnectorStatus.WAITING);
             }
-            if (integrationConnectorStatus == IntegrationConnectorStatus.RUNNING)
+            if (integrationConnectorStatus == IntegrationConnectorStatus.WAITING)
             {
+                updateStatus(IntegrationConnectorStatus.REFRESHING);
                 Date refreshStart = new Date();
 
                 if (auditLog != null)
@@ -623,6 +626,7 @@ public class IntegrationConnectorHandler
                 integrationConnector.refresh();
                 integrationContextRefreshProxy.setRefreshInProgress(false);
                 integrationContext.publishReport();
+                updateStatus(IntegrationConnectorStatus.WAITING);
 
                 if (auditLog != null)
                 {
@@ -693,8 +697,10 @@ public class IntegrationConnectorHandler
      * Start the connector running.
      *
      * @param actionDescription external caller's activity
+     * @param nextStatus next integration connector status
      */
-    private void startConnector(String   actionDescription)
+    private void startConnector(String                     actionDescription,
+                                IntegrationConnectorStatus nextStatus)
     {
         final String operationName = "start";
 
@@ -708,7 +714,7 @@ public class IntegrationConnectorHandler
                 }
 
                 integrationConnector.start();
-                updateStatus(IntegrationConnectorStatus.RUNNING);
+                updateStatus(nextStatus);
             }
         }
         catch (Exception  error)

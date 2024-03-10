@@ -152,18 +152,18 @@ public class FolderSurveyService extends AuditableSurveyService
 
             profileFolder(rootFolder, logFileProgress);
 
-            DataProfileAnnotation dataProfile = new DataProfileAnnotation();
+            ResourceProfileAnnotation dataProfile = new ResourceProfileAnnotation();
 
             setUpAnnotation(dataProfile, SurveyFolderAnnotationType.PROFILE_FILE_EXTENSIONS);
             dataProfile.setValueCount(fileExtensionCounts);
             annotationStore.addAnnotation(dataProfile, null);
 
-            DataProfileLogAnnotation dataProfileLog = new DataProfileLogAnnotation();
+            ResourceProfileLogAnnotation dataProfileLog = new ResourceProfileLogAnnotation();
 
             setUpAnnotation(dataProfileLog, SurveyFolderAnnotationType.PROFILE_FILE_NAMES);
             List<String> dataProfileDataGUIDs = new ArrayList<>();
             dataProfileDataGUIDs.add(setUpExternalLogFile(annotationStore.getSurveyReportGUID(), fileNameCounts));
-            dataProfileLog.setDataProfileLogGUIDs(dataProfileDataGUIDs);
+            dataProfileLog.setResourceProfileLogGUIDs(dataProfileDataGUIDs);
             annotationStore.addAnnotation(dataProfileLog, null);
 
             RequestForActionAnnotation requestForActionAnnotation = new RequestForActionAnnotation();
@@ -174,27 +174,27 @@ public class FolderSurveyService extends AuditableSurveyService
             requestForActionAnnotation.setActionTargetGUIDs(requestForActionTargetGUIDs);
             annotationStore.addAnnotation(requestForActionAnnotation, null);
 
-            dataProfile = new DataProfileAnnotation();
+            dataProfile = new ResourceProfileAnnotation();
 
             setUpAnnotation(dataProfile, SurveyFolderAnnotationType.PROFILE_FILE_TYPES);
             dataProfile.setValueCount(fileTypeCounts);
             annotationStore.addAnnotation(dataProfile, null);
 
-            dataProfile = new DataProfileAnnotation();
+            dataProfile = new ResourceProfileAnnotation();
 
             setUpAnnotation(dataProfile, SurveyFolderAnnotationType.PROFILE_ASSET_TYPES);
             dataProfile.setValueCount(assetTypeCounts);
             annotationStore.addAnnotation(dataProfile, null);
 
-            dataProfile = new DataProfileAnnotation();
+            dataProfile = new ResourceProfileAnnotation();
 
             setUpAnnotation(dataProfile, SurveyFolderAnnotationType.PROFILE_DEP_IMPL_TYPES);
             dataProfile.setValueCount(deployedImplementationTypeCounts);
             annotationStore.addAnnotation(dataProfile, null);
 
-            DataSourceMeasurementAnnotation dataSourceMeasurementAnnotation = new DataSourceMeasurementAnnotation();
+            ResourceMeasureAnnotation resourceMeasureAnnotation = new ResourceMeasureAnnotation();
 
-            setUpAnnotation(dataSourceMeasurementAnnotation, SurveyFolderAnnotationType.MEASUREMENTS);
+            setUpAnnotation(resourceMeasureAnnotation, SurveyFolderAnnotationType.MEASUREMENTS);
 
             Map<String, String> fileCountProperties = new HashMap<>();
             fileCountProperties.put(FolderMetric.FILE_COUNT.getName(), Long.toString(fileCount));
@@ -202,9 +202,9 @@ public class FolderSurveyService extends AuditableSurveyService
             fileCountProperties.put(FolderMetric.READABLE_FILE_COUNT.getName(), Long.toString(canReadCount));
             fileCountProperties.put(FolderMetric.WRITEABLE_FILE_COUNT.getName(), Long.toString(canWriteCount));
             fileCountProperties.put(FolderMetric.EXECUTABLE_FILE_COUNT.getName(), Long.toString(canExecuteCount));
-            dataSourceMeasurementAnnotation.setDataSourceProperties(fileCountProperties);
+            resourceMeasureAnnotation.setResourceProperties(fileCountProperties);
 
-            annotationStore.addAnnotation(dataSourceMeasurementAnnotation, null);
+            annotationStore.addAnnotation(resourceMeasureAnnotation, null);
         }
         catch (ConnectorCheckedException error)
         {
@@ -255,33 +255,39 @@ public class FolderSurveyService extends AuditableSurveyService
 
         String           logFileName = "surveys/report-" + surveyReportGUID + "-fileNameCounts.csv";
         SurveyAssetStore assetStore = surveyContext.getAssetStore();
-
-        String assetGUID = assetStore.addCSVFileToCatalog("File name counts for survey report " + surveyReportGUID,
-                                                          "Shows how many occurrences of each file name was found in the nested directory structure.",
-                                                          logFileName,
-                                                          null,
-                                                          ',',
-                                                          '"');
-
-        File logFile = new File(logFileName);
+        File             logFile = new File(logFileName);
+        boolean          newLogFile = false;
 
         try
         {
             FileUtils.sizeOf(logFile);
-            auditLog.logMessage(methodName,
-                                SurveyServiceAuditCode.REUSING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
-                                                                                             logFileName));
         }
         catch (IllegalArgumentException notFound)
+        {
+            newLogFile = true;
+            FileUtils.writeStringToFile(logFile, "FileName, Number of Occurrences\n", (String)null, false);
+        }
+
+        String assetGUID = assetStore.addCSVFileToCatalog("File name counts for survey report " + surveyReportGUID,
+                                                          "Shows how many occurrences of each file name was found in the nested directory structure.",
+                                                          logFile.getAbsolutePath(),
+                                                          null,
+                                                          ',',
+                                                          '"');
+
+        if (newLogFile)
         {
             auditLog.logMessage(methodName,
                                 SurveyServiceAuditCode.CREATING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
                                                                                               logFileName,
                                                                                               assetGUID));
-
-            FileUtils.writeStringToFile(logFile, "FileName, Number of Occurrences\n", (String)null, false);
         }
-
+        else
+        {
+            auditLog.logMessage(methodName,
+                                SurveyServiceAuditCode.REUSING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
+                                                                                             logFileName));
+        }
 
         for (String fileName : fileNameCounts.keySet())
         {
@@ -317,31 +323,39 @@ public class FolderSurveyService extends AuditableSurveyService
 
         String           logFileName = "surveys/report-" + surveyReportGUID + "-missingReferenceData.csv";
         SurveyAssetStore assetStore = surveyContext.getAssetStore();
-
-        String assetGUID = assetStore.addCSVFileToCatalog("Missing reference data for survey report " + surveyReportGUID,
-                                                          "Shows the files that could not be correctly classified from the reference data.",
-                                                          logFileName,
-                                                          null,
-                                                          ',',
-                                                          '"');
-
-        File logFile = new File(logFileName);
+        File             logFile = new File(logFileName);
+        boolean          newLogFile = false;
 
         try
         {
             FileUtils.sizeOf(logFile);
-            auditLog.logMessage(methodName,
-                                SurveyServiceAuditCode.REUSING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
-                                                                                             logFileName));
         }
         catch (IllegalArgumentException notFound)
+        {
+            newLogFile = true;
+            FileUtils.writeStringToFile(logFile, "FileName,FileExtension,PathName,FileType,AssetTypeName,DeployedImplementationType,Encoding\n", (String)null, false);
+        }
+
+        String assetGUID = assetStore.addCSVFileToCatalog("Missing reference data for survey report " + surveyReportGUID,
+                                                          "Shows the files that could not be correctly classified from the reference data.",
+                                                          logFile.getAbsolutePath(),
+                                                          null,
+                                                          ',',
+                                                          '"');
+
+
+        if (newLogFile)
         {
             auditLog.logMessage(methodName,
                                 SurveyServiceAuditCode.CREATING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
                                                                                               logFileName,
                                                                                               assetGUID));
-
-            FileUtils.writeStringToFile(logFile, "FileName,FileExtension,PathName,FileType,AssetTypeName,DeployedImplementationType,Encoding\n", (String)null, false);
+        }
+        else
+        {
+            auditLog.logMessage(methodName,
+                                SurveyServiceAuditCode.REUSING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
+                                                                                             logFileName));
         }
 
 

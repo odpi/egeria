@@ -13,7 +13,7 @@ public enum AnnotationType
 {
     EXAMPLE_ANNOTATION_TYPE("Example Annotation Type",
                             AnalysisStep.PROFILE_DATA,
-                            OpenMetadataType.DATA_PROFILE_ANNOTATION.typeName,
+                            OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
                             "This is an example annotation type.",
                             "This is the explanation of the annotation type's processing.",
                             "This is the expression used in the annotation type's processing."),

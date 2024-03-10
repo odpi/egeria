@@ -19,7 +19,7 @@ import java.util.Map;
 public enum SurveyFileAnnotationType
 {
     MEASUREMENTS("Extract File Properties",
-                 OpenMetadataType.DATA_SOURCE_MEASUREMENT_ANNOTATION.typeName,
+                 OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName,
                  "Extract properties from the file.",
                  "Extract the properties that visible through the standard File interface and classify the file using reference data.",
                  FileMetric.getMetrics()),

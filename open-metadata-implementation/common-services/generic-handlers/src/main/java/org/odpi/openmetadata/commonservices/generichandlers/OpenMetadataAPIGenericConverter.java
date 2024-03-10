@@ -3180,19 +3180,19 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the sourceCreateTime property from the supplied instance properties.
+     * Extract and delete the resourceCreateTime property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return date or null
      */
-    protected Date removeSourceCreateTime(InstanceProperties  instanceProperties)
+    protected Date removeResourceCreateTime(InstanceProperties  instanceProperties)
     {
-        final String methodName = "removeSourceCreateTime";
+        final String methodName = "removeResourceCreateTime";
 
         if (instanceProperties != null)
         {
             return repositoryHelper.removeDateProperty(serviceName,
-                                                       OpenMetadataProperty.SOURCE_CREATE_TIME.name,
+                                                       OpenMetadataProperty.RESOURCE_CREATE_TIME.name,
                                                        instanceProperties,
                                                        methodName);
         }
@@ -3202,19 +3202,19 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract and delete the sourceUpdateTime property from the supplied instance properties.
+     * Extract and delete the resourceUpdateTime property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
      * @return date or null
      */
-    protected Date removeSourceUpdateTime(InstanceProperties  instanceProperties)
+    protected Date removeResourceUpdateTime(InstanceProperties  instanceProperties)
     {
-        final String methodName = "removeSourceUpdateTime";
+        final String methodName = "removeResourceUpdateTime";
 
         if (instanceProperties != null)
         {
             return repositoryHelper.removeDateProperty(serviceName,
-                                                       OpenMetadataProperty.SOURCE_UPDATE_TIME.name,
+                                                       OpenMetadataProperty.RESOURCE_UPDATE_TIME.name,
                                                        instanceProperties,
                                                        methodName);
         }
@@ -5971,6 +5971,29 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         return null;
     }
 
+    /**
+     * Extract and delete the lastReviewTime property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return date
+     */
+    protected Date removeLastReviewTime(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeLastReviewTime";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                       OpenMetadataType.LAST_REVIEW_TIME_PROPERTY_NAME,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
 
     /**
      * Extract and delete the dueTime property from the supplied instance properties.
@@ -7469,14 +7492,14 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param instanceProperties properties from annotation entities
      * @return map of name value pairs
      */
-    protected Map<String, String> removeDataSourceProperties(InstanceProperties instanceProperties)
+    protected Map<String, String> removeResourceProperties(InstanceProperties instanceProperties)
     {
         final String methodName = "removeDataSourceProperties";
 
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringMapFromProperty(serviceName,
-                                                                OpenMetadataProperty.DATA_SOURCE_PROPERTIES.name,
+                                                                OpenMetadataProperty.RESOURCE_PROPERTIES.name,
                                                                 instanceProperties,
                                                                 methodName);
         }
@@ -7712,9 +7735,9 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param instanceProperties properties from entity
      * @return string text or null
      */
-    protected String removeDiscoveryActivity(InstanceProperties  instanceProperties)
+    protected String removeSurveyActivity(InstanceProperties  instanceProperties)
     {
-        final String methodName = "removeDiscoveryActivity";
+        final String methodName = "removeSurveyActivity";
 
         if (instanceProperties != null)
         {

@@ -84,6 +84,7 @@ public class ToDoConverter<B> extends CommunityProfileOMASConverter<B>
                     toDoProperties.setDescription(this.removeDescription(instanceProperties));
                     toDoProperties.setCreationTime(this.removeCreationTime(instanceProperties));
                     toDoProperties.setPriority(this.removeIntPriority(instanceProperties));
+                    toDoProperties.setLastReviewTime(this.removeLastReviewTime(instanceProperties));
                     toDoProperties.setDueTime(this.removeDueTime(instanceProperties));
                     toDoProperties.setCompletionTime(this.removeCompletionTime(instanceProperties));
                     toDoProperties.setStatus(this.getToDoStatusFromProperties(instanceProperties));

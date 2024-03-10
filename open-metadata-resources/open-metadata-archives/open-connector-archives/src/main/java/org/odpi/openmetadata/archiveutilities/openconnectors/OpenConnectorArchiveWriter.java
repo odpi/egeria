@@ -2046,7 +2046,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
             requestParameters.put(WriteAuditLogRequestParameter.MESSAGE_TEXT.getName(), "Action For Monday is: Wash");
             archiveHelper.addGovernanceActionExecutor(step2GUID,
-                                                      "perform-task",
+                                                      "write-to-audit-log",
                                                       requestParameters,
                                                       null,
                                                       null,
@@ -2083,7 +2083,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
             requestParameters.put(WriteAuditLogRequestParameter.MESSAGE_TEXT.getName(), "Action For Tuesday is: Iron");
             archiveHelper.addGovernanceActionExecutor(step3GUID,
-                                                      "perform-task",
+                                                      "write-to-audit-log",
                                                       requestParameters,
                                                       null,
                                                       null,
@@ -2120,7 +2120,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
             requestParameters.put(WriteAuditLogRequestParameter.MESSAGE_TEXT.getName(), "Action For Wednesday is: Mend");
             archiveHelper.addGovernanceActionExecutor(step4GUID,
-                                                      "perform-task",
+                                                      "write-to-audit-log",
                                                       requestParameters,
                                                       null,
                                                       null,
@@ -2157,7 +2157,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
             requestParameters.put(WriteAuditLogRequestParameter.MESSAGE_TEXT.getName(), "Action For Thursday is: Market");
             archiveHelper.addGovernanceActionExecutor(step5GUID,
-                                                      "perform-task",
+                                                      "write-to-audit-log",
                                                       requestParameters,
                                                       null,
                                                       null,
@@ -2194,7 +2194,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
             requestParameters.put(WriteAuditLogRequestParameter.MESSAGE_TEXT.getName(), "Action For Friday is: Clean");
             archiveHelper.addGovernanceActionExecutor(step6GUID,
-                                                      "perform-task",
+                                                      "write-to-audit-log",
                                                       requestParameters,
                                                       null,
                                                       null,
@@ -2231,7 +2231,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
             requestParameters.put(WriteAuditLogRequestParameter.MESSAGE_TEXT.getName(), "Action For Saturday is: Bake");
             archiveHelper.addGovernanceActionExecutor(step7GUID,
-                                                      "perform-task",
+                                                      "write-to-audit-log",
                                                       requestParameters,
                                                       null,
                                                       null,
@@ -2269,7 +2269,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
             requestParameters.put(WriteAuditLogRequestParameter.MESSAGE_TEXT.getName(), "Action For Sunday is: Rest");
             archiveHelper.addGovernanceActionExecutor(step8GUID,
-                                                      "perform-task",
+                                                      "write-to-audit-log",
                                                       requestParameters,
                                                       null,
                                                       null,
