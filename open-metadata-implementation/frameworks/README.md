@@ -34,7 +34,7 @@ about the data that can be stored in an open metadata repository.
   (called survey action services) that survey and extract characteristics
   about the real-world resources and stores them in an open metadata repository.
 
-* **[Event Action Framework (EAF)](event-action-framework)** provides the interfaces and base implementations for components
+* **[Event Action Framework (EAF)](context-event-framework)** provides the interfaces and base implementations for components
   (called event action services) that manage context events and time-based services.
 
 

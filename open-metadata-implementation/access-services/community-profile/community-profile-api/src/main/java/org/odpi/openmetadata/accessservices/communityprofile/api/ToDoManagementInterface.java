@@ -160,7 +160,7 @@ public interface ToDoManagementInterface
                                                                             UserNotAuthorizedException;
 
     /**
-     * Retrieve the "To Dos" that are chained off of an owner element.
+     * Retrieve the "To Dos" that are chained off of a sponsor's element.
      *
      * @param userId calling user
      * @param elementGUID unique identifier of the element to start with
@@ -174,13 +174,13 @@ public interface ToDoManagementInterface
      * @throws PropertyServerException the server is not available
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    List<ToDoElement> getActionsForOwner(String     userId,
-                                         String     elementGUID,
-                                         ToDoStatus toDoStatus,
-                                         int        startFrom,
-                                         int        pageSize) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException;
+    List<ToDoElement> getActionsForSponsor(String     userId,
+                                           String     elementGUID,
+                                           ToDoStatus toDoStatus,
+                                           int        startFrom,
+                                           int        pageSize) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException;
 
 
     /**

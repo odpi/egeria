@@ -25,10 +25,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ToDoRequestBody extends CommunityProfileOMASAPIRequestBody
 {
     private List<NewActionTargetProperties> newActionTargetProperties = null;
-    private ToDoProperties                  properties = null;
-    private String                          originatorGUID = null;
-    private String                          actionOwnerGUID = null;
-    private String                          assignToActorGUID = null;
+    private ToDoProperties                  properties                = null;
+    private String                          originatorGUID            = null;
+    private String                          actionSponsorGUID         = null;
+    private String                          assignToActorGUID         = null;
     /**
      * Default constructor
      */
@@ -51,9 +51,9 @@ public class ToDoRequestBody extends CommunityProfileOMASAPIRequestBody
         {
             this.newActionTargetProperties = template.getNewActionTargetProperties();
             this.properties                = template.getProperties();
-            this.originatorGUID            = template.getOriginatorGUID();
-            this.actionOwnerGUID           = template.getActionOwnerGUID();
-            this.assignToActorGUID         = template.getAssignToActorGUID();
+            this.originatorGUID    = template.getOriginatorGUID();
+            this.actionSponsorGUID = template.getActionSponsorGUID();
+            this.assignToActorGUID = template.getAssignToActorGUID();
         }
     }
 
@@ -125,24 +125,24 @@ public class ToDoRequestBody extends CommunityProfileOMASAPIRequestBody
 
 
     /**
-     * Return the unique identifier of the owner of the To Do.
+     * Return the unique identifier of the sponsor of the To Do.
      *
      * @return guid
      */
-    public String getActionOwnerGUID()
+    public String getActionSponsorGUID()
     {
-        return actionOwnerGUID;
+        return actionSponsorGUID;
     }
 
 
     /**
-     * Set up the unique identifier of the owner of the To Do.
+     * Set up the unique identifier of the sponsor of the To Do.
      *
-     * @param actionOwnerGUID guid
+     * @param actionSponsorGUID guid
      */
-    public void setActionOwnerGUID(String actionOwnerGUID)
+    public void setActionSponsorGUID(String actionSponsorGUID)
     {
-        this.actionOwnerGUID = actionOwnerGUID;
+        this.actionSponsorGUID = actionSponsorGUID;
     }
 
 
@@ -181,7 +181,7 @@ public class ToDoRequestBody extends CommunityProfileOMASAPIRequestBody
                 "newActionTargetProperties=" + newActionTargetProperties +
                 ", properties=" + properties +
                 ", originatorGUID='" + originatorGUID + '\'' +
-                ", actionOwnerGUID='" + actionOwnerGUID + '\'' +
+                ", actionSponsorGUID='" + actionSponsorGUID + '\'' +
                 ", assignToActorGUID='" + assignToActorGUID + '\'' +
                 "} " + super.toString();
     }
@@ -209,7 +209,7 @@ public class ToDoRequestBody extends CommunityProfileOMASAPIRequestBody
         return Objects.equals(newActionTargetProperties, that.newActionTargetProperties) &&
                        Objects.equals(properties, that.properties) &&
                 Objects.equals(originatorGUID, that.originatorGUID) &&
-                Objects.equals(actionOwnerGUID, that.actionOwnerGUID) &&
+                Objects.equals(actionSponsorGUID, that.actionSponsorGUID) &&
                 Objects.equals(assignToActorGUID, that.assignToActorGUID);
     }
 
@@ -222,6 +222,6 @@ public class ToDoRequestBody extends CommunityProfileOMASAPIRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(newActionTargetProperties, properties, originatorGUID, actionOwnerGUID, assignToActorGUID);
+        return Objects.hash(newActionTargetProperties, properties, originatorGUID, actionSponsorGUID, assignToActorGUID);
     }
 }

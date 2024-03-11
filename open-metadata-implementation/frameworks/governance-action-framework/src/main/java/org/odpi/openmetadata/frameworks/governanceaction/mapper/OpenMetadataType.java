@@ -318,20 +318,20 @@ public enum OpenMetadataType
     /**
      * A governance engine for managing context events and associated actions.
      */
-    EVENT_ACTION_ENGINE("796f6493-3c3e-4091-8b21-46ea4e54d011",
-                        "EventActionEngine",
-                        OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
-                        "cebad26a-08f6-40b7-a0e0-4f9b1b439992",
-                        "A governance engine for managing context events and associated actions."),
+    CONTEXT_EVENT_ENGINE("796f6493-3c3e-4091-8b21-46ea4e54d011",
+                         "ContextEventEngine",
+                         OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
+                         "cebad26a-08f6-40b7-a0e0-4f9b1b439992",
+                         "A governance engine for managing context events and associated actions."),
 
     /**
      * A governance service for managing context events and associated actions.
      */
-    EVENT_ACTION_SERVICE("464bb4d8-f865-4b9d-a06e-7ed19518ff13",
-                         "EventActionService",
-                         OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
-                         "6e030483-39ff-4b1b-bd50-1faa64e44690",
-                         "A governance service for managing context events and associated actions."),
+    CONTEXT_EVENT_SERVICE("464bb4d8-f865-4b9d-a06e-7ed19518ff13",
+                          "ContextEventService",
+                          OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
+                          "6e030483-39ff-4b1b-bd50-1faa64e44690",
+                          "A governance service for managing context events and associated actions."),
 
     /**
      * A governance engine for managing the surveying of real-world resources and capturing the results in survey report attached to the associated asset.
@@ -2119,7 +2119,7 @@ public enum OpenMetadataType
     /**
      * Actions - End1 = originator - Referenceable; End 2 = To Do
      */
-    public static final String ACTIONS_RELATIONSHIP_TYPE_NAME = "Actions";   /* from Area 1 */
+    public static final String ACTION_SPONSOR_RELATIONSHIP_TYPE_NAME = "ActionSponsor";   /* from Area 1 */
 
     /**
      * 207e2594-e3e4-4be8-a12c-4c401656e241

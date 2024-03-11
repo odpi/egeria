@@ -260,7 +260,7 @@ public class MyProfileResource
 
 
     /**
-     * Retrieve the "To Dos" that are chained off of an owner element.
+     * Retrieve the "To Dos" that are chained off of a sponsor's element.
      *
      * @param serverName name of the server instances for this request
      * @param elementGUID unique identifier of the element to start with
@@ -273,21 +273,21 @@ public class MyProfileResource
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    @PostMapping(path = "/elements/{elementGUID}/ownership/to-dos")
+    @PostMapping(path = "/elements/{elementGUID}/sponsored/to-dos")
 
-    @Operation(summary="getActionsForOwner",
-            description="Retrieve the to dos that are chained off of an owner element.",
+    @Operation(summary="getActionsForSponsor",
+            description="Retrieve the to dos that are chained off of a sponsor's element.",
             externalDocs=@ExternalDocumentation(description="To Dos",
                     url="https://egeria-project.org/concepts/to-do"))
 
-    public ToDoListResponse getActionsForOwner(@PathVariable String                serverName,
-                                               @PathVariable String                elementGUID,
-                                               @RequestParam int                   startFrom,
-                                               @RequestParam int                   pageSize,
-                                               @RequestBody  (required = false)
+    public ToDoListResponse getActionsForSponsor(@PathVariable String                serverName,
+                                                 @PathVariable String                elementGUID,
+                                                 @RequestParam int                   startFrom,
+                                                 @RequestParam int                   pageSize,
+                                                 @RequestBody  (required = false)
                                                              ToDoStatusRequestBody requestBody)
     {
-        return restAPI.getActionsForOwner(serverName, elementGUID, startFrom, pageSize, requestBody);
+        return restAPI.getActionsForSponsor(serverName, elementGUID, startFrom, pageSize, requestBody);
     }
 
 

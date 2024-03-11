@@ -4,6 +4,7 @@
 #
 @baseURL=https://localhost:9443
 @adminUserId=garygeeke
+@auditLogTopic=logging
 
 # ---------------------------------------------
 # Metadata Assess Store: simple-metadata-store
@@ -11,6 +12,13 @@
 ###
 # Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simple-metadata-store/server-user-id?id=simplenpa
+
+###
+# Set up the description of this server.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simple-metadata-store/server-description
+Content-Type: text/plain
+
+A metadata store that supports Open Metadata Access Services (OMASs) without event notifications.
 
 ###
 # Set up the local repository to use the in-memory implementation.
@@ -27,6 +35,13 @@ POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simp
 ###
 # Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/server-user-id?id=activenpa
+
+###
+# Set up the description of this server.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/server-description
+Content-Type: text/plain
+
+A metadata store that supports Open Metadata Access Services (OMASs) with event notifications.  It provides metadata to view-server, engine-host and integration-daemon.
 
 ###
 # Set up the local repository to use the XTDB KV implementation.
@@ -49,6 +64,7 @@ Content-Type: application/json
 }
 }
 
+
 ###
 # Set up all of the registered, undeprecated Open Metadata Access Services (OMASs) with kafka notifications enabled.
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/access-services
@@ -61,12 +77,27 @@ Content-Type: text/plain
 content-packs/OpenConnectorsArchive.omarchive
 
 ###
+# Add topic audit log destination to active-metadata-store server
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/audit-log-destinations/event-topic?
+    topicName={{auditLogTopic}}
+Content-Type: application/json
+
+["Information","Decision","Action","Error","Exception","Security","Startup","Shutdown","Asset","Cohort","Activity"]
+
+###
 # -------------------------
 # View Server: view-server
 #
 ###
 # Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/view-server/server-user-id?id=viewnpa
+
+###
+# Set up the description of this server.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/view-server/server-description
+Content-Type: text/plain
+
+A server that supplies REST API endpoints for User Interfaces and non-Java environments such as Python.
 
 ###
 # Set up all of the registered, undeprecated Open Metadata View Services (OMVSs).  The request body lists the platforms
@@ -130,12 +161,45 @@ Content-Type: application/json
 }
 
 ###
+# Set up the common properties needed to call your event bus.  The value of {{kafkaEndpoint}} is resolved in the
+# application.properties file using the `platform.placeholder.variables` property.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/view-server/event-bus
+Content-Type: application/json
+
+{
+"producer":
+{
+"bootstrap.servers":"{{kafkaEndpoint}}"
+},
+"consumer":
+{
+"bootstrap.servers":"{{kafkaEndpoint}}"
+}
+}
+
+###
+# Add topic audit log destination to active-metadata-store server
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/view-server/audit-log-destinations/event-topic?
+    topicName={{auditLogTopic}}
+Content-Type: application/json
+
+["Information","Decision","Action","Error","Exception","Security","Startup","Shutdown","Asset","Cohort","Activity"]
+
+
+###
 # -------------------------
 # Engine Host: engine-host
 #
 ###
 # Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/engine-host/server-user-id?id=enginenpa
+
+###
+# Set up the description of this server.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/engine-host/server-description
+Content-Type: text/plain
+
+A server that runs governance service requests, triggered by engine actions created in active-metadata-store.
 
 ###
 # Set up the address of the active-metadata-store that will supply the engine host with metadata along with the
@@ -176,12 +240,45 @@ Content-Type: application/json
 }
 
 ###
+# Set up the common properties needed to call your event bus.  The value of {{kafkaEndpoint}} is resolved in the
+# application.properties file using the `platform.placeholder.variables` property.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/engine-host/event-bus
+Content-Type: application/json
+
+{
+"producer":
+{
+"bootstrap.servers":"{{kafkaEndpoint}}"
+},
+"consumer":
+{
+"bootstrap.servers":"{{kafkaEndpoint}}"
+}
+}
+
+###
+# Add topic audit log destination to active-metadata-store server
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/engine-host/audit-log-destinations/event-topic?
+    topicName={{auditLogTopic}}
+Content-Type: application/json
+
+["Information","Decision","Action","Error","Exception","Security","Startup","Shutdown","Asset","Cohort","Activity"]
+
+
+###
 # ---------------------------------------
 # Integration Daemon: integration-daemon
 #
 ###
 # Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/integration-daemon/server-user-id?id=daemonnpa
+
+###
+# Set up the description of this server.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/integration-daemon/server-description
+Content-Type: text/plain
+
+A server that runs integration connectors that synchronize and exchange metadata with different types of technologies and tools.
 
 ###
 # Set up the qualified name of the integration group that this server supports and the location of the
@@ -195,5 +292,31 @@ Content-Type: application/json
     "omagserverName" : "active-metadata-store",
     "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:DefaultIntegrationGroup"
 }
+
+###
+# Set up the common properties needed to call your event bus.  The value of {{kafkaEndpoint}} is resolved in the
+# application.properties file using the `platform.placeholder.variables` property.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/integration-daemon/event-bus
+Content-Type: application/json
+
+{
+"producer":
+{
+"bootstrap.servers":"{{kafkaEndpoint}}"
+},
+"consumer":
+{
+"bootstrap.servers":"{{kafkaEndpoint}}"
+}
+}
+
+###
+# Add topic audit log destination to active-metadata-store server
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/integration-daemon/audit-log-destinations/event-topic?
+    topicName={{auditLogTopic}}
+Content-Type: application/json
+
+["Information","Decision","Action","Error","Exception","Security","Startup","Shutdown","Asset","Cohort","Activity"]
+
 
 ###

@@ -5813,7 +5813,7 @@ public class OpenMetadataTypesArchive1_2
         this.archiveBuilder.addEntityDef(getToDoEntity());
 
         this.archiveBuilder.addRelationshipDef(getToDoSourceRelationship());
-        this.archiveBuilder.addRelationshipDef(getActionsRelationship());
+        this.archiveBuilder.addRelationshipDef(getActionSponsorRelationship());
         this.archiveBuilder.addRelationshipDef(getActionAssignment());
     }
 
@@ -6025,11 +6025,11 @@ public class OpenMetadataTypesArchive1_2
     }
 
 
-    private RelationshipDef getActionsRelationship()
+    private RelationshipDef getActionSponsorRelationship()
     {
         final String guid            = "aca1277b-bf1c-42f5-9b3b-fbc2c9047325";
-        final String name            = "Actions";
-        final String description     = "An action to change or support a specific rule, project, deliverable, situation or plan of action.";
+        final String name            = "ActionSponsor";
+        final String description     = "Identifies the sponsor that requires the action (ToDo) to be completed.";
         final String descriptionGUID = null;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
@@ -6047,8 +6047,8 @@ public class OpenMetadataTypesArchive1_2
          * Set up end 1.
          */
         final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
-        final String                     end1AttributeName            = "toDoCause";
-        final String                     end1AttributeDescription     = "Rule or meeting that is driving the need for the to do.";
+        final String                     end1AttributeName            = "toDoSponsor";
+        final String                     end1AttributeDescription     = "Element such as person, team, rule, incident, project, that is driving the need for the action.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -6064,8 +6064,8 @@ public class OpenMetadataTypesArchive1_2
          * Set up end 2.
          */
         final String                     end2EntityType               = "ToDo";
-        final String                     end2AttributeName            = "relatedActions";
-        final String                     end2AttributeDescription     = "Potentially impacting requests for change.";
+        final String                     end2AttributeName            = "trackedActions";
+        final String                     end2AttributeDescription     = "Actions that need to be completed.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 

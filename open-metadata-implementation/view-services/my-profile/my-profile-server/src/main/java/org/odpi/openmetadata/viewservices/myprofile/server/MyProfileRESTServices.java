@@ -7,8 +7,6 @@ import org.odpi.openmetadata.accessservices.communityprofile.client.Organization
 import org.odpi.openmetadata.accessservices.communityprofile.client.ToDoActionManagement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ActorProfileElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonalRoleElement;
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ToDoElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -182,7 +180,7 @@ public class MyProfileRESTServices extends TokenController
             {
                 response.setGUID(handler.createToDo(userId,
                                                     requestBody.getOriginatorGUID(),
-                                                    requestBody.getActionOwnerGUID(),
+                                                    requestBody.getActionSponsorGUID(),
                                                     requestBody.getAssignToActorGUID(),
                                                     requestBody.getNewActionTargetProperties(),
                                                     requestBody.getProperties()));
@@ -499,7 +497,7 @@ public class MyProfileRESTServices extends TokenController
 
 
     /**
-     * Retrieve the "To Dos" that are chained off of an owner element.
+     * Retrieve the "To Dos" that are chained off of a sponsoring element.
      *
      * @param serverName name of the server instances for this request
      * @param elementGUID unique identifier of the element to start with
@@ -512,13 +510,13 @@ public class MyProfileRESTServices extends TokenController
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public ToDoListResponse getActionsForOwner(String                serverName,
-                                               String                elementGUID,
-                                               int                   startFrom,
-                                               int                   pageSize,
-                                               ToDoStatusRequestBody requestBody)
+    public ToDoListResponse getActionsForSponsor(String                serverName,
+                                                 String                elementGUID,
+                                                 int                   startFrom,
+                                                 int                   pageSize,
+                                                 ToDoStatusRequestBody requestBody)
     {
-        final String methodName = "getActionsForOwner";
+        final String methodName = "getActionsForSponsor";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -536,19 +534,19 @@ public class MyProfileRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setToDoElements(handler.getActionsForOwner(userId,
-                                                                    elementGUID,
-                                                                    requestBody.getStatus(),
-                                                                    startFrom,
-                                                                    pageSize));
+                response.setToDoElements(handler.getActionsForSponsor(userId,
+                                                                      elementGUID,
+                                                                      requestBody.getStatus(),
+                                                                      startFrom,
+                                                                      pageSize));
             }
             else
             {
-                response.setToDoElements(handler.getActionsForOwner(userId,
-                                                                    elementGUID,
-                                                                    null,
-                                                                    startFrom,
-                                                                    pageSize));
+                response.setToDoElements(handler.getActionsForSponsor(userId,
+                                                                      elementGUID,
+                                                                      null,
+                                                                      startFrom,
+                                                                      pageSize));
             }
         }
         catch (Exception error)

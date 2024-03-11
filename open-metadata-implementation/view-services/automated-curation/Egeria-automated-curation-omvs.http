@@ -490,7 +490,7 @@ Content-Type: application/json
 
 {
     "class" : "InitiateGovernanceActionTypeRequestBody",
-    "governanceActionTypeQualifiedName": "Egeria:GovernanceActionProcessStep:2adeb8f1-0f59-4970-b6f2-6cc25d4d2402survey-folder",
+    "governanceActionTypeQualifiedName": "Egeria:GovernanceActionType:2adeb8f1-0f59-4970-b6f2-6cc25d4d2402survey-folder",
     "actionTargets": [
       {
           "class" : "NewActionTarget",

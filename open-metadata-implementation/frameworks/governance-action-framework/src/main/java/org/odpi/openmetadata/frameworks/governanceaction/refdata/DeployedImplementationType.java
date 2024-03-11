@@ -351,25 +351,25 @@ public enum DeployedImplementationType
 
 
     /**
-     * Event Action Service - A connector that coordinates governance of context events.
+     * Context Event Service - A connector that coordinates governance of context events.
      */
-    EVENT_ACTION_SERVICE_CONNECTOR("Event Action Service",
-                                   DeployedImplementationType.GOVERNANCE_SERVICE,
-                                   OpenMetadataType.EVENT_ACTION_SERVICE.typeName,
-                                   null,
-                                   "A connector that coordinates governance of context events.",
-                                   "https://egeria-project.org/concepts/event-action-service/"),
+    CONTEXT_EVENT_SERVICE_CONNECTOR("Context Event Service",
+                                    DeployedImplementationType.GOVERNANCE_SERVICE,
+                                    OpenMetadataType.CONTEXT_EVENT_SERVICE.typeName,
+                                    null,
+                                    "A connector that coordinates governance of context events.",
+                                    "https://egeria-project.org/concepts/context-event-service/"),
 
 
     /**
-     * Event Action Engine - A governance engine that runs event action services.
+     * Context Event Engine - A governance engine that runs context event services.
      */
-    EVENT_ACTION_ENGINE("Event Action Engine",
-                        DeployedImplementationType.GOVERNANCE_ENGINE,
-                        OpenMetadataType.EVENT_ACTION_ENGINE.typeName,
-                        null,
-                        "A governance engine that runs event action services.",
-                        "https://egeria-project.org/concepts/event-action-engine/"),
+    CONTEXT_EVENT_ENGINE("Context Event Engine",
+                         DeployedImplementationType.GOVERNANCE_ENGINE,
+                         OpenMetadataType.CONTEXT_EVENT_ENGINE.typeName,
+                         null,
+                         "A governance engine that runs context event services.",
+                         "https://egeria-project.org/concepts/context-event-engine/"),
 
     /**
      * Event Action Service - A connector that coordinates asset surveys.
