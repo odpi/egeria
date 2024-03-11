@@ -180,13 +180,13 @@ implements <a href="../api/ToDoManagementInterface.html" title="interface in org
 <div class="block">Retrieve the "To Dos" that are chained off of an action target element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ToDoElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ToDoElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActionsForOwner(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus,int,int)" class="member-name-link">getActionsForOwner</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActionsForSponsor(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus,int,int)" class="member-name-link">getActionsForSponsor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="../properties/ToDoStatus.html" title="enum class in org.odpi.openmetadata.accessservices.communityprofile.properties">ToDoStatus</a>&nbsp;toDoStatus,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the "To Dos" that are chained off of an owner element.</div>
+<div class="block">Retrieve the "To Dos" that are chained off of a sponsor's element.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ToDoElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ToDoElement</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssignedActions(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus,int,int)" class="member-name-link">getAssignedActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -530,20 +530,20 @@ implements <a href="../api/ToDoManagementInterface.html" title="interface in org
 </section>
 </li>
 <li>
-<section class="detail" id="getActionsForOwner(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus,int,int)">
-<h3>getActionsForOwner</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ToDoElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ToDoElement</a>&gt;</span>&nbsp;<span class="element-name">getActionsForOwner</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<section class="detail" id="getActionsForSponsor(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus,int,int)">
+<h3>getActionsForSponsor</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ToDoElement.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.metadataelements">ToDoElement</a>&gt;</span>&nbsp;<span class="element-name">getActionsForSponsor</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="../properties/ToDoStatus.html" title="enum class in org.odpi.openmetadata.accessservices.communityprofile.properties">ToDoStatus</a>&nbsp;toDoStatus,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</span>
-                                     throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+                                       throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Retrieve the "To Dos" that are chained off of an owner element.</div>
+<div class="block">Retrieve the "To Dos" that are chained off of a sponsor's element.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../api/ToDoManagementInterface.html#getActionsForOwner(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus,int,int)">getActionsForOwner</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ToDoManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.api">ToDoManagementInterface</a></code></dd>
+<dd><code><a href="../api/ToDoManagementInterface.html#getActionsForSponsor(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus,int,int)">getActionsForSponsor</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ToDoManagementInterface.html" title="interface in org.odpi.openmetadata.accessservices.communityprofile.api">ToDoManagementInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>elementGUID</code> - unique identifier of the element to start with</dd>

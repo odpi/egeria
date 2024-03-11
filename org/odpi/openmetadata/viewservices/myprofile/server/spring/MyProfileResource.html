@@ -146,13 +146,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the "To Dos" that are chained off of an action target element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/ToDoListResponse.html" title="class in org.odpi.openmetadata.viewservices.myprofile.rest">ToDoListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActionsForOwner(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.viewservices.myprofile.rest.ToDoStatusRequestBody)" class="member-name-link">getActionsForOwner</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActionsForSponsor(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.viewservices.myprofile.rest.ToDoStatusRequestBody)" class="member-name-link">getActionsForSponsor</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  <a href="../../rest/ToDoStatusRequestBody.html" title="class in org.odpi.openmetadata.viewservices.myprofile.rest">ToDoStatusRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the "To Dos" that are chained off of an owner element.</div>
+<div class="block">Retrieve the "To Dos" that are chained off of a sponsor's element.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/ToDoListResponse.html" title="class in org.odpi.openmetadata.viewservices.myprofile.rest">ToDoListResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssignedActions(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.viewservices.myprofile.rest.ToDoStatusRequestBody)" class="member-name-link">getAssignedActions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
@@ -435,10 +435,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getActionsForOwner(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.viewservices.myprofile.rest.ToDoStatusRequestBody)">
-<h3>getActionsForOwner</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/ownership/to-dos")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/ToDoListResponse.html" title="class in org.odpi.openmetadata.viewservices.myprofile.rest">ToDoListResponse</a></span>&nbsp;<span class="element-name">getActionsForOwner</span><wbr><span class="parameters">(@PathVariable
+<section class="detail" id="getActionsForSponsor(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.viewservices.myprofile.rest.ToDoStatusRequestBody)">
+<h3>getActionsForSponsor</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/sponsored/to-dos")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/ToDoListResponse.html" title="class in org.odpi.openmetadata.viewservices.myprofile.rest">ToDoListResponse</a></span>&nbsp;<span class="element-name">getActionsForSponsor</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
@@ -448,7 +448,7 @@ loadScripts(document, 'script');</script>
  int&nbsp;pageSize,
  @RequestBody(required=false)
  <a href="../../rest/ToDoStatusRequestBody.html" title="class in org.odpi.openmetadata.viewservices.myprofile.rest">ToDoStatusRequestBody</a>&nbsp;requestBody)</span></div>
-<div class="block">Retrieve the "To Dos" that are chained off of an owner element.</div>
+<div class="block">Retrieve the "To Dos" that are chained off of a sponsor's element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
