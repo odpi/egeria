@@ -203,7 +203,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                 openMetadataStoreClient.createRelatedElementsInStore(userId,
                                                                      null,
                                                                      null,
-                                                                     OpenMetadataType.ACTIONS_RELATIONSHIP_TYPE_NAME,
+                                                                     OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP_TYPE_NAME,
                                                                      actionOwnerGUID,
                                                                      toDoGUID,
                                                                      false,
@@ -496,7 +496,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
 
 
     /**
-     * Retrieve the "To Dos" that are chained off of an owner element.
+     * Retrieve the "To Dos" that are chained off of a sponsor's element.
      *
      * @param userId calling user
      * @param elementGUID unique identifier of the element to start with
@@ -511,15 +511,15 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
     @Override
-    public List<ToDoElement> getActionsForOwner(String     userId,
-                                                String     elementGUID,
-                                                ToDoStatus toDoStatus,
-                                                int        startFrom,
-                                                int        pageSize) throws InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException
+    public List<ToDoElement> getActionsForSponsor(String     userId,
+                                                  String     elementGUID,
+                                                  ToDoStatus toDoStatus,
+                                                  int        startFrom,
+                                                  int        pageSize) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
     {
-        final String methodName        = "getActionsForOwner";
+        final String methodName        = "getActionsForSponsor";
         final String guidParameterName = "elementGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -528,7 +528,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
         List<RelatedMetadataElement> relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                                   elementGUID,
                                                                                                                   1,
-                                                                                                                  OpenMetadataType.ACTIONS_RELATIONSHIP_TYPE_NAME,
+                                                                                                                  OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP_TYPE_NAME,
                                                                                                                   false,
                                                                                                                   false,
                                                                                                                   new Date(),
@@ -594,13 +594,13 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
     @Override
-    public List<ToDoElement> findToDos(String userId,
-                                       String searchString,
+    public List<ToDoElement> findToDos(String     userId,
+                                       String     searchString,
                                        ToDoStatus toDoStatus,
-                                       int startFrom,
-                                       int pageSize) throws InvalidParameterException,
-                                                            PropertyServerException,
-                                                            UserNotAuthorizedException
+                                       int        startFrom,
+                                       int        pageSize) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
     {
         final String methodName                = "findToDos";
         final String searchStringParameterName = "searchString";

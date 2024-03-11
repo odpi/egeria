@@ -395,7 +395,7 @@ public class OpenMetadataTypesArchive
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.ACTIONS_RELATIONSHIP_TYPE_NAME;
+        final String typeName = OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP_TYPE_NAME;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -1487,22 +1487,22 @@ public class OpenMetadataTypesArchive
 
     private void update0461GovernanceEngines()
     {
-        this.archiveBuilder.addEntityDef(getEventActionEngineEntity());
-        this.archiveBuilder.addEntityDef(getEventActionServiceEntity());
+        this.archiveBuilder.addEntityDef(getContextEventEngineEntity());
+        this.archiveBuilder.addEntityDef(getContextEventServiceEntity());
         this.archiveBuilder.addEntityDef(getSurveyActionEngineEntity());
         this.archiveBuilder.addEntityDef(getSurveyActionServiceEntity());
     }
 
-    private EntityDef getEventActionEngineEntity()
+    private EntityDef getContextEventEngineEntity()
     {
         /*
          * Build the Entity
          */
-        final String guid            = OpenMetadataType.EVENT_ACTION_ENGINE.typeGUID;
-        final String name            = OpenMetadataType.EVENT_ACTION_ENGINE.typeName;
-        final String description     = OpenMetadataType.EVENT_ACTION_ENGINE.description;
-        final String descriptionGUID = OpenMetadataType.EVENT_ACTION_ENGINE.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.EVENT_ACTION_ENGINE.wikiURL;
+        final String guid            = OpenMetadataType.CONTEXT_EVENT_ENGINE.typeGUID;
+        final String name            = OpenMetadataType.CONTEXT_EVENT_ENGINE.typeName;
+        final String description     = OpenMetadataType.CONTEXT_EVENT_ENGINE.description;
+        final String descriptionGUID = OpenMetadataType.CONTEXT_EVENT_ENGINE.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.CONTEXT_EVENT_ENGINE.wikiURL;
 
         final String superTypeName   = OpenMetadataType.GOVERNANCE_ENGINE.typeName;
 
@@ -1516,16 +1516,16 @@ public class OpenMetadataTypesArchive
     }
 
 
-    private EntityDef getEventActionServiceEntity()
+    private EntityDef getContextEventServiceEntity()
     {
         /*
          * Build the Entity
          */
-        final String guid            = OpenMetadataType.EVENT_ACTION_SERVICE.typeGUID;
-        final String name            = OpenMetadataType.EVENT_ACTION_SERVICE.typeName;
-        final String description     = OpenMetadataType.EVENT_ACTION_SERVICE.description;
-        final String descriptionGUID = OpenMetadataType.EVENT_ACTION_SERVICE.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.EVENT_ACTION_SERVICE.wikiURL;
+        final String guid            = OpenMetadataType.CONTEXT_EVENT_SERVICE.typeGUID;
+        final String name            = OpenMetadataType.CONTEXT_EVENT_SERVICE.typeName;
+        final String description     = OpenMetadataType.CONTEXT_EVENT_SERVICE.description;
+        final String descriptionGUID = OpenMetadataType.CONTEXT_EVENT_SERVICE.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.CONTEXT_EVENT_SERVICE.wikiURL;
 
         final String superTypeName   = OpenMetadataType.GOVERNANCE_SERVICE.typeName;
 
