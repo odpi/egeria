@@ -114,6 +114,7 @@ public class PropertyHelper
 
             PrimitiveTypePropertyValue propertyValue = new PrimitiveTypePropertyValue();
             propertyValue.setTypeName("string");
+            propertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
             propertyValue.setPrimitiveValue(name);
 
             List<PropertyCondition> propertyConditions = new ArrayList<>();
@@ -148,9 +149,9 @@ public class PropertyHelper
      * @param propertyCategory category of the property
      * @return element properties object.
      */
-    private ElementProperties addPrimitivePropertyToInstance(ElementProperties    properties,
-                                                             String               propertyName,
-                                                             Object               propertyValue,
+    private ElementProperties addPrimitivePropertyToInstance(ElementProperties     properties,
+                                                             String                propertyName,
+                                                             Object                propertyValue,
                                                              PrimitiveTypeCategory propertyCategory)
     {
         ElementProperties  resultingProperties;

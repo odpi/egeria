@@ -1865,7 +1865,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         requestBody.setForDuplicateProcessing(forDuplicateProcessing);
         requestBody.setEffectiveTime(effectiveTime);
 
-        restClient.callGUIDPostRESTCall(methodName,
+        restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
                                         serverName,

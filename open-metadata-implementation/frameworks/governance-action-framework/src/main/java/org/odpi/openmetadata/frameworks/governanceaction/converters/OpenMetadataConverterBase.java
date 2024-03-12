@@ -135,7 +135,7 @@ public abstract class OpenMetadataConverterBase<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
-     * an Annotation or DataField bean which combine knowledge from the element and its linked relationships.
+     * an Annotation or To Do bean which combine knowledge from the element and its linked relationships.
      *
      * @param beanClass name of the class to create
      * @param primaryElement element that is the root of the collection of entities that make up the

@@ -127,7 +127,7 @@ public class CollectionMemberConverter<B> extends CommunityProfileConverterBase<
         if (elementProperties != null)
         {
             String retrievedProperty = propertyHelper.removeEnumProperty(serviceName,
-                                                                         OpenMetadataType.MEMBERSHIP_STATUS_ENUM_TYPE_NAME,
+                                                                         OpenMetadataType.STATUS_PROPERTY_NAME,
                                                                          elementProperties,
                                                                          methodName);
 

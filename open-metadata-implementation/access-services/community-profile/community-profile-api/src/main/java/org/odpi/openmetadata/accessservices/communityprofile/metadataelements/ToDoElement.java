@@ -26,8 +26,9 @@ public class ToDoElement implements MetadataElement
 {
     private ElementHeader             elementHeader  = null;
     private ToDoProperties            properties     = null;
-    private RelatedElement            relatedElement = null;
+    private ElementStub               toDoSource     = null;
     private List<ElementStub>         assignedActors = null;
+    private List<ElementStub>         sponsors       = null;
     private List<ActionTargetElement> actionTargets  = null;
 
     /**
@@ -48,11 +49,12 @@ public class ToDoElement implements MetadataElement
     {
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
-            properties = template.getProperties();
-            relatedElement = template.getRelatedElement();
+            elementHeader  = template.getElementHeader();
+            properties     = template.getProperties();
+            toDoSource     = template.getToDoSource();
             assignedActors = template.getAssignedActors();
-            actionTargets = template.getActionTargets();
+            sponsors       = template.getSponsors();
+            actionTargets  = template.getActionTargets();
         }
     }
 
@@ -104,27 +106,26 @@ public class ToDoElement implements MetadataElement
 
 
     /**
-     * Return details of the relationship used to retrieve this element.
-     * Will be null if the element was retrieved directly rather than via a relationship.
+     * Return the source of the To Do
      *
-     * @return list of element stubs
+     * @return  element stub
      */
-    public RelatedElement getRelatedElement()
+    public ElementStub getToDoSource()
     {
-        return relatedElement;
+        return toDoSource;
     }
 
 
     /**
-     * Set up details of the relationship used to retrieve this element.
-     * Will be null if the element was retrieved directly rather than via a relationship.
+     * Set up details of the To Do
      *
-     * @param relatedElement relationship details
+     * @param toDoSource element stub
      */
-    public void setRelatedElement(RelatedElement relatedElement)
+    public void setToDoSource(ElementStub toDoSource)
     {
-        this.relatedElement = relatedElement;
+        this.toDoSource = toDoSource;
     }
+
 
     /**
      * Return the list of actors assigned to this work item.
@@ -145,6 +146,28 @@ public class ToDoElement implements MetadataElement
     public void setAssignedActors(List<ElementStub> assignedActors)
     {
         this.assignedActors = assignedActors;
+    }
+
+
+    /**
+     * Return the list of sponsors for this action.
+     *
+     * @return list of sponsors
+     */
+    public List<ElementStub> getSponsors()
+    {
+        return sponsors;
+    }
+
+
+    /**
+     * Set up the list of sponsors for this action.
+     *
+     * @param sponsors list of sponsors
+     */
+    public void setSponsors(List<ElementStub> sponsors)
+    {
+        this.sponsors = sponsors;
     }
 
 
@@ -181,8 +204,9 @@ public class ToDoElement implements MetadataElement
         return "ToDoElement{" +
                 "elementHeader=" + elementHeader +
                 ", properties=" + properties +
-                ", relatedElement=" + relatedElement +
+                ", toDoSource=" + toDoSource +
                 ", assignedActors=" + assignedActors +
+                ", sponsors=" + sponsors +
                 ", actionTargets=" + actionTargets +
                 '}';
     }
@@ -208,8 +232,9 @@ public class ToDoElement implements MetadataElement
         ToDoElement that = (ToDoElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
                 Objects.equals(properties, that.properties) &&
-                Objects.equals(relatedElement, that.relatedElement) &&
+                Objects.equals(toDoSource, that.toDoSource) &&
                 Objects.equals(assignedActors, that.assignedActors) &&
+                Objects.equals(sponsors, that.sponsors) &&
                 Objects.equals(actionTargets, that.actionTargets);
     }
 
@@ -222,6 +247,6 @@ public class ToDoElement implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, properties, relatedElement, assignedActors, actionTargets);
+        return Objects.hash(super.hashCode(), elementHeader, properties, toDoSource, sponsors, assignedActors, actionTargets);
     }
 }

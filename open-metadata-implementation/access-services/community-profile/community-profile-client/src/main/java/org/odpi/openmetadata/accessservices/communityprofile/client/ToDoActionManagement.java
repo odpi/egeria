@@ -125,7 +125,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
      *
      * @param userId                    calling user
      * @param originatorGUID            optional originator element (such as a person or Governance Service)
-     * @param actionOwnerGUID           optional element that maintains the "To Do" on their list
+     * @param actionSponsorGUID           optional element that maintains the "To Do" on their list
      * @param assignToActorGUID         optional actor to assign the action to
      * @param newActionTargetProperties optional list of elements that the action is to target
      * @param properties                properties of the to do action
@@ -137,7 +137,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
     @Override
     public String createToDo(String                          userId,
                              String                          originatorGUID,
-                             String                          actionOwnerGUID,
+                             String                          actionSponsorGUID,
                              String                          assignToActorGUID,
                              List<NewActionTargetProperties> newActionTargetProperties,
                              ToDoProperties                  properties) throws InvalidParameterException,
@@ -198,13 +198,13 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                                                                      null);
             }
 
-            if (actionOwnerGUID != null)
+            if (actionSponsorGUID != null)
             {
                 openMetadataStoreClient.createRelatedElementsInStore(userId,
                                                                      null,
                                                                      null,
                                                                      OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP_TYPE_NAME,
-                                                                     actionOwnerGUID,
+                                                                     actionSponsorGUID,
                                                                      toDoGUID,
                                                                      false,
                                                                      false,
@@ -447,7 +447,17 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
 
         if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.TO_DO_TYPE_NAME)))
         {
-            return toDoConverter.getNewBean(toDoBeanClass, openMetadataElement, methodName);
+            List<RelatedMetadataElement> relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                                      openMetadataElement.getElementGUID(),
+                                                                                                                      0,
+                                                                                                                      null,
+                                                                                                                      false,
+                                                                                                                      false,
+                                                                                                                      new Date(),
+                                                                                                                      0,
+                                                                                                                      0);
+
+            return toDoConverter.getNewComplexBean(toDoBeanClass, openMetadataElement, relatedMetadataElements, methodName);
         }
 
         return null;
@@ -491,7 +501,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                                                                                                                   new Date(),
                                                                                                                   startFrom,
                                                                                                                   pageSize);
-        return this.convertRelatedToDos(relatedMetadataElements, toDoStatus, methodName);
+        return this.convertRelatedToDos(userId, relatedMetadataElements, toDoStatus, methodName);
     }
 
 
@@ -534,7 +544,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                                                                                                                   new Date(),
                                                                                                                   startFrom,
                                                                                                                   pageSize);
-        return this.convertRelatedToDos(relatedMetadataElements, toDoStatus, methodName);
+        return this.convertRelatedToDos(userId, relatedMetadataElements, toDoStatus, methodName);
     }
 
 
@@ -575,7 +585,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                                                                                                                   new Date(),
                                                                                                                   startFrom,
                                                                                                                   pageSize);
-        return this.convertRelatedToDos(relatedMetadataElements, toDoStatus, methodName);
+        return this.convertRelatedToDos(userId, relatedMetadataElements, toDoStatus, methodName);
     }
 
 
@@ -618,7 +628,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                                                                                                                 startFrom,
                                                                                                                 pageSize);
 
-        return convertToDos(openMetadataElements, toDoStatus, methodName);
+        return convertToDos(userId, openMetadataElements, toDoStatus, methodName);
     }
 
 
@@ -636,20 +646,20 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
     @Override
-    public List<ToDoElement> getToDosByType(String userId,
-                                            String toDoType,
+    public List<ToDoElement> getToDosByType(String     userId,
+                                            String     toDoType,
                                             ToDoStatus toDoStatus,
-                                            int startFrom,
-                                            int pageSize) throws InvalidParameterException,
-                                                                 PropertyServerException,
-                                                                 UserNotAuthorizedException
+                                            int        startFrom,
+                                            int        pageSize) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
     {
         final String methodName = "getToDosByType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        List<String> propertyNames = List.of(OpenMetadataType.TO_DO_TYPE_NAME);
+        List<String> propertyNames = List.of(OpenMetadataType.TO_DO_TYPE_PROPERTY_NAME);
 
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
                                                                                                       OpenMetadataType.TO_DO_TYPE_NAME,
@@ -666,22 +676,28 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                                                                                                       startFrom,
                                                                                                       pageSize);
 
-        return convertToDos(openMetadataElements, toDoStatus, methodName);
+        return convertToDos(userId, openMetadataElements, toDoStatus, methodName);
     }
 
 
     /**
      * Convert to do objects from the OpenMetadataClient to local beans.
      *
+     * @param userId calling user
      * @param openMetadataElements retrieved elements
      * @param toDoStatus           optional "To Do" status
      * @param methodName           calling method
      * @return list of collection elements
-     * @throws PropertyServerException error in retrieved values
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    private List<ToDoElement> convertToDos(List<OpenMetadataElement> openMetadataElements,
-                                           ToDoStatus toDoStatus,
-                                           String methodName) throws PropertyServerException
+    private List<ToDoElement> convertToDos(String                    userId,
+                                           List<OpenMetadataElement> openMetadataElements,
+                                           ToDoStatus                toDoStatus,
+                                           String                    methodName) throws PropertyServerException,
+                                                                                        InvalidParameterException,
+                                                                                        UserNotAuthorizedException
     {
         if (openMetadataElements != null)
         {
@@ -691,7 +707,19 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
             {
                 if (openMetadataElement != null)
                 {
-                    ToDoElement toDoElement = toDoConverter.getNewBean(toDoBeanClass, openMetadataElement, methodName);
+                    List<RelatedMetadataElement> relatedMetadataElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                                              openMetadataElement.getElementGUID(),
+                                                                                                                              0,
+                                                                                                                              null,
+                                                                                                                              false,
+                                                                                                                              false,
+                                                                                                                              new Date(),
+                                                                                                                              0,
+                                                                                                                              0);
+                    ToDoElement toDoElement = toDoConverter.getNewComplexBean(toDoBeanClass,
+                                                                              openMetadataElement,
+                                                                              relatedMetadataElements,
+                                                                              methodName);
 
                     if ((toDoStatus == null) || (toDoStatus == toDoElement.getProperties().getStatus()))
                     {
@@ -700,7 +728,10 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                 }
             }
 
-            return toDoElements;
+            if (! toDoElements.isEmpty())
+            {
+                return toDoElements;
+            }
         }
 
         return null;
@@ -710,15 +741,21 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
     /**
      * Convert to do objects from the OpenMetadataClient to local beans.
      *
+     * @param userId calling user
      * @param relatedMetadataElements retrieved elements
      * @param toDoStatus           optional "To Do" status
      * @param methodName           calling method
      * @return list of collection elements
-     * @throws PropertyServerException error in retrieved values
+     * @throws InvalidParameterException  a parameter is invalid
+     * @throws PropertyServerException    the server is not available
+     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    private List<ToDoElement> convertRelatedToDos(List<RelatedMetadataElement> relatedMetadataElements,
+    private List<ToDoElement> convertRelatedToDos(String                       userId,
+                                                  List<RelatedMetadataElement> relatedMetadataElements,
                                                   ToDoStatus                   toDoStatus,
-                                                  String                       methodName) throws PropertyServerException
+                                                  String                       methodName) throws PropertyServerException,
+                                                                                                  InvalidParameterException,
+                                                                                                  UserNotAuthorizedException
     {
         if (relatedMetadataElements != null)
         {
@@ -728,7 +765,19 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
             {
                 if (relatedMetadataElement != null)
                 {
-                    ToDoElement toDoElement = toDoConverter.getNewBean(toDoBeanClass, relatedMetadataElement, methodName);
+                    List<RelatedMetadataElement> relatedElements = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                                      relatedMetadataElement.getElement().getElementGUID(),
+                                                                                                                      0,
+                                                                                                                      null,
+                                                                                                                      false,
+                                                                                                                              false,
+                                                                                                                              new Date(),
+                                                                                                                              0,
+                                                                                                                              0);
+                    ToDoElement toDoElement = toDoConverter.getNewComplexBean(toDoBeanClass,
+                                                                              relatedMetadataElement.getElement(),
+                                                                              relatedElements,
+                                                                              methodName);
 
                     if ((toDoStatus == null) || (toDoStatus == toDoElement.getProperties().getStatus()))
                     {
@@ -737,7 +786,10 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                 }
             }
 
-            return toDoElements;
+            if (!toDoElements.isEmpty())
+            {
+                return toDoElements;
+            }
         }
 
         return null;
