@@ -358,6 +358,15 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Log an audit message about an asset.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveConnectionForAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">saveConnectionForAsset</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
+ <a href="../../../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Save the connection optionally linked to the supplied asset GUID.</div>
+</div>
 </div>
 </div>
 </div>
@@ -471,6 +480,38 @@ loadScripts(document, 'script');</script>
 <dd>connection object or
  InvalidParameterException one of the parameters is null or invalid or
  UnrecognizedConnectionGUIDException the supplied GUID is not recognized by the metadata repository or
+ PropertyServerException there is a problem retrieving information from the property (metadata) server or
+ UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="saveConnectionForAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
+<h3>saveConnectionForAsset</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/connections")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">saveConnectionForAsset</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ @RequestParam(required=false)
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
+ @RequestBody
+ <a href="../../../../../frameworks/connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</span></div>
+<div class="block">Save the connection optionally linked to the supplied asset GUID.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server instances for this request</dd>
+<dd><code>serviceURLName</code> - String   name of the service that created the connector that issued this request.</dd>
+<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>assetGUID</code> - the unique id for the asset within the metadata repository. This optional.
+                    However, if specified then the new connection is attached to the asset</dd>
+<dd><code>connection</code> - connection to save</dd>
+<dt>Returns:</dt>
+<dd>connection object or
+ InvalidParameterException one of the parameters is null or invalid or
+ UnrecognizedConnectionNameException there is no connection defined for this name or
  PropertyServerException there is a problem retrieving information from the property (metadata) server or
  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
 </dl>

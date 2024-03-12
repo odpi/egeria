@@ -172,24 +172,29 @@ implements <a href="IntegrationConnector.html" title="interface in org.odpi.open
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the component description that is used by this connector in the audit log.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initializeEmbeddedConnectors(java.util.List)" class="member-name-link">initializeEmbeddedConnectors</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&gt;&nbsp;embeddedConnectors)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRequestedCatalogTargets()" class="member-name-link">getRequestedCatalogTargets</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return a list of requested catalog targets for the connector.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initializeEmbeddedConnectors(java.util.List)" class="member-name-link">initializeEmbeddedConnectors</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&gt;&nbsp;embeddedConnectors)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the list of connectors that this virtual connector will use to support its interface.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">setAuditLog</a><wbr>(<a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">setAuditLog</a><wbr>(<a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Receive an audit log object that can be used to record audit log messages.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnectorName(java.lang.String)" class="member-name-link">setConnectorName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnectorName(java.lang.String)" class="member-name-link">setConnectorName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the connector name for logging.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setContext(org.odpi.openmetadata.frameworks.integration.context.IntegrationContext)" class="member-name-link">setContext</a><wbr>(<a href="../context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a>&nbsp;integrationContext)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setContext(org.odpi.openmetadata.frameworks.integration.context.IntegrationContext)" class="member-name-link">setContext</a><wbr>(<a href="../context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a>&nbsp;integrationContext)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the standard integration context for the connector.</div>
 </div>
 </div>
@@ -297,7 +302,7 @@ implements <a href="IntegrationConnector.html" title="interface in org.odpi.open
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initializeEmbeddedConnectors</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&gt;&nbsp;embeddedConnectors)</span></div>
 <div class="block">Set up the list of connectors that this virtual connector will use to support its interface.
  The connectors are initialized waiting to start.  When start() is called on the
- virtual connector, it needs to pass start() to each of the embedded connectors. Similarly for
+ virtual connector, it needs to pass start() to each of the embedded connectors. Similarly, for
  disconnect().</div>
 <dl class="notes">
 <dt>Specified by:</dt>
@@ -334,6 +339,17 @@ implements <a href="IntegrationConnector.html" title="interface in org.odpi.open
 </section>
 </li>
 <li>
+<section class="detail" id="getRequestedCatalogTargets()">
+<h3>getRequestedCatalogTargets</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&gt;</span>&nbsp;<span class="element-name">getRequestedCatalogTargets</span>()</div>
+<div class="block">Return a list of requested catalog targets for the connector.  These are extracted from the metadata store.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of requested catalog targets</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="engage()">
 <h3>engage</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">engage</span>()
@@ -343,7 +359,6 @@ implements <a href="IntegrationConnector.html" title="interface in org.odpi.open
  returns when each blocking call completes.  The integration daemon will pause a second and then
  call engage() again.  This pattern enables the calling thread to detect the shutdown of the integration
  daemon.
-
  This method should be overridden if the connector needs to issue calls that wait for new metadata.
  If this specific implementation is called a message is logged in the audit log because there is probably
  a mismatch between the configuration and the connector implementation.</div>

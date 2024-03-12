@@ -125,14 +125,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Delete an existing to do.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/ToDoListResponse.html" title="class in org.odpi.openmetadata.viewservices.myprofile.rest">ToDoListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findToDos(java.lang.String,java.lang.String,int,int,boolean,boolean,boolean,org.odpi.openmetadata.viewservices.myprofile.rest.ToDoStatusRequestBody)" class="member-name-link">findToDos</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findToDos(java.lang.String,int,int,boolean,boolean,boolean,org.odpi.openmetadata.viewservices.myprofile.rest.ToDoStatusSearchString)" class="member-name-link">findToDos</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  boolean&nbsp;startsWith,
  boolean&nbsp;endsWith,
  boolean&nbsp;ignoreCase,
- <a href="../rest/ToDoStatusRequestBody.html" title="class in org.odpi.openmetadata.viewservices.myprofile.rest">ToDoStatusRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../rest/ToDoStatusSearchString.html" title="class in org.odpi.openmetadata.viewservices.myprofile.rest">ToDoStatusSearchString</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the "To Dos" that match the search string.</div>
 </div>
@@ -453,21 +452,19 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findToDos(java.lang.String,java.lang.String,int,int,boolean,boolean,boolean,org.odpi.openmetadata.viewservices.myprofile.rest.ToDoStatusRequestBody)">
+<section class="detail" id="findToDos(java.lang.String,int,int,boolean,boolean,boolean,org.odpi.openmetadata.viewservices.myprofile.rest.ToDoStatusSearchString)">
 <h3>findToDos</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/ToDoListResponse.html" title="class in org.odpi.openmetadata.viewservices.myprofile.rest">ToDoListResponse</a></span>&nbsp;<span class="element-name">findToDos</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
  boolean&nbsp;startsWith,
  boolean&nbsp;endsWith,
  boolean&nbsp;ignoreCase,
- <a href="../rest/ToDoStatusRequestBody.html" title="class in org.odpi.openmetadata.viewservices.myprofile.rest">ToDoStatusRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../rest/ToDoStatusSearchString.html" title="class in org.odpi.openmetadata.viewservices.myprofile.rest">ToDoStatusSearchString</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the "To Dos" that match the search string.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instances for this request</dd>
-<dd><code>searchString</code> - string to search for (may include RegExs)</dd>
 <dd><code>startFrom</code> - initial position of the results to return</dd>
 <dd><code>pageSize</code> - maximum number of results to return</dd>
 <dd><code>startsWith</code> - does the value start with the supplied string?</dd>

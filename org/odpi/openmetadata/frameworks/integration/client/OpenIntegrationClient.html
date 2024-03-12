@@ -144,13 +144,25 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Create a new metadata element to represent a software capability.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">CatalogTarget</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getCatalogTargets(java.lang.String,java.lang.String,int,int)" class="member-name-link">getCatalogTargets</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="../../connectors/properties/AssetUniverse.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetUniverse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getAssetProperties(java.lang.String,java.lang.String)" class="member-name-link">getAssetProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Returns a comprehensive collection of properties about the requested asset.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">CatalogTarget</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getCatalogTargets(java.lang.String,java.lang.String,int,int)" class="member-name-link">getCatalogTargets</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
  int&nbsp;startingFrom,
  int&nbsp;maximumResults)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Retrieve the identifiers of the metadata elements identified as catalog targets with an integration connector.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getConnectorToAsset(java.lang.String,java.lang.String)" class="member-name-link">getConnectorToAsset</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Return the connector to the requested asset.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="../properties/IntegrationReport.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">IntegrationReport</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getIntegrationReport(java.lang.String,java.lang.String)" class="member-name-link">getIntegrationReport</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -190,6 +202,19 @@ loadScripts(document, 'script');</script>
  <a href="../properties/IntegrationReportProperties.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">IntegrationReportProperties</a>&nbsp;properties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Create a new integration report for an element (identified by anchorGUID).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#saveConnection(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">saveConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
+ <a href="../../connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Returns the unique identifier corresponding to the supplied connection.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#saveConnection(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)" class="member-name-link">saveConnection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="../../connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Returns the unique identifier corresponding to the supplied connection.</div>
 </div>
 </div>
 </div>
@@ -436,6 +461,108 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid,</dd>
 <dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
 <dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - problem with the metadata server.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="saveConnection(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
+<h3>saveConnection</h3>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">saveConnection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="../../connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</span>
+                               throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
+<a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Returns the unique identifier corresponding to the supplied connection.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>connection</code> - the connection object that contains the properties needed to create the connection.</dd>
+<dt>Returns:</dt>
+<dd>guid</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving the asset properties from the property servers.</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - there are errors in the configuration of the connection which is preventing
+                                    the creation of a connector.</dd>
+<dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there are errors in the initialization of the connector.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="saveConnection(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">
+<h3>saveConnection</h3>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">saveConnection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
+ <a href="../../connectors/properties/beans/Connection.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Connection</a>&nbsp;connection)</span>
+                               throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
+<a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Returns the unique identifier corresponding to the supplied connection.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>assetGUID</code> - the unique identifier of an asset to attach the connection to</dd>
+<dd><code>connection</code> - the connection object that contains the properties needed to create the connection.</dd>
+<dt>Returns:</dt>
+<dd>guid</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving the asset properties from the property servers.</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - there are errors in the configuration of the connection which is preventing
+                                    the creation of a connector.</dd>
+<dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there are errors in the initialization of the connector.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getAssetProperties(java.lang.String,java.lang.String)">
+<h3>getAssetProperties</h3>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="../../connectors/properties/AssetUniverse.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetUniverse</a></span>&nbsp;<span class="element-name">getAssetProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID)</span>
+                                          throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Returns a comprehensive collection of properties about the requested asset.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>assetGUID</code> - the unique identifier of an asset to attach the connection to</dd>
+<dt>Returns:</dt>
+<dd>a comprehensive collection of properties about the asset.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving the asset properties from the property servers.</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getConnectorToAsset(java.lang.String,java.lang.String)">
+<h3>getConnectorToAsset</h3>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></span>&nbsp;<span class="element-name">getConnectorToAsset</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID)</span>
+                                       throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a>,
+<a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Return the connector to the requested asset.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>assetGUID</code> - the unique identifier of an asset to attach the connection to</dd>
+<dt>Returns:</dt>
+<dd>Open Connector Framework (OCF) connector</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the asset guid is not recognized or the userId is null</dd>
+<dd><code><a href="../../connectors/ffdc/ConnectionCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectionCheckedException</a></code> - there are errors in the configuration of the connection which is preventing
+                                    the creation of a connector.</dd>
+<dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there are errors in the initialization of the connector.</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to access the asset and/or connection needed to
+                                    create the connector.</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there was a problem in the store whether the asset/connection properties are kept.</dd>
 </dl>
 </section>
 </li>
