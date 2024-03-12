@@ -148,7 +148,7 @@ implements <a href="../api/ToDoManagementInterface.html" title="interface in org
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createToDo(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoProperties)" class="member-name-link">createToDo</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;originatorGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionOwnerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionSponsorGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assignToActorGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/NewActionTargetProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">NewActionTargetProperties</a>&gt;&nbsp;newActionTargetProperties,
  <a href="../properties/ToDoProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">ToDoProperties</a>&nbsp;properties)</code></div>
@@ -350,7 +350,7 @@ implements <a href="../api/ToDoManagementInterface.html" title="interface in org
 <h3>createToDo</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createToDo</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;originatorGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionOwnerGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionSponsorGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assignToActorGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/NewActionTargetProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">NewActionTargetProperties</a>&gt;&nbsp;newActionTargetProperties,
  <a href="../properties/ToDoProperties.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.properties">ToDoProperties</a>&nbsp;properties)</span>
@@ -364,7 +364,7 @@ implements <a href="../api/ToDoManagementInterface.html" title="interface in org
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>originatorGUID</code> - optional originator element (such as a person or Governance Service)</dd>
-<dd><code>actionOwnerGUID</code> - optional element that maintains the "To Do" on their list</dd>
+<dd><code>actionSponsorGUID</code> - optional element that maintains the "To Do" on their list</dd>
 <dd><code>assignToActorGUID</code> - optional actor to assign the action to</dd>
 <dd><code>newActionTargetProperties</code> - optional list of elements that the action is to target</dd>
 <dd><code>properties</code> - properties of the to do action</dd>

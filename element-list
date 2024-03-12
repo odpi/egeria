@@ -120,6 +120,7 @@ org.odpi.openmetadata.accessservices.communityprofile.fvt.errorhandling
 org.odpi.openmetadata.accessservices.communityprofile.fvt.locations
 org.odpi.openmetadata.accessservices.communityprofile.fvt.metadatasources
 org.odpi.openmetadata.accessservices.communityprofile.fvt.profiles
+org.odpi.openmetadata.accessservices.communityprofile.fvt.todos
 org.odpi.openmetadata.accessservices.communityprofile.fvt.validvalues
 org.odpi.openmetadata.accessservices.communityprofile.metadataelements
 org.odpi.openmetadata.accessservices.communityprofile.omrstopic
