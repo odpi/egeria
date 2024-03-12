@@ -23,8 +23,8 @@ public interface ToDoManagementInterface
      *
      * @param userId calling user
      * @param originatorGUID            optional originator element (such as a person or Governance Service)
-     * @param actionOwnerGUID           optional element that maintains the "To Do" on their list
-     * @param assignToActorGUID optional actor to assign the action to
+     * @param actionSponsorGUID           optional element that maintains the "To Do" on their list
+     * @param assignToActorGUID             optional actor to assign the action to
      * @param newActionTargetProperties optional list of elements that the action is to target
      * @param properties properties of the to do action
      *
@@ -36,7 +36,7 @@ public interface ToDoManagementInterface
      */
     String createToDo(String                          userId,
                       String                          originatorGUID,
-                      String                          actionOwnerGUID,
+                      String                          actionSponsorGUID,
                       String                          assignToActorGUID,
                       List<NewActionTargetProperties> newActionTargetProperties,
                       ToDoProperties                  properties) throws InvalidParameterException,

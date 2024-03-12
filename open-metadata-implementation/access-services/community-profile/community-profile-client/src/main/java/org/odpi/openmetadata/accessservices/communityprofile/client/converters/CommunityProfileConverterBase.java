@@ -130,19 +130,19 @@ public abstract class CommunityProfileConverterBase<B> extends OpenMetadataConve
 
 
     /**
-     * Extract and delete the CollectionMemberStatus property from the supplied element properties.
+     * Extract and delete the ToDoStatus property from the supplied element properties.
      *
      * @param elementProperties properties from entity
      * @return KeyPattern enum
      */
     ToDoStatus removeToDoStatus(ElementProperties elementProperties)
     {
-        final String methodName = "removeCollectionMemberStatus";
+        final String methodName = "removeToDoStatus";
 
         if (elementProperties != null)
         {
             String retrievedProperty = propertyHelper.removeEnumProperty(serviceName,
-                                                                         OpenMetadataType.TO_DO_STATUS_ENUM_TYPE_NAME,
+                                                                         OpenMetadataType.STATUS_PROPERTY_NAME,
                                                                          elementProperties,
                                                                          methodName);
 

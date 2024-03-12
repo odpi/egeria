@@ -27,7 +27,7 @@ public class ToDoProperties extends ReferenceableProperties
     private Date       dueTime        = null;
     private Date       lastReviewTime = null;
     private Date       completionTime = null;
-    private ToDoStatus status         = null;
+    private ToDoStatus status         = ToDoStatus.OPEN;
 
 
 
