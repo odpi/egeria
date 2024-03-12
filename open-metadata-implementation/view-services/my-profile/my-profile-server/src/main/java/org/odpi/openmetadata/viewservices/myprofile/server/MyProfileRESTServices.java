@@ -628,7 +628,6 @@ public class MyProfileRESTServices extends TokenController
      * Retrieve the "To Dos" that match the search string.
      *
      * @param serverName name of the server instances for this request
-     * @param searchString string to search for (may include RegExs)
      * @param startFrom initial position of the results to return
      * @param pageSize maximum number of results to return
      * @param startsWith does the value start with the supplied string?
@@ -641,14 +640,13 @@ public class MyProfileRESTServices extends TokenController
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    public ToDoListResponse findToDos(String                serverName,
-                                      String                searchString,
-                                      int                   startFrom,
-                                      int                   pageSize,
-                                      boolean               startsWith,
-                                      boolean               endsWith,
-                                      boolean               ignoreCase,
-                                      ToDoStatusRequestBody requestBody)
+    public ToDoListResponse findToDos(String                 serverName,
+                                      int                    startFrom,
+                                      int                    pageSize,
+                                      boolean                startsWith,
+                                      boolean                endsWith,
+                                      boolean                ignoreCase,
+                                      ToDoStatusSearchString requestBody)
     {
         final String methodName = "findToDos";
 
@@ -669,18 +667,14 @@ public class MyProfileRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setToDoElements(handler.findToDos(userId,
-                                                           instanceHandler.getSearchString(searchString, startsWith, endsWith, ignoreCase),
+                                                           instanceHandler.getSearchString(requestBody.getSearchString(), startsWith, endsWith, ignoreCase),
                                                            requestBody.getStatus(),
                                                            startFrom,
                                                            pageSize));
             }
             else
             {
-                response.setToDoElements(handler.findToDos(userId,
-                                                           instanceHandler.getSearchString(searchString, startsWith, endsWith, ignoreCase),
-                                                           null,
-                                                           startFrom,
-                                                           pageSize));
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
         }
         catch (Exception error)

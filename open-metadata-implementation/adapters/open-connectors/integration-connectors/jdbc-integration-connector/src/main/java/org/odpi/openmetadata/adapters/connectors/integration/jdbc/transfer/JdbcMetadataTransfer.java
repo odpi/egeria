@@ -28,8 +28,8 @@ import static org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JD
 /**
  * Transfers metadata from jdbc in an exploratory way. What can be accessed will be transferred
  */
-public class JdbcMetadataTransfer {
-
+public class JdbcMetadataTransfer
+{
     private static final String TABLES_WITH_NO_SCHEMA = "tables with no schema";
     private static final String VIEWS_WITH_NO_SCHEMA = "views with no schema";
     private static final String COLUMNS_OF_TABLES_WITH_NO_SCHEMA = "columns of tables with no schema";
@@ -49,9 +49,14 @@ public class JdbcMetadataTransfer {
 
     private final AuditLog auditLog;
 
-    public JdbcMetadataTransfer(JdbcMetadata jdbcMetadata, DatabaseIntegratorContext databaseIntegratorContext, String address,
-                                String connectorTypeQualifiedName, String catalog,  TransferCustomizations transferCustomizations,
-                                AuditLog auditLog) {
+    public JdbcMetadataTransfer(JdbcMetadata jdbcMetadata,
+                                DatabaseIntegratorContext databaseIntegratorContext,
+                                String address,
+                                String connectorTypeQualifiedName,
+                                String catalog,
+                                TransferCustomizations transferCustomizations,
+                                AuditLog auditLog)
+    {
         this.jdbc = new Jdbc(jdbcMetadata, auditLog);
         this.omas = new Omas(databaseIntegratorContext, auditLog);
         this.databaseManagerName = databaseIntegratorContext.getDatabaseManagerName();
@@ -66,11 +71,13 @@ public class JdbcMetadataTransfer {
      * Triggers database, schema, table and column metadata transfer. Will do the best it can to transfer as much of the
      * metadata as possible. If available will also build the asset (database) connection structure
      */
-    public void execute() {
+    public void execute()
+    {
         String methodName = "JdbcMetadataTransfer.execute";
 
         DatabaseElement database = new DatabaseTransfer(jdbc, databaseManagerName, address, catalog, omas, auditLog).execute();
-        if (database == null) {
+        if (database == null)
+        {
             auditLog.logMessage("Verifying database metadata transferred. None found. Stopping transfer",
                     EXITING_ON_DATABASE_TRANSFER_FAIL.getMessageDefinition(methodName));
             return;
@@ -85,7 +92,8 @@ public class JdbcMetadataTransfer {
 
         transferSchemas(database);
         List<DatabaseSchemaElement> schemas = omas.getSchemas(database.getElementHeader().getGUID());
-        if(schemas.isEmpty()){
+        if (schemas.isEmpty())
+        {
             return;
         }
         transferTables(database, schemas);

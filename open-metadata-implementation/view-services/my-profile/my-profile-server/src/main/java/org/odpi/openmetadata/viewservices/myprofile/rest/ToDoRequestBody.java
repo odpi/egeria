@@ -168,7 +168,6 @@ public class ToDoRequestBody extends CommunityProfileOMASAPIRequestBody
     }
 
 
-
     /**
      * JSON-style toString.
      *

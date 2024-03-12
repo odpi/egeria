@@ -133,7 +133,7 @@ public enum ViewServiceDescription
     /**
      * Manage Egeria's automation services.
      */
-    AUTOMATED_CURATION  (809,
+    AUTOMATED_CURATION  (810,
                          ComponentDevelopmentStatus.IN_DEVELOPMENT,
                          "Automated Curation",
                          "Automated Curation OMVS",

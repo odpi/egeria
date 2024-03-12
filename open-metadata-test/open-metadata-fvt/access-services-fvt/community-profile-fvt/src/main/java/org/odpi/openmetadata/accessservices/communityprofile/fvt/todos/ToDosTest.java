@@ -34,13 +34,12 @@ import java.util.List;
  */
 public class ToDosTest
 {
-    private final static String testCaseName       = "ToDosTest";
-
+    private final static String testCaseName    = "ToDosTest";
     private final static String toDoName        = "TestToDo";
     private final static String toDoDisplayName = "ToDo displayName";
     private final static String toDoDescription = "ToDo description";
-    private final static String toDoType = "ToDo Type";
-    private final static String badToDoType = "ToDo Type Bad";
+    private final static String toDoType        = "ToDo Type";
+    private final static String badToDoType     = "ToDo Type Bad";
 
     private static final String assetTypeName      = "DataFile";
     private final static String assetQualifiedName = "TestAssetQName";
@@ -662,6 +661,55 @@ public class ToDosTest
             if (toDoElements.size() != 1)
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Wrong number of elements for toDoType retrieved from no status) =>> " + toDoElements);
+            }
+
+            checkToDoElementOK(toDoElements.get(0),
+                               toDoGUID,
+                               priority,
+                               toDoStatus,
+                               assetGUID,
+                               sponsorGUID,
+                               originatorGUID,
+                               actorGUID);
+
+            /*--*/
+
+            toDoElements = client.findToDos(userId, ".*", ToDoStatus.ABANDONED, 0, 0);
+
+            if (toDoElements != null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Elements for sponsor retrieved from bad status) =>> " + toDoElements);
+            }
+
+            toDoElements = client.findToDos(userId, ".*", toDoStatus, 0, 0);
+
+            if (toDoElements == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(No elements for sponsor retrieved from current status)");
+            }
+            if (toDoElements.size() != 1)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Wrong number of elements for sponsor retrieved from current status) =>> " + toDoElements);
+            }
+
+            checkToDoElementOK(toDoElements.get(0),
+                               toDoGUID,
+                               priority,
+                               toDoStatus,
+                               assetGUID,
+                               sponsorGUID,
+                               originatorGUID,
+                               actorGUID);
+
+            toDoElements = client.findToDos(userId, ".*", null, 0, 0);
+
+            if (toDoElements == null)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(No elements for sponsor retrieved from no status)");
+            }
+            if (toDoElements.size() != 1)
+            {
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Wrong number of elements for sponsor retrieved from no status) =>> " + toDoElements);
             }
 
             checkToDoElementOK(toDoElements.get(0),

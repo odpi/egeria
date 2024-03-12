@@ -22,6 +22,7 @@ public class IntegrationContextManager
     protected String                       partnerOMASPlatformRootURL   = null;
     protected String                       partnerOMASServerName        = null;
     protected OpenIntegrationClient        openIntegrationClient        = null;
+    protected ConnectedAssetContext        connectedAssetContext        = null;
     protected OpenMetadataClient           openMetadataStoreClient      = null;
     protected String                       localServerUserId            = null;
     protected String                       localServerPassword          = null;
