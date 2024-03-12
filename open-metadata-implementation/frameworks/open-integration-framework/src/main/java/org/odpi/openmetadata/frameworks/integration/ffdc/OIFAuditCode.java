@@ -79,6 +79,45 @@ public enum OIFAuditCode implements AuditLogMessageSet
                                     "No action is required unless there are errors that follow indicating that there were problems shutting down."),
 
 
+    /**
+     * OIF-CONNECTOR-0006 - An unexpected {0} exception was returned to the {1} integration connector while retrieving the action targets.  The error message was {2}
+     */
+    GET_CATALOG_TARGET_EXCEPTION("OIF-CONNECTOR-0006",
+                                AuditLogRecordSeverityLevel.ERROR,
+                                "An unexpected {0} exception was returned to the {1} integration connector while retrieving the action targets.  The error message was {2}",
+                                "The exception is logged and the integration connector waits for the next refresh.",
+                                "Use the message in the unexpected exception to determine the root cause of the error. Once this is " +
+                                        "resolved, follow the instructions to prepare the integration connector for the next refresh."),
+
+    /**
+     * OIF-CONNECTOR-0007 - No action targets are defined for the {0} integration connector
+     */
+    NO_CATALOG_TARGETS("OIF-CONNECTOR-0007",
+                                 AuditLogRecordSeverityLevel.INFO,
+                                 "No action targets are defined for the {0} integration connector",
+                                 "The integration connector waits for the next refresh.",
+                                 "Add one or more action targets to the integration connector to provide it with work to do."),
+
+    /**
+     * OIF-CONNECTOR-0008 - The {0} integration connector is refreshing action target {1}
+     */
+    REFRESHING_CATALOG_TARGET("OIF-CONNECTOR-0008",
+                       AuditLogRecordSeverityLevel.INFO,
+                       "The {0} integration connector is refreshing action target {1}",
+                       "The integration connector performs the requested metadata synchronization.",
+                       "Check for reported errors.   Otherwise, the connector is working as configured."),
+
+
+    /**
+     * OIF-CONNECTOR-0009 - The {0} integration connector has refreshed {1} action target(s)
+     */
+    REFRESHED_CATALOG_TARGETS("OIF-CONNECTOR-0009",
+                              AuditLogRecordSeverityLevel.INFO,
+                              "The {0} integration connector has refreshed {1} action target(s)",
+                              "The integration connector has completed refresh processing of the catalog targets.",
+                              "Check that the correct action targets have been processes, and adjust them if necessary before the next refresh."),
+
+
     ;
 
     private final String                      logMessageId;

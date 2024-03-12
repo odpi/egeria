@@ -48,6 +48,7 @@ public class IntegrationContext
 
     protected final FileClassifier           fileClassifier;
 
+    private   final ConnectedAssetContext        connectedAssetContext;
     private   final IntegrationGovernanceContext integrationGovernanceContext;
     protected final IntegrationReportWriter      integrationReportWriter;
 
@@ -115,12 +116,13 @@ public class IntegrationContext
             this.integrationReportWriter = null;
         }
 
+        this.connectedAssetContext = new ConnectedAssetContext(connectorUserId, openIntegrationClient);
+
         this.integrationGovernanceContext = constructIntegrationGovernanceContext(openMetadataStoreClient,
                                                                                   connectorUserId,
                                                                                   externalSourceGUID,
                                                                                   externalSourceName,
                                                                                   integrationReportWriter);
-
     }
 
 
@@ -228,6 +230,17 @@ public class IntegrationContext
     public IntegrationGovernanceContext getIntegrationGovernanceContext()
     {
         return  integrationGovernanceContext;
+    }
+
+
+    /**
+     * Return the connected asset context that support an integration connector working with assets and their connectors.
+     *
+     * @return connected asset context
+     */
+    public ConnectedAssetContext getConnectedAssetContext()
+    {
+        return connectedAssetContext;
     }
 
 

@@ -1097,11 +1097,17 @@ public class IntegrationGroupConfigurationHandler
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
-        repositoryHelper.addStringPropertyToInstance(serviceName,
+        instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                      instanceProperties,
                                                      OpenMetadataType.CATALOG_TARGET_NAME_PROPERTY_NAME,
                                                      properties.getCatalogTargetName(),
                                                      methodName);
+
+        instanceProperties = repositoryHelper.addMapPropertyToInstance(serviceName,
+                                                                       instanceProperties,
+                                                                       OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME,
+                                                                       properties.getConfigurationProperties(),
+                                                                       methodName);
 
         integrationGroupHandler.linkElementToElement(userId,
                                                      null,

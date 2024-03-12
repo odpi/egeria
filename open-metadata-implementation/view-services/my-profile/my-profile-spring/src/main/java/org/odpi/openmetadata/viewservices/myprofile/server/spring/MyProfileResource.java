@@ -327,7 +327,6 @@ public class MyProfileResource
      * Retrieve the "To Dos" that match the search string.
      *
      * @param serverName name of the server instances for this request
-     * @param searchString string to search for
      * @param startFrom initial position of the results to return
      * @param pageSize maximum number of results to return
      * @param startsWith does the value start with the supplied string?
@@ -340,7 +339,7 @@ public class MyProfileResource
      * PropertyServerException the server is not available
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
-    @PostMapping(path = "/to-dos/find-by-search-string/{searchString}")
+    @PostMapping(path = "/to-dos/find-by-search-string")
 
     @Operation(summary="findToDos",
             description="Retrieve the to dos that match the search string.",
@@ -348,7 +347,6 @@ public class MyProfileResource
                     url="https://egeria-project.org/concepts/to-do"))
 
     public ToDoListResponse findToDos(@PathVariable String                          serverName,
-                                      @PathVariable String                          searchString,
                                       @RequestParam int                             startFrom,
                                       @RequestParam int                             pageSize,
                                       @RequestParam (required = false, defaultValue = "false")
@@ -357,10 +355,9 @@ public class MyProfileResource
                                                     boolean                        endsWith,
                                       @RequestParam (required = false, defaultValue = "false")
                                                     boolean                        ignoreCase,
-                                      @RequestBody  (required = false)
-                                                    ToDoStatusRequestBody          requestBody)
+                                      @RequestBody  ToDoStatusSearchString          requestBody)
     {
-        return restAPI.findToDos(serverName, searchString, startFrom, pageSize, startsWith, endsWith, ignoreCase, requestBody);
+        return restAPI.findToDos(serverName, startFrom, pageSize, startsWith, endsWith, ignoreCase, requestBody);
     }
 
 

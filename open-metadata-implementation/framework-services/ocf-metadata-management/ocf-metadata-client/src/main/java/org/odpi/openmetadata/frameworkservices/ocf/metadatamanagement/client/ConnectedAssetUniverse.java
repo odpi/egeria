@@ -421,7 +421,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
      * Returns the basic information about the asset.  Note shortDescription is null in the returned asset because
      * there is no linked connection object.
      *
-     * @param serviceName calling service
+     * @param serviceURLMarker calling service
      * @param remoteServerName  name of the server.
      * @param platformURLRoot  url used to call the server.
      * @param restClient client to call REST API
@@ -433,7 +433,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    private static AssetResponse getAssetSummary(String        serviceName,
+    private static AssetResponse getAssetSummary(String        serviceURLMarker,
                                                  String        remoteServerName,
                                                  String        platformURLRoot,
                                                  OCFRESTClient restClient,
@@ -454,7 +454,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
             restResult = restClient.callOCFAssetGetRESTCall(methodName,
                                                             platformURLRoot + urlTemplate,
                                                             remoteServerName,
-                                                            serviceName,
+                                                            serviceURLMarker,
                                                             userId,
                                                             assetGUID);
 

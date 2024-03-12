@@ -7681,7 +7681,7 @@ public class OpenMetadataTypesArchive1_2
         final String attribute3Description     = "Private properties accessible only to the connector.";
         final String attribute3DescriptionGUID = null;
         final String attribute4Name            = "configurationProperties";
-        final String attribute4Description     = "Specific configuration properties for the underlying technology.";
+        final String attribute4Description     = "Specific configuration properties used to configure the behaviour of the connector.";
         final String attribute4DescriptionGUID = null;
         final String attribute5Name            = "userId";
         final String attribute5Description     = "User identity that the connector should use.";

@@ -88,7 +88,6 @@ public class OCFMetadataRESTServices
     }
 
 
-
     /**
      * Returns the connection object corresponding to the supplied connection GUID.
      *
@@ -303,6 +302,111 @@ public class OCFMetadataRESTServices
                                                                  false,
                                                                  new Date(),
                                                                  methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Save the connection optionally linked to the supplied asset GUID.
+     *
+     * @param serverName  name of the server instances for this request
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
+     * @param userId      userId of user making request.
+     * @param assetGUID   the unique id for the asset within the metadata repository. This optional.
+     *                    However, if specified then the new connection is attached to the asset
+     * @param connection connection to save
+     *
+     * @return connection object or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UnrecognizedConnectionNameException there is no connection defined for this name or
+     * PropertyServerException there is a problem retrieving information from the property (metadata) server or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse saveConnectionForAsset(String     serverName,
+                                               String     serviceURLName,
+                                               String     userId,
+                                               String     assetGUID,
+                                               Connection connection)
+    {
+        final String assetGUIDParameterName = "assetGUID";
+        final String methodName = "saveConnectionForAsset";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse  response = new GUIDResponse();
+        AuditLog            auditLog = null;
+
+        try
+        {
+            ConnectionHandler<Connection> connectionHandler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (assetGUID == null)
+            {
+                response.setGUID(connectionHandler.saveConnection(userId,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  connection,
+                                                                  null,
+                                                                  false,
+                                                                  false,
+                                                                  instanceHandler.getSupportedZones(userId,
+                                                                                                    serverName,
+                                                                                                    serviceURLName,
+                                                                                                    methodName),
+                                                                  new Date(),
+                                                                  methodName));
+            }
+            else
+            {
+                AssetHandler<Asset> assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+                Asset asset = assetHandler.getBeanFromRepository(userId,
+                                                                 assetGUID,
+                                                                 assetGUIDParameterName,
+                                                                 OpenMetadataType.ASSET.typeName,
+                                                                 false,
+                                                                 false,
+                                                                 instanceHandler.getSupportedZones(userId,
+                                                                                                   serverName,
+                                                                                                   serviceURLName,
+                                                                                                   methodName),
+                                                                 new Date(),
+                                                                 methodName);
+
+                response.setGUID(connectionHandler.saveConnection(userId,
+                                                                  null,
+                                                                  null,
+                                                                  assetGUID,
+                                                                  assetGUID,
+                                                                  assetGUIDParameterName,
+                                                                  asset.getType().getTypeName(),
+                                                                  asset.getQualifiedName(),
+                                                                  connection,
+                                                                  null,
+                                                                  false,
+                                                                  false,
+                                                                  instanceHandler.getSupportedZones(userId,
+                                                                                                    serverName,
+                                                                                                    serviceURLName,
+                                                                                                    methodName),
+                                                                  new Date(),
+                                                                  methodName));
+            }
         }
         catch (Exception error)
         {

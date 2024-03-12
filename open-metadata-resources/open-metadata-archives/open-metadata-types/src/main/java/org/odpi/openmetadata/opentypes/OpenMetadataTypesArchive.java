@@ -170,6 +170,7 @@ public class OpenMetadataTypesArchive
         update0280SoftwareArtifacts();
         update0380TermInheritance();
         update0461GovernanceEngines();
+        update0464IntegrationGroups();
         update0545ReferenceData();
         update0462GovernanceActionTypes();
         add00475ContextEvents();
@@ -1515,7 +1516,6 @@ public class OpenMetadataTypesArchive
 
     }
 
-
     private EntityDef getContextEventServiceEntity()
     {
         /*
@@ -1537,8 +1537,6 @@ public class OpenMetadataTypesArchive
                                                  descriptionWiki);
 
     }
-
-
 
     private EntityDef getSurveyActionEngineEntity()
     {
@@ -1580,6 +1578,50 @@ public class OpenMetadataTypesArchive
                                                  description,
                                                  descriptionGUID,
                                                  descriptionWiki);
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0464IntegrationGroups()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateCatalogTarget());
+    }
+
+    /**
+     * Add configurationProperties
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateCatalogTarget()
+    {
+        final String typeName = "CatalogTarget";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute4Name            = "configurationProperties";
+        final String attribute4Description     = "Specific configuration properties used to configure the behaviour of the connector.";
+        final String attribute4DescriptionGUID = null;
+
+        property = archiveHelper.getMapStringObjectTypeDefAttribute(attribute4Name,
+                                                                    attribute4Description,
+                                                                    attribute4DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
     }
 
 

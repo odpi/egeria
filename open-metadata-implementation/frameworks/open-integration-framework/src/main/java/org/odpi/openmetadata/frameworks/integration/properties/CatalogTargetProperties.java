@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -19,7 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CatalogTargetProperties
 {
-    private String              catalogTargetName    = null;
+    private String              catalogTargetName       = null;
+    private Map<String, Object> configurationProperties = null;
 
 
     /**
@@ -40,7 +43,8 @@ public class CatalogTargetProperties
     {
         if (template != null)
         {
-            catalogTargetName    = template.getCatalogTargetName();
+            catalogTargetName       = template.getCatalogTargetName();
+            configurationProperties = template.getConfigurationProperties();
         }
     }
 
@@ -67,6 +71,40 @@ public class CatalogTargetProperties
     }
 
 
+    /**
+     * Set up the configuration properties for this action target.  These are used to override the configuration
+     * properties in the integration connector's connection whenever it is processing this action target.
+     *
+     * @param configurationProperties properties typically controlling the behaviour for the integration connector.
+     */
+    public void setConfigurationProperties(Map<String, Object> configurationProperties)
+    {
+        this.configurationProperties = configurationProperties;
+    }
+
+
+    /**
+     * Return a copy of the configuration properties.  These are used to override the configuration
+     * properties in the integration connector's connection whenever it is processing this action target.
+     *
+     * @return configuration properties typically controlling the behaviour for the integration connector.
+     */
+    public Map<String, Object> getConfigurationProperties()
+    {
+        if (configurationProperties == null)
+        {
+            return null;
+        }
+        else if (configurationProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(configurationProperties);
+        }
+    }
+
 
     /**
      * Standard toString method.
@@ -78,6 +116,7 @@ public class CatalogTargetProperties
     {
         return "CatalogTargetProperties{" +
                 "catalogTargetName='" + catalogTargetName + '\'' +
+                "configurationProperties='" + configurationProperties + '\'' +
                 '}';
     }
 
@@ -100,7 +139,8 @@ public class CatalogTargetProperties
             return false;
         }
         CatalogTargetProperties that = (CatalogTargetProperties) objectToCompare;
-        return Objects.equals(catalogTargetName, that.catalogTargetName);
+        return Objects.equals(catalogTargetName, that.catalogTargetName) &&
+                Objects.equals(configurationProperties, that.configurationProperties);
     }
 
 
@@ -112,6 +152,6 @@ public class CatalogTargetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(catalogTargetName);
+        return Objects.hash(catalogTargetName, configurationProperties);
     }
 }

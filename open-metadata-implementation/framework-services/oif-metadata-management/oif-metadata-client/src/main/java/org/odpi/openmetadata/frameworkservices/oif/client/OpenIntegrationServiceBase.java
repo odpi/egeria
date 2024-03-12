@@ -6,14 +6,15 @@ package org.odpi.openmetadata.frameworkservices.oif.client;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.properties.IntegrationReport;
 import org.odpi.openmetadata.frameworks.integration.properties.IntegrationReportProperties;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.frameworkservices.oif.client.rest.OpenIntegrationRESTClient;
 import org.odpi.openmetadata.frameworkservices.oif.rest.CatalogTargetsResponse;
 import org.odpi.openmetadata.frameworkservices.oif.rest.IntegrationReportResponse;
@@ -29,11 +30,10 @@ import java.util.List;
  */
 public class OpenIntegrationServiceBase extends OpenIntegrationClient
 {
-    private final   OpenIntegrationRESTClient restClient;               /* Initialized in constructor */
+    private final OpenIntegrationRESTClient restClient;               /* Initialized in constructor */
+    private final ConnectedAssetClientBase  connectedAssetClientBase; /* Initialized in constructor */
 
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-
-    private AuditLog auditLog = null;
 
 
     /**
@@ -57,6 +57,7 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.restClient = new OpenIntegrationRESTClient(serverName, serverPlatformURLRoot);
+        this.connectedAssetClientBase = new ConnectedAssetClientBase(serverName, serverPlatformURLRoot, serviceURLMarker);
     }
 
 
@@ -86,6 +87,7 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.restClient = new OpenIntegrationRESTClient(serverName, serverPlatformURLRoot, serverUserId, serverPassword);
+        this.connectedAssetClientBase = new ConnectedAssetClientBase(serverName, serverPlatformURLRoot, serviceURLMarker, serverUserId, serverPassword);
     }
 
 
@@ -115,6 +117,7 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.restClient = restClient;
+        this.connectedAssetClientBase = new ConnectedAssetClientBase(serverName, serverPlatformURLRoot, serviceURLMarker);
     }
 
 
@@ -424,5 +427,98 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
                                                                                              maximumResults);
 
         return restResult.getElements();
+    }
+
+
+    /**
+     * Returns the unique identifier corresponding to the supplied connection.
+     *
+     * @param connection the connection object that contains the properties needed to create the connection.
+     * @return guid
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving the asset properties from the property servers.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                    the creation of a connector.
+     * @throws ConnectorCheckedException  there are errors in the initialization of the connector.
+     */
+    @Override
+    public String saveConnection(String    userId,
+                                 Connection connection) throws InvalidParameterException,
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException,
+                                                               ConnectionCheckedException,
+                                                               ConnectorCheckedException
+    {
+        return connectedAssetClientBase.saveConnection(userId, connection);
+    }
+
+    /**
+     * Returns the unique identifier corresponding to the supplied connection.
+     *
+     * @param assetGUID  the unique identifier of an asset to attach the connection to
+     * @param connection the connection object that contains the properties needed to create the connection.
+     * @return guid
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving the asset properties from the property servers.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                    the creation of a connector.
+     * @throws ConnectorCheckedException  there are errors in the initialization of the connector.
+     */
+    @Override
+    public String saveConnection(String     userId,
+                                 String     assetGUID,
+                                 Connection connection) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 ConnectionCheckedException,
+                                                                                 ConnectorCheckedException
+    {
+        return connectedAssetClientBase.saveConnection(userId, assetGUID, connection);
+    }
+
+
+    /**
+     * Returns a comprehensive collection of properties about the requested asset.
+     *
+     * @param assetGUID the unique identifier of an asset to attach the connection to
+     * @return a comprehensive collection of properties about the asset.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving the asset properties from the property servers.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public AssetUniverse getAssetProperties(String userId,
+                                            String assetGUID) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        return connectedAssetClientBase.getAssetProperties(serviceURLMarker, userId, assetGUID);
+    }
+
+
+    /**
+     * Return the connector to the requested asset.
+     *
+     * @param assetGUID the unique identifier of an asset to attach the connection to
+     * @return Open Connector Framework (OCF) connector
+     * @throws InvalidParameterException  the asset guid is not recognized or the userId is null
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                    the creation of a connector.
+     * @throws ConnectorCheckedException  there are errors in the initialization of the connector.
+     * @throws UserNotAuthorizedException the user is not authorized to access the asset and/or connection needed to
+     *                                    create the connector.
+     * @throws PropertyServerException    there was a problem in the store whether the asset/connection properties are kept.
+     */
+    @Override
+    public Connector getConnectorToAsset(String userId,
+                                         String assetGUID) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException,
+                                                                  ConnectionCheckedException,
+                                                                  ConnectorCheckedException
+    {
+        return connectedAssetClientBase.getConnectorForAsset(userId, assetGUID);
     }
 }

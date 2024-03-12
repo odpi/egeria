@@ -3,15 +3,13 @@
 package org.odpi.openmetadata.accessservices.governanceengine.converters;
 
 import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -45,7 +43,6 @@ public class CatalogTargetConverter<B> extends OCFConverter<B>
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
-    @SuppressWarnings(value = "unchecked")
     public B getNewBean(Class<B>     beanClass,
                         Relationship relationship,
                         String       methodName) throws PropertyServerException
@@ -81,45 +78,4 @@ public class CatalogTargetConverter<B> extends OCFConverter<B>
 
         return null;
     }
-
-
-    /**
-     * Using the supplied instances, return list of new instances of the bean.
-     *
-     * @param beanClass name of the class to create
-     * @param relationships list of relationships containing the properties
-     * @param methodName calling method
-     * @return bean populated with properties from the instances supplied
-     * @throws PropertyServerException there is a problem instantiating the bean
-     */
-    public List<B> getNewBeans(Class<B>           beanClass,
-                               List<Relationship> relationships,
-                               String             methodName) throws PropertyServerException
-    {
-        if (relationships != null)
-        {
-            List<B> beans = new ArrayList<>();
-
-            for (Relationship relationship : relationships)
-            {
-                if (relationship != null)
-                {
-                    B bean = getNewBean(beanClass, relationship, methodName);
-
-                    if (bean != null)
-                    {
-                        beans.add(bean);
-                    }
-                }
-            }
-
-            if (! beans.isEmpty())
-            {
-                return beans;
-            }
-        }
-
-        return null;
-    }
-
 }
