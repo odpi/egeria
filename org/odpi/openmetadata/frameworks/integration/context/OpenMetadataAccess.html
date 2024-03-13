@@ -103,10 +103,11 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.reports.IntegrationReportWriter)" class="member-name-link">OpenMetadataAccess</a><wbr>(<a href="../../governanceaction/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenMetadataClient</a>&nbsp;openMetadataClient,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.reports.IntegrationReportWriter)" class="member-name-link">OpenMetadataAccess</a><wbr>(<a href="../../governanceaction/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenMetadataClient</a>&nbsp;openMetadataClient,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;originatorGUID,
  <a href="../reports/IntegrationReportWriter.html" title="class in org.odpi.openmetadata.frameworks.integration.reports">IntegrationReportWriter</a>&nbsp;reportWriter)</code></div>
 <div class="col-last even-row-color">
 <div class="block">The constructor needs an implementation of the open metadata store.</div>
@@ -262,12 +263,13 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.reports.IntegrationReportWriter)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.integration.reports.IntegrationReportWriter)">
 <h3>OpenMetadataAccess</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">OpenMetadataAccess</span><wbr><span class="parameters">(<a href="../../governanceaction/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.client">OpenMetadataClient</a>&nbsp;openMetadataClient,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;originatorGUID,
  <a href="../reports/IntegrationReportWriter.html" title="class in org.odpi.openmetadata.frameworks.integration.reports">IntegrationReportWriter</a>&nbsp;reportWriter)</span></div>
 <div class="block">The constructor needs an implementation of the open metadata store.</div>
 <dl class="notes">
@@ -276,6 +278,7 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>externalSourceGUID</code> - unique identifier for external source (or null)</dd>
 <dd><code>externalSourceName</code> - unique name for external source (or null)</dd>
+<dd><code>originatorGUID</code> - unique identifier of the source of the to do</dd>
 <dd><code>reportWriter</code> - report writer (maybe null)</dd>
 </dl>
 </section>
