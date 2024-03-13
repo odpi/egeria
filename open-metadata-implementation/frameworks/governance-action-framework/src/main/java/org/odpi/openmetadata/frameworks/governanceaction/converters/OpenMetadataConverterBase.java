@@ -862,6 +862,27 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
+     * Extract and delete the toDoType property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string name or null
+     */
+    protected String removeToDoType(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeToDoType";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataType.TO_DO_TYPE_PROPERTY_NAME,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+    /**
      * Extract and delete the collectionType property from the supplied element properties.
      *
      * @param elementProperties properties from element
@@ -4916,7 +4937,30 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.PROCESSING_ENGINE_USER_ID_PROPERTY_NAME,
+                                                       OpenMetadataProperty.REQUESTER_USER_ID.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the requesterUserId property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string
+     */
+    protected String removeRequesterUserId(ElementProperties elementProperties)
+
+    {
+        final String methodName = "removeRequesterUserId";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.REQUESTER_USER_ID.name,
                                                        elementProperties,
                                                        methodName);
         }

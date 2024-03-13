@@ -30,13 +30,13 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
     private String                     description                = null;
     private List<RequestParameterType> supportedRequestParameters = null;
     private List<ActionTargetType>     supportedActionTargetTypes = null;
-    private List<RequestParameterType> producedRequestParameters = null;
-    private List<ActionTargetType>     producedActionTargetTypes = null;
-    private List<GuardType>            producedGuards            = null;
+    private List<RequestParameterType> producedRequestParameters  = null;
+    private List<ActionTargetType>     producedActionTargetTypes  = null;
+    private List<GuardType>            producedGuards             = null;
     private String                     governanceEngineGUID       = null;
-    private String              requestType            = null;
-    private Map<String, String> fixedRequestParameters = null;
-    private int                 waitTime               = 0;
+    private String                     requestType                = null;
+    private Map<String, String>        fixedRequestParameters     = null;
+    private int                        waitTime                   = 0;
 
 
     /**

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionTarget;
 
 /**
  * EvaluateAnnotationsGovernanceActionProvider is the OCF connector provider for the "Evaluate Annotations"
@@ -15,7 +16,7 @@ public class EvaluateAnnotationsGovernanceActionProvider extends GovernanceActio
     private static final String  connectorTypeGUID = "02e8bace-0035-4e80-afef-f5677a8c5ba4";
     private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Verification:EvaluateAnnotations";
     private static final String  connectorTypeDisplayName = "Evaluate Annotations Governance Action Service";
-    private static final String  connectorTypeDescription = "Verification Governance Action Service that checks whether there are Request For Action Annotations in a survey report.";
+    private static final String  connectorTypeDescription = "Governance Action Service that checks whether there are Request For Action Annotations in a survey report.";
 
     private static final String connectorClassName = EvaluateAnnotationsGovernanceActionConnector.class.getName();
 
@@ -29,8 +30,9 @@ public class EvaluateAnnotationsGovernanceActionProvider extends GovernanceActio
         super();
         super.setConnectorClassName(connectorClassName);
 
-        super.producedGuards            = EvaluateAnnotationsGuard.getGuardTypes();
-        super.producedActionTargetTypes = StewardshipHandoverActionTarget.getActionTargetTypes();
+        super.supportedActionTargetTypes = SurveyActionTarget.getActionTargetTypes();
+        super.producedGuards             = EvaluateAnnotationsGuard.getGuardTypes();
+        super.producedActionTargetTypes  = StewardshipHandoverActionTarget.getActionTargetTypes();
 
         ConnectorType connectorType = new ConnectorType();
         connectorType.setType(ConnectorType.getConnectorTypeType());

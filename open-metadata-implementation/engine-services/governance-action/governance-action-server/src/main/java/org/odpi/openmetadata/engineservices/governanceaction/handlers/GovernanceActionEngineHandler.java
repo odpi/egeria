@@ -98,7 +98,8 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
      *
      * @param engineActionGUID unique identifier of the engin action to run
      * @param governanceRequestType governance request type to use when calling the governance engine
-     * @param startDate date/time to start the governance action service
+     * @param requesterUserId original user requesting this governance service
+     * @param requestedStartDate date/time to start the governance action service
      * @param requestParameters name-value properties to control the governance action service
      * @param requestSourceElements metadata elements associated with the request to the governance action service
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
@@ -110,7 +111,8 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
     @Override
     public void runGovernanceService(String                     engineActionGUID,
                                      String                     governanceRequestType,
-                                     Date                       startDate,
+                                     String                     requesterUserId,
+                                     Date                       requestedStartDate,
                                      Map<String, String>        requestParameters,
                                      List<RequestSourceElement> requestSourceElements,
                                      List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,
@@ -136,6 +138,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
                                                                                                                engineActionClient,
                                                                                                                governanceServiceCache.getServiceRequestType(),
                                                                                                                governanceServiceCache.getRequestParameters(requestParameters),
+                                                                                                               requesterUserId,
                                                                                                                requestSourceElements,
                                                                                                                actionTargetElements,
                                                                                                                governanceServiceCache.getGovernanceServiceGUID(),
@@ -144,7 +147,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
                                                                                                                partnerServerName,
                                                                                                                partnerURLRoot,
                                                                                                                governanceContextClient,
-                                                                                                               startDate,
+                                                                                                               requestedStartDate,
                                                                                                                auditLog);
 
             super.startServiceExecutionThread(engineActionGUID,

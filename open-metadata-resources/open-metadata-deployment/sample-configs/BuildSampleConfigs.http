@@ -76,13 +76,6 @@ Content-Type: text/plain
 
 content-packs/OpenConnectorsArchive.omarchive
 
-###
-# Add topic audit log destination to active-metadata-store server
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/audit-log-destinations/event-topic?
-    topicName={{auditLogTopic}}
-Content-Type: application/json
-
-["Information","Decision","Action","Error","Exception","Security","Startup","Shutdown","Asset","Cohort","Activity"]
 
 ###
 # -------------------------
@@ -161,32 +154,6 @@ Content-Type: application/json
 }
 
 ###
-# Set up the common properties needed to call your event bus.  The value of {{kafkaEndpoint}} is resolved in the
-# application.properties file using the `platform.placeholder.variables` property.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/view-server/event-bus
-Content-Type: application/json
-
-{
-"producer":
-{
-"bootstrap.servers":"{{kafkaEndpoint}}"
-},
-"consumer":
-{
-"bootstrap.servers":"{{kafkaEndpoint}}"
-}
-}
-
-###
-# Add topic audit log destination to active-metadata-store server
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/view-server/audit-log-destinations/event-topic?
-    topicName={{auditLogTopic}}
-Content-Type: application/json
-
-["Information","Decision","Action","Error","Exception","Security","Startup","Shutdown","Asset","Cohort","Activity"]
-
-
-###
 # -------------------------
 # Engine Host: engine-host
 #
@@ -240,32 +207,6 @@ Content-Type: application/json
 }
 
 ###
-# Set up the common properties needed to call your event bus.  The value of {{kafkaEndpoint}} is resolved in the
-# application.properties file using the `platform.placeholder.variables` property.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/engine-host/event-bus
-Content-Type: application/json
-
-{
-"producer":
-{
-"bootstrap.servers":"{{kafkaEndpoint}}"
-},
-"consumer":
-{
-"bootstrap.servers":"{{kafkaEndpoint}}"
-}
-}
-
-###
-# Add topic audit log destination to active-metadata-store server
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/engine-host/audit-log-destinations/event-topic?
-    topicName={{auditLogTopic}}
-Content-Type: application/json
-
-["Information","Decision","Action","Error","Exception","Security","Startup","Shutdown","Asset","Cohort","Activity"]
-
-
-###
 # ---------------------------------------
 # Integration Daemon: integration-daemon
 #
@@ -292,31 +233,5 @@ Content-Type: application/json
     "omagserverName" : "active-metadata-store",
     "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:DefaultIntegrationGroup"
 }
-
-###
-# Set up the common properties needed to call your event bus.  The value of {{kafkaEndpoint}} is resolved in the
-# application.properties file using the `platform.placeholder.variables` property.
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/integration-daemon/event-bus
-Content-Type: application/json
-
-{
-"producer":
-{
-"bootstrap.servers":"{{kafkaEndpoint}}"
-},
-"consumer":
-{
-"bootstrap.servers":"{{kafkaEndpoint}}"
-}
-}
-
-###
-# Add topic audit log destination to active-metadata-store server
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/integration-daemon/audit-log-destinations/event-topic?
-    topicName={{auditLogTopic}}
-Content-Type: application/json
-
-["Information","Decision","Action","Error","Exception","Security","Startup","Shutdown","Asset","Cohort","Activity"]
-
 
 ###

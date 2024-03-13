@@ -44,7 +44,7 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
      * @param surveyActionServiceName name of this survey action service - used for message logging
      * @param surveyActionServiceConnector connector that does the work
      * @param surveyContext context for the connector
-     * @param startDate date/time that the service should start
+     * @param requestedStartDate date/time that the service should start
      * @param auditLog destination for log messages
      */
     SurveyActionServiceHandler(GovernanceEngineProperties surveyActionEngineProperties,
@@ -57,7 +57,7 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
                                String                     surveyActionServiceName,
                                Connector                  surveyActionServiceConnector,
                                SurveyContext              surveyContext,
-                               Date                       startDate,
+                               Date                       requestedStartDate,
                                AuditLog                   auditLog) throws InvalidParameterException
     {
         super(surveyActionEngineProperties,
@@ -69,7 +69,7 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
               surveyActionServiceGUID,
               surveyActionServiceName,
               surveyActionServiceConnector,
-              startDate,
+              requestedStartDate,
               auditLog);
 
         this.surveyContext = surveyContext;

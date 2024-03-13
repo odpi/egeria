@@ -495,7 +495,7 @@ Content-Type: application/json
       {
           "class" : "NewActionTarget",
           "actionTargetName": "folderToSurvey",
-          "actionTargetGUID": "bb9aebfe-5412-4512-b5b8-602c21465b09"
+          "actionTargetGUID": "c0c71ae5-c115-438f-ac25-8ac297881768"
       } ]
 }
 
@@ -530,24 +530,30 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "InitiateGovernanceActionProcessRequestBody",
-  "processQualifiedName": "",
-  "requestParameters": {
-      "parameterName1" : "parameterValue1",
-      "parameterName2" : "parameterValue2"
-  },
-  "requestSourceGUIDs": [ "" ],
-  "actionTargets": [
-    {
-      "class" : "NewActionTarget",
-      "actionTargetName" : "",
-      "actionTargetGUID" : ""
-    } ],
-  "startDate": "",
-  "originatorServiceName": "",
-  "originatorEngineName": ""
+  "processQualifiedName": "Egeria:DailyGovernanceActionProcess"
 }
 
+###
+# Full request body for initiate governance action process
+# {
+#   "class" : "InitiateGovernanceActionProcessRequestBody",
+#   "processQualifiedName": "",
+#   "requestParameters": {
+#       "parameterName1" : "parameterValue1",
+#       "parameterName2" : "parameterValue2"
+#   },
+#   "requestSourceGUIDs": [ "" ],
+#   "actionTargets": [
+#     {
+#       "class" : "NewActionTarget",
+#       "actionTargetName" : "",
+#       "actionTargetGUID" : ""
+#     } ],
+#   "startDate": "",
+#   "originatorServiceName": "",
+#   "originatorEngineName": ""
+# }
+#
 ###
 
 @engineActionGUID=ba70c389-3398-4a18-afc7-4711ec63d08d

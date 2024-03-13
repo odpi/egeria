@@ -3,7 +3,6 @@
 
 package org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship;
 
-import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 

@@ -62,7 +62,8 @@ public interface StewardshipRequestInterface
      * @param dueDate date/time this needs to be completed
      * @param additionalProperties additional arbitrary properties for the incident reports
      * @param assignTo qualified name of the Actor element for the recipient
-     * @param causeGUID unique identifier of the element that describes the rule, project that this is on behalf of
+     * @param sponsorGUID unique identifier of the element that describes the rule, project that this is on behalf of
+     * @param originatorGUID unique identifier of the source of the to do
      * @param actionTargets the list of elements that should be acted upon
      *
      * @return unique identifier of new to do element
@@ -80,7 +81,8 @@ public interface StewardshipRequestInterface
                     Date                  dueDate,
                     Map<String, String>   additionalProperties,
                     String                assignTo,
-                    String                causeGUID,
+                    String                sponsorGUID,
+                    String                originatorGUID,
                     List<NewActionTarget> actionTargets) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException;

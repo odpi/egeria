@@ -5368,6 +5368,29 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract and delete the requesterUserId property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string
+     */
+    protected String removeRequesterUserId(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeRequesterUserId";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataProperty.REQUESTER_USER_ID.name,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the requestType property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity
@@ -5918,6 +5941,29 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             return repositoryHelper.removeDateProperty(serviceName,
                                                        OpenMetadataType.START_DATE_PROPERTY_NAME,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the requestedStartDate property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return date
+     */
+    protected Date removeRequestedStartDate(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeRequestedStartDate";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                       OpenMetadataType.REQUESTED_START_DATE_PROPERTY_NAME,
                                                        instanceProperties,
                                                        methodName);
         }

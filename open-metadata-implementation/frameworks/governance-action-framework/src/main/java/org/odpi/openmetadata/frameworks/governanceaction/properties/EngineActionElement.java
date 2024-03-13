@@ -40,12 +40,14 @@ public class EngineActionElement extends ReferenceableProperties
     private String                               processName              = null;
     private String                               processStepGUID          = null;
     private String                               processStepName          = null;
+    private String                               requesterUserId          = null;
     private String                               requestType              = null;
     private Map<String, String>                  requestParameters        = null;
     private List<RequestSourceElement>           requestSourceElements    = null;
     private List<ActionTargetElement>            actionTargetElements     = null;
     private EngineActionStatus                   actionStatus             = null;
     private Date                                 requestedTime            = null;
+    private Date                                 requestedStartTime       = null;
     private Date                                 startTime                = null;
     private String                               processingEngineUserId   = null;
     private Date                                 completionTime           = null;
@@ -93,6 +95,8 @@ public class EngineActionElement extends ReferenceableProperties
             processName = template.getProcessName();
             processStepGUID = template.getProcessStepGUID();
             processStepName = template.getProcessStepName();
+
+            requesterUserId = template.getRequesterUserId();
             requestType = template.getRequestType();
             requestParameters = template.getRequestParameters();
             requestSourceElements = template.getRequestSourceElements();
@@ -101,6 +105,7 @@ public class EngineActionElement extends ReferenceableProperties
             actionStatus = template.getActionStatus();
 
             requestedTime = template.getRequestedTime();
+            requestedStartTime = template.getRequestedStartTime();
             startTime = template.getStartTime();
             processingEngineUserId = template.getProcessingEngineUserId();
 
@@ -548,6 +553,27 @@ public class EngineActionElement extends ReferenceableProperties
 
 
     /**
+     * Return the time that the engine action should start.
+     *
+     * @return date/time
+     */
+    public Date getRequestedStartTime()
+    {
+        return requestedStartTime;
+    }
+
+    /**
+     * Set up the time that the engine action should start.
+     *
+     * @param requestedStartTime date/time
+     */
+    public void setRequestedStartTime(Date requestedStartTime)
+    {
+        this.requestedStartTime = requestedStartTime;
+    }
+
+
+    /**
      * Return the time that this engine action should start (null means as soon as possible).
      *
      * @return date object
@@ -566,6 +592,28 @@ public class EngineActionElement extends ReferenceableProperties
     public void setStartTime(Date startTime)
     {
         this.startTime = startTime;
+    }
+
+
+    /**
+     * Return the requesting user
+     *
+     * @return string
+     */
+    public String getRequesterUserId()
+    {
+        return requesterUserId;
+    }
+
+
+    /**
+     * Set up the requesting user.
+     *
+     * @param requesterUserId string
+     */
+    public void setRequesterUserId(String requesterUserId)
+    {
+        this.requesterUserId = requesterUserId;
     }
 
 
@@ -766,6 +814,7 @@ public class EngineActionElement extends ReferenceableProperties
                 ", processName='" + processName + '\'' +
                 ", processStepGUID='" + processStepGUID + '\'' +
                 ", processStepName='" + processStepName + '\'' +
+                ", requesterUserId='" + requesterUserId + '\'' +
                 ", requestType='" + requestType + '\'' +
                 ", requestParameters=" + requestParameters +
                 ", requestSourceElements=" + requestSourceElements +
@@ -810,6 +859,7 @@ public class EngineActionElement extends ReferenceableProperties
                 && Objects.equals(processName, that.processName) &&
                 Objects.equals(processStepGUID, that.processStepGUID) &&
                 Objects.equals(processStepName, that.processStepName) &&
+                Objects.equals(requesterUserId, that.requesterUserId) &&
                 Objects.equals(requestType, that.requestType) &&
                 Objects.equals(requestParameters, that.requestParameters) &&
                 Objects.equals(requestSourceElements, that.requestSourceElements) &&
@@ -837,7 +887,7 @@ public class EngineActionElement extends ReferenceableProperties
         return Objects.hash(super.hashCode(), elementHeader, domainIdentifier, displayName, description,
                             mandatoryGuards, receivedGuards, governanceEngineGUID, governanceEngineName,
                             governanceActionTypeGUID, governanceActionTypeName, processName, processStepGUID,
-                            processStepName, requestType, requestParameters, requestSourceElements,
+                            processStepName, requesterUserId, requestType, requestParameters, requestSourceElements,
                             actionTargetElements, actionStatus, requestedTime, startTime, processingEngineUserId,
                             completionTime, completionGuards, completionMessage, previousActions, followOnActions);
     }

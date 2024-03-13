@@ -27,9 +27,10 @@ import java.util.Map;
 public class OpenMetadataStore
 {
     protected final OpenMetadataClient openMetadataClient;
-    private final String             userId;
-    private final String             externalSourceGUID;
-    private final String             externalSourceName;
+    private final String               userId;
+    private final String               externalSourceGUID;
+    private final String               externalSourceName;
+    private final String               originatorGUID;
 
     private boolean               forLineage = false;
     private boolean               forDuplicateProcessing = false;
@@ -43,16 +44,19 @@ public class OpenMetadataStore
      * @param userId calling user
      * @param externalSourceGUID unique identifier for external source (or null)
      * @param externalSourceName unique name for external source (or null)
+     * @param originatorGUID unique identifier of the source of the to do
      */
     public OpenMetadataStore(OpenMetadataClient      openMetadataClient,
                              String                  userId,
                              String                  externalSourceGUID,
-                             String                  externalSourceName)
+                             String                  externalSourceName,
+                             String                  originatorGUID)
     {
         this.openMetadataClient = openMetadataClient;
         this.userId             = userId;
         this.externalSourceGUID = externalSourceGUID;
         this.externalSourceName = externalSourceName;
+        this.originatorGUID     = originatorGUID;
     }
 
 
@@ -61,14 +65,17 @@ public class OpenMetadataStore
      *
      * @param openMetadataClient client to retrieve values from the
      * @param userId userId for the governance service
+     * @param originatorGUID unique identifier of the source of the to do
      */
     public OpenMetadataStore(OpenMetadataClient openMetadataClient,
-                             String             userId)
+                             String             userId,
+                             String             originatorGUID)
     {
         this.openMetadataClient = openMetadataClient;
         this.userId             = userId;
         this.externalSourceGUID = null;
         this.externalSourceName = null;
+        this.originatorGUID     = originatorGUID;
     }
 
 
@@ -1302,7 +1309,7 @@ public class OpenMetadataStore
      * @param dueDate date/time this needs to be completed
      * @param additionalProperties additional arbitrary properties for the incident reports
      * @param assignTo qualified name of the Actor element for the recipient
-     * @param causeGUID unique identifier of the element that describes the rule, project that this is on behalf of
+     * @param sponsorGUID unique identifier of the element that describes the rule, project that this is on behalf of
      * @param actionTargets the list of elements that should be acted upon
      *
      * @return unique identifier of new to do element
@@ -1319,12 +1326,12 @@ public class OpenMetadataStore
                            Date                  dueDate,
                            Map<String, String>   additionalProperties,
                            String                assignTo,
-                           String                causeGUID,
+                           String                sponsorGUID,
                            List<NewActionTarget> actionTargets) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        return openMetadataClient.openToDo(userId, qualifiedName, title, instructions, todoCategory, priority, dueDate, additionalProperties, assignTo, causeGUID, actionTargets);
+        return openMetadataClient.openToDo(userId, qualifiedName, title, instructions, todoCategory, priority, dueDate, additionalProperties, assignTo, sponsorGUID, originatorGUID, actionTargets);
     }
 
 

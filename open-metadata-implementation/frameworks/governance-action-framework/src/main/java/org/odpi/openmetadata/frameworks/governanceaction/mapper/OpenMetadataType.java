@@ -1790,13 +1790,18 @@ public enum OpenMetadataType
     /* Area 1 - Collaboration                                                                                                      */
     /* ============================================================================================================================*/
 
+    public static final String ACTOR_TYPE_GUID = "16d2c34a-43db-476b-93ae-6a2996f514ec";
+    public static final String ACTOR_TYPE_NAME = "Actor";                 /* from Area 1 */
+    /* Referenceable */
+
+
     public static final String ACTOR_PROFILE_TYPE_GUID = "5a2f38dc-d69d-4a6f-ad26-ac86f118fa35";
     public static final String ACTOR_PROFILE_TYPE_NAME = "ActorProfile";                 /* from Area 1 */
-    /* Referenceable */
+    /* Actor */
 
     public static final String USER_IDENTITY_TYPE_GUID = "fbe95779-1f3c-4ac6-aa9d-24963ff16282";
     public static final String USER_IDENTITY_TYPE_NAME = "UserIdentity";
-    /* Referenceable */
+    /* Actor */
 
     public static final String DISTINGUISHED_NAME_PROPERTY_NAME = "distinguishedName"; /* from UserIdentity entity */
 
@@ -1857,7 +1862,7 @@ public enum OpenMetadataType
 
     public static final String PERSON_ROLE_TYPE_GUID = "ac406bf8-e53e-49f1-9088-2af28bcbd285";
     public static final String PERSON_ROLE_TYPE_NAME = "PersonRole";
-    /* Referenceable */
+    /* Actor */
 
     public static final String HEAD_COUNT_PROPERTY_NAME = "headCount";   /* from PersonRole entity */
 
@@ -3941,6 +3946,7 @@ public enum OpenMetadataType
     public static final String EXECUTOR_ENGINE_NAME_PROPERTY_NAME      = "executorEngineName";       /* from EngineAction entity */
     public static final String MANDATORY_GUARDS_PROPERTY_NAME          = "mandatoryGuards";           /* from EngineAction entity */
     public static final String RECEIVED_GUARDS_PROPERTY_NAME           = "receivedGuards";            /* from EngineAction entity */
+    public static final String REQUESTED_START_DATE_PROPERTY_NAME      = "requestedStartDate";        /* from EngineAction entity */
     public static final String START_DATE_PROPERTY_NAME                = "startDate";                 /* from EngineAction and Project entity and RegisteredIntegrationConnector relationship*/
     public static final String PLANNED_END_DATE_PROPERTY_NAME          = "plannedEndDate";            /* from Project entity */
     public static final String ACTION_STATUS_PROPERTY_NAME             = "actionStatus";              /* from EngineAction entity */

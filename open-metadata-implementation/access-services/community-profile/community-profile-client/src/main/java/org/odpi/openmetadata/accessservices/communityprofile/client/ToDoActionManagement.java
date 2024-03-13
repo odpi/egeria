@@ -840,7 +840,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
 
             elementProperties = propertyHelper.addDateProperty(elementProperties,
                                                                OpenMetadataType.COMPLETION_TIME_PROPERTY_NAME,
-                                                               toDoProperties.getDueTime());
+                                                               toDoProperties.getCompletionTime());
 
             elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                     OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,

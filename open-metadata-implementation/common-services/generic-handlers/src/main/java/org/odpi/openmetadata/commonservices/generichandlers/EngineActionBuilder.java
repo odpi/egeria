@@ -28,11 +28,13 @@ public class EngineActionBuilder extends ReferenceableBuilder
     private String              processName                     = null;
     private String              governanceActionProcessStepGUID = null;
     private String              governanceActionProcessStepName = null;
+    private String              requesterUserId                 = null;
     private String              requestType                     = null;
     private Map<String, String> requestParameters               = null;
     private List<String>        mandatoryGuards                 = null;
     private List<String>        receivedGuards                  = null;
     private int                 actionStatus                    = 0;
+    private Date                requestedStartDate              = null;
     private Date                startDate                       = null;
     private String              processingEngineUserId          = null;
     private Date                completionDate                  = null;
@@ -41,27 +43,28 @@ public class EngineActionBuilder extends ReferenceableBuilder
     /**
      * Create constructor
      *
-     * @param qualifiedName unique name for the governance action
-     * @param domainIdentifier governance domain for this governance action
-     * @param displayName short display name for the governance action
-     * @param description description of the governance action
+     * @param qualifiedName unique name for the engine action
+     * @param domainIdentifier governance domain for this engine action
+     * @param displayName short display name for the engine action
+     * @param description description of the engine action
      * @param governanceEngineGUID GUID of the governance engine that should execute the request
      * @param governanceEngineName name of the governance engine that should execute the request
      * @param governanceActionTypeGUID unique identifier of the governance action type that initiated this engine action
      * @param governanceActionTypeName unique name of the governance action process step that initiated this engine action
-     * @param processName name of the process that requested the governance action
+     * @param processName name of the process that requested the engine action
      * @param processStepGUID unique identifier of the governance action process step that initiated this engine action
      * @param processStepName unique name of the governance action process step that initiated this engine action
+     * @param requesterUserId  the caller
      * @param requestType request type from the caller
-     * @param requestParameters properties to pass to the governance action service
-     * @param mandatoryGuards list of guards that must be supplied before this governance action can proceed
-     * @param receivedGuards list of guards that triggered this governance action
-     * @param actionStatus status for the governance action
-     * @param startDate the date/time to start this governance action
-     * @param processingEngineUserId userId of the engine host processing this governance action
-     * @param completionDate the date/time that the governance action completed
-     * @param completionGuards the guards produced by the governance service that ran on behalf of this governance action
-     * @param additionalProperties additional properties for a governance action
+     * @param requestParameters properties to pass to the governance service
+     * @param mandatoryGuards list of guards that must be supplied before this engine action can proceed
+     * @param receivedGuards list of guards that triggered this engine action
+     * @param actionStatus status for the engine action
+     * @param requestedStartDate the date/time to start this engine action
+     * @param processingEngineUserId userId of the engine host processing this engine action
+     * @param completionDate the date/time that the engine action completed
+     * @param completionGuards the guards produced by the governance service that ran on behalf of this engine action
+     * @param additionalProperties additional properties for a engine action
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
@@ -77,12 +80,13 @@ public class EngineActionBuilder extends ReferenceableBuilder
                         String               processName,
                         String               processStepGUID,
                         String               processStepName,
+                        String               requesterUserId,
                         String               requestType,
                         Map<String, String>  requestParameters,
                         List<String>         mandatoryGuards,
                         List<String>         receivedGuards,
                         int                  actionStatus,
-                        Date                 startDate,
+                        Date                 requestedStartDate,
                         String               processingEngineUserId,
                         Date                 completionDate,
                         List<String>         completionGuards,
@@ -110,12 +114,13 @@ public class EngineActionBuilder extends ReferenceableBuilder
         this.processName = processName;
         this.governanceActionProcessStepGUID = processStepGUID;
         this.governanceActionProcessStepName = processStepName;
+        this.requesterUserId = requesterUserId;
         this.requestType = requestType;
         this.requestParameters = requestParameters;
         this.mandatoryGuards = mandatoryGuards;
         this.receivedGuards = receivedGuards;
         this.actionStatus = actionStatus;
-        this.startDate = startDate;
+        this.requestedStartDate = requestedStartDate;
         this.processingEngineUserId = processingEngineUserId;
         this.completionDate = completionDate;
         this.completionGuards = completionGuards;
@@ -123,10 +128,10 @@ public class EngineActionBuilder extends ReferenceableBuilder
 
 
     /**
-     * Create constructor for claiming a governance action
+     * Create constructor for claiming an engine action
      *
-     * @param actionStatus status for the governance action
-     * @param processingEngineUserId userId of the engine host processing this governance action
+     * @param actionStatus status for the engine action
+     * @param processingEngineUserId userId of the engine host processing this engine action
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
@@ -148,6 +153,35 @@ public class EngineActionBuilder extends ReferenceableBuilder
 
         this.actionStatus = actionStatus;
         this.processingEngineUserId = processingEngineUserId;
+    }
+
+
+    /**
+     * Create constructor for updating the status of an engine action
+     *
+     * @param actionStatus new status for the engine action
+     * @param startDate time that this engine action actually started (moved from activating to in progress)
+     * @param repositoryHelper helper methods
+     * @param serviceName name of this OMAS
+     * @param serverName name of local server
+     */
+    EngineActionBuilder(int                  actionStatus,
+                        Date                 startDate,
+                        OMRSRepositoryHelper repositoryHelper,
+                        String               serviceName,
+                        String               serverName)
+    {
+        super(null,
+              null,
+              OpenMetadataType.ENGINE_ACTION_TYPE_GUID,
+              OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+              null,
+              repositoryHelper,
+              serviceName,
+              serverName);
+
+        this.actionStatus = actionStatus;
+        this.startDate = startDate;
     }
 
 
@@ -244,6 +278,12 @@ public class EngineActionBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
+                                                                  OpenMetadataProperty.REQUESTER_USER_ID.name,
+                                                                  requesterUserId,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
                                                                   OpenMetadataProperty.REQUEST_TYPE.name,
                                                                   requestType,
                                                                   methodName);
@@ -281,17 +321,22 @@ public class EngineActionBuilder extends ReferenceableBuilder
             throw new InvalidParameterException(error, OpenMetadataType.ACTION_STATUS_PROPERTY_NAME);
         }
 
-        if (startDate == null)
+        if (requestedStartDate == null)
         {
-            this.startDate = new Date();
+            this.requestedStartDate = new Date();
         }
+
+        properties = repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                properties,
+                                                                OpenMetadataType.REQUESTED_START_DATE_PROPERTY_NAME,
+                                                                requestedStartDate,
+                                                                methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
                                                                 OpenMetadataType.START_DATE_PROPERTY_NAME,
                                                                 startDate,
                                                                 methodName);
-
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,

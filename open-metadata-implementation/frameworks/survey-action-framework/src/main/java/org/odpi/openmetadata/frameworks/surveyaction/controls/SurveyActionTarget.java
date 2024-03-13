@@ -6,6 +6,9 @@ package org.odpi.openmetadata.frameworks.surveyaction.controls;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * SurveyActionTarget provides some standard action type names to use in the implementation of survey action services.
  */
@@ -58,6 +61,24 @@ public enum SurveyActionTarget
         this.description                = description;
         this.typeName                   = typeName;
         this.deployedImplementationType = deployedImplementationType;
+    }
+
+
+    /**
+     * Return all the action targets defined in this enum.
+     *
+     * @return list
+     */
+    public static List<ActionTargetType> getActionTargetTypes()
+    {
+        List<ActionTargetType> actionTargetTypes = new ArrayList<>();
+
+        for (SurveyActionTarget actionTarget : SurveyActionTarget.values())
+        {
+            actionTargetTypes.add(actionTarget.getActionTargetType());
+        }
+
+        return actionTargetTypes;
     }
 
 

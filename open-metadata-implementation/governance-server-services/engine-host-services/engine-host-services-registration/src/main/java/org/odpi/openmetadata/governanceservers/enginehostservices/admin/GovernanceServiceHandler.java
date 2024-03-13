@@ -38,7 +38,7 @@ public abstract class GovernanceServiceHandler implements Runnable
     protected final AuditLog                   auditLog;
 
     private final GovernanceContextClient engineActionClient;
-    private final Date                    startDate;
+    private final Date                    requestedStartDate;
 
 
 
@@ -55,9 +55,9 @@ public abstract class GovernanceServiceHandler implements Runnable
      * @param engineActionClient client for processing engine actions
      * @param serviceRequestType incoming request type
      * @param governanceServiceGUID unique identifier of the governance service
-     * @param governanceServiceName name of this governance  service - used for message logging
+     * @param governanceServiceName name of this governance service - used for message logging
      * @param governanceService implementation of governance service
-     * @param startDate date/time that the governance service should start executing
+     * @param requestedStartDate date/time that the governance service should start executing
      * @param auditLog destination for log messages
      */
     protected GovernanceServiceHandler(GovernanceEngineProperties governanceEngineProperties,
@@ -69,7 +69,7 @@ public abstract class GovernanceServiceHandler implements Runnable
                                        String                     governanceServiceGUID,
                                        String                     governanceServiceName,
                                        Connector                  governanceService,
-                                       Date                       startDate,
+                                       Date requestedStartDate,
                                        AuditLog                   auditLog)
     {
         this.governanceEngineProperties = governanceEngineProperties;
@@ -81,7 +81,7 @@ public abstract class GovernanceServiceHandler implements Runnable
         this.engineActionClient         = engineActionClient;
         this.serviceRequestType         = serviceRequestType;
         this.governanceService          = governanceService;
-        this.startDate                  = startDate;
+        this.requestedStartDate         = requestedStartDate;
         this.auditLog                   = auditLog;
     }
 
@@ -134,11 +134,11 @@ public abstract class GovernanceServiceHandler implements Runnable
     {
         Date now = new Date();
 
-        while ((startDate != null) && (startDate.after(now)))
+        while ((requestedStartDate != null) && (requestedStartDate.after(now)))
         {
             try
             {
-                Thread.sleep(startDate.getTime()-now.getTime());
+                Thread.sleep(requestedStartDate.getTime()-now.getTime());
             }
             catch (InterruptedException interruptedException)
             {

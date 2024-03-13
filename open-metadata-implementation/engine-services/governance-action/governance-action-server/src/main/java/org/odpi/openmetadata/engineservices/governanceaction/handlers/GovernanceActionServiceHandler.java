@@ -42,6 +42,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
      * @param engineActionClient client for managing engine actions
      * @param serviceRequestType incoming request
      * @param requestParameters parameters associated with the request type
+     * @param requesterUserId original user requesting this governance service
      * @param requestSourceElements the elements that caused this service to run
      * @param actionTargetElements the elements for the service to work on
      * @param governanceActionServiceGUID unique identifier of entity defining this governance service
@@ -60,6 +61,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                    GovernanceContextClient    engineActionClient,
                                    String                     serviceRequestType,
                                    Map<String, String>        requestParameters,
+                                   String                     requesterUserId,
                                    List<RequestSourceElement> requestSourceElements,
                                    List<ActionTargetElement>  actionTargetElements,
                                    String                     governanceActionServiceGUID,
@@ -103,6 +105,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                                                               engineActionGUID,
                                                                               serviceRequestType,
                                                                               requestParameters,
+                                                                              requesterUserId,
                                                                               requestSourceElements,
                                                                               actionTargetElements,
                                                                               openMetadataClient,
