@@ -99,7 +99,7 @@ public class IntegrationContext
         this.integrationConnectorGUID     = integrationConnectorGUID;
         this.maxPageSize                  = maxPageSize;
 
-        this.fileClassifier               = new FileClassifier(new OpenMetadataStore(openMetadataStoreClient, userId));
+        this.fileClassifier               = new FileClassifier(new OpenMetadataStore(openMetadataStoreClient, userId, integrationConnectorGUID));
         this.listenerManager              = new FilesListenerManager(auditLog, connectorName);
 
         if (generateIntegrationReport)
@@ -122,6 +122,7 @@ public class IntegrationContext
                                                                                   connectorUserId,
                                                                                   externalSourceGUID,
                                                                                   externalSourceName,
+                                                                                  integrationConnectorGUID,
                                                                                   integrationReportWriter);
     }
 
@@ -133,6 +134,7 @@ public class IntegrationContext
      * @param userId calling user
      * @param externalSourceGUID unique identifier for external source (or null)
      * @param externalSourceName unique name for external source (or null)
+     * @param originatorGUID unique identifier of the source of the to do
      * @param integrationReportWriter report writer (maybe null)
      * @return new context
      */
@@ -140,6 +142,7 @@ public class IntegrationContext
                                                                                String                  userId,
                                                                                String                  externalSourceGUID,
                                                                                String                  externalSourceName,
+                                                                               String                  originatorGUID,
                                                                                IntegrationReportWriter integrationReportWriter)
     {
         if (openMetadataStoreClient != null)
@@ -148,9 +151,10 @@ public class IntegrationContext
                                                                                      userId,
                                                                                      externalSourceGUID,
                                                                                      externalSourceName,
+                                                                                     originatorGUID,
                                                                                      integrationReportWriter);
             MultiLanguageManagement multiLanguageManagement = new MultiLanguageManagement(openMetadataStore, userId);
-            StewardshipAction          stewardshipAction          = new StewardshipAction(openMetadataStore, userId);
+            StewardshipAction          stewardshipAction          = new StewardshipAction(openMetadataStore, userId, originatorGUID);
             ValidMetadataValuesContext validMetadataValuesContext = new ValidMetadataValuesContext(openMetadataStore, userId);
 
             return new IntegrationGovernanceContext(openMetadataAccess, multiLanguageManagement, stewardshipAction, validMetadataValuesContext);

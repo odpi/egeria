@@ -74,7 +74,7 @@ public class PersonRoleConverter<B> extends CommunityProfileOMASConverter<B>
 
                     roleProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     roleProperties.setRoleId(this.removeIdentifier(instanceProperties));
-                    roleProperties.setTitle(this.removeTitle(instanceProperties));
+                    roleProperties.setTitle(this.removeName(instanceProperties));
                     roleProperties.setDescription(this.removeDescription(instanceProperties));
                     roleProperties.setScope(this.removeScope(instanceProperties));
                     roleProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));

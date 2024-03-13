@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ProfileIdentityElement
 {
     private ProfileIdentityProperties profileIdentity = null;
-    private UserIdentityElement       properties    = null;
+    private UserIdentityElement       userIdentity    = null;
 
 
     /**
@@ -45,7 +45,7 @@ public class ProfileIdentityElement
         if (template != null)
         {
             profileIdentity = template.getProfileIdentity();
-            properties = template.getProperties();
+            userIdentity    = template.getUserIdentity();
         }
     }
 
@@ -77,20 +77,20 @@ public class ProfileIdentityElement
      *
      * @return properties
      */
-    public UserIdentityElement getProperties()
+    public UserIdentityElement getUserIdentity()
     {
-        return properties;
+        return userIdentity;
     }
 
 
     /**
      * Set up the userId properties.
      *
-     * @param properties  properties
+     * @param userIdentity  properties
      */
-    public void setProperties(UserIdentityElement properties)
+    public void setUserIdentity(UserIdentityElement userIdentity)
     {
-        this.properties = properties;
+        this.userIdentity = userIdentity;
     }
 
 
@@ -104,7 +104,7 @@ public class ProfileIdentityElement
     {
         return "ProfileIdentityElement{" +
                        "profileIdentity=" + profileIdentity +
-                       ", properties=" + properties +
+                       ", properties=" + userIdentity +
                        '}';
     }
 
@@ -128,7 +128,7 @@ public class ProfileIdentityElement
         }
         ProfileIdentityElement that = (ProfileIdentityElement) objectToCompare;
         return Objects.equals(profileIdentity, that.profileIdentity) &&
-                       Objects.equals(properties, that.properties);
+                       Objects.equals(userIdentity, that.userIdentity);
     }
 
 
@@ -140,6 +140,6 @@ public class ProfileIdentityElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), profileIdentity, properties);
+        return Objects.hash(super.hashCode(), profileIdentity, userIdentity);
     }
 }

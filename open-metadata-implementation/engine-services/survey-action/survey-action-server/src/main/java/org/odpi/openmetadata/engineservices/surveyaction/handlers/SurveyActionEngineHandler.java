@@ -88,10 +88,11 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
      *
      * @param engineActionGUID unique identifier of engine action to activate
      * @param governanceRequestType governance request type to use when calling the governance engine
-     * @param startDate date/time to start the governance action service
-     * @param requestParameters name-value properties to control the governance action service
-     * @param requestSourceElements metadata elements associated with the request to the governance  service
-     * @param actionTargetElements metadata elements that need to be worked on by the governance  service
+     * @param requesterUserId original user requesting this governance service
+     * @param requestedStartDate date/time to start the governance service
+     * @param requestParameters name-value properties to control the governance service
+     * @param requestSourceElements metadata elements associated with the request to the governance service
+     * @param actionTargetElements metadata elements that need to be worked on by the governance service
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
@@ -100,7 +101,8 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
     @Override
     public void runGovernanceService(String                     engineActionGUID,
                                      String                     governanceRequestType,
-                                     Date                       startDate,
+                                     String                     requesterUserId,
+                                     Date                       requestedStartDate,
                                      Map<String, String>        requestParameters,
                                      List<RequestSourceElement> requestSourceElements,
                                      List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,
@@ -128,7 +130,8 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
                                                                                                                governanceRequestType,
                                                                                                                requestParameters,
                                                                                                                engineActionGUID,
-                                                                                                               startDate,
+                                                                                                               requesterUserId,
+                                                                                                               requestedStartDate,
                                                                                                                governanceServiceCache);
 
                     super.startServiceExecutionThread(engineActionGUID,
@@ -241,7 +244,8 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
      * @param requestType type of survey
      * @param requestParameters parameters for the survey
      * @param engineActionGUID unique identifier of the associated engine action entity
-     * @param startDate date/time that the governance service should start executing
+     * @param requesterUserId original user requesting this governance service
+     * @param requestedStartDate date/time that the governance service should start executing
      * @param governanceServiceCache factory for survey action services
      *
      * @return unique identifier for this request.
@@ -254,7 +258,8 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
                                                                      String                 requestType,
                                                                      Map<String, String>    requestParameters,
                                                                      String                 engineActionGUID,
-                                                                     Date                   startDate,
+                                                                     String                 requesterUserId,
+                                                                     Date                   requestedStartDate,
                                                                      GovernanceServiceCache governanceServiceCache) throws InvalidParameterException,
                                                                                                                            UserNotAuthorizedException,
                                                                                                                            PropertyServerException
@@ -289,7 +294,8 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
         SurveyOpenMetadataStore openMetadataStore = new SurveyOpenMetadataStore(openMetadataClient,
                                                                                 engineUserId,
                                                                                 null,
-                                                                                null);
+                                                                                null,
+                                                                                engineActionGUID);
 
         SurveyContext surveyContext = new SurveyContext(engineUserId,
                                                         assetGUID,
@@ -298,6 +304,7 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
                                                         annotationStore,
                                                         openMetadataStore,
                                                         governanceServiceCache.getGovernanceServiceName(),
+                                                        requesterUserId,
                                                         auditLog);
 
         return new SurveyActionServiceHandler(governanceEngineProperties,
@@ -310,7 +317,7 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
                                               governanceServiceCache.getGovernanceServiceName(),
                                               governanceServiceCache.getNextGovernanceService(),
                                               surveyContext,
-                                              startDate,
+                                              requestedStartDate,
                                               auditLog);
     }
 }

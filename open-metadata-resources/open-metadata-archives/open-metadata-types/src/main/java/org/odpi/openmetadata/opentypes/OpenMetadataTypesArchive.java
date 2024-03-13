@@ -382,6 +382,31 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setUpdateTime(creationDate);
         typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
 
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = OpenMetadataProperty.REQUESTER_USER_ID.name;
+        final String attribute1Description     = OpenMetadataProperty.REQUESTER_USER_ID.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.REQUESTER_USER_ID.descriptionGUID;
+        final String attribute2Name            = "requestedStartDate";
+        final String attribute2Description     = "Time that the ending action should start.  This is the request time plus any requested wait time.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        property = archiveHelper.getDateTypeDefAttribute(attribute2Name,
+                                                         attribute2Description,
+                                                         attribute2DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
         return typeDefPatch;
     }
 
@@ -1579,6 +1604,8 @@ public class OpenMetadataTypesArchive
                                                  descriptionGUID,
                                                  descriptionWiki);
     }
+
+
 
 
     /*

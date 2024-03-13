@@ -25,6 +25,7 @@ public class SurveyContext
     private final AnnotationStore         annotationStore;
     private final SurveyOpenMetadataStore openMetadataStore;
     private final String                  surveyActionServiceName;
+    private final String                  requesterUserId;
     private final AuditLog                auditLog;
     private final FileClassifier          fileClassifier;
     private       boolean                 isActive = true;
@@ -40,6 +41,7 @@ public class SurveyContext
      * @param annotationStore annotation store for the survey action service
      * @param openMetadataStore generic metadata API from the Governance Action Framework (GAF)
      * @param surveyActionServiceName name of the running service
+     * @param requesterUserId original user requesting this governance service
      * @param auditLog logging destination
      */
     public SurveyContext(String                     userId,
@@ -49,6 +51,7 @@ public class SurveyContext
                          AnnotationStore            annotationStore,
                          SurveyOpenMetadataStore    openMetadataStore,
                          String                     surveyActionServiceName,
+                         String                     requesterUserId,
                          AuditLog                   auditLog)
     {
         this.userId                  = userId;
@@ -58,6 +61,7 @@ public class SurveyContext
         this.annotationStore         = annotationStore;
         this.openMetadataStore       = openMetadataStore;
         this.surveyActionServiceName = surveyActionServiceName;
+        this.requesterUserId         = requesterUserId;
         this.auditLog                = auditLog;
 
         this.fileClassifier          = new FileClassifier(openMetadataStore);
@@ -93,6 +97,17 @@ public class SurveyContext
         validateIsActive(methodName);
 
         return requestParameters;
+    }
+
+
+    /**
+     * Return the requester user identifier.
+     *
+     * @return userId
+     */
+    public String getRequesterUserId()
+    {
+        return requesterUserId;
     }
 
 

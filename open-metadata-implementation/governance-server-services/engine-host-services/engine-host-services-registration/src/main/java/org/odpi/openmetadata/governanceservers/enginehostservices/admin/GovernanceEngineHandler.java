@@ -509,7 +509,8 @@ public abstract class GovernanceEngineHandler
 
                 runGovernanceService(engineActionGUID,
                                      latestEngineActionElement.getRequestType(),
-                                     latestEngineActionElement.getStartTime(),
+                                     latestEngineActionElement.getRequesterUserId(),
+                                     latestEngineActionElement.getRequestedStartTime(),
                                      latestEngineActionElement.getRequestParameters(),
                                      latestEngineActionElement.getRequestSourceElements(),
                                      latestEngineActionElement.getActionTargetElements());
@@ -537,7 +538,8 @@ public abstract class GovernanceEngineHandler
      *
      * @param engineActionGUID unique identifier of the engine action
      * @param governanceRequestType governance request type to use when calling the governance engine
-     * @param startDate date/time to start the governance service
+     * @param requestedStartDate date/time to start the governance service
+     * @param requesterUserId original user requesting this governance service
      * @param requestParameters name-value properties to control the governance service
      * @param requestSourceElements metadata elements associated with the request to the governance service
      * @param actionTargetElements metadata elements that need to be worked on by the governance service
@@ -548,7 +550,8 @@ public abstract class GovernanceEngineHandler
      */
     public abstract void runGovernanceService(String                     engineActionGUID,
                                               String                     governanceRequestType,
-                                              Date                       startDate,
+                                              String                     requesterUserId,
+                                              Date                       requestedStartDate,
                                               Map<String, String>        requestParameters,
                                               List<RequestSourceElement> requestSourceElements,
                                               List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,
@@ -570,7 +573,8 @@ public abstract class GovernanceEngineHandler
         {
             runGovernanceService(engineActionElement.getElementHeader().getGUID(),
                                  engineActionElement.getRequestType(),
-                                 engineActionElement.getStartTime(),
+                                 engineActionElement.getRequesterUserId(),
+                                 engineActionElement.getRequestedStartTime(),
                                  engineActionElement.getRequestParameters(),
                                  engineActionElement.getRequestSourceElements(),
                                  engineActionElement.getActionTargetElements());

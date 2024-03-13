@@ -33,15 +33,17 @@ public class OpenMetadataAccess extends OpenMetadataStore
      * @param userId calling user
      * @param externalSourceGUID unique identifier for external source (or null)
      * @param externalSourceName unique name for external source (or null)
+     * @param originatorGUID unique identifier of the source of the to do
      * @param reportWriter report writer (maybe null)
      */
     public OpenMetadataAccess(OpenMetadataClient      openMetadataClient,
                               String                  userId,
                               String                  externalSourceGUID,
                               String                  externalSourceName,
+                              String                  originatorGUID,
                               IntegrationReportWriter reportWriter)
     {
-        super(openMetadataClient, userId, externalSourceGUID, externalSourceName);
+        super(openMetadataClient, userId, externalSourceGUID, externalSourceName, originatorGUID);
 
         this.reportWriter = reportWriter;
     }

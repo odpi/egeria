@@ -83,6 +83,7 @@ public class ToDoConverter<B> extends CommunityProfileConverterBase<B>
                     toDoProperties.setQualifiedName(this.removeQualifiedName(elementProperties));
                     toDoProperties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
                     toDoProperties.setName(this.removeName(elementProperties));
+                    toDoProperties.setToDoType(this.removeToDoType(elementProperties));
                     toDoProperties.setDescription(this.removeDescription(elementProperties));
                     toDoProperties.setCreationTime(this.removeCreationTime(elementProperties));
                     toDoProperties.setPriority(this.removeIntPriority(elementProperties));

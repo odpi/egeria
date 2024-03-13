@@ -19,12 +19,15 @@ public class SurveyOpenMetadataStore extends OpenMetadataStore
      * @param userId calling user
      * @param externalSourceGUID unique identifier for external source (or null)
      * @param externalSourceName unique name for external source (or null)
+     * @param originatorGUID unique identifier of the source of the to do
+     *
      */
     public SurveyOpenMetadataStore(OpenMetadataClient      openMetadataStore,
                                    String                  userId,
                                    String                  externalSourceGUID,
-                                   String                  externalSourceName)
+                                   String                  externalSourceName,
+                                   String                  originatorGUID)
     {
-        super(openMetadataStore, userId, externalSourceGUID, externalSourceName);
+        super(openMetadataStore, userId, externalSourceGUID, externalSourceName, originatorGUID);
     }
 }

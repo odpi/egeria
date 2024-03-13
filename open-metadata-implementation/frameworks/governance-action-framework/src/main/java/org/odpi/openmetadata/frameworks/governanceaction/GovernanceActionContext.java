@@ -57,7 +57,7 @@ public class GovernanceActionContext implements GovernanceContext,
 
     private final String                     requestType;
     private final Map<String, String>        requestParameters;
-
+    private final String                     requesterUserId;
     private final List<RequestSourceElement> requestSourceElements;
     private final List<ActionTargetElement>  actionTargetElements;
 
@@ -82,6 +82,7 @@ public class GovernanceActionContext implements GovernanceContext,
      * @param engineActionGUID unique identifier of the engine action that triggered this governance service
      * @param requestType unique identifier of the asset that the annotations should be attached to
      * @param requestParameters name-value properties to control the governance action service
+     * @param requesterUserId original user requesting this governance service
      * @param requestSourceElements metadata elements associated with the request to the governance action service
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
      * @param openMetadataClient client to the metadata store for use by the governance action service
@@ -95,6 +96,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                    String                           engineActionGUID,
                                    String                           requestType,
                                    Map<String, String>              requestParameters,
+                                   String                           requesterUserId,
                                    List<RequestSourceElement>       requestSourceElements,
                                    List<ActionTargetElement>        actionTargetElements,
                                    OpenMetadataClient               openMetadataClient,
@@ -108,6 +110,7 @@ public class GovernanceActionContext implements GovernanceContext,
         this.engineActionGUID = engineActionGUID;
         this.requestType = requestType;
         this.requestParameters = requestParameters;
+        this.requesterUserId = requesterUserId;
         this.requestSourceElements = requestSourceElements;
         this.actionTargetElements = actionTargetElements;
         this.openMetadataClient = openMetadataClient;
@@ -116,7 +119,7 @@ public class GovernanceActionContext implements GovernanceContext,
         this.governanceActionProcessClient = governanceActionProcessClient;
         this.governanceCompletionClient = governanceCompletionClient;
         this.watchDogEventClient = watchdogEventClient;
-        this.openMetadataStore = new OpenMetadataStore(openMetadataClient, userId);
+        this.openMetadataStore = new OpenMetadataStore(openMetadataClient, userId, engineActionGUID);
     }
 
 
@@ -153,6 +156,18 @@ public class GovernanceActionContext implements GovernanceContext,
     public Map<String, String> getRequestParameters()
     {
         return requestParameters;
+    }
+
+
+    /**
+     * Return the userId of the original person, process, service that requested this action.
+     *
+     * @return string userId
+     */
+    @Override
+    public String getRequesterUserId()
+    {
+        return requesterUserId;
     }
 
 

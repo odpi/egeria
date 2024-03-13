@@ -2990,6 +2990,7 @@ public class OpenGovernanceRESTServices
                                                                      requestBody.getReceivedGuards(),
                                                                      startTime,
                                                                      governanceEngineName,
+                                                                     userId,
                                                                      requestBody.getRequestType(),
                                                                      requestBody.getRequestParameters(),
                                                                      null,
@@ -3055,9 +3056,9 @@ public class OpenGovernanceRESTServices
      *  UserNotAuthorizedException this governance action service is not authorized to create a governance action process
      *  PropertyServerException there is a problem with the metadata store
      */
-    public GUIDResponse initiateGovernanceActionType(String                          serverName,
-                                                     String                          serviceURLMarker,
-                                                     String                          userId,
+    public GUIDResponse initiateGovernanceActionType(String                                  serverName,
+                                                     String                                  serviceURLMarker,
+                                                     String                                  userId,
                                                      InitiateGovernanceActionTypeRequestBody requestBody)
     {
         final String methodName = "initiateGovernanceActionType";
