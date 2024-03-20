@@ -5,10 +5,6 @@ package org.odpi.openmetadata.adminservices.configuration.registration;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * GovernanceServicesDescription provides a list of subsystems that support the various governance servers.
@@ -18,12 +14,15 @@ public enum GovernanceServicesDescription implements Serializable
     /**
      * Store and query asset lineage.
      */
-    OPEN_LINEAGE_SERVICES            (190,
-                                      ComponentDevelopmentStatus.STABLE,
-                                      "Open Lineage Services",
-                                      "open-lineage",
-                                      "Store and query asset lineage",
-                                      "https://egeria-project.org/services/open-lineage-services/"),
+    LINEAGE_WAREHOUSE_SERVICES(190,
+                               ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                               "Lineage Warehouse Services",
+                               "lineage-warehouse",
+                               "Store and query asset lineage",
+                               "https://egeria-project.org/services/lineage-warehouse-services/",
+                               ServerTypeClassification.LINEAGE_WAREHOUSE.getServerTypeName(),
+                               AccessServiceDescription.ASSET_LINEAGE_OMAS.getAccessServiceFullName(),
+                               ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName()),
 
     /**
      * Run automated open metadata conformance suite services.
@@ -33,37 +32,49 @@ public enum GovernanceServicesDescription implements Serializable
                                       "Conformance Suite Services",
                                       "conformance-suite",
                                       "Run automated open metadata conformance suite services.",
-                                      "https://egeria-project.org/guides/cts/overview/"),
+                                      "https://egeria-project.org/guides/cts/overview/",
+                                      ServerTypeClassification.CONFORMANCE_SERVER.getServerTypeName(),
+                                      null,
+                                      null),
 
     /**
      * Integrate Data Engines that are not self-capable of integrating directly with the Data Engine OMAS.
      */
     DATA_ENGINE_PROXY_SERVICES       (192,
-                                      ComponentDevelopmentStatus.STABLE,
+                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
                                       "Data Engine Proxy Services",
-                                      null,
+                                      "data-engine-proxy",
                                       "Integrate Data Engines that are not self-capable of integrating directly with the Data Engine OMAS.",
-                                      "https://egeria-project.org/services/data-engine-proxy-services/"),
+                                      "https://egeria-project.org/services/data-engine-proxy-services/",
+                                      ServerTypeClassification.DATA_ENGINE_PROXY.getServerTypeName(),
+                                      AccessServiceDescription.DATA_ENGINE_OMAS.getAccessServiceFullName(),
+                                      ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName()),
 
     /**
      * Host one or more integration services that are exchanging metadata with third party technologies.
      */
     INTEGRATION_DAEMON_SERVICES      (193,
-                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                      ComponentDevelopmentStatus.STABLE,
                                       "Integration Daemon Services",
-                                      null,
-                                      "Host one or more integration services that are exchanging metadata with third party technologies.",
-                                      "https://egeria-project.org/services/integration-daemon-services/"),
+                                      "integration-daemon",
+                                      "Hosts integration connectors that are exchanging metadata with third party technologies.",
+                                      "https://egeria-project.org/services/integration-daemon-services/",
+                                      ServerTypeClassification.INTEGRATION_DAEMON.getServerTypeName(),
+                                      AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName(),
+                                      ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName()),
 
     /**
      * Host one or more engine services that are actively managing governance of open metadata and the digital landscape.
      */
     ENGINE_HOST_SERVICES             (194,
-                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                      ComponentDevelopmentStatus.STABLE,
                                       "Engine Host Services",
-                                      null,
+                                      "engine-host",
                                       "Host one or more engine services that are actively managing governance of open metadata and the digital landscape.",
-                                      "https://egeria-project.org/services/engine-host-services/"),
+                                      "https://egeria-project.org/services/engine-host-services/",
+                                      ServerTypeClassification.ENGINE_HOST.getServerTypeName(),
+                                      AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName(),
+                                      ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName()),
     ;
 
 
@@ -75,45 +86,10 @@ public enum GovernanceServicesDescription implements Serializable
     private final String                     serviceURLMarker;
     private final String                     serviceDescription;
     private final String                     serviceWiki;
+    private final String                     serverType;
+    private final String                     partnerServiceName;
+    private final String                     partnerServerType;
 
-
-    /**
-     * Return a list containing each of the governance service descriptions defined in this enum class.
-     *
-     * @return List of enums
-     */
-    public static List<GovernanceServicesDescription> getGovernanceServersDescriptionList()
-    {
-        List<GovernanceServicesDescription> serviceDescriptionList = new ArrayList<>();
-
-        serviceDescriptionList.add(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES);
-        serviceDescriptionList.add(GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES);
-        serviceDescriptionList.add(GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES);
-        serviceDescriptionList.add(GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES);
-
-        return serviceDescriptionList;
-    }
-
-
-    /**
-     * Return a set of non null url markers (short names) of the governance services
-     *
-     * @return set of url markers
-     */
-    public static Set<String> getGovernanceServersURLMarkers()
-    {
-        Set<String> urlMarkerSet = new HashSet<>();
-        for (GovernanceServicesDescription governanceServicesDescription:getGovernanceServersDescriptionList())
-        {
-            String urlMarker = governanceServicesDescription.getServiceURLMarker();
-            if (urlMarker != null)
-            {
-                urlMarkerSet.add(urlMarker);
-            }
-        }
-
-        return urlMarkerSet;
-    }
 
 
     /**
@@ -125,13 +101,19 @@ public enum GovernanceServicesDescription implements Serializable
      * @param serviceURLMarker string used in URLs
      * @param serviceDescription short description for this access service
      * @param serviceWiki wiki page for the access service for this access service
+     * @param serverType the server type where this service resides
+     * @param partnerServiceName the name of a partner service called in a remote server
+     * @param partnerServerType the type of server where the partner service resides
      */
     GovernanceServicesDescription(int                        serviceCode,
                                   ComponentDevelopmentStatus serviceDevelopmentStatus,
                                   String                     serviceName,
                                   String                     serviceURLMarker,
                                   String                     serviceDescription,
-                                  String                     serviceWiki)
+                                  String                     serviceWiki,
+                                  String                     serverType,
+                                  String                     partnerServiceName,
+                                  String                     partnerServerType)
     {
         this.serviceCode = serviceCode;
         this.serviceDevelopmentStatus = serviceDevelopmentStatus;
@@ -139,6 +121,9 @@ public enum GovernanceServicesDescription implements Serializable
         this.serviceURLMarker = serviceURLMarker;
         this.serviceDescription = serviceDescription;
         this.serviceWiki = serviceWiki;
+        this.serverType = serverType;
+        this.partnerServiceName = partnerServiceName;
+        this.partnerServerType = partnerServerType;
     }
 
 
@@ -206,5 +191,39 @@ public enum GovernanceServicesDescription implements Serializable
     public String getServiceWiki()
     {
         return serviceWiki;
+    }
+
+
+
+    /**
+     * Return the name of the type of server where this service resides.
+     *
+     * @return server type name
+     */
+    public String getServerType()
+    {
+        return serverType;
+    }
+
+
+    /**
+     * Return the name of a service called in a remote server (if any).
+     *
+     * @return name of service
+     */
+    public String getPartnerServiceName()
+    {
+        return partnerServiceName;
+    }
+
+
+    /**
+     * Return the type of server where the partner service resides.
+     *
+     * @return name of type of server
+     */
+    public String getPartnerServerType()
+    {
+        return partnerServerType;
     }
 }

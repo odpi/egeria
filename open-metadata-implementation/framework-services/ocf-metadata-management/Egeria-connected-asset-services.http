@@ -1,0 +1,136 @@
+# Egeria-connected-asset-services
+
+###
+# @name Get Connection By GUID
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/connections/{{guid}}
+
+###
+# @name Get Connection By Name
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/connections/by-name/myConnection
+
+###
+# @name Get Connection for Asset
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/connection
+
+###
+# @name Get Asset for Connection
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/by-connection/{{guid}}
+
+###
+# @name Get Connected Asset Summary
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/via-connection/{{guid}}
+
+###
+@assetGUID=90e35d5a-cc22-4b5e-9762-7845daaced0e
+@serviceURLName=asset-consumer
+###
+# @name Get Asset Summary
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}
+
+###
+# @name Get Asset Certifications
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/certifications?
+    elementStart=0&
+    maxElements=100
+
+###
+# @name Get Asset Comments
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/comments?
+    elementStart=0&
+    maxElements=100
+
+###
+# @name Get Asset Comment Replies
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/comments/{{guid}}/replies?
+    elementStart=0&
+    maxElements=100
+
+###
+# @name Get Asset Connections
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/connections?
+    elementStart=0&
+    maxElements=100
+
+###
+# @name Get Asset External Identifiers
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/external-identifiers?
+    elementStart=0&
+    maxElements=100
+
+###
+# @name Get Asset External References
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/external-references?
+    elementStart=0&
+    maxElements=100
+
+###
+# @name Get Asset Informal Tags
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/informal-tags?
+    elementStart=0&
+    maxElements=100
+
+###
+# @name Get Asset Licenses
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/licenses?
+    elementStart=0&
+    maxElements=100
+
+###
+# @name Get Asset Likes
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/likes?
+    elementStart=0&
+    maxElements=100
+
+###
+# @name Get Asset Known Locations
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/known-locations?
+    elementStart=0&
+    maxElements=100
+
+###
+# @name Get Asset Note Logs
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/note-logs?
+    elementStart=0&
+    maxElements=100
+
+###
+# @name Get NoteLog Notes
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/note-logs/{{guid}}/notes?
+    elementStart=0&
+    maxElements=100
+
+###
+# @name Get Asset Ratings
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/ratings?
+    elementStart=0&
+    maxElements=100
+
+###
+# @name Get Related Assets
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/related-assets?
+    elementStart=0&
+    maxElements=100
+
+###
+# @name Get Element More Information
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/referenceables/{{guid}}/more-information?
+    elementStart=0&
+    maxElements=100
+
+###
+# @name Get Asset Related Media References
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/{{assetGUID}}/related-media-references?
+    elementStart=0&
+    maxElements=100
+
+###
+# @name Get Schema Attributes
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/schemas/{{guid}}/schema-attributes?
+    elementStart=0&
+    maxElements=100
+
+###
+# @name Get API Operations
+GET {{baseURL}}/servers/{{server}}/open-metadata/framework-services/{{serviceURLName}}/connected-asset/users/{{user}}/assets/schemas/apis/{{guid}}/api-operations?
+    elementStart=0&
+    maxElements=100

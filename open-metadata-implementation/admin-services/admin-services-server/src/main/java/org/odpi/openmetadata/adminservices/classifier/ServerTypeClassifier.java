@@ -61,9 +61,9 @@ public class ServerTypeClassifier
         List<IntegrationGroupConfig>    dynamicIntegrationGroupConfigList = configurationDocument.getDynamicIntegrationGroupsConfig();
         List<ViewServiceConfig>         viewServiceConfigList             = configurationDocument.getViewServicesConfig();
         ConformanceSuiteConfig          conformanceSuiteConfig            = configurationDocument.getConformanceSuiteConfig();
-        EngineHostServicesConfig        engineHostServicesConfig          = configurationDocument.getEngineHostServicesConfig();
-        OpenLineageServerConfig         openLineageServerConfig           = configurationDocument.getOpenLineageServerConfig();
-        DataEngineProxyConfig           dataEngineProxyConfig             = configurationDocument.getDataEngineProxyConfig();
+        EngineHostServicesConfig engineHostServicesConfig = configurationDocument.getEngineHostServicesConfig();
+        LineageWarehouseConfig   lineageWarehouseConfig   = configurationDocument.getOpenLineageServerConfig();
+        DataEngineProxyConfig    dataEngineProxyConfig    = configurationDocument.getDataEngineProxyConfig();
 
         if ((repositoryServicesConfig == null) &&
                 (accessServiceConfigList == null) &&
@@ -72,7 +72,7 @@ public class ServerTypeClassifier
                 (dynamicIntegrationGroupConfigList == null) &&
                 (viewServiceConfigList == null) &&
                 (conformanceSuiteConfig == null) &&
-                (openLineageServerConfig == null) &&
+                (lineageWarehouseConfig == null) &&
                 (dataEngineProxyConfig == null))
         {
             throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.EMPTY_CONFIGURATION.getMessageDefinition(serverName),
@@ -102,15 +102,15 @@ public class ServerTypeClassifier
             LocalRepositoryMode localRepositoryMode = this.detectLocalRepository(repositoryServicesConfig);
             if (localRepositoryMode == LocalRepositoryMode.METADATA_CACHE)
             {
-                serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
+                serverTypeClassification = ServerTypeClassification.METADATA_ACCESS_STORE;
             }
             else if (localRepositoryMode == LocalRepositoryMode.OPEN_METADATA_NATIVE)
             {
-                serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
+                serverTypeClassification = ServerTypeClassification.METADATA_ACCESS_STORE;
             }
             else if (localRepositoryMode == LocalRepositoryMode.PLUGIN_REPOSITORY)
             {
-                serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
+                serverTypeClassification = ServerTypeClassification.METADATA_ACCESS_STORE;
             }
             else if (localRepositoryMode == LocalRepositoryMode.REPOSITORY_PROXY)
             {
@@ -118,7 +118,7 @@ public class ServerTypeClassifier
             }
             else
             {
-                serverTypeClassification = ServerTypeClassification.METADATA_ACCESS_POINT;
+                serverTypeClassification = ServerTypeClassification.METADATA_ACCESS_SERVER;
             }
 
             this.validateSubsystemNotConfigured(serverName,
@@ -133,8 +133,8 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
-                                                openLineageServerConfig);
+                                                GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(),
+                                                lineageWarehouseConfig);
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -183,8 +183,8 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
-                                                openLineageServerConfig);
+                                                GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(),
+                                                lineageWarehouseConfig);
         }
 
         if (dataEngineProxyConfig != null)
@@ -218,8 +218,8 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
-                                                openLineageServerConfig);
+                                                GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(),
+                                                lineageWarehouseConfig);
         }
 
         if (engineHostServicesConfig != null)
@@ -253,8 +253,8 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
-                                                openLineageServerConfig);
+                                                GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(),
+                                                lineageWarehouseConfig);
         }
 
         if ((integrationServiceConfigList != null) || (dynamicIntegrationGroupConfigList != null))
@@ -288,13 +288,13 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
-                                                openLineageServerConfig);
+                                                GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(),
+                                                lineageWarehouseConfig);
         }
 
-        if (openLineageServerConfig != null)
+        if (lineageWarehouseConfig != null)
         {
-            serverTypeClassification = ServerTypeClassification.OPEN_LINEAGE_SERVER;
+            serverTypeClassification = ServerTypeClassification.LINEAGE_WAREHOUSE;
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
@@ -358,8 +358,8 @@ public class ServerTypeClassifier
 
             this.validateSubsystemNotConfigured(serverName,
                                                 serverTypeClassification.getServerTypeName(),
-                                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
-                                                openLineageServerConfig);
+                                                GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(),
+                                                lineageWarehouseConfig);
         }
 
         if (serverTypeClassification == null)
@@ -371,15 +371,15 @@ public class ServerTypeClassifier
 
             if (localRepositoryMode == LocalRepositoryMode.METADATA_CACHE)
             {
-                serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
+                serverTypeClassification = ServerTypeClassification.METADATA_ACCESS_STORE;
             }
             else if (localRepositoryMode == LocalRepositoryMode.OPEN_METADATA_NATIVE)
             {
-                serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
+                serverTypeClassification = ServerTypeClassification.METADATA_ACCESS_STORE;
             }
             else if (localRepositoryMode == LocalRepositoryMode.PLUGIN_REPOSITORY)
             {
-                serverTypeClassification = ServerTypeClassification.METADATA_SERVER;
+                serverTypeClassification = ServerTypeClassification.METADATA_ACCESS_STORE;
             }
             else if (localRepositoryMode == LocalRepositoryMode.REPOSITORY_PROXY)
             {

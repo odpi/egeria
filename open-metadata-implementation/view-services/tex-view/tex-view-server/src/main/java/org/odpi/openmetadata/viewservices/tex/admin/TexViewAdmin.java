@@ -31,7 +31,6 @@ public class TexViewAdmin extends ViewServiceAdmin {
     protected String resourceEndpointsPropertyName = "resourceEndpoints";      /* Common */
 
     private AuditLog auditLog = null;
-    private String serverUserName = null;
     private TexViewServicesInstance instance = null;
     private String serverName = null;
 
@@ -57,9 +56,7 @@ public class TexViewAdmin extends ViewServiceAdmin {
                            ViewServiceConfig viewServiceConfig,
                            AuditLog auditLog,
                            String serverUserName,
-                           int maxPageSize)
-
-    throws OMAGConfigurationErrorException
+                           int maxPageSize) throws OMAGConfigurationErrorException
     {
 
         final String actionDescription = "initialize";
@@ -78,7 +75,7 @@ public class TexViewAdmin extends ViewServiceAdmin {
          * This is the super type of IntegrationViewServiceConfig which is what this service actually requires.
          */
 
-        IntegrationViewServiceConfig integrationViewServiceConfig = null;
+        IntegrationViewServiceConfig integrationViewServiceConfig;
         if (viewServiceConfig instanceof IntegrationViewServiceConfig)
         {
             integrationViewServiceConfig = (IntegrationViewServiceConfig) viewServiceConfig;
@@ -116,7 +113,6 @@ public class TexViewAdmin extends ViewServiceAdmin {
                                                         maxPageSize,
                                                         resourceEndpoints);
 
-            this.serverUserName = serverUserName;
             this.serverName = serverName;
 
             auditLog.logMessage(actionDescription,
@@ -186,7 +182,6 @@ public class TexViewAdmin extends ViewServiceAdmin {
     throws OMAGConfigurationErrorException
     {
         final String methodName = "extractResourceEndpoints";
-        final String parameterName = "resourceEndpoints";
 
         /*
          * Tex cannot operate without any endpoints.
@@ -208,10 +203,10 @@ public class TexViewAdmin extends ViewServiceAdmin {
         }
         else
         {
-
-            List<ResourceEndpointConfig> endpointList = (List<ResourceEndpointConfig>) resourceEndpoints;
-            auditLog.logMessage(methodName, OMAGAdminAuditCode.RESOURCE_ENDPOINTS.getMessageDefinition(viewServiceFullName, endpointList.toString()));
-            return endpointList;
+            auditLog.logMessage(methodName,
+                                OMAGAdminAuditCode.RESOURCE_ENDPOINTS.getMessageDefinition(viewServiceFullName,
+                                                                                           resourceEndpoints.toString()));
+            return resourceEndpoints;
         }
 
     }

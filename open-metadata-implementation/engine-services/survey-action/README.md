@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
+![Stable](../../../images/egeria-content-status-released.png#pagewidth)
 
 # Survey Action Open Metadata Engine Service (OMES)
 
@@ -19,7 +19,7 @@ The results of each of these
 calls is a [discovery analysis report](https://egeria-project.org/discovery-analysis-report/).
 
 The survey action engine services call the
-[Discovery Engine Open Metadata Access Service (OMAS)](https://egeria-project.org/services/omas/survey-action-engine/overview)
+[Asset Owner Open Metadata Access Service (OMAS)](https://egeria-project.org/services/omas/asset-owner/overview)
 running in a Metadata Access Server to retrieve information about assets and to
 store the results of the survey action services.
 

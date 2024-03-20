@@ -9,9 +9,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -27,6 +29,7 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
     private final MatchCriteria      matchCriteria;
     private final String             searchCriteria;
 
+
     /**
      * Constructor takes the parameters used to call the repository handler.
      *
@@ -37,6 +40,8 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
      * @param properties properties used in the search
      * @param matchCriteria all or any
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param limitResultsByStatus only return elements that have the requested status (null means all statuses
+     * @param limitResultsByClassification only return elements that have the requested classification(s)
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
@@ -52,6 +57,8 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
                                               InstanceProperties      properties,
                                               MatchCriteria           matchCriteria,
                                               String                  sequencingPropertyName,
+                                              List<InstanceStatus>    limitResultsByStatus,
+                                              List<String>            limitResultsByClassification,
                                               boolean                 forLineage,
                                               boolean                 forDuplicateProcessing,
                                               int                     startingFrom,
@@ -65,6 +72,8 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
               entityTypeGUID,
               null,
               sequencingPropertyName,
+              limitResultsByStatus,
+              limitResultsByClassification,
               forLineage,
               forDuplicateProcessing,
               startingFrom,
@@ -72,9 +81,9 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
               effectiveTime,
               methodName);
 
-        this.properties           = properties;
-        this.matchCriteria        = matchCriteria;
-        this.searchCriteria       = null;
+        this.properties                   = properties;
+        this.matchCriteria                = matchCriteria;
+        this.searchCriteria               = null;
     }
 
 
@@ -87,6 +96,8 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
      * @param entityTypeGUID  identifier for the relationship to follow
      * @param searchCriteria value used in the search
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param limitResultsByStatus only return elements that have the requested status (null means all statuses
+     * @param limitResultsByClassification only return elements that have the requested classification(s)
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
@@ -101,6 +112,8 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
                                               String                   entityTypeGUID,
                                               String                   searchCriteria,
                                               String                   sequencingPropertyName,
+                                              List<InstanceStatus>     limitResultsByStatus,
+                                              List<String>             limitResultsByClassification,
                                               boolean                  forLineage,
                                               boolean                  forDuplicateProcessing,
                                               int                      startingFrom,
@@ -114,6 +127,8 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
               entityTypeGUID,
               null,
               sequencingPropertyName,
+              limitResultsByStatus,
+              limitResultsByClassification,
               forLineage,
               forDuplicateProcessing,
               startingFrom,
@@ -121,9 +136,9 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
               effectiveTime,
               methodName);
 
-        this.searchCriteria       = searchCriteria;
-        this.properties           = null;
-        this.matchCriteria        = null;
+        this.searchCriteria               = searchCriteria;
+        this.properties                   = null;
+        this.matchCriteria                = null;
     }
 
 
@@ -156,6 +171,8 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
                                                                          searchCriteria,
                                                                          entityTypeGUID,
                                                                          sequencingPropertyName,
+                                                                         limitResultsByStatus,
+                                                                         limitResultsByClassification,
                                                                          forLineage,
                                                                          forDuplicateProcessing,
                                                                          startingFrom,
@@ -169,6 +186,8 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
                                                                         properties,
                                                                         entityTypeGUID,
                                                                         sequencingPropertyName,
+                                                                        limitResultsByStatus,
+                                                                        limitResultsByClassification,
                                                                         forLineage,
                                                                         forDuplicateProcessing,
                                                                         startingFrom,
@@ -182,6 +201,8 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
                                                                                  properties,
                                                                                  entityTypeGUID,
                                                                                  sequencingPropertyName,
+                                                                                 limitResultsByStatus,
+                                                                                 limitResultsByClassification,
                                                                                  forLineage,
                                                                                  forDuplicateProcessing,
                                                                                  startingFrom,
@@ -195,6 +216,8 @@ public class RepositorySelectedEntitiesIterator extends RepositoryIteratorForEnt
                                                                                        properties,
                                                                                        entityTypeGUID,
                                                                                        sequencingPropertyName,
+                                                                                       limitResultsByStatus,
+                                                                                       limitResultsByClassification,
                                                                                        forLineage,
                                                                                        forDuplicateProcessing,
                                                                                        startingFrom,

@@ -325,8 +325,7 @@ public class InvalidParameterHandler
                                                 pageSizeParameterName);
         }
 
-
-        if (pageSize > maxPagingSize)
+        if ((maxPagingSize != 0) && (pageSize > maxPagingSize))
         {
             throw new InvalidParameterException(OMAGCommonErrorCode.MAX_PAGE_SIZE.getMessageDefinition(Integer.toString(pageSize),
                                                                                                        pageSizeParameterName,
@@ -395,17 +394,7 @@ public class InvalidParameterHandler
         {
             if (! anchorGUID.equals(anchorEntity.getGUID()))
             {
-                if (anchorGUID.equals(elementGUID))
-                {
-                    throw new InvalidParameterException(OMAGCommonErrorCode.NOT_ANCHOR_ELEMENT.getMessageDefinition(elementTypeName,
-                                                                                                                    elementGUID,
-                                                                                                                    anchorEntity.getGUID(),
-                                                                                                                    methodName),
-                                                        this.getClass().getName(),
-                                                        methodName,
-                                                        anchorGUIDParameterName);
-                }
-                else
+                if (! anchorGUID.equals(elementGUID))
                 {
                     throw new InvalidParameterException(OMAGCommonErrorCode.WRONG_ANCHOR_GUID.getMessageDefinition(elementTypeName,
                                                                                                                    elementGUID,

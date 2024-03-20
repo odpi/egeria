@@ -5,11 +5,10 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.remediation;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
-import org.odpi.openmetadata.frameworks.governanceaction.actiontargettype.ActionTargetType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * OriginSeekerGovernanceActionProvider is the OCF connector provider for the Origin Seeker Governance Action Service.
@@ -21,14 +20,6 @@ public class OriginSeekerGovernanceActionProvider extends GovernanceActionServic
     private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Remediation:OriginSeeker";
     private static final String  connectorTypeDisplayName = "Origin Seeker Governance Action Service";
     private static final String  connectorTypeDescription = "Follows the lineage mapping for an action target element to determine its origin.";
-
-    static final String ORIGIN_ASSIGNED_GUARD           = "origin-assigned";
-    static final String ORIGIN_ALREADY_ASSIGNED_GUARD   = "origin-already-assigned";
-    static final String MULTIPLE_ORIGINS_DETECTED_GUARD = "multiple-origins-detected";
-    static final String NO_ORIGINS_DETECTED_GUARD       = "no-origins-detected";
-    static final String NO_TARGETS_DETECTED_GUARD       = "no-targets-detected";
-    static final String MULTIPLE_TARGETS_DETECTED_GUARD = "multiple-targets-detected";
-    static final String ORIGIN_SEEKING_FAILED_GUARD     = "origin-seeking-failed";
 
     /**
      * Name of the target action where the asset's unique identifier.
@@ -47,14 +38,16 @@ public class OriginSeekerGovernanceActionProvider extends GovernanceActionServic
         super();
         super.setConnectorClassName(connectorClassName);
 
-        supportedGuards = new ArrayList<>();
-        supportedGuards.add(ORIGIN_ASSIGNED_GUARD);
-        supportedGuards.add(ORIGIN_ALREADY_ASSIGNED_GUARD);
-        supportedGuards.add(MULTIPLE_ORIGINS_DETECTED_GUARD);
-        supportedGuards.add(NO_ORIGINS_DETECTED_GUARD);
-        supportedGuards.add(NO_TARGETS_DETECTED_GUARD);
-        supportedGuards.add(MULTIPLE_TARGETS_DETECTED_GUARD);
-        supportedGuards.add(ORIGIN_SEEKING_FAILED_GUARD);
+        producedGuards = OriginSeekerGuard.getGuardTypes();
+
+        supportedActionTargetTypes = new ArrayList<>();
+        ActionTargetType actionTargetType = new ActionTargetType();
+
+        actionTargetType.setName(ACTION_TARGET_NAME);
+        actionTargetType.setTypeName(DeployedImplementationType.DATA_ASSET.getAssociatedTypeName());
+        actionTargetType.setDeployedImplementationType(DeployedImplementationType.DATA_ASSET.getDeployedImplementationType());
+
+        super.supportedActionTargetTypes.add(actionTargetType);
 
         super.setConnectorClassName(connectorClassName);
 
@@ -68,13 +61,5 @@ public class OriginSeekerGovernanceActionProvider extends GovernanceActionServic
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
 
         super.connectorTypeBean = connectorType;
-
-        actionTargetTypes = new HashMap<>();
-        ActionTargetType actionTargetType = new ActionTargetType();
-
-        actionTargetType.setTypeName(DeployedImplementationType.DATA_ASSET.getAssociatedTypeName());
-        actionTargetType.setDeployedImplementationType(DeployedImplementationType.DATA_ASSET.getDeployedImplementationType());
-
-        super.actionTargetTypes.put(ACTION_TARGET_NAME, actionTargetType);
     }
 }

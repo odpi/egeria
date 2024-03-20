@@ -28,11 +28,10 @@ public class RepositoryFindEntitiesIterator extends RepositoryIteratorForEntitie
 {
     private final List<String>         entitySubtypeGUIDs;
     private final SearchProperties      searchProperties;
-    private final List<InstanceStatus>  limitResultsByStatus;
     private final SearchClassifications searchClassifications;
-    private final Date            asOfTime;
-    private final String          sequencingProperty;
-    private final SequencingOrder sequencingOrder;
+    private final Date                  asOfTime;
+    private final String                sequencingProperty;
+    private final SequencingOrder       sequencingOrder;
 
     /**
      * Constructor takes the parameters used to call the repository handler.
@@ -84,6 +83,8 @@ public class RepositoryFindEntitiesIterator extends RepositoryIteratorForEntitie
               entityTypeGUID,
               null,
               sequencingProperty,
+              limitResultsByStatus,
+              null,
               forLineage,
               forDuplicateProcessing,
               startingFrom,
@@ -93,7 +94,6 @@ public class RepositoryFindEntitiesIterator extends RepositoryIteratorForEntitie
 
         this.entitySubtypeGUIDs    = entitySubtypeGUIDs;
         this.searchProperties      = searchProperties;
-        this.limitResultsByStatus  = limitResultsByStatus;
         this.searchClassifications = searchClassifications;
         this.asOfTime              = asOfTime;
         this.sequencingProperty    = sequencingProperty;

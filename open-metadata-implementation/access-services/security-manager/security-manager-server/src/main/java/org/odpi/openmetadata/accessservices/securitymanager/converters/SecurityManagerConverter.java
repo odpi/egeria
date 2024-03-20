@@ -71,7 +71,7 @@ public class SecurityManagerConverter<B> extends SecurityManagerOMASConverter<B>
                     securityManagerProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     securityManagerProperties.setDisplayName(this.removeName(instanceProperties));
                     securityManagerProperties.setDescription(this.removeDescription(instanceProperties));
-                    securityManagerProperties.setTypeDescription(this.removeCapabilityType(instanceProperties));
+                    securityManagerProperties.setDeployedImplementationType(this.removeCapabilityType(instanceProperties));
                     securityManagerProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
                     securityManagerProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
                     securityManagerProperties.setSource(this.removeSource(instanceProperties));

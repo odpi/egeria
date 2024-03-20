@@ -28,10 +28,10 @@ public class NewMetadataElementRequestBody extends MetadataSourceRequestBody
     private ElementStatus                  initialStatus                = null;
     private Map<String, ElementProperties> initialClassifications       = null;
     private String                         anchorGUID                   = null;
+    private boolean                        isOwnAnchor                  = false;
     private Date                           effectiveFrom                = null;
     private Date                           effectiveTo                  = null;
     private ElementProperties              properties                   = null;
-    private String                         templateGUID                 = null;
     private String                         parentGUID                   = null;
     private String                         parentRelationshipTypeName   = null;
     private ElementProperties              parentRelationshipProperties = null;
@@ -63,10 +63,10 @@ public class NewMetadataElementRequestBody extends MetadataSourceRequestBody
             initialStatus = template.getInitialStatus();
             initialClassifications = template.getInitialClassifications();
             anchorGUID = template.getAnchorGUID();
+            isOwnAnchor = template.getIsOwnAnchor();
             effectiveFrom = template.getEffectiveFrom();
             effectiveTo = template.getEffectiveTo();
             properties = template.getProperties();
-            templateGUID = template.getTemplateGUID();
             parentGUID = template.getParentGUID();
             parentRelationshipTypeName = template.getParentRelationshipTypeName();
             parentRelationshipProperties = template.getParentRelationshipProperties();
@@ -156,6 +156,28 @@ public class NewMetadataElementRequestBody extends MetadataSourceRequestBody
 
 
     /**
+     * Return whether this element should be classified as its own anchor or not.  The default is false.
+     *
+     * @return boolean
+     */
+    public boolean getIsOwnAnchor()
+    {
+        return isOwnAnchor;
+    }
+
+
+    /**
+     * Set up whether this element should be classified as its own anchor or not.  The default is false.
+     *
+     * @param ownAnchor boolean
+     */
+    public void setIsOwnAnchor(boolean ownAnchor)
+    {
+        isOwnAnchor = ownAnchor;
+    }
+
+
+    /**
      * Set up the initial status of the metadata element (typically ACTIVE).
      *
      * @param initialStatus element status enum value
@@ -229,28 +251,6 @@ public class NewMetadataElementRequestBody extends MetadataSourceRequestBody
     public void setProperties(ElementProperties properties)
     {
         this.properties = properties;
-    }
-
-
-    /**
-     * Set up the unique identifier of the element to use as a template (optional).
-     *
-     * @param templateGUID String guid
-     */
-    public void setTemplateGUID(String templateGUID)
-    {
-        this.templateGUID = templateGUID;
-    }
-
-
-    /**
-     * Returns the unique identifier of the element to use as a template (optional).
-     *
-     * @return string guid
-     */
-    public String getTemplateGUID()
-    {
-        return templateGUID;
     }
 
 
@@ -379,10 +379,10 @@ public class NewMetadataElementRequestBody extends MetadataSourceRequestBody
                        ", initialStatus=" + initialStatus +
                        ", initialClassifications=" + initialClassifications +
                        ", anchorGUID='" + anchorGUID + '\'' +
+                       ", isOwnAnchor='" + isOwnAnchor + '\'' +
                        ", effectiveFrom=" + effectiveFrom +
                        ", effectiveTo=" + effectiveTo +
                        ", properties=" + properties +
-                       ", templateGUID='" + templateGUID + '\'' +
                        ", parentGUID='" + parentGUID + '\'' +
                        ", parentRelationshipTypeName='" + parentRelationshipTypeName + '\'' +
                        ", parentRelationshipProperties=" + parentRelationshipProperties +
@@ -416,6 +416,7 @@ public class NewMetadataElementRequestBody extends MetadataSourceRequestBody
             return false;
         }
         return parentAtEnd1 == that.parentAtEnd1 &&
+                       isOwnAnchor == that.isOwnAnchor &&
                        Objects.equals(typeName, that.typeName) &&
                        initialStatus == that.initialStatus &&
                        Objects.equals(initialClassifications, that.initialClassifications) &&
@@ -423,7 +424,6 @@ public class NewMetadataElementRequestBody extends MetadataSourceRequestBody
                        Objects.equals(effectiveFrom, that.effectiveFrom) &&
                        Objects.equals(effectiveTo, that.effectiveTo) &&
                        Objects.equals(properties, that.properties) &&
-                       Objects.equals(templateGUID, that.templateGUID) &&
                        Objects.equals(parentGUID, that.parentGUID) &&
                        Objects.equals(parentRelationshipTypeName, that.parentRelationshipTypeName) &&
                        Objects.equals(parentRelationshipProperties, that.parentRelationshipProperties) &&
@@ -439,7 +439,7 @@ public class NewMetadataElementRequestBody extends MetadataSourceRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), typeName, initialStatus, initialClassifications, anchorGUID, effectiveFrom, effectiveTo, properties,
-                            templateGUID, parentGUID, parentRelationshipTypeName, parentRelationshipProperties, parentAtEnd1, effectiveTime);
+        return Objects.hash(super.hashCode(), typeName, initialStatus, initialClassifications, anchorGUID, isOwnAnchor, effectiveFrom, effectiveTo, properties,
+                            parentGUID, parentRelationshipTypeName, parentRelationshipProperties, parentAtEnd1, effectiveTime);
     }
 }

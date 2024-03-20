@@ -10,8 +10,6 @@ import java.util.Objects;
  */
 public class FileSystemProperties extends SoftwareCapabilitiesProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String              format = null;
     private String              encryption = null;
 
@@ -110,7 +108,7 @@ public class FileSystemProperties extends SoftwareCapabilitiesProperties
                        ", encryption='" + encryption + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
-                       ", typeDescription='" + getTypeDescription() + '\'' +
+                       ", typeDescription='" + getDeployedImplementationType() + '\'' +
                        ", version='" + getVersion() + '\'' +
                        ", patchLevel='" + getPatchLevel() + '\'' +
                        ", source='" + getSource() + '\'' +

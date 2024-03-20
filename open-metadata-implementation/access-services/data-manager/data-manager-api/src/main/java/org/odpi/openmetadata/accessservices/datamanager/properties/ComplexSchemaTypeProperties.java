@@ -5,8 +5,6 @@ package org.odpi.openmetadata.accessservices.datamanager.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.Objects;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -29,9 +27,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
               })
 public class ComplexSchemaTypeProperties extends SchemaTypeProperties
 {
-    private static final long     serialVersionUID = 1L;
-
-
     /**
      * Default constructor used by subclasses
      */

@@ -8,4 +8,6 @@ Provides a basic implementation of the interface javax.sql.DataSource interface 
 jdbcConnector.asDataSource()
 ```
 
-See [JDBC Integration Connector](../jdbc-integration-connector/README.MD) for actual usage example.
+Its Jar file includes the PostgreSQL client driver.
+
+See [JDBC Resource Connector](https://egeria-project.org/connectors/resource/jdbc-resource-connector/) for documentation.

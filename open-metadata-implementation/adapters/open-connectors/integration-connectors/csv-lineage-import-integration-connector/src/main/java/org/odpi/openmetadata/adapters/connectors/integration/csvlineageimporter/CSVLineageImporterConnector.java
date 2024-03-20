@@ -216,11 +216,7 @@ public class CSVLineageImporterConnector extends LineageIntegratorConnector
         {
             String qualifiedName = inputType + ":" + inputInstanceName;
 
-            OpenMetadataElement openMetadataElement = openMetadataAccess.getMetadataElementByUniqueName(qualifiedName,
-                                                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                        false,
-                                                                                                        false,
-                                                                                                        null);
+            OpenMetadataElement openMetadataElement = openMetadataAccess.getMetadataElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
 
             if (openMetadataElement == null)
             {
@@ -232,8 +228,7 @@ public class CSVLineageImporterConnector extends LineageIntegratorConnector
                                                                        ElementStatus.ACTIVE,
                                                                        null,
                                                                        null,
-                                                                       elementProperties,
-                                                                       null);
+                                                                       elementProperties);
 
             }
             else
@@ -269,9 +264,6 @@ public class CSVLineageImporterConnector extends LineageIntegratorConnector
             List<RelatedMetadataElements> existingRelationships = openMetadataAccess.getMetadataElementRelationships(end1GUID,
                                                                                                                      end2GUID,
                                                                                                                      openMetadataRelationshipType,
-                                                                                                                     false,
-                                                                                                                     false,
-                                                                                                                     null,
                                                                                                                      0,
                                                                                                                      0);
             if (existingRelationships == null)
@@ -284,12 +276,9 @@ public class CSVLineageImporterConnector extends LineageIntegratorConnector
                 openMetadataAccess.createRelatedElementsInStore(openMetadataRelationshipType,
                                                                 end1GUID,
                                                                 end2GUID,
-                                                                false,
-                                                                false,
                                                                 null,
                                                                 null,
-                                                                properties,
-                                                                null);
+                                                                properties);
             }
         }
     }

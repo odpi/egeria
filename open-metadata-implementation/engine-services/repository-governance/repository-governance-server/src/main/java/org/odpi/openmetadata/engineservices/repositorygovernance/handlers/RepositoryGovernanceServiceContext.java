@@ -57,8 +57,9 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
     private volatile CompletionStatus  completionStatus = null;
 
     private RepositoryGovernanceServiceHandler repositoryGovernanceServiceHandler = null;
-    private String                             repositoryGovernanceServiceName;
-    private EnterpriseRepositoryServicesClient repositoryServicesClient;
+    private final String                             requesterUserId;
+    private final String                             repositoryGovernanceServiceName;
+    private final EnterpriseRepositoryServicesClient repositoryServicesClient;
 
 
     /**
@@ -68,14 +69,16 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
      * @param repositoryGovernanceServiceName name os service using this context - for error messages.
      * @param requestType unique identifier of the asset that the annotations should be attached to
      * @param requestParameters name-value properties to control the archive service
+     * @param requesterUserId original user requesting this governance service
      * @param requestSourceElements metadata elements associated with the request to the archive service
      * @param actionTargetElements metadata elements that need to be worked on by the archive service
      * @param repositoryServicesClient client to the metadata store for use by the archive service
      */
     public RepositoryGovernanceServiceContext(String                             userId,
-                                              String repositoryGovernanceServiceName,
+                                              String                             repositoryGovernanceServiceName,
                                               String                             requestType,
                                               Map<String, String>                requestParameters,
+                                              String                             requesterUserId,
                                               List<RequestSourceElement>         requestSourceElements,
                                               List<ActionTargetElement>          actionTargetElements,
                                               EnterpriseRepositoryServicesClient repositoryServicesClient)
@@ -84,6 +87,18 @@ public class RepositoryGovernanceServiceContext extends RepositoryGovernanceCont
 
         this.repositoryGovernanceServiceName = repositoryGovernanceServiceName;
         this.repositoryServicesClient = repositoryServicesClient;
+        this.requesterUserId = requesterUserId;
+    }
+
+
+    /**
+     * Return the userId of the original person, process, service that requested this action.
+     *
+     * @return string userId
+     */
+    public String getRequesterUserId()
+    {
+        return requesterUserId;
     }
 
 

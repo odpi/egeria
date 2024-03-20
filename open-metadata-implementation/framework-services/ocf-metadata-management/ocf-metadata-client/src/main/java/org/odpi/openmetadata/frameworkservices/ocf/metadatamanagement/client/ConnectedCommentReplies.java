@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Comment;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,8 @@ public class ConnectedCommentReplies extends CommentReplies
     private int                    maxCacheSize;
     private OCFRESTClient          restClient;
 
-
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Typical constructor creates an iterator with the supplied list of elements.
@@ -40,7 +42,6 @@ public class ConnectedCommentReplies extends CommentReplies
      * @param userId user id to use on server calls.
      * @param platformURLRoot url root of the server to use.
      * @param rootCommentGUID unique identifier of the comment that the replies are attached to.
-     * @param totalElementCount the total number of elements to process.  A negative value is converted to 0.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      * @param restClient client to call REST API
@@ -50,11 +51,10 @@ public class ConnectedCommentReplies extends CommentReplies
                             String                 userId,
                             String                 platformURLRoot,
                             String                 rootCommentGUID,
-                            int                    totalElementCount,
                             int                    maxCacheSize,
                             OCFRESTClient          restClient)
     {
-        super(totalElementCount, maxCacheSize);
+        super(maxCacheSize);
 
         this.serviceName     = serviceName;
         this.serverName      = serverName;
@@ -80,7 +80,7 @@ public class ConnectedCommentReplies extends CommentReplies
             this.serviceName     = template.serviceName;
             this.serverName      = template.serverName;
             this.userId          = template.userId;
-            this.platformURLRoot   = template.platformURLRoot;
+            this.platformURLRoot = template.platformURLRoot;
             this.rootCommentGUID = template.rootCommentGUID;
             this.maxCacheSize    = template.maxCacheSize;
             this.restClient      = template.restClient;
@@ -161,26 +161,20 @@ public class ConnectedCommentReplies extends CommentReplies
             }
             else
             {
-                List<ElementBase>   resultList = new ArrayList<>();
+                List<ElementBase> resultList = new ArrayList<>();
 
-                for (CommentResponse  commentResponse : Responses)
+                for (CommentResponse commentResponse : Responses)
                 {
                     if (commentResponse != null)
                     {
                         Comment                 bean           = commentResponse.getComment();
-                        ConnectedCommentReplies commentReplies = null;
-
-                        if (commentResponse.getReplyCount() > 0)
-                        {
-                            commentReplies = new ConnectedCommentReplies(serviceName,
-                                                                         serverName,
-                                                                         userId,
-                                                                         platformURLRoot,
-                                                                         bean.getGUID(),
-                                                                         commentResponse.getReplyCount(),
-                                                                         maxCacheSize,
-                                                                         restClient);
-                        }
+                        ConnectedCommentReplies commentReplies = new ConnectedCommentReplies(serviceName,
+                                                                                             serverName,
+                                                                                             userId,
+                                                                                             platformURLRoot,
+                                                                                             bean.getGUID(),
+                                                                                             maxCacheSize,
+                                                                                             restClient);
 
                         /*
                          * Note replies are ignored - but can be extracted through the Asset Consumer OMAS

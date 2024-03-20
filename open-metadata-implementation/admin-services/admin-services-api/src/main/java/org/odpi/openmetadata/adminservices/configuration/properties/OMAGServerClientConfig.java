@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adminservices.configuration.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.io.Serial;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -29,7 +30,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class OMAGServerClientConfig extends AdminServicesConfigHeader
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /* Properties needed to call the OMAG Server REST APIs */
     private String omagServerPlatformRootURL = null;

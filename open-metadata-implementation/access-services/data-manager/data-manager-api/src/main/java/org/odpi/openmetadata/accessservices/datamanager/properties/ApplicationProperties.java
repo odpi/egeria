@@ -8,8 +8,6 @@ package org.odpi.openmetadata.accessservices.datamanager.properties;
  */
 public class ApplicationProperties extends SoftwareCapabilitiesProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Default constructor
      */
@@ -52,7 +50,7 @@ public class ApplicationProperties extends SoftwareCapabilitiesProperties
         return "ApplicationProperties{" +
                        "displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
-                       ", typeDescription='" + getTypeDescription() + '\'' +
+                       ", typeDescription='" + getDeployedImplementationType() + '\'' +
                        ", version='" + getVersion() + '\'' +
                        ", patchLevel='" + getPatchLevel() + '\'' +
                        ", source='" + getSource() + '\'' +

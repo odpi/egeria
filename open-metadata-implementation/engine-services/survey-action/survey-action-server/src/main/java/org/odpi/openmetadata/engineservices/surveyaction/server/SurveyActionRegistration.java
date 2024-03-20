@@ -5,6 +5,7 @@ package org.odpi.openmetadata.engineservices.surveyaction.server;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceRegistrationEntry;
 import org.odpi.openmetadata.engineservices.surveyaction.admin.SurveyActionAdmin;
+import org.odpi.openmetadata.engineservices.surveyaction.handlers.SurveyActionEngineHandlerFactory;
 import org.odpi.openmetadata.governanceservers.enginehostservices.registration.OMAGEngineServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
@@ -27,6 +28,6 @@ class SurveyActionRegistration
         EngineServiceRegistrationEntry myRegistration = new EngineServiceRegistrationEntry(myDescription,
                                                                                            ServiceOperationalStatus.ENABLED,
                                                                                            SurveyActionAdmin.class.getName());
-        OMAGEngineServiceRegistration.registerEngineService(myRegistration);
+        OMAGEngineServiceRegistration.registerEngineService(myRegistration, new SurveyActionEngineHandlerFactory());
     }
 }

@@ -4,7 +4,7 @@ package org.odpi.openmetadata.adminservices.server;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OLSSimplifiedAccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageServerConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.LineageWarehouseConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
@@ -20,7 +20,7 @@ import java.util.List;
 public class OMAGServerConfigOpenLineage {
     private final OMAGServerAdminStoreServices configStore = new OMAGServerAdminStoreServices();
 
-    private static final String serviceName = GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName();
+    private static final String serviceName = GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName();
     private static final String defaultInTopicName = "inTopic";
 
 
@@ -32,10 +32,10 @@ public class OMAGServerConfigOpenLineage {
      *
      * @param userId                  user that is issuing the request.
      * @param serverName              local server name.
-     * @param openLineageServerConfig Config for the Open Lineage Services
+     * @param lineageWarehouseConfig Config for the Open Lineage Services
      * @return void response
      **/
-    public VoidResponse setOpenLineageConfig(String userId, String serverName, OpenLineageServerConfig openLineageServerConfig) {
+    public VoidResponse setLineageWarehouseServices(String userId, String serverName, LineageWarehouseConfig lineageWarehouseConfig) {
 
         String methodName = "setOpenLineageConfig";
         VoidResponse response = new VoidResponse();
@@ -43,8 +43,8 @@ public class OMAGServerConfigOpenLineage {
         try {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
-            errorHandler.validatePropertyNotNull(openLineageServerConfig.getLineageGraphConnection(), "lineageGraphConnection", serverName, methodName);
-            OLSSimplifiedAccessServiceConfig accessServiceConfig = openLineageServerConfig.getAccessServiceConfig();
+            errorHandler.validatePropertyNotNull(lineageWarehouseConfig.getLineageGraphConnection(), "lineageGraphConnection", serverName, methodName);
+            OLSSimplifiedAccessServiceConfig accessServiceConfig = lineageWarehouseConfig.getAccessServiceConfig();
             errorHandler.validatePropertyNotNull(accessServiceConfig, "accessServiceConfig", serverName, methodName);
             errorHandler.validatePropertyNotNull(accessServiceConfig.getServerName(), "accessServiceConfig.serverName", serverName, methodName);
             errorHandler.validatePropertyNotNull(accessServiceConfig.getServerPlatformUrlRoot(), "accessServiceConfig.serverPlatformUrlRoot", serverName, methodName);
@@ -53,7 +53,7 @@ public class OMAGServerConfigOpenLineage {
 
             errorHandler.validateEventBusIsSet(serverName, serverConfig, methodName);
 
-            serverConfig.setOpenLineageServerConfig(openLineageServerConfig);
+            serverConfig.setOpenLineageServerConfig(lineageWarehouseConfig);
             configStore.saveServerConfig(serverName, methodName, serverConfig);
 
             List<String> configAuditTrail = serverConfig.getAuditTrail();
@@ -79,7 +79,7 @@ public class OMAGServerConfigOpenLineage {
      * @param serverName local server name.
      * @return void response
      */
-    public VoidResponse removeOpenLineageConfig(String userId, String serverName) {
+    public VoidResponse removeLineageWarehouseServices(String userId, String serverName) {
         final String methodName = "shutdown";
 
         VoidResponse response = new VoidResponse();

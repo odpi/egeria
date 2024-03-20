@@ -125,6 +125,7 @@ public class ConnectorConfigurationFactory
         {
             if ((! AuditLogRecordSeverityLevel.TRACE.equals(severityDefinition)) &&
                 (! AuditLogRecordSeverityLevel.ACTIVITY.equals(severityDefinition)) &&
+                (! AuditLogRecordSeverityLevel.TYPES.equals(severityDefinition)) &&
                 (! AuditLogRecordSeverityLevel.EVENT.equals(severityDefinition)) &&
                 (! AuditLogRecordSeverityLevel.PERFMON.equals(severityDefinition)))
             {
@@ -421,7 +422,7 @@ public class ConnectorConfigurationFactory
     /**
      * Return the local XTDB repository's connection.  This is using the XTDBOMRSRepositoryConnector.
      * Note there is no endpoint defined.
-     *
+     * <br>
      * "configurationProperties": {
      *     "xtdbConfig": {
      *         "xtdb.lucene/lucene-store": { "db-dir": "data/servers/" + serverName + "/xtdb/lucene" },
@@ -434,6 +435,7 @@ public class ConnectorConfigurationFactory
      *     }
      *   }
      *
+     * @param serverName associated server name
      * @return Connection object
      */
     public Connection getXTDBKVLocalRepositoryLocalConnection(String serverName)

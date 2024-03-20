@@ -18,7 +18,7 @@ for the connectors, the ability to retrieve all the metadata about the asset and
 
   The Asset Lineage OMAS listens to relevant lineage related events on the Enterprise topic level and publishes these on
 the Asset Lineage OutTopic, combined with relevant context information on the described entities. These events are 
-listened to by the Open Lineage Services governance server.  
+listened to by the Lineage Warehouse Services governance server.  
 
 * **[asset-manager](asset-manager)** - manage exchange of metadata with third party metadata catalogs and
 asset managers.
@@ -99,24 +99,21 @@ definition and management of a digital service through concept to deployment.
   
   The Digital Service OMAS provides services for a managing the lifecycle of a Digital Service and any associated products.
 
-* **[discovery-engine](discovery-engine)** - manage metadata for metadata discovery services.
-
-  The Discovery Engine OMAS provides an API for a discovery engine to access and store
-metadata about a digital resource, its schema and the data it stores.
-
 * **[governance-engine](governance-engine)** - manage metadata for an operational governance engine.
 
   The Governance Engine OMAS provides APIs and events that retrieve and
-manage metadata for governance engines.  Governance engines ensure that 
-the infrastructure supporting the data landscape is operating according
-to the governance program. For example, the governance engine may be ensuring
-that individuals and servers
-only have access to the data they have been authorized to see.
+manage metadata for governance engines.  This OMAS has been replaced by the Governance Server OMAS.
 
 * **[governance-program](governance-program)** - set up and manage a governance program.
 
   The Governance Program OMAS provides the ability to maintain a governance program in the open metadata repositories.
 It is designed for governance and CDO tools.
+
+* **[governance-server](governance-server)** - manage metadata for an operational governance server.
+
+  The Governance Server OMAS provides APIs and events that retrieve and
+  manage metadata for the [Engine Host](https://egeria-project.org/concepts/engine-host/) and 
+  [Integration Daemon](https://egeria-project.org/concepts/integration-daemon/) governance servers.
 
 * **[it-infrastructure](it-infrastructure)** - manage metadata about deployed infrastructure.
 

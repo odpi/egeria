@@ -5,8 +5,13 @@ package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client;
 import org.odpi.openmetadata.frameworks.connectors.properties.DeployedAPIOperation;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.APIOperation;
 
+import java.io.Serial;
+
 class ConnectedDeployedAPIOperation extends DeployedAPIOperation
 {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     /**
      * Typical constructor creates an DeployedAPIOperation object primed with information to retrieve an asset's API operations.
      *
@@ -40,7 +45,6 @@ class ConnectedDeployedAPIOperation extends DeployedAPIOperation
                                                                    platformURLRoot,
                                                                    this.getGUID(),
                                                                    maxCacheSize,
-                                                                   headerAttributeCount,
                                                                    restClient);
 
         }
@@ -53,7 +57,6 @@ class ConnectedDeployedAPIOperation extends DeployedAPIOperation
                                                                    platformURLRoot,
                                                                    this.getGUID(),
                                                                    maxCacheSize,
-                                                                   requestAttributeCount,
                                                                    restClient);
 
         }
@@ -66,7 +69,6 @@ class ConnectedDeployedAPIOperation extends DeployedAPIOperation
                                                                    platformURLRoot,
                                                                    this.getGUID(),
                                                                    maxCacheSize,
-                                                                   responseAttributeCount,
                                                                    restClient);
 
         }

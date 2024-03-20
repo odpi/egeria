@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.Locations;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Location;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,9 @@ public class ConnectedLocations extends Locations
     private String                 assetGUID;
     private OCFRESTClient          restClient;
 
+    @Serial
+    private static final long serialVersionUID = 1L;
+
 
     /**
      * Typical constructor creates an iterator with the supplied list of elements.
@@ -37,7 +41,6 @@ public class ConnectedLocations extends Locations
      * @param userId user id to use on server calls.
      * @param platformURLRoot url root of the server to use.
      * @param assetGUID unique identifier of the asset.
-     * @param totalElementCount the total number of elements to process.  A negative value is converted to 0.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      * @param restClient client to call REST API
@@ -47,16 +50,15 @@ public class ConnectedLocations extends Locations
                        String                 userId,
                        String                 platformURLRoot,
                        String                 assetGUID,
-                       int                    totalElementCount,
                        int                    maxCacheSize,
                        OCFRESTClient          restClient)
     {
-        super(totalElementCount, maxCacheSize);
+        super(maxCacheSize);
 
         this.serviceName     = serviceName;
         this.serverName      = serverName;
         this.userId          = userId;
-        this.platformURLRoot   = platformURLRoot;
+        this.platformURLRoot = platformURLRoot;
         this.assetGUID       = assetGUID;
         this.restClient      = restClient;
     }
@@ -76,7 +78,7 @@ public class ConnectedLocations extends Locations
             this.serviceName    = template.serviceName;
             this.serverName     = template.serverName;
             this.userId         = template.userId;
-            this.platformURLRoot  = template.platformURLRoot;
+            this.platformURLRoot= template.platformURLRoot;
             this.assetGUID      = template.assetGUID;
             this.restClient     = template.restClient;
         }

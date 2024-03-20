@@ -318,20 +318,20 @@ public enum OpenMetadataType
     /**
      * A governance engine for managing context events and associated actions.
      */
-    EVENT_ACTION_ENGINE("796f6493-3c3e-4091-8b21-46ea4e54d011",
-                        "EventActionEngine",
-                        OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
-                        "cebad26a-08f6-40b7-a0e0-4f9b1b439992",
-                        "A governance engine for managing context events and associated actions."),
+    CONTEXT_EVENT_ENGINE("796f6493-3c3e-4091-8b21-46ea4e54d011",
+                         "ContextEventEngine",
+                         OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
+                         "cebad26a-08f6-40b7-a0e0-4f9b1b439992",
+                         "A governance engine for managing context events and associated actions."),
 
     /**
      * A governance service for managing context events and associated actions.
      */
-    EVENT_ACTION_SERVICE("464bb4d8-f865-4b9d-a06e-7ed19518ff13",
-                         "EventActionService",
-                         OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
-                         "6e030483-39ff-4b1b-bd50-1faa64e44690",
-                         "A governance service for managing context events and associated actions."),
+    CONTEXT_EVENT_SERVICE("464bb4d8-f865-4b9d-a06e-7ed19518ff13",
+                          "ContextEventService",
+                          OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
+                          "6e030483-39ff-4b1b-bd50-1faa64e44690",
+                          "A governance service for managing context events and associated actions."),
 
     /**
      * A governance engine for managing the surveying of real-world resources and capturing the results in survey report attached to the associated asset.
@@ -577,31 +577,31 @@ public enum OpenMetadataType
                               "Attached data field level annotations."),
 
     /**
-     * A collection of properties about the values stored in a data field, or number of data fields, in an Asset.
+     * A collection of properties that characterize an aspect of a resource.
      */
-    DATA_PROFILE_ANNOTATION("bff1f694-afd0-4829-ab11-50a9fbaf2f5f",
-                            "DataProfileAnnotation",
-                            OpenMetadataWikiPages.MODEL_0620_DATA_PROFILING,
-                            "e1ba2eb5-bf03-4dc0-ab7e-0d99ba6ece55",
-                            "A collection of properties about the values stored in a data field, or number of data fields, in an Asset."),
+    RESOURCE_PROFILE_ANNOTATION("bff1f694-afd0-4829-ab11-50a9fbaf2f5f",
+                                "ResourceProfileAnnotation",
+                                OpenMetadataWikiPages.MODEL_0620_RESOURCE_PROFILING,
+                                "e1ba2eb5-bf03-4dc0-ab7e-0d99ba6ece55",
+                                "A collection of properties that characterize an aspect of a resource."),
 
     /**
-     * A link to a log file containing properties about the values stored in an Asset.
+     * A link to a log file containing profile measures for a resource.
      */
-    DATA_PROFILE_LOG_ANNOTATION("368e6fb3-7323-4f81-a723-5182491594bd",
-                                "DataProfileLogAnnotation",
-                                OpenMetadataWikiPages.MODEL_0620_DATA_PROFILING,
-                                "016944a4-5a11-4351-9b09-b4e4056d4816",
-                                "A link to a log file containing properties about the values stored in an Asset."),
+    RESOURCE_PROFILE_LOG_ANNOTATION("368e6fb3-7323-4f81-a723-5182491594bd",
+                                    "ResourceProfileLogAnnotation",
+                                    OpenMetadataWikiPages.MODEL_0620_RESOURCE_PROFILING,
+                                    "016944a4-5a11-4351-9b09-b4e4056d4816",
+                                    "A link to a log file containing profile measures for a resource."),
 
     /**
-     * An assessment of the match between a data class and the values stored in a data field, or number of data fields, in an Asset.
+     * An assessment of the match between a data class and the values stored in a data field, or number of data fields, in a resource.
      */
     DATA_CLASS_ANNOTATION("0c8a3673-04ef-406f-899d-e88de67f6176",
                           "DataClassAnnotation",
                           OpenMetadataWikiPages.MODEL_0625_DATA_CLASS_DISCOVERY,
                           "d0c467cf-6be0-4bf0-9260-6a5aeeee1e52",
-                          "An assessment of the match between a data class and the values stored in a data field, or number of data fields, in an Asset."),
+                          "An assessment of the match between a data class and the values stored in a data field, or number of data fields, in a resource."),
 
     /**
      * A recommendation of likely mappings to Glossary Terms for all or part of an Asset.
@@ -613,16 +613,16 @@ public enum OpenMetadataType
                         "A recommendation of likely mappings to Glossary Terms for all or part of an Asset."),
 
     /**
-     * A calculation of the level of quality found in the values stored in an Asset.
+     * A calculation of the level of quality found in the values associated with a resource.
      */
     QUALITY_ANNOTATION("72e6473d-4ce0-4609-80a4-e6e949a7f520",
                        "QualityAnnotation",
                        OpenMetadataWikiPages.MODEL_0640_QUALITY_SCORES,
                        "b9a28f99-3f10-480f-9e00-81a552de69ca",
-                       "A calculation of the level of quality found in the values stored in an Asset."),
+                       "A calculation of the level of quality found in the values associated with a resource."),
 
     /**
-     * A recommendation of the relationships that could be added to all or part of an Asset.
+     * A recommendation of the relationships that could be added to all or part of an asset.
      */
     RELATIONSHIP_ADVICE_ANNOTATION("740f07dc-4ee8-4c2a-baba-efb55c73eb68",
                                    "RelationshipAdviceAnnotation",
@@ -640,40 +640,49 @@ public enum OpenMetadataType
                                          "Annotation relating two referenceables."),
 
     /**
-     * A summary set of measurements for a DataSource asset.
+     * A summary set of measurements for a resource.
      */
-    DATA_SOURCE_MEASUREMENT_ANNOTATION("c85bea73-d7af-46d7-8a7e-cb745910b1d",
-                                       "DataSourceMeasurementAnnotation",
-                                       OpenMetadataWikiPages.MODEL_0660_MEASUREMENTS,
-                                       "dbb4a6af-67af-449d-a5a6-b12bf6933955",
-                                       "A summary set of measurements for a DataSource asset."),
+    RESOURCE_MEASURE_ANNOTATION("c85bea73-d7af-46d7-8a7e-cb745910b1d",
+                                "ResourceMeasureAnnotation",
+                                OpenMetadataWikiPages.MODEL_0660_MEASUREMENTS,
+                                "dbb4a6af-67af-449d-a5a6-b12bf6933955",
+                                "A summary set of measurements for a resource."),
 
     /**
-     * A set of summary properties about the physical status of an Asset.
+     * A set of summary properties about the physical status of a resource.
      */
-    DS_PHYSICAL_STATUS_ANNOTATION("e9ba276e-6d9f-4999-a5a9-9ddaaabfae23",
-                                  "DataSourcePhysicalStatusAnnotation",
-                                  OpenMetadataWikiPages.MODEL_0660_MEASUREMENTS,
-                                  "109a8865-2ead-452e-b72f-9d9e09b2763f",
-                                  "A set of summary properties about the physical status of an Asset."),
+    RESOURCE_PHYSICAL_STATUS_ANNOTATION("e9ba276e-6d9f-4999-a5a9-9ddaaabfae23",
+                                        "ResourcePhysicalStatusAnnotation",
+                                        OpenMetadataWikiPages.MODEL_0660_MEASUREMENTS,
+                                        "109a8865-2ead-452e-b72f-9d9e09b2763f",
+                                        "A set of summary properties about the physical status of a resource."),
 
     /**
-     * A request for a stewardship action to be initiated against an Asset.
+     * A request for a stewardship action to be initiated against an element.
      */
     REQUEST_FOR_ACTION_ANNOTATION("f45765a9-f3ae-4686-983f-602c348e020d",
-                                  "RequestForActionAnnotation",
+                                  "RequestForAction",
                                   OpenMetadataWikiPages.MODEL_0690_REQUEST_FOR_ACTION,
                                   "2a94d1d6-ead8-4d57-a419-90c8704a27a2",
-                                  "A request for a stewardship action to be initiated against an Asset."),
+                                  "A request for a stewardship action to be initiated against an element."),
 
     /**
-     * Link to the log file containing the data profile information.
+     * A link to the element that should be acted upon by the resulting action.
      */
-    DATA_PROFILE_LOG_FILE_RELATIONSHIP("75026fac-f9e5-4da8-9ad1-e9c68d47f577",
-                                       "DataProfileLogFile",
-                                       OpenMetadataWikiPages.MODEL_0620_DATA_PROFILING,
+    REQUEST_FOR_ACTION_TARGET("b6943670-93aa-4ce5-a00a-a50581de997d",
+                                  "RequestForActionTarget",
+                                  OpenMetadataWikiPages.MODEL_0690_REQUEST_FOR_ACTION,
+                                  "c2d0f01b-25f8-412f-abb1-2e88c9fba1e4",
+                                  "A link to the element that should be acted upon by the resulting action."),
+
+    /**
+     * Link to the external data resource containing the surveyed resource's profile data.
+     */
+    RESOURCE_PROFILE_DATA_RELATIONSHIP("2ebf2c09-b272-42a1-8fc0-e3eb44df296d",
+                                       "ResourceProfileData",
+                                       OpenMetadataWikiPages.MODEL_0620_RESOURCE_PROFILING,
                                        "11050162-ed05-4e5a-8a72-872c50001b5b",
-                                       "Link to the log file containing the data profile information."),
+                                       "Link to the external data resource containing the surveyed resource's profile data."),
 
     ;
 
@@ -1781,13 +1790,18 @@ public enum OpenMetadataType
     /* Area 1 - Collaboration                                                                                                      */
     /* ============================================================================================================================*/
 
+    public static final String ACTOR_TYPE_GUID = "16d2c34a-43db-476b-93ae-6a2996f514ec";
+    public static final String ACTOR_TYPE_NAME = "Actor";                 /* from Area 1 */
+    /* Referenceable */
+
+
     public static final String ACTOR_PROFILE_TYPE_GUID = "5a2f38dc-d69d-4a6f-ad26-ac86f118fa35";
     public static final String ACTOR_PROFILE_TYPE_NAME = "ActorProfile";                 /* from Area 1 */
-    /* Referenceable */
+    /* Actor */
 
     public static final String USER_IDENTITY_TYPE_GUID = "fbe95779-1f3c-4ac6-aa9d-24963ff16282";
     public static final String USER_IDENTITY_TYPE_NAME = "UserIdentity";
-    /* Referenceable */
+    /* Actor */
 
     public static final String DISTINGUISHED_NAME_PROPERTY_NAME = "distinguishedName"; /* from UserIdentity entity */
 
@@ -1848,7 +1862,7 @@ public enum OpenMetadataType
 
     public static final String PERSON_ROLE_TYPE_GUID = "ac406bf8-e53e-49f1-9088-2af28bcbd285";
     public static final String PERSON_ROLE_TYPE_NAME = "PersonRole";
-    /* Referenceable */
+    /* Actor */
 
     public static final String HEAD_COUNT_PROPERTY_NAME = "headCount";   /* from PersonRole entity */
 
@@ -1942,6 +1956,17 @@ public enum OpenMetadataType
      */
     public static final String PERSONAL_PROJECT_TYPE_NAME = "PersonalProject";   /* from Area 1 */
 
+
+    /**
+     * e68ae56a-7567-4c6a-9bff-04076bcc0b3b
+     */
+    public static final String STUDY_PROJECT_TYPE_GUID = "e68ae56a-7567-4c6a-9bff-04076bcc0b3b";
+
+    /**
+     * Study
+     */
+    public static final String STUDY_PROJECT_TYPE_NAME = "StudyProject";   /* from Area 1 */
+
     public static final String PROJECT_STATUS_PROPERTY_NAME     = "projectStatus";                     /* from Area 1 */
     public static final String TEAM_ROLE_PROPERTY_NAME          = "teamRole";                          /* from Area 1 */
     public static final String DEPENDENCY_SUMMARY_PROPERTY_NAME = "dependencySummary";                 /* from Area 1 */
@@ -2015,6 +2040,12 @@ public enum OpenMetadataType
      */
     public static final String CREATION_TIME_PROPERTY_NAME = "creationTime";                      /* from Area 1 */
 
+
+    /**
+     * toDoType
+     */
+    public static final String TO_DO_TYPE_PROPERTY_NAME = "toDoType";                      /* from Area 1 */
+
     /**
      * priority
      */
@@ -2024,6 +2055,11 @@ public enum OpenMetadataType
      * dueTime
      */
     public static final String DUE_TIME_PROPERTY_NAME = "dueTime";                           /* from Area 1 */
+
+    /**
+     * lastReviewTime
+     */
+    public static final String LAST_REVIEW_TIME_PROPERTY_NAME = "lastReviewTime";           /* from Area 1 */
 
     /**
      * completionTime
@@ -2088,7 +2124,7 @@ public enum OpenMetadataType
     /**
      * Actions - End1 = originator - Referenceable; End 2 = To Do
      */
-    public static final String ACTIONS_RELATIONSHIP_TYPE_NAME = "Actions";   /* from Area 1 */
+    public static final String ACTION_SPONSOR_RELATIONSHIP_TYPE_NAME = "ActionSponsor";   /* from Area 1 */
 
     /**
      * 207e2594-e3e4-4be8-a12c-4c401656e241
@@ -3864,7 +3900,12 @@ public enum OpenMetadataType
     /* GovernanceActionType */
 
 
-    public static final String PRODUCED_GUARDS_PROPERTY_NAME = "producedGuards";     /* from GovernanceActionType entity */
+    public static final String SUPPORTED_GUARDS_PROPERTY_NAME            = "supportedGuards";             /* from GovernanceActionType entity */
+    public static final String REQUIRED_REQUEST_PARAMETERS_PROPERTY_NAME = "requiredRequestParameters";   /* from GovernanceActionType entity */
+    public static final String REQUIRED_ACTION_TARGETS_PROPERTY_NAME     = "requiredActionTargets";       /* from GovernanceActionType entity */
+    public static final String PRODUCED_REQUEST_PARAMETERS_PROPERTY_NAME = "producedRequestParameters";   /* from GovernanceActionType entity */
+    public static final String PRODUCED_ACTION_TARGETS_PROPERTY_NAME     = "producedActionTargets";       /* from GovernanceActionType entity */
+    public static final String PRODUCED_GUARDS_PROPERTY_NAME             = "producedGuards";              /* from GovernanceActionType entity */
 
     public static final String GOVERNANCE_ACTION_EXECUTOR_TYPE_GUID = "f672245f-35b5-4ca7-b645-014cf61d5b75";
     public static final String GOVERNANCE_ACTION_EXECUTOR_TYPE_NAME = "GovernanceActionExecutor";
@@ -3888,11 +3929,13 @@ public enum OpenMetadataType
     public static final int    REQUESTED_EA_STATUS_ORDINAL         = 0;
     public static final int    APPROVED_EA_STATUS_ORDINAL          = 1;
     public static final int    WAITING_EA_STATUS_ORDINAL           = 2;
+    public static final int    ACTIVATING_EA_STATUS_ORDINAL        = 3;
     public static final int    IN_PROGRESS_EA_STATUS_ORDINAL       = 4;
     public static final int    ACTIONED_EA_STATUS_ORDINAL          = 10;
     public static final int    INVALID_EA_STATUS_ORDINAL           = 11;
     public static final int    IGNORED_EA_STATUS_ORDINAL           = 12;
     public static final int    FAILED_EA_STATUS_ORDINAL            = 13;
+    public static final int    CANCELLED_EA_STATUS_ORDINAL         = 14;
     public static final int    OTHER_EA_STATUS_ORDINAL             = 99;
 
     public static final String ENGINE_ACTION_TYPE_GUID = "c976d88a-2b11-4b40-b972-c38d41bfc6be";
@@ -3903,6 +3946,7 @@ public enum OpenMetadataType
     public static final String EXECUTOR_ENGINE_NAME_PROPERTY_NAME      = "executorEngineName";       /* from EngineAction entity */
     public static final String MANDATORY_GUARDS_PROPERTY_NAME          = "mandatoryGuards";           /* from EngineAction entity */
     public static final String RECEIVED_GUARDS_PROPERTY_NAME           = "receivedGuards";            /* from EngineAction entity */
+    public static final String REQUESTED_START_DATE_PROPERTY_NAME      = "requestedStartDate";        /* from EngineAction entity */
     public static final String START_DATE_PROPERTY_NAME                = "startDate";                 /* from EngineAction and Project entity and RegisteredIntegrationConnector relationship*/
     public static final String PLANNED_END_DATE_PROPERTY_NAME          = "plannedEndDate";            /* from Project entity */
     public static final String ACTION_STATUS_PROPERTY_NAME             = "actionStatus";              /* from EngineAction entity */
@@ -4078,6 +4122,9 @@ public enum OpenMetadataType
     public static final String LICENSEE_PROPERTY_NAME                  = "licensee";               /* from License relationship */
     public static final String LICENSEE_TYPE_NAME_PROPERTY_NAME        = "licenseeTypeName";       /* from License relationship */
     public static final String LICENSEE_PROPERTY_NAME_PROPERTY_NAME    = "licenseePropertyName";   /* from License relationship */
+    public static final String ENTITLEMENTS_PROPERTY_NAME              = "entitlements";   /* from License relationship */
+    public static final String RESTRICTIONS_PROPERTY_NAME              = "restrictions";   /* from License relationship */
+    public static final String OBLIGATIONS_PROPERTY_NAME               = "obligations";   /* from License relationship */
 
 
     /* ============================================================================================================================*/

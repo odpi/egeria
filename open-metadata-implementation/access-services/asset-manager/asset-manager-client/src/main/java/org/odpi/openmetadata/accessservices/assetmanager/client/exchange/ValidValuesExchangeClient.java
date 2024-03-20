@@ -285,8 +285,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                      ElementStatus.ACTIVE,
                                                                                      validValueProperties.getEffectiveFrom(),
                                                                                      validValueProperties.getEffectiveTo(),
-                                                                                     this.getElementProperties(validValueProperties),
-                                                                                     null);
+                                                                                     this.getElementProperties(validValueProperties));
 
         super.addExternalIdentifier(userId,
                                     assetManagerGUID,
@@ -351,10 +350,10 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                      ElementStatus.ACTIVE,
                                                                                      null,
                                                                                      null,
+                                                                                     false,
                                                                                      validValueProperties.getEffectiveFrom(),
                                                                                      validValueProperties.getEffectiveTo(),
                                                                                      this.getElementProperties(validValueProperties),
-                                                                                     null,
                                                                                      setGUID,
                                                                                      OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
                                                                                      null,
@@ -1300,6 +1299,10 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
             elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                  OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME,
                                                                  validValueProperties.getPreferredValue());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataType.DATA_TYPE_PROPERTY_NAME,
+                                                                 validValueProperties.getDataType());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                  OpenMetadataType.SCOPE_PROPERTY_NAME,

@@ -4,16 +4,17 @@ package org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStore;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.AuditableSurveyService;
-import org.odpi.openmetadata.adapters.connectors.surveyaction.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassification;
+import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.DataSourcePhysicalStatusAnnotation;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourcePhysicalStatusAnnotation;
 
 import java.io.File;
 import java.util.Date;
@@ -22,8 +23,7 @@ import java.util.Map;
 
 
 /**
- * FileSurveyService is a survey action service implementation for analysing a file to
- * columns and profile the data in them.
+ * FileSurveyService is a survey action service implementation for extracting properties about a file.
  */
 public class FileSurveyService extends AuditableSurveyService
 {
@@ -48,6 +48,8 @@ public class FileSurveyService extends AuditableSurveyService
         {
             AnnotationStore          annotationStore   = surveyContext.getAnnotationStore();
             SurveyAssetStore         assetStore        = surveyContext.getAssetStore();
+
+            annotationStore.setAnalysisStep(AnalysisStep.CHECK_ASSET.getName());
 
             /*
              * Before performing any real work, check the type of the asset.
@@ -77,28 +79,35 @@ public class FileSurveyService extends AuditableSurveyService
 
             File file = assetConnector.getFile();
 
-            FileClassifier fileClassifier = new FileClassifier(surveyContext.getOpenMetadataStore(), file);
+            annotationStore.setAnalysisStep(AnalysisStep.MEASURE_RESOURCE.getName());
 
-            DataSourcePhysicalStatusAnnotation measurementAnnotation = new DataSourcePhysicalStatusAnnotation();
+            FileClassifier fileClassifier = surveyContext.getFileClassifier();
+            FileClassification fileClassification = fileClassifier.classifyFile(file);
 
-            measurementAnnotation.setAnnotationType("ExtractDataStoreProperties");
-            measurementAnnotation.setSummary("Extract properties from the file.");
+            ResourcePhysicalStatusAnnotation measurementAnnotation = new ResourcePhysicalStatusAnnotation();
+
+            measurementAnnotation.setAnnotationType(SurveyFileAnnotationType.MEASUREMENTS.getName());
+            measurementAnnotation.setSummary(SurveyFileAnnotationType.MEASUREMENTS.getSummary());
+            measurementAnnotation.setExplanation(SurveyFileAnnotationType.MEASUREMENTS.getExplanation());
             measurementAnnotation.setModifiedTime(new Date(file.lastModified()));
-            measurementAnnotation.setSize(Integer.getInteger(String.valueOf(file.length())));
+            measurementAnnotation.setSize(file.length());
 
             Map<String, String> dataSourceProperties = new HashMap<>();
 
-            dataSourceProperties.put(OpenMetadataProperty.FILE_NAME.name, file.getName());
-            dataSourceProperties.put(OpenMetadataProperty.PATH_NAME.name, file.getAbsolutePath());
-            dataSourceProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, fileClassifier.getFileExtension());
-            dataSourceProperties.put(OpenMetadataProperty.FILE_TYPE.name, fileClassifier.getFileType());
-            dataSourceProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, fileClassifier.getDeployedImplementationType());
-            dataSourceProperties.put("assetTypeName", fileClassifier.getAssetTypeName());
-            dataSourceProperties.put("canRead", Boolean.toString(fileClassifier.isCanRead()));
-            dataSourceProperties.put("canWrite", Boolean.toString(fileClassifier.isCanWrite()));
-            dataSourceProperties.put("canExecute", Boolean.toString(fileClassifier.isCanExecute()));
+            dataSourceProperties.put(FileMetric.FILE_NAME.name, fileClassification.getFileName());
+            dataSourceProperties.put(FileMetric.PATH_NAME.name, fileClassification.getPathName());
+            dataSourceProperties.put(FileMetric.FILE_EXTENSION.name, fileClassification.getFileExtension());
+            dataSourceProperties.put(FileMetric.FILE_TYPE.name, fileClassification.getFileType());
+            dataSourceProperties.put(FileMetric.DEPLOYED_IMPLEMENTATION_TYPE.name, fileClassification.getDeployedImplementationType());
+            dataSourceProperties.put(FileMetric.ENCODING.name, fileClassification.getEncoding());
+            dataSourceProperties.put(FileMetric.ASSET_TYPE_NAME.name, fileClassification.getAssetTypeName());
+            dataSourceProperties.put(FileMetric.CAN_READ.name, Boolean.toString(fileClassification.isCanRead()));
+            dataSourceProperties.put(FileMetric.CAN_WRITE.name, Boolean.toString(fileClassification.isCanWrite()));
+            dataSourceProperties.put(FileMetric.CAN_EXECUTE.name, Boolean.toString(fileClassification.isCanExecute()));
+            dataSourceProperties.put(FileMetric.IS_SYM_LINK.name, Boolean.toString(fileClassification.isSymLink()));
+            dataSourceProperties.put(FileMetric.IS_HIDDEN.name, Boolean.toString(fileClassification.isHidden()));
 
-            measurementAnnotation.setDataSourceProperties(dataSourceProperties);
+            measurementAnnotation.setResourceProperties(dataSourceProperties);
 
             annotationStore.addAnnotation(measurementAnnotation, surveyContext.getAssetGUID());
         }

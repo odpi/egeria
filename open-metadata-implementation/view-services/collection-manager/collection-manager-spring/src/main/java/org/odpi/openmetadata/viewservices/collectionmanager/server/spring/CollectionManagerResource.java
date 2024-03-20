@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping("/servers/{serverName}/api/open-metadata/glossary-browser")
+@RequestMapping("/servers/{serverName}/api/open-metadata/collection-manager")
 
 @Tag(name="API: Collection Manager OMVS",
      description="Maintain and explore the contents of nested collections. These collections can be used to represent digital products, or collections of resources for a particular project or team. They can be used to organize assets and other resources into logical groups.",
-     externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/services/omvs/glossary-browser/overview/"))
+     externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/services/omvs/collection-manager/overview/"))
 
 public class CollectionManagerResource
 {

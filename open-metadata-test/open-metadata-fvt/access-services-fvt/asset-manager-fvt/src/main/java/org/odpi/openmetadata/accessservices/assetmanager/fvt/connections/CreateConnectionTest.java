@@ -290,7 +290,7 @@ public class CreateConnectionTest
             properties.setQualifiedName(assetManagerName);
             properties.setDisplayName(assetManagerDisplayName);
             properties.setDescription(assetManagerDescription);
-            properties.setTypeDescription(assetManagerTypeDescription);
+            properties.setDeployedImplementationType(assetManagerTypeDescription);
             properties.setVersion(assetManagerVersion);
 
             String assetManagerGUID = client.createExternalAssetManager(userId, properties);

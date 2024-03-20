@@ -21,8 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ReportProperties extends DataSetProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String id               = null;
     private String author           = null;
     private String url              = null;

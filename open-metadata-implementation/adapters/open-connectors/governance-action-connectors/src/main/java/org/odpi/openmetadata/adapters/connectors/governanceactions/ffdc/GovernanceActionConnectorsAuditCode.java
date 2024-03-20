@@ -225,16 +225,15 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                                         "or as part of a governance action process.  Then correct this approach so that an action target is set up."),
 
     /**
-     * GOVERNANCE-ACTION-CONNECTORS-0019 - The {0} governance action service is not configured with a valid set of zones
+     * GOVERNANCE-ACTION-CONNECTORS-0019 - The {0} governance action service has publishZones set to null
      */
     NO_ZONES("GOVERNANCE-ACTION-CONNECTORS-0019",
-             AuditLogRecordSeverityLevel.ERROR,
-                                "The {0} governance action service is not configured with a valid set of zones",
-                                "The governance action service will not operate without this zone value because setting the zones to null " +
-                                        "will make the asset visible through every interface.  It returns an INVALID completion status.",
-                                "This is likely to be a configuration error.  The zones are passed with as a configuration property or as a " +
-                                        "request parameter.  Ensure either method provides a valid list of zone names expressed as a comma separated list" +
-                                        "(for example: zone1,zone2)."),
+             AuditLogRecordSeverityLevel.INFO,
+                                "The {0} governance action service has publishZones set to null",
+                                "The governance action service will remove the AssetZoneMembership from ",
+                                "Verify that this is the intended behaviour.  If zones are needed, the zone names are passed with as a configuration property or as a " +
+                                        "request parameter.  Either method can provide a valid list of zone names expressed as a comma separated list" +
+                                        "(for example: zone1,zone2) that will control the visibility of the asset."),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0020 - The {0} governance action service is publishing asset {1} to the following zones: {2}
@@ -277,6 +276,16 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                                "The {0} governance action service is unable to retrieve the template {1} configured in property {2}.  The asset {3} was created without a template",
                                "The asset is created with the supplied parameters.",
                                "Determine whether the template name is specified incorrectly, or if the name is correct, why it is not accessible to governance service.  Once the situation has been corrected, future assets will be created with the right template.  However this asset may need some remediation to add the values that would have been added by the template."),
+
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0024 - {0}
+     */
+    BLANK_INFO_LOG_MESSAGE("GOVERNANCE-ACTION-CONNECTORS-0024",
+                     AuditLogRecordSeverityLevel.INFO,
+                     "{0}",
+                     "The message is supplied by the caller.",
+                     "Look at the message text to understand any actions."),
     ;
 
     private final String                      logMessageId;

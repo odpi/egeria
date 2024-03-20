@@ -102,19 +102,13 @@ egeria-lineage-repositories/**
 *-graph-repository/**
 
 # Ignore archives if they are in the top level directory
-/OpenConnectorsArchive.json
-/OpenMetadataTypes.json
-/SimpleAPICatalog.json
-/SimpleCatalog.json
-/SimpleDataCatalog.json
-/SimpleEventCatalog.json
-/SimpleGovernanceCatalog.json
-/*Archive.json
-/BigGlossary*.json
 /*.omarchive
 
 # Ignore report output
 component-id-report.md
+survey-report*.md
+valid-values-report*.md
+surveys/*
 
 # Ignore any json files generated during junit
 open-metadata-resources/open-metadata-archives/design-model-archives/*.json
@@ -165,9 +159,14 @@ jitdump*dmp
 # License files (generated)
 THIRD_PARTY*.txt
 
+# Local test files
+extra/**
+lib/**
+
 # gradle
 !gradle/**
 .gradle/
 build/
 *.gz
 *.tmp
+/.run/

@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.surveyaction.ffdc.SAFAuditCode;
 import org.odpi.openmetadata.frameworks.surveyaction.ffdc.SAFErrorCode;
 
 import java.util.ArrayList;
@@ -63,12 +64,12 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
 
 
     /**
-     * Set up the list of discovery services connectors that will be invoked as part of this discovery pipeline.
+     * Set up the list of survey action services connectors that will be invoked as part of this survey action pipeline.
      * The connectors are initialized waiting to start.  After start() is called on the
-     * discovery pipeline, it will choreograph the invocation of its embedded discovery services by calling
+     * survey action pipeline, it will choreograph the invocation of its embedded survey action services by calling
      * start() to each of them when they are to run. Similar processing is needed for the disconnect() method.
      *
-     * @param embeddedConnectors  list of embedded connectors that are hopefully discovery services
+     * @param embeddedConnectors  list of embedded connectors that are hopefully survey action services
      */
     @Override
     public void initializeEmbeddedConnectors(List<Connector> embeddedConnectors)
@@ -81,8 +82,8 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
      * Set up details of the asset to analyze and the results of any previous analysis.
      *
      * @param surveyContext information about the asset to analyze and the results of analysis of
-     *                         other discovery service request.  Partial results from other discovery
-     *                         services run as part of the same discovery service request may also be
+     *                         other survey action service request.  Partial results from other survey action
+     *                         services run as part of the same survey action service request may also be
      *                         stored in the newAnnotations list.
      */
     public synchronized void setSurveyContext(SurveyContext surveyContext)
@@ -106,25 +107,62 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
      * Return the survey context for this survey action service.  This is typically called after the disconnect()
      * method is called.  If called before disconnect(), it may only contain partial results.
      *
-     * @return discovery context containing the results discovered (so far) by the discovery service.
+     * @return survey context containing the results discovered (so far) by the survey action service.
+     * @throws ConnectorCheckedException the service is no longer active
      */
-    public synchronized SurveyContext getSurveyContext()
+    protected synchronized SurveyContext getSurveyContext() throws ConnectorCheckedException
     {
+        final String methodName = "getSurveyContext";
+
+        validateIsActive(methodName);
         return surveyContext;
     }
 
 
-    /**
-     * Retrieve and validate the list of embedded connectors and cast them to discovery service connector.
-     * This is used by DiscoveryPipelines and DiscoveryScanningServices.
-     *
-     * @return list of discovery service connectors
-     *
-     * @throws ConnectorCheckedException one of the embedded connectors is not a discovery service
-     */
-    protected List<SurveyActionServiceConnector> getEmbeddedDiscoveryServices() throws ConnectorCheckedException
+    protected synchronized AnnotationStore getAnnotationStore() throws ConnectorCheckedException
     {
-        final String           methodName        = "getEmbeddedSurveyActionServices";
+        final String methodName = "getAnnotationStore";
+
+        validateIsActive(methodName);
+        return surveyContext.getAnnotationStore();
+    }
+
+
+    /**
+     * Verify that the connector is still active.
+     *
+     * @param methodName calling method
+     * @throws ConnectorCheckedException exception thrown if connector is no longer active
+     */
+    private void validateIsActive(String methodName) throws ConnectorCheckedException
+    {
+        if (! isActive())
+        {
+            if (auditLog != null)
+            {
+                auditLog.logMessage(methodName,
+                                    SAFAuditCode.DISCONNECT_DETECTED.getMessageDefinition(surveyActionServiceName));
+            }
+
+            throw new ConnectorCheckedException(SAFErrorCode.DISCONNECT_DETECTED.getMessageDefinition(surveyActionServiceName),
+                                                this.getClass().getName(),
+                                                methodName);
+        }
+    }
+
+
+
+    /**
+     * Retrieve and validate the list of embedded connectors and cast them to survey action service connector.
+     * This is used by SurveyPipelines and SurveyScanningServices.
+     *
+     * @return list of survey action service connectors
+     *
+     * @throws ConnectorCheckedException one of the embedded connectors is not a survey action service
+     */
+    protected List<SurveyActionServiceConnector> getEmbeddedSurveyActionServices() throws ConnectorCheckedException
+    {
+        final String methodName = "getEmbeddedSurveyActionServices";
         
         List<SurveyActionServiceConnector> surveyActionServiceConnectors = null;
 
@@ -160,12 +198,12 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
 
 
     /**
-     * Indicates that the discovery service is completely configured and can begin processing.
-     * This is where the function of the discovery service is implemented.
+     * Indicates that the survey action service is completely configured and can begin processing.
+     * This is where the function of the survey action service is implemented.
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() in your version.
      *
-     * @throws ConnectorCheckedException there is a problem within the discovery service.
+     * @throws ConnectorCheckedException there is a problem within the survey action service.
      */
     @Override
     public void start() throws ConnectorCheckedException
@@ -191,14 +229,14 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
      * @throws ConnectorCheckedException wrapped exception
      */
     protected void handleUnexpectedException(String      methodName,
-                                             Throwable   error) throws ConnectorCheckedException
+                                             Exception   error) throws ConnectorCheckedException
     {
         throw new ConnectorCheckedException(SAFErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(surveyActionServiceName,
-                error.getClass().getName(),
-                methodName,
-                error.getMessage()),
-                this.getClass().getName(),
-                methodName);
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                                            this.getClass().getName(),
+                                            methodName);
     }
 
 
@@ -210,6 +248,11 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
     @Override
     public  synchronized void disconnect() throws ConnectorCheckedException
     {
+        if (surveyContext!= null)
+        {
+            surveyContext.disconnect();
+        }
+
         super.disconnectConnectors(this.embeddedConnectors);
         super.disconnect();
     }

@@ -15,8 +15,12 @@ enable connectors of all types to support natural language diagnostic messages f
 exceptions and the audit log.
 
 * **[Open Connector Framework (OCF)](open-connector-framework)** provides the interfaces and base implementations for components
-(called [connectors](open-connector-framework/docs/concepts/connector.md)) that access data-related assets.
-OCF connectors also provide detailed metadata about the assets they access.
+(called [connectors](https://egeria-project.org/concepts/connector/)) that access real-world
+[digital resources](https://egeria-project.org/concepts/resource).
+OCF connectors also provide detailed metadata about the resources they access.
+
+* **[open-integration-framework](open-integration-framework)** - provides the interfaces and services for
+[integration connectors](https://egeria-project.org/concepts/integration-connector/).
 
 * **[Governance Action Framework (GAF)](governance-action-framework)** provides the interfaces and base implementations for components
 (called governance action services) that take action to assess and correct a situation that is harmful to the data,
@@ -30,12 +34,10 @@ about the data that can be stored in an open metadata repository.
   (called survey action services) that survey and extract characteristics
   about the real-world resources and stores them in an open metadata repository.
 
-* **[Event Action Framework (EAF)](event-action-framework)** provides the interfaces and base implementations for components
-  (called survey action services) that survey and extract characteristics
-  about the real-world resources and stores them in an open metadata repository.
+* **[Event Action Framework (EAF)](context-event-framework)** provides the interfaces and base implementations for components
+  (called event action services) that manage context events and time-based services.
 
-**Note:** The survey services, discovery services and the governance actions are specialized OCF connectors, making the OCF the
-**only** plug-in mechanism in the open metadata and governance technology.
+
 
 ----
 Return to [open-metadata-implementation](..).

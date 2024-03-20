@@ -43,7 +43,7 @@ public class ConfigPropertiesResource
      */
     @GetMapping(path = "/server-type-classification")
 
-    @Operation(summary="getServerClassification",
+    @Operation(summary="getServerTypeClassification",
                description="Return the derived server type that is created from the classification of the server configuration.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/omag-server/#types-of-omag-server"))
@@ -74,6 +74,7 @@ public class ConfigPropertiesResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/omag-server/#types-of-omag-server"))
 
+    @Deprecated
     public VoidResponse setServerType(@PathVariable String userId,
                                       @PathVariable String serverName,
                                       @RequestParam String typeName)
@@ -231,7 +232,7 @@ public class ConfigPropertiesResource
 
     public VoidResponse setBasicServerProperties(@PathVariable String                      userId,
                                                  @PathVariable String                      serverName,
-                                                 @RequestBody ServerPropertiesRequestBody requestBody)
+                                                 @RequestBody  ServerPropertiesRequestBody requestBody)
     {
         return adminAPI.setBasicServerProperties(userId, serverName, requestBody);
     }

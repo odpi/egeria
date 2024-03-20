@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adminservices.server;
 
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistrationEntry;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
 import org.odpi.openmetadata.adminservices.registration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
@@ -20,6 +21,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.StringMapResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSConfigurationFactory;
@@ -94,18 +96,16 @@ public class OMAGServerAdminForAccessServices
                 {
                     if (accessServiceConfig != null)
                     {
-                        if (accessServiceConfig.getAccessServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
-                        {
-                            RegisteredOMAGService service = new RegisteredOMAGService();
+                        RegisteredOMAGService service = new RegisteredOMAGService();
 
-                            service.setServiceId(accessServiceConfig.getAccessServiceId());
-                            service.setServiceName(accessServiceConfig.getAccessServiceFullName());
-                            service.setServiceDevelopmentStatus(accessServiceConfig.getAccessServiceDevelopmentStatus());
-                            service.setServiceDescription(accessServiceConfig.getAccessServiceDescription());
-                            service.setServiceURLMarker(accessServiceConfig.getAccessServiceURLMarker());
-                            service.setServiceWiki(accessServiceConfig.getAccessServiceWiki());
-                            services.add(service);
-                        }
+                        service.setServiceId(accessServiceConfig.getAccessServiceId());
+                        service.setServiceName(accessServiceConfig.getAccessServiceFullName());
+                        service.setServiceDevelopmentStatus(accessServiceConfig.getAccessServiceDevelopmentStatus());
+                        service.setServiceDescription(accessServiceConfig.getAccessServiceDescription());
+                        service.setServiceURLMarker(accessServiceConfig.getAccessServiceURLMarker());
+                        service.setServiceWiki(accessServiceConfig.getAccessServiceWiki());
+                        service.setServerType(ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName());
+                        services.add(service);
                     }
                 }
                 if (!services.isEmpty())
@@ -324,7 +324,7 @@ public class OMAGServerAdminForAccessServices
                 {
                     if (registration != null)
                     {
-                        if (registration.getAccessServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
+                        if (registration.getAccessServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
                         {
                             accessServiceConfigList.add(createAccessServiceConfig(registration,
                                                                                   accessServiceOptions,
@@ -482,7 +482,7 @@ public class OMAGServerAdminForAccessServices
                                                            String              serverName,
                                                            Map<String, Object> accessServiceOptions)
     {
-        final String methodName = "configureAllAccessServices";
+        final String methodName = "configureAllAccessServicesNoTopics";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -515,7 +515,7 @@ public class OMAGServerAdminForAccessServices
                 {
                     if (registration != null)
                     {
-                        if (registration.getAccessServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
+                        if (registration.getAccessServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
                         {
                             accessServiceConfigList.add(createAccessServiceConfig(registration,
                                                                                   accessServiceOptions,
@@ -1351,11 +1351,11 @@ public class OMAGServerAdminForAccessServices
 
             if (enterpriseAccessConfig == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for enterprise repository services (used by access services).");
+                configAuditTrail.add(new Date() + " " + userId + " removed configuration for enterprise repository services (used by access services).");
             }
             else
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for enterprise repository services (used by access services).");
+                configAuditTrail.add(new Date() + " " + userId + " updated configuration for enterprise repository services (used by access services).");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);

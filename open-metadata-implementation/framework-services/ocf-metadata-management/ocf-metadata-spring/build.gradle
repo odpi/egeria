@@ -8,6 +8,7 @@ dependencies {
     implementation project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-server')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-api')
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation 'org.springframework:spring-web'
     implementation 'io.swagger.core.v3:swagger-annotations'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'

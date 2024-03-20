@@ -56,7 +56,7 @@ public class MetadataElementBuilder extends OpenMetadataAPIGenericBuilder
               serviceName,
               serverName);
 
-       this.propertyMap = propertyMap;
+        this.propertyMap = propertyMap;
     }
 
 

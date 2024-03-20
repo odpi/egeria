@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices.configuration.registration;
 
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -11,7 +12,8 @@ import java.io.Serializable;
  */
 public class ViewServiceRegistrationEntry implements Serializable
 {
-    private static final long     serialVersionUID    = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private int                            viewServiceCode;
     private ComponentDevelopmentStatus     viewServiceDevelopmentStatus;
@@ -20,6 +22,7 @@ public class ViewServiceRegistrationEntry implements Serializable
     private String                         viewServiceURLMarker;
     private String                         viewServiceDescription;
     private String                         viewServiceWiki;
+    private String                         viewServicePartnerService;
     private ServiceOperationalStatus       viewServiceOperationalStatus;
     private String                         viewServiceAdminClassName;
 
@@ -33,6 +36,7 @@ public class ViewServiceRegistrationEntry implements Serializable
      * @param viewServiceURLMarker name of the part of the URL that is the name of the view service
      * @param viewServiceDescription short description for this view service
      * @param viewServiceWiki wiki page for the view service for this view service
+     * @param viewServicePartnerService service that is called
      * @param viewServiceOperationalStatus default initial operational status for the view service
      * @param viewServiceAdminClassName  name of ViewServiceAdmin implementation class for the view service
      */
@@ -43,6 +47,7 @@ public class ViewServiceRegistrationEntry implements Serializable
                                         String                         viewServiceURLMarker,
                                         String                         viewServiceDescription,
                                         String                         viewServiceWiki,
+                                        String                         viewServicePartnerService,
                                         ServiceOperationalStatus       viewServiceOperationalStatus,
                                         String                         viewServiceAdminClassName)
     {
@@ -53,6 +58,7 @@ public class ViewServiceRegistrationEntry implements Serializable
         this.viewServiceURLMarker = viewServiceURLMarker;
         this.viewServiceDescription = viewServiceDescription;
         this.viewServiceWiki = viewServiceWiki;
+        this.viewServicePartnerService = viewServicePartnerService;
         this.viewServiceOperationalStatus = viewServiceOperationalStatus;
         this.viewServiceAdminClassName = viewServiceAdminClassName;
     }
@@ -76,6 +82,7 @@ public class ViewServiceRegistrationEntry implements Serializable
              viewServiceDescription.getViewServiceURLMarker(),
              viewServiceDescription.getViewServiceDescription(),
              viewServiceDescription.getViewServiceWiki(),
+             viewServiceDescription.getViewServicePartnerService(),
              viewServiceOperationalStatus,
              viewServiceAdminClassName);
     }
@@ -247,6 +254,28 @@ public class ViewServiceRegistrationEntry implements Serializable
 
 
     /**
+     * Return the full name of the service (typically Open Metadata Access Service (OMAS)) that this view service is partnered with.
+     *
+     * @return Full name of OMAS
+     */
+    public String getViewServicePartnerService()
+    {
+        return viewServicePartnerService;
+    }
+
+
+    /**
+     * Set up the full name of the service (typically Open Metadata Access Service (OMAS)) that this view service is partnered with.
+     *
+     * @param viewServicePartnerService Full name of OMAS
+     */
+    public void setViewServicePartnerService(String viewServicePartnerService)
+    {
+        this.viewServicePartnerService = viewServicePartnerService;
+    }
+
+
+    /**
      * Return the initial operational status for this view service.
      *
      * @return ServiceOperationalStatus enum
@@ -289,5 +318,4 @@ public class ViewServiceRegistrationEntry implements Serializable
     {
         this.viewServiceAdminClassName = viewServiceAdminClassName;
     }
-
 }

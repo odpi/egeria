@@ -8,7 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 
-import java.io.Serial;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -25,9 +26,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CatalogTarget
 {
-    private String      relationshipGUID     = null;
-    private String      catalogTargetName    = null;
-    private ElementStub catalogTargetElement = null;
+    private String              relationshipGUID        = null;
+    private String              catalogTargetName       = null;
+    private Map<String, Object> configurationProperties = null;
+    private ElementStub         catalogTargetElement    = null;
 
 
     /**
@@ -50,6 +52,7 @@ public class CatalogTarget
         {
             relationshipGUID = template.getRelationshipGUID();
             catalogTargetName = template.getCatalogTargetName();
+            configurationProperties = template.getConfigurationProperties();
             catalogTargetElement = template.getCatalogTargetElement();
         }
     }
@@ -98,6 +101,40 @@ public class CatalogTarget
         this.catalogTargetName = catalogTargetName;
     }
 
+    /**
+     * Set up the configuration properties for this action target.  These are used to override the configuration
+     * properties in the integration connector's connection whenever it is processing this action target.
+     *
+     * @param configurationProperties properties typically controlling the behaviour for the integration connector.
+     */
+    public void setConfigurationProperties(Map<String, Object> configurationProperties)
+    {
+        this.configurationProperties = configurationProperties;
+    }
+
+
+    /**
+     * Return a copy of the configuration properties.  These are used to override the configuration
+     * properties in the integration connector's connection whenever it is processing this action target.
+     *
+     * @return configuration properties typically controlling the behaviour for the integration connector.
+     */
+    public Map<String, Object> getConfigurationProperties()
+    {
+        if (configurationProperties == null)
+        {
+            return null;
+        }
+        else if (configurationProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(configurationProperties);
+        }
+    }
+
 
     /**
      * Return details of the catalog target element.  This is extracted from the entity proxy so the classification list may not be complete.
@@ -130,10 +167,11 @@ public class CatalogTarget
     public String toString()
     {
         return "CatalogTarget{" +
-                       "relationshipGUID='" + relationshipGUID + '\'' +
-                       ", catalogTargetName='" + catalogTargetName + '\'' +
-                       ", catalogTargetElement=" + catalogTargetElement +
-                       '}';
+                "relationshipGUID='" + relationshipGUID + '\'' +
+                ", catalogTargetName='" + catalogTargetName + '\'' +
+                ", configurationProperties='" + configurationProperties + '\'' +
+                ", catalogTargetElement=" + catalogTargetElement +
+                '}';
     }
 
 
@@ -155,8 +193,9 @@ public class CatalogTarget
             return false;
         }
         return Objects.equals(relationshipGUID, that.relationshipGUID) &&
-                       Objects.equals(catalogTargetName, that.catalogTargetName) &&
-                       Objects.equals(catalogTargetElement, that.catalogTargetElement);
+                Objects.equals(catalogTargetName, that.catalogTargetName) &&
+                Objects.equals(configurationProperties, that.configurationProperties) &&
+                Objects.equals(catalogTargetElement, that.catalogTargetElement);
     }
 
 
@@ -168,6 +207,6 @@ public class CatalogTarget
     @Override
     public int hashCode()
     {
-        return Objects.hash(relationshipGUID, catalogTargetName, catalogTargetElement);
+        return Objects.hash(relationshipGUID, catalogTargetName, configurationProperties, catalogTargetElement);
     }
 }

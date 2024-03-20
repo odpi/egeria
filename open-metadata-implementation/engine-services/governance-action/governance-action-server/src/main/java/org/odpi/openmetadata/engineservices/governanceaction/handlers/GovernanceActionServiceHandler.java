@@ -2,9 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.governanceaction.handlers;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceengine.client.OpenMetadataStoreClient;
-import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceEngineProperties;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActionErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActionAuditCode;
@@ -13,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.governanceaction.*;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceEngineProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceHandler;
 
@@ -42,6 +42,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
      * @param engineActionClient client for managing engine actions
      * @param serviceRequestType incoming request
      * @param requestParameters parameters associated with the request type
+     * @param requesterUserId original user requesting this governance service
      * @param requestSourceElements the elements that caused this service to run
      * @param actionTargetElements the elements for the service to work on
      * @param governanceActionServiceGUID unique identifier of entity defining this governance service
@@ -49,6 +50,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
      * @param governanceActionServiceConnector connector that does the work
      * @param partnerServerName name of the metadata server used by the governance service
      * @param partnerServerPlatformURLRoot location of the metadata server used by the governance service
+     * @param startDate date/time that the governance service should start executing
      * @param auditLog destination for log messages
      * @throws InvalidParameterException problem with the governance service definitions
      */
@@ -59,6 +61,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                    GovernanceContextClient    engineActionClient,
                                    String                     serviceRequestType,
                                    Map<String, String>        requestParameters,
+                                   String                     requesterUserId,
                                    List<RequestSourceElement> requestSourceElements,
                                    List<ActionTargetElement>  actionTargetElements,
                                    String                     governanceActionServiceGUID,
@@ -67,6 +70,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                    String                     partnerServerName,
                                    String                     partnerServerPlatformURLRoot,
                                    GovernanceContextClient    governanceContextClient,
+                                   Date                       startDate,
                                    AuditLog                   auditLog) throws InvalidParameterException
     {
         super(governanceActionEngineProperties,
@@ -78,6 +82,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
               governanceActionServiceGUID,
               governanceActionServiceName,
               governanceActionServiceConnector,
+              startDate,
               auditLog);
 
         final String actionDescription = "Initializing GeneralGovernanceActionService";
@@ -100,6 +105,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                                                               engineActionGUID,
                                                                               serviceRequestType,
                                                                               requestParameters,
+                                                                              requesterUserId,
                                                                               requestSourceElements,
                                                                               actionTargetElements,
                                                                               openMetadataClient,
@@ -208,10 +214,12 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
         Date startTime;
         Date endTime;
 
-        final String actionDescription = "Run governance service";
+        final String actionDescription = "Run governance action service";
 
         try
         {
+            super.waitForStartDate(engineHostUserId);
+
             auditLog.logMessage(actionDescription,
                                 GovernanceActionAuditCode.GOVERNANCE_ACTION_SERVICE_STARTING.getMessageDefinition(governanceActionServiceType,
                                                                                                                   governanceServiceName,

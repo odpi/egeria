@@ -36,7 +36,6 @@ public class BigGlossaryArchiveBuilder
     /*
      * Names for glossary terms
      */
-    private static final String glossaryTermPrefix = "Term";
     private static final String glossaryTermSummaryPrefix = "Summary of glossary term: ";
     private static final String glossaryTermDescriptionPrefix = "Description of glossary term: ";
 
@@ -108,9 +107,9 @@ public class BigGlossaryArchiveBuilder
                                                         null,
                                                         null);
 
-        for (int i=1; i<10001 ; i++)
+        for (int i=1; i<3001 ; i++)
         {
-            String glossaryTermName = MessageFormat.format("Term{1, number,000000}", glossaryTermPrefix, i);
+            String glossaryTermName = "Glossary:" + glossaryIdentifier + ":" + MessageFormat.format("Term{0, number,000000}", i);
 
             System.out.println("Adding glossary term: " + glossaryTermName);
 

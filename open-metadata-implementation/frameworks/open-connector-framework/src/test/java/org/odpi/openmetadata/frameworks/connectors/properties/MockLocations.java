@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Location;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,11 @@ import java.util.List;
  */
 public class MockLocations extends Locations
 {
-    private static final long     serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    int totalElementCount = 0;
+
 
     /**
      * Typical Constructor creates an iterator with the supplied list of elements.
@@ -26,7 +31,9 @@ public class MockLocations extends Locations
     public MockLocations(int             totalElementCount,
                          int             maxCacheSize)
     {
-        super( totalElementCount, maxCacheSize);
+        super(maxCacheSize);
+
+        this.totalElementCount = totalElementCount;
     }
 
 
@@ -35,9 +42,11 @@ public class MockLocations extends Locations
      *
      * @param template - type-specific iterator to copy; null to create an empty iterator
      */
-    public MockLocations(Locations template)
+    public MockLocations(MockLocations template)
     {
         super(template);
+
+        this.totalElementCount = template.totalElementCount;
     }
 
 
@@ -65,13 +74,18 @@ public class MockLocations extends Locations
         int                            numberOfEntries;
         List<ElementBase>        propertyList = new ArrayList<>();
 
-        if (cacheStartPointer + maximumSize > super.pagingIterator.getElementCount())
+        if (cacheStartPointer + maximumSize > totalElementCount)
         {
-            numberOfEntries = super.pagingIterator.getElementCount() - cacheStartPointer;
+            numberOfEntries = totalElementCount - cacheStartPointer;
         }
         else
         {
             numberOfEntries = maximumSize;
+        }
+
+        if (numberOfEntries <= 0)
+        {
+            return null;
         }
 
         for (int i=0; i< numberOfEntries ; i++)

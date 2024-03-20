@@ -173,7 +173,10 @@ public class OrganizationIntegratorContextManager extends IntegrationContextMana
                                                                                                                     permittedSynchronizationName,
                                                                                                                     serviceOptionsString));
 
-            String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName, null, null);
+            String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName,
+                                                                 null,
+                                                                 null,
+                                                                 null);
             String externalSourceName = metadataSourceQualifiedName;
 
             if (externalSourceGUID == null)

@@ -70,7 +70,7 @@ public class HandlerHelper {
      * @param invalidParameterHandler    handler for invalid parameters
      * @param repositoryHelper           helper used by the converters
      * @param genericHandler             handler for calling the repository services
-     * @param converter                  converter used for creating entities in Open Lineage format
+     * @param converter                  converter used for creating entities in Lineage Warehouse format
      * @param assetLineageTypesValidator service for validating types
      * @param clockService               clock service
      */

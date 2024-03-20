@@ -18,8 +18,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DatabaseManagerProperties extends SoftwareCapabilitiesProperties
 {
-    private static final long serialVersionUID = 1L;
-
     /**
      * Default constructor
      */
@@ -51,7 +49,7 @@ public class DatabaseManagerProperties extends SoftwareCapabilitiesProperties
         return "DatabaseManagerProperties{" +
                 "displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
-                ", typeDescription='" + getTypeDescription() + '\'' +
+                ", typeDescription='" + getDeployedImplementationType() + '\'' +
                 ", version='" + getVersion() + '\'' +
                 ", patchLevel='" + getPatchLevel() + '\'' +
                 ", source='" + getSource() + '\'' +

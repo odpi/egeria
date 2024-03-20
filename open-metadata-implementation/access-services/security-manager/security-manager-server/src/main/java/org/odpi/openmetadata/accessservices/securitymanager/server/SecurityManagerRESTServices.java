@@ -160,7 +160,7 @@ public class SecurityManagerRESTServices
                                                                   requestBody.getQualifiedName(),
                                                                   requestBody.getDisplayName(),
                                                                   requestBody.getDescription(),
-                                                                  requestBody.getTypeDescription(),
+                                                                  requestBody.getDeployedImplementationType(),
                                                                   requestBody.getVersion(),
                                                                   requestBody.getPatchLevel(),
                                                                   requestBody.getSource(),

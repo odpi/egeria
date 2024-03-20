@@ -5813,7 +5813,7 @@ public class OpenMetadataTypesArchive1_2
         this.archiveBuilder.addEntityDef(getToDoEntity());
 
         this.archiveBuilder.addRelationshipDef(getToDoSourceRelationship());
-        this.archiveBuilder.addRelationshipDef(getActionsRelationship());
+        this.archiveBuilder.addRelationshipDef(getActionSponsorRelationship());
         this.archiveBuilder.addRelationshipDef(getActionAssignment());
     }
 
@@ -5842,7 +5842,7 @@ public class OpenMetadataTypesArchive1_2
         elementDefs.add(elementDef);
 
         final int    element2Ordinal         = 1;
-        final String element2Value           = "InProgress";
+        final String element2Value           = "In Progress";
         final String element2Description     = "Work is underway to complete the action.";
         final String element2DescriptionGUID = null;
 
@@ -6025,11 +6025,11 @@ public class OpenMetadataTypesArchive1_2
     }
 
 
-    private RelationshipDef getActionsRelationship()
+    private RelationshipDef getActionSponsorRelationship()
     {
         final String guid            = "aca1277b-bf1c-42f5-9b3b-fbc2c9047325";
-        final String name            = "Actions";
-        final String description     = "An action to change or support a specific rule, project, deliverable, situation or plan of action.";
+        final String name            = "ActionSponsor";
+        final String description     = "Identifies the sponsor that requires the action (ToDo) to be completed.";
         final String descriptionGUID = null;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
@@ -6047,8 +6047,8 @@ public class OpenMetadataTypesArchive1_2
          * Set up end 1.
          */
         final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
-        final String                     end1AttributeName            = "toDoCause";
-        final String                     end1AttributeDescription     = "Rule or meeting that is driving the need for the to do.";
+        final String                     end1AttributeName            = "toDoSponsor";
+        final String                     end1AttributeDescription     = "Element such as person, team, rule, incident, project, that is driving the need for the action.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -6064,8 +6064,8 @@ public class OpenMetadataTypesArchive1_2
          * Set up end 2.
          */
         final String                     end2EntityType               = "ToDo";
-        final String                     end2AttributeName            = "relatedActions";
-        final String                     end2AttributeDescription     = "Potentially impacting requests for change.";
+        final String                     end2AttributeName            = "trackedActions";
+        final String                     end2AttributeDescription     = "Actions that need to be completed.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -7681,7 +7681,7 @@ public class OpenMetadataTypesArchive1_2
         final String attribute3Description     = "Private properties accessible only to the connector.";
         final String attribute3DescriptionGUID = null;
         final String attribute4Name            = "configurationProperties";
-        final String attribute4Description     = "Specific configuration properties for the underlying technology.";
+        final String attribute4Description     = "Specific configuration properties used to configure the behaviour of the connector.";
         final String attribute4DescriptionGUID = null;
         final String attribute5Name            = "userId";
         final String attribute5Description     = "User identity that the connector should use.";
@@ -22347,7 +22347,7 @@ public class OpenMetadataTypesArchive1_2
         this.add0635ClassificationDiscovery();
         this.add0640QualityScores();
         this.add0650RelationshipDiscovery();
-        this.add0660DataSourceMeasurements();
+        this.add0660ResourceMeasures();
         this.add0690RequestForAction();
 
     }
@@ -23219,7 +23219,7 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.SCHEMA_NAME.name();
+        final String attribute1Name            = OpenMetadataProperty.SCHEMA_NAME.name;
         final String attribute1Description     = OpenMetadataProperty.SCHEMA_NAME.description;
         final String attribute1DescriptionGUID = OpenMetadataProperty.SCHEMA_NAME.descriptionGUID;
         final String attribute2Name            = OpenMetadataProperty.SCHEMA_TYPE.name;
@@ -23753,20 +23753,20 @@ public class OpenMetadataTypesArchive1_2
     private void add0620DataProfiling()
     {
         this.archiveBuilder.addEntityDef(getDataProfileAnnotationEntity());
-        this.archiveBuilder.addEntityDef(getDataProfileLogAnnotationEntity());
+        this.archiveBuilder.addEntityDef(getResourceProfileLogAnnotationEntity());
 
-        this.archiveBuilder.addRelationshipDef(getDataProfileLogFileRelationship());
+        this.archiveBuilder.addRelationshipDef(getResourceProfileLogFileRelationship());
 
     }
 
 
     private EntityDef getDataProfileAnnotationEntity()
     {
-        final String guid            = OpenMetadataType.DATA_PROFILE_ANNOTATION.typeGUID;
-        final String name            = OpenMetadataType.DATA_PROFILE_ANNOTATION.typeName;
-        final String description     = OpenMetadataType.DATA_PROFILE_ANNOTATION.description;
-        final String descriptionGUID = OpenMetadataType.DATA_PROFILE_ANNOTATION.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.DATA_PROFILE_ANNOTATION.wikiURL;
+        final String guid            = OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeGUID;
+        final String name            = OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName;
+        final String description     = OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.description;
+        final String descriptionGUID = OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.wikiURL;
 
         final String superTypeName = OpenMetadataType.DATA_FIELD_ANNOTATION.typeName;
 
@@ -23888,13 +23888,13 @@ public class OpenMetadataTypesArchive1_2
     }
 
 
-    private EntityDef getDataProfileLogAnnotationEntity()
+    private EntityDef getResourceProfileLogAnnotationEntity()
     {
-        final String guid            = OpenMetadataType.DATA_PROFILE_LOG_ANNOTATION.typeGUID;
-        final String name            = OpenMetadataType.DATA_PROFILE_LOG_ANNOTATION.typeName;
-        final String description     = OpenMetadataType.DATA_PROFILE_LOG_ANNOTATION.description;
-        final String descriptionGUID = OpenMetadataType.DATA_PROFILE_LOG_ANNOTATION.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.DATA_PROFILE_LOG_ANNOTATION.wikiURL;
+        final String guid            = OpenMetadataType.RESOURCE_PROFILE_LOG_ANNOTATION.typeGUID;
+        final String name            = OpenMetadataType.RESOURCE_PROFILE_LOG_ANNOTATION.typeName;
+        final String description     = OpenMetadataType.RESOURCE_PROFILE_LOG_ANNOTATION.description;
+        final String descriptionGUID = OpenMetadataType.RESOURCE_PROFILE_LOG_ANNOTATION.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.RESOURCE_PROFILE_LOG_ANNOTATION.wikiURL;
 
         final String superTypeName = OpenMetadataType.DATA_FIELD_ANNOTATION.typeName;
 
@@ -23907,13 +23907,13 @@ public class OpenMetadataTypesArchive1_2
     }
 
 
-    private RelationshipDef getDataProfileLogFileRelationship()
+    private RelationshipDef getResourceProfileLogFileRelationship()
     {
-        final String guid            = OpenMetadataType.DATA_PROFILE_LOG_FILE_RELATIONSHIP.typeGUID;
-        final String name            = OpenMetadataType.DATA_PROFILE_LOG_FILE_RELATIONSHIP.typeName;
-        final String description     = OpenMetadataType.DATA_PROFILE_LOG_FILE_RELATIONSHIP.description;
-        final String descriptionGUID = OpenMetadataType.DATA_PROFILE_LOG_FILE_RELATIONSHIP.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.DATA_PROFILE_LOG_FILE_RELATIONSHIP.wikiURL;
+        final String guid            = OpenMetadataType.RESOURCE_PROFILE_DATA_RELATIONSHIP.typeGUID;
+        final String name            = OpenMetadataType.RESOURCE_PROFILE_DATA_RELATIONSHIP.typeName;
+        final String description     = OpenMetadataType.RESOURCE_PROFILE_DATA_RELATIONSHIP.description;
+        final String descriptionGUID = OpenMetadataType.RESOURCE_PROFILE_DATA_RELATIONSHIP.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.RESOURCE_PROFILE_DATA_RELATIONSHIP.wikiURL;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
@@ -23930,8 +23930,8 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = OpenMetadataType.DATA_PROFILE_LOG_ANNOTATION.typeName;
-        final String                     end1AttributeName            = "dataProfileAnnotations";
+        final String                     end1EntityType               = OpenMetadataType.RESOURCE_PROFILE_LOG_ANNOTATION.typeName;
+        final String                     end1AttributeName            = "resourceProfileAnnotations";
         final String                     end1AttributeDescription     = "The annotations that refer to this log file.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
@@ -23947,9 +23947,9 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.LOG_FILE_TYPE_NAME;
-        final String                     end2AttributeName            = "dataProfileLogFiles";
-        final String                     end2AttributeDescription     = "Location of the data profile information.";
+        final String                     end2EntityType               = OpenMetadataType.ASSET.typeName;
+        final String                     end2AttributeName            = "resourceProfileLogs";
+        final String                     end2AttributeDescription     = "Location of the profile information.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -24420,20 +24420,21 @@ public class OpenMetadataTypesArchive1_2
      * 0660 Data Source Measurements describe annotations that are measuring characteristics of a data source.
      * This may be a DataSet, DataFeed or DataSource.
      */
-    private void add0660DataSourceMeasurements()
+    private void add0660ResourceMeasures()
     {
-        this.archiveBuilder.addEntityDef(getDataSourceMeasurementAnnotationEntity());
+        this.archiveBuilder.addEntityDef(getResourceMeasureAnnotationEntity());
         this.archiveBuilder.addEntityDef(getDataSourcePhysicalStatusAnnotationEntity());
     }
 
 
-    private EntityDef getDataSourceMeasurementAnnotationEntity()
+    private EntityDef getResourceMeasureAnnotationEntity()
     {
-        final String guid = "c85bea73-d7af-46d7-8a7e-cb745910b1df";
+        final String guid = OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeGUID;
 
-        final String name            = "DataSourceMeasurementAnnotation";
-        final String description     = "A summary set of measurements for an Asset.";
-        final String descriptionGUID = null;
+        final String name            = OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName;
+        final String description     = OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.description;
+        final String descriptionGUID = OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.wikiURL;
 
         final String superTypeName = OpenMetadataType.ANNOTATION.typeName;
 
@@ -24441,7 +24442,8 @@ public class OpenMetadataTypesArchive1_2
                                                                 name,
                                                                 this.archiveBuilder.getEntityDef(superTypeName),
                                                                 description,
-                                                                descriptionGUID);
+                                                                descriptionGUID,
+                                                                descriptionWiki);
 
         /*
          * Build the attributes
@@ -24449,9 +24451,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.DATA_SOURCE_PROPERTIES.name;
-        final String attribute1Description     = OpenMetadataProperty.DATA_SOURCE_PROPERTIES.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.DATA_SOURCE_PROPERTIES.descriptionGUID;
+        final String attribute1Name            = OpenMetadataProperty.RESOURCE_PROPERTIES.name;
+        final String attribute1Description     = OpenMetadataProperty.RESOURCE_PROPERTIES.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.RESOURCE_PROPERTIES.descriptionGUID;
 
         property = archiveHelper.getMapStringStringTypeDefAttribute(attribute1Name,
                                                                     attribute1Description,
@@ -24466,31 +24468,33 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getDataSourcePhysicalStatusAnnotationEntity()
     {
-        final String guid = "e9ba276e-6d9f-4999-a5a9-9ddaaabfae23";
+        final String guid = OpenMetadataType.RESOURCE_PHYSICAL_STATUS_ANNOTATION.typeGUID;
 
-        final String name            = "DataSourcePhysicalStatusAnnotation";
-        final String description     = "A set of summary properties about the physical status of an Asset.";
-        final String descriptionGUID = null;
+        final String name            = OpenMetadataType.RESOURCE_PHYSICAL_STATUS_ANNOTATION.typeName;
+        final String description     = OpenMetadataType.RESOURCE_PHYSICAL_STATUS_ANNOTATION.description;
+        final String descriptionGUID = OpenMetadataType.RESOURCE_PHYSICAL_STATUS_ANNOTATION.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.RESOURCE_PHYSICAL_STATUS_ANNOTATION.wikiURL;
 
-        final String superTypeName = "DataSourceMeasurementAnnotation";
+        final String superTypeName = OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
                                                                 this.archiveBuilder.getEntityDef(superTypeName),
                                                                 description,
-                                                                descriptionGUID);
+                                                                descriptionGUID,
+                                                                descriptionWiki);
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.SOURCE_CREATE_TIME.name;
-        final String attribute1Description     = OpenMetadataProperty.SOURCE_CREATE_TIME.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.SOURCE_CREATE_TIME.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.SOURCE_UPDATE_TIME.name;
-        final String attribute2Description     = OpenMetadataProperty.SOURCE_UPDATE_TIME.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.SOURCE_UPDATE_TIME.descriptionGUID;
+        final String attribute1Name            = OpenMetadataProperty.RESOURCE_CREATE_TIME.name;
+        final String attribute1Description     = OpenMetadataProperty.RESOURCE_CREATE_TIME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.RESOURCE_CREATE_TIME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.RESOURCE_UPDATE_TIME.name;
+        final String attribute2Description     = OpenMetadataProperty.RESOURCE_UPDATE_TIME.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.RESOURCE_UPDATE_TIME.descriptionGUID;
         final String attribute3Name            = OpenMetadataProperty.SIZE.name;
         final String attribute3Description     = OpenMetadataProperty.SIZE.description;
         final String attribute3DescriptionGUID = OpenMetadataProperty.SIZE.descriptionGUID;
@@ -24506,9 +24510,9 @@ public class OpenMetadataTypesArchive1_2
                                                          attribute2Description,
                                                          attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(attribute3Name,
-                                                        attribute3Description,
-                                                        attribute3DescriptionGUID);
+        property = archiveHelper.getLongTypeDefAttribute(attribute3Name,
+                                                         attribute3Description,
+                                                         attribute3DescriptionGUID);
         properties.add(property);
         property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
                                                            attribute4Description,
@@ -24537,11 +24541,12 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getRequestForActionAnnotationEntity()
     {
-        final String guid = "f45765a9-f3ae-4686-983f-602c348e020d";
+        final String guid = OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.typeGUID;
 
-        final String name            = "RequestForAction";
-        final String description     = "A request for a stewardship action to be initiated against an Asset.";
-        final String descriptionGUID = null;
+        final String name            = OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.typeName;
+        final String description     = OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.description;
+        final String descriptionGUID = OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.descriptionGUID;
+        final String wikiURL         = OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.wikiURL;
 
         final String superTypeName = OpenMetadataType.DATA_FIELD_ANNOTATION.typeName;
 
@@ -24549,7 +24554,8 @@ public class OpenMetadataTypesArchive1_2
                                                                 name,
                                                                 this.archiveBuilder.getEntityDef(superTypeName),
                                                                 description,
-                                                                descriptionGUID);
+                                                                descriptionGUID,
+                                                                wikiURL);
 
         /*
          * Build the attributes

@@ -8,7 +8,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,12 +15,11 @@ import java.util.Map;
  */
 public class GovernanceActionProcessStepBuilder extends ReferenceableBuilder
 {
-    private final int          domainIdentifier;
-    private final String       displayName;
-    private final String       description;
-    private final List<String> supportedGuards;
-    private final boolean      ignoreMultipleTriggers;
-    private final int          waitTime;
+    private final int                 domainIdentifier;
+    private final String              displayName;
+    private final String              description;
+    private final boolean             ignoreMultipleTriggers;
+    private final int                 waitTime;
 
     /**
      * Create constructor
@@ -30,7 +28,6 @@ public class GovernanceActionProcessStepBuilder extends ReferenceableBuilder
      * @param domainIdentifier governance domain for this governance action
      * @param displayName short display name for the governance action
      * @param description description of the governance action
-     * @param supportedGuards list of guards that triggered this governance action
      * @param ignoreMultipleTriggers prevent multiple instances of the next step to run (or not)
      * @param waitTime minimum number of minutes to wait before running the governance action
      * @param additionalProperties additional properties for a governance action
@@ -42,7 +39,6 @@ public class GovernanceActionProcessStepBuilder extends ReferenceableBuilder
                                        int                  domainIdentifier,
                                        String               displayName,
                                        String               description,
-                                       List<String>         supportedGuards,
                                        boolean              ignoreMultipleTriggers,
                                        int                  waitTime,
                                        Map<String, String>  additionalProperties,
@@ -59,12 +55,11 @@ public class GovernanceActionProcessStepBuilder extends ReferenceableBuilder
               serviceName,
               serverName);
 
-        this.domainIdentifier = domainIdentifier;
-        this.displayName = displayName;
-        this.description = description;
-        this.supportedGuards = supportedGuards;
+        this.domainIdentifier       = domainIdentifier;
+        this.displayName            = displayName;
+        this.description            = description;
         this.ignoreMultipleTriggers = ignoreMultipleTriggers;
-        this.waitTime = waitTime;
+        this.waitTime               = waitTime;
     }
 
 
@@ -96,12 +91,6 @@ public class GovernanceActionProcessStepBuilder extends ReferenceableBuilder
                                                                   OpenMetadataProperty.DESCRIPTION.name,
                                                                   description,
                                                                   methodName);
-
-        properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                                       properties,
-                                                                       OpenMetadataType.PRODUCED_GUARDS_PROPERTY_NAME,
-                                                                       supportedGuards,
-                                                                       methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,

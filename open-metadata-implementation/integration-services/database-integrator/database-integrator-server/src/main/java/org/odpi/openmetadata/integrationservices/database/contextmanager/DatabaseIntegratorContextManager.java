@@ -5,7 +5,8 @@ package org.odpi.openmetadata.integrationservices.database.contextmanager;
 
 import org.odpi.openmetadata.accessservices.datamanager.client.*;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseManagerProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -32,7 +33,6 @@ public class DatabaseIntegratorContextManager extends IntegrationContextManager
     private DatabaseManagerClient   databaseManagerClient   = null;
     private ConnectionManagerClient connectionManagerClient = null;
     private ValidValueManagement    validValueManagement    = null;
-    private MetadataSourceClient    metadataSourceClient    = null;
     private DataManagerRESTClient   restClient              = null;
 
     /**
@@ -112,47 +112,6 @@ public class DatabaseIntegratorContextManager extends IntegrationContextManager
                                                         partnerOMASPlatformRootURL,
                                                         restClient,
                                                         maxPageSize);
-
-        metadataSourceClient = new MetadataSourceClient(partnerOMASServerName,
-                                                        partnerOMASPlatformRootURL,
-                                                        restClient,
-                                                        maxPageSize);
-    }
-
-
-    /**
-     * Retrieve the metadata source's unique identifier (GUID) or if it is not defined, create the software server capability
-     * for this integrator.
-     *
-     * @param metadataSourceQualifiedName unique name of the software server capability that represents this integration service
-     *
-     * @return unique identifier of the metadata source
-     *
-     * @throws InvalidParameterException one of the parameters passed (probably on initialize) is invalid
-     * @throws UserNotAuthorizedException the integration daemon's userId does not have access to the partner OMAS
-     * @throws PropertyServerException there is a problem in the remote server running the partner OMAS
-     */
-    protected String setUpMetadataSource(String   metadataSourceQualifiedName) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
-    {
-        if (metadataSourceQualifiedName != null)
-        {
-            String metadataSourceGUID = metadataSourceClient.getMetadataSourceGUID(localServerUserId, metadataSourceQualifiedName);
-
-            if (metadataSourceGUID == null)
-            {
-                DatabaseManagerProperties properties = new DatabaseManagerProperties();
-
-                properties.setQualifiedName(metadataSourceQualifiedName);
-
-                metadataSourceGUID = metadataSourceClient.createDatabaseManager(localServerUserId, null, null, properties);
-            }
-
-            return metadataSourceGUID;
-        }
-
-        return null;
     }
 
 
@@ -209,7 +168,10 @@ public class DatabaseIntegratorContextManager extends IntegrationContextManager
                                                                                                                 permittedSynchronizationName,
                                                                                                                 serviceOptionsString));
 
-            String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName);
+            String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName,
+                                                                 DeployedImplementationType.RELATIONAL_DATABASE_MANAGER.getAssociatedTypeName(),
+                                                                 DeployedImplementationType.RELATIONAL_DATABASE_MANAGER.getAssociatedClassification(),
+                                                                 DeployedImplementationType.RELATIONAL_DATABASE_MANAGER.getDeployedImplementationType());
             String externalSourceName = metadataSourceQualifiedName;
 
             if (externalSourceGUID == null)

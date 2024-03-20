@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.SchemaAttributes;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
+import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ArchiveProperties;
@@ -23,9 +24,10 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyOpenMetadataStore;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.AnnotationStatus;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.DataProfileAnnotation;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.DataSourcePhysicalStatusAnnotation;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceProfileAnnotation;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourcePhysicalStatusAnnotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.SchemaAnalysisAnnotation;
 
 import java.util.*;
@@ -173,6 +175,8 @@ public class CSVSurveyService extends AuditableSurveyService
             SurveyOpenMetadataStore  openMetadataStore = surveyContext.getOpenMetadataStore();
             SurveyAssetStore         assetStore        = surveyContext.getAssetStore();
 
+            annotationStore.setAnalysisStep(AnalysisStep.CHECK_ASSET.getName());
+
             /*
              * Before performing any real work, check the type of the asset.
              */
@@ -253,7 +257,8 @@ public class CSVSurveyService extends AuditableSurveyService
 
             CSVFileStoreConnector    assetConnector    = (CSVFileStoreConnector)connector;
 
-            int                      delimiterCount  = 0;
+            annotationStore.setAnalysisStep(AnalysisStep.SCHEMA_EXTRACTION.getName());
+
             long                     recordCount     = assetConnector.getRecordCount();
             List<String>             columnNames     = assetConnector.getColumnNames();
 
@@ -285,8 +290,10 @@ public class CSVSurveyService extends AuditableSurveyService
 
             annotationStore.addAnnotation(schemaAnnotation, schemaTypeGUID);
 
-            DataSourcePhysicalStatusAnnotation measurementAnnotation = new DataSourcePhysicalStatusAnnotation();
-            Map<String, String>                measurementProperties = new HashMap<>();
+            annotationStore.setAnalysisStep(AnalysisStep.MEASURE_RESOURCE.getName());
+
+            ResourcePhysicalStatusAnnotation measurementAnnotation = new ResourcePhysicalStatusAnnotation();
+            Map<String, String>              measurementProperties = new HashMap<>();
 
             measurementAnnotation.setAnnotationType("ExtractDataStoreProperties");
             measurementAnnotation.setSummary("Extract properties from the file.");
@@ -295,10 +302,12 @@ public class CSVSurveyService extends AuditableSurveyService
             measurementProperties.put("Record Count", Long.toString(recordCount));
 
             measurementAnnotation.setModifiedTime(assetConnector.getLastUpdateDate());
-            measurementAnnotation.setDataSourceProperties(measurementProperties);
-            measurementAnnotation.setSize(Integer.getInteger(String.valueOf(assetConnector.getFile().length())));
+            measurementAnnotation.setResourceProperties(measurementProperties);
+            measurementAnnotation.setSize(assetConnector.getFile().length());
 
             annotationStore.addAnnotation(measurementAnnotation, surveyContext.getAssetGUID());
+
+            annotationStore.setAnalysisStep(AnalysisStep.PROFILE_DATA.getName());
 
             /*
              * Perform the analysis on the store.
@@ -318,7 +327,7 @@ public class CSVSurveyService extends AuditableSurveyService
                         dataField.setDataFieldPosition(position);
                         dataField.setDataFieldName(columnName);
 
-                        DataProfileAnnotation dataProfile = dataField.getDataProfileAnnotation();
+                        ResourceProfileAnnotation dataProfile = dataField.getDataProfileAnnotation();
 
                         dataProfile.setAnnotationType("InspectDataValues");
                         dataProfile.setSummary("Iterate through values to determine values present and how often they appear.");
@@ -326,11 +335,6 @@ public class CSVSurveyService extends AuditableSurveyService
                         dataFields.put(position, dataField);
                         position++;
                     }
-                }
-
-                if (position > 0)
-                {
-                    delimiterCount = position - 1;
                 }
 
                 for (int recordNumber=0; recordNumber < recordCount ; recordNumber++)
@@ -344,8 +348,8 @@ public class CSVSurveyService extends AuditableSurveyService
 
                         for (String fieldValue : recordValues)
                         {
-                            DataField             dataField   = dataFields.get(columnPosition);
-                            DataProfileAnnotation dataProfile = dataField.getDataProfileAnnotation();
+                            DataField                 dataField   = dataFields.get(columnPosition);
+                            ResourceProfileAnnotation dataProfile = dataField.getDataProfileAnnotation();
 
                             dataField.setDataFieldType(this.getDataFieldType(dataField.getDataFieldType(), fieldValue));
 
@@ -386,7 +390,7 @@ public class CSVSurveyService extends AuditableSurveyService
                      * and lineage relationships are not lost.
                      *
                      * CSV files are positional.  They may have multiple columns with the same names,
-                     * so we can only cater for small changes to the schema, eg adding/deleting columns.
+                     * so we can only cater for small changes to the schema, such as adding/deleting columns.
                      * A comprehensive reorganization of the columns will result in a new schema.
                      */
                     int columnNumber = 0;
@@ -401,7 +405,6 @@ public class CSVSurveyService extends AuditableSurveyService
                             if (dataField.getDataFieldName().equals(schemaAttribute.getDisplayName()))
                             {
                                 dataField.setMatchingSchemaAttributeGUID(schemaAttribute.getGUID());
-                                columnNumber = i;
                                 found = true;
                                 break;
                             }
@@ -428,10 +431,11 @@ public class CSVSurveyService extends AuditableSurveyService
 
                         if (dataField.getMatchingSchemaAttributeGUID() == null)
                         {
-                            addSchemaAttributeToSchemaType(openMetadataStore,
-                                                           assetUniverse,
-                                                           schemaTypeGUID,
-                                                           dataField);
+                            String schemaAttributeGUID = addSchemaAttributeToSchemaType(openMetadataStore,
+                                                                                        assetUniverse,
+                                                                                        schemaTypeGUID,
+                                                                                        dataField);
+                            dataField.setMatchingSchemaAttributeGUID(schemaAttributeGUID);
                         }
                         else
                         {
@@ -439,6 +443,9 @@ public class CSVSurveyService extends AuditableSurveyService
                                                   dataField.getMatchingSchemaAttributeGUID(),
                                                   dataField);
                         }
+
+                        annotationStore.addAnnotation(dataField.getDataProfileAnnotation(),
+                                                      dataField.getMatchingSchemaAttributeGUID());
                     }
                 }
             }
@@ -476,8 +483,7 @@ public class CSVSurveyService extends AuditableSurveyService
         
         String schemaTypeGUID = openMetadataStore.createMetadataElementInStore(schemaType,
                                                                                ElementStatus.ACTIVE,
-                                                                               elementProperties,
-                                                                               null);
+                                                                               elementProperties);
         if (schemaTypeGUID != null)
         {
             openMetadataStore.createRelatedElementsInStore(OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
@@ -505,12 +511,12 @@ public class CSVSurveyService extends AuditableSurveyService
      * @throws PropertyServerException repository not working
      * @throws UserNotAuthorizedException insufficient security
      */
-    private String addSchemaAttributeToSchemaType(SurveyOpenMetadataStore openMetadataStore,
-                                                  AssetUniverse           assetUniverse,
-                                                  String                  schemaTypeGUID,
-                                                  DataField               dataField) throws InvalidParameterException,
-                                                                                            PropertyServerException,
-                                                                                            UserNotAuthorizedException
+    private String addSchemaAttributeToSchemaType(OpenMetadataStore openMetadataStore,
+                                                  AssetUniverse     assetUniverse,
+                                                  String            schemaTypeGUID,
+                                                  DataField         dataField) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
     {
         ElementProperties elementProperties = propertyHelper.addStringProperty(null,
                                                                                OpenMetadataProperty.QUALIFIED_NAME.name,
@@ -540,10 +546,10 @@ public class CSVSurveyService extends AuditableSurveyService
                                                               ElementStatus.ACTIVE,
                                                               initialClassifications,
                                                               assetUniverse.getGUID(),
+                                                              false,
                                                               null,
                                                               null,
                                                               elementProperties,
-                                                              null,
                                                               schemaTypeGUID,
                                                               OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                               null,
@@ -591,7 +597,6 @@ public class CSVSurveyService extends AuditableSurveyService
     }
 
 
-
     /**
      * DataField acts as a cache of information about a single column in the CSV File
      */
@@ -599,9 +604,9 @@ public class CSVSurveyService extends AuditableSurveyService
     {
         private       String                dataFieldName               = null;
         private       String                dataFieldType               = null;
-        private       int                   dataFieldPosition           = 0;
-        private final DataProfileAnnotation dataProfileAnnotation       = new DataProfileAnnotation();
-        private       String                matchingSchemaAttributeGUID = null;
+        private       int                       dataFieldPosition           = 0;
+        private final ResourceProfileAnnotation resourceProfileAnnotation   = new ResourceProfileAnnotation();
+        private       String                    matchingSchemaAttributeGUID = null;
 
 
         /**
@@ -696,9 +701,9 @@ public class CSVSurveyService extends AuditableSurveyService
          *
          * @return data profile annotation
          */
-        public DataProfileAnnotation getDataProfileAnnotation()
+        public ResourceProfileAnnotation getDataProfileAnnotation()
         {
-            return dataProfileAnnotation;
+            return resourceProfileAnnotation;
         }
     }
 

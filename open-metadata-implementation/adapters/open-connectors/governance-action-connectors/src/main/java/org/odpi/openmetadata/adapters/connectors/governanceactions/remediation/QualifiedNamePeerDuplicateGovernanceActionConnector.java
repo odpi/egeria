@@ -21,7 +21,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,8 +51,7 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
         {
             if (governanceContext.getActionTargetElements() == null)
             {
-                completionStatus = CompletionStatus.FAILED;
-                outputGuards.add(QualifiedNamePeerDuplicateGovernanceActionProvider.NO_TARGETS_DETECTED_GUARD);
+                outputGuards.add(QualifiedNamePeerDuplicateGuard.NO_TARGETS_DETECTED.getName());
             }
             else if (governanceContext.getActionTargetElements().size() == 1)
             {
@@ -61,6 +59,7 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
                 OpenMetadataElement targetElement = actionTarget.getTargetElement();
 
                 OpenMetadataStore store = governanceContext.getOpenMetadataStore();
+                store.setForDuplicateProcessing(true);
 
                 String qualifiedName = targetElement.getElementProperties().getPropertyValueMap().get(OpenMetadataProperty.QUALIFIED_NAME.name).valueAsString();
                 SearchProperties searchProperties = getSearchProperties(qualifiedName);
@@ -71,9 +70,6 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
                                                                                 null,
                                                                                 null,
                                                                                 null,
-                                                                                false,
-                                                                                true,
-                                                                                new Date(),
                                                                                 0,
                                                                                 0);
 
@@ -82,7 +78,8 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
                     String targetElementGUID = targetElement.getElementGUID();
                     if (elements.size() == 1 && elements.get(0).getElementGUID().equalsIgnoreCase(targetElementGUID))
                     {
-                        outputGuards.add(QualifiedNamePeerDuplicateGovernanceActionProvider.NO_DUPLICATION_DETECTED_GUARD);
+                        outputGuards.add(QualifiedNamePeerDuplicateGuard.NO_DUPLICATION_DETECTED.getName());
+                        completionStatus = CompletionStatus.ACTIONED;
                     }
                     for (OpenMetadataElement duplicateAsset : elements)
                     {
@@ -101,11 +98,15 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
                                                                        null,
                                                                        null,
                                                                        true);
-                        outputGuards.add(QualifiedNamePeerDuplicateGovernanceActionProvider.DUPLICATE_ASSIGNED_GUARD);
+                        outputGuards.add(QualifiedNamePeerDuplicateGuard.DUPLICATE_ASSIGNED.getName());
                         completionStatus = CompletionStatus.ACTIONED;
                         break;
                     }
                 }
+            }
+            else
+            {
+                outputGuards.add(OriginSeekerGuard.MULTIPLE_TARGETS_DETECTED.getName());
             }
 
             governanceContext.recordCompletionStatus(completionStatus, outputGuards);

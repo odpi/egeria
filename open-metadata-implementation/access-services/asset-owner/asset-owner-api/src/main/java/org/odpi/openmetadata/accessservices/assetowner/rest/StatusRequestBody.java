@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetowner.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.AnnotationStatus;
 
 import java.util.Objects;
 
@@ -81,7 +81,7 @@ public class StatusRequestBody extends AssetOwnerOMASAPIRequestBody
     @Override
     public String toString()
     {
-        return "DeleteRequestBody{" +
+        return "StatusRequestBody{" +
                 "qualifiedName='" + annotationStatus + '\'' +
                 '}';
     }

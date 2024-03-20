@@ -9,15 +9,7 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuil
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationPropagationRule;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
@@ -178,10 +170,13 @@ public class OpenMetadataTypesArchive
         update0280SoftwareArtifacts();
         update0380TermInheritance();
         update0461GovernanceEngines();
+        update0464IntegrationGroups();
         update0545ReferenceData();
+        update0462GovernanceActionTypes();
         add00475ContextEvents();
         add0603SurveyReports();
         update0615SchemaExtraction();
+        update0690RequestForAction();
         add0755UltimateSourcesDestinations();
     }
 
@@ -347,6 +342,23 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setUpdateTime(creationDate);
         typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
 
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = OpenMetadataType.LAST_REVIEW_TIME_PROPERTY_NAME;
+        final String attribute1Description     = "The Date/time that this action was reviewed.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
         return typeDefPatch;
     }
 
@@ -370,6 +382,31 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setUpdateTime(creationDate);
         typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
 
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = OpenMetadataProperty.REQUESTER_USER_ID.name;
+        final String attribute1Description     = OpenMetadataProperty.REQUESTER_USER_ID.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.REQUESTER_USER_ID.descriptionGUID;
+        final String attribute2Name            = "requestedStartDate";
+        final String attribute2Description     = "Time that the ending action should start.  This is the request time plus any requested wait time.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        property = archiveHelper.getDateTypeDefAttribute(attribute2Name,
+                                                         attribute2Description,
+                                                         attribute2DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
         return typeDefPatch;
     }
 
@@ -384,7 +421,7 @@ public class OpenMetadataTypesArchive
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.ACTIONS_RELATIONSHIP_TYPE_NAME;
+        final String typeName = OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP_TYPE_NAME;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -431,13 +468,13 @@ public class OpenMetadataTypesArchive
      * -------------------------------------------------------------------------------------------------------
      */
 
-
     /**
      * update0130Projects
      */
     private void update0130Projects()
     {
         this.archiveBuilder.addClassificationDef(getPersonalProjectClassification());
+        this.archiveBuilder.addClassificationDef(getStudyProjectClassification());
     }
 
 
@@ -465,6 +502,31 @@ public class OpenMetadataTypesArchive
     }
 
 
+
+    /**
+     * Add StudyProject classification to allow specific types of investigations to be characterized.
+     *
+     * @return classification def
+     */
+    private ClassificationDef getStudyProjectClassification()
+    {
+        final String guid            = OpenMetadataType.STUDY_PROJECT_TYPE_GUID;
+        final String name            = OpenMetadataType.STUDY_PROJECT_TYPE_NAME;
+        final String description     = "A focused analysis of a topic, person, object or situation.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = OpenMetadataType.PROJECT_TYPE_NAME;
+
+        return archiveHelper.getClassificationDef(guid,
+                                                  name,
+                                                  null,
+                                                  description,
+                                                  descriptionGUID,
+                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  false);
+    }
+
+
     /*
      * -------------------------------------------------------------------------------------------------------
      */
@@ -476,6 +538,7 @@ public class OpenMetadataTypesArchive
     private void update0011UpdateTemplates()
     {
         this.archiveBuilder.addRelationshipDef(addCatalogTemplateRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateTemplateClassification());
     }
 
 
@@ -537,6 +600,28 @@ public class OpenMetadataTypesArchive
                                                                  end2Cardinality);
         relationshipDef.setEndDef2(relationshipEndDef);
 
+        return relationshipDef;
+
+    }
+
+
+    /**
+     * Add new properties to TemplateClassification to describe the replacement properties and the
+     * placeholder properties.
+     *
+     * @return  patch
+     */
+    private TypeDefPatch updateTemplateClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName;
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
 
         /*
          * Build the attributes
@@ -544,12 +629,9 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.TEMPLATE_NAME.name;
-        final String attribute1Description     = OpenMetadataProperty.TEMPLATE_NAME.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.TEMPLATE_NAME.descriptionGUID;
-        final String attribute2Name            = OpenMetadataProperty.TEMPLATE_DESCRIPTION.name;
-        final String attribute2Description     = OpenMetadataProperty.TEMPLATE_DESCRIPTION.description;
-        final String attribute2DescriptionGUID = OpenMetadataProperty.TEMPLATE_DESCRIPTION.descriptionGUID;
+        final String attribute1Name            = OpenMetadataProperty.VERSION_IDENTIFIER.name;
+        final String attribute1Description     = OpenMetadataProperty.VERSION_IDENTIFIER.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.VERSION_IDENTIFIER.descriptionGUID;
         final String attribute3Name            = OpenMetadataProperty.REPLACEMENT_PROPERTIES.name;
         final String attribute3Description     = OpenMetadataProperty.REPLACEMENT_PROPERTIES.description;
         final String attribute3DescriptionGUID = OpenMetadataProperty.REPLACEMENT_PROPERTIES.descriptionGUID;
@@ -561,10 +643,6 @@ public class OpenMetadataTypesArchive
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
         property = archiveHelper.getMapStringStringTypeDefAttribute(attribute3Name,
                                                                     attribute3Description,
                                                                     attribute3DescriptionGUID);
@@ -574,10 +652,9 @@ public class OpenMetadataTypesArchive
                                                                     attribute4DescriptionGUID);
         properties.add(property);
 
-        relationshipDef.setPropertiesDefinition(properties);
+        typeDefPatch.setPropertyDefinitions(properties);
 
-        return relationshipDef;
-
+        return typeDefPatch;
     }
 
 
@@ -1436,22 +1513,22 @@ public class OpenMetadataTypesArchive
 
     private void update0461GovernanceEngines()
     {
-        this.archiveBuilder.addEntityDef(getEventActionEngineEntity());
-        this.archiveBuilder.addEntityDef(getEventActionServiceEntity());
+        this.archiveBuilder.addEntityDef(getContextEventEngineEntity());
+        this.archiveBuilder.addEntityDef(getContextEventServiceEntity());
         this.archiveBuilder.addEntityDef(getSurveyActionEngineEntity());
         this.archiveBuilder.addEntityDef(getSurveyActionServiceEntity());
     }
 
-    private EntityDef getEventActionEngineEntity()
+    private EntityDef getContextEventEngineEntity()
     {
         /*
          * Build the Entity
          */
-        final String guid            = OpenMetadataType.EVENT_ACTION_ENGINE.typeGUID;
-        final String name            = OpenMetadataType.EVENT_ACTION_ENGINE.typeName;
-        final String description     = OpenMetadataType.EVENT_ACTION_ENGINE.description;
-        final String descriptionGUID = OpenMetadataType.EVENT_ACTION_ENGINE.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.EVENT_ACTION_ENGINE.wikiURL;
+        final String guid            = OpenMetadataType.CONTEXT_EVENT_ENGINE.typeGUID;
+        final String name            = OpenMetadataType.CONTEXT_EVENT_ENGINE.typeName;
+        final String description     = OpenMetadataType.CONTEXT_EVENT_ENGINE.description;
+        final String descriptionGUID = OpenMetadataType.CONTEXT_EVENT_ENGINE.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.CONTEXT_EVENT_ENGINE.wikiURL;
 
         final String superTypeName   = OpenMetadataType.GOVERNANCE_ENGINE.typeName;
 
@@ -1464,17 +1541,16 @@ public class OpenMetadataTypesArchive
 
     }
 
-
-    private EntityDef getEventActionServiceEntity()
+    private EntityDef getContextEventServiceEntity()
     {
         /*
          * Build the Entity
          */
-        final String guid            = OpenMetadataType.EVENT_ACTION_SERVICE.typeGUID;
-        final String name            = OpenMetadataType.EVENT_ACTION_SERVICE.typeName;
-        final String description     = OpenMetadataType.EVENT_ACTION_SERVICE.description;
-        final String descriptionGUID = OpenMetadataType.EVENT_ACTION_SERVICE.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.EVENT_ACTION_SERVICE.wikiURL;
+        final String guid            = OpenMetadataType.CONTEXT_EVENT_SERVICE.typeGUID;
+        final String name            = OpenMetadataType.CONTEXT_EVENT_SERVICE.typeName;
+        final String description     = OpenMetadataType.CONTEXT_EVENT_SERVICE.description;
+        final String descriptionGUID = OpenMetadataType.CONTEXT_EVENT_SERVICE.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.CONTEXT_EVENT_SERVICE.wikiURL;
 
         final String superTypeName   = OpenMetadataType.GOVERNANCE_SERVICE.typeName;
 
@@ -1486,8 +1562,6 @@ public class OpenMetadataTypesArchive
                                                  descriptionWiki);
 
     }
-
-
 
     private EntityDef getSurveyActionEngineEntity()
     {
@@ -1529,6 +1603,52 @@ public class OpenMetadataTypesArchive
                                                  description,
                                                  descriptionGUID,
                                                  descriptionWiki);
+    }
+
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0464IntegrationGroups()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateCatalogTarget());
+    }
+
+    /**
+     * Add configurationProperties
+     *
+     * @return patch
+     */
+    private TypeDefPatch updateCatalogTarget()
+    {
+        final String typeName = "CatalogTarget";
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute4Name            = "configurationProperties";
+        final String attribute4Description     = "Specific configuration properties used to configure the behaviour of the connector.";
+        final String attribute4DescriptionGUID = null;
+
+        property = archiveHelper.getMapStringObjectTypeDefAttribute(attribute4Name,
+                                                                    attribute4Description,
+                                                                    attribute4DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
     }
 
 
@@ -2195,6 +2315,9 @@ public class OpenMetadataTypesArchive
         final String attribute2Name            = OpenMetadataType.IS_CASE_SENSITIVE_PROPERTY_NAME;
         final String attribute2Description     = "Is this valid value case-sensitive, or should the values match irrespective of case?";
         final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = OpenMetadataType.DATA_TYPE_PROPERTY_NAME;
+        final String attribute3Description     = "The type of the value identifies it format and content.";
+        final String attribute3DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -2203,6 +2326,10 @@ public class OpenMetadataTypesArchive
         property = archiveHelper.getBooleanTypeDefAttribute(attribute2Name,
                                                             attribute2Description,
                                                             attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
@@ -2240,7 +2367,6 @@ public class OpenMetadataTypesArchive
 
         return typeDefPatch;
     }
-
 
     private RelationshipDef getConsistentValidValuesRelationship()
     {
@@ -2381,6 +2507,52 @@ public class OpenMetadataTypesArchive
         relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0462GovernanceActionTypes()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionType());
+    }
+
+    private TypeDefPatch updateGovernanceActionType()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = OpenMetadataType.GOVERNANCE_ACTION_TYPE_TYPE_NAME;
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = OpenMetadataType.SUPPORTED_GUARDS_PROPERTY_NAME;
+        final String attribute1Description     = "Deprecated list of produced guards.";
+        final String attribute1DescriptionGUID = null;
+
+
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+        property.setReplacedByAttribute(OpenMetadataType.PRODUCED_GUARDS_PROPERTY_NAME);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
     }
 
 
@@ -2629,11 +2801,11 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = OpenMetadataType.ANNOTATION.typeName;
-        final String                     end1AttributeName            = "reportedAnnotations";
-        final String                     end1AttributeDescription     = "The annotations providing the contents for the report.";
+        final String                     end1EntityType               = OpenMetadataType.SURVEY_REPORT.typeName;
+        final String                     end1AttributeName            = "fromSurveyReport";
+        final String                     end1AttributeDescription     = "The report that the annotations belong to.";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
                                                                  end1AttributeName,
@@ -2642,15 +2814,14 @@ public class OpenMetadataTypesArchive
                                                                  end1Cardinality);
         relationshipDef.setEndDef1(relationshipEndDef);
 
-
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.SURVEY_REPORT.typeName;
-        final String                     end2AttributeName            = "fromSurveyReport";
-        final String                     end2AttributeDescription     = "The report that the annotations belong to.";
+        final String                     end2EntityType               = OpenMetadataType.ANNOTATION.typeName;
+        final String                     end2AttributeName            = "reportedAnnotations";
+        final String                     end2AttributeDescription     = "The annotations providing the contents for the report.";
         final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
                                                                  end2AttributeName,
@@ -2945,12 +3116,95 @@ public class OpenMetadataTypesArchive
     /*
      * -------------------------------------------------------------------------------------------------------
      */
+
+    private void update0690RequestForAction()
+    {
+        this.archiveBuilder.addRelationshipDef(getRequestForActionTargetRelationship());
+    }
+
+    private RelationshipDef getRequestForActionTargetRelationship()
+    {
+        final String guid            = OpenMetadataType.REQUEST_FOR_ACTION_TARGET.typeGUID;
+        final String name            = OpenMetadataType.REQUEST_FOR_ACTION_TARGET.typeName;
+        final String description     = OpenMetadataType.REQUEST_FOR_ACTION_TARGET.description;
+        final String descriptionGUID = OpenMetadataType.REQUEST_FOR_ACTION_TARGET.descriptionGUID;
+        final String wikiURL         = OpenMetadataType.REQUEST_FOR_ACTION_TARGET.wikiURL;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                wikiURL,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.typeName;
+        final String                     end1AttributeName            = "identifiedInRequestForActions";
+        final String                     end1AttributeDescription     = "Request for action that originated the action.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
+        final String                     end2AttributeName            = "requestForActionTargets";
+        final String                     end2AttributeDescription     = "Elements that originated the data.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = OpenMetadataProperty.ACTION_TARGET_NAME.name;
+        final String attribute1Description     = "Unique name of the action target.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
     private void add0755UltimateSourcesDestinations()
     {
         this.archiveBuilder.addRelationshipDef(getUltimateSourceRelationship());
         this.archiveBuilder.addRelationshipDef(getUltimateDestinationRelationship());
     }
-
 
     private RelationshipDef getUltimateSourceRelationship()
     {
@@ -3108,7 +3362,5 @@ public class OpenMetadataTypesArchive
 
         return relationshipDef;
     }
-
-
 }
 

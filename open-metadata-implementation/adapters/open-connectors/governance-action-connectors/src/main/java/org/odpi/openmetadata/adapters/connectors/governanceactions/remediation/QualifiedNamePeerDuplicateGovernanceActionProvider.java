@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.remediation;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
-import org.odpi.openmetadata.frameworks.governanceaction.actiontargettype.ActionTargetType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 
 import java.util.ArrayList;
@@ -20,15 +20,9 @@ public class QualifiedNamePeerDuplicateGovernanceActionProvider extends Governan
     private static final String  connectorTypeGUID = "346939c4-de2c-44aa-a044-0ec64df0560f";
     private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Remediation:Deduplication";
     private static final String  connectorTypeDisplayName = "Deduplication Governance Action Service";
-    private static final String  connectorTypeDescription = "Checks the qualified name of an action target element to determine its duplicates.";
+    private static final String  connectorTypeDescription = "Checks the qualified name of an action target element to determine its duplicates.  Any duplicated found are linked to the action target element.";
 
     static final String ACTION_TARGET_NAME = "elementGUID";
-
-    static final String DUPLICATE_ASSIGNED_GUARD = "duplicate-detected";
-    static final String DUPLICATE_ALREADY_ASSIGNED_GUARD = "duplicate-already-assigned";
-    static final String NO_DUPLICATION_DETECTED_GUARD = "no-duplication-detected";
-    static final String DUPLICATE_DETECTION_FAILED_GUARD = "duplicate-detection-failed";
-    static final String NO_TARGETS_DETECTED_GUARD       = "no-targets-detected";
 
     private static final String connectorClassName = QualifiedNamePeerDuplicateGovernanceActionConnector.class.getName();
 
@@ -42,12 +36,15 @@ public class QualifiedNamePeerDuplicateGovernanceActionProvider extends Governan
         super();
         super.setConnectorClassName(connectorClassName);
 
-        supportedGuards = new ArrayList<>();
-        supportedGuards.add(DUPLICATE_ASSIGNED_GUARD);
-        supportedGuards.add(DUPLICATE_ALREADY_ASSIGNED_GUARD);
-        supportedGuards.add(NO_DUPLICATION_DETECTED_GUARD);
-        supportedGuards.add(DUPLICATE_DETECTION_FAILED_GUARD);
-        supportedGuards.add(NO_TARGETS_DETECTED_GUARD);
+        producedGuards = QualifiedNamePeerDuplicateGuard.getGuardTypes();
+
+        supportedActionTargetTypes = new ArrayList<>();
+        ActionTargetType actionTargetType = new ActionTargetType();
+
+        actionTargetType.setName(ACTION_TARGET_NAME);
+        actionTargetType.setTypeName(OpenMetadataType.REFERENCEABLE.typeName);
+
+        super.supportedActionTargetTypes.add(actionTargetType);
 
         super.setConnectorClassName(connectorClassName);
 
@@ -61,12 +58,5 @@ public class QualifiedNamePeerDuplicateGovernanceActionProvider extends Governan
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
 
         super.connectorTypeBean = connectorType;
-
-        actionTargetTypes = new HashMap<>();
-        ActionTargetType actionTargetType = new ActionTargetType();
-
-        actionTargetType.setTypeName(OpenMetadataType.REFERENCEABLE.typeName);
-
-        super.actionTargetTypes.put(ACTION_TARGET_NAME, actionTargetType);
     }
 }

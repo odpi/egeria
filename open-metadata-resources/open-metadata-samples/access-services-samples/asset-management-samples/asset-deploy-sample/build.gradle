@@ -17,6 +17,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     runtimeOnly 'ch.qos.logback:logback-classic'
+    runtimeOnly project(':open-metadata-implementation:user-security:token-manager')
 
 }
 

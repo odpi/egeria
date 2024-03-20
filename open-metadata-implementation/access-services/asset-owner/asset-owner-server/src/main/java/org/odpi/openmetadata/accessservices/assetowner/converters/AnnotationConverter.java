@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.converters;
 
-import org.odpi.openmetadata.commonservices.generichandlers.ODFConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.SAFConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.discovery.properties.*;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -16,7 +16,7 @@ import java.util.List;
  * AnnotationConverter transfers the relevant properties from some Open Metadata Repository Services (OMRS)
  * EntityDetail object into an Annotation bean.
  */
-public class AnnotationConverter<B> extends ODFConverter<B>
+public class AnnotationConverter<B> extends SAFConverter<B>
 {
     /**
      * Constructor

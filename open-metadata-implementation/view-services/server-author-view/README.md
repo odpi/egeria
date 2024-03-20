@@ -1,9 +1,10 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
-  
+
+![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
+
 # Server Author View Service
 
-![In Development](../../../images/egeria-content-status-in-development.png)
 
 The Server Author Open Metadata View Service (OMVS) is an Integration View Service that supports Server Author UI operations
 that retrieve, author and deploy server configurations.

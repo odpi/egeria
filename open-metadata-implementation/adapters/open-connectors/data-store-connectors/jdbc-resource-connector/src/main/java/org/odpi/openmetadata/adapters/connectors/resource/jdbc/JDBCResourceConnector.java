@@ -218,12 +218,18 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
                                     timestampColumnName +
                                     " = (SELECT MAX(" + timestampColumnName + ") FROM " + tableName + " WHERE " + identifierColumnName + " = ?)";
 
+        if (jdbcConnection.isClosed())
+        {
+            jdbcConnection = DriverManager.getConnection(jdbcDatabaseURL);
+        }
+
         PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand);
 
         preparedStatement.setString(1, identifierColumnValue);
         preparedStatement.setString(2, identifierColumnValue);
 
         ResultSet resultSet = preparedStatement.executeQuery();
+
         Map<String, JDBCDataValue> results = null;
 
         /*
@@ -243,7 +249,8 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
                     case Types.ARRAY     -> dataValue = new JDBCDataValue(resultSet.getArray(columnName), sqlType);
                     case Types.BOOLEAN   -> dataValue = new JDBCDataValue(resultSet.getBoolean(columnName), sqlType);
                     case Types.DATE      -> dataValue = new JDBCDataValue(resultSet.getDate(columnName), sqlType);
-                    case Types.INTEGER   -> dataValue = new JDBCDataValue(resultSet.getInt(columnName), sqlType);
+                    case Types.INTEGER,
+                            Types.NUMERIC -> dataValue = new JDBCDataValue(resultSet.getInt(columnName), sqlType);
                     case Types.TIMESTAMP -> dataValue = new JDBCDataValue(resultSet.getTimestamp(columnName), sqlType);
                 }
 

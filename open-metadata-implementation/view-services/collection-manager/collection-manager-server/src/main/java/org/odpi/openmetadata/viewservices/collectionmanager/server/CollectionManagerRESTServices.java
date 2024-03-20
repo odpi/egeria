@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * The CollectionManagerRESTServices provides the implementation of the Collection Manager Open Metadata View Service (OMVS).
- * This interface provides view interfaces for glossary UIs.
  */
 
 public class CollectionManagerRESTServices extends TokenController

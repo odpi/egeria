@@ -48,21 +48,8 @@ public class AssetResponseTest
         testObject.setExceptionProperties(exceptionProperties);
 
         testObject.setAsset(assetBean);
-        testObject.setCertificationCount(5);
-        testObject.setCommentCount(5);
-        testObject.setConnectionCount(5);
-        testObject.setExternalIdentifierCount(5);
-        testObject.setExternalReferencesCount(5);
-        testObject.setInformalTagCount(5);
-        testObject.setLicenseCount(5);
-        testObject.setLikeCount(5);
-        testObject.setKnownLocationsCount(5);
-        testObject.setNoteLogsCount(5);
-        testObject.setRatingsCount(5);
-        testObject.setRelatedAssetCount(5);
-        testObject.setRelatedMediaReferenceCount(5);
+
         testObject.setSchemaType(null);
-        testObject.setLastAttachment(null);
 
         return testObject;
     }
@@ -84,21 +71,7 @@ public class AssetResponseTest
         assertTrue(resultObject.getExceptionProperties() == null);
 
         assertTrue(resultObject.getAsset().equals(assetBean));
-        assertTrue(resultObject.getCertificationCount() == 5);
-        assertTrue(resultObject.getCommentCount() == 5);
-        assertTrue(resultObject.getConnectionCount() == 5);
-        assertTrue(resultObject.getExternalIdentifierCount() == 5);
-        assertTrue(resultObject.getExternalReferencesCount() == 5);
-        assertTrue(resultObject.getInformalTagCount() == 5);
-        assertTrue(resultObject.getLicenseCount() == 5);
-        assertTrue(resultObject.getLikeCount() == 5);
-        assertTrue(resultObject.getKnownLocationsCount() == 5);
-        assertTrue(resultObject.getNoteLogsCount() == 5);
-        assertTrue(resultObject.getRatingsCount() == 5);
-        assertTrue(resultObject.getRelatedAssetCount() == 5);
-        assertTrue(resultObject.getRelatedMediaReferenceCount() == 5);
         assertTrue(resultObject.getSchemaType() == null);
-        assertTrue(resultObject.getLastAttachment() == null);
     }
 
 
@@ -116,19 +89,6 @@ public class AssetResponseTest
         assertTrue(nullObject.getExceptionUserAction() == null);
         assertTrue(nullObject.getExceptionProperties() == null);
         assertTrue(nullObject.getAsset() == null);
-        assertTrue(nullObject.getCertificationCount() == 0);
-        assertTrue(nullObject.getCommentCount() == 0);
-        assertTrue(nullObject.getConnectionCount() == 0);
-        assertTrue(nullObject.getExternalIdentifierCount() == 0);
-        assertTrue(nullObject.getExternalReferencesCount() == 0);
-        assertTrue(nullObject.getInformalTagCount() == 0);
-        assertTrue(nullObject.getLicenseCount() == 0);
-        assertTrue(nullObject.getLikeCount() == 0);
-        assertTrue(nullObject.getKnownLocationsCount() == 0);
-        assertTrue(nullObject.getNoteLogsCount() == 0);
-        assertTrue(nullObject.getRatingsCount() == 0);
-        assertTrue(nullObject.getRelatedAssetCount() == 0);
-        assertTrue(nullObject.getRelatedMediaReferenceCount() == 0);
         assertTrue(nullObject.getSchemaType() == null);
 
         nullObject = new AssetResponse(null);
@@ -140,19 +100,6 @@ public class AssetResponseTest
         assertTrue(nullObject.getExceptionUserAction() == null);
         assertTrue(nullObject.getExceptionProperties() == null);
         assertTrue(nullObject.getAsset() == null);
-        assertTrue(nullObject.getCertificationCount() == 0);
-        assertTrue(nullObject.getCommentCount() == 0);
-        assertTrue(nullObject.getConnectionCount() == 0);
-        assertTrue(nullObject.getExternalIdentifierCount() == 0);
-        assertTrue(nullObject.getExternalReferencesCount() == 0);
-        assertTrue(nullObject.getInformalTagCount() == 0);
-        assertTrue(nullObject.getLicenseCount() == 0);
-        assertTrue(nullObject.getLikeCount() == 0);
-        assertTrue(nullObject.getKnownLocationsCount() == 0);
-        assertTrue(nullObject.getNoteLogsCount() == 0);
-        assertTrue(nullObject.getRatingsCount() == 0);
-        assertTrue(nullObject.getRelatedAssetCount() == 0);
-        assertTrue(nullObject.getRelatedMediaReferenceCount() == 0);
         assertTrue(nullObject.getSchemaType() == null);
 
     }

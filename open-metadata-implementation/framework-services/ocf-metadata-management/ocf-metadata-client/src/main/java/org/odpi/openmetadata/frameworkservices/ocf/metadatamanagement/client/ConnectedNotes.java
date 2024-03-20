@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Note;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,8 @@ public class ConnectedNotes extends Notes
     private String                 noteLogGUID;
     private OCFRESTClient          restClient;
 
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Typical constructor creates an iterator with the supplied list of elements.
@@ -37,7 +40,6 @@ public class ConnectedNotes extends Notes
      * @param userId user id to use on server calls.
      * @param platformURLRoot url root of the server to use.
      * @param noteLogGUID unique identifier of the asset.
-     * @param totalElementCount the total number of elements to process.  A negative value is converted to 0.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      * @param restClient client to call REST API
@@ -47,16 +49,15 @@ public class ConnectedNotes extends Notes
                    String                 userId,
                    String                 platformURLRoot,
                    String                 noteLogGUID,
-                   int                    totalElementCount,
                    int                    maxCacheSize,
                    OCFRESTClient          restClient)
     {
-        super(totalElementCount, maxCacheSize);
+        super(maxCacheSize);
 
         this.serviceName     = serviceName;
         this.serverName      = serverName;
         this.userId          = userId;
-        this.platformURLRoot   = platformURLRoot;
+        this.platformURLRoot = platformURLRoot;
         this.noteLogGUID     = noteLogGUID;
         this.restClient      = restClient;
     }
@@ -73,12 +74,12 @@ public class ConnectedNotes extends Notes
 
         if (template != null)
         {
-            this.serviceName    = template.serviceName;
-            this.serverName     = template.serverName;
-            this.userId         = template.userId;
-            this.platformURLRoot  = template.platformURLRoot;
-            this.noteLogGUID    = template.noteLogGUID;
-            this.restClient     = template.restClient;
+            this.serviceName     = template.serviceName;
+            this.serverName      = template.serverName;
+            this.userId          = template.userId;
+            this.platformURLRoot = template.platformURLRoot;
+            this.noteLogGUID     = template.noteLogGUID;
+            this.restClient      = template.restClient;
         }
     }
 
