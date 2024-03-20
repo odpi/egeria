@@ -16,13 +16,13 @@ pluginManagement {
     }
     plugins {
         id "io.freefair.aggregate-javadoc" version "6.6.3"
-        id "io.freefair.lombok" version "8.3"
+        id "io.freefair.lombok" version "8.6"
         // Checks for unnecessary dependencies
-        id("com.autonomousapps.dependency-analysis") version "1.29.0"
+        id("com.autonomousapps.dependency-analysis") version "1.30.0"
         // helps resolve log implementation clashes
         id 'dev.jacomet.logging-capabilities' version "0.11.1"
         // This plugin helps resolve jakarta/javax dev.jacomet.logging-capabilities
-        id 'org.gradlex.java-ecosystem-capabilities' version "1.5.1"
+        id 'org.gradlex.java-ecosystem-capabilities' version "1.5.2"
         // Docs don't recommend specifying a version for checkstyle
         id 'checkstyle'
         id 'org.springframework.boot' version '2.7.16'
