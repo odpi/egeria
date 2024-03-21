@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the Egeria project. -->
 
+![Technical Preview](../../../images/egeria-content-status-tech-preview.png)
+
 # Glossary Browser OMVS
 
 The Glossary Browser OMVS enables the caller to retrieve glossary terms and the elements linked to them.

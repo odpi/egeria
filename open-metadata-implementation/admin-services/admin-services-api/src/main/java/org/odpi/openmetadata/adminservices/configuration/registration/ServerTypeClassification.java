@@ -28,19 +28,28 @@ public enum ServerTypeClassification
      * Server that provides specialist APIs for accessing and storing metadata in
      * open metadata repositories connected through one or more open metadata repository cohorts.
      */
-    METADATA_ACCESS_POINT("Metadata Access Point",
-                "Server that provides specialist APIs for accessing and storing metadata in" +
+    METADATA_ACCESS_SERVER("Metadata Access Server",
+                           "Server that provides specialist APIs for accessing and storing metadata in" +
                             "open metadata repositories connected through one or more open metadata repository cohorts.",
-                 ServerTypeClassification.COHORT_MEMBER,
-                "https://egeria-project.org/concepts/metadata-access-point/"),
+                           ServerTypeClassification.COHORT_MEMBER,
+                           "https://egeria-project.org/concepts/metadata-access-server/"),
 
     /**
-     * Server that is a metadata access point with its own native open metadata repository.
+     * Server that is a metadata access server with its own native open metadata repository.
      */
-    METADATA_SERVER("Metadata Access Store",
-                "Server that is a metadata access point with its own native open metadata repository.",
-                 ServerTypeClassification.METADATA_ACCESS_POINT,
-                "https://egeria-project.org/concepts/metadata-access-store/"),
+    METADATA_ACCESS_STORE("Metadata Access Store",
+                          "Server that is a metadata access server with its own native open metadata repository.",
+                          ServerTypeClassification.METADATA_ACCESS_SERVER,
+                          "https://egeria-project.org/concepts/metadata-access-store/"),
+
+    /**
+     * Server that is a metadata access server without its own native open metadata repository so all
+     * metadata access is remote.
+     */
+    METADATA_ACCESS_POINT("Metadata Access Point",
+                          "Server that is a metadata access server without its own native open metadata repository so all metadata access is remote.",
+                          ServerTypeClassification.METADATA_ACCESS_SERVER,
+                          "https://egeria-project.org/concepts/metadata-access-point/"),
 
     /**
      * Hosting environment for a repository connector acting as an adapter to a third party metadata server.
@@ -87,10 +96,10 @@ public enum ServerTypeClassification
     /**
      * Server that manages a warehouse of lineage information.
      */
-    OPEN_LINEAGE_SERVER("Open Lineage Server",
-                "Server that manages a warehouse of lineage information.",
-                 ServerTypeClassification.GOVERNANCE_SERVER,
-                "https://egeria-project.org/concepts/open-lineage-server/"),
+    LINEAGE_WAREHOUSE("Lineage Warehouse",
+                      "Server that manages a warehouse of lineage information.",
+                      ServerTypeClassification.GOVERNANCE_SERVER,
+                      "https://egeria-project.org/concepts/lineage-warehouse/"),
 
     /**
      * Server that manages the extraction of metadata from a single data engine.

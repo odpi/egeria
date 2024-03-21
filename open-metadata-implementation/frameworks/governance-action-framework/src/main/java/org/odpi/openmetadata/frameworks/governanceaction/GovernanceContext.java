@@ -44,6 +44,14 @@ public interface GovernanceContext
 
 
     /**
+     * Return the userId of the original person, process, service that requested this action.
+     *
+     * @return string userId
+     */
+    String getRequesterUserId();
+
+
+    /**
      * Return the list of metadata elements associated with the request to the governance action service.
      * This list will not change during the lifetime of the service.
      *

@@ -6,8 +6,8 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.Governan
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.RemediationGovernanceActionService;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
@@ -25,15 +25,19 @@ import java.util.StringTokenizer;
  */
 public class ZonePublisherGovernanceActionConnector extends RemediationGovernanceActionService
 {
-    private static final String assetZoneClassification = "AssetZoneMembership";
-    private static final String assetZoneProperty       = "zoneMembership";
-
+    /**
+     * Value used to set up the zones.
+     */
     private List<String> publishZones = null;
+
+    /**
+     * Property helper supports isTypeOf method.
+     */
+    private final PropertyHelper propertyHelper = new PropertyHelper();
 
 
     /**
      * Indicates that the governance action service is completely configured and can begin processing.
-     *
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() at the start of your overriding version.
      *
@@ -53,7 +57,7 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
          */
         if (configurationProperties != null)
         {
-            Object publishZonesOption = configurationProperties.get(ZonePublisherGovernanceActionProvider.PUBLISH_ZONES_PROPERTY);
+            Object publishZonesOption = configurationProperties.get(ZonePublisherRequestParameter.PUBLISH_ZONES.getName());
 
             if (publishZonesOption != null)
             {
@@ -72,7 +76,7 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
             {
                 if (requestParameterName != null)
                 {
-                    if (ZonePublisherGovernanceActionProvider.PUBLISH_ZONES_PROPERTY.equals(requestParameterName))
+                    if (ZonePublisherRequestParameter.PUBLISH_ZONES.getName().equals(requestParameterName))
                     {
                         publishZones = getZoneArrayFromString(requestParameters.get(requestParameterName));
                     }
@@ -85,16 +89,7 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
 
         try
         {
-            if ((publishZones == null) || (publishZones.isEmpty()))
-            {
-                if (auditLog != null)
-                {
-                    auditLog.logMessage(methodName, GovernanceActionConnectorsAuditCode.NO_ZONES.getMessageDefinition(governanceServiceName));
-                }
-                completionStatus = CompletionStatus.INVALID;
-                outputGuards.add(ZonePublisherGovernanceActionProvider.NO_ZONES_DETECTED_GUARD);
-            }
-            else if (governanceContext.getActionTargetElements() == null)
+            if (governanceContext.getActionTargetElements() == null)
             {
                 if (auditLog != null)
                 {
@@ -102,8 +97,42 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
                                         GovernanceActionConnectorsAuditCode.NO_TARGETS.getMessageDefinition(governanceServiceName));
                 }
 
-                completionStatus = CompletionStatus.INVALID;
-                outputGuards.add(ZonePublisherGovernanceActionProvider.NO_TARGETS_DETECTED_GUARD);
+                completionStatus = ZonePublisherGuard.NO_TARGETS_DETECTED.getCompletionStatus();
+                outputGuards.add(ZonePublisherGuard.NO_TARGETS_DETECTED.getName());
+            }
+            else if ((publishZones == null) || (publishZones.isEmpty()))
+            {
+                if (auditLog != null)
+                {
+                    auditLog.logMessage(methodName, GovernanceActionConnectorsAuditCode.NO_ZONES.getMessageDefinition(governanceServiceName));
+                }
+
+                for (ActionTargetElement actionTarget : governanceContext.getActionTargetElements())
+                {
+                    if ((actionTarget != null) &&
+                            (actionTarget.getTargetElement() != null) &&
+                            (propertyHelper.isTypeOf(actionTarget.getTargetElement(), OpenMetadataType.ASSET.typeName)))
+                    {
+                        OpenMetadataElement element = actionTarget.getTargetElement();
+
+                        if (auditLog != null)
+                        {
+                            auditLog.logMessage(methodName,
+                                                GovernanceActionConnectorsAuditCode.SETTING_ZONES.getMessageDefinition(governanceServiceName,
+                                                                                                                       element.getElementGUID(),
+                                                                                                                       publishZones.toString()));
+                        }
+
+                        governanceContext.declassifyMetadataElement(element.getElementGUID(),
+                                                                    OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME,
+                                                                    false,
+                                                                    false,
+                                                                    new Date());
+                    }
+                }
+
+                completionStatus = ZonePublisherGuard.NO_ZONES_DETECTED.getCompletionStatus();
+                outputGuards.add(ZonePublisherGuard.NO_ZONES_DETECTED.getName());
             }
             else
             {
@@ -111,7 +140,9 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
 
                 for (ActionTargetElement actionTarget : governanceContext.getActionTargetElements())
                 {
-                    if (actionTarget != null)
+                    if ((actionTarget != null) &&
+                            (actionTarget.getTargetElement() != null) &&
+                            (propertyHelper.isTypeOf(actionTarget.getTargetElement(), OpenMetadataType.ASSET.typeName)))
                     {
                         OpenMetadataElement element = actionTarget.getTargetElement();
 
@@ -124,7 +155,7 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
                         }
 
                         governanceContext.classifyMetadataElement(element.getElementGUID(),
-                                                                  assetZoneClassification,
+                                                                  OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME,
                                                                   false,
                                                                   false,
                                                                   properties,
@@ -132,8 +163,8 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
                     }
                 }
 
-                completionStatus = CompletionStatus.ACTIONED;
-                outputGuards.add(ZonePublisherGovernanceActionProvider.ZONE_ASSIGNED_GUARD);
+                completionStatus = ZonePublisherGuard.ZONE_ASSIGNED.getCompletionStatus();
+                outputGuards.add(ZonePublisherGuard.ZONE_ASSIGNED.getName());
             }
 
             governanceContext.recordCompletionStatus(completionStatus, outputGuards);
@@ -150,7 +181,6 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
                                                 error.getClass().getName(),
                                                 methodName,
                                                 error);
-
         }
     }
 
@@ -164,7 +194,7 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
     {
         PropertyHelper helper = new PropertyHelper();
 
-        return helper.addStringArrayProperty(null, assetZoneProperty, publishZones);
+        return helper.addStringArrayProperty(null, OpenMetadataType.ZONE_MEMBERSHIP_PROPERTY_NAME, publishZones);
     }
 
 
@@ -182,11 +212,11 @@ public class ZonePublisherGovernanceActionConnector extends RemediationGovernanc
         while (stringTokenizer.hasMoreTokens())
         {
             String zone = stringTokenizer.nextToken();
-            String trimedZone = zone.trim();
+            String trimmedZone = zone.trim();
 
-            if (trimedZone.length() != 0)
+            if (! trimmedZone.isEmpty())
             {
-                zoneArray.add(trimedZone);
+                zoneArray.add(trimmedZone);
             }
         }
 

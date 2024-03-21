@@ -11,55 +11,60 @@ or [while the server is running](https://egeria-project.org/guides/operations/ad
 
 They are as follows:
 
-* **CloudInformationModel.omarchive** - glossary from the **Cloud Information Model**'s
+* **CloudInformationModel.json** - glossary from the **Cloud Information Model**'s
 [JSONLD formatted model](https://raw.githubusercontent.com/cloudinformationmodel/cloudinformationmodel/master/dist/model.jsonld).
 The content covers basic commerce concepts such as Party, Product, Invoice and Shipping.
 The cloud information project has been archived.  However, this is a useful starter set glossary,
 
-The next set of archives supply metadata to support the Coco Pharmaceuticals scenarios.  There is also an archive called `CocoComboArchive` that includes all of the metadata from these archives in a single file.
+The next four archives are built from the [coco-metadata-archives](https://github.com/odpi/egeria/tree/main/open-metadata-resources/open-metadata-samples/sample-metadata/coco-metadata-archives) module.
+They supply metadata to support the [Coco Pharmaceuticals scenarios](https://egeria-project.org/practices/coco-pharmaceuticals/).
 
-* **CocoBusinessSystemsArchive.omarchive** provides a catalog of the business systems and the lineage between
+* **CocoBusinessSystemsArchive** provides a catalog of the business systems and the lineage between
   them and the load of their data into the data lake.  This archive simulates the type of metadata expected from
   an ETL tool suite.  It is intended for **cocoMDS5** in the open metadata labs but can be used in any server.
 
-* **CocoOrganizationArchive.omarchive** - provides the profiles, user identifies and team of the featured
+* **Coco Pharmaceuticals Organizations** - provides the profiles, user identifies and team of the featured
   personas of Coco Pharmaceuticals.
 
-* **CocoClinicalTrialsTemplatesArchive.omarchive** - provides the template assets used for onboarding weekly patient measurements during a clinical trial.
+* **CocoClinicalTrialsTemplatesArchive** - provides the template assets used for onboarding weekly patient measurements during a clinical trial.
 
-* **GovernanceProgramArchive.omarchive** - provides the metadata to describe Coco Pharmaceuticals governance program.
+* **Governance Program Definitions** - provides the metadata to describe Coco Pharmaceuticals governance program.
 
-* **CocoGovernanceEngineDefinitionsArchive.omarchive** - provides the metadata to describe Coco Pharmaceuticals quality governance engine: `AssetQuality`.
+* **CocoGovernanceEngineDefinitionsArchive** - provides the metadata to describe Coco Pharmaceuticals three governance engines:
+  `AssetGovernance`, `AssetDiscovery` and `AssetQuality`.
 
-* **CocoSustainabilityArchive.omarchive** provides the base definitions for Coco Pharmaceutical's
+* **Coco Pharmaceuticals Sustainability Initiative** provides the base definitions for Coco Pharmaceutical's
   sustainability initiative.
 
-* **CocoTypesArchive.omarchive** - provides additional types for Coco Pharmaceuticals.  These are `BiopsyScope` Enum, `BiopsyReport` Entity, `BiopsySupportingEvidence` Relationship and
+* **CocoTypesArchive** - provides additional types for Coco Pharmaceuticals.  These are `BiopsyScope` Enum, `BiopsyReport` Entity, `BiopsySupportingEvidence` Relationship and
   `ReviewedByClinicalTrials` Classification.
 
-This next archive contains connector type and connector category definitions for the connectors supplied by Egeria.
+These next archives contain connector type and connector category definitions.
 
-* **OpenConnectorsArchive.omarchive** - Connector type metadata for connecting to data sources and other third party technology.
+* **DataStoreConnectorTypes** - A subset of the *OpenConnectorsArchive* retained in case anyone is using it. 
+  It should be considered deprecated and the OpenConnectorsArchive used instead.
 
-The next archive is a summary of all the open metadata type definitions provided by Egeria.  It is supplied for
+* **OpenConnectorsArchive** - Connector type metadata for connecting to data sources and other third party technology.
+
+This archive is a summary of all the open metadata type definitions provided by Egeria.  It is supplied for
 external utilities since each OMAG server capable of being a cohort member will load these types on start up.
 
-* **OpenMetadataTypes.omarchive** - Archive of the open metadata types defined by Egeria.
+* **OpenMetadataTypes** - Archive of the open metadata types defined by Egeria.
 
 This final four archives are for a demo showing 4 metadata access servers connected together in a single cohort.
 The archives are each loaded into a different server.  
 It is then possible to show how the cohort integrates metadata from different catalogs.
 These archives are used in the *Development labs* which are part of the [Open Metadata Labs](https://egeria-project.org/education/open-metadata-labs/overview/).
 
-* **SimpleAPICatalog.omarchive** - API metadata typically found in an API catalog.
+* **SimpleAPICatalog** - API metadata typically found in an API catalog.
 
-* **SimpleDataCatalog.omarchive** - Data Source metadata typically found in an Data catalog.
+* **SimpleDataCatalog** - Data Source metadata typically found in an Data catalog.
 
-* **SimpleEventCatalog.omarchive** - Event metadata typically found in an API catalog.
+* **SimpleEventCatalog** - Event metadata typically found in an API catalog.
 
-* **SimpleGovernanceCatalog.omarchive** - A glossary term linked to metadata elements in the API, Event, Data catalogs.
+* **SimpleGovernanceCatalog** - A glossary term linked to metadata elements in the API, Event, Data catalogs.
 
-There is also **SimpleCatalog.omarchive** that rolls up the content of the four catalogs into a single content pack for use in other scenarios.
+There is also **SimpleCatalog** that rolls up the content of the four catalogs into a single content pack for use in other scenarios.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

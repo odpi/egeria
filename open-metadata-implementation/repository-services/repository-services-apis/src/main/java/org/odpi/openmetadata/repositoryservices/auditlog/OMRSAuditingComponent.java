@@ -271,7 +271,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
      * Open Discovery Service Connector - A connector that analyzing the contents of a digital resource.
      */
     OPEN_DISCOVERY_SERVICE_CONNECTOR(28,
-                                     ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                     ComponentDevelopmentStatus.DEPRECATED,
                                      "Open Discovery Service Connector",
                                      "A connector that analyzing the contents of a digital resource.",
                                      "https://egeria-project.org/guides/developer/open-discovery-services/overview/"),
@@ -280,7 +280,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
      * Governance Action Service Connector - A connector that coordinates governance of digital resources and metadata.
      */
     GOVERNANCE_ACTION_SERVICE_CONNECTOR(29,
-                                        ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                        ComponentDevelopmentStatus.STABLE,
                                         "Governance Action Service Connector",
                                         "A connector that coordinates governance of digital resources and metadata.",
                                         "https://egeria-project.org/guides/developer/governance-action-services/overview/"),
@@ -298,7 +298,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
      * Integration Connector - Connector that manages metadata exchange with a third-party technology.
      */
     INTEGRATION_CONNECTOR(31,
-                          ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                          ComponentDevelopmentStatus.STABLE,
                           "Integration Connector",
                           "Connector that manages metadata exchange with a third party technology.",
                           "https://egeria-project.org/concepts/integration-connector/"),
@@ -307,7 +307,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
      * Platform Metadata Security Connector - Connector that manages authorization requests to the OMAG Server Platform.
      */
     PLATFORM_SECURITY_CONNECTOR(32,
-                                ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                ComponentDevelopmentStatus.STABLE,
                                 "Platform Metadata Security Connector",
                                 "Connector that manages authorization requests to the OMAG Server Platform.",
                                 "https://egeria-project.org/concepts/platform-metadata-security-connector/"),
@@ -316,7 +316,7 @@ public enum OMRSAuditingComponent implements ComponentDescription
      * Server Metadata Security Connector - Connector that manages authorization requests to the OMAG Server.
      */
     SERVER_SECURITY_CONNECTOR(33,
-                              ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                              ComponentDevelopmentStatus.STABLE,
                               "Server Metadata Security Connector",
                               "Connector that manages authorization requests to the OMAG Server.",
                               "https://egeria-project.org/concepts/server-metadata-security-connector/"),

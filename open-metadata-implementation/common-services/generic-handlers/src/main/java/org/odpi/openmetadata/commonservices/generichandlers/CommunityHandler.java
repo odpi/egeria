@@ -204,6 +204,9 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
                                                         serviceName,
                                                         serverName);
 
+        builder.setAnchors(userId, null, OpenMetadataType.COMMUNITY_TYPE_NAME, methodName);
+
+
         return this.createBeanFromTemplate(userId,
                                            externalSourceGUID,
                                            externalSourceName,
@@ -215,6 +218,9 @@ public class CommunityHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataProperty.QUALIFIED_NAME.name,
                                            builder,
                                            supportedZones,
+                                           true,
+                                           false,
+                                           null,
                                            methodName);
     }
 

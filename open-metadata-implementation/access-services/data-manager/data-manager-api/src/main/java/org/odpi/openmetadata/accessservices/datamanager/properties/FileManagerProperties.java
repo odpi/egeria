@@ -50,7 +50,7 @@ public class FileManagerProperties extends SoftwareCapabilitiesProperties
         return "FileManagerProperties{" +
                        "displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
-                       ", typeDescription='" + getTypeDescription() + '\'' +
+                       ", typeDescription='" + getDeployedImplementationType() + '\'' +
                        ", version='" + getVersion() + '\'' +
                        ", patchLevel='" + getPatchLevel() + '\'' +
                        ", source='" + getSource() + '\'' +

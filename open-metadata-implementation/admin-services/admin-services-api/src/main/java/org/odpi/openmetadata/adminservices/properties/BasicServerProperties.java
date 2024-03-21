@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.properties;
 
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.rest.AdminServicesAPIResponse;
 
 import java.util.Objects;
@@ -16,7 +17,7 @@ public class BasicServerProperties
     private String localServerURL         = null;
     private String localServerUserId      = null;
     private String localServerPassword    = null;
-    private int    maxPageSize            = 0;
+    private int    maxPageSize            = OMAGServerConfig.defaultMaxPageSize;
 
 
     /**

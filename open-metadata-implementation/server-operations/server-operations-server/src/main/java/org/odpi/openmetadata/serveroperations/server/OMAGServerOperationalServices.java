@@ -4,6 +4,12 @@ package org.odpi.openmetadata.serveroperations.server;
 
 
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
+import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminAuditCode;
+import org.odpi.openmetadata.adminservices.registration.OMAGAccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.registration.OMAGViewServiceRegistration;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.governanceservers.enginehostservices.registration.OMAGEngineServiceRegistration;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
 import org.odpi.openmetadata.serveroperations.ffdc.ServerOpsAuditCode;
 import org.odpi.openmetadata.serveroperations.ffdc.ServerOpsErrorCode;
 import org.odpi.openmetadata.adminservices.classifier.ServerTypeClassifier;
@@ -34,7 +40,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineProxyOperationalServices;
-import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageServerOperationalServices;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.admin.LineageWarehouseOperationalServices;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
 import org.odpi.openmetadata.serveroperations.rest.ServerServicesListResponse;
@@ -174,6 +180,178 @@ public class OMAGServerOperationalServices
     }
 
 
+
+
+    /**
+     * Refresh the definitions of the registered services for this server configuration, so they match the
+     * definitions in this platform.
+     *
+     * @param serverConfig server to refresh
+     * @param auditLog operational audit log
+     */
+    private void refreshRegisteredServices(OMAGServerConfig serverConfig,
+                                           AuditLog         auditLog)
+    {
+        final String methodName = "refreshRegisteredServices";
+        /*
+         * Refresh the definition of any access service to match the current platform implementation.
+         */
+        if (serverConfig.getAccessServicesConfig() != null)
+        {
+            List<AccessServiceConfig> accessServiceConfigList = new ArrayList<>();
+
+            for (AccessServiceConfig accessServiceConfig : serverConfig.getAccessServicesConfig())
+            {
+                if (accessServiceConfig != null)
+                {
+                    AccessServiceRegistrationEntry description = OMAGAccessServiceRegistration.getAccessServiceRegistration(accessServiceConfig.getAccessServiceURLMarker());
+
+                    if (description != null)
+                    {
+                        accessServiceConfig.setAccessServiceName(description.getAccessServiceName());
+                        accessServiceConfig.setAccessServiceDevelopmentStatus(description.getAccessServiceDevelopmentStatus());
+                        accessServiceConfig.setAccessServiceFullName(description.getAccessServiceFullName());
+                        accessServiceConfig.setAccessServiceDescription(description.getAccessServiceDescription());
+                        accessServiceConfig.setAccessServiceURLMarker(description.getAccessServiceURLMarker());
+                        accessServiceConfig.setAccessServiceWiki(description.getAccessServiceWiki());
+                        accessServiceConfig.setAccessServiceOperationalStatus(description.getAccessServiceOperationalStatus());
+
+                        accessServiceConfigList.add(accessServiceConfig);
+                    }
+                    else
+                    {
+                        auditLog.logMessage(methodName, OMAGAdminAuditCode.IGNORING_UNREGISTERED_SERVICE.getMessageDefinition(accessServiceConfig.getAccessServiceFullName(),
+                                                                                                                              serverConfig.getLocalServerName()));
+                    }
+                }
+            }
+
+            serverConfig.setAccessServicesConfig(accessServiceConfigList);
+        }
+
+        /*
+         * Refresh the definition of any engine service to match the current platform implementation.
+         */
+        if (serverConfig.getEngineHostServicesConfig() != null)
+        {
+            EngineHostServicesConfig engineHostServicesConfig = serverConfig.getEngineHostServicesConfig();
+
+            if (engineHostServicesConfig.getEngineServiceConfigs() != null)
+            {
+                List<EngineServiceConfig> engineServiceConfigList = new ArrayList<>();
+
+                for (EngineServiceConfig engineServiceConfig : engineHostServicesConfig.getEngineServiceConfigs())
+                {
+                    if (engineServiceConfig != null)
+                    {
+                        EngineServiceRegistrationEntry description = OMAGEngineServiceRegistration.getEngineServiceRegistration(engineServiceConfig.getEngineServiceURLMarker());
+
+                        if (description != null)
+                        {
+                            engineServiceConfig.setEngineServiceName(description.getEngineServiceName());
+                            engineServiceConfig.setEngineServiceDevelopmentStatus(description.getEngineServiceDevelopmentStatus());
+                            engineServiceConfig.setEngineServiceFullName(description.getEngineServiceFullName());
+                            engineServiceConfig.setEngineServiceDescription(description.getEngineServiceDescription());
+                            engineServiceConfig.setEngineServiceURLMarker(description.getEngineServiceURLMarker());
+                            engineServiceConfig.setEngineServiceWiki(description.getEngineServiceWiki());
+                            engineServiceConfig.setEngineServicePartnerOMAS(description.getEngineServicePartnerOMAS());
+                            engineServiceConfig.setEngineServiceOperationalStatus(description.getEngineServiceOperationalStatus());
+
+                            engineServiceConfigList.add(engineServiceConfig);
+                        }
+                        else
+                        {
+                            auditLog.logMessage(methodName, OMAGAdminAuditCode.IGNORING_UNREGISTERED_SERVICE.getMessageDefinition(engineServiceConfig.getEngineServiceName(),
+                                                                                                                                  serverConfig.getLocalServerName()));
+                        }
+                    }
+                }
+
+                engineHostServicesConfig.setEngineServiceConfigs(engineServiceConfigList);
+            }
+        }
+
+        /*
+         * Refresh the definition of any integration service to match the current platform implementation.
+         */
+        if (serverConfig.getIntegrationServicesConfig() != null)
+        {
+            List<IntegrationServiceConfig> integrationServiceConfigList = new ArrayList<>();
+
+            for (IntegrationServiceConfig integrationServiceConfig : serverConfig.getIntegrationServicesConfig())
+            {
+                if (integrationServiceConfig != null)
+                {
+                    IntegrationServiceConfig description;
+
+                    try
+                    {
+                        description = IntegrationServiceRegistry.getIntegrationServiceConfig(integrationServiceConfig.getIntegrationServiceURLMarker(),
+                                                                                             serverConfig.getLocalServerName(),
+                                                                                             methodName);
+
+
+                        integrationServiceConfig.setIntegrationServiceName(description.getIntegrationServiceName());
+                        integrationServiceConfig.setIntegrationServiceDevelopmentStatus(description.getIntegrationServiceDevelopmentStatus());
+                        integrationServiceConfig.setIntegrationServiceFullName(description.getIntegrationServiceFullName());
+                        integrationServiceConfig.setIntegrationServiceDescription(description.getIntegrationServiceDescription());
+                        integrationServiceConfig.setIntegrationServiceURLMarker(description.getIntegrationServiceURLMarker());
+                        integrationServiceConfig.setIntegrationServiceWiki(description.getIntegrationServiceWiki());
+                        integrationServiceConfig.setIntegrationServicePartnerOMAS(description.getIntegrationServicePartnerOMAS());
+                        integrationServiceConfig.setIntegrationServiceOperationalStatus(description.getIntegrationServiceOperationalStatus());
+
+                        integrationServiceConfigList.add(integrationServiceConfig);
+                    }
+                    catch (InvalidParameterException exception)
+                    {
+                        auditLog.logMessage(methodName, OMAGAdminAuditCode.IGNORING_UNREGISTERED_SERVICE.getMessageDefinition(integrationServiceConfig.getIntegrationServiceName(),
+                                                                                                                              serverConfig.getLocalServerName()));
+                    }
+                }
+            }
+
+            serverConfig.setIntegrationServicesConfig(integrationServiceConfigList);
+        }
+
+        /*
+         * Refresh the definition of any view service to match the current platform implementation.
+         */
+        if (serverConfig.getViewServicesConfig() != null)
+        {
+            List<ViewServiceConfig> viewServiceConfigList = new ArrayList<>();
+
+            for (ViewServiceConfig viewServiceConfig : serverConfig.getViewServicesConfig())
+            {
+                if (viewServiceConfig != null)
+                {
+                    ViewServiceRegistrationEntry description = OMAGViewServiceRegistration.getViewServiceRegistration(viewServiceConfig.getViewServiceURLMarker());
+
+                    if (description != null)
+                    {
+                        viewServiceConfig.setViewServiceName(description.getViewServiceName());
+                        viewServiceConfig.setViewServiceDevelopmentStatus(description.getViewServiceDevelopmentStatus());
+                        viewServiceConfig.setViewServiceFullName(description.getViewServiceFullName());
+                        viewServiceConfig.setViewServiceDescription(description.getViewServiceDescription());
+                        viewServiceConfig.setViewServiceURLMarker(description.getViewServiceURLMarker());
+                        viewServiceConfig.setViewServiceWiki(description.getViewServiceWiki());
+                        viewServiceConfig.setViewServicePartnerService(description.getViewServicePartnerService());
+                        viewServiceConfig.setViewServiceOperationalStatus(ServiceOperationalStatus.ENABLED);
+
+                        viewServiceConfigList.add(viewServiceConfig);
+                    }
+                    else
+                    {
+                        auditLog.logMessage(methodName, OMAGAdminAuditCode.IGNORING_UNREGISTERED_SERVICE.getMessageDefinition(viewServiceConfig.getViewServiceName(),
+                                                                                                                              serverConfig.getLocalServerName()));
+                    }
+                }
+            }
+
+            serverConfig.setViewServicesConfig(viewServiceConfigList);
+        }
+    }
+
+
     /**
      * Activate the open metadata and governance services using the supplied configuration
      * document.  Inside the configuration document are sections that each relate
@@ -287,12 +465,17 @@ public class OMAGServerOperationalServices
             instance.setAuditLog(auditLog);
 
             /*
+             * Check that the description of the services reflect the latest information about the registered services.
+             */
+            refreshRegisteredServices(configuration, auditLog);
+
+            /*
              * There are many paging services in Egeria.  This value sets a maximum page size that a requester can use.
              * It is passed to each subsystem at start-up, so it can enforce the limit on all paging REST calls.
              * Having a limit helps to prevent a denial of service attack that uses very large requests to overwhelm the server.
              * If this value is 0 it means there is no upper limit.  If this value is negative then it is invalid.
              */
-            this.validateMaxPageSize(configuration.getMaxPageSize(), serverName, auditLog, methodName);
+            this.validateMaxPageSize(configuration.getMaxPageSize(), serverName, auditLog);
 
             /*
              * Save the instance of the repository services and then initialize it.  OMRS has 2 modes of initialization.
@@ -307,8 +490,8 @@ public class OMAGServerOperationalServices
             /*
              * At this point the type of server influences the start-up sequence.
              */
-            if ((ServerTypeClassification.METADATA_SERVER.equals(serverTypeClassification)) ||
-                (ServerTypeClassification.METADATA_ACCESS_POINT.equals(serverTypeClassification)) ||
+            if ((ServerTypeClassification.METADATA_ACCESS_STORE.equals(serverTypeClassification)) ||
+                (ServerTypeClassification.METADATA_ACCESS_SERVER.equals(serverTypeClassification)) ||
                 (ServerTypeClassification.REPOSITORY_PROXY.equals(serverTypeClassification)) ||
                 (ServerTypeClassification.CONFORMANCE_SERVER.equals(serverTypeClassification)))
             {
@@ -365,6 +548,7 @@ public class OMAGServerOperationalServices
                                                                                         configuration.getMaxPageSize());
 
                     instance.setOperationalOCFMetadataServices(operationalOCFMetadataServices);
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.RUNNING);
                     activatedServiceList.add(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName());
 
                     /*
@@ -386,6 +570,7 @@ public class OMAGServerOperationalServices
 
                     instance.setOperationalGAFMetadataServices(operationalGAFMetadataServices);
                     activatedServiceList.add(CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName());
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.RUNNING);
 
                     /*
                      * The enterprise repository services have been requested so OIF metadata management can also be started.
@@ -406,6 +591,7 @@ public class OMAGServerOperationalServices
 
                     instance.setOperationalOIFMetadataServices(operationalOIFMetadataServices);
                     activatedServiceList.add(CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceName());
+                    instance.setServerServiceActiveStatus(CommonServicesDescription.OIF_METADATA_MANAGEMENT.getServiceName(), ServerActiveStatus.RUNNING);
                 }
 
                 /*
@@ -452,6 +638,7 @@ public class OMAGServerOperationalServices
                                                                            GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceWiki()));
 
                     activatedServiceList.add(GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName());
+                    instance.setServerServiceActiveStatus(GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(), ServerActiveStatus.RUNNING);
                 }
 
                 /*
@@ -610,27 +797,27 @@ public class OMAGServerOperationalServices
         catch (UserNotAuthorizedException error)
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
-            cleanUpRunningServiceInstances(userId, serverName, methodName, instance);
+            cleanUpRunningServiceInstances(userId, serverName, instance);
         }
         catch (OMAGConfigurationErrorException  error)
         {
             exceptionHandler.captureConfigurationErrorException(response, error);
-            cleanUpRunningServiceInstances(userId, serverName, methodName, instance);
+            cleanUpRunningServiceInstances(userId, serverName, instance);
         }
         catch (OMAGInvalidParameterException error)
         {
             exceptionHandler.captureInvalidParameterException(response, error);
-            cleanUpRunningServiceInstances(userId, serverName, methodName, instance);
+            cleanUpRunningServiceInstances(userId, serverName, instance);
         }
         catch (OMAGNotAuthorizedException error)
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
-            cleanUpRunningServiceInstances(userId, serverName, methodName, instance);
+            cleanUpRunningServiceInstances(userId, serverName, instance);
         }
         catch (Exception  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
-            cleanUpRunningServiceInstances(userId, serverName, methodName, instance);
+            cleanUpRunningServiceInstances(userId, serverName, instance);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -647,13 +834,11 @@ public class OMAGServerOperationalServices
      * @param maxPageSize value to validate
      * @param serverName name of the server that the configuration comes from
      * @param auditLog logging destination
-     * @param methodName calling method
      * @throws OMAGConfigurationErrorException the max page size is negative.
      */
     private void validateMaxPageSize(int          maxPageSize,
                                      String       serverName,
-                                     OMRSAuditLog auditLog,
-                                     String       methodName) throws OMAGConfigurationErrorException
+                                     OMRSAuditLog auditLog) throws OMAGConfigurationErrorException
     {
         final String actionDescription = "Validating max page size during server initialization";
 
@@ -676,7 +861,7 @@ public class OMAGServerOperationalServices
             throw new OMAGConfigurationErrorException(ServerOpsErrorCode.BAD_MAX_PAGE_SIZE.getMessageDefinition(serverName,
                                                                                                                 Integer.toString(maxPageSize)),
                                                       this.getClass().getName(),
-                                                      methodName);
+                                                      actionDescription);
         }
     }
 
@@ -1140,16 +1325,16 @@ public class OMAGServerOperationalServices
         /*
          * Initialize the Open Lineage Services.  This is supports the storing and querying of asset lineage.
          */
-        else if (ServerTypeClassification.OPEN_LINEAGE_SERVER.equals(serverTypeClassification))
+        else if (ServerTypeClassification.LINEAGE_WAREHOUSE.equals(serverTypeClassification))
         {
             instance.setServerServiceActiveStatus(GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(), ServerActiveStatus.STARTING);
 
-            OpenLineageServerOperationalServices
-                    operationalOpenLineageServer = new OpenLineageServerOperationalServices(configuration.getLocalServerId(),
-                                                                                            configuration.getLocalServerName(),
-                                                                                            configuration.getLocalServerUserId(),
-                                                                                            configuration.getLocalServerPassword(),
-                                                                                            configuration.getMaxPageSize());
+            LineageWarehouseOperationalServices
+                    operationalOpenLineageServer = new LineageWarehouseOperationalServices(configuration.getLocalServerId(),
+                                                                                           configuration.getLocalServerName(),
+                                                                                           configuration.getLocalServerUserId(),
+                                                                                           configuration.getLocalServerPassword(),
+                                                                                           configuration.getMaxPageSize());
             instance.setOpenLineageOperationalServices(operationalOpenLineageServer);
             operationalOpenLineageServer.initialize(configuration.getOpenLineageServerConfig(),
                                                     operationalRepositoryServices.getAuditLog(
@@ -1171,14 +1356,14 @@ public class OMAGServerOperationalServices
      *
      * @param userId calling user
      * @param serverName name of this server
-     * @param methodName calling method
      * @param instance a list of the running services
      */
     private void cleanUpRunningServiceInstances(String                          userId,
                                                 String                          serverName,
-                                                String                          methodName,
                                                 OMAGOperationalServicesInstance instance)
     {
+        final String methodName = "cleanUpRunningServiceInstances";
+
         try
         {
             deactivateRunningServiceInstances(userId, serverName, methodName, instance, false);

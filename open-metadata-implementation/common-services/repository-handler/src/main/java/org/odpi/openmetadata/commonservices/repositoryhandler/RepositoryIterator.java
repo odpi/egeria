@@ -15,7 +15,7 @@ import java.util.Date;
 public class RepositoryIterator
 {
     /**
-     * Page size used when retrieving metadataion
+     * Page size used when retrieving metadata.
      */
     public static final int MAX_PAGE_SIZE = 500;
 

@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
+![Technical Preview](../../../images/egeria-content-status-tech-preview.png#pagewidth)
 
 # Governance Program Open Metadata Access Service (OMAS)
 

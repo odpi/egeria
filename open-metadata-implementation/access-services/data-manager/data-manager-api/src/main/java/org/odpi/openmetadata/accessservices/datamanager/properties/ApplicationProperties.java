@@ -50,7 +50,7 @@ public class ApplicationProperties extends SoftwareCapabilitiesProperties
         return "ApplicationProperties{" +
                        "displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
-                       ", typeDescription='" + getTypeDescription() + '\'' +
+                       ", typeDescription='" + getDeployedImplementationType() + '\'' +
                        ", version='" + getVersion() + '\'' +
                        ", patchLevel='" + getPatchLevel() + '\'' +
                        ", source='" + getSource() + '\'' +

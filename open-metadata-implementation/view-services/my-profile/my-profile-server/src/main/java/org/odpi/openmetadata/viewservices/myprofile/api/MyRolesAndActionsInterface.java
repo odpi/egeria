@@ -17,26 +17,6 @@ import java.util.List;
  */
 public interface MyRolesAndActionsInterface
 {
-
-    /**
-     * Return a list of the personal roles that the calling user is appointed to.
-     *
-     * @param userId     userId of user making request.
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
-     *
-     * @return list of personal role details
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    List<PersonalRoleElement> getMyPersonalRoles(String userId,
-                                                 int    startFrom,
-                                                 int    pageSize) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException;
-
     /**
      * Return a list of to dos assigned to the calling user.
      *
@@ -63,7 +43,7 @@ public interface MyRolesAndActionsInterface
      * Return a list of to dos assigned to the calling user.
      *
      * @param userId           userId of user making request.
-     * @param personalRoleGUID unique identifier of the user's role.
+     * @param actorGUID unique identifier of the user's actor.
      * @param status           status of the to do (null means current active)
      * @param startFrom        index of the list to start from (0 for start)
      * @param pageSize         maximum number of elements to return.
@@ -74,11 +54,11 @@ public interface MyRolesAndActionsInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<ToDoElement> getMyToDosByRole(String     userId,
-                                       String     personalRoleGUID,
-                                       ToDoStatus status,
-                                       int        startFrom,
-                                       int        pageSize) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException;
+    List<ToDoElement> getMyToDosByActor(String     userId,
+                                        String     actorGUID,
+                                        ToDoStatus status,
+                                        int        startFrom,
+                                        int        pageSize) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException;
 }

@@ -68,7 +68,7 @@ public class CollectionManagerAdmin extends ViewServiceAdmin
                                                           viewServiceConfig.getOMAGServerPlatformRootURL());
 
             auditLog.logMessage(actionDescription,
-                                CollectionManagerAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
+                                CollectionManagerAuditCode.SERVICE_INITIALIZED.getMessageDefinition(),
                                 viewServiceConfig.toString());
 
         }

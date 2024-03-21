@@ -20,8 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CommunityMembershipElement extends PersonalRoleElement
 {
-    private static final long    serialVersionUID = 1L;
-
     private CommunityMembershipType membershipType = null;
     private ElementStub             community      = null;
 

@@ -29,10 +29,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = GovernanceActionProcessProperties.class, name = "GovernanceActionProcessProperties"),
         })
-public class ReferenceableProperties implements Serializable
+public class ReferenceableProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String               qualifiedName        = null;
     private Map<String, String>  additionalProperties = null;
 

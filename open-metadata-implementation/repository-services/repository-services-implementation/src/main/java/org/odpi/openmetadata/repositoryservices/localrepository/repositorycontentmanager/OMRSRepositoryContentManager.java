@@ -8,51 +8,19 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EnumDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EnumElementDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OMRSRepositoryPropertiesUtilities;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventManager;
-import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
-import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
-import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventErrorCode;
-import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessor;
-import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventType;
+import org.odpi.openmetadata.repositoryservices.events.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidTypeDefException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSCheckedExceptionBase;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PatchErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefConflictException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.rest.server.OMRSRepositoryRESTServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * OMRSRepositoryContentManager supports an in-memory cache of TypeDefs for the local server.  It is used by the OMRS
@@ -541,8 +509,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @return list of supertype links or null if top level
      */
     public List<TypeDefLink>   getSuperTypes(String    sourceName,
-                                              String    typeName,
-                                              String    methodName)
+                                             String    typeName,
+                                             String    methodName)
     {
         final String  thisMethodName = "getSuperTypes";
 

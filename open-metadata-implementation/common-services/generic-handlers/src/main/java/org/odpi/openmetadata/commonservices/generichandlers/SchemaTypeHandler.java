@@ -958,6 +958,9 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                                            OpenMetadataProperty.QUALIFIED_NAME.name,
                                            builder,
                                            supportedZones,
+                                           true,
+                                           false,
+                                           null,
                                            methodName);
     }
 

@@ -21,9 +21,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class MetadataSourceRequestBody
 {
-    private String typeName           = null;
-    private String classificationName = null;
-    private String qualifiedName      = null;
+    private String typeName                   = null;
+    private String classificationName         = null;
+    private String qualifiedName              = null;
+    private String deployedImplementationType = null;
 
 
     /**
@@ -44,9 +45,10 @@ public class MetadataSourceRequestBody
     {
         if (template != null)
         {
-            typeName           = template.getTypeName();
-            classificationName = template.getClassificationName();
-            qualifiedName      = template.getQualifiedName();
+            typeName                   = template.getTypeName();
+            classificationName         = template.getClassificationName();
+            qualifiedName              = template.getQualifiedName();
+            deployedImplementationType = template.getDeployedImplementationType();
         }
     }
 
@@ -118,6 +120,28 @@ public class MetadataSourceRequestBody
 
 
     /**
+     * Return the description of the type of capability this is.
+     *
+     * @return string description
+     */
+    public String getDeployedImplementationType()
+    {
+        return deployedImplementationType;
+    }
+
+
+    /**
+     * Set up the description of the type of capability this is.
+     *
+     * @param deployedImplementationType string
+     */
+    public void setDeployedImplementationType(String deployedImplementationType)
+    {
+        this.deployedImplementationType = deployedImplementationType;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -126,10 +150,11 @@ public class MetadataSourceRequestBody
     public String toString()
     {
         return "NameRequestBody{" +
-                       "typeName='" + typeName + '\'' +
-                       ", classificationName='" + classificationName + '\'' +
-                       ", qualifiedName='" + qualifiedName + '\'' +
-                       '}';
+                "typeName='" + typeName + '\'' +
+                ", classificationName='" + classificationName + '\'' +
+                ", qualifiedName='" + qualifiedName + '\'' +
+                ", deployedImplementationType='" + deployedImplementationType + '\'' +
+                '}';
     }
 
 
@@ -153,7 +178,8 @@ public class MetadataSourceRequestBody
         MetadataSourceRequestBody that = (MetadataSourceRequestBody) objectToCompare;
         return Objects.equals(typeName, that.typeName) &&
                        Objects.equals(classificationName, that.classificationName) &&
-                       Objects.equals(qualifiedName, that.qualifiedName);
+                       Objects.equals(qualifiedName, that.qualifiedName) &&
+                Objects.equals(deployedImplementationType, that.deployedImplementationType);
     }
 
 
@@ -165,6 +191,6 @@ public class MetadataSourceRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(typeName, classificationName, qualifiedName);
+        return Objects.hash(typeName, classificationName, qualifiedName, deployedImplementationType);
     }
 }

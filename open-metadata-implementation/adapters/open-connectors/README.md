@@ -21,9 +21,6 @@ the open metadata configuration.
 * **[data-store-connectors](data-store-connectors)** contains OCF connectors to data stores on different
 data platforms.
 
-* **[discovery-service-connectors](discovery-service-connectors)** implementations of open discovery services
-from the [Open Discovery Framework (ODF)](../../frameworks/open-discovery-framework).
-
 * **[dynamic-archiver-connectors](dynamic-archiver-connectors)** implementations of archive services
 that run in the [Repository Governance OMES](../../engine-services/repository-governance).
 
@@ -50,6 +47,9 @@ These connectors enable the OMRS to be adapted to many different platforms.
 Java.
 
 * **[secrets-store-connectors](secrets-store-connectors)** provides connectors to access secrets (passwords, certificates etc) at runtime.
+
+* **[survey-action-connectors](survey-action-connectors)** implementations of survey action services
+  from the [Survey Action Framework (SAF)](../../frameworks/survey-action-framework).
 
 * **[system-connectors](system-connectors)** provides connectors to access data and function from different systems.
 

@@ -1686,17 +1686,17 @@ public class AssetOwnerResource
      */
     @GetMapping(path = "/assets/{assetGUID}/discovery-analysis-reports")
 
-    public DiscoveryAnalysisReportListResponse getDiscoveryAnalysisReports(@PathVariable String  serverName,
-                                                                           @PathVariable String  userId,
-                                                                           @PathVariable String  assetGUID,
-                                                                           @RequestParam int     startingFrom,
-                                                                           @RequestParam int     maximumResults)
+    public SurveyReportListResponse getDiscoveryAnalysisReports(@PathVariable String  serverName,
+                                                                @PathVariable String  userId,
+                                                                @PathVariable String  assetGUID,
+                                                                @RequestParam int     startingFrom,
+                                                                @RequestParam int     maximumResults)
     {
-        return restAPI.getDiscoveryAnalysisReports(serverName,
-                                                   userId,
-                                                   assetGUID,
-                                                   startingFrom,
-                                                   maximumResults);
+        return restAPI.getSurveyReports(serverName,
+                                        userId,
+                                        assetGUID,
+                                        startingFrom,
+                                        maximumResults);
     }
 
 
@@ -1725,12 +1725,12 @@ public class AssetOwnerResource
                                                                 @RequestParam int               maximumResults,
                                                                 @RequestBody  StatusRequestBody requestBody)
     {
-        return restAPI.getDiscoveryReportAnnotations(serverName,
-                                                     userId,
-                                                     discoveryReportGUID,
-                                                     startingFrom,
-                                                     maximumResults,
-                                                     requestBody);
+        return restAPI.getSurveyReportAnnotations(serverName,
+                                                  userId,
+                                                  discoveryReportGUID,
+                                                  startingFrom,
+                                                  maximumResults,
+                                                  requestBody);
     }
 
 

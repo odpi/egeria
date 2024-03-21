@@ -244,6 +244,9 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataProperty.QUALIFIED_NAME.name,
                                            roleBuilder,
                                            supportedZones,
+                                           true,
+                                           false,
+                                           null,
                                            methodName);
     }
 
@@ -1411,7 +1414,7 @@ public class PersonRoleHandler<B> extends ReferenceableHandler<B>
         return getBeanFromRepository(userId,
                                      personRoleGUID,
                                      personRoleGUIDParameterName,
-                                     OpenMetadataType.PERSON_TYPE_NAME,
+                                     OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                      forLineage,
                                      forDuplicateProcessing,
                                      effectiveTime,

@@ -392,6 +392,9 @@ public class DisplayDataContainerHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends 
                                                                                    qualifiedNameParameterName,
                                                                                    builder,
                                                                                    supportedZones,
+                                                                                   true,
+                                                                                   false,
+                                                                                   null,
                                                                                    methodName);
 
             if (dataContainerGUID != null)

@@ -1,0 +1,20 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    implementation 'org.slf4j:slf4j-api'
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-api')
+    implementation project(':open-metadata-implementation:common-services:ffdc-services')
+}
+
+description = 'Lineage Warehouse Services API and connector'
+
+java {
+    withJavadocJar()
+}

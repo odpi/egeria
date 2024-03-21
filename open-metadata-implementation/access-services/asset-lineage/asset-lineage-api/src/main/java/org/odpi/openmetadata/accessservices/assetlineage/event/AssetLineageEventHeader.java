@@ -30,8 +30,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = LineageSyncEvent.class, name = "LineageSyncEvent")
 })
 
-public abstract class AssetLineageEventHeader implements Serializable {
-
+public abstract class AssetLineageEventHeader
+{
     private long eventVersionId = 1L;
 
     private AssetLineageEventType assetLineageEventType;

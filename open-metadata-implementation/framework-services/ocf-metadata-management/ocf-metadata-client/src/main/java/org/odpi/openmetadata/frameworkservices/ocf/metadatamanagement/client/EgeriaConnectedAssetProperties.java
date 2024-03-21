@@ -18,10 +18,8 @@ import java.io.Serial;
 /**
  * EgeriaConnectedAssetProperties is associated with a Connector.  Connectors provide access to
  * assets.   EgeriaConnectedAssetProperties returns properties (metadata) about the connector's asset.
- *
  * It is a generic interface for all types of open metadata assets.  However, it assumes the asset's metadata model
  * inherits from <b>Asset</b> (see model 0010 in Area 0).
- *
  * The EgeriaConnectedAssetProperties returns metadata about the asset at three levels of detail:
  * <ul>
  *     <li><b>assetSummary</b> - used for displaying details of the asset in summary lists or hover text</li>
@@ -77,7 +75,7 @@ public class EgeriaConnectedAssetProperties extends ConnectedAssetProperties
         this.serviceName         = serviceName;
         this.remoteServerName    = remoteServerName;
         this.userId              = userId;
-        this.platformURLRoot       = platformURLRoot;
+        this.platformURLRoot     = platformURLRoot;
         this.connectorInstanceId = connectorInstanceId;
         this.connection          = connection;
         this.assetGUID           = assetGUID;
@@ -114,7 +112,7 @@ public class EgeriaConnectedAssetProperties extends ConnectedAssetProperties
         this.localServerUserId   = localServerUserId;
         this.localServerPassword = localServerPassword;
         this.userId              = userId;
-        this.platformURLRoot       = platformURLRoot;
+        this.platformURLRoot     = platformURLRoot;
         this.connectorInstanceId = connectorInstanceId;
         this.connection          = connection;
         this.assetGUID           = assetGUID;
@@ -139,7 +137,7 @@ public class EgeriaConnectedAssetProperties extends ConnectedAssetProperties
             this.userId              = template.userId;
             this.connection          = template.connection;
             this.connectorInstanceId = template.connectorInstanceId;
-            this.platformURLRoot       = template.platformURLRoot;
+            this.platformURLRoot     = template.platformURLRoot;
             this.assetGUID           = template.assetGUID;
         }
     }

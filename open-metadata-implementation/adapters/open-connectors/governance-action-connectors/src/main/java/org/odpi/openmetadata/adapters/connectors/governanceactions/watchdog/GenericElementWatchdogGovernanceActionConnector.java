@@ -7,7 +7,6 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.Governan
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.governanceaction.events.*;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
@@ -27,7 +26,6 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
 
     /**
      * Indicates that the governance action service is completely configured and can begin processing.
-     *
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() at the start of your overriding version.
      *
@@ -91,8 +89,9 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                                 previousElementProperties = metadataElementEvent.getPreviousMetadataElement().getElementProperties();
                             }
 
-                            requestParameters.put("ChangedProperties", this.diffProperties(previousElementProperties,
-                                                                                           metadataElementEvent.getMetadataElement().getElementProperties()));
+                            requestParameters.put(GenericElementRequestParameter.CHANGED_PROPERTIES.getName(),
+                                                  this.diffProperties(previousElementProperties,
+                                                                      metadataElementEvent.getMetadataElement().getElementProperties()));
 
                             initiateProcess(updatedElementProcessName,
                                             requestParameters,
@@ -141,7 +140,7 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                             }
                         }
 
-                        if (GenericElementWatchdogGovernanceActionProvider.PROCESS_SINGLE_EVENT.equals(governanceContext.getRequestType()))
+                        if (GenericElementRequestType.PROCESS_SINGLE_EVENT.getRequestType().equals(governanceContext.getRequestType()))
                         {
                             completed = true;
                         }
@@ -174,6 +173,8 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                             actionTarget.setActionTargetName(actionTargetName);
                             actionTarget.setActionTargetGUID(end1GUID);
                             actionTargets.add(actionTarget);
+
+                            actionTarget = new NewActionTarget();
 
                             actionTarget.setActionTargetName(actionTargetTwoName);
                             actionTarget.setActionTargetGUID(end2GUID);
@@ -208,7 +209,7 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                                                 actionTargets);
                             }
 
-                            if (GenericElementWatchdogGovernanceActionProvider.PROCESS_SINGLE_EVENT.equals(governanceContext.getRequestType()))
+                            if (GenericElementRequestType.PROCESS_SINGLE_EVENT.getRequestType().equals(governanceContext.getRequestType()))
                             {
                                 completed = true;
                             }
@@ -221,9 +222,9 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                 try
                 {
                     List<String> outputGuards = new ArrayList<>();
-                    outputGuards.add(GenericWatchdogGovernanceActionProvider.MONITORING_FAILED);
+                    outputGuards.add(GenericWatchdogGuard.MONITORING_FAILED.getName());
 
-                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards, null, null, error.getMessage());
+                    governanceContext.recordCompletionStatus(GenericWatchdogGuard.MONITORING_FAILED.getCompletionStatus(), outputGuards, null, null, error.getMessage());
                 }
                 catch (Exception completionError)
                 {
@@ -243,9 +244,9 @@ public class GenericElementWatchdogGovernanceActionConnector extends GenericWatc
                 try
                 {
                     List<String> outputGuards = new ArrayList<>();
-                    outputGuards.add(GenericElementWatchdogGovernanceActionProvider.MONITORING_STOPPED);
+                    outputGuards.add(GenericWatchdogGuard.MONITORING_STOPPED.getName());
 
-                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards);
+                    governanceContext.recordCompletionStatus(GenericWatchdogGuard.MONITORING_STOPPED.getCompletionStatus(), outputGuards);
                 }
                 catch (Exception error)
                 {

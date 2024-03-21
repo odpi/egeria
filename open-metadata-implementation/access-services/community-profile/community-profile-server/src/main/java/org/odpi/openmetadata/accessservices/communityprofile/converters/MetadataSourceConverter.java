@@ -74,7 +74,7 @@ public class MetadataSourceConverter<B> extends CommunityProfileOMASConverter<B>
                     metadataSourceProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                     metadataSourceProperties.setDisplayName(this.removeName(instanceProperties));
                     metadataSourceProperties.setDescription(this.removeDescription(instanceProperties));
-                    metadataSourceProperties.setTypeDescription(this.removeCapabilityType(instanceProperties));
+                    metadataSourceProperties.setDeployedImplementationType(this.removeCapabilityType(instanceProperties));
                     metadataSourceProperties.setVersion(this.removeCapabilityVersion(instanceProperties));
                     metadataSourceProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
                     metadataSourceProperties.setSource(this.removeSource(instanceProperties));

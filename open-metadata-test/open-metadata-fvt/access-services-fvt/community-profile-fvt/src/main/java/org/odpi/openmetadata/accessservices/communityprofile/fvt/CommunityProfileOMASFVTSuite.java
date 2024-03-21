@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.fvt;
 import org.odpi.openmetadata.accessservices.communityprofile.fvt.clientconstructors.ClientConstructorTest;
 import org.odpi.openmetadata.accessservices.communityprofile.fvt.profiles.CreateProfileTest;
 import org.odpi.openmetadata.accessservices.communityprofile.fvt.errorhandling.InvalidParameterTest;
+import org.odpi.openmetadata.accessservices.communityprofile.fvt.todos.ToDosTest;
 import org.odpi.openmetadata.accessservices.communityprofile.fvt.validvalues.CreateValidValuesSetTest;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.FVTSuiteBase;
@@ -92,6 +93,13 @@ public class CommunityProfileOMASFVTSuite extends FVTSuiteBase
         results.printResults(serverName);
 
         results = CreateProfileTest.performFVT(serverName, serverPlatformRootURL, userId);
+        if (! results.isSuccessful())
+        {
+            returnCode --;
+        }
+        results.printResults(serverName);
+
+        results = ToDosTest.performFVT(serverName, serverPlatformRootURL, userId);
         if (! results.isSuccessful())
         {
             returnCode --;

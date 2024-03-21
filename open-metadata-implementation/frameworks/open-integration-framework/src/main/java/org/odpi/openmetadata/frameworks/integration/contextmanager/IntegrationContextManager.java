@@ -22,6 +22,7 @@ public class IntegrationContextManager
     protected String                       partnerOMASPlatformRootURL   = null;
     protected String                       partnerOMASServerName        = null;
     protected OpenIntegrationClient        openIntegrationClient        = null;
+    protected ConnectedAssetContext        connectedAssetContext        = null;
     protected OpenMetadataClient           openMetadataStoreClient      = null;
     protected String                       localServerUserId            = null;
     protected String                       localServerPassword          = null;
@@ -93,11 +94,12 @@ public class IntegrationContextManager
      */
     protected String setUpMetadataSource(String   metadataSourceQualifiedName,
                                          String   typeName,
-                                         String   classificationName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                         String   classificationName,
+                                         String   deployedImplementationType) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
-        if (openIntegrationClient != null)
+        if ((openIntegrationClient != null) && (metadataSourceQualifiedName != null))
         {
             String metadataSourceGUID = openIntegrationClient.getMetadataSourceGUID(localServerUserId, metadataSourceQualifiedName);
 
@@ -106,7 +108,8 @@ public class IntegrationContextManager
                 metadataSourceGUID = openIntegrationClient.createMetadataSource(localServerUserId,
                                                                                 typeName,
                                                                                 classificationName,
-                                                                                metadataSourceQualifiedName);
+                                                                                metadataSourceQualifiedName,
+                                                                                deployedImplementationType);
             }
 
             return metadataSourceGUID;
@@ -146,7 +149,10 @@ public class IntegrationContextManager
     {
         IntegrationContext integrationContext = null;
 
-        String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName, null, null);
+        String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName,
+                                                             null,
+                                                             null,
+                                                             null);
         String externalSourceName = metadataSourceQualifiedName;
 
         if (externalSourceGUID == null)

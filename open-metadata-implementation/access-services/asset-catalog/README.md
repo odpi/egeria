@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-![TechPreview](../../../images/egeria-content-status-deprecated.png#pagewidth)
+![Deprecated](../../../images/egeria-content-status-deprecated.png#pagewidth)
 
 # Asset Catalog Open Metadata Access Service (OMAS)
 

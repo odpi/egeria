@@ -33,15 +33,17 @@ public class OpenMetadataAccess extends OpenMetadataStore
      * @param userId calling user
      * @param externalSourceGUID unique identifier for external source (or null)
      * @param externalSourceName unique name for external source (or null)
+     * @param originatorGUID unique identifier of the source of the to do
      * @param reportWriter report writer (maybe null)
      */
     public OpenMetadataAccess(OpenMetadataClient      openMetadataClient,
                               String                  userId,
                               String                  externalSourceGUID,
                               String                  externalSourceName,
+                              String                  originatorGUID,
                               IntegrationReportWriter reportWriter)
     {
-        super(openMetadataClient, userId, externalSourceGUID, externalSourceName);
+        super(openMetadataClient, userId, externalSourceGUID, externalSourceName, originatorGUID);
 
         this.reportWriter = reportWriter;
     }
@@ -58,8 +60,6 @@ public class OpenMetadataAccess extends OpenMetadataStore
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
-     *                     connection etc.)
      *
      * @return unique identifier of the new metadata element
      *
@@ -71,17 +71,15 @@ public class OpenMetadataAccess extends OpenMetadataStore
                                                ElementStatus     initialStatus,
                                                Date              effectiveFrom,
                                                Date              effectiveTo,
-                                               ElementProperties properties,
-                                               String            templateGUID) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+                                               ElementProperties properties) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         String metadataElementGUID = super.createMetadataElementInStore(metadataElementTypeName,
                                                                         initialStatus,
                                                                         effectiveFrom,
                                                                         effectiveTo,
-                                                                        properties,
-                                                                        templateGUID);
+                                                                        properties);
 
         if ((metadataElementGUID != null) && (reportWriter != null))
         {
@@ -103,11 +101,11 @@ public class OpenMetadataAccess extends OpenMetadataStore
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
      * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
      *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
-     *                     connection etc.)
      * @param parentGUID unique identifier of optional parent entity
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
@@ -123,10 +121,10 @@ public class OpenMetadataAccess extends OpenMetadataStore
                                                ElementStatus                  initialStatus,
                                                Map<String, ElementProperties> initialClassifications,
                                                String                         anchorGUID,
+                                               boolean                        isOwnAnchor,
                                                Date                           effectiveFrom,
                                                Date                           effectiveTo,
                                                ElementProperties              properties,
-                                               String                         templateGUID,
                                                String                         parentGUID,
                                                String                         parentRelationshipTypeName,
                                                ElementProperties              parentRelationshipProperties,
@@ -138,10 +136,10 @@ public class OpenMetadataAccess extends OpenMetadataStore
                                                                         initialStatus,
                                                                         initialClassifications,
                                                                         anchorGUID,
+                                                                        isOwnAnchor,
                                                                         effectiveFrom,
                                                                         effectiveTo,
                                                                         properties,
-                                                                        templateGUID,
                                                                         parentGUID,
                                                                         parentRelationshipTypeName,
                                                                         parentRelationshipProperties,

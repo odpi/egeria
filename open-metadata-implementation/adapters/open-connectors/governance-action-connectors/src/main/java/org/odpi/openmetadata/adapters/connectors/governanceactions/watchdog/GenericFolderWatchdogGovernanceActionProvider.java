@@ -5,18 +5,18 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog;
 
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.actiontargettype.ActionTargetType;
+import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
  * GenericFolderWatchdogGovernanceActionProvider is the OCF connector provider for the Generic Folder Watchdog Governance Action Service.
  * This is a Watchdog Governance Action Service.
  */
-public class GenericFolderWatchdogGovernanceActionProvider extends GenericWatchdogGovernanceActionProvider
+public class GenericFolderWatchdogGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {
     private static final String  connectorTypeGUID = "b4629f05-710c-492b-bc9c-6e3f89e002df";
     private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Watchdog:GenericFolder";
@@ -27,14 +27,9 @@ public class GenericFolderWatchdogGovernanceActionProvider extends GenericWatchd
      * The folder to monitor can be passed as a GUID in the configuration properties or
      * request parameters.  Alternatively as an action target.
      */
-    static final String FOLDER_NAME_PROPERTY   = "folderName";
-    static final String FOLDER_TARGET_PROPERTY = "folderTarget";
+    static final String FOLDER_TARGET_PROPERTY = "watchedFolder";
+    static final String FOLDER_TARGET_PROPERTY_DESCRIPTION = "This action target identifies the folder asset to watch.";
 
-    /*
-     * Does the asset need to be directly within the folder or can it be in a nested folder?
-     */
-    static final String DIRECT_REQUEST_TYPE   = "watch-member-of-folder";
-    static final String NESTED_REQUEST_TYPE   = "watch-nested-in-folder";
 
     private static final String connectorClassName = GenericFolderWatchdogGovernanceActionConnector.class.getName();
 
@@ -48,29 +43,21 @@ public class GenericFolderWatchdogGovernanceActionProvider extends GenericWatchd
         super();
         super.setConnectorClassName(connectorClassName);
 
-        supportedRequestTypes = new ArrayList<>();
-        supportedRequestTypes.add(DIRECT_REQUEST_TYPE);
-        supportedRequestTypes.add(NESTED_REQUEST_TYPE);
+        supportedRequestTypes = GenericFolderRequestType.getRequestTypeTypes();
 
-        supportedRequestParameters = new ArrayList<>();
-        supportedRequestParameters.add(CHANGED_PROPERTY_NAMES);
-        supportedRequestParameters.add(ACTION_TARGET_NAME_PROPERTY);
-        supportedRequestParameters.add(ACTION_TARGET_TWO_NAME_PROPERTY);
-        supportedRequestParameters.add(FOLDER_NAME_PROPERTY);
-        supportedRequestParameters.add(NEW_ELEMENT_PROCESS_NAME_PROPERTY);
-        supportedRequestParameters.add(UPDATED_ELEMENT_PROCESS_NAME_PROPERTY);
-        supportedRequestParameters.add(DELETED_ELEMENT_PROCESS_NAME_PROPERTY);
-        supportedRequestParameters.add(CLASSIFIED_ELEMENT_PROCESS_NAME_PROPERTY);
-        supportedRequestParameters.add(RECLASSIFIED_ELEMENT_PROCESS_NAME_PROPERTY);
-        supportedRequestParameters.add(DECLASSIFIED_ELEMENT_PROCESS_NAME_PROPERTY);
+        supportedRequestParameters = GenericFolderRequestParameter.getRequestParameterTypes();
 
-        supportedTargetActionNames = new ArrayList<>();
-        supportedTargetActionNames.add(FOLDER_TARGET_PROPERTY);
+        supportedActionTargetTypes = new ArrayList<>();
+        ActionTargetType actionTargetType = new ActionTargetType();
 
-        supportedGuards = new ArrayList<>();
-        supportedGuards.add(MONITORING_COMPLETE);
-        supportedGuards.add(MONITORING_FAILED);
-        supportedGuards.add(MONITORING_STOPPED);
+        actionTargetType.setName(FOLDER_TARGET_PROPERTY);
+        actionTargetType.setDescription(FOLDER_TARGET_PROPERTY_DESCRIPTION);
+        actionTargetType.setTypeName(DeployedImplementationType.FILE_FOLDER.getAssociatedTypeName());
+        actionTargetType.setDeployedImplementationType(DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType());
+
+        super.supportedActionTargetTypes.add(actionTargetType);
+
+        producedGuards = GenericWatchdogGuard.getGuardTypes();
 
         super.setConnectorClassName(connectorClassName);
 
@@ -84,25 +71,17 @@ public class GenericFolderWatchdogGovernanceActionProvider extends GenericWatchd
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
 
         List<String> recognizedConfigurationProperties = new ArrayList<>();
-        recognizedConfigurationProperties.add(FOLDER_NAME_PROPERTY);
-        recognizedConfigurationProperties.add(ACTION_TARGET_NAME_PROPERTY);
-        recognizedConfigurationProperties.add(ACTION_TARGET_TWO_NAME_PROPERTY);
-        recognizedConfigurationProperties.add(NEW_ELEMENT_PROCESS_NAME_PROPERTY);
-        recognizedConfigurationProperties.add(UPDATED_ELEMENT_PROCESS_NAME_PROPERTY);
-        recognizedConfigurationProperties.add(DELETED_ELEMENT_PROCESS_NAME_PROPERTY);
-        recognizedConfigurationProperties.add(CLASSIFIED_ELEMENT_PROCESS_NAME_PROPERTY);
-        recognizedConfigurationProperties.add(RECLASSIFIED_ELEMENT_PROCESS_NAME_PROPERTY);
-        recognizedConfigurationProperties.add(DECLASSIFIED_ELEMENT_PROCESS_NAME_PROPERTY);
+        recognizedConfigurationProperties.add(GenericFolderRequestParameter.FOLDER_NAME.getName());
+        recognizedConfigurationProperties.add(GenericFolderRequestParameter.ACTION_TARGET_NAME.getName());
+        recognizedConfigurationProperties.add(GenericFolderRequestParameter.ACTION_TARGET_TWO_NAME.getName());
+        recognizedConfigurationProperties.add(GenericFolderRequestParameter.NEW_ELEMENT_PROCESS_NAME.getName());
+        recognizedConfigurationProperties.add(GenericFolderRequestParameter.UPDATED_ELEMENT_PROCESS_NAME.getName());
+        recognizedConfigurationProperties.add(GenericFolderRequestParameter.DELETED_ELEMENT_PROCESS_NAME.getName());
+        recognizedConfigurationProperties.add(GenericFolderRequestParameter.CLASSIFIED_ELEMENT_PROCESS_NAME.getName());
+        recognizedConfigurationProperties.add(GenericFolderRequestParameter.RECLASSIFIED_ELEMENT_PROCESS_NAME.getName());
+        recognizedConfigurationProperties.add(GenericFolderRequestParameter.DECLASSIFIED_ELEMENT_PROCESS_NAME.getName());
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 
         super.connectorTypeBean = connectorType;
-
-        actionTargetTypes = new HashMap<>();
-        ActionTargetType actionTargetType = new ActionTargetType();
-
-        actionTargetType.setTypeName(DeployedImplementationType.FILE_FOLDER.getAssociatedTypeName());
-        actionTargetType.setDeployedImplementationType(DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType());
-
-        super.actionTargetTypes.put(FOLDER_TARGET_PROPERTY, actionTargetType);
     }
 }

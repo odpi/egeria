@@ -58,9 +58,8 @@ public class UserIdentityConverter<B> extends CommunityProfileOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof UserIdentityElement)
+            if (returnBean instanceof UserIdentityElement bean)
             {
-                UserIdentityElement    bean       = (UserIdentityElement) returnBean;
                 UserIdentityProperties properties = new UserIdentityProperties();
 
                 if (entity != null)

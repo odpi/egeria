@@ -97,7 +97,6 @@ public class GovernanceActionProcessStepConverter<B> extends OpenMetadataStoreCo
                     actionTypeProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
                     actionTypeProperties.setDisplayName(this.removeDisplayName(instanceProperties));
                     actionTypeProperties.setDescription(this.removeDescription(instanceProperties));
-                    actionTypeProperties.setSupportedGuards(this.removeProducedGuards(instanceProperties));
                     actionTypeProperties.setIgnoreMultipleTriggers(this.removeIgnoreMultipleTriggers(instanceProperties));
                     actionTypeProperties.setWaitTime(this.removeWaitTime(instanceProperties));
                 }
@@ -111,7 +110,7 @@ public class GovernanceActionProcessStepConverter<B> extends OpenMetadataStoreCo
                     InstanceProperties instanceProperties = new InstanceProperties(relationship.getProperties());
 
                     actionTypeProperties.setRequestType(this.removeRequestType(instanceProperties));
-                    actionTypeProperties.setRequestParameters(this.removeRequestParameters(instanceProperties));
+                    actionTypeProperties.setFixedRequestParameters(this.removeRequestParameters(instanceProperties));
 
                     EntityProxy entityProxy = relationship.getEntityTwoProxy();
 

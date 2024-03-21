@@ -25,7 +25,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class CommentResponse extends OCFOMASAPIResponse
 {
     private Comment comment    = null;
-    private int     replyCount = 0;
 
 
     /**
@@ -46,7 +45,6 @@ public class CommentResponse extends OCFOMASAPIResponse
         if (template != null)
         {
             this.comment = template.getComment();
-            this.replyCount = template.getReplyCount();
         }
     }
 
@@ -74,28 +72,6 @@ public class CommentResponse extends OCFOMASAPIResponse
 
 
     /**
-     * Return the count of the replies to the comment.
-     *
-     * @return int
-     */
-    public int getReplyCount()
-    {
-        return replyCount;
-    }
-
-
-    /**
-     * Set up the count of the replies to the comment.
-     *
-     * @param replyCount int
-     */
-    public void setReplyCount(int replyCount)
-    {
-        this.replyCount = replyCount;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -105,7 +81,6 @@ public class CommentResponse extends OCFOMASAPIResponse
     {
         return "CommentResponse{" +
                 "comment=" + comment +
-                ", replyCount=" + replyCount +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
@@ -138,8 +113,7 @@ public class CommentResponse extends OCFOMASAPIResponse
             return false;
         }
         CommentResponse that = (CommentResponse) objectToCompare;
-        return getReplyCount() == that.getReplyCount() &&
-                Objects.equals(getComment(), that.getComment());
+        return Objects.equals(getComment(), that.getComment());
     }
 
 
@@ -151,6 +125,6 @@ public class CommentResponse extends OCFOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(getComment(), getReplyCount());
+        return Objects.hash(getComment());
     }
 }

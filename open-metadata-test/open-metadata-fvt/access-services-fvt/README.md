@@ -14,7 +14,7 @@ ensure they function correctly.  Each aims to test the client-server dependency 
 * **[data-manager-fvt](data-manager-fvt)** - provides the resources to run Data Manager OMAS FVTs.
 * **[digital-architecture-fvt](digital-architecture-fvt)** - provides the resources to run Digital Architecture FVTs.
 * **[discovery-engine-fvt](discovery-engine-fvt)** - provides the resources to run Discovery Engine OMAS FVTs.
-* **[governance-engine-fvt](governance-engine-fvt)** - provides the resources to run Governance Engine OMAS FVTs.
+* **[governance-server-fvt](governance-server-fvt)** - provides the resources to run Governance Engine OMAS FVTs.
 * **[governance-program-fvt](governance-program-fvt)** - provides the resources to run Governance Program OMAS FVTs.
 * **[stewardship-action-fvt](stewardship-action-fvt)** - provides the resources to run Stewardship Action OMAS FVTs.
 * **[subject-area-fvt](subject-area-fvt)** - provides the resources to run Subject Area OMAS FVTs. 

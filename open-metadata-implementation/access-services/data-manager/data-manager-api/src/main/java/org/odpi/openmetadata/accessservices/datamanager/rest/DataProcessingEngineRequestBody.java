@@ -121,7 +121,7 @@ public class DataProcessingEngineRequestBody extends DataProcessingEnginePropert
                        ", externalSourceName='" + externalSourceName + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
-                       ", typeDescription='" + getTypeDescription() + '\'' +
+                       ", typeDescription='" + getDeployedImplementationType() + '\'' +
                        ", version='" + getVersion() + '\'' +
                        ", patchLevel='" + getPatchLevel() + '\'' +
                        ", source='" + getSource() + '\'' +

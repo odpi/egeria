@@ -45,6 +45,7 @@ public class ViewServiceConfig extends OMAGServerClientConfig
     private String                         viewServiceURLMarker         = null;
     private String                         viewServiceDescription       = null;
     private String                         viewServiceWiki              = null;
+    private String                         viewServicePartnerService    = null;
     private ServiceOperationalStatus       viewServiceOperationalStatus = null;
     private Map<String, Object>            viewServiceOptions           = null;
 
@@ -76,7 +77,8 @@ public class ViewServiceConfig extends OMAGServerClientConfig
             viewServiceName = template.getViewServiceName();
             viewServiceURLMarker = template.getViewServiceURLMarker();
             viewServiceDescription = template.getViewServiceDescription();
-            viewServiceWiki = template.getViewServiceWiki();
+            viewServiceWiki              = template.getViewServiceWiki();
+            viewServicePartnerService    = template.getViewServicePartnerService();
             viewServiceOperationalStatus = template.getViewServiceOperationalStatus();
             viewServiceOptions = template.getViewServiceOptions();
         }
@@ -99,6 +101,7 @@ public class ViewServiceConfig extends OMAGServerClientConfig
         this.viewServiceAdminClass = viewRegistration.getViewServiceAdminClassName();
         this.viewServiceDescription = viewRegistration.getViewServiceDescription();
         this.viewServiceWiki = viewRegistration.getViewServiceWiki();
+        this.viewServicePartnerService = viewRegistration.getViewServicePartnerService();
         this.viewServiceOperationalStatus = viewRegistration.getViewServiceOperationalStatus();
     }
 
@@ -284,6 +287,28 @@ public class ViewServiceConfig extends OMAGServerClientConfig
 
 
     /**
+     * Return the full name of the service (typically Open Metadata Access Service (OMAS)) that this view service is partnered with.
+     *
+     * @return Full name of OMAS
+     */
+    public String getViewServicePartnerService()
+    {
+        return viewServicePartnerService;
+    }
+
+
+    /**
+     * Set up the full name of the service (typically Open Metadata Access Service (OMAS)) that this view service is partnered with.
+     *
+     * @param viewServicePartnerService Full name of OMAS
+     */
+    public void setViewServicePartnerService(String viewServicePartnerService)
+    {
+        this.viewServicePartnerService = viewServicePartnerService;
+    }
+
+
+    /**
      * Return the status of this view service.
      *
      * @return viewServiceOperationalStatus enum
@@ -354,6 +379,7 @@ public class ViewServiceConfig extends OMAGServerClientConfig
                        ", viewServiceURLMarker='" + viewServiceURLMarker + '\'' +
                        ", viewServiceDescription='" + viewServiceDescription + '\'' +
                        ", viewServiceWiki='" + viewServiceWiki + '\'' +
+                       ", viewServicePartnerService='" + viewServicePartnerService + '\'' +
                        ", viewServiceOperationalStatus=" + viewServiceOperationalStatus +
                        ", viewServiceOptions=" + viewServiceOptions +
                        ", OMAGServerPlatformRootURL='" + getOMAGServerPlatformRootURL() + '\'' +
@@ -392,6 +418,7 @@ public class ViewServiceConfig extends OMAGServerClientConfig
                        Objects.equals(viewServiceURLMarker, that.viewServiceURLMarker) &&
                        Objects.equals(viewServiceDescription, that.viewServiceDescription) &&
                        Objects.equals(viewServiceWiki, that.viewServiceWiki) &&
+                       Objects.equals(viewServicePartnerService, that.viewServicePartnerService) &&
                        viewServiceOperationalStatus == that.viewServiceOperationalStatus &&
                        Objects.equals(viewServiceOptions, that.viewServiceOptions);
     }
@@ -406,7 +433,7 @@ public class ViewServiceConfig extends OMAGServerClientConfig
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), viewServiceId, viewServiceDevelopmentStatus, viewServiceAdminClass, viewServiceName,
-                            viewServiceFullName,
-                            viewServiceURLMarker, viewServiceDescription, viewServiceWiki, viewServiceOperationalStatus, viewServiceOptions);
+                            viewServiceFullName, viewServiceURLMarker, viewServiceDescription, viewServiceWiki,
+                            viewServicePartnerService, viewServiceOperationalStatus, viewServiceOptions);
     }
 }

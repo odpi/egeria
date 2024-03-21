@@ -19,6 +19,12 @@ These modules create utilities that produce reports for different aspects of the
 
 * **[database-report](database-report)** - a utility to report on the databases catalogued in open metadata.
 
+* **[survey-report](survey-report)** - a utility to extract details of the 
+[Survey Report](https://egeria-project.org/concepts/survey-report/) attached to an asset.
+
+* **[valid-values-report](valid-values-report)** - the valid values report retrieves the reference data
+contained within a valid value set.
+
 * **[report-utilities](report-utilities)** - provide common formatting functions used in the reports.
 
 

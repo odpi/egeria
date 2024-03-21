@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ProfileIdentityProperties;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -21,12 +20,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ProfileIdentityElement implements Serializable
+public class ProfileIdentityElement
 {
-    private static final long     serialVersionUID = 1L;
-
     private ProfileIdentityProperties profileIdentity = null;
-    private UserIdentityElement       properties    = null;
+    private UserIdentityElement       userIdentity    = null;
 
 
     /**
@@ -48,7 +45,7 @@ public class ProfileIdentityElement implements Serializable
         if (template != null)
         {
             profileIdentity = template.getProfileIdentity();
-            properties = template.getProperties();
+            userIdentity    = template.getUserIdentity();
         }
     }
 
@@ -80,20 +77,20 @@ public class ProfileIdentityElement implements Serializable
      *
      * @return properties
      */
-    public UserIdentityElement getProperties()
+    public UserIdentityElement getUserIdentity()
     {
-        return properties;
+        return userIdentity;
     }
 
 
     /**
      * Set up the userId properties.
      *
-     * @param properties  properties
+     * @param userIdentity  properties
      */
-    public void setProperties(UserIdentityElement properties)
+    public void setUserIdentity(UserIdentityElement userIdentity)
     {
-        this.properties = properties;
+        this.userIdentity = userIdentity;
     }
 
 
@@ -107,7 +104,7 @@ public class ProfileIdentityElement implements Serializable
     {
         return "ProfileIdentityElement{" +
                        "profileIdentity=" + profileIdentity +
-                       ", properties=" + properties +
+                       ", properties=" + userIdentity +
                        '}';
     }
 
@@ -131,7 +128,7 @@ public class ProfileIdentityElement implements Serializable
         }
         ProfileIdentityElement that = (ProfileIdentityElement) objectToCompare;
         return Objects.equals(profileIdentity, that.profileIdentity) &&
-                       Objects.equals(properties, that.properties);
+                       Objects.equals(userIdentity, that.userIdentity);
     }
 
 
@@ -143,6 +140,6 @@ public class ProfileIdentityElement implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), profileIdentity, properties);
+        return Objects.hash(super.hashCode(), profileIdentity, userIdentity);
     }
 }

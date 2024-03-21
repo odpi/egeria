@@ -118,10 +118,10 @@ public class AnnotationStore
                                                                                ElementStatus.ACTIVE,
                                                                                null,
                                                                                assetGUID,
+                                                                               false,
                                                                                null,
                                                                                null,
                                                                                properties,
-                                                                               null,
                                                                                assetGUID,
                                                                                OpenMetadataType.ASSET_SURVEY_REPORT_RELATIONSHIP.typeName,
                                                                                null,
@@ -680,10 +680,10 @@ public class AnnotationStore
                                                                                    ElementStatus.ACTIVE,
                                                                                    null,
                                                                                    surveyReportGUID,
+                                                                                   false,
                                                                                    null,
                                                                                    null,
                                                                                    builder.getElementProperties(),
-                                                                                   null,
                                                                                    surveyReportGUID,
                                                                                    OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
                                                                                    null,
@@ -700,9 +700,31 @@ public class AnnotationStore
                             openMetadataStore.createRelatedElementsInStore(userId,
                                                                            externalSourceGUID,
                                                                            externalSourceName,
-                                                                           OpenMetadataType.DATA_PROFILE_DATA_RELATIONSHIP.typeName,
+                                                                           OpenMetadataType.RESOURCE_PROFILE_DATA_RELATIONSHIP.typeName,
                                                                            annotationGUID,
                                                                            dataProfileDataGUID,
+                                                                           forLineage,
+                                                                           forDuplicateProcessing,
+                                                                           null,
+                                                                           null,
+                                                                           null,
+                                                                           this.getEffectiveTime());
+                        }
+                    }
+                }
+
+                if (builder.getRequestForActionTargetGUIDs() != null)
+                {
+                    for (String requestForActionTargetGUID : builder.getRequestForActionTargetGUIDs())
+                    {
+                        if (requestForActionTargetGUID != null)
+                        {
+                            openMetadataStore.createRelatedElementsInStore(userId,
+                                                                           externalSourceGUID,
+                                                                           externalSourceName,
+                                                                           OpenMetadataType.REQUEST_FOR_ACTION_TARGET.typeName,
+                                                                           annotationGUID,
+                                                                           requestForActionTargetGUID,
                                                                            forLineage,
                                                                            forDuplicateProcessing,
                                                                            null,
@@ -865,42 +887,42 @@ public class AnnotationStore
                                                       dataClassAnnotation.getMatchingValues(),
                                                       dataClassAnnotation.getNonMatchingValues());
             }
-            else if (annotation instanceof DataProfileLogAnnotation dataProfileLogAnnotation)
+            else if (annotation instanceof ResourceProfileLogAnnotation resourceProfileLogAnnotation)
             {
-                builder.setDataProfileLogSubtypeProperties(OpenMetadataType.DATA_PROFILE_LOG_ANNOTATION.typeName,
-                                                           dataProfileLogAnnotation.getDataProfileLogGUIDs());
+                builder.setDataProfileLogSubtypeProperties(OpenMetadataType.RESOURCE_PROFILE_LOG_ANNOTATION.typeName,
+                                                           resourceProfileLogAnnotation.getResourceProfileLogGUIDs());
             }
-            else if (annotation instanceof DataProfileAnnotation dataProfileAnnotation)
+            else if (annotation instanceof ResourceProfileAnnotation resourceProfileAnnotation)
             {
-                builder.setDataProfileSubtypeProperties(OpenMetadataType.DATA_PROFILE_ANNOTATION.typeName,
-                                                        dataProfileAnnotation.getLength(),
-                                                        dataProfileAnnotation.getInferredDataType(),
-                                                        dataProfileAnnotation.getInferredFormat(),
-                                                        dataProfileAnnotation.getInferredLength(),
-                                                        dataProfileAnnotation.getInferredPrecision(),
-                                                        dataProfileAnnotation.getInferredScale(),
-                                                        dataProfileAnnotation.getProfileProperties(),
-                                                        dataProfileAnnotation.getProfileFlags(),
-                                                        dataProfileAnnotation.getProfileCounts(),
-                                                        dataProfileAnnotation.getValueList(),
-                                                        dataProfileAnnotation.getValueCount(),
-                                                        dataProfileAnnotation.getValueRangeFrom(),
-                                                        dataProfileAnnotation.getValueRangeTo(),
-                                                        dataProfileAnnotation.getAverageValue());
+                builder.setDataProfileSubtypeProperties(OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
+                                                        resourceProfileAnnotation.getLength(),
+                                                        resourceProfileAnnotation.getInferredDataType(),
+                                                        resourceProfileAnnotation.getInferredFormat(),
+                                                        resourceProfileAnnotation.getInferredLength(),
+                                                        resourceProfileAnnotation.getInferredPrecision(),
+                                                        resourceProfileAnnotation.getInferredScale(),
+                                                        resourceProfileAnnotation.getProfileProperties(),
+                                                        resourceProfileAnnotation.getProfileFlags(),
+                                                        resourceProfileAnnotation.getProfileCounts(),
+                                                        resourceProfileAnnotation.getValueList(),
+                                                        resourceProfileAnnotation.getValueCount(),
+                                                        resourceProfileAnnotation.getValueRangeFrom(),
+                                                        resourceProfileAnnotation.getValueRangeTo(),
+                                                        resourceProfileAnnotation.getAverageValue());
             }
-            else if (annotation instanceof DataSourcePhysicalStatusAnnotation dataSourcePhysicalStatusAnnotation)
+            else if (annotation instanceof ResourcePhysicalStatusAnnotation dataSourcePhysicalStatusAnnotation)
             {
-                builder.setDataSourcePhysicalStatusSubtypeProperties(OpenMetadataType.DS_PHYSICAL_STATUS_ANNOTATION.typeName,
-                                                                     dataSourcePhysicalStatusAnnotation.getDataSourceProperties(),
+                builder.setDataSourcePhysicalStatusSubtypeProperties(OpenMetadataType.RESOURCE_PHYSICAL_STATUS_ANNOTATION.typeName,
+                                                                     dataSourcePhysicalStatusAnnotation.getResourceProperties(),
                                                                      dataSourcePhysicalStatusAnnotation.getCreateTime(),
                                                                      dataSourcePhysicalStatusAnnotation.getModifiedTime(),
                                                                      dataSourcePhysicalStatusAnnotation.getSize(),
                                                                      dataSourcePhysicalStatusAnnotation.getEncoding());
             }
-            else if (annotation instanceof DataSourceMeasurementAnnotation dataSourceMeasurementAnnotation)
+            else if (annotation instanceof ResourceMeasureAnnotation resourceMeasureAnnotation)
             {
-                builder.setDataSourceMeasurementSubtypeProperties(OpenMetadataType.DATA_SOURCE_MEASUREMENT_ANNOTATION.typeName,
-                                                                  dataSourceMeasurementAnnotation.getDataSourceProperties());
+                builder.setDataSourceMeasurementSubtypeProperties(OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName,
+                                                                  resourceMeasureAnnotation.getResourceProperties());
             }
             else if (annotation instanceof QualityAnnotation qualityAnnotation)
             {
@@ -920,7 +942,8 @@ public class AnnotationStore
                 builder.setRequestForActionSubtypeProperties(OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.typeName,
                                                              requestForActionAnnotation.getSurveyActivity(),
                                                              requestForActionAnnotation.getActionRequested(),
-                                                             requestForActionAnnotation.getActionProperties());
+                                                             requestForActionAnnotation.getActionProperties(),
+                                                             requestForActionAnnotation.getActionTargetGUIDs());
             }
             else if (annotation instanceof SchemaAnalysisAnnotation schemaAnalysisAnnotation)
             {
@@ -1133,6 +1156,7 @@ public class AnnotationStore
         private String surveyActivity  = null;
         private String actionRequested = null;
         private Map<String, String> actionProperties  = null;
+        private List<String> requestForActionTargetGUIDs = null;
 
         /*
          * Attributes for the SchemaAnalysisAnnotation
@@ -1433,16 +1457,30 @@ public class AnnotationStore
         void setRequestForActionSubtypeProperties(String              annotationTypeName,
                                                   String              surveyActivity,
                                                   String              actionRequested,
-                                                  Map<String, String> actionProperties)
+                                                  Map<String, String> actionProperties,
+                                                  List<String>        requestForActionTargetGUIDs)
         {
             if (this.openMetadataTypeName == null)
             {
                 this.openMetadataTypeName = annotationTypeName;
             }
-            this.surveyActivity     = surveyActivity;
-            this.actionRequested    = actionRequested;
-            this.actionProperties   = actionProperties;
+            this.surveyActivity              = surveyActivity;
+            this.actionRequested             = actionRequested;
+            this.actionProperties            = actionProperties;
+            this.requestForActionTargetGUIDs = requestForActionTargetGUIDs;
         }
+
+
+        /**
+         * Return the elements that need action.
+         *
+         * @return list of guids
+         */
+        public List<String> getRequestForActionTargetGUIDs()
+        {
+            return requestForActionTargetGUIDs;
+        }
+
 
 
         /**
@@ -1538,17 +1576,17 @@ public class AnnotationStore
             {
                 return addDataClassAnnotationElementProperties(properties);
             }
-            else if (OpenMetadataType.DATA_PROFILE_ANNOTATION.typeName.equals(openMetadataTypeName))
+            else if (OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName.equals(openMetadataTypeName))
             {
                 return addDataProfileAnnotationElementProperties(properties);
             }
-            else if (OpenMetadataType.DS_PHYSICAL_STATUS_ANNOTATION.typeName.equals(openMetadataTypeName))
+            else if (OpenMetadataType.RESOURCE_PHYSICAL_STATUS_ANNOTATION.typeName.equals(openMetadataTypeName))
             {
-                return addDataSourcePhysicalStatusAnnotationElementProperties(properties);
+                return addResourcePhysicalStatusAnnotationElementProperties(properties);
             }
-            else if (OpenMetadataType.DATA_SOURCE_MEASUREMENT_ANNOTATION.typeName.equals(openMetadataTypeName))
+            else if (OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName.equals(openMetadataTypeName))
             {
-                return addDataSourceMeasurementAnnotationElementProperties(properties);
+                return addResourceMeasureAnnotationElementProperties(properties);
             }
             else if (OpenMetadataType.QUALITY_ANNOTATION.typeName.equals(openMetadataTypeName))
             {
@@ -1689,16 +1727,16 @@ public class AnnotationStore
          * @param properties properties to fill out
          * @return ElementProperties object
          */
-        private ElementProperties addDataSourcePhysicalStatusAnnotationElementProperties(ElementProperties properties)
+        private ElementProperties addResourcePhysicalStatusAnnotationElementProperties(ElementProperties properties)
         {
-            properties = this.addDataSourceMeasurementAnnotationElementProperties(properties);
+            properties = this.addResourceMeasureAnnotationElementProperties(properties);
 
             properties = propertyHelper.addDateProperty(properties,
-                                                        OpenMetadataProperty.SOURCE_CREATE_TIME.name,
+                                                        OpenMetadataProperty.RESOURCE_CREATE_TIME.name,
                                                         createTime);
 
             properties = propertyHelper.addDateProperty(properties,
-                                                        OpenMetadataProperty.SOURCE_UPDATE_TIME.name,
+                                                        OpenMetadataProperty.RESOURCE_UPDATE_TIME.name,
                                                         modifiedTime);
 
             properties = propertyHelper.addLongProperty(properties,
@@ -1719,10 +1757,10 @@ public class AnnotationStore
          * @param properties properties to fill out
          * @return ElementProperties object
          */
-        private ElementProperties addDataSourceMeasurementAnnotationElementProperties(ElementProperties properties)
+        private ElementProperties addResourceMeasureAnnotationElementProperties(ElementProperties properties)
         {
             properties = propertyHelper.addStringMapProperty(properties,
-                                                             OpenMetadataProperty.DATA_SOURCE_PROPERTIES.name,
+                                                             OpenMetadataProperty.RESOURCE_PROPERTIES.name,
                                                              dataSourceProperties);
 
             return properties;
@@ -1895,19 +1933,19 @@ public class AnnotationStore
                 {
                     return getNewDataClassAnnotation(beanClass, annotationElement, relationships, methodName);
                 }
-                else if (propertyHelper.isTypeOf(annotationElement, OpenMetadataType.DATA_PROFILE_ANNOTATION.typeName))
+                else if (propertyHelper.isTypeOf(annotationElement, OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName))
                 {
                     return getNewDataProfileAnnotation(beanClass, annotationElement, relationships, methodName);
                 }
-                else if (propertyHelper.isTypeOf(annotationElement, OpenMetadataType.DATA_PROFILE_LOG_ANNOTATION.typeName))
+                else if (propertyHelper.isTypeOf(annotationElement, OpenMetadataType.RESOURCE_PROFILE_LOG_ANNOTATION.typeName))
                 {
                     return getNewDataProfileLogAnnotation(beanClass, annotationElement, relationships, methodName);
                 }
-                else if (propertyHelper.isTypeOf(annotationElement, OpenMetadataType.DS_PHYSICAL_STATUS_ANNOTATION.typeName))
+                else if (propertyHelper.isTypeOf(annotationElement, OpenMetadataType.RESOURCE_PHYSICAL_STATUS_ANNOTATION.typeName))
                 {
                     return getNewDataSourcePhysicalStatusAnnotation(beanClass, annotationElement, relationships, methodName);
                 }
-                else if (propertyHelper.isTypeOf(annotationElement, OpenMetadataType.DATA_SOURCE_MEASUREMENT_ANNOTATION.typeName))
+                else if (propertyHelper.isTypeOf(annotationElement, OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName))
                 {
                     return getNewDataSourceMeasurementAnnotation(beanClass, annotationElement, relationships, methodName);
                 }
@@ -2049,7 +2087,7 @@ public class AnnotationStore
         {
             try
             {
-                DataProfileAnnotation annotation = new DataProfileAnnotation();
+                ResourceProfileAnnotation annotation = new ResourceProfileAnnotation();
 
                 ElementProperties remainingProperties = fillInCommonAnnotationProperties(beanClass,
                                                                                          annotation,
@@ -2107,7 +2145,7 @@ public class AnnotationStore
         {
             try
             {
-                DataProfileLogAnnotation annotation = new DataProfileLogAnnotation();
+                ResourceProfileLogAnnotation annotation = new ResourceProfileLogAnnotation();
 
                 ElementProperties remainingProperties = fillInCommonAnnotationProperties(beanClass,
                                                                                          annotation,
@@ -2124,7 +2162,7 @@ public class AnnotationStore
                     {
                         if (relationship != null)
                         {
-                            if (propertyHelper.isTypeOf(relationship, OpenMetadataType.DATA_PROFILE_DATA_RELATIONSHIP.typeName))
+                            if (propertyHelper.isTypeOf(relationship, OpenMetadataType.RESOURCE_PROFILE_DATA_RELATIONSHIP.typeName))
                             {
                                 OpenMetadataElement logFile = relationship.getElement();
 
@@ -2137,7 +2175,7 @@ public class AnnotationStore
                     }
                 }
 
-                annotation.setDataProfileLogGUIDs(dataProfileLogs);
+                annotation.setResourceProfileLogGUIDs(dataProfileLogs);
 
                 /*
                  * Any remaining properties are returned in the extended properties.  They are
@@ -2174,7 +2212,7 @@ public class AnnotationStore
         {
             try
             {
-                DataSourceMeasurementAnnotation annotation = new DataSourceMeasurementAnnotation();
+                ResourceMeasureAnnotation annotation = new ResourceMeasureAnnotation();
 
                 ElementProperties remainingProperties = fillInCommonAnnotationProperties(beanClass,
                                                                                          annotation,
@@ -2182,7 +2220,7 @@ public class AnnotationStore
                                                                                          relationships,
                                                                                          methodName);
 
-                annotation.setDataSourceProperties(this.removeDataSourceProperties(remainingProperties));
+                annotation.setResourceProperties(this.removeResourceProperties(remainingProperties));
 
                 /*
                  * Any remaining properties are returned in the extended properties.  They are
@@ -2219,7 +2257,7 @@ public class AnnotationStore
         {
             try
             {
-                DataSourcePhysicalStatusAnnotation annotation = new DataSourcePhysicalStatusAnnotation();
+                ResourcePhysicalStatusAnnotation annotation = new ResourcePhysicalStatusAnnotation();
 
                 ElementProperties remainingProperties = fillInCommonAnnotationProperties(beanClass,
                                                                                          annotation,
@@ -2227,9 +2265,9 @@ public class AnnotationStore
                                                                                          relationships,
                                                                                          methodName);
 
-                annotation.setDataSourceProperties(this.removeDataSourceProperties(remainingProperties));
-                annotation.setCreateTime(this.removeSourceCreateTime(remainingProperties));
-                annotation.setModifiedTime(this.removeSourceUpdateTime(remainingProperties));
+                annotation.setResourceProperties(this.removeResourceProperties(remainingProperties));
+                annotation.setCreateTime(this.removeResourceCreateTime(remainingProperties));
+                annotation.setModifiedTime(this.removeResourceUpdateTime(remainingProperties));
                 annotation.setSize(this.removeSize(remainingProperties));
                 annotation.setEncoding(this.removeEncoding(remainingProperties));
 
@@ -2379,6 +2417,28 @@ public class AnnotationStore
                  */
                 annotation.setExtendedProperties(this.getRemainingExtendedProperties(remainingProperties));
 
+                List<String> actionTargetGUIDS = new ArrayList<>();
+
+                if (relationships != null)
+                {
+                    for (RelatedMetadataElement relationship : relationships)
+                    {
+                        if (relationship != null)
+                        {
+                            if (propertyHelper.isTypeOf(relationship, OpenMetadataType.REQUEST_FOR_ACTION_TARGET.typeName))
+                            {
+                                OpenMetadataElement logFile = relationship.getElement();
+
+                                if (logFile != null)
+                                {
+                                    actionTargetGUIDS.add(logFile.getElementGUID());
+                                }
+                            }
+                        }
+                    }
+                }
+
+                annotation.setActionTargetGUIDs(actionTargetGUIDS);
                 return annotation;
             }
             catch (ClassCastException error)

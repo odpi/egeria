@@ -4,12 +4,12 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.api.lineage;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.governanceservers.openlineage.converters.ScopeEnumConverter;
-import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
-import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVertex;
-import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
-import org.odpi.openmetadata.governanceservers.openlineage.requests.ElementHierarchyRequest;
-import org.odpi.openmetadata.governanceservers.openlineage.requests.LineageSearchRequest;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.converters.ScopeEnumConverter;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.ffdc.LineageWarehouseException;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.model.LineageVertex;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.model.Scope;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.requests.ElementHierarchyRequest;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.requests.LineageSearchRequest;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Graph;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.service.OpenLineageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,11 +44,12 @@ public class OpenLineageController {
      * @return graph of nodes and edges describing the ultimate sources of the asset
      * @throws InvalidParameterException from the underlying service
      * @throws PropertyServerException from the underlying service
-     * @throws OpenLineageException from the underlying service
+     * @throws LineageWarehouseException from the underlying service
      */
     @GetMapping( value = "/entities/{guid}/ultimate-source")
     public Graph ultimateSourceGraph(@PathVariable("guid") String guid , @RequestParam boolean includeProcesses)
-            throws InvalidParameterException, PropertyServerException, OpenLineageException {
+            throws InvalidParameterException, PropertyServerException, LineageWarehouseException
+    {
         Graph exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         exportedGraph = openLineageService.getUltimateSource(userId, guid, includeProcesses);
@@ -62,14 +63,15 @@ public class OpenLineageController {
      * @return graph of nodes and edges describing the end to end flow
      * @throws InvalidParameterException from the underlying service
      * @throws PropertyServerException from the underlying service
-     * @throws OpenLineageException from the underlying service
+     * @throws LineageWarehouseException from the underlying service
      *
      * TODO: Remove api request mapping /entities/{guid}/end2end in major release (i.e. v4.x.x)
      */
     @GetMapping( value = {"/entities/{guid}/end-to-end", "/entities/{guid}/end2end"})
     @ResponseBody
     public Graph endToEndLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses)
-            throws InvalidParameterException, PropertyServerException, OpenLineageException {
+            throws InvalidParameterException, PropertyServerException, LineageWarehouseException
+    {
         Graph exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         exportedGraph = openLineageService.getEndToEndLineage(userId, guid, includeProcesses);
@@ -83,11 +85,12 @@ public class OpenLineageController {
      * @return graph of nodes and edges describing the ultimate destination of the asset
      * @throws InvalidParameterException from the underlying service
      * @throws PropertyServerException from the underlying service
-     * @throws OpenLineageException from the underlying service
+     * @throws LineageWarehouseException from the underlying service
      */
     @GetMapping( value = "/entities/{guid}/ultimate-destination")
     public Graph ultimateDestination(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses)
-            throws InvalidParameterException, PropertyServerException, OpenLineageException {
+            throws InvalidParameterException, PropertyServerException, LineageWarehouseException
+    {
         Graph exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         exportedGraph = openLineageService.getUltimateDestination(userId, guid, includeProcesses);
@@ -102,11 +105,12 @@ public class OpenLineageController {
      * @return graph of nodes and edges describing the assets linked to the glossary term
      * @throws InvalidParameterException from the underlying service
      * @throws PropertyServerException from the underlying service
-     * @throws OpenLineageException from the underlying service
+     * @throws LineageWarehouseException from the underlying service
      */
     @GetMapping( value = "/entities/{guid}/vertical-lineage")
     public Graph verticalLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses)
-            throws InvalidParameterException, PropertyServerException, OpenLineageException {
+            throws InvalidParameterException, PropertyServerException, LineageWarehouseException
+    {
         Graph exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         exportedGraph = openLineageService.getVerticalLineage(userId, guid, includeProcesses);
@@ -118,11 +122,12 @@ public class OpenLineageController {
      * @return the entity details
      * @throws InvalidParameterException from the underlying service
      * @throws PropertyServerException from the underlying service
-     * @throws OpenLineageException from the underlying service
+     * @throws LineageWarehouseException from the underlying service
      */
     @GetMapping( value = "entities/{guid}/details")
     public LineageVertex getEntityDetails(@PathVariable("guid") String guid)
-            throws InvalidParameterException, PropertyServerException, OpenLineageException {
+            throws InvalidParameterException, PropertyServerException, LineageWarehouseException
+    {
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         return openLineageService.getEntityDetails(user, guid);
     }
@@ -158,11 +163,12 @@ public class OpenLineageController {
      * @return the entity details
      * @throws InvalidParameterException from the underlying service
      * @throws PropertyServerException from the underlying service
-     * @throws OpenLineageException from the underlying service
+     * @throws LineageWarehouseException from the underlying service
      */
     @PostMapping( value = "entities/search")
     public List<LineageVertex> search(@RequestBody LineageSearchRequest searchRequest)
-            throws InvalidParameterException, PropertyServerException, OpenLineageException {
+            throws InvalidParameterException, PropertyServerException, LineageWarehouseException
+    {
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         return openLineageService.search(user, searchRequest);
     }

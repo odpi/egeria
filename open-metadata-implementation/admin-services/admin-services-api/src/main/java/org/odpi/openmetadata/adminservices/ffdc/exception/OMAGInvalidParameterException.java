@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDef
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 
+import java.io.Serial;
 import java.util.Map;
 
 /**
@@ -13,8 +14,8 @@ import java.util.Map;
  */
 public class OMAGInvalidParameterException extends OMAGCheckedExceptionBase
 {
-    private static final long    serialVersionUID = 1L;
-
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * This is the typical constructor used for creating an OCFCheckedException.

@@ -336,6 +336,7 @@ public class OMAGServerPlatform
          * @return string name
          * @throws JsonProcessingException problem parsing property
          */
+        @SuppressWarnings(value = "unchecked")
         private Map<String, String> getPlaceholderVariables() throws JsonProcessingException
         {
             if ((placeholderVariables != null) && (! placeholderVariables.isBlank()))

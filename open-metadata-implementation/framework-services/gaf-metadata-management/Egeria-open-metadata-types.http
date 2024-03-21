@@ -1,0 +1,79 @@
+# Egeria-open-metadata-types - for woking with open metadata types
+
+@serverName=active-metadata-store
+@serviceURLMarker=asset-owner
+@userId=erinoverview
+@typeDefCategory=ENTITY_DEF
+@attributeTypeDefCateogry=ENUM_DEF
+@typeName=Asset
+@typeGUID=2a84d94c-ac6f-4be1-a72a-07dcec7b1fe3
+@attributeTypeName=OperationalStatus
+@attributeTypeGUID=a6e698b0-a4f7-4a39-8c80-db0bb0f972ec
+
+###
+# @name getAllTypes
+# Returns the list of different types of metadata organized into two groups.  The first are the
+# attribute type definitions (AttributeTypeDefs).  These provide types for attributes in full
+# type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
+# and classifications.
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/framework-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/open-metadata-types
+
+
+###
+# @name findTypeDefsByCategory
+# Returns all the TypeDefs for a specific category: CLASSIFICATION_DEF, ENTITY_DEF, or RELATIONSHIP_DEF.
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/framework-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/open-metadata-types/category/{{typeDefCategory}}
+
+
+###
+# @name findAttributeTypeDefsByCategory
+# Returns all the AttributeTypeDefs for a specific category: PRIMITIVE, COLLECTION, ENUM_DEF.
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/framework-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/open-metadata-attribute-types/category/{{attributeTypeDefCateogry}}
+
+
+###
+
+@standardName=DCAT
+@standardOrganizationName=w3c
+@standardIdentifier=resource
+
+###
+# @name findTypesByExternalId
+# Return the types that are linked to the elements from the specified standard.  The type of external standard is 
+# expressed using one to three of the following parameters: standardName (eg DCAT), standardOriganizationName (eg w3c) 
+# and identifier (eg resource)
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/framework-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/open-metadata-types/external-id?
+    standard={{standardName}}&
+    organization={{standardOrganizationName}}&
+    identifier={{standardIdentifier}}
+
+
+###
+# @name getSubTypes
+# Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the type has no subtypes.
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/framework-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/open-metadata-types/sub-types?{{typeName}}
+
+
+###
+# @name getTypeDefByGUID
+# Return the TypeDef identified by the GUID.
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/framework-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/open-metadata-types/guid/{{typeGUID}}
+
+
+###
+# @name getAttributeTypeDefByGUID
+#  Return the AttributeTypeDef identified by the GUID.
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/framework-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/open-metadata-attribute-types/guid/{{attributeTypeGUID}}
+
+
+###
+# @name getTypeDefByName
+# Return the TypeDef identified by the unique name.
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/framework-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/open-metadata-types/name/{{typeName}}
+
+
+###
+# @name getAttributeTypeDefByName
+# Return the AttributeTypeDef identified by the unique name.
+GET {{baseURL}}/servers/{{serverName}}/open-metadata/framework-services/{{serviceURLMarker}}/open-metadata-store/users/{{userId}}/open-metadata-attribute-types/name/{{attributeTypeName}}
+

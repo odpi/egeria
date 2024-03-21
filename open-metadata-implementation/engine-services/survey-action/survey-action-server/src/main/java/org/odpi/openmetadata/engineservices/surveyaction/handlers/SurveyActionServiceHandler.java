@@ -2,19 +2,23 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.surveyaction.handlers;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceEngineProperties;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
 import org.odpi.openmetadata.engineservices.surveyaction.ffdc.SurveyActionErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.engineservices.surveyaction.ffdc.SurveyActionAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceEngineProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyContext;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionGuard;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * SurveyActionServiceHandler provides the support to run a survey action service.  A new instance is created for each request, and it is assigned its
@@ -40,6 +44,7 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
      * @param surveyActionServiceName name of this survey action service - used for message logging
      * @param surveyActionServiceConnector connector that does the work
      * @param surveyContext context for the connector
+     * @param requestedStartDate date/time that the service should start
      * @param auditLog destination for log messages
      */
     SurveyActionServiceHandler(GovernanceEngineProperties surveyActionEngineProperties,
@@ -52,6 +57,7 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
                                String                     surveyActionServiceName,
                                Connector                  surveyActionServiceConnector,
                                SurveyContext              surveyContext,
+                               Date                       requestedStartDate,
                                AuditLog                   auditLog) throws InvalidParameterException
     {
         super(surveyActionEngineProperties,
@@ -63,10 +69,10 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
               surveyActionServiceGUID,
               surveyActionServiceName,
               surveyActionServiceConnector,
+              requestedStartDate,
               auditLog);
 
-        this.surveyContext    = surveyContext;
-        this.auditLog         = auditLog;
+        this.surveyContext = surveyContext;
 
         try
         {
@@ -83,10 +89,10 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
                                                                                                            error.getClass().getName(),
                                                                                                            error.getMessage()),
                                   error);
-            throw new InvalidParameterException(SurveyActionErrorCode.INVALID_DISCOVERY_SERVICE.getMessageDefinition(surveyActionServiceName,
-                                                                                                                      serviceRequestType,
-                                                                                                                      error.getClass().getName(),
-                                                                                                                      error.getMessage()),
+            throw new InvalidParameterException(SurveyActionErrorCode.INVALID_SURVEY_SERVICE.getMessageDefinition(surveyActionServiceName,
+                                                                                                                  serviceRequestType,
+                                                                                                                  error.getClass().getName(),
+                                                                                                                  error.getMessage()),
                                                 this.getClass().getName(),
                                                 actionDescription,
                                                 error,
@@ -106,10 +112,12 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
         String surveyReportGUID = null;
 
 
-        final String actionDescription = "Analyse an Asset";
+        final String actionDescription = "Survey an Asset";
 
         try
         {
+            super.waitForStartDate(engineHostUserId);
+
             surveyReportGUID = surveyContext.getAnnotationStore().getSurveyReportGUID();
             auditLog.logMessage(actionDescription,
                                 SurveyActionAuditCode.SURVEY_ACTION_SERVICE_STARTING.getMessageDefinition(governanceServiceName,
@@ -137,7 +145,18 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
             super.disconnect();
             surveyActionService.setSurveyContext(null);
 
-            super.recordCompletionStatus(CompletionStatus.ACTIONED, null, null, null, null);
+            List<String> outputGuards = new ArrayList<>();
+            outputGuards.add(SurveyActionGuard.SURVEY_COMPLETED.getName());
+
+            List<NewActionTarget> newActionTargets = new ArrayList<>();
+            NewActionTarget newActionTarget = new NewActionTarget();
+
+            newActionTarget.setActionTargetGUID(surveyReportGUID);
+            newActionTarget.setActionTargetName("surveyReport");
+
+            newActionTargets.add(newActionTarget);
+
+            super.recordCompletionStatus(CompletionStatus.ACTIONED, outputGuards, null, newActionTargets, "SUCCESS");
         }
         catch (Exception  error)
         {
@@ -147,6 +166,23 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
                  * Try to log the completion message - may not work
                  */
                 surveyContext.getAnnotationStore().setCompletionMessage(error.getMessage());
+
+                List<String> outputGuards = new ArrayList<>();
+                outputGuards.add(SurveyActionGuard.SURVEY_FAILED.getName());
+
+                super.recordCompletionStatus(CompletionStatus.FAILED, outputGuards, null, null, error.getMessage());
+
+                auditLog.logException(actionDescription,
+                                      SurveyActionAuditCode.SURVEY_ACTION_SERVICE_FAILED.getMessageDefinition(governanceServiceName,
+                                                                                                              error.getClass().getName(),
+                                                                                                              surveyReportGUID,
+                                                                                                              surveyContext.getAssetGUID(),
+                                                                                                              serviceRequestType,
+                                                                                                              governanceEngineProperties.getQualifiedName(),
+                                                                                                              governanceEngineGUID,
+                                                                                                              error.getMessage()),
+                                      error.toString(),
+                                      error);
             }
             catch (Exception ignore)
             {
@@ -155,17 +191,6 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
                  */
             }
 
-            auditLog.logException(actionDescription,
-                                  SurveyActionAuditCode.SURVEY_ACTION_SERVICE_FAILED.getMessageDefinition(governanceServiceName,
-                                                                                                          error.getClass().getName(),
-                                                                                                          surveyReportGUID,
-                                                                                                          surveyContext.getAssetGUID(),
-                                                                                                          serviceRequestType,
-                                                                                                          governanceEngineProperties.getQualifiedName(),
-                                                                                                          governanceEngineGUID,
-                                                                                                          error.getMessage()),
-                                  error.toString(),
-                                  error);
         }
     }
 }

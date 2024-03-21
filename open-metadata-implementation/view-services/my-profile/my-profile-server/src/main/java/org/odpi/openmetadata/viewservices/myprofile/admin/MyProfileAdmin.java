@@ -68,7 +68,7 @@ public class MyProfileAdmin extends ViewServiceAdmin
                                                   viewServiceConfig.getOMAGServerPlatformRootURL());
 
             auditLog.logMessage(actionDescription,
-                                MyProfileAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
+                                MyProfileAuditCode.SERVICE_INITIALIZED.getMessageDefinition(),
                                 viewServiceConfig.toString());
 
         }

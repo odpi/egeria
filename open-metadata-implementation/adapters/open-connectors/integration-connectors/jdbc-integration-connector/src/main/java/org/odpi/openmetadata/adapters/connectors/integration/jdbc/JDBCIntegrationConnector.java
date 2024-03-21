@@ -69,7 +69,7 @@ public class JDBCIntegrationConnector extends DatabaseIntegratorConnector
             close(connection);
             return;
         }
-        if (!test(databaseMetaData))
+        if (!testDatabaseCatalogAccessible(databaseMetaData))
         {
             auditLog.logMessage(exitAction, EXITING_ON_METADATA_TEST.getMessageDefinition(methodName));
             close(connection);
@@ -124,6 +124,13 @@ public class JDBCIntegrationConnector extends DatabaseIntegratorConnector
         }
     }
 
+
+    /**
+     * Retrieve tne database metadata from the database connection.
+     *
+     * @param connection database connection
+     * @return database metadata
+     */
     private DatabaseMetaData getDatabaseMetadata(Connection connection)
     {
         String methodName = "getDatabaseMetadata";
@@ -135,15 +142,24 @@ public class JDBCIntegrationConnector extends DatabaseIntegratorConnector
         catch (SQLException sqlException)
         {
             auditLog.logException("Extracting database metadata",
-                    EXCEPTION_READING_JDBC.getMessageDefinition(methodName, sqlException.getMessage()), sqlException);
+                                  EXCEPTION_READING_JDBC.getMessageDefinition(methodName,
+                                                                              sqlException.getMessage()),
+                                  sqlException);
         }
 
         return null;
     }
 
-    private boolean test(DatabaseMetaData databaseMetaData)
+
+    /**
+     * Check that catalogs can be retrieved.
+     *
+     * @param databaseMetaData database metadata extracted from the database connection
+     * @return boolean flag
+     */
+    private boolean testDatabaseCatalogAccessible(DatabaseMetaData databaseMetaData)
     {
-        String methodName = "test";
+        String methodName = "testDatabaseCatalogAccessible";
         try
         {
             databaseMetaData.getCatalogs();
@@ -152,12 +168,22 @@ public class JDBCIntegrationConnector extends DatabaseIntegratorConnector
         catch (SQLException sqlException)
         {
             auditLog.logException("Extracting database metadata",
-                    EXCEPTION_READING_JDBC.getMessageDefinition(methodName, sqlException.getMessage()), sqlException);
+                                  EXCEPTION_READING_JDBC.getMessageDefinition(methodName,
+                                                                              sqlException.getMessage()),
+                                  sqlException);
         }
         return false;
     }
 
-    private JdbcMetadataTransfer createJdbcMetadataTransfer(DatabaseMetaData databaseMetaData){
+
+    /**
+     * Create a record that is used to manage the metadata synchronization.
+     *
+     * @param databaseMetaData metadata
+     * @return metadata transfer object
+     */
+    private JdbcMetadataTransfer createJdbcMetadataTransfer(DatabaseMetaData databaseMetaData)
+    {
         String methodName = "createJdbcMetadataTransfer";
         try
         {
@@ -166,13 +192,17 @@ public class JDBCIntegrationConnector extends DatabaseIntegratorConnector
             String connectorTypeQualifiedName = JDBCResourceConnector.getConnection().getConnectorType().getConnectorProviderClassName();
             String address = JDBCResourceConnector.getConnection().getEndpoint().getAddress();
             String catalog = (String)configurationProperties.get("catalog");
-            return new JdbcMetadataTransfer(new JdbcMetadata(databaseMetaData), this.getContext(), address,
-                    connectorTypeQualifiedName, catalog, transferCustomizations, auditLog);
+            return new JdbcMetadataTransfer(new JdbcMetadata(databaseMetaData),
+                                            this.getContext(),
+                                            address,
+                                            connectorTypeQualifiedName,
+                                            catalog,
+                                            transferCustomizations,
+                                            auditLog);
         }
         catch (ConnectorCheckedException e)
         {
-            auditLog.logException("Extracting integration context",
-                    EXCEPTION_ON_CONTEXT_RETRIEVAL.getMessageDefinition(methodName), e);
+            auditLog.logException("Extracting integration context", EXCEPTION_ON_CONTEXT_RETRIEVAL.getMessageDefinition(methodName), e);
         }
         return null;
     }

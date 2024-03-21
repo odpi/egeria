@@ -52,8 +52,8 @@ dependencies {
     implementation 'org.springframework.security:spring-security-web'
     runtimeOnly project(':open-metadata-implementation:access-services:subject-area:subject-area-api')
     runtimeOnly 'com.fasterxml.jackson.core:jackson-core'
-    implementation project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-client')
-    implementation project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-api')
+    implementation project(':open-metadata-implementation:governance-server-services:lineage-warehouse-services:lineage-warehouse-services-client')
+    implementation project(':open-metadata-implementation:governance-server-services:lineage-warehouse-services:lineage-warehouse-services-api')
     testCompileOnly project(':open-metadata-implementation:common-services:ffdc-services')
     compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
     implementation 'org.apache.commons:commons-collections4'

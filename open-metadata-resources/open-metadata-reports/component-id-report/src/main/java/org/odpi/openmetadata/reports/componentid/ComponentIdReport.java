@@ -45,7 +45,7 @@ public class ComponentIdReport
     private static final String csvFileResourceConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider";
     private static final String inmemTopicConnectorProviderClassName = "org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider";
     private static final String kafkaTopicConnectorProviderClassName = "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider";
-    private static final String atlasIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationProvider";
+    private static final String atlasIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationProvider";
     private static final String egeriaIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.egeria.EgeriaCataloguerIntegrationProvider";
     private static final String filesIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider";
     private static final String foldersIntegrationConnectorProviderClassName            = "org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider";
@@ -59,8 +59,8 @@ public class ComponentIdReport
     private static final String openLineageCataloguerIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageCataloguerIntegrationProvider";
     private static final String openLineageEventReceiverIntegrationConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageEventReceiverIntegrationProvider";
     private static final String envVarSecretsStoreProviderClassName = "org.odpi.openmetadata.adapters.connectors.secretsstore.envar.EnvVarSecretsStoreProvider";
-    private static final String apacheAtlasRESTConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTProvider";
-    private static final String apacheAtlasDiscoveryServiceProviderClassName = "org.odpi.openmetadata.adapters.connectors.discoveryservices.discoveratlas.DiscoverApacheAtlasProvider";
+    private static final String apacheAtlasRESTConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTProvider";
+    private static final String apacheAtlasDiscoveryServiceProviderClassName = "org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasProvider";
     private static final String sequentialSurveyPipelineProviderClassName = "org.odpi.openmetadata.adapters.connectors.surveyaction.SequentialSurveyPipelineProvider";
     private static final String folderSurveyActionProviderClassName = "org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyServiceProvider";
     private static final String fileSurveyActionProviderClassName = "org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileSurveyServiceProvider";

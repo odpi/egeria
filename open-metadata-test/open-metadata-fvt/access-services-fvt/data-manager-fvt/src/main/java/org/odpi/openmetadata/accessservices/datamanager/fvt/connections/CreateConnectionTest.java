@@ -198,7 +198,7 @@ public class CreateConnectionTest
             properties.setQualifiedName(databaseManagerName);
             properties.setDisplayName(databaseManagerDisplayName);
             properties.setDescription(databaseManagerDescription);
-            properties.setTypeDescription(databaseManagerTypeDescription);
+            properties.setDeployedImplementationType(databaseManagerTypeDescription);
             properties.setVersion(databaseManagerVersion);
 
             String databaseManagerGUID = client.createDatabaseManager(userId, null, null, properties);

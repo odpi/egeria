@@ -133,7 +133,7 @@ public class GovernanceLeadershipSample
         else if (userIdentities.size() == 1)
         {
             ProfileIdentityElement firstUser = userIdentities.get(0);
-            UserIdentityElement    userIdentity = firstUser.getProperties();
+            UserIdentityElement    userIdentity = firstUser.getUserIdentity();
             if (userIdentity == null)
             {
                 System.out.println("  UserId: empty <ERROR>");
@@ -154,7 +154,7 @@ public class GovernanceLeadershipSample
                 }
                 else
                 {
-                    System.out.print(" " + userIdentity.getProperties().getProperties().getQualifiedName());
+                    System.out.print(" " + userIdentity.getUserIdentity().getProperties().getQualifiedName());
                 }
             }
             System.out.println();

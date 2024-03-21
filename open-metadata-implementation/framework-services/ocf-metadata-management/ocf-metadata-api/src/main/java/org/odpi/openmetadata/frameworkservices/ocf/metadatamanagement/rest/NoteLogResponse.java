@@ -29,8 +29,6 @@ public class NoteLogResponse extends OCFOMASAPIResponse
 {
     private NoteLogHeader noteLog = null;
     private List<Note>    notes   = null;
-    private int           noteCount = 0;
-
 
     /**
      * Default constructor
@@ -54,7 +52,6 @@ public class NoteLogResponse extends OCFOMASAPIResponse
         {
             this.noteLog = template.getNoteLog();
             this.notes = template.getNotes();
-            this.noteCount = template.getNoteCount();
         }
     }
 
@@ -113,26 +110,6 @@ public class NoteLogResponse extends OCFOMASAPIResponse
     {
         this.notes = notes;
     }
-    /**
-     * Return the count of the notes within the note log.
-     *
-     * @return int
-     */
-    public int getNoteCount()
-    {
-        return noteCount;
-    }
-
-
-    /**
-     * Set up the count of notes within the note log.
-     *
-     * @param noteCount int
-     */
-    public void setNoteCount(int noteCount)
-    {
-        this.noteCount = noteCount;
-    }
 
 
     /**
@@ -146,7 +123,6 @@ public class NoteLogResponse extends OCFOMASAPIResponse
         return "NoteLogResponse{" +
                 "noteLog=" + noteLog +
                 ", notes=" + notes +
-                ", noteCount=" + noteCount +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
@@ -183,8 +159,7 @@ public class NoteLogResponse extends OCFOMASAPIResponse
             return false;
         }
         NoteLogResponse that = (NoteLogResponse) objectToCompare;
-        return getNoteCount() == that.getNoteCount() &&
-                Objects.equals(getNoteLog(), that.getNoteLog()) &&
+        return Objects.equals(getNoteLog(), that.getNoteLog()) &&
                 Objects.equals(getNotes(), that.getNotes());
     }
 
@@ -198,6 +173,6 @@ public class NoteLogResponse extends OCFOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getNoteLog(), getNotes(), getNoteCount());
+        return Objects.hash(super.hashCode(), getNoteLog(), getNotes());
     }
 }
