@@ -9,8 +9,10 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.Governan
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.RemediationGovernanceActionService;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 
 
 import java.util.ArrayList;
@@ -26,7 +28,6 @@ import java.util.Map;
  * added to the action target asset and the output guard is set to origin-assigned.  If there are multiple origin's identified they are
  * added to the detectedOrigins request parameter and the output guard is multiple-origins-detected.
  * If no AssetOrigin classifications are found, the output guard is no-origins-detected.
- *
  * Note: This implementation currently only follows LineageMapping links between assets, it needs extending to support lineage mapping
  * between ports and schema attributes.
  */
@@ -36,10 +37,11 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
     private static final String detectedOriginsProperty   = "detectedOrigins";
     private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer();
 
+    private final PropertyHelper propertyHelper = new PropertyHelper();
+
 
     /**
      * Indicates that the governance action service is completely configured and can begin processing.
-     *
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() at the start of your overriding version.
      *
@@ -53,7 +55,6 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
         super.start();
 
         List<String>          outputGuards = new ArrayList<>();
-        List<NewActionTarget> newActionTargets = null;
         CompletionStatus      completionStatus = null;
         Map<String, String>   newRequestParameters = null;
 
@@ -61,82 +62,86 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
         {
             if (governanceContext.getActionTargetElements() == null)
             {
-                completionStatus = CompletionStatus.FAILED;
-                outputGuards.add(OriginSeekerGovernanceActionProvider.NO_TARGETS_DETECTED_GUARD);
+                completionStatus = OriginSeekerGuard.NO_TARGETS_DETECTED.getCompletionStatus();
+                outputGuards.add(OriginSeekerGuard.NO_TARGETS_DETECTED.getName());
             }
             else if (governanceContext.getActionTargetElements().size() == 1)
             {
                 ActionTargetElement actionTarget = governanceContext.getActionTargetElements().get(0);
 
-                newActionTargets = new ArrayList<>();
-
-                newActionTargets.add(actionTarget); // pass on existing action target to follow-on actions
-
                 OpenMetadataElement targetElement = actionTarget.getTargetElement();
 
-                /*
-                 * Check that the AssetOrigin classification is not already set - this is an error if it is.
-                 */
-                AttachedClassification existingAssetOriginClassification = this.getAssetOriginClassification(targetElement);
-
-                if (existingAssetOriginClassification != null)
-                {
-                    completionStatus = CompletionStatus.ACTIONED;
-                    outputGuards.add(OriginSeekerGovernanceActionProvider.ORIGIN_ALREADY_ASSIGNED_GUARD);
-                }
-
-                if (completionStatus == null)
+                if (propertyHelper.isTypeOf(targetElement, OpenMetadataType.ASSET.typeName))
                 {
                     /*
-                     * No current AssetOrigin classification is present so ok to begin seeking the origin through the lineage.
-                     * This method returns a list of origin classifications detected from walking the lineage tree.
-                     * The returned list has been deduplicated.
+                     * Check that the AssetOrigin classification is not already set - this is an error if it is.
                      */
-                    List<String> coveredEntityGUIDs = new ArrayList<>();
-                    coveredEntityGUIDs.add(targetElement.getElementGUID());
+                    AttachedClassification existingAssetOriginClassification = this.getAssetOriginClassification(targetElement);
 
-                    List<ElementProperties> originClassifications = this.getOrigins(targetElement, coveredEntityGUIDs);
+                    if (existingAssetOriginClassification != null)
+                    {
+                        completionStatus = OriginSeekerGuard.ORIGIN_ALREADY_ASSIGNED.getCompletionStatus();
+                        outputGuards.add(OriginSeekerGuard.ORIGIN_ALREADY_ASSIGNED.getName());
+                    }
 
-                    if (originClassifications == null)
+                    if (completionStatus == null)
                     {
                         /*
-                         * No origin classifications have been detected which means the guard needs to be set so that a manual assignment
-                         * can be initiated.
+                         * No current AssetOrigin classification is present so ok to begin seeking the origin through the lineage.
+                         * This method returns a list of origin classifications detected from walking the lineage tree.
+                         * The returned list has been deduplicated.
                          */
-                        outputGuards.add(OriginSeekerGovernanceActionProvider.NO_ORIGINS_DETECTED_GUARD);
-                        completionStatus = CompletionStatus.INVALID;
+                        List<String> coveredEntityGUIDs = new ArrayList<>();
+                        coveredEntityGUIDs.add(targetElement.getElementGUID());
+
+                        List<ElementProperties> originClassifications = this.getOrigins(targetElement, coveredEntityGUIDs);
+
+                        if (originClassifications == null)
+                        {
+                            /*
+                             * No origin classifications have been detected which means the guard needs to be set so that a manual assignment
+                             * can be initiated.
+                             */
+                            outputGuards.add(OriginSeekerGuard.NO_ORIGINS_DETECTED.getName());
+                            completionStatus = OriginSeekerGuard.NO_ORIGINS_DETECTED.getCompletionStatus();
+                        }
+                        else if (originClassifications.size() == 1)
+                        {
+                            /*
+                             * A single origin has been found, so it is ok to add it to the action target asset.
+                             */
+                            governanceContext.classifyMetadataElement(targetElement.getElementGUID(),
+                                                                      assetOriginClassification,
+                                                                      false,
+                                                                      false,
+                                                                      originClassifications.get(0),
+                                                                      new Date());
+
+                            outputGuards.add(OriginSeekerGuard.ORIGIN_ASSIGNED.getName());
+                            completionStatus = OriginSeekerGuard.ORIGIN_ASSIGNED.getCompletionStatus();
+                        }
+                        else /* multiple origins to choose from */
+                        {
+                            /*
+                             * There are multiple possible origin classifications to use.  This is going to need a manual assignment and so
+                             * the different origin values are added to the request parameters that will be added to the request parameters to
+                             * make it easier for the steward to understand the origins found in the lineage.
+                             */
+                            newRequestParameters = new HashMap<>();
+
+                            String jsonString = OBJECT_WRITER.writeValueAsString(originClassifications);
+
+                            newRequestParameters.put(detectedOriginsProperty, jsonString);
+
+                            outputGuards.add(OriginSeekerGuard.MULTIPLE_ORIGINS_DETECTED.getName());
+                            completionStatus = OriginSeekerGuard.MULTIPLE_ORIGINS_DETECTED.getCompletionStatus();
+                        }
                     }
-                    else if (originClassifications.size() == 1)
-                    {
-                        /*
-                         * A single origin has been found, so it is ok to add it to the action target asset.
-                         */
-                        governanceContext.classifyMetadataElement(targetElement.getElementGUID(),
-                                                                  assetOriginClassification,
-                                                                  false,
-                                                                  false,
-                                                                  originClassifications.get(0),
-                                                                  new Date());
-
-                        outputGuards.add(OriginSeekerGovernanceActionProvider.ORIGIN_ASSIGNED_GUARD);
-                        completionStatus = CompletionStatus.ACTIONED;
-                    }
-                    else /* multiple origins to choose from */
-                    {
-                        /*
-                         * There are multiple possible origin classifications to use.  This is going to need a manual assignment and so
-                         * the different origin values are added to the request parameters that will be added to the request parameters to
-                         * make it easier for the steward to understand the origins found in the lineage.
-                         */
-                        newRequestParameters = new HashMap<>();
-
-                        String       jsonString   = OBJECT_WRITER.writeValueAsString(originClassifications);
-
-                        newRequestParameters.put(detectedOriginsProperty, jsonString);
-
-                        outputGuards.add(OriginSeekerGovernanceActionProvider.MULTIPLE_ORIGINS_DETECTED_GUARD);
-                        completionStatus = CompletionStatus.INVALID;
-                    }
+                }
+                else
+                {
+                    completionStatus = OriginSeekerGuard.TARGET_NOT_ASSET.getCompletionStatus();
+                    outputGuards.add(OriginSeekerGuard.TARGET_NOT_ASSET.getName());
                 }
             }
             else
@@ -145,11 +150,11 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
                  * Multiple action targets to supply.  This governance action does not support multiple action targets because the
                  * result of the origin search could be different for each action target and so it would be difficult to automate the response.
                  */
-                completionStatus = CompletionStatus.FAILED;
-                outputGuards.add(OriginSeekerGovernanceActionProvider.MULTIPLE_TARGETS_DETECTED_GUARD);
+                completionStatus = OriginSeekerGuard.MULTIPLE_TARGETS_DETECTED.getCompletionStatus();
+                outputGuards.add(OriginSeekerGuard.MULTIPLE_TARGETS_DETECTED.getName());
             }
 
-            governanceContext.recordCompletionStatus(completionStatus, outputGuards, newRequestParameters, newActionTargets);
+            governanceContext.recordCompletionStatus(completionStatus, outputGuards, newRequestParameters, null);
         }
         catch (OCFCheckedExceptionBase error)
         {
@@ -163,7 +168,6 @@ public class OriginSeekerGovernanceActionConnector extends RemediationGovernance
                                                 error.getClass().getName(),
                                                 methodName,
                                                 error);
-
         }
     }
 

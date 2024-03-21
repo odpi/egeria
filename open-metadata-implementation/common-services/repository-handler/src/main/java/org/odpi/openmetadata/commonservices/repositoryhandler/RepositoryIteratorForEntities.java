@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 
 import java.util.Date;
 import java.util.List;
@@ -18,11 +19,13 @@ import java.util.List;
  */
 public abstract class RepositoryIteratorForEntities extends RepositoryIterator
 {
-    protected String             entityTypeGUID;
-    protected String             entityTypeName;
-    protected String             sequencingPropertyName;
+    protected final String               entityTypeGUID;
+    protected final String               entityTypeName;
+    protected final String               sequencingPropertyName;
+    protected final List<InstanceStatus> limitResultsByStatus;
+    protected final List<String>         limitResultsByClassification;
 
-    protected List<EntityDetail> entitiesCache = null;
+    protected List<EntityDetail>       entitiesCache = null;
 
 
     /**
@@ -34,6 +37,8 @@ public abstract class RepositoryIteratorForEntities extends RepositoryIterator
      * @param entityTypeGUID  identifier for the type of entity to retrieve
      * @param entityTypeName  name for the type of entity to retrieve
      * @param sequencingPropertyName name of property used to sequence the results - null means no sequencing
+     * @param limitResultsByStatus only return elements that have the requested status (null means all statuses
+     * @param limitResultsByClassification only return elements that have the requested classification(s)
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
@@ -48,6 +53,8 @@ public abstract class RepositoryIteratorForEntities extends RepositoryIterator
                                          String                  entityTypeGUID,
                                          String                  entityTypeName,
                                          String                  sequencingPropertyName,
+                                         List<InstanceStatus>    limitResultsByStatus,
+                                         List<String>            limitResultsByClassification,
                                          boolean                 forLineage,
                                          boolean                 forDuplicateProcessing,
                                          int                     startingFrom,
@@ -65,9 +72,11 @@ public abstract class RepositoryIteratorForEntities extends RepositoryIterator
               effectiveTime,
               methodName);
 
-        this.entityTypeGUID          = entityTypeGUID;
-        this.entityTypeName          = entityTypeName;
-        this.sequencingPropertyName  = sequencingPropertyName;
+        this.entityTypeGUID               = entityTypeGUID;
+        this.entityTypeName               = entityTypeName;
+        this.sequencingPropertyName       = sequencingPropertyName;
+        this.limitResultsByStatus         = limitResultsByStatus;
+        this.limitResultsByClassification = limitResultsByClassification;
     }
 
 

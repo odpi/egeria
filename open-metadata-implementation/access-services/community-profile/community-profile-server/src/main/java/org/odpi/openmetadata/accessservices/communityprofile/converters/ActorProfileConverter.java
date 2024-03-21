@@ -79,9 +79,8 @@ public class ActorProfileConverter<B> extends CommunityProfileOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ActorProfileElement)
+            if (returnBean instanceof ActorProfileElement bean)
             {
-                ActorProfileElement    bean              = (ActorProfileElement) returnBean;
                 ActorProfileProperties profileProperties = new ActorProfileProperties();
 
                 if (primaryEntity != null)
@@ -131,8 +130,8 @@ public class ActorProfileConverter<B> extends CommunityProfileOMASConverter<B>
                                     InstanceProperties entityProperties = new InstanceProperties(entity.getProperties());
 
                                     userProperties.setQualifiedName(this.removeQualifiedName(entityProperties));
-                                    userProperties.setUserId(this.removeUserId(instanceProperties));
-                                    userProperties.setDistinguishedName(this.removeDistinguishedName(instanceProperties));
+                                    userProperties.setUserId(this.removeUserId(entityProperties));
+                                    userProperties.setDistinguishedName(this.removeDistinguishedName(entityProperties));
                                     userProperties.setAdditionalProperties(this.removeAdditionalProperties(entityProperties));
 
                                     userProperties.setEffectiveFrom(entityProperties.getEffectiveFromTime());
@@ -302,7 +301,7 @@ public class ActorProfileConverter<B> extends CommunityProfileOMASConverter<B>
                                     profileIdentityProperties.setDescription(this.removeDescription(relationshipProperties));
 
                                     profileIdentityElement.setProfileIdentity(profileIdentityProperties);
-                                    profileIdentityElement.setProperties(userIdentities.get(entityProxy.getGUID()));
+                                    profileIdentityElement.setUserIdentity(userIdentities.get(entityProxy.getGUID()));
 
                                     profileIdentities.add(profileIdentityElement);
                                 }

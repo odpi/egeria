@@ -2,9 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.surveyaction.admin;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
-import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -34,7 +33,6 @@ public class SurveyActionAdmin extends EngineServiceAdmin
      * @param localServerPassword password for this server to use if sending REST requests
      * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
      * @param configurationClient client used by the engine host services to connect to the Governance Engine OMAS to retrieve the governance engine definitions
-     * @param governanceActionClient client used by the engine host services to connect to the Governance Engine OMAS to manage governance actions
      * @param engineServiceConfig details of the options and the engines to run
      * @param governanceEngineMap map of configured engines
      * @throws OMAGConfigurationErrorException an issue in the configuration prevented initialization
@@ -48,7 +46,6 @@ public class SurveyActionAdmin extends EngineServiceAdmin
                            String                              localServerPassword,
                            int                                 maxPageSize,
                            GovernanceEngineConfigurationClient configurationClient,
-                           GovernanceContextClient             governanceActionClient,
                            EngineServiceConfig                 engineServiceConfig,
                            GovernanceEngineMap                 governanceEngineMap) throws OMAGConfigurationErrorException
     {

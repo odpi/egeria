@@ -25,48 +25,84 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  */
 public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessageSet
 {
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-400-001 - The name of the directory (folder) identifying where the files to be catalogued are located is null in the Connection object {0}
+     */
     FILES_LOCATION_NOT_SPECIFIED(400, "BASIC-FILES-INTEGRATION-CONNECTORS-400-001",
             "The name of the directory (folder) identifying where the files to be catalogued are located is null in the Connection object {0}",
             "The connector is unable to monitor the directory for files because the name of the directory is not passed in the Connection object.",
             "The name of the directory should be set up in the address property of the connection's Endpoint object.  Correct this in the configuration " +
                     "for this connector in the Files Integration integration service configuration which is part of the configuration of the " +
                     "Integration Daemon OMAG server where this connector is running."),
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-400-002 - The file location {0} is not a directory
+     */
     FILES_LOCATION_NOT_DIRECTORY(400, "BASIC-FILES-INTEGRATION-CONNECTORS-400-002",
             "The file location {0} is not a directory",
             "The connector is unable to work with this location since it is not a directory (folder).",
             "Ensure a valid directory name is passed in the address property in the Endpoint object of the Connection object.  " +
                     "This connection object is part of he Files Integration integration service configuration which is part of the configuration " +
                     "of the Integration Daemon OMAG server where this connector is running."),
+
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-400-003 - The directory (folder) {0} is not readable
+     */
     FILES_LOCATION_NOT_READABLE(400, "BASIC-FILES-INTEGRATION-CONNECTORS-400-003",
             "The directory (folder) {0} is not readable",
             "The connector is unable to open the file because it does not have sufficient permission.",
             "Ensure the name of a readable file is passed in the address property in the Endpoint object of the Connection object."),
+
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-400-004 - An unexpected {0} exception was returned to the {1} integration
+     * connector by the Files Integrator OMIS {2} method when trying to retrieve the FileFolder asset for directory {3} (absolute path {4}).  The error message was {5}
+     */
     UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_PATH_NAME(400, "BASIC-FILES-INTEGRATION-CONNECTORS-400-004",
                                                   "An unexpected {0} exception was returned to the {1} integration connector by the Files Integrator OMIS {2} " +
                     "method when trying to retrieve the FileFolder asset for directory {3} (absolute path {4}).  The error message was {5}",
                                                   "The exception is returned to the integration daemon that is hosting this connector to enable it to perform error handling.",
                                                   "Use the message in the nested exception to determine the root cause of the error. Once this is " +
                     "resolved, follow the instructions in the messages produced by the integration daemon to restart the connector."),
+
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-400-005 - An unexpected {0} exception was returned to the {1} integration
+     * connector when it tried to update the DataFile in the metadata repositories for file {2}.  The error message was {3}
+     */
     UNEXPECTED_EXC_DATA_FILE_UPDATE(400,"BASIC-FILES-INTEGRATION-CONNECTORS-400-005",
             "An unexpected {0} exception was returned to the {1} integration connector when it tried to update the " +
                     "DataFile in the metadata repositories for file {2}.  The error message was {3}",
             "The exception is logged and the integration connector continues to synchronize metadata.  " +
                     "This file is not catalogued at this time but may succeed later.",
             "Use the message in the unexpected exception to determine the root cause of the error and fix it."),
+
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-404-001 - The directory named {0} does not exist
+     */
     FILES_LOCATION_NOT_FOUND(404, "BASIC-FILES-INTEGRATION-CONNECTORS-404-001",
              "The directory named {0} does not exist",
-             "The connector is unable to locate the file it has been asked to work with.",
-             "Ensure that the name of the file in the address property of the connection's Endpoint object matches the location of the file " +
-                           "that the connector is to access."),
+             "The connector is unable to locate the directory it has been asked to work with.",
+             "Ensure that the name of the directory is correct and restart the connector once it exists."),
+
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-500-001 - The connector received an unexpected security exception when reading the file named {0}; the error message was: {1}
+     */
     UNEXPECTED_SECURITY_EXCEPTION(500, "BASIC-FILES-INTEGRATION-CONNECTORS-500-001",
              "The connector received an unexpected security exception when reading the file named {0}; the error message was: {1}",
              "The connector is unable to access the file.",
              "Use details from the error message to determine the cause of the error and retry the request once it is resolved."),
+
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-500-002 - The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}
+     */
     UNEXPECTED_IO_EXCEPTION(500, "BASIC-FILES-INTEGRATION-CONNECTORS-500-002",
              "The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}",
              "The connector is unable to process the file.",
              "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-500-003 - An unexpected {0} exception was returned to the {1}
+     * integration connector by the Files Integrator OMIS {2} method when trying to retrieve the FileFolder
+     * asset {3}.  The error message was {4}
+     */
     UNEXPECTED_EXC_RETRIEVING_FOLDER_BY_GUID(500, "BASIC-FILES-INTEGRATION-CONNECTORS-500-003",
              "An unexpected {0} exception was returned to the {1} integration connector by the " +
                      "Files Integrator OMIS {2} method when trying to retrieve the FileFolder asset {3}.  The error message was {4}",
@@ -74,6 +110,11 @@ public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessage
                      "perform error handling since this is likely to be a logic error.",
              "Use the message in the nested exception to determine the root cause of the error. Report the situation to the Egeria community."),
 
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-500-004 - An unexpected {0} exception was returned to the {1}
+     * integration connector by the Files Integrator OMIS {2} method when trying to retrieve the catalog
+     * targets for connector {3}.  The error message was {4}
+     */
     UNEXPECTED_EXC_RETRIEVING_CATALOG_TARGETS(500, "BASIC-FILES-INTEGRATION-CONNECTORS-500-004",
              "An unexpected {0} exception was returned to the {1} integration connector by the " +
                               "Files Integrator OMIS {2} method when trying to retrieve the catalog targets for connector {3}.  The error message was {4}",
@@ -81,6 +122,10 @@ public enum BasicFilesIntegrationConnectorsErrorCode implements ExceptionMessage
                                                      "perform error handling since this is likely to be a set up error. This exception is not expected if there are no catalog targets.",
              "Use the message in the nested exception to determine the root cause of the error. Fix the configuration error and restart the connector."),
 
+    /**
+     * BASIC-FILES-INTEGRATION-CONNECTORS-500-005 - The connector {0} received an unexpected {1} exception when
+     * processing the file named {2} in method {3}; the error message was: {4}
+     */
     UNEXPECTED_EXCEPTION(500, "BASIC-FILES-INTEGRATION-CONNECTORS-500-005",
                             "The connector {0} received an unexpected {1} exception when processing the file named {2} in method {3}; the error message was: {4}",
                             "The connector is unable to process the file.  The associated catalog entry may be out of date",

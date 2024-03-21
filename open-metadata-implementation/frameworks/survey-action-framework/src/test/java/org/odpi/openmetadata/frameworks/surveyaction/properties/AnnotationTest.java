@@ -93,7 +93,7 @@ public class AnnotationTest
         assertTrue(nullObject.getExplanation() == null);
         assertTrue(nullObject.getAnalysisStep() == null);
         assertTrue(nullObject.getJsonProperties() == null);
-        assertTrue(nullObject.getAnnotationStatus() == null);
+        assertTrue(nullObject.getAnnotationStatus() == AnnotationStatus.NEW_ANNOTATION);
         assertTrue(nullObject.getSteward() == null);
         assertTrue(nullObject.getReviewComment() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
@@ -107,7 +107,7 @@ public class AnnotationTest
         assertTrue(nullObject.getExplanation() == null);
         assertTrue(nullObject.getAnalysisStep() == null);
         assertTrue(nullObject.getJsonProperties() == null);
-        assertTrue(nullObject.getAnnotationStatus() == null);
+        assertTrue(nullObject.getAnnotationStatus() == AnnotationStatus.NEW_ANNOTATION);
         assertTrue(nullObject.getSteward() == null);
         assertTrue(nullObject.getReviewComment() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);

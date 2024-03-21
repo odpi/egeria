@@ -47,27 +47,6 @@ public class TestRelatedAssets
     }
 
 
-    /**
-     * Validate that a clone can be created
-     */
-    @Test public void  testClonedIterator()
-    {
-        RelatedAssets propertyIterator = getPropertyIterator(10, 100);
-
-        propertyIterator.next();
-
-        RelatedAssets propertyIteratorClone = new MockRelatedAssets( propertyIterator);
-
-        int elementCount = 0;
-        while (propertyIteratorClone.hasNext())
-        {
-            assertTrue(propertyIteratorClone.next() != null);
-            elementCount ++;
-        }
-
-        assertTrue(elementCount == 10);
-    }
-
 
     /**
      * Test that the iterator works well if there are no elements
@@ -115,25 +94,6 @@ public class TestRelatedAssets
     {
         validatePropertyIterator(30,
                                  10);
-    }
-
-
-    /**
-     * Validate that element count is set.
-     */
-    @Test public void testElementCount()
-    {
-        RelatedAssets propertyIterator = getPropertyIterator(30, 10);
-
-        assertTrue(propertyIterator.getElementCount() == 30);
-
-        RelatedAssets clonedPropertyIterator = new MockRelatedAssets(propertyIterator);
-
-        assertTrue(clonedPropertyIterator.getElementCount() == 30);
-
-        clonedPropertyIterator = new MockRelatedAssets( null);
-
-        assertTrue(clonedPropertyIterator.getElementCount() == 0);
     }
 
 

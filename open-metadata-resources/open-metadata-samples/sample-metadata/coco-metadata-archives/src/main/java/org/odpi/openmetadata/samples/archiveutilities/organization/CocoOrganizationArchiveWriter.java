@@ -404,6 +404,7 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
             if (personDefinition.getEmail() != null)
             {
                 archiveHelper.addContactDetails(profileGUID,
+                                                OpenMetadataType.PERSON_TYPE_NAME,
                                                 ContactTypeDefinition.COMPANY_EMAIL.getDisplayName(),
                                                 ContactTypeDefinition.COMPANY_EMAIL.getPreferredValue(),
                                                 OpenMetadataType.CONTACT_METHOD_TYPE_EMAIL,

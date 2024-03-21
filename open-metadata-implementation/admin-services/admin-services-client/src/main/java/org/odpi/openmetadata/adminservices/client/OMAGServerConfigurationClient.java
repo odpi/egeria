@@ -25,11 +25,29 @@ import java.util.Map;
  */
 public class OMAGServerConfigurationClient
 {
+    /**
+     * Callers user id to pass on each request to the config document store.
+     */
     protected String adminUserId;              /* Initialized in constructor */
+
+    /**
+     * Name of the server being configured.
+     */
     protected String serverName;               /* Initialized in constructor */
+
+    /**
+     * URL of the platform that can pass on administration requests to the configuration document store.
+     */
     protected String serverPlatformRootURL;    /* Initialized in constructor */
 
+    /**
+     * Handler for validating parameters passed on requests.
+     */
     protected InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+
+    /**
+     * REST client for calling the Administration Services on the platform.
+     */
     protected AdminServicesRESTClient restClient;               /* Initialized in constructor */
 
     protected NullRequestBody nullRequestBody = new NullRequestBody();
@@ -135,11 +153,11 @@ public class OMAGServerConfigurationClient
      * @throws OMAGInvalidParameterException invalid parameter.
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
-    public ServerTypeClassificationSummary getServerClassification() throws OMAGNotAuthorizedException,
-                                                                            OMAGInvalidParameterException,
-                                                                            OMAGConfigurationErrorException
+    public ServerTypeClassificationSummary getServerTypeClassification() throws OMAGNotAuthorizedException,
+                                                                                OMAGInvalidParameterException,
+                                                                                OMAGConfigurationErrorException
     {
-        final String methodName    = "getServerClassification";
+        final String methodName    = "getServerTypeClassification";
         final String urlTemplate   = "/open-metadata/admin-services/users/{0}/servers/{1}/server-type-classification";
 
 

@@ -48,28 +48,6 @@ public class TestInformalTags
 
 
     /**
-     * Validate that a clone can be created
-     */
-    @Test public void  testClonedIterator()
-    {
-        InformalTags propertyIterator = getPropertyIterator(10, 100);
-
-        propertyIterator.next();
-
-        InformalTags propertyIteratorClone = new MockInformalTags(propertyIterator);
-
-        int elementCount = 0;
-        while (propertyIteratorClone.hasNext())
-        {
-            assertTrue(propertyIteratorClone.next() != null);
-            elementCount ++;
-        }
-
-        assertTrue(elementCount == 10);
-    }
-
-
-    /**
      * Test that the iterator works well if there are no elements
      */
     @Test public void testEmptyIterator()
@@ -115,25 +93,6 @@ public class TestInformalTags
     {
         validatePropertyIterator(30,
                                  10);
-    }
-
-
-    /**
-     * Validate that element count is set.
-     */
-    @Test public void testElementCount()
-    {
-        InformalTags propertyIterator = getPropertyIterator(30, 10);
-
-        assertTrue(propertyIterator.getElementCount() == 30);
-
-        InformalTags clonedPropertyIterator = new MockInformalTags( propertyIterator);
-
-        assertTrue(clonedPropertyIterator.getElementCount() == 30);
-
-        clonedPropertyIterator = new MockInformalTags( null);
-
-        assertTrue(clonedPropertyIterator.getElementCount() == 0);
     }
 
 

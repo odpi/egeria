@@ -3,9 +3,10 @@
 package org.odpi.openmetadata.frameworks.integration.client;
 
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.properties.IntegrationReport;
 import org.odpi.openmetadata.frameworks.integration.properties.IntegrationReportProperties;
@@ -66,6 +67,7 @@ public abstract class OpenIntegrationClient
      * @param softwareCapabilityTypeName name of software capability type to describe the metadata source
      * @param classificationName optional classification name that refines the type of the software capability.
      * @param qualifiedName unique name for the external source
+     * @param deployedImplementationType type of technology
      *
      * @return unique identifier of the new metadata element
      *
@@ -76,9 +78,10 @@ public abstract class OpenIntegrationClient
     public abstract String createMetadataSource(String userId,
                                                 String softwareCapabilityTypeName,
                                                 String classificationName,
-                                                String qualifiedName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException;
+                                                String qualifiedName,
+                                                String deployedImplementationType) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException;
 
 
     /**
@@ -187,4 +190,80 @@ public abstract class OpenIntegrationClient
                                                                   int     maximumResults) throws InvalidParameterException,
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException;
+
+
+    /**
+     * Returns the unique identifier corresponding to the supplied connection.
+     *
+     * @param connection the connection object that contains the properties needed to create the connection.
+     * @return guid
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving the asset properties from the property servers.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                    the creation of a connector.
+     * @throws ConnectorCheckedException  there are errors in the initialization of the connector.
+     */
+    public abstract String saveConnection(String    userId,
+                                          Connection connection) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException,
+                                                                        ConnectionCheckedException,
+                                                                        ConnectorCheckedException;
+
+    /**
+     * Returns the unique identifier corresponding to the supplied connection.
+     *
+     * @param assetGUID  the unique identifier of an asset to attach the connection to
+     * @param connection the connection object that contains the properties needed to create the connection.
+     * @return guid
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving the asset properties from the property servers.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                    the creation of a connector.
+     * @throws ConnectorCheckedException  there are errors in the initialization of the connector.
+     */
+    public abstract String saveConnection(String     userId,
+                                          String     assetGUID,
+                                          Connection connection) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException,
+                                                                        ConnectionCheckedException,
+                                                                        ConnectorCheckedException;
+
+    /**
+     * Returns a comprehensive collection of properties about the requested asset.
+     *
+     * @param assetGUID the unique identifier of an asset to attach the connection to
+     * @return a comprehensive collection of properties about the asset.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving the asset properties from the property servers.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public abstract AssetUniverse getAssetProperties(String userId,
+                                                     String assetGUID) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException;
+
+
+    /**
+     * Return the connector to the requested asset.
+     *
+     * @param assetGUID the unique identifier of an asset to attach the connection to
+     * @return Open Connector Framework (OCF) connector
+     * @throws InvalidParameterException  the asset guid is not recognized or the userId is null
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                    the creation of a connector.
+     * @throws ConnectorCheckedException  there are errors in the initialization of the connector.
+     * @throws UserNotAuthorizedException the user is not authorized to access the asset and/or connection needed to
+     *                                    create the connector.
+     * @throws PropertyServerException    there was a problem in the store whether the asset/connection properties are kept.
+     */
+    public abstract Connector getConnectorToAsset(String userId,
+                                                  String assetGUID) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException,
+                                                                           ConnectionCheckedException,
+                                                                           ConnectorCheckedException;
 }

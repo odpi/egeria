@@ -23,14 +23,12 @@ public abstract class SchemaAttributes extends PropertyIteratorBase implements I
     /**
      * Typical Constructor creates an iterator with the supplied list of elements.
      *
-     * @param totalElementCount the total number of elements to process.  A negative value is converted to 0.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      */
-    public SchemaAttributes(int totalElementCount,
-                            int maxCacheSize)
+    public SchemaAttributes(int maxCacheSize)
     {
-        super(totalElementCount, maxCacheSize);
+        super(maxCacheSize);
     }
 
 

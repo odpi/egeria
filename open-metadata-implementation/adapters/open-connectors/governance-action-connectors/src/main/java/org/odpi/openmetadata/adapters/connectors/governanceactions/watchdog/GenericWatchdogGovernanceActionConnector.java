@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.WatchdogGovernanceActio
 import org.odpi.openmetadata.frameworks.governanceaction.events.*;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
@@ -41,7 +40,6 @@ public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogG
 
     /**
      * Indicates that the governance action service is completely configured and can begin processing.
-     *
      * This is a standard method from the Open Connector Framework (OCF) so
      * be sure to call super.start() at the start of your overriding version.
      *
@@ -58,8 +56,8 @@ public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogG
         /*
          * Work out what type of asset to listen for.
          */
-        String interestingTypeName = getProperty(GenericElementWatchdogGovernanceActionProvider.INTERESTING_TYPE_NAME_PROPERTY, defaultTypeName);
-        String instanceToListenTo = getProperty(GenericElementWatchdogGovernanceActionProvider.INSTANCE_TO_MONITOR_PROPERTY, null);
+        String interestingTypeName = getProperty(GenericElementRequestParameter.INTERESTING_TYPE_NAME.getName(), defaultTypeName);
+        String instanceToListenTo = getProperty(GenericElementRequestParameter.INSTANCE_TO_MONITOR.getName(), null);
 
         if (instanceToListenTo != null)
         {
@@ -73,7 +71,7 @@ public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogG
             {
                 if (actionTargetElement != null)
                 {
-                    if (GenericWatchdogGovernanceActionProvider.INSTANCE_TO_MONITOR_PROPERTY.equals(actionTargetElement.getActionTargetName()))
+                    if (GenericElementRequestParameter.INSTANCE_TO_MONITOR.getName().equals(actionTargetElement.getActionTargetName()))
                     {
                         instancesToListenTo.add(actionTargetElement.getActionTargetGUID());
                     }
@@ -81,17 +79,17 @@ public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogG
             }
         }
 
-        actionTargetName = getProperty(GenericElementWatchdogGovernanceActionProvider.ACTION_TARGET_NAME_PROPERTY, "receivedElement");
-        actionTargetTwoName = getProperty(GenericElementWatchdogGovernanceActionProvider.ACTION_TARGET_TWO_NAME_PROPERTY, "receivedElementTwo");
-        newElementProcessName = getProperty(GenericElementWatchdogGovernanceActionProvider.NEW_ELEMENT_PROCESS_NAME_PROPERTY, null);
-        updatedElementProcessName = getProperty(GenericElementWatchdogGovernanceActionProvider.UPDATED_ELEMENT_PROCESS_NAME_PROPERTY, null);
-        deletedElementProcessName = getProperty(GenericElementWatchdogGovernanceActionProvider.DELETED_ELEMENT_PROCESS_NAME_PROPERTY, null);
-        classifiedElementProcessName = getProperty(GenericElementWatchdogGovernanceActionProvider.CLASSIFIED_ELEMENT_PROCESS_NAME_PROPERTY, null);
-        reclassifiedElementProcessName = getProperty(GenericElementWatchdogGovernanceActionProvider.RECLASSIFIED_ELEMENT_PROCESS_NAME_PROPERTY, null);
-        declassifiedElementProcessName = getProperty(GenericElementWatchdogGovernanceActionProvider.DECLASSIFIED_ELEMENT_PROCESS_NAME_PROPERTY, null);
-        newRelationshipProcessName = getProperty(GenericElementWatchdogGovernanceActionProvider.NEW_RELATIONSHIP_PROCESS_NAME_PROPERTY, null);
-        updatedRelationshipProcessName = getProperty(GenericElementWatchdogGovernanceActionProvider.UPDATED_RELATIONSHIP_PROCESS_NAME_PROPERTY, null);
-        deletedRelationshipProcessName = getProperty(GenericElementWatchdogGovernanceActionProvider.DELETED_RELATIONSHIP_PROCESS_NAME_PROPERTY, null);
+        actionTargetName = getProperty(GenericElementRequestParameter.ACTION_TARGET_NAME.getName(), "receivedElement");
+        actionTargetTwoName = getProperty(GenericElementRequestParameter.ACTION_TARGET_TWO_NAME.getName(), "receivedElementTwo");
+        newElementProcessName = getProperty(GenericElementRequestParameter.NEW_ELEMENT_PROCESS_NAME.getName(), null);
+        updatedElementProcessName = getProperty(GenericElementRequestParameter.UPDATED_ELEMENT_PROCESS_NAME.getName(), null);
+        deletedElementProcessName = getProperty(GenericElementRequestParameter.DELETED_ELEMENT_PROCESS_NAME.getName(), null);
+        classifiedElementProcessName = getProperty(GenericElementRequestParameter.CLASSIFIED_ELEMENT_PROCESS_NAME.getName(), null);
+        reclassifiedElementProcessName = getProperty(GenericElementRequestParameter.RECLASSIFIED_ELEMENT_PROCESS_NAME.getName(), null);
+        declassifiedElementProcessName = getProperty(GenericElementRequestParameter.DECLASSIFIED_ELEMENT_PROCESS_NAME.getName(), null);
+        newRelationshipProcessName = getProperty(GenericElementRequestParameter.NEW_RELATIONSHIP_PROCESS_NAME.getName(), null);
+        updatedRelationshipProcessName = getProperty(GenericElementRequestParameter.UPDATED_RELATIONSHIP_PROCESS_NAME.getName(), null);
+        deletedRelationshipProcessName = getProperty(GenericElementRequestParameter.DELETED_RELATIONSHIP_PROCESS_NAME.getName(), null);
 
         try
         {
@@ -177,8 +175,8 @@ public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogG
             {
                 List<String> outputGuards = new ArrayList<>();
 
-                outputGuards.add(GenericElementWatchdogGovernanceActionProvider.MONITORING_FAILED);
-                governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards);
+                outputGuards.add(GenericWatchdogGuard.MONITORING_FAILED.getName());
+                governanceContext.recordCompletionStatus(GenericWatchdogGuard.MONITORING_FAILED.getCompletionStatus(), outputGuards);
             }
             catch (Exception nestedError)
             {
@@ -393,9 +391,9 @@ public abstract class GenericWatchdogGovernanceActionConnector extends WatchdogG
                 try
                 {
                     List<String> outputGuards = new ArrayList<>();
-                    outputGuards.add(GenericElementWatchdogGovernanceActionProvider.MONITORING_FAILED);
+                    outputGuards.add(GenericWatchdogGuard.MONITORING_FAILED.getName());
 
-                    governanceContext.recordCompletionStatus(CompletionStatus.FAILED, outputGuards);
+                    governanceContext.recordCompletionStatus(GenericWatchdogGuard.MONITORING_FAILED.getCompletionStatus(), outputGuards);
                 }
                 catch (Exception contextError)
                 {

@@ -46,6 +46,7 @@ dependencies {
 
     // The following are only included at runtime for the full platform (ie adminChassisOnly is not set as a property)
     if (!project.hasProperty("adminChassisOnly")) {
+        runtimeOnly project(':open-metadata-implementation:view-services:automated-curation:automated-curation-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:server-author-view:server-author-view-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:glossary-author-view:glossary-author-view-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:glossary-browser:glossary-browser-spring')
@@ -65,7 +66,7 @@ dependencies {
         runtimeOnly project(':open-metadata-implementation:access-services:asset-catalog:omas-asset-catalog-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:governance-program:governance-program-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:governance-engine:governance-engine-spring')
-        runtimeOnly project(':open-metadata-implementation:access-services:discovery-engine:discovery-engine-spring')
+        runtimeOnly project(':open-metadata-implementation:access-services:governance-server:governance-server-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:stewardship-action:stewardship-action-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:community-profile:community-profile-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:design-model:design-model-spring')
@@ -80,7 +81,6 @@ dependencies {
         runtimeOnly project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:asset-manager:asset-manager-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:asset-owner:asset-owner-spring')
-        runtimeOnly project(':open-metadata-implementation:engine-services:asset-analysis:asset-analysis-spring')
         runtimeOnly project(':open-metadata-implementation:engine-services:survey-action:survey-action-spring')
         runtimeOnly project(':open-metadata-implementation:engine-services:repository-governance:repository-governance-spring')
         runtimeOnly project(':open-metadata-implementation:engine-services:governance-action:governance-action-spring')
@@ -101,10 +101,10 @@ dependencies {
         runtimeOnly project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-spring')
         runtimeOnly project(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-spring')
         runtimeOnly project(':open-metadata-implementation:framework-services:oif-metadata-management:oif-metadata-spring')
-        runtimeOnly project(':open-metadata-implementation:governance-servers:data-engine-proxy-services:data-engine-proxy-services-spring')
-        runtimeOnly project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-spring')
-        runtimeOnly project(':open-metadata-implementation:governance-servers:engine-host-services:engine-host-services-spring')
-        runtimeOnly project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-spring')
+        runtimeOnly project(':open-metadata-implementation:governance-server-services:data-engine-proxy-services:data-engine-proxy-services-spring')
+        runtimeOnly project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-spring')
+        runtimeOnly project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-spring')
+        runtimeOnly project(':open-metadata-implementation:governance-server-services:lineage-warehouse-services:lineage-warehouse-services-spring')
     }
 }
 

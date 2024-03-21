@@ -3,8 +3,8 @@
 
 package org.odpi.openmetadata.engineservices.repositorygovernance.handlers;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;

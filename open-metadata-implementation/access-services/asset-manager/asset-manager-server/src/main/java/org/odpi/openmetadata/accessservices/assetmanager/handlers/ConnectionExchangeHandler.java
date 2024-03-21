@@ -361,6 +361,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
                                                                    connectionProperties.getEffectiveTo(),
                                                                    false,
                                                                    false,
+                                                                   connectionHandler.getSupportedZones(),
                                                                    null,
                                                                    methodName);
 
@@ -830,6 +831,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
                                                     properties.getEffectiveTo(),
                                                     forLineage,
                                                     forDuplicateProcessing,
+                                                    connectionHandler.getSupportedZones(),
                                                     effectiveTime,
                                                     methodName);
         }
@@ -849,6 +851,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
                                                     null,
                                                     forLineage,
                                                     forDuplicateProcessing,
+                                                    connectionHandler.getSupportedZones(),
                                                     effectiveTime,
                                                     methodName);
         }
@@ -900,6 +903,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
                                                    embeddedConnectionGUIDParameterName,
                                                    forLineage,
                                                    forDuplicateProcessing,
+                                                   connectionHandler.getSupportedZones(),
                                                    effectiveTime,
                                                    methodName);
     }

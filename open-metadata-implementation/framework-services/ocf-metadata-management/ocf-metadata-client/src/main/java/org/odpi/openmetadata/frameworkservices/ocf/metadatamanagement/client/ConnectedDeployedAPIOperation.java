@@ -45,7 +45,6 @@ class ConnectedDeployedAPIOperation extends DeployedAPIOperation
                                                                    platformURLRoot,
                                                                    this.getGUID(),
                                                                    maxCacheSize,
-                                                                   headerAttributeCount,
                                                                    restClient);
 
         }
@@ -58,7 +57,6 @@ class ConnectedDeployedAPIOperation extends DeployedAPIOperation
                                                                    platformURLRoot,
                                                                    this.getGUID(),
                                                                    maxCacheSize,
-                                                                   requestAttributeCount,
                                                                    restClient);
 
         }
@@ -71,7 +69,6 @@ class ConnectedDeployedAPIOperation extends DeployedAPIOperation
                                                                    platformURLRoot,
                                                                    this.getGUID(),
                                                                    maxCacheSize,
-                                                                   responseAttributeCount,
                                                                    restClient);
 
         }

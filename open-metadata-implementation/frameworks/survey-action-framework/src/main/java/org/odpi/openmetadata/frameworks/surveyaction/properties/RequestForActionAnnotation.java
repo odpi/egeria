@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serial;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -29,6 +30,7 @@ public class RequestForActionAnnotation extends DataFieldAnnotation
     private String              surveyActivity  = null;
     private String              actionRequested = null;
     private Map<String, String> actionProperties  = null;
+    private List<String>        actionTargetGUIDs = null;
 
 
     /**
@@ -54,6 +56,7 @@ public class RequestForActionAnnotation extends DataFieldAnnotation
             surveyActivity  = template.getSurveyActivity();
             actionRequested = template.getActionRequested();
             actionProperties  = template.getActionProperties();
+            actionTargetGUIDs  = template.getActionTargetGUIDs();
         }
     }
 
@@ -138,6 +141,28 @@ public class RequestForActionAnnotation extends DataFieldAnnotation
 
 
     /**
+     * Return the list of unique identifiers for the request for action target elements.
+     *
+     * @return list of guids
+     */
+    public List<String> getActionTargetGUIDs()
+    {
+        return actionTargetGUIDs;
+    }
+
+
+    /**
+     * Set up the list of unique identifiers for the request for action target elements.
+     *
+     * @param actionTargetGUIDs list of guids
+     */
+    public void setActionTargetGUIDs(List<String> actionTargetGUIDs)
+    {
+        this.actionTargetGUIDs = actionTargetGUIDs;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -149,9 +174,9 @@ public class RequestForActionAnnotation extends DataFieldAnnotation
                 "surveyActivity='" + surveyActivity + '\'' +
                 ", actionRequested='" + actionRequested + '\'' +
                 ", actionProperties=" + actionProperties +
+                ", actionTargetGUIDs=" + actionTargetGUIDs +
                 "} " + super.toString();
     }
-
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -177,7 +202,8 @@ public class RequestForActionAnnotation extends DataFieldAnnotation
         RequestForActionAnnotation that = (RequestForActionAnnotation) objectToCompare;
         return Objects.equals(surveyActivity, that.surveyActivity) &&
                 Objects.equals(actionRequested, that.actionRequested) &&
-                Objects.equals(actionProperties, that.actionProperties);
+                Objects.equals(actionProperties, that.actionProperties) &&
+                Objects.equals(actionTargetGUIDs, that.actionTargetGUIDs);
     }
 
 
@@ -189,6 +215,6 @@ public class RequestForActionAnnotation extends DataFieldAnnotation
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), surveyActivity, actionRequested, actionProperties);
+        return Objects.hash(super.hashCode(), surveyActivity, actionRequested, actionProperties, actionTargetGUIDs);
     }
 }

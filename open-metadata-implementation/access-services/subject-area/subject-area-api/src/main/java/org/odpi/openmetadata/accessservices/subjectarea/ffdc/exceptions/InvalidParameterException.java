@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
+import java.io.Serial;
 import java.util.Map;
 
 /**
@@ -12,6 +13,9 @@ import java.util.Map;
  * value.
  */
 public class InvalidParameterException extends SubjectAreaCheckedException {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     /**
      * invalid property name
      *

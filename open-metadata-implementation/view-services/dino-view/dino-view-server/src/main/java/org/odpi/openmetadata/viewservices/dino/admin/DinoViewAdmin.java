@@ -31,7 +31,6 @@ public class DinoViewAdmin extends ViewServiceAdmin {
     protected String   resourceEndpointsPropertyName       = "resourceEndpoints";      /* Common */
 
     private AuditLog                  auditLog             = null;
-    private String                    serverUserName       = null;
     private DinoViewServicesInstance  instance             = null;
     private String                    serverName           = null;
 
@@ -75,11 +74,13 @@ public class DinoViewAdmin extends ViewServiceAdmin {
          * This is the super type of IntegrationViewServiceConfig which is what this service actually requires.
          */
 
-        IntegrationViewServiceConfig integrationViewServiceConfig = null;
-        if (viewServiceConfig instanceof IntegrationViewServiceConfig) {
+        IntegrationViewServiceConfig integrationViewServiceConfig;
+        if (viewServiceConfig instanceof IntegrationViewServiceConfig)
+        {
             integrationViewServiceConfig = (IntegrationViewServiceConfig) viewServiceConfig;
         }
-        else {
+        else
+        {
             logBadConfiguration(viewServiceConfig.getViewServiceName(),
                                    "viewServiceConfig",
                                    viewServiceConfig.toString(),
@@ -113,11 +114,10 @@ public class DinoViewAdmin extends ViewServiceAdmin {
                                                          maxPageSize,
                                                          resourceEndpoints);
 
-            this.serverUserName    = serverUserName;
             this.serverName        = serverName;
 
             auditLog.logMessage(actionDescription,
-                                DinoViewAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
+                                DinoViewAuditCode.SERVICE_INITIALIZED.getMessageDefinition(),
                                 viewServiceConfig.toString());
 
             if (log.isDebugEnabled()) {
@@ -183,8 +183,6 @@ public class DinoViewAdmin extends ViewServiceAdmin {
     throws OMAGConfigurationErrorException
     {
         final String methodName = "extractResourceEndpoints";
-        final String parameterName = "resourceEndpoints";
-
 
         /*
          * Dino cannot operate without any endpoints.
@@ -206,9 +204,10 @@ public class DinoViewAdmin extends ViewServiceAdmin {
         }
         else
         {
-            List<ResourceEndpointConfig> endpointList = (List<ResourceEndpointConfig>) resourceEndpoints;
-            auditLog.logMessage(methodName, OMAGAdminAuditCode.RESOURCE_ENDPOINTS.getMessageDefinition(viewServiceFullName, endpointList.toString()));
-            return endpointList;
+            auditLog.logMessage(methodName,
+                                OMAGAdminAuditCode.RESOURCE_ENDPOINTS.getMessageDefinition(viewServiceFullName,
+                                                                                           resourceEndpoints.toString()));
+            return resourceEndpoints;
         }
     }
 

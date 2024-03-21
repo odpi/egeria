@@ -12,7 +12,6 @@ import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -52,15 +51,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
     private final static String defaultAvroFileType = "avro";
     private final static String defaultCSVFileType  = "csv";
-
-    private static final String fileTypeCategory =
-            OpenMetadataValidValues.constructValidValueCategory(OpenMetadataType.DATA_FILE.typeName,
-                                                                OpenMetadataProperty.FILE_TYPE.name,
-                                                                null);
-    private static final String deployedImplementationTypeCategory =
-            OpenMetadataValidValues.constructValidValueCategory(OpenMetadataType.DATA_FILE.typeName,
-                                                                OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                                null);
 
 
     /**
@@ -234,7 +224,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
             {
                 int startingToken = 0;
 
-                if (tokens[startingToken].length() == 0)
+                if (tokens[startingToken].isEmpty())
                 {
                     startingToken = 1;
                 }
@@ -499,6 +489,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                        effectiveTo,
                                                        forLineage,
                                                        forDuplicateProcessing,
+                                                       folderHandler.getSupportedZones(),
                                                        effectiveTime,
                                                        methodName);
     }
@@ -596,6 +587,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                      effectiveTo,
                                                      forLineage,
                                                      forDuplicateProcessing,
+                                                     fileHandler.getSupportedZones(),
                                                      effectiveTime,
                                                      methodName);
     }
@@ -906,7 +898,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                               externalSourceName,
                                               connectToGUID,
                                               this.getFileSystemName(pathName),
-                                              this.getFolderNames(pathName),
+                                              this.getFolderNames(pathName + "/dummyFileName.ext"),
                                               effectiveFrom,
                                               effectiveTo,
                                               forLineage,
@@ -1842,6 +1834,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                        effectiveTo,
                                                                        forLineage,
                                                                        forDuplicateProcessing,
+                                                                       fileHandler.getSupportedZones(),
                                                                        effectiveTime,
                                                                        methodName);
 
@@ -2079,6 +2072,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                      effectiveTo,
                                                                      forLineage,
                                                                      forDuplicateProcessing,
+                                                                     fileHandler.getSupportedZones(),
                                                                      effectiveTime,
                                                                      methodName);
 
@@ -3290,23 +3284,18 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                      0,
                                                                      effectiveTime,
                                                                      methodName);
-        if (entities == null)
+        if (entities != null)
         {
-            return null;
-        }
-        else if (entities.size() == 1)
-        {
-            return entities.get(0).getGUID();
+            for (EntityDetail entityDetail : entities)
+            {
+                if (entityDetail != null)
+                {
+                    return entityDetail.getGUID();
+                }
+            }
         }
 
-        throw new PropertyServerException(GenericHandlersErrorCode.MULTIPLE_ENTITIES_FOUND.getMessageDefinition(OpenMetadataType.FILE_FOLDER.typeName,
-                                                                                                                pathName,
-                                                                                                                entities.toString(),
-                                                                                                                methodName,
-                                                                                                                pathNameParameterName,
-                                                                                                                serverName),
-                                          this.getClass().getName(),
-                                          methodName);
+        return null;
     }
 
 
@@ -3356,23 +3345,18 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                              0,
                                                              effectiveTime,
                                                              methodName);
-        if (folders == null)
+        if (folders != null)
         {
-            return null;
-        }
-        else if (folders.size() == 1)
-        {
-            return folders.get(0);
+            for (FOLDER folder : folders)
+            {
+                if (folder != null)
+                {
+                    return folder;
+                }
+            }
         }
 
-        throw new PropertyServerException(GenericHandlersErrorCode.MULTIPLE_ENTITIES_FOUND.getMessageDefinition(OpenMetadataType.FILE_FOLDER.typeName,
-                                                                                                                pathName,
-                                                                                                                folders.toString(),
-                                                                                                                methodName,
-                                                                                                                pathNameParameterName,
-                                                                                                                serverName),
-                                          this.getClass().getName(),
-                                          methodName);
+        return null;
     }
 
 
@@ -3752,23 +3736,19 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                        0,
                                                        effectiveTime,
                                                        methodName);
-        if (files == null)
+
+        if (files != null)
         {
-            return null;
-        }
-        else if (files.size() == 1)
-        {
-            return files.get(0);
+            for (FILE file : files)
+            {
+                if (file != null)
+                {
+                    return file;
+                }
+            }
         }
 
-        throw new PropertyServerException(GenericHandlersErrorCode.MULTIPLE_ENTITIES_FOUND.getMessageDefinition(OpenMetadataType.DATA_FILE.typeName,
-                                                                                                                pathName,
-                                                                                                                files.toString(),
-                                                                                                                methodName,
-                                                                                                                pathNameParameterName,
-                                                                                                                serverName),
-                                          this.getClass().getName(),
-                                          methodName);
+        return null;
     }
 
 

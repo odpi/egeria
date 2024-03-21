@@ -2375,6 +2375,8 @@ public class RepositoryHandler
      * @param userId         user making the request
      * @param entityTypeGUID identifier for the entity's type
      * @param entityTypeName name for the entity's type
+     * @param limitResultsByStatus only return elements that have the requested status (null means all statuses
+     * @param limitResultsByClassification only return elements that have the requested classification(s)
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom   initial position in the stored list.
@@ -2387,16 +2389,18 @@ public class RepositoryHandler
      * @throws PropertyServerException    problem accessing the property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<EntityDetail> getEntitiesForType(String  userId,
-                                                 String  entityTypeGUID,
-                                                 String  entityTypeName,
-                                                 boolean forLineage,
-                                                 boolean forDuplicateProcessing,
-                                                 int     startingFrom,
-                                                 int     pageSize,
-                                                 Date    effectiveTime,
-                                                 String  methodName) throws UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public List<EntityDetail> getEntitiesForType(String               userId,
+                                                 String               entityTypeGUID,
+                                                 String               entityTypeName,
+                                                 List<InstanceStatus> limitResultsByStatus,
+                                                 List<String>         limitResultsByClassification,
+                                                 boolean              forLineage,
+                                                 boolean              forDuplicateProcessing,
+                                                 int                  startingFrom,
+                                                 int                  pageSize,
+                                                 Date                 effectiveTime,
+                                                 String               methodName) throws UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         final String localMethodName = "getEntitiesForType";
 
@@ -2417,8 +2421,8 @@ public class RepositoryHandler
                                                                                              null,
                                                                                              null,
                                                                                              startingFrom,
-                                                                                             null,
-                                                                                             null,
+                                                                                             limitResultsByStatus,
+                                                                                             limitResultsByClassification,
                                                                                              null,
                                                                                              null,
                                                                                              null,
@@ -3299,6 +3303,8 @@ public class RepositoryHandler
      * @param nameProperties list of name properties to search on
      * @param entityTypeGUID unique identifier of the entity's type
      * @param sequencingPropertyName property name used to sequence the results
+     * @param limitResultsByStatus only return elements that have the requested status (null means all statuses
+     * @param limitResultsByClassification only return elements that have the requested classification(s)
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list
@@ -3311,17 +3317,19 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
-    public List<EntityDetail>  getEntitiesByName(String             userId,
-                                                 InstanceProperties nameProperties,
-                                                 String             entityTypeGUID,
-                                                 String             sequencingPropertyName,
-                                                 boolean            forLineage,
-                                                 boolean            forDuplicateProcessing,
-                                                 int                startingFrom,
-                                                 int                pageSize,
-                                                 Date               effectiveTime,
-                                                 String             methodName) throws UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    public List<EntityDetail>  getEntitiesByName(String               userId,
+                                                 InstanceProperties   nameProperties,
+                                                 String               entityTypeGUID,
+                                                 String               sequencingPropertyName,
+                                                 List<InstanceStatus> limitResultsByStatus,
+                                                 List<String>         limitResultsByClassification,
+                                                 boolean              forLineage,
+                                                 boolean              forDuplicateProcessing,
+                                                 int                  startingFrom,
+                                                 int                  pageSize,
+                                                 Date                 effectiveTime,
+                                                 String               methodName) throws UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         final String localMethodName = "getEntitiesByName";
 
@@ -3339,8 +3347,8 @@ public class RepositoryHandler
                                                                                              nameProperties,
                                                                                              MatchCriteria.ANY,
                                                                                              startingFrom,
-                                                                                             null,
-                                                                                             null,
+                                                                                             limitResultsByStatus,
+                                                                                             limitResultsByClassification,
                                                                                              null,
                                                                                              sequencingPropertyName,
                                                                                              sequencingOrder,
@@ -3375,6 +3383,8 @@ public class RepositoryHandler
      * @param properties list of name properties to search on.
      * @param entityTypeGUID unique identifier of the entity's type
      * @param sequencingPropertyName property name used to sequence the results
+     * @param limitResultsByStatus only return elements that have the requested status (null means all statuses
+     * @param limitResultsByClassification only return elements that have the requested classification(s)
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
@@ -3387,17 +3397,19 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
-    public List<EntityDetail>  getEntitiesByAllProperties(String             userId,
-                                                          InstanceProperties properties,
-                                                          String             entityTypeGUID,
-                                                          String             sequencingPropertyName,
-                                                          boolean            forLineage,
-                                                          boolean            forDuplicateProcessing,
-                                                          int                startingFrom,
-                                                          int                pageSize,
-                                                          Date               effectiveTime,
-                                                          String             methodName) throws UserNotAuthorizedException,
-                                                                                                PropertyServerException
+    public List<EntityDetail>  getEntitiesByAllProperties(String               userId,
+                                                          InstanceProperties   properties,
+                                                          String               entityTypeGUID,
+                                                          String               sequencingPropertyName,
+                                                          List<InstanceStatus> limitResultsByStatus,
+                                                          List<String>         limitResultsByClassification,
+                                                          boolean              forLineage,
+                                                          boolean              forDuplicateProcessing,
+                                                          int                  startingFrom,
+                                                          int                  pageSize,
+                                                          Date                 effectiveTime,
+                                                          String               methodName) throws UserNotAuthorizedException,
+                                                                                                  PropertyServerException
     {
         final String localMethodName = "getEntitiesByAllProperties";
 
@@ -3411,16 +3423,16 @@ public class RepositoryHandler
         try
         {
             List<EntityDetail> retrievedEntities = metadataCollection.findEntitiesByProperty(userId,
-                                                                                    entityTypeGUID,
-                                                                                    properties,
-                                                                                    MatchCriteria.ALL,
-                                                                                    startingFrom,
-                                                                                    null,
-                                                                                    null,
-                                                                                    null,
-                                                                                    sequencingPropertyName,
-                                                                                    sequencingOrder,
-                                                                                    pageSize);
+                                                                                             entityTypeGUID,
+                                                                                             properties,
+                                                                                             MatchCriteria.ALL,
+                                                                                             startingFrom,
+                                                                                             limitResultsByStatus,
+                                                                                             limitResultsByClassification,
+                                                                                             null,
+                                                                                             sequencingPropertyName,
+                                                                                             sequencingOrder,
+                                                                                             pageSize);
 
             return this.validateEntities(userId,
                                          retrievedEntities,
@@ -3450,6 +3462,8 @@ public class RepositoryHandler
      * @param properties list of name properties to search on.
      * @param entityTypeGUID unique identifier of the entity's type
      * @param sequencingPropertyName name of property to use when sequencing results
+     * @param limitResultsByStatus only return elements that have the requested status (null means all statuses
+     * @param limitResultsByClassification only return elements that have the requested classification(s)
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list.
@@ -3462,17 +3476,19 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
-    public List<EntityDetail>  getEntitiesWithoutPropertyValues(String             userId,
-                                                                InstanceProperties properties,
-                                                                String             entityTypeGUID,
-                                                                String             sequencingPropertyName,
-                                                                boolean            forLineage,
-                                                                boolean            forDuplicateProcessing,
-                                                                int                startingFrom,
-                                                                int                pageSize,
-                                                                Date               effectiveTime,
-                                                                String             methodName) throws UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+    public List<EntityDetail>  getEntitiesWithoutPropertyValues(String               userId,
+                                                                InstanceProperties   properties,
+                                                                String               entityTypeGUID,
+                                                                String               sequencingPropertyName,
+                                                                List<InstanceStatus> limitResultsByStatus,
+                                                                List<String>         limitResultsByClassification,
+                                                                boolean              forLineage,
+                                                                boolean              forDuplicateProcessing,
+                                                                int                  startingFrom,
+                                                                int                  pageSize,
+                                                                Date                 effectiveTime,
+                                                                String               methodName) throws UserNotAuthorizedException,
+                                                                                                        PropertyServerException
     {
         final String localMethodName = "getEntitiesWithoutPropertyValues";
 
@@ -3490,8 +3506,8 @@ public class RepositoryHandler
                                                                                     properties,
                                                                                     MatchCriteria.NONE,
                                                                                     startingFrom,
-                                                                                    null,
-                                                                                    null,
+                                                                                    limitResultsByStatus,
+                                                                                    limitResultsByClassification,
                                                                                     null,
                                                                                     sequencingPropertyName,
                                                                                     sequencingOrder,
@@ -3525,6 +3541,8 @@ public class RepositoryHandler
      * @param userId calling userId
      * @param propertyValue string value to search on - may be a RegEx
      * @param entityTypeGUID unique identifier of the entity's type
+     * @param limitResultsByStatus only return elements that have the requested status (null means all statuses
+     * @param limitResultsByClassification only return elements that have the requested classification(s)
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
      * @param startingFrom initial position in the stored list
@@ -3538,17 +3556,19 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
-    public List<EntityDetail>  getEntitiesByValue(String  userId,
-                                                  String  propertyValue,
-                                                  String  entityTypeGUID,
-                                                  String  sequencingPropertyName,
-                                                  boolean forLineage,
-                                                  boolean forDuplicateProcessing,
-                                                  int     startingFrom,
-                                                  int     pageSize,
-                                                  Date    effectiveTime,
-                                                  String  methodName) throws UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public List<EntityDetail>  getEntitiesByValue(String               userId,
+                                                  String               propertyValue,
+                                                  String               entityTypeGUID,
+                                                  String               sequencingPropertyName,
+                                                  List<InstanceStatus> limitResultsByStatus,
+                                                  List<String>         limitResultsByClassification,
+                                                  boolean              forLineage,
+                                                  boolean              forDuplicateProcessing,
+                                                  int                  startingFrom,
+                                                  int                  pageSize,
+                                                  Date                 effectiveTime,
+                                                  String               methodName) throws UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         final String localMethodName = "getEntitiesByValue";
 
@@ -3565,8 +3585,8 @@ public class RepositoryHandler
                                                                                                   entityTypeGUID,
                                                                                                   propertyValue,
                                                                                                   startingFrom,
-                                                                                                  null,
-                                                                                                  null,
+                                                                                                  limitResultsByStatus,
+                                                                                                  limitResultsByClassification,
                                                                                                   null,
                                                                                                   sequencingPropertyName,
                                                                                                   sequencingOrder,

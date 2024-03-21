@@ -2,10 +2,29 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.assetcatalog.beans;
 
-public enum Scope {
+/**
+ * Scope characterizes the type of lineage query request.
+ */
+public enum Scope
+{
+    /**
+     * end-to-end
+     */
     END_TO_END("end-to-end"),
+
+    /**
+     * ultimate-source
+     */
     ULTIMATE_SOURCE("ultimate-source"),
+
+    /**
+     * ultimate-destination
+     */
     ULTIMATE_DESTINATION("ultimate-destination"),
+
+    /**
+     * vertical
+     */
     VERTICAL("vertical");
 
     private final String value;
@@ -14,16 +33,32 @@ public enum Scope {
         this.value = s;
     }
 
+    /**
+     * Retrieve the enum value as a string.
+     *
+     * @return string
+     */
     public String getValue() {
         return value;
     }
 
-    public static Scope fromString(String text) {
-        for (Scope value : Scope.values()) {
-            if (value.value.equals(text)) {
+
+    /**
+     * Convert a string to an enum value - or null if no match occurs.
+     *
+     * @param text string, typically passed on a REST call
+     * @return associated enum
+     */
+    public static Scope fromString(String text)
+    {
+        for (Scope value : Scope.values())
+        {
+            if (value.value.equals(text))
+            {
                 return value;
             }
         }
+
         return null;
     }
 }

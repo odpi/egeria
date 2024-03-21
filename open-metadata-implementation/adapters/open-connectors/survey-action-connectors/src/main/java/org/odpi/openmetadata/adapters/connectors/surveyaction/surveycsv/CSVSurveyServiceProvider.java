@@ -5,12 +5,11 @@ package org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.actiontargettype.ActionTargetType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * CSVSurveyServiceProvider provides the connector provider for the CSV Survey Action Service
@@ -38,6 +37,7 @@ public class CSVSurveyServiceProvider extends SurveyActionServiceProvider
 
 
     static final String  FILE_TARGET_PROPERTY = "fileToSurvey";
+    static final String  FILE_TARGET_PROPERTY_DESCRIPTION = "The CSVFile asset that describes the physical file to survey";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -60,16 +60,15 @@ public class CSVSurveyServiceProvider extends SurveyActionServiceProvider
 
         super.connectorTypeBean = connectorType;
 
-        supportedTargetActionNames = new ArrayList<>();
-        supportedTargetActionNames.add(FILE_TARGET_PROPERTY);
-
-        actionTargetTypes = new HashMap<>();
+        supportedActionTargetTypes = new ArrayList<>();
         ActionTargetType actionTargetType = new ActionTargetType();
 
+        actionTargetType.setName(FILE_TARGET_PROPERTY);
+        actionTargetType.setDescription(FILE_TARGET_PROPERTY_DESCRIPTION);
         actionTargetType.setTypeName(DeployedImplementationType.FILE_FOLDER.getAssociatedTypeName());
         actionTargetType.setDeployedImplementationType(DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType());
 
-        super.actionTargetTypes.put(FILE_TARGET_PROPERTY, actionTargetType);
+        super.supportedActionTargetTypes.add(actionTargetType);
 
         /*
          * Set up the component description used in the connector's audit log messages.

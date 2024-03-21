@@ -38,6 +38,19 @@ public enum ResourceUse
             "Improve the information about an element in the open metadata repositories."),
 
     /**
+     * Send notification to a steward.
+     */
+    INFORM_STEWARD("Inform Steward",
+                     "Send notification to a steward."),
+
+
+    /**
+     * Choose the appropriate path to take.
+     */
+    CHOOSE_PATH("Choose Path",
+                   "Choose the appropriate path to take."),
+
+    /**
      * Monitor for changes to a metadata element and its related elements and take action if required.
      */
     WATCH_DOG("Watch Metadata Element",

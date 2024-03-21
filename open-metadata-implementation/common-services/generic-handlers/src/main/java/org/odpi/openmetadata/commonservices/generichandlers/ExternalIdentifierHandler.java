@@ -632,6 +632,8 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                                    true,
                                                                                    false,
                                                                                    null,
+                                                                                   null,
+                                                                                   null,
                                                                                    forLineage,
                                                                                    forDuplicateProcessing,
                                                                                    0,
@@ -1187,43 +1189,6 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                        externalIdScope,
                                                        properties,
                                                        methodName);
-    }
-
-
-
-    /**
-     * Count the number of external identifiers attached to an anchor entity.
-     *
-     * @param userId     calling user
-     * @param elementGUID identifier for the entity that the object is attached to
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     * @return count of attached objects
-     * @throws InvalidParameterException  the parameters are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem detected in the repository services
-     */
-    public int countExternalIdentifiers(String  userId,
-                                        String  elementGUID,
-                                        boolean forLineage,
-                                        boolean forDuplicateProcessing,
-                                        Date    effectiveTime,
-                                        String  methodName) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
-    {
-        return super.countAttachments(userId,
-                                      elementGUID,
-                                      OpenMetadataType.REFERENCEABLE.typeName,
-                                      OpenMetadataType.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_GUID,
-                                      OpenMetadataType.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME,
-                                      2,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      effectiveTime,
-                                      methodName);
     }
 
 

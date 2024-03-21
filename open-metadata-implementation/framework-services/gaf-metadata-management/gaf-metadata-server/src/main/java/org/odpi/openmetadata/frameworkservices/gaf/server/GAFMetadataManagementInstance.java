@@ -8,6 +8,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworkservices.gaf.converters.*;
 import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenMetadataStoreErrorCode;
+import org.odpi.openmetadata.frameworkservices.gaf.handlers.GovernanceEngineConfigurationHandler;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -23,7 +24,8 @@ public class GAFMetadataManagementInstance extends OMASServiceInstance
 {
     private final static CommonServicesDescription myDescription = CommonServicesDescription.GAF_METADATA_MANAGEMENT;
 
-    private final MetadataElementHandler<OpenMetadataElement>                            metadataElementHandler;
+    private final GovernanceEngineConfigurationHandler        governanceEngineConfigurationHandler;
+    private final MetadataElementHandler<OpenMetadataElement> metadataElementHandler;
     private final ValidValuesHandler<ValidMetadataValue>                                 validMetadataValuesHandler;
     private final ValidValuesHandler<ValidMetadataValueDetail>                           validMetadataValuesDetailHandler;
     private final EngineActionHandler<EngineActionElement>                               engineActionHandler;
@@ -64,6 +66,19 @@ public class GAFMetadataManagementInstance extends OMASServiceInstance
 
         if (repositoryHandler != null)
         {
+            this.governanceEngineConfigurationHandler = new GovernanceEngineConfigurationHandler(serviceName,
+                                                                                                 serverName,
+                                                                                                 invalidParameterHandler,
+                                                                                                 repositoryHandler,
+                                                                                                 repositoryHelper,
+                                                                                                 localServerUserId,
+                                                                                                 securityVerifier,
+                                                                                                 supportedZones,
+                                                                                                 defaultZones,
+                                                                                                 publishZones,
+                                                                                                 auditLog);
+
+
             this.metadataElementHandler = new MetadataElementHandler<>(new MetadataElementConverter<>(repositoryHelper, serviceName, serverName),
                                                                        OpenMetadataElement.class,
                                                                        serviceName,
@@ -133,6 +148,7 @@ public class GAFMetadataManagementInstance extends OMASServiceInstance
                                                                      supportedZones,
                                                                      defaultZones,
                                                                      publishZones,
+                                                                     null,
                                                                      auditLog);
 
             this.governanceActionProcessStepHandler = new GovernanceActionProcessStepHandler<>(new GovernanceActionProcessStepConverter<>(repositoryHelper, serviceName, serverName),
@@ -169,6 +185,16 @@ public class GAFMetadataManagementInstance extends OMASServiceInstance
                                            this.getClass().getName(),
                                            methodName);
         }
+    }
+
+    /**
+     * Return the handler for configuring governance engines.
+     *
+     * @return handler object
+     */
+    public GovernanceEngineConfigurationHandler getGovernanceConfigurationHandler()
+    {
+        return governanceEngineConfigurationHandler;
     }
 
 

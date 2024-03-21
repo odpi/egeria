@@ -122,15 +122,6 @@ public abstract class AssetOwnerConverterBase<B> extends OpenMetadataConverterBa
             handleMissingMetadataInstance(beanClass.getName(), RelatedMetadataElements.class.getName(), methodName);
         }
 
-        if (relatedMetadataElement.getStartingElement() != null)
-        {
-            relatedElement.setRelatedElement(new ElementStub(relatedMetadataElement.getStartingElement()));
-        }
-        else
-        {
-            handleMissingMetadataInstance(beanClass.getName(), ElementStub.class.getName(), methodName);
-        }
-
         return relatedElement;
     }
 }

@@ -2,23 +2,35 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.registration;
 
-import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminAuditCode;
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
+import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminAuditCode;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
- * ViewServiceAdmin is the interface that an view service implements to receive its configuration.
+ * ViewServiceAdmin is the interface that a view service implements to receive its configuration.
  * The java class that implements this interface is created with a default constructor and then
  * the initialize method is called.  It is configured in the ViewServiceDescription enumeration.
  */
 public abstract class ViewServiceAdmin
 {
-    final protected String remoteServerName  = "remoteServerName";        /* Common */
-    final protected String remoteServerURL   = "remoteServerURL";         /* Common */
+    /*
+     * These are standard property names that a view service may support.  They are passed in the
+     * ViewServiceConfig as the viewServicesOptions.  Individual access services may support
+     * additional properties.
+     */
+    protected final String   supportedTypesForSearch         = "SupportedTypesForSearch"; /* Asset Catalog OMVS */
+
+    /*
+     * Properties needed by all view services.
+     */
+    protected final String remoteServerName  = "remoteServerName";        /* Common */
+    protected final String remoteServerURL   = "remoteServerURL";         /* Common */
 
     private String     fullServiceName = null;
 
@@ -26,14 +38,14 @@ public abstract class ViewServiceAdmin
      * Initialize the view service.
      *
      * @param serverName                         name of the local server
-     * @param viewServiceConfigurationProperties specific configuration properties for this view service.
+     * @param viewServiceConfig                  specific configuration properties for this view service.
      * @param auditLog                           audit log component for logging messages.
      * @param serverUserName                     user id to use on OMRS calls where there is no end user.
      * @param maxPageSize                        maximum page size. 0 means unlimited
      * @throws OMAGConfigurationErrorException   invalid parameters in the configuration properties.
      */
     public abstract void initialize(String            serverName,
-                                    ViewServiceConfig viewServiceConfigurationProperties,
+                                    ViewServiceConfig viewServiceConfig,
                                     AuditLog          auditLog,
                                     String            serverUserName,
                                     int               maxPageSize) throws OMAGConfigurationErrorException;
@@ -64,6 +76,59 @@ public abstract class ViewServiceAdmin
     public void setFullServiceName(String fullServiceName)
     {
         this.fullServiceName = fullServiceName;
+    }
+
+
+    /**
+     * Retrieve the option from the configuration that overrides default list of assets
+     * that a caller can search for.
+     *
+     * @param viewServiceOptions service configuration options
+     * @return the list of supported asset types for search or null
+     * @throws OMAGConfigurationErrorException error in the view options
+     */
+    @SuppressWarnings(value = "unchecked")
+    protected List<String> getSupportedTypesForSearchOption(Map<String, Object> viewServiceOptions,
+                                                            String              viewServiceName,
+                                                            AuditLog            auditLog) throws OMAGConfigurationErrorException
+    {
+        final String methodName = "getSupportedTypesForSearchOption";
+
+        if (viewServiceOptions != null)
+        {
+            Object supportedTypesObject = viewServiceOptions.get(supportedTypesForSearch);
+
+            if (supportedTypesObject == null)
+            {
+                auditLog.logMessage(methodName, OMAGAdminAuditCode.ALL_SEARCH_TYPES.getMessageDefinition(viewServiceName));
+                return null;
+            }
+            else
+            {
+                try
+                {
+                    @SuppressWarnings("unchecked")
+                    List<String> typeList = (List<String>) supportedTypesObject;
+
+                    auditLog.logMessage(methodName, OMAGAdminAuditCode.SUPPORTED_SEARCH_TYPES.getMessageDefinition(viewServiceName, typeList.toString()));
+                    return typeList;
+                }
+                catch (Exception error)
+                {
+                    logBadConfigProperties(viewServiceName,
+                                           supportedTypesForSearch,
+                                           supportedTypesObject.toString(),
+                                           auditLog,
+                                           methodName,
+                                           error);
+
+                    /* unreachable */
+                    return null;
+                }
+            }
+        }
+
+        return null;
     }
 
 

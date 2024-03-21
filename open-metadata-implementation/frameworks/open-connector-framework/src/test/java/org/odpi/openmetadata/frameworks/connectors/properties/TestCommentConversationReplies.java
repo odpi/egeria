@@ -48,28 +48,6 @@ public class TestCommentConversationReplies
 
 
     /**
-     * Validate that a clone can be created
-     */
-    @Test public void  testClonedIterator()
-    {
-        CommentReplies propertyIterator = getPropertyIterator(10, 100);
-
-        propertyIterator.next();
-
-        CommentReplies propertyIteratorClone = new MockCommentReplies( propertyIterator);
-
-        int elementCount = 0;
-        while (propertyIteratorClone.hasNext())
-        {
-            assertTrue(propertyIteratorClone.next() != null);
-            elementCount ++;
-        }
-
-        assertTrue(elementCount == 10);
-    }
-
-
-    /**
      * Test that the iterator works well if there are no elements
      */
     @Test public void testEmptyIterator()
@@ -115,25 +93,6 @@ public class TestCommentConversationReplies
     {
         validatePropertyIterator(30,
                                  10);
-    }
-
-
-    /**
-     * Validate that element count is set.
-     */
-    @Test public void testElementCount()
-    {
-        CommentReplies propertyIterator = getPropertyIterator(30, 10);
-
-        assertTrue(propertyIterator.getElementCount() == 30);
-
-        CommentReplies clonedPropertyIterator = new MockCommentReplies( propertyIterator);
-
-        assertTrue(clonedPropertyIterator.getElementCount() == 30);
-
-        clonedPropertyIterator = new MockCommentReplies( null);
-
-        assertTrue(clonedPropertyIterator.getElementCount() == 0);
     }
 
 

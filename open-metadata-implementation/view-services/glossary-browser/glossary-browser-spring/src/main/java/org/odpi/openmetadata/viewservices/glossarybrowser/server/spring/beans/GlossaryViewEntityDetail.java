@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,10 +36,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "typeDefName",
         include = JsonTypeInfo.As.EXISTING_PROPERTY,
         visible = true)
-public class GlossaryViewEntityDetail{
-
-    private static final String QUALIFIED_NAME = "qualifiedName";
-
+public class GlossaryViewEntityDetail
+{
     private String typeDefName;
     private String createdBy;
     private String updatedBy;
@@ -101,11 +100,12 @@ public class GlossaryViewEntityDetail{
     }
 
     public String getQualifiedName(){
-        return properties.get(QUALIFIED_NAME);
+        return properties.get(OpenMetadataProperty.QUALIFIED_NAME.name);
     }
 
-    public void setQualifiedName(String qualifiedName){
-        properties.put(QUALIFIED_NAME, qualifiedName);
+    public void setQualifiedName(String qualifiedName)
+    {
+        properties.put(OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName);
     }
 
     public List<GlossaryViewClassification> getClassifications() {

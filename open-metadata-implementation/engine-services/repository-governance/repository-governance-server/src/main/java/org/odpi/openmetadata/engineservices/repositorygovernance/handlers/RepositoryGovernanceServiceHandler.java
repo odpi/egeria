@@ -2,8 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.repositorygovernance.handlers;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceengine.properties.GovernanceEngineProperties;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
 import org.odpi.openmetadata.engineservices.repositorygovernance.connector.RepositoryGovernanceContext;
 import org.odpi.openmetadata.engineservices.repositorygovernance.connector.RepositoryGovernanceServiceConnector;
 import org.odpi.openmetadata.engineservices.repositorygovernance.ffdc.RepositoryGovernanceErrorCode;
@@ -12,6 +11,7 @@ import org.odpi.openmetadata.engineservices.repositorygovernance.ffdc.Repository
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceEngineProperties;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceHandler;
 
 import java.util.Date;
@@ -41,6 +41,7 @@ public class RepositoryGovernanceServiceHandler extends GovernanceServiceHandler
      * @param repositoryGovernanceServiceName name of this repository governance service - used for message logging
      * @param repositoryGovernanceServiceConnector connector that does the work
      * @param repositoryGovernanceContext context for the connector
+     * @param startDate date/time that the governance service should start executing
      * @param auditLog destination for log messages
      */
     RepositoryGovernanceServiceHandler(GovernanceEngineProperties  repositoryGovernanceEngineProperties,
@@ -53,6 +54,7 @@ public class RepositoryGovernanceServiceHandler extends GovernanceServiceHandler
                                        String                      repositoryGovernanceServiceName,
                                        Connector                   repositoryGovernanceServiceConnector,
                                        RepositoryGovernanceContext repositoryGovernanceContext,
+                                       Date                        startDate,
                                        AuditLog                    auditLog) throws InvalidParameterException
     {
         super(repositoryGovernanceEngineProperties,
@@ -64,10 +66,10 @@ public class RepositoryGovernanceServiceHandler extends GovernanceServiceHandler
               repositoryGovernanceServiceGUID,
               repositoryGovernanceServiceName,
               repositoryGovernanceServiceConnector,
+              startDate,
               auditLog);
 
         this.repositoryGovernanceContext = repositoryGovernanceContext;
-        this.auditLog       = auditLog;
 
         try
         {
@@ -105,15 +107,17 @@ public class RepositoryGovernanceServiceHandler extends GovernanceServiceHandler
         Date startTime;
         Date endTime;
 
-        final String actionDescription = "Maintain an repository governance service";
+        final String actionDescription = "Run a repository governance service";
 
         try
         {
+            super.waitForStartDate(engineHostUserId);
+
             auditLog.logMessage(actionDescription,
                                 RepositoryGovernanceAuditCode.REPOSITORY_GOVERNANCE_SERVICE_STARTING.getMessageDefinition(governanceServiceName,
                                                                                                                           serviceRequestType,
-                                                                                                      governanceEngineProperties.getQualifiedName(),
-                                                                                                      governanceEngineGUID));
+                                                                                                                          governanceEngineProperties.getQualifiedName(),
+                                                                                                                          governanceEngineGUID));
 
 
 

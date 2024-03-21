@@ -11,12 +11,13 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.EngineActionElementResponse;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.EngineActionElementsResponse;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient;
 
 
 /**
  * GovernanceEngineRESTClient is responsible for issuing calls to the OMAS REST APIs.
  */
-public class GovernanceEngineRESTClient extends GAFRESTClient
+public class GovernanceEngineRESTClient extends OCFRESTClient
 {
     /**
      * Constructor for no authentication with audit log.
@@ -302,7 +303,7 @@ public class GovernanceEngineRESTClient extends GAFRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a CntegrationConnectorElementResponse object.
+     * Issue a GET REST call that returns a IntegrationConnectorElementResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API with place-holders for the parameters.

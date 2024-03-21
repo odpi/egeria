@@ -11,7 +11,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface;
@@ -44,6 +46,9 @@ public class IntegrationContext
     protected final String                   integrationConnectorGUID;
     protected final PermittedSynchronization permittedSynchronization;
 
+    protected final FileClassifier           fileClassifier;
+
+    private   final ConnectedAssetContext        connectedAssetContext;
     private   final IntegrationGovernanceContext integrationGovernanceContext;
     protected final IntegrationReportWriter      integrationReportWriter;
 
@@ -94,7 +99,8 @@ public class IntegrationContext
         this.integrationConnectorGUID     = integrationConnectorGUID;
         this.maxPageSize                  = maxPageSize;
 
-        this.listenerManager = new FilesListenerManager(auditLog, connectorName);
+        this.fileClassifier               = new FileClassifier(new OpenMetadataStore(openMetadataStoreClient, userId, integrationConnectorGUID));
+        this.listenerManager              = new FilesListenerManager(auditLog, connectorName);
 
         if (generateIntegrationReport)
         {
@@ -110,12 +116,14 @@ public class IntegrationContext
             this.integrationReportWriter = null;
         }
 
+        this.connectedAssetContext = new ConnectedAssetContext(connectorUserId, openIntegrationClient);
+
         this.integrationGovernanceContext = constructIntegrationGovernanceContext(openMetadataStoreClient,
                                                                                   connectorUserId,
                                                                                   externalSourceGUID,
                                                                                   externalSourceName,
+                                                                                  integrationConnectorGUID,
                                                                                   integrationReportWriter);
-
     }
 
 
@@ -126,6 +134,7 @@ public class IntegrationContext
      * @param userId calling user
      * @param externalSourceGUID unique identifier for external source (or null)
      * @param externalSourceName unique name for external source (or null)
+     * @param originatorGUID unique identifier of the source of the to do
      * @param integrationReportWriter report writer (maybe null)
      * @return new context
      */
@@ -133,6 +142,7 @@ public class IntegrationContext
                                                                                String                  userId,
                                                                                String                  externalSourceGUID,
                                                                                String                  externalSourceName,
+                                                                               String                  originatorGUID,
                                                                                IntegrationReportWriter integrationReportWriter)
     {
         if (openMetadataStoreClient != null)
@@ -141,15 +151,27 @@ public class IntegrationContext
                                                                                      userId,
                                                                                      externalSourceGUID,
                                                                                      externalSourceName,
+                                                                                     originatorGUID,
                                                                                      integrationReportWriter);
             MultiLanguageManagement multiLanguageManagement = new MultiLanguageManagement(openMetadataStore, userId);
-            StewardshipAction          stewardshipAction          = new StewardshipAction(openMetadataStore, userId);
+            StewardshipAction          stewardshipAction          = new StewardshipAction(openMetadataStore, userId, originatorGUID);
             ValidMetadataValuesContext validMetadataValuesContext = new ValidMetadataValuesContext(openMetadataStore, userId);
 
             return new IntegrationGovernanceContext(openMetadataAccess, multiLanguageManagement, stewardshipAction, validMetadataValuesContext);
         }
 
         return null;
+    }
+
+
+    /**
+     * Return the file classifier that uses reference data to describe a file.
+     *
+     * @return file classifier utility
+     */
+    public FileClassifier getFileClassifier()
+    {
+        return fileClassifier;
     }
 
 
@@ -212,6 +234,17 @@ public class IntegrationContext
     public IntegrationGovernanceContext getIntegrationGovernanceContext()
     {
         return  integrationGovernanceContext;
+    }
+
+
+    /**
+     * Return the connected asset context that support an integration connector working with assets and their connectors.
+     *
+     * @return connected asset context
+     */
+    public ConnectedAssetContext getConnectedAssetContext()
+    {
+        return connectedAssetContext;
     }
 
 

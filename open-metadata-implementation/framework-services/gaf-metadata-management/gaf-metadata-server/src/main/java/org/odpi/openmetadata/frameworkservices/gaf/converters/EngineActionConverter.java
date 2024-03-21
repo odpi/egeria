@@ -89,6 +89,7 @@ public class EngineActionConverter<B> extends OpenMetadataStoreConverter<B>
                     bean.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
                     bean.setDisplayName(this.removeDisplayName(instanceProperties));
                     bean.setDescription(this.removeDescription(instanceProperties));
+                    bean.setRequesterUserId(this.removeRequesterUserId(instanceProperties));
                     bean.setRequestType(this.removeRequestType(instanceProperties));
                     bean.setRequestParameters(this.removeRequestParameters(instanceProperties));
                     bean.setGovernanceEngineGUID(this.removeExecutorEngineGUID(instanceProperties));
@@ -101,6 +102,7 @@ public class EngineActionConverter<B> extends OpenMetadataStoreConverter<B>
                     bean.setMandatoryGuards(this.removeMandatoryGuards(instanceProperties));
                     bean.setReceivedGuards(this.removeReceivedGuards(instanceProperties));
                     bean.setActionStatus(this.removeActionStatus(OpenMetadataType.ACTION_STATUS_PROPERTY_NAME, instanceProperties));
+                    bean.setRequestedStartTime(this.removeRequestedStartDate(instanceProperties));
                     bean.setStartTime(this.removeStartDate(instanceProperties));
                     bean.setProcessingEngineUserId(this.removeProcessingEngineUserId(instanceProperties));
                     bean.setCompletionTime(this.removeCompletionDate(instanceProperties));
@@ -146,8 +148,9 @@ public class EngineActionConverter<B> extends OpenMetadataStoreConverter<B>
                                 {
                                     ActionTargetElement actionTargetElement = new ActionTargetElement();
 
+                                    actionTargetElement.setActionTargetRelationshipGUID(relationship.getGUID());
                                     actionTargetElement.setActionTargetName(this.removeActionTargetName(instanceProperties));
-                                    actionTargetElement.setStatus(this.removeActionStatus(OpenMetadataType.STATUS_PROPERTY_NAME, instanceProperties));
+                                    actionTargetElement.setStatus(this.removeActionStatus(OpenMetadataType.ACTION_STATUS_PROPERTY_NAME, instanceProperties));
                                     actionTargetElement.setStartDate(this.removeStartDate(instanceProperties));
                                     actionTargetElement.setCompletionDate(this.removeCompletionDate(instanceProperties));
                                     actionTargetElement.setCompletionMessage(this.removeCompletionMessage(instanceProperties));

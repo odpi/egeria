@@ -27,6 +27,7 @@ public class ValidMetadataValue
     private String  displayName    = null;
     private String  description    = null;
     private String  preferredValue = null;
+    private String  dataType       = null;
     private boolean isDeprecated   = false;
     private boolean isCaseSensitive = false;
 
@@ -56,6 +57,7 @@ public class ValidMetadataValue
             displayName = template.getDisplayName();
             description = template.getDescription();
             preferredValue = template.getPreferredValue();
+            dataType = template.getDataType();
             isDeprecated = template.getIsDeprecated();
             isCaseSensitive = template.getIsCaseSensitive();
             additionalProperties = template.getAdditionalProperties();
@@ -152,6 +154,28 @@ public class ValidMetadataValue
     public void setPreferredValue(String preferredValue)
     {
         this.preferredValue = preferredValue;
+    }
+
+
+    /**
+     * Returns the data type of the preferred value.
+     *
+     * @return string
+     */
+    public String getDataType()
+    {
+        return dataType;
+    }
+
+
+    /**
+     * Set up the data type of the preferred value.
+     *
+     * @param dataType string
+     */
+    public void setDataType(String dataType)
+    {
+        this.dataType = dataType;
     }
 
 
@@ -289,6 +313,7 @@ public class ValidMetadataValue
                        ", displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
                        ", preferredValue='" + preferredValue + '\'' +
+                       ", dataType='" + dataType + '\'' +
                        ", isDeprecated=" + isDeprecated +
                        ", isCaseSensitive=" + isCaseSensitive +
                        ", additionalProperties=" + additionalProperties +
@@ -316,11 +341,12 @@ public class ValidMetadataValue
             return false;
         }
         return isDeprecated == that.isDeprecated &&
-                       isCaseSensitive == isCaseSensitive &&
+                       isCaseSensitive == that.isCaseSensitive &&
                        Objects.equals(category, that.category) &&
                        Objects.equals(displayName, that.displayName) &&
                        Objects.equals(description, that.description) &&
                        Objects.equals(preferredValue, that.preferredValue) &&
+                       Objects.equals(dataType, that.dataType) &&
                        Objects.equals(additionalProperties, that.additionalProperties) &&
                        Objects.equals(effectiveFrom, that.effectiveFrom) &&
                        Objects.equals(effectiveTo, that.effectiveTo);
@@ -335,6 +361,6 @@ public class ValidMetadataValue
     @Override
     public int hashCode()
     {
-        return Objects.hash(category, displayName, description, preferredValue, isDeprecated, isCaseSensitive, additionalProperties, effectiveFrom, effectiveTo);
+        return Objects.hash(category, displayName, description, preferredValue, dataType, isDeprecated, isCaseSensitive, additionalProperties, effectiveFrom, effectiveTo);
     }
 }

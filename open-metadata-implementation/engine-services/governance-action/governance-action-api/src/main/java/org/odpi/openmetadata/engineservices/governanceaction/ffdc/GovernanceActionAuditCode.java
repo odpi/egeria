@@ -34,9 +34,9 @@ public enum GovernanceActionAuditCode implements AuditLogMessageSet
                                 "Verify that the start up sequence goes on to initialize the configured governance action engines."),
 
     /**
-     * OMES-GOVERNANCE-ACTION-0012 - The Governance Action OMES is unable to initialize a new instance of itself in server {0}; error message is {1}
+     * OMES-GOVERNANCE-ACTION-0002 - The Governance Action OMES is unable to initialize a new instance of itself in server {0}; error message is {1}
      */
-    SERVICE_INSTANCE_FAILURE("OMES-GOVERNANCE-ACTION-0012",
+    SERVICE_INSTANCE_FAILURE("OMES-GOVERNANCE-ACTION-0002",
                              AuditLogRecordSeverityLevel.ERROR,
                              "The Governance Action OMES is unable to initialize a new instance of itself in server {0}; error message is {1}",
                              "The engine services detected an error during the start up of a specific engine host server instance.  Its governance action services are not available for the server.",
@@ -171,6 +171,16 @@ public enum GovernanceActionAuditCode implements AuditLogMessageSet
                                   "{0} governance service ({1}) with request type {2} has initialized in governance engine {3}",
                                   "The governance engine is starting a governance action request.",
                                   "Validate that the governance action ran to successful completion."),
+
+    /**
+     * OMES-GOVERNANCE-ACTION-0033 - The Governance Action OMES has received an unexpected {0} exception during method {1}; the error message was: {2}
+     */
+    UNEXPECTED_EXCEPTION("OMES-GOVERNANCE-ACTION-0033",
+                         AuditLogRecordSeverityLevel.EXCEPTION,
+                         "The Governance Action OMES has received an unexpected {0} exception during method {1}; the error message was: {2}",
+                         "The service is unable to process the current request.",
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+
 
     ;
 

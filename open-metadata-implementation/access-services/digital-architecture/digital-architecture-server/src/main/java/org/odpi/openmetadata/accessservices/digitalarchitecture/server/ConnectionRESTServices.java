@@ -106,6 +106,7 @@ public class ConnectionRESTServices
                                                           null,
                                                           false,
                                                           false,
+                                                          handler.getSupportedZones(),
                                                           new Date(),
                                                           methodName));
             }
@@ -579,6 +580,7 @@ public class ConnectionRESTServices
                                               null,
                                               false,
                                               false,
+                                              handler.getSupportedZones(),
                                               new Date(),
                                               methodName);
             }
@@ -645,6 +647,7 @@ public class ConnectionRESTServices
                                                  embeddedConnectionGUIDParameterName,
                                                  false,
                                                  false,
+                                                 handler.getSupportedZones(),
                                                  new Date(),
                                                  methodName);
             }

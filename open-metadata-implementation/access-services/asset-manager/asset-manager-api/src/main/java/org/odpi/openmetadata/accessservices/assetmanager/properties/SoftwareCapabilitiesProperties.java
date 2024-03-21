@@ -26,12 +26,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class SoftwareCapabilitiesProperties extends SupplementaryProperties
 {
-    private String technicalName        = null;
-    private String technicalDescription = null;
-    private String typeDescription      = null;
-    private String version              = null;
-    private String patchLevel           = null;
-    private String source               = null;
+    private String technicalName              = null;
+    private String technicalDescription       = null;
+    private String deployedImplementationType = null;
+    private String version                    = null;
+    private String patchLevel                 = null;
+    private String source                     = null;
 
 
     /**
@@ -55,9 +55,9 @@ public class SoftwareCapabilitiesProperties extends SupplementaryProperties
         if (template != null)
         {
             technicalName = template.getTechnicalName();
-            technicalDescription = template.getTechnicalDescription();
-            typeDescription = template.getTypeDescription();
-            version = template.getVersion();
+            technicalDescription       = template.getTechnicalDescription();
+            deployedImplementationType = template.getDeployedImplementationType();
+            version                    = template.getVersion();
             patchLevel = template.getPatchLevel();
             source = template.getSource();
         }
@@ -113,20 +113,20 @@ public class SoftwareCapabilitiesProperties extends SupplementaryProperties
      *
      * @return string description
      */
-    public String getTypeDescription()
+    public String getDeployedImplementationType()
     {
-        return typeDescription;
+        return deployedImplementationType;
     }
 
 
     /**
      * Set up the description of the type of capability this is.
      *
-     * @param typeDescription string
+     * @param deployedImplementationType string
      */
-    public void setTypeDescription(String typeDescription)
+    public void setDeployedImplementationType(String deployedImplementationType)
     {
-        this.typeDescription = typeDescription;
+        this.deployedImplementationType = deployedImplementationType;
     }
 
 
@@ -207,7 +207,7 @@ public class SoftwareCapabilitiesProperties extends SupplementaryProperties
         return "SoftwareCapabilitiesProperties{" +
                        "technicalName='" + technicalName + '\'' +
                        ", technicalDescription='" + technicalDescription + '\'' +
-                       ", typeDescription='" + typeDescription + '\'' +
+                       ", typeDescription='" + deployedImplementationType + '\'' +
                        ", version='" + version + '\'' +
                        ", patchLevel='" + patchLevel + '\'' +
                        ", source='" + source + '\'' +
@@ -250,7 +250,7 @@ public class SoftwareCapabilitiesProperties extends SupplementaryProperties
         SoftwareCapabilitiesProperties that = (SoftwareCapabilitiesProperties) objectToCompare;
         return Objects.equals(getTechnicalName(), that.getTechnicalName()) &&
                        Objects.equals(getTechnicalDescription(), that.getTechnicalDescription()) &&
-                       Objects.equals(getTypeDescription(), that.getTypeDescription()) &&
+                       Objects.equals(getDeployedImplementationType(), that.getDeployedImplementationType()) &&
                        Objects.equals(getVersion(), that.getVersion()) &&
                        Objects.equals(getPatchLevel(), that.getPatchLevel()) &&
                        Objects.equals(getSource(), that.getSource());
@@ -265,7 +265,7 @@ public class SoftwareCapabilitiesProperties extends SupplementaryProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getTechnicalName(), getTechnicalDescription(), getTypeDescription(), getVersion(),
+        return Objects.hash(super.hashCode(), getTechnicalName(), getTechnicalDescription(), getDeployedImplementationType(), getVersion(),
                             getPatchLevel(), getSource());
     }
 }

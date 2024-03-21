@@ -4,18 +4,27 @@ package org.odpi.openmetadata.viewservices.myprofile.server;
 
 
 import org.odpi.openmetadata.accessservices.communityprofile.client.OrganizationManagement;
+import org.odpi.openmetadata.accessservices.communityprofile.client.ToDoActionManagement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ActorProfileProperties;
+import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonRoleElement;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.myprofile.metadataelements.PersonalProfileUniverse;
 import org.odpi.openmetadata.viewservices.myprofile.properties.PersonalProfileProperties;
-import org.odpi.openmetadata.viewservices.myprofile.rest.PersonalProfileResponse;
+import org.odpi.openmetadata.viewservices.myprofile.rest.*;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -45,7 +54,7 @@ public class MyProfileRESTServices extends TokenController
      *
      * @param serverName name of the server instances for this request
      *
-     * @return profile response object or or null or
+     * @return profile response object or null or
      * InvalidParameterException the userId is null or invalid or
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -99,11 +108,637 @@ public class MyProfileRESTServices extends TokenController
                 personalProfileUniverse.setProfileProperties(profileProperties);
                 personalProfileUniverse.setContributionRecord(actorProfileElement.getContributionRecord());
                 personalProfileUniverse.setContactMethods(actorProfileElement.getContactMethods());
-                personalProfileUniverse.setPeers(actorProfileElement.getPeers());
-                personalProfileUniverse.setRoles(actorProfileElement.getPersonRoles());
                 personalProfileUniverse.setUserIdentities(actorProfileElement.getUserIdentities());
+                personalProfileUniverse.setPeers(actorProfileElement.getPeers());
+
+                if (actorProfileElement.getPersonRoles() != null)
+                {
+                    List<PersonRoleElement> personRoles = new ArrayList<>();
+
+                    for (ElementStub personRoleStub : actorProfileElement.getPersonRoles())
+                    {
+                        PersonRoleElement personRoleElement = client.getPersonRoleByGUID(userId,
+                                                                                         personRoleStub.getGUID());
+
+                        if (personRoleElement != null)
+                        {
+                            personRoles.add(personRoleElement);
+                        }
+                    }
+
+                    if (! personRoles.isEmpty())
+                    {
+                        personalProfileUniverse.setRoles(personRoles);
+                    }
+                }
 
                 response.setPersonalProfile(personalProfileUniverse);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Create a new to do action and link it to the supplied role and targets (if applicable).
+     *
+     * @param serverName name of the server instances for this request
+     * @param requestBody properties of the to do action
+     *
+     * @return unique identifier of the to do or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public GUIDResponse createToDo(String          serverName,
+                                   ToDoRequestBody requestBody)
+    {
+        final String methodName = "createToDo";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setGUID(handler.createToDo(userId,
+                                                    requestBody.getOriginatorGUID(),
+                                                    requestBody.getActionSponsorGUID(),
+                                                    requestBody.getAssignToActorGUID(),
+                                                    requestBody.getNewActionTargetProperties(),
+                                                    requestBody.getProperties()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, SearchStringRequestBody.class.getName());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Update the properties associated with a "To Do".
+     *
+     * @param serverName name of the server instances for this request
+     * @param toDoGUID unique identifier of the to do
+     * @param isMergeUpdate should the toDoProperties overlay the existing stored properties or replace them
+     * @param toDoProperties properties to change
+     *
+     * @return void or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public VoidResponse updateToDo(String         serverName,
+                                   String         toDoGUID,
+                                   boolean        isMergeUpdate,
+                                   ToDoProperties toDoProperties)
+    {
+        final String methodName = "updateToDo";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+
+            handler.updateToDo(userId, toDoGUID, isMergeUpdate, toDoProperties);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Update the properties associated with an Action Target.
+     *
+     * @param serverName name of the server instances for this request
+     * @param actionTargetGUID               unique identifier of the action target relationship
+     * @param isMergeUpdate should the actionTargetProperties overlay the existing stored properties or replace them
+     * @param actionTargetProperties properties to change
+     *
+     * @return void or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public VoidResponse updateActionTargetProperties(String                 serverName,
+                                                     String                 actionTargetGUID,
+                                                     boolean                isMergeUpdate,
+                                                     ActionTargetProperties actionTargetProperties)
+    {
+        final String methodName = "updateActionTargetProperties";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+
+            handler.updateActionTargetProperties(userId, actionTargetGUID, isMergeUpdate, actionTargetProperties);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Assign a "To Do" to a new actor.
+     *
+     * @param serverName name of the server instances for this request
+     * @param toDoGUID unique identifier of the to do
+     * @param actorGUID  actor to assign the action to
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    @SuppressWarnings(value = "unused")
+    public VoidResponse reassignToDo(String          serverName,
+                                     String          toDoGUID,
+                                     String          actorGUID,
+                                     NullRequestBody requestBody)
+    {
+        final String methodName = "reassignToDo";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+
+            handler.reassignToDo(userId, toDoGUID, actorGUID);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Delete an existing to do.
+     *
+     * @param serverName name of the server instances for this request
+     * @param toDoGUID unique identifier of the to do
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    @SuppressWarnings(value = "unused")
+    public VoidResponse deleteToDo(String          serverName,
+                                   String          toDoGUID,
+                                   NullRequestBody requestBody)
+    {
+        final String methodName = "deleteToDo";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+
+            handler.deleteToDo(userId, toDoGUID);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve a "To Do" by unique identifier.
+     *
+     * @param serverName name of the server instances for this request
+     * @param toDoGUID unique identifier of the to do
+     *
+     * @return to do bean or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public ToDoResponse getToDo(String serverName,
+                                String toDoGUID)
+    {
+        final String methodName = "getToDo";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        ToDoResponse response = new ToDoResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+
+            response.setToDoElement(handler.getToDo(userId, toDoGUID));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the "To Dos" that are chained off of an action target element.
+     *
+     * @param serverName name of the server instances for this request
+     * @param elementGUID unique identifier of the element to start with
+     * @param startFrom initial position of the results to return
+     * @param pageSize maximum number of results to return
+     * @param requestBody     status of the to do (null means current active)
+     *
+     * @return list of to do beans or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public ToDoListResponse getActionsForActionTarget(String                serverName,
+                                                      String                elementGUID,
+                                                      int                   startFrom,
+                                                      int                   pageSize,
+                                                      ToDoStatusRequestBody requestBody)
+    {
+        final String methodName = "getActionsForActionTarget";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        ToDoListResponse response = new ToDoListResponse();
+        AuditLog         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setToDoElements(handler.getActionsForActionTarget(userId,
+                                                                           elementGUID,
+                                                                           requestBody.getStatus(),
+                                                                           startFrom,
+                                                                           pageSize));
+            }
+            else
+            {
+                response.setToDoElements(handler.getActionsForActionTarget(userId,
+                                                                           elementGUID,
+                                                                           null,
+                                                                           startFrom,
+                                                                           pageSize));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the "To Dos" that are chained off of a sponsoring element.
+     *
+     * @param serverName name of the server instances for this request
+     * @param elementGUID unique identifier of the element to start with
+     * @param startFrom initial position of the results to return
+     * @param pageSize maximum number of results to return
+     * @param requestBody     status of the to do (null means current active)
+     *
+     * @return list of to do beans or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public ToDoListResponse getActionsForSponsor(String                serverName,
+                                                 String                elementGUID,
+                                                 int                   startFrom,
+                                                 int                   pageSize,
+                                                 ToDoStatusRequestBody requestBody)
+    {
+        final String methodName = "getActionsForSponsor";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        ToDoListResponse response = new ToDoListResponse();
+        AuditLog         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setToDoElements(handler.getActionsForSponsor(userId,
+                                                                      elementGUID,
+                                                                      requestBody.getStatus(),
+                                                                      startFrom,
+                                                                      pageSize));
+            }
+            else
+            {
+                response.setToDoElements(handler.getActionsForSponsor(userId,
+                                                                      elementGUID,
+                                                                      null,
+                                                                      startFrom,
+                                                                      pageSize));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the "To Dos" for a particular actor.
+     *
+     * @param serverName name of the server instances for this request
+     * @param actorGUID unique identifier of the role
+     * @param startFrom initial position of the results to return
+     * @param pageSize maximum number of results to return
+     * @param requestBody     status of the to do (null means current active)
+     *
+     * @return list of to do beans or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public ToDoListResponse getAssignedActions(String                serverName,
+                                               String                actorGUID,
+                                               int                   startFrom,
+                                               int                   pageSize,
+                                               ToDoStatusRequestBody requestBody)
+    {
+        final String methodName = "getAssignedActions";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        ToDoListResponse response = new ToDoListResponse();
+        AuditLog         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setToDoElements(handler.getAssignedActions(userId,
+                                                                    actorGUID,
+                                                                    requestBody.getStatus(),
+                                                                    startFrom,
+                                                                    pageSize));
+            }
+            else
+            {
+                response.setToDoElements(handler.getAssignedActions(userId,
+                                                                    actorGUID,
+                                                                    null,
+                                                                    startFrom,
+                                                                    pageSize));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the "To Dos" that match the search string.
+     *
+     * @param serverName name of the server instances for this request
+     * @param startFrom initial position of the results to return
+     * @param pageSize maximum number of results to return
+     * @param startsWith does the value start with the supplied string?
+     * @param endsWith does the value end with the supplied string?
+     * @param ignoreCase should the search ignore case?
+     * @param requestBody     status of the to do (null means current active)
+     *
+     * @return list of to do beans or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public ToDoListResponse findToDos(String                 serverName,
+                                      int                    startFrom,
+                                      int                    pageSize,
+                                      boolean                startsWith,
+                                      boolean                endsWith,
+                                      boolean                ignoreCase,
+                                      ToDoStatusSearchString requestBody)
+    {
+        final String methodName = "findToDos";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        ToDoListResponse response = new ToDoListResponse();
+        AuditLog         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setToDoElements(handler.findToDos(userId,
+                                                           instanceHandler.getSearchString(requestBody.getSearchString(), startsWith, endsWith, ignoreCase),
+                                                           requestBody.getStatus(),
+                                                           startFrom,
+                                                           pageSize));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the "To Dos" that match the type name and status.
+     *
+     * @param serverName name of the server instances for this request
+     * @param toDoType   type to search for
+     * @param startFrom initial position of the results to return
+     * @param pageSize maximum number of results to return
+     * @param requestBody     status of the to do (null means current active)
+     *
+     * @return list of to do beans or
+     * InvalidParameterException a parameter is invalid
+     * PropertyServerException the server is not available
+     * UserNotAuthorizedException the calling user is not authorized to issue the call
+     */
+    public ToDoListResponse getToDosByType(String                serverName,
+                                           String                toDoType,
+                                           int                   startFrom,
+                                           int                   pageSize,
+                                           ToDoStatusRequestBody requestBody)
+    {
+        final String methodName = "getToDosByType";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        ToDoListResponse response = new ToDoListResponse();
+        AuditLog         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ToDoActionManagement handler = instanceHandler.getToDoActionManagementClient(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setToDoElements(handler.getToDosByType(userId,
+                                                                toDoType,
+                                                                requestBody.getStatus(),
+                                                                startFrom,
+                                                                pageSize));
+            }
+            else
+            {
+                response.setToDoElements(handler.getToDosByType(userId,
+                                                                toDoType,
+                                                               null,
+                                                                startFrom,
+                                                                pageSize));
             }
         }
         catch (Exception error)

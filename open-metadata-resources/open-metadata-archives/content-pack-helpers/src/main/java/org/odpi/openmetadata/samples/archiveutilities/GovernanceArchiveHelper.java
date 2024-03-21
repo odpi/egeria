@@ -4,19 +4,21 @@ package org.odpi.openmetadata.samples.archiveutilities;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.GuardType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestParameterType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestTypeType;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStepType;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * GovernanceArchiveHelper creates elements for governance.  This includes governance program definitions, governance engine definitions and
@@ -101,36 +103,27 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
 
 
+
     /**
-     * Create a governance service entity.
+     * Create an integration connector entity.
      *
-     * @param typeName name of governance service subtype to use - default is GovernanceService
-     * @param connectorProviderName name of the connector provider for the governance service
-     * @param configurationProperties configuration properties for the governance service (goes in the connection)
-     * @param qualifiedName unique name for the governance service
-     * @param displayName display name for the governance service
-     * @param description description about the governance service
+     * @param connectorProviderName name of the connector provider for the integration connector
+     * @param configurationProperties configuration properties for the integration connector (goes in the connection)
+     * @param qualifiedName unique name for the integration connector
+     * @param displayName display name for the integration connector
+     * @param description description about the integration connector
      * @param additionalProperties any other properties
-     * @param extendedProperties additional properties defined in the subtype
      *
-     * @return id for the governance service
+     * @return id for the integration connector
      */
-    public String addGovernanceService(String              typeName,
-                                       String              connectorProviderName,
-                                       Map<String, Object> configurationProperties,
-                                       String              qualifiedName,
-                                       String              displayName,
-                                       String              description,
-                                       Map<String, String> additionalProperties,
-                                       Map<String, Object> extendedProperties)
+    public String addIntegrationConnector(String              connectorProviderName,
+                                          Map<String, Object> configurationProperties,
+                                          String              qualifiedName,
+                                          String              displayName,
+                                          String              description,
+                                          String              endpointAddress,
+                                          Map<String, String> additionalProperties)
     {
-        String serviceTypeName = OpenMetadataType.GOVERNANCE_SERVICE.typeName;
-
-        if (typeName != null)
-        {
-            serviceTypeName = typeName;
-        }
-
         try
         {
             Class<?>   connectorProviderClass = Class.forName(connectorProviderName);
@@ -160,25 +153,255 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                               connectorType.getRecognizedAdditionalProperties(),
                                                               connectorType.getAdditionalProperties());
 
-            String serviceGUID = super.addAsset(serviceTypeName, qualifiedName, displayName, description, additionalProperties, extendedProperties);
+            Map<String, Object> extendedProperties = new HashMap<>();
+
+            extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                   DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType());
+
+            String connectorGUID = super.addAsset(DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                                  qualifiedName,
+                                                  displayName,
+                                                  description,
+                                                  additionalProperties,
+                                                  extendedProperties);
+
+            String endpointGUID = null;
+            if (endpointAddress != null)
+            {
+                endpointGUID = super.addEndpoint(connectorGUID,
+                                                 DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                                 qualifiedName + "_endpoint",
+                                                 displayName + "'s first catalog target",
+                                                 "Endpoint for integration connector: " + qualifiedName,
+                                                 endpointAddress,
+                                                 null,
+                                                 null);
+            }
 
             String connectionGUID = super.addConnection(qualifiedName + "_implementation",
-                                                       displayName + " Governance Service Provider Implementation",
-                                                       "Connection for governance service: " + qualifiedName,
-                                                       null,
-                                                       null,
-                                                       null,
-                                                       null,
-                                                       configurationProperties,
-                                                       null,
-                                                       connectorTypeGUID,
-                                                       null,
-                                                        serviceGUID,
-                                                        serviceTypeName);
+                                                        displayName + " Integration Connector Provider Implementation",
+                                                        "Connection for integration connector: " + qualifiedName,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        configurationProperties,
+                                                        null,
+                                                        connectorTypeGUID,
+                                                        endpointGUID,
+                                                        connectorGUID,
+                                                        DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName());
 
-            if ((serviceGUID != null) && (connectionGUID != null))
+            if ((connectorGUID != null) && (connectionGUID != null))
             {
-                super.addConnectionForAsset(serviceGUID, null, connectionGUID);
+                super.addConnectionForAsset(connectorGUID, null, connectionGUID);
+            }
+
+            return connectorGUID;
+        }
+        catch (Exception error)
+        {
+            System.out.println("Invalid connector type " + connectorProviderName + " for integration connector.  Exception " + error.getClass().getName() + " with message " + error.getMessage());
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Create a software capability entity for an integration group.
+     *
+     * @param qualifiedName unique name for the group
+     * @param displayName display name for the group
+     * @param description description about the group
+     * @param capabilityVersion version
+     * @param patchLevel patch level
+     * @param source source
+     * @param additionalProperties any other properties
+     * @param extendedProperties properties for subtype
+     *
+     * @return id for the capability
+     */
+    public String addIntegrationGroup(String              qualifiedName,
+                                      String              displayName,
+                                      String              description,
+                                      String              capabilityVersion,
+                                      String              patchLevel,
+                                      String              source,
+                                      Map<String, String> additionalProperties,
+                                      Map<String, Object> extendedProperties)
+    {
+        return super.addSoftwareCapability(DeployedImplementationType.INTEGRATION_GROUP.getAssociatedTypeName(),
+                                           qualifiedName,
+                                           displayName,
+                                           description,
+                                           DeployedImplementationType.INTEGRATION_GROUP.getDeployedImplementationType(),
+                                           capabilityVersion,
+                                           patchLevel,
+                                           source,
+                                           additionalProperties,
+                                           extendedProperties);
+    }
+
+
+    /**
+     * Create the relationship between a governance engine and one of its supported governance services.
+     *
+     * @param integrationGroupGUID unique identifier of the integration group
+     * @param connectorName name of the connector used in messages and REST calls
+     * @param connectorUserId  userId for the connector to use (overrides the server's userId)
+     * @param metadataSourceQualifiedName unique name of the metadata collection for anything catalogued by this connector
+     * @param refreshTimeInterval how long (in minutes) between each refresh of the connector
+     * @param integrationConnectorGUID unique identifier of the integration connector
+     */
+    public void addRegisteredIntegrationConnector(String              integrationGroupGUID,
+                                                  String              connectorName,
+                                                  String              connectorUserId,
+                                                  String              metadataSourceQualifiedName,
+                                                  long                refreshTimeInterval,
+                                                  String              integrationConnectorGUID)
+    {
+        final String methodName = "addRegisteredIntegrationConnector";
+
+        EntityDetail groupEntity = archiveBuilder.getEntity(integrationGroupGUID);
+        EntityDetail connectorEntity = archiveBuilder.getEntity(integrationConnectorGUID);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(groupEntity);
+        EntityProxy end2 = archiveHelper.getEntityProxy(connectorEntity);
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.CONNECTOR_NAME_PROPERTY_NAME, connectorName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.CONNECTOR_USER_ID_PROPERTY_NAME, connectorUserId, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME, metadataSourceQualifiedName, methodName);
+        properties = archiveHelper.addLongPropertyToInstance(archiveRootName, properties, OpenMetadataType.REFRESH_TIME_INTERVAL_PROPERTY_NAME, refreshTimeInterval, methodName);
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(integrationGroupGUID + "_to_" + integrationConnectorGUID + "_" + connectorName + "_registered_integration_connector_relationship"),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+    /**
+     * Create a governance service entity.
+     *
+     * @param deployedImplementationType name of governance service subtype to use - default is GovernanceService
+     * @param connectorProviderName name of the connector provider for the governance service
+     * @param configurationProperties configuration properties for the governance service (goes in the connection)
+     * @param qualifiedName unique name for the governance service
+     * @param displayName display name for the governance service
+     * @param description description about the governance service
+     * @param additionalProperties any other properties
+     *
+     * @return id for the governance service
+     */
+    public String addGovernanceService(DeployedImplementationType deployedImplementationType,
+                                       String                     connectorProviderName,
+                                       Map<String, Object>        configurationProperties,
+                                       String                     qualifiedName,
+                                       String                     displayName,
+                                       String                     description,
+                                       Map<String, String>        additionalProperties)
+    {
+        try
+        {
+            Class<?>   connectorProviderClass = Class.forName(connectorProviderName);
+            Object     potentialConnectorProvider = connectorProviderClass.getDeclaredConstructor().newInstance();
+
+            ConnectorProviderBase serviceProvider = (ConnectorProviderBase)potentialConnectorProvider;
+            ConnectorType         connectorType   = serviceProvider.getConnectorType();
+
+            String connectorTypeGUID = super.addConnectorType(null,
+                                                              connectorType.getGUID(),
+                                                              connectorType.getQualifiedName(),
+                                                              connectorType.getDisplayName(),
+                                                              connectorType.getDescription(),
+                                                              connectorType.getDeployedImplementationType(),
+                                                              connectorType.getSupportedAssetTypeName(),
+                                                              connectorType.getExpectedDataFormat(),
+                                                              connectorType.getConnectorProviderClassName(),
+                                                              connectorType.getConnectorFrameworkName(),
+                                                              connectorType.getConnectorInterfaceLanguage(),
+                                                              connectorType.getConnectorInterfaces(),
+                                                              connectorType.getTargetTechnologySource(),
+                                                              connectorType.getTargetTechnologyName(),
+                                                              connectorType.getTargetTechnologyInterfaces(),
+                                                              connectorType.getTargetTechnologyVersions(),
+                                                              connectorType.getRecognizedSecuredProperties(),
+                                                              connectorType.getRecognizedConfigurationProperties(),
+                                                              connectorType.getRecognizedAdditionalProperties(),
+                                                              connectorType.getAdditionalProperties());
+
+            Map<String, Object> extendedProperties = new HashMap<>();
+
+            extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                   deployedImplementationType.getDeployedImplementationType());
+
+            String serviceGUID = super.addAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                qualifiedName,
+                                                displayName,
+                                                description,
+                                                additionalProperties,
+                                                extendedProperties);
+
+            if (serviceGUID != null)
+            {
+                String connectionGUID = super.addConnection(qualifiedName + "_implementation",
+                                                            displayName + " Governance Service Provider Implementation",
+                                                            "Connection for governance service: " + qualifiedName,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            configurationProperties,
+                                                            null,
+                                                            connectorTypeGUID,
+                                                            null,
+                                                            serviceGUID,
+                                                            deployedImplementationType.getAssociatedTypeName());
+
+                if (connectionGUID != null)
+                {
+                    super.addConnectionForAsset(serviceGUID, null, connectionGUID);
+                }
+
+                if (serviceProvider instanceof GovernanceServiceProviderBase governanceServiceProviderBase)
+                {
+                    addSupportedRequestTypes(serviceGUID,
+                                             deployedImplementationType.getAssociatedTypeName(),
+                                             governanceServiceProviderBase.getSupportedRequestTypes());
+
+                    addSupportedRequestParameters(serviceGUID,
+                                                  deployedImplementationType.getAssociatedTypeName(),
+                                                  governanceServiceProviderBase.getSupportedRequestParameters());
+
+                    addSupportedActionTargets(serviceGUID,
+                                              deployedImplementationType.getAssociatedTypeName(),
+                                              governanceServiceProviderBase.getSupportedActionTargetTypes());
+
+                    addProducedRequestParameters(serviceGUID,
+                                                  deployedImplementationType.getAssociatedTypeName(),
+                                                  governanceServiceProviderBase.getProducedRequestParameters());
+
+                    addProducedActionTargets(serviceGUID,
+                                              deployedImplementationType.getAssociatedTypeName(),
+                                              governanceServiceProviderBase.getProducedActionTargetTypes());
+
+                    addProducedGuards(serviceGUID,
+                                      deployedImplementationType.getAssociatedTypeName(),
+                                      governanceServiceProviderBase.getProducedGuards());
+
+                    if (serviceProvider instanceof SurveyActionServiceProvider surveyActionServiceProvider)
+                    {
+                        addSupportedAnalysisSteps(serviceGUID,
+                                                  deployedImplementationType.getAssociatedTypeName(),
+                                                  surveyActionServiceProvider.getSupportedAnalysisSteps());
+
+                        addSupportedAnnotationTypes(serviceGUID,
+                                                    deployedImplementationType.getAssociatedTypeName(),
+                                                    surveyActionServiceProvider.getSupportedAnnotationTypes());
+                    }
+                }
             }
 
             return serviceGUID;
@@ -193,7 +416,491 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
 
     /**
-     * Create a software capability entity got s governance engine.
+     * Add reference data for governance services and actions.
+     *
+     * @param parentGUID unique identifier of governance service/action
+     * @param parentTypeName type of parent
+     * @param supportedRequestTypes list of reference values
+     */
+    public void addSupportedRequestTypes(String                parentGUID,
+                                         String                parentTypeName,
+                                         List<RequestTypeType> supportedRequestTypes)
+    {
+        if (supportedRequestTypes != null)
+        {
+            for (RequestTypeType supportedRequestType : supportedRequestTypes)
+            {
+                Map<String, String> additionalProperties = supportedRequestType.getOtherPropertyValues();
+
+                if (additionalProperties == null)
+                {
+                    additionalProperties = new HashMap<>();
+                }
+
+                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, supportedRequestType.getDescription());
+
+                String validValueGUID = this.addValidValue(null,
+                                                           null,
+                                                           parentGUID,
+                                                           parentTypeName,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                           parentTypeName + ":" + parentGUID + ":SupportedRequestType:" + supportedRequestType.getRequestType(),
+                                                           supportedRequestType.getRequestType(),
+                                                           OpenMetadataProperty.SUPPORTED_REQUEST_TYPE.description,
+                                                           OpenMetadataProperty.SUPPORTED_REQUEST_TYPE.name,
+                                                           null,
+                                                           null,
+                                                           supportedRequestType.getRequestType(),
+                                                           false,
+                                                           true,
+                                                           additionalProperties);
+
+                if (validValueGUID != null)
+                {
+                    addReferenceValueAssignmentRelationship(parentGUID,
+                                                            validValueGUID,
+                                                            OpenMetadataProperty.SUPPORTED_REQUEST_TYPE.name + "s",
+                                                            100,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Add reference data for governance services and actions.
+     *
+     * @param parentGUID unique identifier of governance service/action
+     * @param parentTypeName type of parent
+     * @param supportedRequestParameters list of reference values
+     */
+    public void addSupportedRequestParameters(String                     parentGUID,
+                                              String                     parentTypeName,
+                                              List<RequestParameterType> supportedRequestParameters)
+    {
+        if (supportedRequestParameters != null)
+        {
+            for (RequestParameterType supportedRequestParameter : supportedRequestParameters)
+            {
+                Map<String, String> additionalProperties = supportedRequestParameter.getOtherPropertyValues();
+
+                if (additionalProperties == null)
+                {
+                    additionalProperties = new HashMap<>();
+                }
+
+                String required = "false";
+
+                if (supportedRequestParameter.getRequired())
+                {
+                    required = "true";
+                }
+
+                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, supportedRequestParameter.getDescription());
+                additionalProperties.put(OpenMetadataProperty.DATA_TYPE.name, supportedRequestParameter.getDataType());
+                additionalProperties.put(OpenMetadataProperty.EXAMPLE.name, supportedRequestParameter.getExample());
+                additionalProperties.put(OpenMetadataProperty.REQUIRED.name, required);
+
+                String validValueGUID = this.addValidValue(null,
+                                                           null,
+                                                           parentGUID,
+                                                           parentTypeName,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                           parentTypeName + ":" + parentGUID + ":SupportedRequestParameter:" + supportedRequestParameter.getName(),
+                                                           supportedRequestParameter.getName(),
+                                                           OpenMetadataProperty.SUPPORTED_REQUEST_PARAMETER.description,
+                                                           OpenMetadataProperty.SUPPORTED_REQUEST_PARAMETER.name,
+                                                           null,
+                                                           null,
+                                                           supportedRequestParameter.getName(),
+                                                           false,
+                                                           true,
+                                                           additionalProperties);
+
+                if (validValueGUID != null)
+                {
+                    addReferenceValueAssignmentRelationship(parentGUID,
+                                                            validValueGUID,
+                                                            OpenMetadataProperty.SUPPORTED_REQUEST_PARAMETER.name + "s",
+                                                            100,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Add reference data for governance services and actions.
+     *
+     * @param parentGUID unique identifier of governance service/action
+     * @param parentTypeName type of parent
+     * @param actionTargetTypes list of reference values
+     */
+    public void addSupportedActionTargets(String                 parentGUID,
+                                          String                 parentTypeName,
+                                          List<ActionTargetType> actionTargetTypes)
+    {
+        if (actionTargetTypes != null)
+        {
+            for (ActionTargetType supportedActionTarget : actionTargetTypes)
+            {
+                Map<String, String> additionalProperties = supportedActionTarget.getOtherPropertyValues();
+
+                if (additionalProperties == null)
+                {
+                    additionalProperties = new HashMap<>();
+                }
+
+                String required = "false";
+
+                if (supportedActionTarget.getRequired())
+                {
+                    required = "true";
+                }
+
+                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, supportedActionTarget.getDescription());
+                additionalProperties.put(OpenMetadataProperty.DATA_TYPE.name, supportedActionTarget.getTypeName());
+                additionalProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, supportedActionTarget.getDeployedImplementationType());
+                additionalProperties.put(OpenMetadataProperty.REQUIRED.name, required);
+
+                String validValueGUID = this.addValidValue(null,
+                                                           null,
+                                                           parentGUID,
+                                                           parentTypeName,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                           parentTypeName + ":" + parentGUID + ":SupportedActionTarget:" + supportedActionTarget.getName(),
+                                                           supportedActionTarget.getName(),
+                                                           OpenMetadataProperty.SUPPORTED_ACTION_TARGET.description,
+                                                           OpenMetadataProperty.SUPPORTED_ACTION_TARGET.name,
+                                                           null,
+                                                           null,
+                                                           supportedActionTarget.getName(),
+                                                           false,
+                                                           true,
+                                                           additionalProperties);
+
+                if (validValueGUID != null)
+                {
+                    addReferenceValueAssignmentRelationship(parentGUID,
+                                                            validValueGUID,
+                                                            OpenMetadataProperty.SUPPORTED_ACTION_TARGET.name + "s",
+                                                            100,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Add reference data for governance services and actions.
+     *
+     * @param parentGUID unique identifier of governance service/action
+     * @param parentTypeName type of parent
+     * @param analysisStepTypes list of reference values
+     */
+    public void addSupportedAnalysisSteps(String                 parentGUID,
+                                          String                 parentTypeName,
+                                          List<AnalysisStepType> analysisStepTypes)
+    {
+        if (analysisStepTypes != null)
+        {
+            for (AnalysisStepType analysisStepType : analysisStepTypes)
+            {
+                Map<String, String> additionalProperties = analysisStepType.getOtherPropertyValues();
+
+                if (additionalProperties == null)
+                {
+                    additionalProperties = new HashMap<>();
+                }
+
+                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, analysisStepType.getDescription());
+
+                String validValueGUID = this.addValidValue(null,
+                                                           null,
+                                                           parentGUID,
+                                                           parentTypeName,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                           parentTypeName + ":" + parentGUID + ":SupportedAnalysisStep:" + analysisStepType.getName(),
+                                                           analysisStepType.getName(),
+                                                           OpenMetadataProperty.SUPPORTED_ANALYSIS_STEP.description,
+                                                           OpenMetadataProperty.SUPPORTED_ANALYSIS_STEP.name,
+                                                           null,
+                                                           null,
+                                                           analysisStepType.getName(),
+                                                           false,
+                                                           true,
+                                                           additionalProperties);
+
+                if (validValueGUID != null)
+                {
+                    addReferenceValueAssignmentRelationship(parentGUID,
+                                                            validValueGUID,
+                                                            OpenMetadataProperty.SUPPORTED_ANALYSIS_STEP.name + "s",
+                                                            100,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Add reference data for governance services and actions.
+     *
+     * @param parentGUID unique identifier of governance service/action
+     * @param parentTypeName type of parent
+     * @param annotationTypeTypes list of reference values
+     */
+    public void addSupportedAnnotationTypes(String                   parentGUID,
+                                            String                   parentTypeName,
+                                            List<AnnotationTypeType> annotationTypeTypes)
+    {
+        if (annotationTypeTypes != null)
+        {
+            for (AnnotationTypeType annotationTypeType : annotationTypeTypes)
+            {
+                Map<String, String> additionalProperties = annotationTypeType.getOtherPropertyValues();
+
+                if (additionalProperties == null)
+                {
+                    additionalProperties = new HashMap<>();
+                }
+
+                additionalProperties.put(OpenMetadataProperty.SUMMARY.name, annotationTypeType.getSummary());
+                additionalProperties.put(OpenMetadataProperty.EXPLANATION.name, annotationTypeType.getExplanation());
+                additionalProperties.put(OpenMetadataProperty.EXPRESSION.name, annotationTypeType.getExpression());
+                additionalProperties.put(OpenMetadataProperty.ANALYSIS_STEP.name, annotationTypeType.getAnalysisStepName());
+                additionalProperties.put(OpenMetadataProperty.TYPE_NAME.name, annotationTypeType.getOpenMetadataTypeName());
+
+                String validValueGUID = this.addValidValue(null,
+                                                           null,
+                                                           parentGUID,
+                                                           parentTypeName,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                           parentTypeName + ":" + parentGUID + ":SupportedAnnotationType:" + annotationTypeType.getName(),
+                                                           annotationTypeType.getOpenMetadataTypeName() + ":" + annotationTypeType.getName(),
+                                                           OpenMetadataProperty.SUPPORTED_ANNOTATION_TYPE.description,
+                                                           OpenMetadataProperty.SUPPORTED_ANNOTATION_TYPE.name,
+                                                           null,
+                                                           null,
+                                                           annotationTypeType.getName(),
+                                                           false,
+                                                           true,
+                                                           annotationTypeType.getOtherPropertyValues());
+
+                if (validValueGUID != null)
+                {
+                    addReferenceValueAssignmentRelationship(parentGUID,
+                                                            validValueGUID,
+                                                            OpenMetadataProperty.SUPPORTED_ANNOTATION_TYPE.name + "s",
+                                                            100,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Add reference data for governance services and actions.
+     *
+     * @param parentGUID unique identifier of governance service/action
+     * @param parentTypeName type of parent
+     * @param producedRequestParameters list of reference values
+     */
+    public void addProducedRequestParameters(String                     parentGUID,
+                                             String                     parentTypeName,
+                                             List<RequestParameterType> producedRequestParameters)
+    {
+        if (producedRequestParameters != null)
+        {
+            for (RequestParameterType producedRequestParameter : producedRequestParameters)
+            {
+                Map<String, String> additionalProperties = producedRequestParameter.getOtherPropertyValues();
+
+                if (additionalProperties == null)
+                {
+                    additionalProperties = new HashMap<>();
+                }
+
+                String required = "false";
+
+                if (producedRequestParameter.getRequired())
+                {
+                    required = "true";
+                }
+
+                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, producedRequestParameter.getDescription());
+                additionalProperties.put(OpenMetadataProperty.DATA_TYPE.name, producedRequestParameter.getDataType());
+                additionalProperties.put(OpenMetadataProperty.EXAMPLE.name, producedRequestParameter.getExample());
+                additionalProperties.put(OpenMetadataProperty.REQUIRED.name, required);
+
+                String validValueGUID = this.addValidValue(null,
+                                                           null,
+                                                           parentGUID,
+                                                           parentTypeName,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                           parentTypeName + ":" + parentGUID + ":ProducedRequestParameter:" + producedRequestParameter.getName(),
+                                                           producedRequestParameter.getName(),
+                                                           OpenMetadataProperty.PRODUCED_REQUEST_PARAMETER.description,
+                                                           OpenMetadataProperty.PRODUCED_REQUEST_PARAMETER.name,
+                                                           null,
+                                                           null,
+                                                           producedRequestParameter.getName(),
+                                                           false,
+                                                           true,
+                                                           producedRequestParameter.getOtherPropertyValues());
+
+                if (validValueGUID != null)
+                {
+                    addReferenceValueAssignmentRelationship(parentGUID,
+                                                            validValueGUID,
+                                                            OpenMetadataProperty.PRODUCED_REQUEST_PARAMETER.name + "s",
+                                                            100,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Add reference data for governance services and actions.
+     *
+     * @param parentGUID unique identifier of governance service/action
+     * @param parentTypeName type of parent
+     * @param actionTargetTypes list of reference values
+     */
+    public void addProducedActionTargets(String                 parentGUID,
+                                         String                 parentTypeName,
+                                         List<ActionTargetType> actionTargetTypes)
+    {
+        if (actionTargetTypes != null)
+        {
+            for (ActionTargetType actionTargetType : actionTargetTypes)
+            {
+                Map<String, String> additionalProperties = actionTargetType.getOtherPropertyValues();
+
+                if (additionalProperties == null)
+                {
+                    additionalProperties = new HashMap<>();
+                }
+
+                String required = "false";
+
+                if (actionTargetType.getRequired())
+                {
+                    required = "true";
+                }
+
+                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, actionTargetType.getDescription());
+                additionalProperties.put(OpenMetadataProperty.DATA_TYPE.name, actionTargetType.getTypeName());
+                additionalProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, actionTargetType.getDeployedImplementationType());
+                additionalProperties.put(OpenMetadataProperty.REQUIRED.name, required);
+
+
+                String validValueGUID = this.addValidValue(null,
+                                                           null,
+                                                           parentGUID,
+                                                           parentTypeName,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                           parentTypeName + ":" + parentGUID + ":ProducedActionTarget:" + actionTargetType.getName(),
+                                                           actionTargetType.getName(),
+                                                           OpenMetadataProperty.PRODUCED_ACTION_TARGET.description,
+                                                           OpenMetadataProperty.PRODUCED_ACTION_TARGET.name,
+                                                           null,
+                                                           null,
+                                                           actionTargetType.getName(),
+                                                           false,
+                                                           true,
+                                                           actionTargetType.getOtherPropertyValues());
+
+                if (validValueGUID != null)
+                {
+                    addReferenceValueAssignmentRelationship(parentGUID,
+                                                            validValueGUID,
+                                                            OpenMetadataProperty.PRODUCED_ACTION_TARGET.name + "s",
+                                                            100,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Add reference data for governance services and actions.
+     *
+     * @param parentGUID unique identifier of governance service/action
+     * @param parentTypeName type of parent
+     * @param guardTypes list of reference values
+     */
+    public void addProducedGuards(String          parentGUID,
+                                  String          parentTypeName,
+                                  List<GuardType> guardTypes)
+    {
+        if (guardTypes != null)
+        {
+            for (GuardType guardType : guardTypes)
+            {
+                String validValueGUID = this.addValidValue(null,
+                                                           null,
+                                                           parentGUID,
+                                                           parentTypeName,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                           parentTypeName + ":" + parentGUID + ":ProducedGuard:" + guardType.getGuard(),
+                                                           guardType.getGuard(),
+                                                           guardType.getDescription(),
+                                                           null,
+                                                           guardType.getCompletionStatus().getName(),
+                                                           null,
+                                                           guardType.getGuard(),
+                                                           false,
+                                                           true,
+                                                           guardType.getOtherPropertyValues());
+
+                if (validValueGUID != null)
+                {
+                    addReferenceValueAssignmentRelationship(parentGUID,
+                                                            validValueGUID,
+                                                            "producedGuards",
+                                                            100,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Create a software capability entity for a governance engine.
      *
      * @param typeName name of software capability subtype to use - default is SoftwareCapability
      * @param qualifiedName unique name for the capability
@@ -325,28 +1032,44 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      * Create a governance action type.
      *
      * @param typeName name of subtype to use - default is GovernanceActionType
+     * @param anchorGUID unique identifier of the anchor
+     * @param anchorTypeName type name of the anchor
      * @param qualifiedName unique name for the capability
      * @param displayName display name for the capability
      * @param description description about the capability
+     * @param domainIdentifier which governance domain - 0=all
+     * @param supportedRequestParameters request parameters to use when triggering this governance action
+     * @param supportedActionTargets action targets to use when triggering this governance action
+     * @param supportedAnalysisSteps analysis steps supported by this governance action (survey action)
+     * @param supportedAnnotationTypes annotation types supported by this governance action (survey action)
+     * @param producedRequestParameters request parameters produced by this governance action
+     * @param producedActionTargets action targets produced by this governance action
      * @param producedGuards guards expected from the implementation
      * @param waitTime minutes to wait before starting governance action
-     * @param domainIdentifier which governance domain - 0=all
      * @param additionalProperties any other properties
      * @param extendedProperties properties for subtype
      * @param classifications list of classifications (if any)
      *
      * @return id for the new entity
      */
-    public String addGovernanceActionType(String               typeName,
-                                          String               qualifiedName,
-                                          String               displayName,
-                                          String               description,
-                                          int                  domainIdentifier,
-                                          List<String>         producedGuards,
-                                          int                  waitTime,
-                                          Map<String, String>  additionalProperties,
-                                          Map<String, Object>  extendedProperties,
-                                          List<Classification> classifications)
+    public String addGovernanceActionType(String                     typeName,
+                                          String                     anchorGUID,
+                                          String                     anchorTypeName,
+                                          String                     qualifiedName,
+                                          String                     displayName,
+                                          String                     description,
+                                          int                        domainIdentifier,
+                                          List<RequestParameterType> supportedRequestParameters,
+                                          List<ActionTargetType>     supportedActionTargets,
+                                          List<AnalysisStepType>     supportedAnalysisSteps,
+                                          List<AnnotationTypeType>   supportedAnnotationTypes,
+                                          List<RequestParameterType> producedRequestParameters,
+                                          List<ActionTargetType>     producedActionTargets,
+                                          List<GuardType>            producedGuards,
+                                          int                        waitTime,
+                                          Map<String, String>        additionalProperties,
+                                          Map<String, Object>        extendedProperties,
+                                          List<Classification>       classifications)
     {
         final String methodName = "addGovernanceActionType";
 
@@ -361,18 +1084,57 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME, domainIdentifier, methodName);
-        properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataType.PRODUCED_GUARDS_PROPERTY_NAME, producedGuards, methodName);
         properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataType.WAIT_TIME_PROPERTY_NAME, waitTime, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
+
+        List<Classification> entityClassifications = classifications;
+
+        if (anchorGUID != null)
+        {
+            if (entityClassifications == null)
+            {
+                entityClassifications = new ArrayList<>();
+            }
+
+            entityClassifications.add(this.getAnchorClassification(anchorGUID, anchorTypeName, methodName));
+        }
 
         EntityDetail assetEntity = archiveHelper.getEntityDetail(actionTypeName,
                                                                  idToGUIDMap.getGUID(qualifiedName),
                                                                  properties,
                                                                  InstanceStatus.ACTIVE,
-                                                                 classifications);
+                                                                 entityClassifications);
 
         archiveBuilder.addEntity(assetEntity);
+
+        addSupportedRequestParameters(assetEntity.getGUID(),
+                                      actionTypeName,
+                                      supportedRequestParameters);
+
+        addSupportedActionTargets(assetEntity.getGUID(),
+                                  actionTypeName,
+                                  supportedActionTargets);
+
+        addSupportedAnalysisSteps(assetEntity.getGUID(),
+                                  actionTypeName,
+                                  supportedAnalysisSteps);
+
+        addSupportedAnnotationTypes(assetEntity.getGUID(),
+                                    actionTypeName,
+                                    supportedAnnotationTypes);
+
+        addProducedRequestParameters(assetEntity.getGUID(),
+                                     actionTypeName,
+                                     producedRequestParameters);
+
+        addProducedActionTargets(assetEntity.getGUID(),
+                                 actionTypeName,
+                                 producedActionTargets);
+
+        addProducedGuards(assetEntity.getGUID(),
+                          actionTypeName,
+                          producedGuards);
 
         return assetEntity.getGUID();
     }
@@ -382,12 +1144,20 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      * Create a governance action process step.
      *
      * @param typeName name of subtype to use - default is GovernanceActionProcessStep
+     * @param anchorGUID unique identifier of the anchor
+     * @param anchorTypeName type name of the anchor
      * @param qualifiedName unique name for the capability
      * @param displayName display name for the capability
      * @param description description about the capability
+     * @param domainIdentifier which governance domain - 0=all
+     * @param supportedRequestParameters request parameters to use when triggering this governance action
+     * @param supportedActionTargets action targets to use when triggering this governance action
+     * @param supportedAnalysisSteps analysis steps supported by this governance action (survey action)
+     * @param supportedAnnotationTypes annotation types supported by this governance action (survey action)
+     * @param producedRequestParameters request parameters produced by this governance action
+     * @param producedActionTargets action targets produced by this governance action
      * @param producedGuards guards expected from the implementation
      * @param waitTime minutes to wait before starting governance action
-     * @param domainIdentifier which governance domain - 0=all
      * @param ignoreMultipleTriggers only run this once even if the same guard occurs multiple times while it is waiting
      * @param additionalProperties any other properties
      * @param extendedProperties properties for subtype
@@ -395,17 +1165,25 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      *
      * @return id for the new entity
      */
-    public String addGovernanceActionProcessStep(String               typeName,
-                                                 String               qualifiedName,
-                                                 String               displayName,
-                                                 String               description,
-                                                 int                  domainIdentifier,
-                                                 List<String>         producedGuards,
-                                                 int                  waitTime,
-                                                 boolean              ignoreMultipleTriggers,
-                                                 Map<String, String>  additionalProperties,
-                                                 Map<String, Object>  extendedProperties,
-                                                 List<Classification> classifications)
+    public String addGovernanceActionProcessStep(String                     typeName,
+                                                 String                     anchorGUID,
+                                                 String                     anchorTypeName,
+                                                 String                     qualifiedName,
+                                                 String                     displayName,
+                                                 String                     description,
+                                                 int                        domainIdentifier,
+                                                 List<RequestParameterType> supportedRequestParameters,
+                                                 List<ActionTargetType>     supportedActionTargets,
+                                                 List<AnalysisStepType>     supportedAnalysisSteps,
+                                                 List<AnnotationTypeType>   supportedAnnotationTypes,
+                                                 List<RequestParameterType> producedRequestParameters,
+                                                 List<ActionTargetType>     producedActionTargets,
+                                                 List<GuardType>            producedGuards,
+                                                 int                        waitTime,
+                                                 boolean                    ignoreMultipleTriggers,
+                                                 Map<String, String>        additionalProperties,
+                                                 Map<String, Object>        extendedProperties,
+                                                 List<Classification>       classifications)
     {
         final String methodName = "addGovernanceActionProcessStep";
 
@@ -420,19 +1198,58 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME, domainIdentifier, methodName);
-        properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName, properties, OpenMetadataType.PRODUCED_GUARDS_PROPERTY_NAME, producedGuards, methodName);
         properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataType.WAIT_TIME_PROPERTY_NAME, waitTime, methodName);
         properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataType.IGNORE_MULTIPLE_TRIGGERS_PROPERTY_NAME, ignoreMultipleTriggers, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 
+        List<Classification> entityClassifications = classifications;
+
+        if (anchorGUID != null)
+        {
+            if (entityClassifications == null)
+            {
+                entityClassifications = new ArrayList<>();
+            }
+
+            entityClassifications.add(this.getAnchorClassification(anchorGUID, anchorTypeName, methodName));
+        }
+
         EntityDetail assetEntity = archiveHelper.getEntityDetail(actionTypeName,
                                                                  idToGUIDMap.getGUID(qualifiedName),
                                                                  properties,
                                                                  InstanceStatus.ACTIVE,
-                                                                 classifications);
+                                                                 entityClassifications);
 
         archiveBuilder.addEntity(assetEntity);
+
+        addSupportedRequestParameters(assetEntity.getGUID(),
+                                      actionTypeName,
+                                      supportedRequestParameters);
+
+        addSupportedActionTargets(assetEntity.getGUID(),
+                                  actionTypeName,
+                                  supportedActionTargets);
+
+        addSupportedAnalysisSteps(assetEntity.getGUID(),
+                                  actionTypeName,
+                                  supportedAnalysisSteps);
+
+        addSupportedAnnotationTypes(assetEntity.getGUID(),
+                                    actionTypeName,
+                                    supportedAnnotationTypes);
+
+        addProducedRequestParameters(assetEntity.getGUID(),
+                                     actionTypeName,
+                                     producedRequestParameters);
+
+        addProducedActionTargets(assetEntity.getGUID(),
+                                 actionTypeName,
+                                 producedActionTargets);
+
+        addProducedGuards(assetEntity.getGUID(),
+                          actionTypeName,
+                          producedGuards);
 
         return assetEntity.getGUID();
     }

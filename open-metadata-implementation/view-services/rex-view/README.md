@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
-  
-# Repository Explorer View Service
 
-![In Development](../../../images/egeria-content-status-in-development.png)
+![Technical Preview](../../../images/egeria-content-status-tech-preview.png)
+
+# Repository Explorer View Service
 
 The Repository Explorer (Rex) View Service is an Integration View Service that supports Repository Explorer UI operations
 that retrieve metadata type and instance information from metadata repositories.

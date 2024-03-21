@@ -53,7 +53,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
      * along with classes for testing and manipulating instances.
      *
-     * @param converter                  The converter used for creating entities in Open Lineage format
+     * @param converter                  The converter used for creating entities in Lineage Warehouse format
      * @param serverName                 name of this server instance
      * @param publisher                  instance of the asset-lineage topic publisher
      * @param assetLineageTypesValidator service for validating types

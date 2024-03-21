@@ -127,6 +127,8 @@ public class RepositoryRelatedEntitiesIterator extends RepositoryIteratorForEnti
               null,
               null,
               sequencingPropertyName,
+              null,
+              null,
               forLineage,
               forDuplicateProcessing,
               startingFrom,
