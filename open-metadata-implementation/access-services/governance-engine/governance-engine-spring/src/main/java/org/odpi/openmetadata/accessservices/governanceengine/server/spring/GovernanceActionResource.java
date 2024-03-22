@@ -50,7 +50,6 @@ public class GovernanceActionResource
      *  PropertyServerException there was a problem detected by the metadata store.
      */
     @PostMapping(path = "/governance-actions/{governanceActionGUID}/status/update")
-
     public VoidResponse updateGovernanceActionStatus(@PathVariable String            serverName,
                                                      @PathVariable String            userId,
                                                      @PathVariable String            governanceActionGUID,

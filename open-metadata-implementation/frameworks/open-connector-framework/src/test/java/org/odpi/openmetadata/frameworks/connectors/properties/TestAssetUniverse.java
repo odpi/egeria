@@ -69,7 +69,7 @@ public class TestAssetUniverse
         testObject.setDisplayName("TestDisplayName");
         testObject.setOwner("TestOwner");
         testObject.setConnectionDescription("TestShortDescription");
-        testObject.setDescription("TestDescription");
+        testObject.setResourceDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
 
         return new AssetUniverse(testObject,
@@ -107,7 +107,7 @@ public class TestAssetUniverse
         testObject.setDisplayName("TestDisplayName");
         testObject.setOwner("TestOwner");
         testObject.setConnectionDescription("TestShortDescription");
-        testObject.setDescription("TestDescription");
+        testObject.setResourceDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
 
         return new AssetUniverse(testObject,
@@ -145,7 +145,7 @@ public class TestAssetUniverse
         testObject.setDisplayName("TestDisplayName");
         testObject.setOwner("TestOwner");
         testObject.setConnectionDescription("TestShortDescription");
-        testObject.setDescription("TestDescription");
+        testObject.setResourceDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
 
         return new AssetUniverse(testObject,

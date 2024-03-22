@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.ffdc.exce
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
@@ -15,6 +16,9 @@ import java.util.Objects;
  */
 public class NoConnectedAssetException extends OCFCheckedExceptionBase
 {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     /**
      * Unique identifier of the connection
      */

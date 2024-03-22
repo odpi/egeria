@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
 import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalog;
 import org.odpi.openmetadata.accessservices.glossaryview.client.GlossaryViewClient;
-import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
+import org.odpi.openmetadata.governanceservers.lineagewarehouse.client.LineageWarehouseClientWarehouse;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,9 +84,9 @@ public class EgeriaUIPlatform {
     }
 
     @Bean
-    public OpenLineageClient getOpenLineage(@Value("${open.lineage.server.url}") String serverUrl,
-                                            @Value("${open.lineage.server.name}") String serverName) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
-        return new OpenLineageClient(serverName, serverUrl);
+    public LineageWarehouseClientWarehouse getOpenLineage(@Value("${open.lineage.server.url}") String serverUrl,
+                                                          @Value("${open.lineage.server.name}") String serverName) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+        return new LineageWarehouseClientWarehouse(serverName, serverUrl);
     }
 
 //    @Bean

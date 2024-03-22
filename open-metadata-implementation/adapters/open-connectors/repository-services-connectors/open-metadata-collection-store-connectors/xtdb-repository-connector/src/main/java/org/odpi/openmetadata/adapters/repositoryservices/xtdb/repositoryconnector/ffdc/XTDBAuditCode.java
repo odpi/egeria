@@ -21,11 +21,11 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 public enum XTDBAuditCode implements AuditLogMessageSet 
 {
     /**
-     * OMRS-XTDB-REPOSITORY-0001 - A request to start a new XTDB repository node has been received
+     * OMRS-XTDB-REPOSITORY-0001 - A request to start an XTDB repository node has been received
      */
     REPOSITORY_NODE_STARTING("OMRS-XTDB-REPOSITORY-0001",
                              AuditLogRecordSeverityLevel.STARTUP,
-                             "A request to start a new XTDB repository node has been received",
+                             "A request to start an XTDB repository node has been received",
                              "The local server is creating a new local node for the XTDB repository.",
                              "This repository will be used as the local repository for this server. Depending on the configuration " +
                                      "of your XTDB repository, this may be the only XTDB node (standalone) or one of many (for example, in " +
@@ -36,34 +36,34 @@ public enum XTDBAuditCode implements AuditLogMessageSet
                                      "indicating that the node is starting up with a default, in-memory-only configuration."),
 
     /**
-     * OMRS-XTDB-REPOSITORY-0002 - A new XTDB repository node is starting with a persistent store
+     * OMRS-XTDB-REPOSITORY-0002 - An XTDB repository node is starting with a persistent store
      */
     REPOSITORY_NODE_STARTING_WITH_CONFIG("OMRS-XTDB-REPOSITORY-0002",
                                          AuditLogRecordSeverityLevel.STARTUP,
-                                         "A new XTDB repository node is starting with a persistent store",
-                                         "The local server is starting a new XTDB node based on the configuration provided through the configurationProperties of the local repository connection.",
+                                         "An XTDB repository node is starting with a persistent store",
+                                         "The local server is starting an XTDB node based on the configuration provided through the configurationProperties of the local repository connection.",
                                          "All nodes that are started with a provided configuration that can be interpreted will display this " +
                                                  "message. You should see a subsequent OMRS-XTDB-REPOSITORY-0004 indicating that the " +
                                                  "node has started based on this provided configuration."),
 
     /**
-     * OMRS-XTDB-REPOSITORY-0003 - A new XTDB repository node is starting in-memory (only)
+     * OMRS-XTDB-REPOSITORY-0003 - An XTDB repository node is starting in-memory (only)
      */
     REPOSITORY_NODE_STARTING_NO_CONFIG("OMRS-XTDB-REPOSITORY-0003",
                                        AuditLogRecordSeverityLevel.STARTUP,
-                                       "A new XTDB repository node is starting in-memory (only)",
-                                       "The local server is starting a new XTDB node in-memory (only), as no configuration was provided through configurationProperties of the local repository connection.",
+                                       "An XTDB repository node is starting in-memory (only)",
+                                       "The local server is starting an XTDB node in-memory (only), as no configuration was provided through configurationProperties of the local repository connection.",
                                        "All nodes that are started without any configuration provided will display this " +
                                                "message. You should see a subsequent OMRS-XTDB-REPOSITORY-0004 indicating that the " +
                                                "node has started purely in-memory."),
 
     /**
-     * OMRS-XTDB-REPOSITORY-0004 - A new XTDB repository node has started, running XTDB version {0} with: {1}
+     * OMRS-XTDB-REPOSITORY-0004 - An XTDB repository node has started, running XTDB version {0} with: {1}
      */
     REPOSITORY_SERVICE_STARTED("OMRS-XTDB-REPOSITORY-0004",
                                AuditLogRecordSeverityLevel.STARTUP,
-                               "A new XTDB repository node has started, running XTDB version {0} with: {1}",
-                               "The local server has completed startup of a new XTDB repository node.",
+                               "An XTDB repository node has started, running XTDB version {0} with: {1}",
+                               "The local server has completed startup of an XTDB repository node.",
                                "A XTDB repository node is only in a known running state once this message is displayed. When " +
                                        "the node is shutdown, an OMRS-XTDB-REPOSITORY-0005 will be displayed."),
 

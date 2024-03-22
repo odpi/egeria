@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.io.Serial;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -25,13 +26,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class ValidValue extends Referenceable
 {
-    private static final long     serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     protected String  displayName    = null;
     protected String  description    = null;
     protected String  usage          = null;
     protected String  scope          = null;
     protected String  preferredValue = null;
+    protected String  dataType       = null;
     protected boolean isDeprecated   = false;
 
 
@@ -59,6 +62,7 @@ public class ValidValue extends Referenceable
             usage = template.getUsage();
             scope = template.getScope();
             preferredValue = template.getPreferredValue();
+            dataType = template.getDataType();
             isDeprecated = template.getIsDeprecated();
         }
     }
@@ -177,6 +181,28 @@ public class ValidValue extends Referenceable
 
 
     /**
+     * Returns the data type of the preferred value.
+     *
+     * @return string
+     */
+    public String getDataType()
+    {
+        return dataType;
+    }
+
+
+    /**
+     * Set up the data type of the preferred value.
+     *
+     * @param dataType string
+     */
+    public void setDataType(String dataType)
+    {
+        this.dataType = dataType;
+    }
+
+
+    /**
      * Is the valid value deprecated?
      *
      * @return boolean flag
@@ -206,25 +232,15 @@ public class ValidValue extends Referenceable
     public String toString()
     {
         return "ValidValue{" +
-                       "URL='" + getURL() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       ", status=" + getStatus() +
-                       ", type=" + getType() +
-                       ", origin=" + getOrigin() +
-                       ", versions=" + getVersions() +
-                       ", GUID='" + getGUID() + '\'' +
-                       ", classifications=" + getClassifications() +
-                       ", headerVersion=" + getHeaderVersion() +
-                       ", qualifiedName='" + getQualifiedName() + '\'' +
-                       ", displayName='" + displayName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", usage='" + usage + '\'' +
-                       ", scope='" + scope + '\'' +
-                       ", preferredValue='" + preferredValue + '\'' +
-                       ", isDeprecated=" + isDeprecated +
-                       '}';
+                "displayName='" + displayName + '\'' +
+                ", description='" + description + '\'' +
+                ", usage='" + usage + '\'' +
+                ", scope='" + scope + '\'' +
+                ", preferredValue='" + preferredValue + '\'' +
+                ", dataType='" + dataType + '\'' +
+                ", isDeprecated=" + isDeprecated +
+                "} " + super.toString();
     }
-
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -253,7 +269,8 @@ public class ValidValue extends Referenceable
                 Objects.equals(usage, that.usage) &&
                 Objects.equals(scope, that.scope) &&
                 Objects.equals(isDeprecated, that.isDeprecated) &&
-                Objects.equals(preferredValue, that.preferredValue);
+                Objects.equals(preferredValue, that.preferredValue)  &&
+                Objects.equals(dataType, that.dataType);
     }
 
 
@@ -265,6 +282,6 @@ public class ValidValue extends Referenceable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, usage, scope, preferredValue, isDeprecated);
+        return Objects.hash(super.hashCode(), displayName, description, usage, scope, preferredValue, dataType, isDeprecated);
     }
 }

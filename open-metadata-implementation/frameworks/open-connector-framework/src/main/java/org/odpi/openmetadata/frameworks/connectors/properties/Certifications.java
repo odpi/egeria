@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Certification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 
+import java.io.Serial;
 import java.util.Iterator;
 
 /**
@@ -17,19 +18,18 @@ import java.util.Iterator;
  */
 public abstract class Certifications extends PropertyIteratorBase implements Iterator<Certification>
 {
-    private static final long     serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * Typical Constructor creates an iterator with the supplied list of elements.
      *
-     * @param totalElementCount the total number of elements to process.  A negative value is converted to 0.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      */
-    public Certifications(int totalElementCount,
-                          int maxCacheSize)
+    public Certifications(int maxCacheSize)
     {
-        super(totalElementCount, maxCacheSize);
+        super(maxCacheSize);
     }
 
 

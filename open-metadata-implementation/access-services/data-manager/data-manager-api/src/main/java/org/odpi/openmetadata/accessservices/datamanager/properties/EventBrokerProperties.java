@@ -49,7 +49,7 @@ public class EventBrokerProperties extends SoftwareCapabilitiesProperties
         return "EventBrokerProperties{" +
                 "displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
-                ", typeDescription='" + getTypeDescription() + '\'' +
+                ", typeDescription='" + getDeployedImplementationType() + '\'' +
                 ", version='" + getVersion() + '\'' +
                 ", patchLevel='" + getPatchLevel() + '\'' +
                 ", source='" + getSource() + '\'' +

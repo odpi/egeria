@@ -109,7 +109,7 @@ public class GlossaryBrowserResource
     @GetMapping(path = "/glossaries/terms/relationships/status-list")
 
     @Operation(summary="getGlossaryTermRelationshipStatuses",
-               description="Return the list of glossary term relationship status enum values.  These values are stored in a term-to-term, or term-to-category, relationship and are used to indicate how much the relationship should be trusted",
+               description="Return the list of glossary term relationship status enum values.  These values are stored in a term-to-term, or term-to-category, relationship and are used to indicate how much the relationship should be trusted.",
                externalDocs=@ExternalDocumentation(description="Relationship statuses",
                                                    url="https://egeria-project.org/services/omvs/glossary-workflow/overview/#relationship-statuses"))
 
@@ -362,7 +362,7 @@ public class GlossaryBrowserResource
                                                                                  boolean                         forDuplicateProcessing,
                                                                    @RequestBody  GlossarySearchStringRequestBody requestBody)
     {
-        return restAPI.findGlossaryCategories(serverName, startFrom, pageSize, forLineage, forDuplicateProcessing, startsWith, endsWith, ignoreCase, requestBody);
+        return restAPI.findGlossaryCategories(serverName, startFrom, pageSize, startsWith, endsWith, ignoreCase, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -630,7 +630,7 @@ public class GlossaryBrowserResource
                                                                         boolean                         forDuplicateProcessing,
                                                           @RequestBody  GlossarySearchStringRequestBody requestBody)
     {
-        return restAPI.findGlossaryTerms(serverName, startFrom, pageSize, forLineage, forDuplicateProcessing, startsWith, endsWith, ignoreCase, requestBody);
+        return restAPI.findGlossaryTerms(serverName, startFrom, pageSize, startsWith, endsWith, ignoreCase, forLineage, forDuplicateProcessing, requestBody);
     }
 
 

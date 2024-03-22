@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
@@ -15,7 +16,9 @@ import java.util.Objects;
  */
 public class UserNotAuthorizedException extends OCFCheckedExceptionBase
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
+
 
     private String  userId;
 

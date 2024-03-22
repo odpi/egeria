@@ -5,6 +5,7 @@ package org.odpi.openmetadata.viewservices.rex.api.ffdc;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 
+import java.io.Serial;
 import java.util.Arrays;
 
 
@@ -17,6 +18,9 @@ import java.util.Arrays;
  */
 public class RexViewServiceException extends OCFCheckedExceptionBase
 {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
 
     /*
      * Constructor

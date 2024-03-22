@@ -48,28 +48,6 @@ public class TestSchemaAttributes
 
 
     /**
-     * Validate that a clone can be created
-     */
-    @Test public void  testClonedIterator()
-    {
-        SchemaAttributes propertyIterator = getPropertyIterator(10, 100);
-
-        propertyIterator.next();
-
-        SchemaAttributes propertyIteratorClone = new MockSchemaAttributes( propertyIterator);
-
-        int elementCount = 0;
-        while (propertyIteratorClone.hasNext())
-        {
-            assertTrue(propertyIteratorClone.next() != null);
-            elementCount ++;
-        }
-
-        assertTrue(elementCount == 10);
-    }
-
-
-    /**
      * Test that the iterator works well if there are no elements
      */
     @Test public void testEmptyIterator()

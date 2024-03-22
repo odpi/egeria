@@ -152,6 +152,11 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         final String cocoEngineUserId   = "cocoETLnpa";
         final String generalNPAUserId   = "generalnpa";
         final String omagServerUserId   = "OMAGServer";
+        final String simpleUserId       = "simplenpa";
+        final String activeUserId       = "activenpa";
+        final String engineUserId       = "enginenpa";
+        final String viewUserId         = "viewnpa";
+        final String daemonUserId       = "daemonnpa";
 
         /*
          * This userId is the userId that is expected in the calls to auto-start servers (it is changed with the startup.user variable).

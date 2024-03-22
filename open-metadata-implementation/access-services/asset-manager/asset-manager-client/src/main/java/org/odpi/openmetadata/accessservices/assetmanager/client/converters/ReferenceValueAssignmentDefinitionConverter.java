@@ -120,7 +120,9 @@ public class ReferenceValueAssignmentDefinitionConverter<B> extends AssetManager
                     validValueProperties.setUsage(this.removeUsage(elementProperties));
                     validValueProperties.setScope(this.removeScope(elementProperties));
                     validValueProperties.setIsDeprecated(this.removeIsDeprecated(elementProperties));
-                    validValueProperties.setPreferredValue(this.removePreferredValue(elementProperties)); validValueProperties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
+                    validValueProperties.setPreferredValue(this.removePreferredValue(elementProperties));
+                    validValueProperties.setDataType(this.removeDataType(elementProperties));
+                    validValueProperties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are

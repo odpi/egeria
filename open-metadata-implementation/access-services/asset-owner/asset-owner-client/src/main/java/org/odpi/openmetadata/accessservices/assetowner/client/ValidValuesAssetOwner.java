@@ -196,6 +196,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
      * @param description further information.
      * @param usage how/when should this value be used.
      * @param preferredValue the value that should be used in an implementation if possible.
+     * @param dataType data type of the preferred value.
      * @param additionalProperties additional properties for this definition.
      * @param extendedProperties properties that need to be populated into a subtype.
      *
@@ -215,6 +216,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
                                               String              usage,
                                               String              scope,
                                               String              preferredValue,
+                                              String              dataType,
                                               Map<String, String> additionalProperties,
                                               Map<String, Object> extendedProperties) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
@@ -234,6 +236,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         requestBody.setUsage(usage);
         requestBody.setScope(scope);
         requestBody.setPreferredValue(preferredValue);
+        requestBody.setDataType(dataType);
         requestBody.setAdditionalProperties(additionalProperties);
         requestBody.setExtendedProperties(extendedProperties);
 
@@ -262,6 +265,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
      * @param usage how/when should this value be used.
      * @param scope what is the scope of the values.
      * @param preferredValue the value that should be used in an implementation if possible.
+     * @param dataType the data type of the preferred value.
      * @param isDeprecated is this value deprecated?
      * @param additionalProperties additional properties for this valid value.
      * @param extendedProperties properties that need to be populated into a subtype.
@@ -279,6 +283,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
                                     String              usage,
                                     String              scope,
                                     String              preferredValue,
+                                    String              dataType,
                                     boolean             isDeprecated,
                                     Map<String, String> additionalProperties,
                                     Map<String, Object> extendedProperties) throws InvalidParameterException,
@@ -301,6 +306,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         requestBody.setUsage(usage);
         requestBody.setScope(scope);
         requestBody.setPreferredValue(preferredValue);
+        requestBody.setDataType(dataType);
         requestBody.setIsDeprecated(isDeprecated);
         requestBody.setAdditionalProperties(additionalProperties);
         requestBody.setExtendedProperties(extendedProperties);

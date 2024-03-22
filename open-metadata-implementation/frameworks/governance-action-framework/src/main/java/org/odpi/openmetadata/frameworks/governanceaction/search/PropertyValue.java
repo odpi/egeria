@@ -148,7 +148,8 @@ public abstract class PropertyValue
      *
      * @param typeName String type name
      */
-    public void setTypeName(String typeName) {
+    public void setTypeName(String typeName)
+    {
         this.typeName = typeName;
     }
 

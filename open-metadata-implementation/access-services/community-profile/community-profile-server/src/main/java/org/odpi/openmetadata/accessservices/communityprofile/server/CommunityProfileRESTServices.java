@@ -125,7 +125,7 @@ public class CommunityProfileRESTServices
                                                                   requestBody.getQualifiedName(),
                                                                   requestBody.getDisplayName(),
                                                                   requestBody.getDescription(),
-                                                                  requestBody.getTypeDescription(),
+                                                                  requestBody.getDeployedImplementationType(),
                                                                   requestBody.getVersion(),
                                                                   requestBody.getPatchLevel(),
                                                                   requestBody.getSource(),

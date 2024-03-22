@@ -5,12 +5,15 @@ package org.odpi.openmetadata.frameworks.discovery.ffdc;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 
+import java.io.Serial;
+
 /**
  * DiscoveryServiceException indicates there has been a problem running a discovery service.  The
  * error codes and messages indicate the cause of the problem and guidance on finding a remedy.
  */
 public class DiscoveryServiceException extends ConnectorCheckedException
 {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

@@ -37,22 +37,20 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-audit-integration-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-integration-connector')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:atlas-integration-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:jdbc-integration-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openapi-integration-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:openlineage-integration-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:survey-action-connectors')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:discovery-service-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:open-lineage-connectors:open-lineage-janus-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:lineage-warehouse-connectors:lineage-warehouse-janus-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-file-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-directory-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-rest-connector')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector')
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-client')
     implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-client')
@@ -66,8 +64,8 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:dev-ops:dev-ops-client')
     implementation project(':open-metadata-implementation:access-services:digital-architecture:digital-architecture-client')
     implementation project(':open-metadata-implementation:access-services:digital-service:digital-service-client')
-    implementation project(':open-metadata-implementation:access-services:discovery-engine:discovery-engine-client')
     implementation project(':open-metadata-implementation:access-services:governance-engine:governance-engine-client')
+    implementation project(':open-metadata-implementation:access-services:governance-server:governance-server-client')
     implementation project(':open-metadata-implementation:access-services:governance-program:governance-program-client')
     implementation project(':open-metadata-implementation:access-services:project-management:project-management-client')
     implementation project(':open-metadata-implementation:access-services:security-officer:security-officer-client')
@@ -75,7 +73,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:software-developer:software-developer-client')
     implementation project(':open-metadata-implementation:access-services:subject-area:subject-area-client')
     implementation project(':open-metadata-implementation:engine-services:repository-governance:repository-governance-client')
-    implementation project(':open-metadata-implementation:engine-services:asset-analysis:asset-analysis-client')
+    implementation project(':open-metadata-implementation:engine-services:survey-action:survey-action-client')
     implementation project(':open-metadata-implementation:engine-services:governance-action:governance-action-client')
     implementation project(':open-metadata-implementation:integration-services:analytics-integrator:analytics-integrator-client')
     implementation project(':open-metadata-implementation:integration-services:api-integrator:api-integrator-client')
@@ -88,9 +86,9 @@ dependencies {
     implementation project(':open-metadata-implementation:integration-services:security-integrator:security-integrator-client')
     implementation project(':open-metadata-implementation:integration-services:topic-integrator:topic-integrator-client')
     implementation project(':open-metadata-implementation:integration-services:search-integrator:search-integrator-client')
-    implementation project(':open-metadata-implementation:governance-servers:engine-host-services:engine-host-services-client')
-    implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-client')
-    implementation project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-client')
+    implementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-client')
+    implementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-client')
+    implementation project(':open-metadata-implementation:governance-server-services:lineage-warehouse-services:lineage-warehouse-services-client')
     implementation project(':open-metadata-implementation:admin-services:admin-services-client')
     implementation project(':open-metadata-implementation:user-interfaces:ui-chassis:ui-chassis-spring')
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-client')
@@ -195,16 +193,14 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:data-folder-connector').jar }
-                from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector').shadowJar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-encrypted-file-store-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:survey-action-connectors').jar }
-                from { project(':open-metadata-implementation:adapters:open-connectors:discovery-service-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:csv-lineage-import-integration-connector').jar }
-                from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:atlas-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-audit-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:kafka-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:jdbc-integration-connector').jar }
@@ -213,11 +209,11 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:elasticsearch-integration-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:inmemory-open-metadata-topic-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:event-bus-connectors:open-metadata-topic-connectors:kafka-open-metadata-topic-connector').jar }
-                from { project(':open-metadata-implementation:adapters:open-connectors:governance-daemon-connectors:open-lineage-connectors:open-lineage-janus-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:lineage-warehouse-connectors:lineage-warehouse-janus-connector').jar }
                 from { project(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector').jar }
-                from { project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-rest-connector').jar }
+                from { project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-connectors').jar }
                 from { project(':open-metadata-resources:open-metadata-samples:governance-services-sample').jar }
                 fileMode = 0755
             }
@@ -357,13 +353,50 @@ distributions {
                         {
                             include 'Egeria*.http'
                         }
-                from { "$rootProject.projectDir/open-metadata-implementation" }
-                        {
-                            include 'admin-services/Egeria*.http'
-                            include 'repository-services/Egeria*.http'
-                            include 'platform-services/Egeria*.http'
-                            include 'access-services/*/Egeria*.http'
-                        }
+                from { "$rootProject.projectDir/open-metadata-implementation/admin-services" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/repository-services" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/platform-services" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/access-services/asset-consumer" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/access-services/asset-manager" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/access-services/asset-owner" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/access-services/data-manager" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/access-services/digital-architecture" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/access-services/discovery-engine" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/access-services/governance-engine" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/access-services/it-infrastructure" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/access-services/subject-area" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/framework-services/ocf-metadata-management" }
+                        { include 'Egeria*.http'}
+                from { "$rootProject.projectDir/open-metadata-implementation/framework-services/oif-metadata-management" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/framework-services/gaf-metadata-management" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/my-profile" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/automated-curation" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/asset-catalog" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/glossary-browser" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/glossary-workflow" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/user-security/user-authn" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-conformance-suite" }
+                        { include 'Egeria*.http' }
                 fileMode = 0755
             }
             into('assembly/opt/postman-collections/framework-services') {
@@ -381,32 +414,10 @@ distributions {
                         }
                 fileMode = 0755
             }
-            into('assembly/opt/http-client-collections/framework-services') {
-                from { "$rootProject.projectDir/open-metadata-implementation/framework-services/ocf-metadata-management" }
-                        {
-                            include 'Egeria*.http'
-                        }
-                from { "$rootProject.projectDir/open-metadata-implementation/framework-services/oif-metadata-management" }
-                        {
-                            include 'Egeria*.http'
-                        }
-                from { "$rootProject.projectDir/open-metadata-implementation/framework-services/gaf-metadata-management" }
-                        {
-                            include 'Egeria*.http'
-                        }
-                fileMode = 0755
-            }
             into('assembly/opt/postman-collections/conformance-suite') {
                 from { "$rootProject.projectDir/open-metadata-conformance-suite" }
                         {
                             include 'Egeria*.json'
-                        }
-                fileMode = 0755
-            }
-            into('assembly/opt/http-client-collections/conformance-suite') {
-                from { "$rootProject.projectDir/open-metadata-conformance-suite" }
-                        {
-                            include 'Egeria*.http'
                         }
                 fileMode = 0755
             }

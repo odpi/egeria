@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.PrimitiveSchemaType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,15 +17,16 @@ import java.util.List;
  */
 public class MockConnectedAssetProperties extends ConnectedAssetProperties
 {
-    private static final long     serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
-    private ExternalIdentifiers    externalIdentifiers    = null;
-    private RelatedMediaReferences relatedMediaReferences = null;
-    private NoteLogs               noteLogs               = null;
-    private ExternalReferences     externalReferences     = null;
-    private Connections         connections    = null;
-    private Licenses            licenses       = null;
-    private Certifications certifications = null;
+    private final ExternalIdentifiers    externalIdentifiers    = null;
+    private final RelatedMediaReferences relatedMediaReferences = null;
+    private final NoteLogs               noteLogs               = null;
+    private final ExternalReferences     externalReferences     = null;
+    private final Connections            connections            = null;
+    private final Licenses               licenses               = null;
+    private final Certifications         certifications         = null;
 
 
     /**

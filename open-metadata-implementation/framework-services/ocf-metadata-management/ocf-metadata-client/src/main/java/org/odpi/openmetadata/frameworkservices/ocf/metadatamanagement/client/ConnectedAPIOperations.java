@@ -41,7 +41,6 @@ public class ConnectedAPIOperations extends APIOperations
      * @param userId user id to use on server calls.
      * @param platformURLRoot url root of the server to use.
      * @param schemaGUID unique identifier of the parent schema type.
-     * @param totalElementCount the total number of elements to process.  A negative value is converted to 0.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      * @param restClient client to call REST API
@@ -51,11 +50,10 @@ public class ConnectedAPIOperations extends APIOperations
                            String                 userId,
                            String                 platformURLRoot,
                            String                 schemaGUID,
-                           int                    totalElementCount,
                            int                    maxCacheSize,
                            OCFRESTClient          restClient)
     {
-        super(totalElementCount, maxCacheSize);
+        super(maxCacheSize);
 
         this.serviceName     = serviceName;
         this.serverName      = serverName;

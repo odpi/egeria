@@ -2,20 +2,20 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.governanceaction.admin;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
-import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
+import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineEventClient;
+import org.odpi.openmetadata.accessservices.governanceengine.client.rest.GovernanceEngineRESTClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActionAuditCode;
 import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActionErrorCode;
+import org.odpi.openmetadata.engineservices.governanceaction.listener.GovernanceEngineOutTopicListener;
 import org.odpi.openmetadata.engineservices.governanceaction.server.GovernanceActionInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.EngineServiceAdmin;
 import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
 
-import java.util.List;
 
 /**
  * GovernanceActionAdmin is called during server start-up and initializes the Governance Action OMES.
@@ -34,7 +34,6 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
      * @param localServerPassword password for this server to use if sending REST requests.
      * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
      * @param configurationClient client used to connect to the Governance Engine OMAS to retrieve the governance engine definitions.
-     * @param serverClient client used to connect to the Governance Engine OMAS to manage governance actions
      * @param engineServiceConfig details of the options and the engines to run.
      * @param governanceEngineMap map of configured engines
      * @throws OMAGConfigurationErrorException an issue in the configuration prevented initialization
@@ -48,7 +47,6 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
                            String                              localServerPassword,
                            int                                 maxPageSize,
                            GovernanceEngineConfigurationClient configurationClient,
-                           GovernanceContextClient             serverClient,
                            EngineServiceConfig                 engineServiceConfig,
                            GovernanceEngineMap                 governanceEngineMap) throws OMAGConfigurationErrorException
     {
@@ -90,6 +88,33 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
                                                                     maxPageSize,
                                                                     engineServiceConfig.getOMAGServerPlatformRootURL(),
                                                                     engineServiceConfig.getOMAGServerName());
+
+            GovernanceEngineRESTClient governanceEngineRESTClient;
+
+            if (localServerPassword != null)
+            {
+                governanceEngineRESTClient = new GovernanceEngineRESTClient(accessServiceServerName,
+                                                                            accessServiceRootURL,
+                                                                            localServerUserId,
+                                                                            localServerPassword,
+                                                                            auditLog);
+            }
+            else
+            {
+                governanceEngineRESTClient = new GovernanceEngineRESTClient(accessServiceServerName,
+                                                                            accessServiceRootURL,
+                                                                            auditLog);
+
+            }
+
+            GovernanceEngineEventClient eventClient = new GovernanceEngineEventClient(accessServiceServerName,
+                                                                                      accessServiceRootURL,
+                                                                                      governanceEngineRESTClient,
+                                                                                      maxPageSize,
+                                                                                      auditLog,
+                                                                                      localServerId);
+
+            eventClient.registerListener(localServerUserId, new GovernanceEngineOutTopicListener(governanceEngineMap, auditLog));
         }
         catch (Exception error)
         {

@@ -1057,8 +1057,8 @@ public class OpenMetadataTypesArchive2_6
         final String attribute4Name            = "waitTime";
         final String attribute4Description     = "The minimum number of minutes that the governance engine should wait before calling the governance service.";
         final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "producedGuards";
-        final String attribute5Description     = "List of guards that this action type produces.";
+        final String attribute5Name            = "supportedGuards";
+        final String attribute5Description     = "List of guards that this action type supports.";
         final String attribute5DescriptionGUID = null;
 
         property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
@@ -1462,6 +1462,17 @@ public class OpenMetadataTypesArchive2_6
                                                      element8Value,
                                                      element8Description,
                                                      element8DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element10Ordinal         = 14;
+        final String element10Value           = "Cancelled";
+        final String element10Description     = "The engine action was cancelled by an external caller.";
+        final String element10DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element10Ordinal,
+                                                     element10Value,
+                                                     element10Description,
+                                                     element10DescriptionGUID);
         elementDefs.add(elementDef);
 
         final int    element99Ordinal         = 99;

@@ -1,9 +1,10 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
-  
+
+![Technical Preview](../../../images/egeria-content-status-tech-preview.png)
+
 # Open Metadata View Services (OMVS)
 
-![In Development](../../../images/egeria-content-status-in-development.png)
 
 Develop a user interface to support the Dino UI, which enables a technical user (such as an Egeria Operator) to 
 retrieve information about servers, services, cohorts and platforms. 

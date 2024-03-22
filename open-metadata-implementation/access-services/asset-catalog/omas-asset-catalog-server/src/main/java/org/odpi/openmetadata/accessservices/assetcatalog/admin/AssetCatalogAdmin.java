@@ -146,21 +146,4 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
         }
         return false;
     }
-
-
-    /**
-     *
-     * @param accessServiceConfigurationProperties service configuration object
-     * @return the list of supported types for search
-     */
-    private List<String> getSupportedTypesForSearchOption(AccessServiceConfig accessServiceConfigurationProperties) {
-        if (accessServiceConfigurationProperties.getAccessServiceOptions() != null) {
-            Object supportedTypesProperty = accessServiceConfigurationProperties.getAccessServiceOptions().get(SUPPORTED_TYPES_FOR_SEARCH);
-            if (supportedTypesProperty instanceof List) {
-                return (List<String>) supportedTypesProperty;
-            }
-        }
-
-        return Collections.emptyList();
-    }
 }

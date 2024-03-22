@@ -51,8 +51,7 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
         {
             if (governanceContext.getActionTargetElements() == null)
             {
-                completionStatus = CompletionStatus.FAILED;
-                outputGuards.add(QualifiedNamePeerDuplicateGovernanceActionProvider.NO_TARGETS_DETECTED_GUARD);
+                outputGuards.add(QualifiedNamePeerDuplicateGuard.NO_TARGETS_DETECTED.getName());
             }
             else if (governanceContext.getActionTargetElements().size() == 1)
             {
@@ -79,7 +78,8 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
                     String targetElementGUID = targetElement.getElementGUID();
                     if (elements.size() == 1 && elements.get(0).getElementGUID().equalsIgnoreCase(targetElementGUID))
                     {
-                        outputGuards.add(QualifiedNamePeerDuplicateGovernanceActionProvider.NO_DUPLICATION_DETECTED_GUARD);
+                        outputGuards.add(QualifiedNamePeerDuplicateGuard.NO_DUPLICATION_DETECTED.getName());
+                        completionStatus = CompletionStatus.ACTIONED;
                     }
                     for (OpenMetadataElement duplicateAsset : elements)
                     {
@@ -98,11 +98,15 @@ public class QualifiedNamePeerDuplicateGovernanceActionConnector extends Remedia
                                                                        null,
                                                                        null,
                                                                        true);
-                        outputGuards.add(QualifiedNamePeerDuplicateGovernanceActionProvider.DUPLICATE_ASSIGNED_GUARD);
+                        outputGuards.add(QualifiedNamePeerDuplicateGuard.DUPLICATE_ASSIGNED.getName());
                         completionStatus = CompletionStatus.ACTIONED;
                         break;
                     }
                 }
+            }
+            else
+            {
+                outputGuards.add(OriginSeekerGuard.MULTIPLE_TARGETS_DETECTED.getName());
             }
 
             governanceContext.recordCompletionStatus(completionStatus, outputGuards);

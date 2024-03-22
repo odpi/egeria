@@ -2,7 +2,7 @@
 <!-- Copyright Contributors to the Egeria project. -->
 
 
-![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
+![Stable](../../../images/egeria-content-status-released.png#pagewidth)
 
 # Display Integrator Open Metadata Integration Service (OMIS)
 

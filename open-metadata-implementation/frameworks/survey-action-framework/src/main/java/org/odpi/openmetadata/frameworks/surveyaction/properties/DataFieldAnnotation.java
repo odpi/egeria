@@ -22,8 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = ClassificationAnnotation.class, name = "ClassificationAnnotation"),
                 @JsonSubTypes.Type(value = DataClassAnnotation.class, name = "DataClassAnnotation"),
-                @JsonSubTypes.Type(value = DataProfileAnnotation.class, name = "DataProfileAnnotation"),
-                @JsonSubTypes.Type(value = DataProfileLogAnnotation.class, name = "DataProfileLogAnnotation"),
+                @JsonSubTypes.Type(value = ResourceProfileAnnotation.class, name = "DataProfileAnnotation"),
+                @JsonSubTypes.Type(value = ResourceProfileLogAnnotation.class, name = "DataProfileLogAnnotation"),
                 @JsonSubTypes.Type(value = QualityAnnotation.class, name = "QualityAnnotation"),
                 @JsonSubTypes.Type(value = RelationshipAdviceAnnotation.class, name = "RelationshipAdviceAnnotation"),
                 @JsonSubTypes.Type(value = RequestForActionAnnotation.class, name = "RequestForActionAnnotation"),

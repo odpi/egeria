@@ -68,7 +68,7 @@ public class GlossaryBrowserAdmin extends ViewServiceAdmin
                                                          viewServiceConfig.getOMAGServerPlatformRootURL());
 
             auditLog.logMessage(actionDescription,
-                                GlossaryBrowserAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
+                                GlossaryBrowserAuditCode.SERVICE_INITIALIZED.getMessageDefinition(),
                                 viewServiceConfig.toString());
 
         }

@@ -10,20 +10,20 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-@JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
 /**
  * SoftwareCapabilityProperties describes a function implemented in software that is supported by an instance of IT Infrastructure.
  */
+@JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SoftwareCapabilityProperties extends ConfigurationItemProperties
 {
     private static final long    serialVersionUID = 1L;
 
     private String displayName     = null;
-    private String description     = null;
-    private String typeDescription = null;
-    private String version         = null;
+    private String description                = null;
+    private String deployedImplementationType = null;
+    private String version                    = null;
     private String patchLevel      = null;
     private String source          = null;
 
@@ -49,9 +49,9 @@ public class SoftwareCapabilityProperties extends ConfigurationItemProperties
         if (template != null)
         {
             displayName = template.getDisplayName();
-            description = template.getDescription();
-            typeDescription = template.getTypeDescription();
-            version = template.getVersion();
+            description                = template.getDescription();
+            deployedImplementationType = template.getDeployedImplementationType();
+            version                    = template.getVersion();
             patchLevel = template.getPatchLevel();
             source = template.getSource();
         }
@@ -103,24 +103,24 @@ public class SoftwareCapabilityProperties extends ConfigurationItemProperties
 
 
     /**
-     * Return the description of the type of discovery engine this is.
+     * Return the description of the type of capability this is.
      *
      * @return string description
      */
-    public String getTypeDescription()
+    public String getDeployedImplementationType()
     {
-        return typeDescription;
+        return deployedImplementationType;
     }
 
 
     /**
-     * Set up the description of the type of discovery engine this is.
+     * Set up the description of the type of capability this is.
      *
-     * @param typeDescription string
+     * @param deployedImplementationType string
      */
-    public void setTypeDescription(String typeDescription)
+    public void setDeployedImplementationType(String deployedImplementationType)
     {
-        this.typeDescription = typeDescription;
+        this.deployedImplementationType = deployedImplementationType;
     }
 
 
@@ -201,7 +201,7 @@ public class SoftwareCapabilityProperties extends ConfigurationItemProperties
         return "SoftwareCapabilityProperties{" +
                        "displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
-                       ", typeDescription='" + typeDescription + '\'' +
+                       ", typeDescription='" + deployedImplementationType + '\'' +
                        ", version='" + version + '\'' +
                        ", patchLevel='" + patchLevel + '\'' +
                        ", source='" + source + '\'' +
@@ -240,7 +240,7 @@ public class SoftwareCapabilityProperties extends ConfigurationItemProperties
         SoftwareCapabilityProperties that = (SoftwareCapabilityProperties) objectToCompare;
         return Objects.equals(getDisplayName(), that.getDisplayName()) &&
                 Objects.equals(getDescription(), that.getDescription()) &&
-                Objects.equals(getTypeDescription(), that.getTypeDescription()) &&
+                Objects.equals(getDeployedImplementationType(), that.getDeployedImplementationType()) &&
                 Objects.equals(getVersion(), that.getVersion()) &&
                 Objects.equals(getPatchLevel(), that.getPatchLevel()) &&
                 Objects.equals(getSource(), that.getSource());
@@ -255,7 +255,7 @@ public class SoftwareCapabilityProperties extends ConfigurationItemProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getTypeDescription(), getVersion(),
-                            getPatchLevel(), getSource());
+        return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getDeployedImplementationType(),
+                            getVersion(), getPatchLevel(), getSource());
     }
 }

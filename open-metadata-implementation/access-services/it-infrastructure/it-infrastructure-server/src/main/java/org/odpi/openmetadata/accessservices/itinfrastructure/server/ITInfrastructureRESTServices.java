@@ -185,6 +185,7 @@ public class ITInfrastructureRESTServices
                                                                  null,
                                                                  false,
                                                                  false,
+                                                                 handler.getSupportedZones(),
                                                                  new Date(),
                                                                  methodName);
 
@@ -686,6 +687,7 @@ public class ITInfrastructureRESTServices
                                               null,
                                               false,
                                               false,
+                                              handler.getSupportedZones(),
                                               new Date(),
                                               methodName);
             }
@@ -751,6 +753,7 @@ public class ITInfrastructureRESTServices
                                                  embeddedConnectionGUIDParameterName,
                                                  false,
                                                  false,
+                                                 handler.getSupportedZones(),
                                                  new Date(),
                                                  methodName);
             }
@@ -2163,7 +2166,6 @@ public class ITInfrastructureRESTServices
      * @param pageSize maximum results that can be returned
      *
      * @return list of matching metadata elements or
-     *
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
@@ -2544,7 +2546,7 @@ public class ITInfrastructureRESTServices
                                                                       requestBody.getQualifiedName(),
                                                                       requestBody.getDisplayName(),
                                                                       requestBody.getDescription(),
-                                                                      requestBody.getTypeDescription(),
+                                                                      requestBody.getDeployedImplementationType(),
                                                                       requestBody.getVersion(),
                                                                       requestBody.getPatchLevel(),
                                                                       requestBody.getSource(),
@@ -2568,7 +2570,7 @@ public class ITInfrastructureRESTServices
                                                                       requestBody.getQualifiedName(),
                                                                       requestBody.getDisplayName(),
                                                                       requestBody.getDescription(),
-                                                                      requestBody.getTypeDescription(),
+                                                                      requestBody.getDeployedImplementationType(),
                                                                       requestBody.getVersion(),
                                                                       requestBody.getPatchLevel(),
                                                                       requestBody.getSource(),
@@ -2732,7 +2734,7 @@ public class ITInfrastructureRESTServices
                                                requestBody.getQualifiedName(),
                                                requestBody.getDisplayName(),
                                                requestBody.getDescription(),
-                                               requestBody.getTypeDescription(),
+                                               requestBody.getDeployedImplementationType(),
                                                requestBody.getVersion(),
                                                requestBody.getPatchLevel(),
                                                requestBody.getSource(),

@@ -29,32 +29,11 @@ public enum GovernanceEngineEventType implements Serializable
                                          "An event that is not recognized by the local server."),
 
     /**
-     * The configuration for a governance engine has changed.
-     */
-    REFRESH_GOVERNANCE_ENGINE_EVENT      (1,
-                                         "Refresh Governance Engine Configuration",
-                                         "The configuration for a governance engine has changed."),
-
-    /**
-     * The configuration for a governance service has changed.
-     */
-    REFRESH_GOVERNANCE_SERVICE_EVENT     (2,
-                                          "Refresh Governance Service Configuration",
-                                          "The configuration for a governance service has changed."),
-
-    /**
      * Metadata change event for watchdog governance action services.
      */
     WATCHDOG_GOVERNANCE_SERVICE_EVENT    (3,
                                           "Metadata change event",
                                           "Metadata change event for watchdog governance action services."),
-
-    /**
-     * New request to run a governance service.
-     */
-    REQUESTED_GOVERNANCE_ACTION_EVENT    (4,
-                                          "Requested Governance Action",
-                                          "New request to run a governance service."),
 
     ;
 

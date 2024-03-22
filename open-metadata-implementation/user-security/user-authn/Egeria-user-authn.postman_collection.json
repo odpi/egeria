@@ -1,0 +1,103 @@
+{
+	"info": {
+		"_postman_id": "04a09aa8-28f0-42e9-b9f5-24ad2c196541",
+		"name": "Egeria-user-authn",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28623075"
+	},
+	"item": [
+		{
+			"name": "Application info",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/api/public/app/info",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"public",
+						"app",
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "About",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/api/about",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"about"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Token (RequestBody)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\" : \"peterprofile\",\n    \"password\" : \"secret\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/api/token",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Token (Request Parms)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/api/token?username=garygeeke&password=secret",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"api",
+						"token"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "garygeeke"
+						},
+						{
+							"key": "password",
+							"value": "secret"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

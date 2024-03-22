@@ -19,11 +19,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicProvider;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * AccessServiceAdmin is the interface that an access service implements to receive its configuration.
@@ -32,6 +28,9 @@ import java.util.UUID;
  */
 public abstract class AccessServiceAdmin
 {
+    /*
+     * These properties are used by Community Profile OMAS
+     */
     private static final int defaultKarmaPointThreshold = 500;
     private static final int defaultKarmaPointInterval  = 0;
 
@@ -41,11 +40,12 @@ public abstract class AccessServiceAdmin
      * AccessServiceConfig as the accessServicesOptions.  Individual access services may support
      * additional properties.
      */
-    protected String   supportedZonesPropertyName      = "SupportedZones";      /* Common */
-    protected String   defaultZonesPropertyName        = "DefaultZones";        /* Common */
-    protected String   publishZonesPropertyName        = "PublishZones";        /* Common */
-    protected String   karmaPointPlateauPropertyName   = "KarmaPointPlateau";   /* Community Profile OMAS */
-    protected String   karmaPointIncrementPropertyName = "KarmaPointIncrement"; /* Community Profile OMAS */
+    protected final String   supportedZonesPropertyName      = "SupportedZones";          /* Common */
+    protected final String   defaultZonesPropertyName        = "DefaultZones";            /* Common */
+    protected final String   publishZonesPropertyName        = "PublishZones";            /* Common */
+    protected final String   karmaPointPlateauPropertyName   = "KarmaPointPlateau";       /* Community Profile OMAS */
+    protected final String   karmaPointIncrementPropertyName = "KarmaPointIncrement";     /* Community Profile OMAS */
+    protected final String   supportedTypesForSearch         = "SupportedTypesForSearch"; /* Asset Catalog OMAS */
 
     private String     fullServiceName = null;
 
@@ -339,6 +339,29 @@ public abstract class AccessServiceAdmin
                 }
             }
         }
+    }
+
+
+    /**
+     * Retrieve the option from the configuration that overrides default list of assets
+     * that a caller can search for.
+     *
+     * @param accessServiceConfig service configuration object
+     * @return the list of supported asset types for search or null
+     */
+    @SuppressWarnings(value = "unchecked")
+    protected List<String> getSupportedTypesForSearchOption(AccessServiceConfig accessServiceConfig)
+    {
+        if (accessServiceConfig.getAccessServiceOptions() != null)
+        {
+            Object supportedTypesProperty = accessServiceConfig.getAccessServiceOptions().get(supportedTypesForSearch);
+            if (supportedTypesProperty instanceof List)
+            {
+                return (List<String>) supportedTypesProperty;
+            }
+        }
+
+        return null;
     }
 
 

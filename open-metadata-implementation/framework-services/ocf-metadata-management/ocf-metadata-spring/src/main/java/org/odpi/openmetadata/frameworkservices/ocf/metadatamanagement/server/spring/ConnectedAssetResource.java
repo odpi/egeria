@@ -10,7 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.server.OCFMetadataRESTServices;
-import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -115,6 +115,34 @@ public class ConnectedAssetResource
         return restAPI.getConnectionByName(serverName, serviceURLName, userId, name);
     }
 
+
+    /**
+     * Save the connection optionally linked to the supplied asset GUID.
+     *
+     * @param serverName  name of the server instances for this request
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
+     * @param userId      userId of user making request.
+     * @param assetGUID   the unique id for the asset within the metadata repository. This optional.
+     *                    However, if specified then the new connection is attached to the asset
+     * @param connection connection to save
+     *
+     * @return connection object or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UnrecognizedConnectionNameException there is no connection defined for this name or
+     * PropertyServerException there is a problem retrieving information from the property (metadata) server or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/connections")
+
+    public GUIDResponse saveConnectionForAsset(@PathVariable String     serverName,
+                                               @PathVariable String     serviceURLName,
+                                               @PathVariable String     userId,
+                                               @RequestParam(required = false)
+                                               String     assetGUID,
+                                               @RequestBody  Connection connection)
+    {
+        return restAPI.saveConnectionForAsset(serverName, serviceURLName, userId, assetGUID, connection);
+    }
 
 
     /**

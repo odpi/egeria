@@ -16,9 +16,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
-import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
-import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
-import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.AnnotationStatus;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.SurveyReport;
 
 import java.util.Date;
 import java.util.List;
@@ -195,23 +195,23 @@ public interface AssetReviewInterface
 
 
     /**
-     * Return the discovery analysis reports about the asset.
+     * Return the survey reports about the asset.
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the asset
      * @param startingFrom position in the list (used when there are so many reports that paging is needed
      * @param maximumResults maximum number of elements to return an this call
-     * @return list of discovery analysis reports
+     * @return list of survey reports
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
-    List<DiscoveryAnalysisReport>   getDiscoveryAnalysisReports(String  userId,
-                                                                String  assetGUID,
-                                                                int     startingFrom,
-                                                                int     maximumResults) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException;
+    List<SurveyReport>   getSurveyReports(String  userId,
+                                          String  assetGUID,
+                                          int     startingFrom,
+                                          int     maximumResults) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
 
 
     /**
@@ -246,7 +246,7 @@ public interface AssetReviewInterface
      * Return the annotations linked directly to the report.
      *
      * @param userId identifier of calling user
-     * @param discoveryReportGUID identifier of the discovery request.
+     * @param surveyReportGUID identifier of the survey report.
      * @param annotationStatus status of the desired annotations - null means all statuses.
      * @param startingFrom initial position in the stored list.
      * @param maximumResults maximum number of definitions to return on this call.
@@ -257,11 +257,11 @@ public interface AssetReviewInterface
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
-    List<Annotation> getDiscoveryReportAnnotations(String           userId,
-                                                   String           discoveryReportGUID,
-                                                   AnnotationStatus annotationStatus,
-                                                   int              startingFrom,
-                                                   int              maximumResults) throws InvalidParameterException,
+    List<Annotation> getSurveyReportAnnotations(String           userId,
+                                                String           surveyReportGUID,
+                                                AnnotationStatus annotationStatus,
+                                                int              startingFrom,
+                                                int              maximumResults) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException;
 

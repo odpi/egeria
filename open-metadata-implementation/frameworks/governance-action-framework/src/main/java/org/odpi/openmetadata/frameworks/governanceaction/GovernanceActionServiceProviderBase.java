@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.frameworks.governanceaction;
 
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.search.GovernanceServiceProviderBase;
 
 
 /**

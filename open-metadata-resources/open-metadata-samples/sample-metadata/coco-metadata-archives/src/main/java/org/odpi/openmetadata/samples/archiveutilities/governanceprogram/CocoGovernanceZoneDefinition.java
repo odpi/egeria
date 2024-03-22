@@ -24,9 +24,19 @@ public enum CocoGovernanceZoneDefinition
      */
     QUARANTINE( "quarantine",
                 "Quarantine Zone",
-                "Assets from third parties that are being evaluated by the onboarding team. " +
+                "Resources from third parties that are being evaluated by the onboarding team. " +
                         "The assets will move into the other zones once the asset has been catalogued and classified.",
                 "Data sets just received and have not yet been properly catalogued."),
+
+
+    /**
+     * landing-area
+     */
+    LANDING_AREA( "landing-area",
+                "Landing Area Zone",
+                "Denotes resources from third parties in their initial form. " +
+                        "These resources will be copied and augmented by various onboarding processes.",
+                "Original data sets received from third parties that have not been moved or transformed."),
 
     /**
      * data-lake

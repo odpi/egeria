@@ -148,6 +148,7 @@ public class AssetConsumerRESTServices
                                                                connectionNameParameterName,
                                                                false,
                                                                false,
+                                                               handler.getSupportedZones(),
                                                                new Date(),
                                                                methodName));
         }

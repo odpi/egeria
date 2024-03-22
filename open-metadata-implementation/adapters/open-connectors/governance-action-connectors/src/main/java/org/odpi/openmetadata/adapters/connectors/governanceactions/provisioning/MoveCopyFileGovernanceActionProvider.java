@@ -6,12 +6,10 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
-import org.odpi.openmetadata.frameworks.governanceaction.actiontargettype.ActionTargetType;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -20,32 +18,19 @@ import java.util.List;
  */
 public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {
-    private static final String  connectorTypeGUID = "e2a14ca8-57b1-48d7-9cc4-d0b44983ca79";
-    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Provisioning:MoveCopyFile";
-    private static final String  connectorTypeDisplayName = "Move or Copy File Governance Action Service";
-    private static final String  connectorTypeDescription = "Provisioning Governance Action Service that moves or copies files on request.";
+    private static final String  connectorTypeGUID          = "e2a14ca8-57b1-48d7-9cc4-d0b44983ca79";
+    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Provisioning:MoveCopyDeleteFile";
+    private static final String  connectorTypeDisplayName   = "Move, Copy or Delete File Governance Action Service";
+    private static final String  connectorTypeDescription   = "Provisioning Governance Action Service that moves, copies or deletes files on request.";
 
-    static final String TARGET_FILE_NAME_PATTERN_PROPERTY                          = "targetFileNamePattern";
+    static final String DEFAULT_TOP_LEVEL_PROCESS_NAME_PROPERTY                    = "Egeria:MoveCopyDeleteFileGovernanceActionService";
 
-    static final String NO_LINEAGE_PROPERTY                                        = "noLineage";
-    static final String TOP_LEVEL_PROCESS_NAME_PROPERTY                            = "topLevelProcessQualifiedName";
-    static final String TOP_LEVEL_PROCESS_TEMPLATE_NAME_PROPERTY                   = "topLevelProcessTemplateQualifiedName";
-    static final String DESTINATION_TEMPLATE_NAME_PROPERTY                         = "destinationFileTemplateQualifiedName";
-    static final String TOP_LEVEL_PROCESS_ONLY_LINEAGE_PROPERTY                    = "topLevelProcessLineageOnly";
-    static final String LINEAGE_TO_DESTINATION_FOLDER_ONLY_PROPERTY                = "lineageToDestinationFolderOnly";
-    static final String LINEAGE_FROM_SOURCE_FOLDER_ONLY_PROPERTY                   = "lineageFromSourceFolderOnly";
-
-    static final String COPY_REQUEST_TYPE   = "copy-file";
-    static final String MOVE_REQUEST_TYPE   = "move-file";
-    static final String DELETE_REQUEST_TYPE = "delete-file";
-
-    static final String SOURCE_FILE_PROPERTY        = "sourceFile";
-    static final String DESTINATION_FOLDER_PROPERTY = "destinationFolder";
-    static final String NEW_ASSET_GUID_PROPERTY     = "newAssetGUID";
-
-    static final String PROVISIONING_COMPLETE_GUARD             = "provisioning-complete";
-    static final String PROVISIONING_FAILED_NO_FILE_NAMES_GUARD = "provisioning-failed-no-file-names";
-    static final String PROVISIONING_FAILED_EXCEPTION_GUARD     = "provisioning-failed-exception";
+    static final String SOURCE_FILE_PROPERTY                    = "sourceFile";
+    static final String SOURCE_FILE_PROPERTY_DESCRIPTION        = "The full path name of the source file.";
+    static final String DESTINATION_FOLDER_PROPERTY             = "destinationFolder";
+    static final String DESTINATION_FOLDER_PROPERTY_DESCRIPTION = "The full path name of the destination directory.";
+    static final String NEW_ASSET_PROPERTY                      = "newAsset";
+    static final String NEW_ASSET_PROPERTY_DESCRIPTION          = "This is the asset for the destination file.";
 
     private static final String connectorClassName = MoveCopyFileGovernanceActionConnector.class.getName();
 
@@ -59,54 +44,43 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
         super();
         super.setConnectorClassName(connectorClassName);
 
-        supportedRequestTypes = new ArrayList<>();
-        supportedRequestTypes.add(COPY_REQUEST_TYPE);
-        supportedRequestTypes.add(MOVE_REQUEST_TYPE);
-        supportedRequestTypes.add(DELETE_REQUEST_TYPE);
+        supportedRequestTypes = RequestType.getRequestTypeTypes();
 
-        supportedRequestParameters = new ArrayList<>();
-        supportedRequestParameters.add(SOURCE_FILE_PROPERTY);
-        supportedRequestParameters.add(DESTINATION_FOLDER_PROPERTY);
-        supportedRequestParameters.add(DESTINATION_TEMPLATE_NAME_PROPERTY);
-        supportedRequestParameters.add(TARGET_FILE_NAME_PATTERN_PROPERTY);
-        supportedRequestParameters.add(NO_LINEAGE_PROPERTY);
-        supportedRequestParameters.add(TOP_LEVEL_PROCESS_NAME_PROPERTY);
-        supportedRequestParameters.add(TOP_LEVEL_PROCESS_TEMPLATE_NAME_PROPERTY);
-        supportedRequestParameters.add(TOP_LEVEL_PROCESS_ONLY_LINEAGE_PROPERTY);
-        supportedRequestParameters.add(LINEAGE_FROM_SOURCE_FOLDER_ONLY_PROPERTY);
-        supportedRequestParameters.add(LINEAGE_TO_DESTINATION_FOLDER_ONLY_PROPERTY);
+        supportedRequestParameters = RequestParameter.getRequestParameterTypes();
 
-        supportedTargetActionNames = new ArrayList<>();
-        supportedTargetActionNames.add(SOURCE_FILE_PROPERTY);
-        supportedTargetActionNames.add(DESTINATION_FOLDER_PROPERTY);
-        supportedTargetActionNames.add(NEW_ASSET_GUID_PROPERTY);
+        supportedActionTargetTypes = new ArrayList<>();
 
-        actionTargetTypes = new HashMap<>();
         ActionTargetType actionTargetType = new ActionTargetType();
 
+        actionTargetType.setName(SOURCE_FILE_PROPERTY);
+        actionTargetType.setDescription(SOURCE_FILE_PROPERTY_DESCRIPTION);
         actionTargetType.setTypeName(DeployedImplementationType.FILE.getAssociatedTypeName());
         actionTargetType.setDeployedImplementationType(DeployedImplementationType.FILE.getDeployedImplementationType());
 
-        super.actionTargetTypes.put(SOURCE_FILE_PROPERTY, actionTargetType);
+        supportedActionTargetTypes.add(actionTargetType);
 
         actionTargetType = new ActionTargetType();
 
+        actionTargetType.setName(DESTINATION_FOLDER_PROPERTY);
+        actionTargetType.setDescription(DESTINATION_FOLDER_PROPERTY_DESCRIPTION);
         actionTargetType.setTypeName(DeployedImplementationType.FILE_FOLDER.getAssociatedTypeName());
         actionTargetType.setDeployedImplementationType(DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType());
 
-        super.actionTargetTypes.put(DESTINATION_FOLDER_PROPERTY, actionTargetType);
+        supportedActionTargetTypes.add(actionTargetType);
+
+        producedActionTargetTypes = new ArrayList<>();
 
         actionTargetType = new ActionTargetType();
 
-        actionTargetType.setTypeName(DeployedImplementationType.DATA_ASSET.getAssociatedTypeName());
-        actionTargetType.setDeployedImplementationType(DeployedImplementationType.DATA_ASSET.getDeployedImplementationType());
+        actionTargetType.setName(NEW_ASSET_PROPERTY);
+        actionTargetType.setDescription(NEW_ASSET_PROPERTY_DESCRIPTION);
+        actionTargetType.setTypeName(DeployedImplementationType.FILE.getAssociatedTypeName());
+        actionTargetType.setDeployedImplementationType(DeployedImplementationType.FILE.getDeployedImplementationType());
 
-        super.actionTargetTypes.put(NEW_ASSET_GUID_PROPERTY, actionTargetType);
+        super.producedActionTargetTypes.add(actionTargetType);
 
-        supportedGuards = new ArrayList<>();
-        supportedGuards.add(PROVISIONING_COMPLETE_GUARD);
-        supportedGuards.add(PROVISIONING_FAILED_NO_FILE_NAMES_GUARD);
-        supportedGuards.add(PROVISIONING_FAILED_EXCEPTION_GUARD);
+
+        producedGuards = MoveCopyFileGuard.getGuardTypes();
 
         super.setConnectorClassName(connectorClassName);
 
@@ -120,18 +94,17 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
 
         List<String> recognizedConfigurationProperties = new ArrayList<>();
-        recognizedConfigurationProperties.add(TARGET_FILE_NAME_PATTERN_PROPERTY);
-        recognizedConfigurationProperties.add(NO_LINEAGE_PROPERTY);
-        recognizedConfigurationProperties.add(TOP_LEVEL_PROCESS_NAME_PROPERTY);
-        recognizedConfigurationProperties.add(TOP_LEVEL_PROCESS_TEMPLATE_NAME_PROPERTY);
-        recognizedConfigurationProperties.add(DESTINATION_TEMPLATE_NAME_PROPERTY);
-        recognizedConfigurationProperties.add(DESTINATION_FOLDER_PROPERTY);
-        recognizedConfigurationProperties.add(TOP_LEVEL_PROCESS_ONLY_LINEAGE_PROPERTY);
-        recognizedConfigurationProperties.add(LINEAGE_FROM_SOURCE_FOLDER_ONLY_PROPERTY);
-        recognizedConfigurationProperties.add(LINEAGE_TO_DESTINATION_FOLDER_ONLY_PROPERTY);
+        recognizedConfigurationProperties.add(RequestParameter.TARGET_FILE_NAME_PATTERN.getName());
+        recognizedConfigurationProperties.add(RequestParameter.NO_LINEAGE.getName());
+        recognizedConfigurationProperties.add(RequestParameter.TOP_LEVEL_PROCESS_NAME.getName());
+        recognizedConfigurationProperties.add(RequestParameter.TOP_LEVEL_PROCESS_TEMPLATE_NAME.getName());
+        recognizedConfigurationProperties.add(RequestParameter.DESTINATION_TEMPLATE_NAME.getName());
+        recognizedConfigurationProperties.add(RequestParameter.DESTINATION_DIRECTORY.getName());
+        recognizedConfigurationProperties.add(RequestParameter.TOP_LEVEL_PROCESS_ONLY_LINEAGE.getName());
+        recognizedConfigurationProperties.add(RequestParameter.LINEAGE_FROM_SOURCE_FOLDER_ONLY.getName());
+        recognizedConfigurationProperties.add(RequestParameter.LINEAGE_TO_DESTINATION_FOLDER_ONLY.getName());
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 
         super.connectorTypeBean = connectorType;
-
     }
 }

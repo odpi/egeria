@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the Egeria project. -->
 
+![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
+
 # Asset Catalog OMVS
 
 The Asset Catalog OMVS enables the caller to retrieve assets and the elements linked to them.

@@ -2859,6 +2859,10 @@ public class RelationalDataHandler<DATABASE,
                                                                                    qualifiedName,
                                                                                    qualifiedNameParameterName,
                                                                                    builder,
+                                                                                   databaseTableHandler.getSupportedZones(),
+                                                                                   true,
+                                                                                   false,
+                                                                                   null,
                                                                                    methodName);
 
             if (databaseTableGUID != null)
@@ -4657,6 +4661,10 @@ public class RelationalDataHandler<DATABASE,
                                                                                  qualifiedName,
                                                                                  qualifiedNameParameterName,
                                                                                  builder,
+                                                                                 databaseColumnHandler.getSupportedZones(),
+                                                                                 true,
+                                                                                 false,
+                                                                                 null,
                                                                                  methodName);
 
         if (databaseColumnGUID != null)

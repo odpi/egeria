@@ -5,6 +5,7 @@
 
 
 dependencies {
+    implementation 'commons-io:commons-io'
     implementation 'org.slf4j:slf4j-api'
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')

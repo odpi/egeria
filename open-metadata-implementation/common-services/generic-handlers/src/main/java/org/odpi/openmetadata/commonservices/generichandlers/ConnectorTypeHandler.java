@@ -24,7 +24,6 @@ import java.util.Map;
 /**
  * ConnectorTypeHandler manages ConnectorType objects.  These describe the information necessary to construct a connector.  They are used by
  * connection objects to describe the connector provider for the connector.
- *
  * ConnectorTypeHandler runs server-side in the OMAG Server Platform and retrieves ConnectorType entities through the OMRSRepositoryConnector via the
  * generic handler and repository handler.
  */
@@ -460,6 +459,8 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                                 serviceName,
                                                                 serverName);
 
+        builder.setAnchors(userId, null, OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME, methodName);
+
         return this.createBeanFromTemplate(userId,
                                            externalSourceGUID,
                                            externalSourceName,
@@ -471,6 +472,9 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataProperty.QUALIFIED_NAME.name,
                                            builder,
                                            supportedZones,
+                                           true,
+                                           false,
+                                           null,
                                            methodName);
     }
 
@@ -632,12 +636,13 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                                                        PropertyServerException,
                                                                                        UserNotAuthorizedException
     {
-        String qualifiedNameParameterName = "qualifiedName";
+        final String qualifiedNameParameterName = "qualifiedName";
+        final String connectorProviderClassNameParameterName = "connectorProviderClassName";
 
         String connectorTypeGUID = this.getBeanGUIDByUniqueName(userId,
-                                                                qualifiedName,
-                                                                qualifiedNameParameterName,
-                                                                OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                connectorProviderClassName,
+                                                                connectorProviderClassNameParameterName,
+                                                                OpenMetadataType.CONNECTOR_PROVIDER_PROPERTY_NAME,
                                                                 OpenMetadataType.CONNECTOR_TYPE_TYPE_GUID,
                                                                 OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
                                                                 forLineage,
@@ -645,6 +650,21 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                                 supportedZones,
                                                                 effectiveTime,
                                                                 methodName);
+
+        if (connectorTypeGUID == null)
+        {
+            connectorTypeGUID = this.getBeanGUIDByUniqueName(userId,
+                                                             qualifiedName,
+                                                             qualifiedNameParameterName,
+                                                             OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                             OpenMetadataType.CONNECTOR_TYPE_TYPE_GUID,
+                                                             OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
+                                                             forLineage,
+                                                             forDuplicateProcessing,
+                                                             supportedZones,
+                                                             effectiveTime,
+                                                             methodName);
+        }
 
         if (connectorTypeGUID == null)
         {

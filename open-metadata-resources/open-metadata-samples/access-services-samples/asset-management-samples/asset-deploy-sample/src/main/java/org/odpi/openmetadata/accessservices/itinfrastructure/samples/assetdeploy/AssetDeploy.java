@@ -225,7 +225,7 @@ public class AssetDeploy
 
             if (platformGUID != null)
             {
-                String serverGUID = deployServer(platformNetworkAddress, "TestServer", ServerTypeClassification.METADATA_SERVER.getServerTypeName());
+                String serverGUID = deployServer(platformNetworkAddress, "TestServer", ServerTypeClassification.METADATA_ACCESS_STORE.getServerTypeName());
             }
         }
         catch (Exception error)
@@ -271,7 +271,7 @@ public class AssetDeploy
 
         String platformURLRoot = "https://localhost:9443";
         String clientUserId = "erinoverview";
-        String serverName = "simple-metadata-store";
+        String serverName = "active-metadata-store";
         String mode = interactiveMode;
 
         if (args.length > 0)
@@ -295,7 +295,7 @@ public class AssetDeploy
         }
 
         System.out.println("===============================");
-        System.out.println("Asset Deploy Utility:    " + new Date().toString());
+        System.out.println("Asset Deploy Utility:    " + new Date());
         System.out.println("===============================");
         System.out.print("Running against platform: " + platformURLRoot);
 

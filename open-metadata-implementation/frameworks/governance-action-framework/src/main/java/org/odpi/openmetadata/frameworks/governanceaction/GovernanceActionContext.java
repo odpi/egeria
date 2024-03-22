@@ -14,6 +14,8 @@ import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClie
 import org.odpi.openmetadata.frameworks.governanceaction.client.WatchDogEventInterface;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus;
@@ -55,7 +57,7 @@ public class GovernanceActionContext implements GovernanceContext,
 
     private final String                     requestType;
     private final Map<String, String>        requestParameters;
-
+    private final String                     requesterUserId;
     private final List<RequestSourceElement> requestSourceElements;
     private final List<ActionTargetElement>  actionTargetElements;
 
@@ -80,6 +82,7 @@ public class GovernanceActionContext implements GovernanceContext,
      * @param engineActionGUID unique identifier of the engine action that triggered this governance service
      * @param requestType unique identifier of the asset that the annotations should be attached to
      * @param requestParameters name-value properties to control the governance action service
+     * @param requesterUserId original user requesting this governance service
      * @param requestSourceElements metadata elements associated with the request to the governance action service
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
      * @param openMetadataClient client to the metadata store for use by the governance action service
@@ -93,6 +96,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                    String                           engineActionGUID,
                                    String                           requestType,
                                    Map<String, String>              requestParameters,
+                                   String                           requesterUserId,
                                    List<RequestSourceElement>       requestSourceElements,
                                    List<ActionTargetElement>        actionTargetElements,
                                    OpenMetadataClient               openMetadataClient,
@@ -106,6 +110,7 @@ public class GovernanceActionContext implements GovernanceContext,
         this.engineActionGUID = engineActionGUID;
         this.requestType = requestType;
         this.requestParameters = requestParameters;
+        this.requesterUserId = requesterUserId;
         this.requestSourceElements = requestSourceElements;
         this.actionTargetElements = actionTargetElements;
         this.openMetadataClient = openMetadataClient;
@@ -114,7 +119,7 @@ public class GovernanceActionContext implements GovernanceContext,
         this.governanceActionProcessClient = governanceActionProcessClient;
         this.governanceCompletionClient = governanceCompletionClient;
         this.watchDogEventClient = watchdogEventClient;
-        this.openMetadataStore = new OpenMetadataStore(openMetadataClient, userId);
+        this.openMetadataStore = new OpenMetadataStore(openMetadataClient, userId, engineActionGUID);
     }
 
 
@@ -151,6 +156,18 @@ public class GovernanceActionContext implements GovernanceContext,
     public Map<String, String> getRequestParameters()
     {
         return requestParameters;
+    }
+
+
+    /**
+     * Return the userId of the original person, process, service that requested this action.
+     *
+     * @return string userId
+     */
+    @Override
+    public String getRequesterUserId()
+    {
+        return requesterUserId;
     }
 
 
@@ -464,7 +481,12 @@ public class GovernanceActionContext implements GovernanceContext,
 
         ElementProperties properties = packBasicProperties(qualifiedName, name, null, description, null, methodName);
 
-        return openMetadataClient.createMetadataElementInStore(userId, assetTypeName, ElementStatus.ACTIVE, null, null, properties, null);
+        return openMetadataClient.createMetadataElementInStore(userId,
+                                                               assetTypeName,
+                                                               ElementStatus.ACTIVE,
+                                                               null,
+                                                               null,
+                                                               properties);
     }
 
 
@@ -498,7 +520,12 @@ public class GovernanceActionContext implements GovernanceContext,
 
         ElementProperties properties = packBasicProperties(qualifiedName, name, versionIdentifier, description, extendedProperties, methodName);
 
-        return openMetadataClient.createMetadataElementInStore(userId, assetTypeName, ElementStatus.ACTIVE, null, null, properties, null);
+        return openMetadataClient.createMetadataElementInStore(userId,
+                                                               assetTypeName,
+                                                               ElementStatus.ACTIVE,
+                                                               null,
+                                                               null,
+                                                               properties);
     }
 
 
@@ -528,9 +555,26 @@ public class GovernanceActionContext implements GovernanceContext,
     {
         final String methodName = "createAssetFromTemplate";
 
-        ElementProperties properties = packBasicProperties(qualifiedName, name, null, description, null, methodName);
+        ElementProperties properties = packBasicProperties(qualifiedName,
+                                                           name,
+                                                           null,
+                                                           description,
+                                                           null,
+                                                           methodName);
 
-        return openMetadataClient.createMetadataElementInStore(userId, "Asset", ElementStatus.ACTIVE, null, null, properties, templateGUID);
+        return openMetadataClient.createMetadataElementFromTemplate(userId,
+                                                                    OpenMetadataType.ASSET.typeName,
+                                                                    null,
+                                                                    true,
+                                                                    null,
+                                                                    null,
+                                                                    templateGUID,
+                                                                    properties,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    false);
     }
 
 
@@ -574,13 +618,19 @@ public class GovernanceActionContext implements GovernanceContext,
 
         ElementProperties properties = packBasicProperties(qualifiedName, name, versionIdentifier, description, extendedProperties, methodName);
 
-        return openMetadataClient.createMetadataElementInStore(userId,
-                                                                 metadataElementTypeName,
-                                                                 ElementStatus.ACTIVE,
-                                                                 null,
-                                                                 null,
-                                                                 properties,
-                                                                 templateGUID);
+        return openMetadataClient.createMetadataElementFromTemplate(userId,
+                                                                    OpenMetadataType.ASSET.typeName,
+                                                                    null,
+                                                                    true,
+                                                                    null,
+                                                                    null,
+                                                                    templateGUID,
+                                                                    properties,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    false);
     }
 
 
@@ -617,8 +667,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                  initialStatus,
                                                                  null,
                                                                  null,
-                                                                 properties,
-                                                                 null);
+                                                                 properties);
     }
 
 
@@ -663,8 +712,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                  initialStatus,
                                                                  null,
                                                                  null,
-                                                                 properties,
-                                                                 null);
+                                                                 properties);
     }
 
 
@@ -697,13 +745,19 @@ public class GovernanceActionContext implements GovernanceContext,
 
         ElementProperties properties = packBasicProperties(qualifiedName, name, null, description, null, methodName);
 
-        return openMetadataClient.createMetadataElementInStore(userId,
-                                                                 null,
-                                                                 initialStatus,
-                                                                 null,
-                                                                 null,
-                                                                 properties,
-                                                                 templateGUID);
+        return openMetadataClient.createMetadataElementFromTemplate(userId,
+                                                                    OpenMetadataType.PROCESS.typeName,
+                                                                    null,
+                                                                    true,
+                                                                    null,
+                                                                    null,
+                                                                    templateGUID,
+                                                                    properties,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    false);
     }
 
 
@@ -744,13 +798,19 @@ public class GovernanceActionContext implements GovernanceContext,
 
         properties = propertyHelper.addStringProperty(properties, "formula", formula);
 
-        return openMetadataClient.createMetadataElementInStore(userId,
-                                                                 null,
-                                                                 initialStatus,
-                                                                 null,
-                                                                 null,
-                                                                 properties,
-                                                                 templateGUID);
+        return openMetadataClient.createMetadataElementFromTemplate(userId,
+                                                                    OpenMetadataType.PROCESS.typeName,
+                                                                    null,
+                                                                    true,
+                                                                    null,
+                                                                    null,
+                                                                    templateGUID,
+                                                                    properties,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    false);
     }
 
 
@@ -785,12 +845,11 @@ public class GovernanceActionContext implements GovernanceContext,
         ElementProperties properties = packBasicProperties(qualifiedName, name, null, description, null, methodName);
 
         String processGUID = openMetadataClient.createMetadataElementInStore(userId,
-                                                                               processTypeName,
-                                                                               initialStatus,
-                                                                               null,
-                                                                               null,
-                                                                               properties,
-                                                                               null);
+                                                                             processTypeName,
+                                                                             initialStatus,
+                                                                             null,
+                                                                             null,
+                                                                             properties);
 
         if (processGUID != null)
         {
@@ -855,12 +914,11 @@ public class GovernanceActionContext implements GovernanceContext,
         properties = propertyHelper.addStringProperty(properties, "formula", formula);
 
         String processGUID = openMetadataClient.createMetadataElementInStore(userId,
-                                                                               processTypeName,
-                                                                               initialStatus,
-                                                                               null,
-                                                                               null,
-                                                                               properties,
-                                                                               null);
+                                                                             processTypeName,
+                                                                             initialStatus,
+                                                                             null,
+                                                                             null,
+                                                                             properties);
 
         if (processGUID != null)
         {
@@ -892,7 +950,6 @@ public class GovernanceActionContext implements GovernanceContext,
      * @param qualifiedName unique name for the port
      * @param displayName display name for the port
      * @param portType type of port (direction of data flow)
-     * @param templateGUID optional unique identifier of a template port to copy
      *
      * @return unique identifier of the new port
      *
@@ -904,10 +961,9 @@ public class GovernanceActionContext implements GovernanceContext,
     public String createPort(String   processGUID,
                              String   qualifiedName,
                              String   displayName,
-                             PortType portType,
-                             String   templateGUID) throws InvalidParameterException,
-                                                           UserNotAuthorizedException,
-                                                           PropertyServerException
+                             PortType portType) throws InvalidParameterException,
+                                                       UserNotAuthorizedException,
+                                                       PropertyServerException
     {
         final String methodName = "createProcess";
 
@@ -939,8 +995,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                             ElementStatus.ACTIVE,
                                                                             null,
                                                                             null,
-                                                                            properties,
-                                                                            templateGUID);
+                                                                            properties);
 
         openMetadataClient.createRelatedElementsInStore(userId,
                                                           processPortTypeName,
@@ -1077,8 +1132,6 @@ public class GovernanceActionContext implements GovernanceContext,
      *
      * @param metadataElementTypeName type name of the new metadata element
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
-     *                     connection etc)
      *
      * @return unique identifier of the new metadata element
      *
@@ -1088,8 +1141,7 @@ public class GovernanceActionContext implements GovernanceContext,
      */
     @Override
     public String createMetadataElement(String            metadataElementTypeName,
-                                        ElementProperties properties,
-                                        String            templateGUID) throws InvalidParameterException,
+                                        ElementProperties properties) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
@@ -1098,8 +1150,7 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                ElementStatus.ACTIVE,
                                                                null,
                                                                null,
-                                                               properties,
-                                                               templateGUID);
+                                                               properties);
     }
 
 
@@ -1114,11 +1165,11 @@ public class GovernanceActionContext implements GovernanceContext,
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
      * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
      *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
-     *                     connection etc)
      * @param parentGUID unique identifier of optional parent entity
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
@@ -1134,10 +1185,10 @@ public class GovernanceActionContext implements GovernanceContext,
                                                ElementStatus                  initialStatus,
                                                Map<String, ElementProperties> initialClassifications,
                                                String                         anchorGUID,
+                                               boolean                        isOwnAnchor,
                                                Date                           effectiveFrom,
                                                Date                           effectiveTo,
                                                ElementProperties              properties,
-                                               String                         templateGUID,
                                                String                         parentGUID,
                                                String                         parentRelationshipTypeName,
                                                ElementProperties              parentRelationshipProperties,
@@ -1152,10 +1203,10 @@ public class GovernanceActionContext implements GovernanceContext,
                                                                initialStatus,
                                                                initialClassifications,
                                                                anchorGUID,
+                                                               isOwnAnchor,
                                                                effectiveFrom,
                                                                effectiveTo,
                                                                properties,
-                                                               templateGUID,
                                                                parentGUID,
                                                                parentRelationshipTypeName,
                                                                parentRelationshipProperties,
@@ -1174,8 +1225,6 @@ public class GovernanceActionContext implements GovernanceContext,
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
-     *                     connection etc)
      *
      * @return unique identifier of the new metadata element
      *
@@ -1188,18 +1237,16 @@ public class GovernanceActionContext implements GovernanceContext,
                                         ElementStatus     initialStatus,
                                         Date              effectiveFrom,
                                         Date              effectiveTo,
-                                        ElementProperties properties,
-                                        String            templateGUID) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+                                        ElementProperties properties) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         return openMetadataClient.createMetadataElementInStore(userId,
                                                                  metadataElementTypeName,
                                                                  initialStatus,
                                                                  effectiveFrom,
                                                                  effectiveTo,
-                                                                 properties,
-                                                                 templateGUID);
+                                                                 properties);
     }
 
 
@@ -1833,11 +1880,6 @@ public class GovernanceActionContext implements GovernanceContext,
     {
         final String methodName = "openToDo";
 
-        final String todoTypeName             = "ToDo";
-        final String personRoleTypeName       = "PersonRole";
-        final String actionAssignmentTypeName = "ActionAssignment";
-
-        final String qualifiedNamePropertyName = "qualifiedName";
         final String titlePropertyName         = "name";
         final String instructionsPropertyName  = "description";
         final String priorityPropertyName      = "priority";
@@ -1852,8 +1894,8 @@ public class GovernanceActionContext implements GovernanceContext,
         propertyHelper.validateMandatoryName(toDoQualifiedName, toDoQualifiedNameParameterName, methodName);
         propertyHelper.validateMandatoryName(assignTo, assignToParameterName, methodName);
 
-        SearchProperties        searchProperties = new SearchProperties();
-        List<PropertyCondition> conditions = new ArrayList<>();
+        SearchProperties           searchProperties           = new SearchProperties();
+        List<PropertyCondition>    conditions                 = new ArrayList<>();
         PropertyCondition          condition                  = new PropertyCondition();
         PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
 
@@ -1861,7 +1903,7 @@ public class GovernanceActionContext implements GovernanceContext,
         primitiveTypePropertyValue.setPrimitiveValue(assignTo);
         primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getName());
 
-        condition.setProperty(qualifiedNamePropertyName);
+        condition.setProperty(OpenMetadataProperty.QUALIFIED_NAME.name);
         condition.setOperator(PropertyComparisonOperator.EQ);
         condition.setValue(primitiveTypePropertyValue);
 
@@ -1874,18 +1916,18 @@ public class GovernanceActionContext implements GovernanceContext,
          * Validate that there is a person role to assign the "to do" to
          */
         List<OpenMetadataElement> personRoleMatches = openMetadataClient.findMetadataElements(userId,
-                                                                                                personRoleTypeName,
-                                                                                                null,
-                                                                                                searchProperties,
-                                                                                                null,
-                                                                                                null,
-                                                                                                null,
-                                                                                                null,
-                                                                                                false,
-                                                                                                false,
-                                                                                                new Date(),
-                                                                                                0,
-                                                                                                0);
+                                                                                              OpenMetadataType.PERSON_ROLE_TYPE_NAME,
+                                                                                              null,
+                                                                                              searchProperties,
+                                                                                              null,
+                                                                                              null,
+                                                                                              null,
+                                                                                              null,
+                                                                                              false,
+                                                                                              false,
+                                                                                              new Date(),
+                                                                                              0,
+                                                                                              0);
 
         if ((personRoleMatches == null) || personRoleMatches.isEmpty())
         {
@@ -1928,43 +1970,29 @@ public class GovernanceActionContext implements GovernanceContext,
         /*
          * Create the to do entity
          */
-        ElementProperties properties = propertyHelper.addStringProperty(null, qualifiedNamePropertyName, toDoQualifiedName);
+        ElementProperties properties = propertyHelper.addStringProperty(null,
+                                                                        OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                        toDoQualifiedName);
 
-        if (title != null)
-        {
-            properties = propertyHelper.addStringProperty(properties, titlePropertyName, title);
-        }
-
-        if (instructions != null)
-        {
-            properties = propertyHelper.addStringProperty(properties, instructionsPropertyName, instructionsPropertyName);
-        }
-
-        if (dueDate != null)
-        {
-            properties = propertyHelper.addDateProperty(properties, dueDatePropertyName, dueDate);
-        }
-
+        properties = propertyHelper.addStringProperty(properties, OpenMetadataProperty.NAME.name, title);
+        properties = propertyHelper.addStringProperty(properties, instructionsPropertyName, instructionsPropertyName);
+        properties = propertyHelper.addDateProperty(properties, dueDatePropertyName, dueDate);
         properties = propertyHelper.addIntProperty(properties, priorityPropertyName, priority);
         properties = propertyHelper.addEnumProperty(properties, statusPropertyName, statusPropertyTypeName, openEnumPropertyValue);
 
-        String todoGUID = openMetadataClient.createMetadataElementInStore(userId, todoTypeName, ElementStatus.ACTIVE, null, null, properties, null);
-
-        /*
-         * Link the "to do" and the person role
-         */
-        openMetadataClient.createRelatedElementsInStore(userId,
-                                                          actionAssignmentTypeName,
-                                                          personRoleGUID,
-                                                          todoGUID,
-                                                          false,
-                                                          false,
-                                                          null,
-                                                          null,
-                                                          null,
-                                                          new Date());
-
-        return todoGUID;
+        return openMetadataClient.createMetadataElementInStore(userId,
+                                                               OpenMetadataType.TO_DO_TYPE_NAME,
+                                                               ElementStatus.ACTIVE,
+                                                               null,
+                                                               null,
+                                                               false,
+                                                               null,
+                                                               null,
+                                                               properties,
+                                                               personRoleGUID,
+                                                               OpenMetadataType.ACTION_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                               null,
+                                                               true);
     }
 
 

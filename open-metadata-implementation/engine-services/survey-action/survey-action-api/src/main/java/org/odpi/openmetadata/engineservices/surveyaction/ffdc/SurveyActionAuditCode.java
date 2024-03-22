@@ -114,6 +114,19 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
                                  "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, retry the survey request."),
 
     /**
+     * OMES-SURVEY-ACTION-0022 - Method {0} can not execute in the survey action engine {1} hosted by Survey Action OMES in server {2} because the associated " +
+     *                                 "survey action service properties are null
+     */
+    NULL_SURVEY_SERVICE( "OMES-SURVEY-ACTION-0022",
+                        AuditLogRecordSeverityLevel.ERROR,
+                        "Method {0} can not execute in the survey action engine {1} hosted by Survey Action OMES in server {2} because the associated " +
+                                "survey action service properties are null",
+                        "The survey request is not run and an error is returned to the caller.",
+                        "This may be an error in the survey action engine's logic or the Survey Action Framework (SAF) may have returned " +
+                                "invalid configuration.  Raise an issue to get help to fix it"),
+
+
+    /**
      * OMES-SURVEY-ACTION-0029 - The survey action service {0} linked to request type {1} can not be started.
      * The {2} exception was returned with message {3}
      */
@@ -132,6 +145,15 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
                                       "true this it is likely to be a code error in the survey action service in which case, " +
                                       "raise an issue with the author of the survey action service to get it fixed.  Once the cause is resolved, " +
                                       "retry the survey request."),
+
+    /**
+     * OMES-SURVEY-ACTION-0030 - The survey action service {0} linked to request type {1} is processing asset {2} and ignoring the following asset action targets: {3}
+     */
+    IGNORING_ASSETS("OMES-SURVEY-ACTION-0030",
+                                  AuditLogRecordSeverityLevel.INFO,
+                                  "The survey action service {0} linked to request type {1} for engine action {2} is processing asset {3} and ignoring the following asset action targets: {4}",
+                                  "There are multiple assets in the action targets.  The survey action service can only process one of them.  The other assets are ignored.",
+                                  "Create a new engine action for each of the ignored assets so that they each run in their own survey action service."),
     ;
 
 

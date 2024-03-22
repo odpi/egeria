@@ -123,7 +123,7 @@ public class FileManagerRequestBody extends FileManagerProperties
                 ", externalSourceName='" + externalSourceName + '\'' +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
-                ", typeDescription='" + getTypeDescription() + '\'' +
+                ", typeDescription='" + getDeployedImplementationType() + '\'' +
                 ", version='" + getVersion() + '\'' +
                 ", patchLevel='" + getPatchLevel() + '\'' +
                 ", source='" + getSource() + '\'' +

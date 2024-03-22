@@ -144,8 +144,9 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
                                 {
                                     ActionTargetElement actionTargetElement = new ActionTargetElement();
 
+                                    actionTargetElement.setActionTargetRelationshipGUID(relationship.getGUID());
                                     actionTargetElement.setActionTargetName(this.removeActionTargetName(instanceProperties));
-                                    actionTargetElement.setStatus(this.removeActionStatus(OpenMetadataType.STATUS_PROPERTY_NAME, instanceProperties));
+                                    actionTargetElement.setStatus(this.removeActionStatus(OpenMetadataType.ACTION_STATUS_PROPERTY_NAME, instanceProperties));
                                     actionTargetElement.setStartDate(this.removeStartDate(instanceProperties));
                                     actionTargetElement.setCompletionDate(this.removeCompletionDate(instanceProperties));
                                     actionTargetElement.setCompletionMessage(this.removeCompletionMessage(instanceProperties));

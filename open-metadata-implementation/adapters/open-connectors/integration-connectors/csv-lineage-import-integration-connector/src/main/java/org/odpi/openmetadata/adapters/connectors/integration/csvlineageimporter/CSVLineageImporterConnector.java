@@ -228,8 +228,7 @@ public class CSVLineageImporterConnector extends LineageIntegratorConnector
                                                                        ElementStatus.ACTIVE,
                                                                        null,
                                                                        null,
-                                                                       elementProperties,
-                                                                       null);
+                                                                       elementProperties);
 
             }
             else

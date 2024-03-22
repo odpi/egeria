@@ -437,22 +437,22 @@ public class OpenMetadataTypesArchive3_13
         typeDefPatch.setUpdateTime(creationDate);
 
         /*
-         * Set up end 2.
+         * Set up end 1.
          */
-        final String                     end2EntityType               = "Actor";
-        final String                     end2AttributeName            = "assignedActor";
-        final String                     end2AttributeDescription     = "The person/people assigned to perform the action(s) requested in the to do.";
-        final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+        final String                     end1EntityType               = "Actor";
+        final String                     end1AttributeName            = "assignedActor";
+        final String                     end1AttributeDescription     = "The person/people assigned to perform the action(s) requested in the to do.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
-                                                                                    end2AttributeName,
-                                                                                    end2AttributeDescription,
-                                                                                    end2AttributeDescriptionGUID,
-                                                                                    end2Cardinality);
+        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                                    end1AttributeName,
+                                                                                    end1AttributeDescription,
+                                                                                    end1AttributeDescriptionGUID,
+                                                                                    end1Cardinality);
 
 
-        typeDefPatch.setEndDef2(relationshipEndDef);
+        typeDefPatch.setEndDef1(relationshipEndDef);
 
         return typeDefPatch;
     }

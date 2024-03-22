@@ -6,8 +6,8 @@
 
 The engine services provide the specialist interfaces to host a specific type of [governance engine](https://egeria-project.org/concepts/governance-engine). 
 
-* **[Asset Analysis OMES](asset-analysis)** - provides support for open discovery engines.
 * **[Governance Action OMES](governance-action)** - provides support for the governance action engines.
+* **[Survey Action OMES](survey-action)** - provides support for survey action engines.
 * **[Repository Governance OMES](repository-governance)** - provides support for the repository governance engines.
 
 These services run in the Engine Host OMAG Server.

@@ -125,7 +125,7 @@ public class FileSystemRequestBody extends FileSystemProperties
                 ", encryption='" + getEncryption() + '\'' +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
-                ", typeDescription='" + getTypeDescription() + '\'' +
+                ", typeDescription='" + getDeployedImplementationType() + '\'' +
                 ", version='" + getVersion() + '\'' +
                 ", patchLevel='" + getPatchLevel() + '\'' +
                 ", source='" + getSource() + '\'' +

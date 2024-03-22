@@ -71,41 +71,6 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
               auditLog);
     }
 
-    /**
-     * Count the number of informal tags attached to a supplied entity.
-     *
-     * @param userId     calling user
-     * @param elementGUID identifier for the entity that the object is attached to
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     * @return count of attached objects
-     * @throws InvalidParameterException  the parameters are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public int countTags(String  userId,
-                         String  elementGUID,
-                         boolean forLineage,
-                         boolean forDuplicateProcessing,
-                         Date    effectiveTime,
-                         String  methodName) throws InvalidParameterException,
-                                                    PropertyServerException,
-                                                    UserNotAuthorizedException
-    {
-        return this.countAttachments(userId,
-                                     elementGUID,
-                                     OpenMetadataType.REFERENCEABLE.typeName,
-                                     OpenMetadataType.REFERENCEABLE_TO_TAG_TYPE_GUID,
-                                     OpenMetadataType.REFERENCEABLE_TO_TAG_TYPE_NAME,
-                                     2,
-                                     forLineage,
-                                     forDuplicateProcessing,
-                                     effectiveTime,
-                                     methodName);
-    }
-
 
     /**
      * Return the informal tags attached to a supplied entity.
