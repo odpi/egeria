@@ -42,7 +42,7 @@ public class RelatedTermMapper extends RelationshipMapper<RelatedTerm> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, relatedTerm.getSteward(), OpenMetadataType.STEWARD_PROPERTY_NAME);
         }
         if (relatedTerm.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, relatedTerm.getSource(), OpenMetadataType.SOURCE_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, relatedTerm.getSource(), OpenMetadataProperty.SOURCE.name);
         }
         if (relatedTerm.getStatus() != null) {
             SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, relatedTerm.getStatus(), OpenMetadataType.STATUS_PROPERTY_NAME);
@@ -73,7 +73,7 @@ public class RelatedTermMapper extends RelationshipMapper<RelatedTerm> {
             relatedTerm.setSteward(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataType.SOURCE_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.SOURCE.name)) {
             relatedTerm.setSource(stringValue);
             foundProperty = true;
         }

@@ -202,7 +202,7 @@ public class RequestParameterType
 
 
     /**
-     * Set up a map of property name to property value to provide additional information for this governance service..
+     * Set up a map of property name to property value to provide additional information for this governance service.
      *
      * @param otherPropertyValues map of string to string
      */

@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.adapters.connectors.surveyaction;
+package org.odpi.openmetadata.frameworks.surveyaction;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
@@ -31,7 +31,7 @@ public class SequentialSurveyPipelineProvider extends SurveyActionServiceProvide
     /*
      * Class of the connector.
      */
-    private static final String connectorClass = "org.odpi.openmetadata.adapters.connectors.surveyaction.SequentialSurveyPipeline";
+    private static final String connectorClass = "org.odpi.openmetadata.frameworks.surveyaction.SequentialSurveyPipeline";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -49,6 +49,7 @@ public class SequentialSurveyPipelineProvider extends SurveyActionServiceProvide
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
+        connectorType.setDeployedImplementationType(supportedDeployedImplementationType);
 
         super.connectorTypeBean = connectorType;
 

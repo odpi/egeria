@@ -2,14 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.surveyaction;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStepType;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionGuard;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionTarget;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -20,11 +16,12 @@ public abstract class SurveyActionServiceProvider extends GovernanceServiceProvi
 {
     static
     {
-        supportedAssetTypeName = OpenMetadataType.SURVEY_ACTION_SERVICE.typeName;
+        supportedAssetTypeName = DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName();
+        supportedDeployedImplementationType = DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType();
     }
 
-    protected List<AnalysisStepType>   supportedAnalysisSteps   = null;
-    protected List<AnnotationTypeType> supportedAnnotationTypes = null;
+    protected List<AnalysisStepType>   supportedAnalysisSteps  = null;
+    protected List<AnnotationTypeType> producedAnnotationTypes = null;
 
 
     /**
@@ -32,12 +29,9 @@ public abstract class SurveyActionServiceProvider extends GovernanceServiceProvi
      */
     public SurveyActionServiceProvider()
     {
-        producedGuards = new ArrayList<>();
-        producedGuards.add(SurveyActionGuard.SURVEY_COMPLETED.getGuardType());
-        producedGuards.add(SurveyActionGuard.SURVEY_FAILED.getGuardType());
-
-        producedActionTargetTypes = new ArrayList<>();
-        producedActionTargetTypes.add(SurveyActionTarget.SURVEY_REPORT.getActionTargetType());
+        super.supportedRequestParameters = SurveyRequestParameter.getRequestParameterTypes();
+        super.producedGuards = SurveyActionGuard.getGuardTypes();
+        super.producedActionTargetTypes = SurveyActionTarget.getActionTargetTypes();
     }
 
 
@@ -57,8 +51,8 @@ public abstract class SurveyActionServiceProvider extends GovernanceServiceProvi
      *
      * @return list of annotation types
      */
-    public List<AnnotationTypeType> getSupportedAnnotationTypes()
+    public List<AnnotationTypeType> getProducedAnnotationTypes()
     {
-        return supportedAnnotationTypes;
+        return producedAnnotationTypes;
     }
 }

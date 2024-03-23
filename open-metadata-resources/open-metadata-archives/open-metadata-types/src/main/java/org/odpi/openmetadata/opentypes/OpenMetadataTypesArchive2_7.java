@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
@@ -193,10 +194,11 @@ public class OpenMetadataTypesArchive2_7
 
     private RelationshipDef getServerAssetUseRelationship()
     {
-        final String guid            = "56315447-88a6-4235-ba91-fead86524ebf";
-        final String name            = "ServerAssetUse";
-        final String description     = "Defines that a server capability is using an asset.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID;
+        final String name            = OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName;
+        final String description     = OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.description;
+        final String descriptionGUID = OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.wikiURL;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
@@ -205,6 +207,7 @@ public class OpenMetadataTypesArchive2_7
                                                                                 null,
                                                                                 description,
                                                                                 descriptionGUID,
+                                                                                descriptionWiki,
                                                                                 classificationPropagationRule);
 
         RelationshipEndDef relationshipEndDef;
@@ -212,7 +215,7 @@ public class OpenMetadataTypesArchive2_7
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "SoftwareServerCapability";
+        final String                     end1EntityType               = OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName;
         final String                     end1AttributeName            = "consumedIn";
         final String                     end1AttributeDescription     = "Capability consuming this asset.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -248,14 +251,14 @@ public class OpenMetadataTypesArchive2_7
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "useType";
-        final String attribute1Description     = "Describes how the software server capability uses the asset.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Additional information on how the asset is used by the software server capability.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.USE_TYPE.name;
+        final String attribute1Description     = OpenMetadataProperty.USE_TYPE.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.USE_TYPE.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
-        property = archiveHelper.getEnumTypeDefAttribute("ServerAssetUseType",
+        property = archiveHelper.getEnumTypeDefAttribute(OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_NAME,
                                                          attribute1Name,
                                                          attribute1Description,
                                                          attribute1DescriptionGUID);
@@ -284,7 +287,7 @@ public class OpenMetadataTypesArchive2_7
 
     private TypeDefPatch updateDataStore()
     {
-        final String typeName = "DataStore";
+        final String typeName = OpenMetadataType.DATA_STORE.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -296,9 +299,9 @@ public class OpenMetadataTypesArchive2_7
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "pathName";
-        final String attribute1Description     = "The fully qualified physical location of the data store.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.PATH_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.PATH_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.PATH_NAME.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,

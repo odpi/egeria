@@ -770,7 +770,6 @@ public class OpenMetadataStore
      * The template and any similar anchored objects are
      * copied in this process.
      *
-     * @param userId caller's userId
      * @param metadataElementTypeName type name of the new metadata element
      * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
      *                   or the Anchors classification is included in the initial classifications.
@@ -782,7 +781,7 @@ public class OpenMetadataStore
      *                     connection etc)
      * @param templateProperties properties of the new metadata element.  These override the template values
      * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
-     *                              template element - and their anchored elements, which are also copied as part of this operaiton.
+     *                              template element - and their anchored elements, which are also copied as part of this operation.
      * @param parentGUID unique identifier of optional parent entity
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
@@ -794,8 +793,7 @@ public class OpenMetadataStore
      * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
      * @throws PropertyServerException there is a problem with the metadata store
      */
-    public String createMetadataElementFromTemplate(String                         userId,
-                                                    String                         metadataElementTypeName,
+    public String createMetadataElementFromTemplate(String                         metadataElementTypeName,
                                                     String                         anchorGUID,
                                                     boolean                        isOwnAnchor,
                                                     Date                           effectiveFrom,

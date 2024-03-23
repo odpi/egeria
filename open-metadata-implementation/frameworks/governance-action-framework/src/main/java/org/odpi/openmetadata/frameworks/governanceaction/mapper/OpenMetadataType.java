@@ -189,6 +189,33 @@ public enum OpenMetadataType
                                  "Links search keywords that have similar meanings together."),
 
     /**
+     * Alternative identifier used in another system.
+     */
+    EXTERNAL_ID("7c8f8c2c-cc48-429e-8a21-a1f1851ccdb0",
+                "ExternalId",
+                OpenMetadataWikiPages.MODEL_0017_EXTERNAL_IDENTIFIERS,
+                null,
+                "Alternative identifier used in another system."),
+
+    /**
+     * Link between an external identifier and an asset or related item.
+     */
+    EXTERNAL_ID_LINK_RELATIONSHIP("28ab0381-c662-4b6d-b787-5d77208de126",
+                                  "ExternalIdLink",
+                                  OpenMetadataWikiPages.MODEL_0017_EXTERNAL_IDENTIFIERS,
+                                  "4c97ac83-5c1f-4d15-90d8-39b28290c898",
+                                  "Link between an external identifier and an asset or related item."),
+
+    /**
+     * Places where an external identifier is recognized.
+     */
+    EXTERNAL_ID_SCOPE_RELATIONSHIP("8c5b1415-2d1f-4190-ba6c-1fdd47f03269",
+                                   "ExternalIdScope",
+                                   OpenMetadataWikiPages.MODEL_0017_EXTERNAL_IDENTIFIERS,
+                                   "e1e481ce-0536-4637-8658-5224353c7d69",
+                                   "Places where an external identifier is recognized."),
+
+    /**
      * Identifies an IT Infrastructure asset that is deployed to a specific destination.
      */
     DEPLOYED_ON("6932ba75-9522-4a06-a4a4-ee60a4df6aab",
@@ -197,11 +224,209 @@ public enum OpenMetadataType
                 "d727b3ce-d58b-45d5-8abc-55b1394e030a",
                 "Identifies an IT Infrastructure asset that is deployed to a specific destination."),
 
+    /**
+     * A software implemented function such as a software service or engine.
+     */
+    SOFTWARE_CAPABILITY("54055c38-b9ad-4a66-a75b-14dc643d4c69",
+                        "SoftwareCapability",
+                        OpenMetadataWikiPages.MODEL_0042_SOFTWARE_CAPABILITIES,
+                        "7fb02c7c-4a41-455b-ab7e-73e0afe7789f",
+                        "A software implemented function such as a software service or engine."),
+
+
+    /**
+     * A software capability such as an application, that is deployed to a software server.
+     */
+    SOFTWARE_SERVER_CAPABILITY("fe30a033-8f86-4d17-8986-e6166fa24177",
+                               "SoftwareServerCapability",
+                               OpenMetadataWikiPages.MODEL_0042_SOFTWARE_CAPABILITIES,
+                               "a8cfffa4-a761-4fe0-be8b-6be43ac55020",
+                               "A software capability such as an application, that is deployed to a software server."),
+
+    /**
+     * Identifies a software capability that is deployed to an instance of IT infrastructure.
+     */
+    SUPPORTED_CAPABILITY_RELATIONSHIP("2480aa71-44c5-414d-8b32-9c4340786d77",
+                                      "SupportedSoftwareCapability",
+                                      OpenMetadataWikiPages.MODEL_0042_SOFTWARE_CAPABILITIES,
+                                      "47fc8ae9-5f6b-42e8-bb9d-c261cc9371f3",
+                                      "Identifies a software capability that is deployed to an instance of IT infrastructure."),
+
+    /**
+     * Defines that a server capability is associated with an asset.
+     */
+    SERVER_ASSET_USE_RELATIONSHIP("56315447-88a6-4235-ba91-fead86524ebf",
+                                  "ServerAssetUse",
+                                  OpenMetadataWikiPages.MODEL_0045_SERVERS_AND_ASSETS,
+                                  "fb79cb7f-fcec-4798-a165-ebf4649c8513",
+                                  "Defines that a server capability is associated with an asset."),
+
+    /**
+     * A server capability supporting a specific business function.
+     */
+    APPLICATION("58280f3c-9d63-4eae-9509-3f223872fb25",
+                     "Application",
+                     OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
+                     "920182b0-bf3c-4558-ad4b-a23804f00221",
+                     "A server capability supporting a specific business function."),
+
+    /**
+     * A capability that manages callable APIs.
+     */
+    API_MANAGER("283a127d-3acd-4d64-b558-1fce9db9a35b",
+                "APIManager",
+                OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
+                "dfbbb1d9-6c9c-4cfb-bc07-e48e07936ebf",
+                "A capability that manages callable APIs."),
+
+    /**
+     * A capability that supports REST APIs in a server.
+     */
+    REST_API_MANAGER("cb337e45-929d-48a2-89c7-a25b8de578c6",
+                     "RESTAPIManager",
+                     OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
+                     "86f6504a-f7e1-441e-9143-38d67c52ff40",
+                     "A capability that supports REST APIs in a server."),
+
+    /**
+     * A capability that supports the authorization of requests.
+     */
+    AUTHORIZATION_MANAGER("f862880f-222d-4827-8412-9013cd1f85c2",
+                          "AuthorizationManager",
+                          OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
+                          "6a33c5e9-39d7-4f0d-a81a-92faeda756d6",
+                          "A capability that supports the authorization of requests."),
+
+    /**
+     * A capability that supports the identification/authentication of users.
+     */
+    USER_AUTHENTICATION_MANAGER("2de822e6-dad2-4df0-b5d8-13f82ffc33c1",
+                          "UserAuthenticationManager",
+                          OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
+                          "4a8d9d89-7936-4ae8-ae1d-5d327e0e7cad",
+                          "A capability that supports the identification/authentication of users."),
+
+    /**
+     * A capability that ends and/or receives events as part of its software function.
+     */
+    EVENT_MANAGER("98383304-ca78-492a-b0a2-1bd46d690ed3",
+                           "EventManager",
+                           OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
+                           "1d4324e9-0696-4bab-bbf8-6f4c7c0643d4",
+                           "A capability that ends and/or receives events as part of its software function."),
+
+    /**
+     * A capability that supports event-based services, typically around topics.
+     */
+    EVENT_BROKER("309dfc3c-663b-4732-957b-e4a084436314",
+                          "EventBroker",
+                          OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
+                          "5cde95af-6bb8-4c83-9178-b05a995e32cb",
+                          "A capability that supports event-based services, typically around topics."),
+
+    /**
+     * A capability that manages collections of data.
+     */
+    DATA_MANAGER("82efa1fa-501f-4ac7-942c-6536c4a1cd61",
+                 "DataManager",
+                 OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
+                 "b2151b29-e115-417f-a711-521a9d66f99b",
+                 "A capability that manages collections of data."),
+
+    /**
+     * Defines a capability that manages data organized as relational schemas.
+     */
+    DATABASE_MANAGER("68b35c1e-6c28-4ac3-94f9-2c3dbcbb79e9",
+                 "DatabaseManager",
+                 OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
+                 "b41f74bf-a633-49c4-9fda-3d4d5f82b066",
+                 "Defines a capability that manages data organized as relational schemas."),
+
+    /**
+     * A capability that manages collections of descriptions about people, places, digital assets, things, ...
+     */
+    CATALOG("f4fffcc0-d9eb-4bb9-8aff-0718932f689e",
+                     "Catalog",
+                     OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
+                     "df539ee4-fb5a-4555-8697-c391e244557d",
+                     "A capability that manages collections of descriptions about people, places, digital assets, things, ..."),
+
+    /**
+     * A programmable engine for running automated processes.
+     */
+    ENGINE("3566527f-b1bd-4e7a-873e-a3e04d5f2a14",
+            "Engine",
+            OpenMetadataWikiPages.MODEL_0055_DATA_PROCESSING_ENGINES,
+            "8742ae9e-6ce4-48f1-baaf-8c7cae123092",
+            "A programmable engine for running automated processes."),
+
+
+    /**
+     * An engine capable of running a mixture of human and automated tasks as part of a workflow process.
+     */
+    WORKFLOW_ENGINE_CLASSIFICATION("37a6d212-7c4a-4a82-b4e2-601d4358381c",
+                                   "WorkflowEngine",
+                                   OpenMetadataWikiPages.MODEL_0055_DATA_PROCESSING_ENGINES,
+                                   "c980f0ad-c7f1-492b-96c3-ea85327f56de",
+                                   "An engine capable of running a mixture of human and automated tasks as part of a workflow process."),
+
+    /**
+     * An engine capable of creating reports by combining information from multiple data sets.
+     */
+    REPORTING_ENGINE_CLASSIFICATION("e07eefaa-16e0-46cf-ad54-bed47fb15812",
+                                    "ReportingEngine",
+                                    OpenMetadataWikiPages.MODEL_0055_DATA_PROCESSING_ENGINES,
+                                    "04051763-2945-47c0-856c-dbe9278d7cb9",
+                                    "An engine capable of creating reports by combining information from multiple data sets."),
+
+    /**
+     * An engine capable of running analytics models using data from one or more data sets.
+     */
+    ANALYTICS_ENGINE("1a0dc6f6-7980-42f5-98bd-51e56543a07e",
+                     "AnalyticsEngine",
+                     OpenMetadataWikiPages.MODEL_0055_DATA_PROCESSING_ENGINES,
+                     "a1db5c5b-c7c9-41b1-9b37-7f1f3eb40dea",
+                     "An engine capable of running analytics models using data from one or more data sets."),
+
+    /**
+     * An engine capable of copying data from one data store to another.
+     */
+    DATA_MOVEMENT_ENGINE("d2ed6621-9d99-4fe8-843a-b28d816cf888",
+                         "DataMovementEngine",
+                         OpenMetadataWikiPages.MODEL_0055_DATA_PROCESSING_ENGINES,
+                         "b4df7850-45a5-4ba0-8216-3828480dc2c1",
+                         "An engine capable of copying data from one data store to another."),
+
+    /**
+     * An engine capable of creating new data sets by dynamically combining data from one or more data stores or data sets.
+     */
+    DATA_VIRTUALIZATION_ENGINE("03e25cd0-03d7-4d96-b28b-eed671824ed6",
+                               "DataVirtualizationEngine",
+                               OpenMetadataWikiPages.MODEL_0055_DATA_PROCESSING_ENGINES,
+                               "faa47e2b-4987-4ad8-bc39-5a4f91f9658c",
+                               "An engine capable of creating new data sets by dynamically combining data from one or more data stores or data sets."),
+
+    /* ============================================================================================================================*/
+    /* Area 1 - Collaboration                                                                                                      */
+    /* ============================================================================================================================*/
+
+    /**
+     * An action that has been identified to support the development, improvement, or remedy of an object or situation.
+     */
+    ACTION("95261f26-8fe0-4723-b953-4ae5789ec639",
+           "Action",
+           OpenMetadataWikiPages.MODEL_0137_ACTIONS_FOR_PEOPLE,
+           "d1df6cb0-80af-473f-aacf-f29972fd4c34",
+           "An action that has been identified to support the development, improvement, or remedy of an object or situation."),
+
 
     /* ============================================================================================================================*/
     /* Area 2 - Assets                                                                                                             */
     /* ============================================================================================================================*/
 
+    /**
+     * A physical store of data
+     */
     DATA_STORE("30756d0b-362b-4bfa-a0de-fce6a8f47b47",
                "DataStore",
                OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
@@ -262,17 +487,42 @@ public enum OpenMetadataType
              "4072c15f-9792-45a3-a4c9-d0602f4ffe87",
              "A description of a comma separated value (CSV) file."),
 
+    /**
+     * A description of a file that follows the Apache Avro specification.
+     */
     AVRO_FILE("75293260-3373-4777-af7d-7274d5c0b9a5",
               "AvroFile",
               OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
               "ac017c45-d167-424a-b0db-501d1dbe7096",
               "A description of a file that follows the Apache Avro specification."),
 
+    /**
+     * A description of a file that follows the JavaScript Object Notation specification.
+     */
     JSON_FILE("baa608fa-510e-42d7-95cd-7c12fa37bb35",
               "JSONFile",
               OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
               "8fc52dce-17fe-426a-b504-c15d5df35524",
               "A description of a file that follows the JavaScript Object Notation specification."),
+
+    /**
+     * A data set that consists of a collection files (do not need to be co-located).
+     */
+    DATA_FILE_COLLECTION("962de053-ab51-40eb-b843-85b98013f5ca",
+                         "DataFileCollection",
+                         OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
+                         "c2833bb5-5508-4328-a81d-f9b5971be095",
+                         "A data set that consists of a collection files (do not need to be co-located)."),
+
+
+    /**
+     * A tabular data source (typically a database table) that is an asset in its own right.
+     */
+    TABLE_DATA_SET("20c45531-5d2e-4eb6-9a47-035cb1067b82",
+                   "TableDataSet",
+                   OpenMetadataWikiPages.MODEL_0224_DATABASES,
+                   "ff9fced9-daaf-4512-97c1-88381ffe05aa",
+                   "A tabular data source (typically a database table) that is an asset in its own right."),
 
 
     /* ============================================================================================================================*/
@@ -404,6 +654,19 @@ public enum OpenMetadataType
                                               OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
                                               "346ca38f-287d-401f-bbe9-375ecd2b938f",
                                               "Link between a governance engine and one of its services."),
+
+    INTEGRATION_GROUP("4d7c43ec-983b-40e4-af78-6fb66c4f5136",
+                      "IntegrationGroup",
+                      OpenMetadataWikiPages.MODEL_0464_INTEGRATION_GROUPS,
+                      "1c5e6f3c-96ff-4e3d-876d-26c8905add7b",
+                      "A collection of integration connectors to run together."),
+
+    INTEGRATION_CONNECTOR("759da11b-ebb6-4382-bdc9-72adc7c922db",
+                          "IntegrationConnector",
+                          OpenMetadataWikiPages.MODEL_0464_INTEGRATION_GROUPS,
+                          "fe907752-40e5-4bbc-9984-5a363bfd0241",
+                          "A definition to control the execution of an integration connector."),
+
 
     /* ============================================================================================================================*/
     /* Area 5 - Schemas                                                                                                            */
@@ -684,6 +947,7 @@ public enum OpenMetadataType
                                        "11050162-ed05-4e5a-8a72-872c50001b5b",
                                        "Link to the external data resource containing the surveyed resource's profile data."),
 
+
     ;
 
 
@@ -707,38 +971,6 @@ public enum OpenMetadataType
     }
 
 
-    public static final String EXTERNAL_IDENTIFIER_TYPE_GUID = "7c8f8c2c-cc48-429e-8a21-a1f1851ccdb0";
-    public static final String EXTERNAL_IDENTIFIER_TYPE_NAME = "ExternalId";              /* from Area 0 */
-
-    public static final String IDENTIFIER_PROPERTY_NAME                    = "identifier";                      /* from ExternalId entity */
-    public static final String EXT_INSTANCE_CREATED_BY_PROPERTY_NAME       = "externalInstanceCreatedBy";       /* from ExternalId entity */
-    public static final String EXT_INSTANCE_CREATION_TIME_PROPERTY_NAME    = "externalInstanceCreationTime";    /* from ExternalId entity */
-    public static final String EXT_INSTANCE_LAST_UPDATED_BY_PROPERTY_NAME  = "externalInstanceLastUpdatedBy";   /* from ExternalId entity */
-    public static final String EXT_INSTANCE_LAST_UPDATE_TIME_PROPERTY_NAME = "externalInstanceLastUpdateTime";  /* from ExternalId entity */
-    public static final String EXT_INSTANCE_VERSION_PROPERTY_NAME          = "externalInstanceVersion";         /* from ExternalId entity */
-    public static final String MAPPING_PROPERTIES_PROPERTY_NAME            = "mappingProperties";      /* from ExternalId entity */
-    public static final String LAST_SYNCHRONIZED_PROPERTY_NAME             = "lastSynchronized";       /* from ExternalId entity */
-    public static final String KEY_PATTERN_PROPERTY_NAME                   = "keyPattern";             /* from ExternalId entity */
-    /* Enum type KeyPattern */
-
-    public static final String KEY_PATTERN_ENUM_TYPE_GUID = "8904df8f-1aca-4de8-9abd-1ef2aadba300";
-    public static final String KEY_PATTERN_ENUM_TYPE_NAME = "KeyPattern";
-
-    public static final String REFERENCEABLE_TO_EXTERNAL_ID_TYPE_GUID = "28ab0381-c662-4b6d-b787-5d77208de126";
-    public static final String REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME = "ExternalIdLink";
-    /* End1 = Referenceable; End 2 = ExternalId */
-
-    public static final String SOURCE_PROPERTY_NAME = "source"; /* from ExternalIdLink relationship */
-
-    public static final String EXTERNAL_ID_SCOPE_TYPE_GUID = "8c5b1415-2d1f-4190-ba6c-1fdd47f03269";
-    public static final String EXTERNAL_ID_SCOPE_TYPE_NAME = "ExternalIdScope";
-    /* End1 = Referenceable; End 2 = ExternalId */
-
-    public static final String PERMITTED_SYNC_PROPERTY_NAME = "permittedSynchronization"; /* from ExternalId and RegisteredIntegrationConnector */
-    /* Enum type PermittedSynchronization */
-
-    public static final String PERMITTED_SYNC_ENUM_TYPE_GUID = "973a9f4c-93fa-43a5-a0c5-d97dbd164e78";
-    public static final String PERMITTED_SYNC_ENUM_TYPE_NAME = "PermittedSynchronization";
 
     public static final String REFERENCEABLE_TO_EXT_REF_TYPE_GUID = "7d818a67-ab45-481c-bc28-f6b1caf12f06";
     public static final String REFERENCEABLE_TO_EXT_REF_TYPE_NAME = "ExternalReferenceLink";
@@ -1352,89 +1584,6 @@ public enum OpenMetadataType
      */
     public static final String ENCRYPTION_METHOD_PROPERTY_NAME = "encryptionMethod";                     /* from Endpoint entity */
 
-    /**
-     * 54055c38-b9ad-4a66-a75b-14dc643d4c69
-     */
-    public static final String SOFTWARE_CAPABILITY_TYPE_GUID = "54055c38-b9ad-4a66-a75b-14dc643d4c69";
-
-    /**
-     * SoftwareCapability - inherits from Referenceable
-     */
-    public static final String SOFTWARE_CAPABILITY_TYPE_NAME = "SoftwareCapability";
-
-    /**
-     * fe30a033-8f86-4d17-8986-e6166fa24177
-     */
-    public static final String SOFTWARE_SERVER_CAPABILITY_TYPE_GUID = "fe30a033-8f86-4d17-8986-e6166fa24177";
-
-    /**
-     * SoftwareServerCapability - inherits from SoftwareCapability
-     */
-    public static final String SOFTWARE_SERVER_CAPABILITY_TYPE_NAME = "SoftwareServerCapability";
-
-    /**
-     * capabilityType
-     */
-    public static final String CAPABILITY_TYPE_PROPERTY_NAME = "capabilityType";             /* from SoftwareCapability entity */
-
-    /**
-     * type
-     */
-    public static final String CAPABILITY_TYPE_PROPERTY_NAME_DEP1 = "type";                       /* from SoftwareServerCapability entity */
-    /**
-     * capabilityVersion
-     */
-    public static final String CAPABILITY_VERSION_PROPERTY_NAME = "capabilityVersion";          /* from SoftwareCapability entity */
-
-    /**
-     * version
-     */
-    public static final String CAPABILITY_VERSION_PROPERTY_NAME_DEP = "version";       /* from SoftwareCapability entity */
-
-    /**
-     * patchLevel
-     */
-    public static final String PATCH_LEVEL_PROPERTY_NAME = "patchLevel";    /* from SoftwareCapability entity */
-
-    /**
-     * 2480aa71-44c5-414d-8b32-9c4340786d77
-     */
-    public static final String SUPPORTED_CAPABILITY_TYPE_GUID = "2480aa71-44c5-414d-8b32-9c4340786d77";
-
-    /**
-     * SupportedSoftwareCapability - End 1 = ITInfrastructure; End 2 = SoftwareCapability
-     */
-    public static final String SUPPORTED_CAPABILITY_TYPE_NAME = "SupportedSoftwareCapability";
-
-    /**
-     * serverCapabilityStatus
-     */
-    public static final String SERVER_CAPABILITY_STATUS_PROPERTY_NAME = "serverCapabilityStatus";  /* from SoftwareServerSupportedCapability */
-
-    /**
-     * 56315447-88a6-4235-ba91-fead86524ebf
-     */
-    public static final String SERVER_ASSET_USE_TYPE_GUID = "56315447-88a6-4235-ba91-fead86524ebf";  /* from Area 0 */
-
-    /**
-     * ServerAssetUse - End1 = SoftwareCapability; End 2 = Asset
-     */
-    public static final String SERVER_ASSET_USE_TYPE_NAME = "ServerAssetUse";
-
-    /**
-     * useType
-     */
-    public static final String USE_TYPE_PROPERTY_NAME = "useType";                       /* from ServerAssetUse relationship */
-
-    /**
-     * minimumInstances
-     */
-    public static final String MINIMUM_INSTANCES_PROPERTY_NAME = "minimumInstances";              /* from ServerAssetUse relationship */
-
-    /**
-     * maximumInstances
-     */
-    public static final String MAXIMUM_INSTANCES_PROPERTY_NAME = "maximumInstances";              /* from ServerAssetUse relationship */
 
     /**
      * 09439481-9489-467c-9ae5-178a6e0b6b5a
@@ -1450,6 +1599,7 @@ public enum OpenMetadataType
      * 0
      */
     public static final int SERVER_ASSET_USE_TYPE_OWNS_ORDINAL = 0;
+    public static final String SERVER_ASSET_USE_TYPE_OWNS_SYMBOLIC_NAME = "OWNS";
 
     /**
      * 1
@@ -1471,115 +1621,7 @@ public enum OpenMetadataType
      */
     public static final int SERVER_ASSET_USE_TYPE_OTHER_ORDINAL = 99;
 
-    /**
-     * 58280f3c-9d63-4eae-9509-3f223872fb25
-     */
-    public static final String APPLICATION_TYPE_GUID = "58280f3c-9d63-4eae-9509-3f223872fb25";
 
-    /**
-     * Application - inherits from SoftwareServerCapability
-     */
-    public static final String APPLICATION_TYPE_NAME = "Application";
-
-    /**
-     * 283a127d-3acd-4d64-b558-1fce9db9a35b
-     */
-    public static final String API_MANAGER_TYPE_GUID = "283a127d-3acd-4d64-b558-1fce9db9a35b";
-
-    /**
-     * APIManager - inherits from SoftwareServerCapability
-     */
-    public static final String API_MANAGER_TYPE_NAME = "APIManager";
-
-    /**
-     * 309dfc3c-663b-4732-957b-e4a084436314
-     */
-    public static final String EVENT_BROKER_TYPE_GUID = "309dfc3c-663b-4732-957b-e4a084436314";
-
-    /**
-     * EventBroker - inherits from SoftwareServerCapability
-     */
-    public static final String EVENT_BROKER_TYPE_NAME = "EventBroker";
-
-    /**
-     * 82efa1fa-501f-4ac7-942c-6536c4a1cd61
-     */
-    public static final String DATA_MANAGER_TYPE_GUID = "82efa1fa-501f-4ac7-942c-6536c4a1cd61";
-
-    /**
-     * DataManager - inherits from SoftwareServerCapability
-     */
-    public static final String DATA_MANAGER_TYPE_NAME = "DataManager";
-
-    /**
-     * f4fffcc0-d9eb-4bb9-8aff-0718932f689e
-     */
-    public static final String CATALOG_TYPE_GUID = "f4fffcc0-d9eb-4bb9-8aff-0718932f689e";
-
-    /**
-     * Catalog - inherits from SoftwareServerCapability
-     */
-    public static final String CATALOG_TYPE_NAME = "Catalog";
-
-    /**
-     * 3566527f-b1bd-4e7a-873e-a3e04d5f2a14
-     */
-    public static final String ENGINE_TYPE_GUID = "3566527f-b1bd-4e7a-873e-a3e04d5f2a14";
-
-    /**
-     * Engine - inherits from SoftwareServerCapability
-     */
-    public static final String ENGINE_TYPE_NAME = "Engine";
-
-    /**
-     * 37a6d212-7c4a-4a82-b4e2-601d4358381c
-     */
-    public static final String WORKFLOW_ENGINE_CLASSIFICATION_GUID = "37a6d212-7c4a-4a82-b4e2-601d4358381c";
-
-    /**
-     * WorkflowEngine - inheirts from Engine
-     */
-    public static final String WORKFLOW_ENGINE_CLASSIFICATION_NAME = "WorkflowEngine";
-
-    /**
-     * e07eefaa-16e0-46cf-ad54-bed47fb15812
-     */
-    public static final String REPORTING_ENGINE_CLASSIFICATION_GUID = "e07eefaa-16e0-46cf-ad54-bed47fb15812";
-
-    /**
-     * ReportingEngine - inherits from Engine
-     */
-    public static final String REPORTING_ENGINE_CLASSIFICATION_NAME = "ReportingEngine";
-
-    /**
-     * 1a0dc6f6-7980-42f5-98bd-51e56543a07e
-     */
-    public static final String ANALYTICS_ENGINE_CLASSIFICATION_GUID = "1a0dc6f6-7980-42f5-98bd-51e56543a07e";
-
-    /**
-     * AnalyticsEngine - inherits from Engine
-     */
-    public static final String ANALYTICS_ENGINE_CLASSIFICATION_NAME = "AnalyticsEngine";
-
-    /**
-     * d2ed6621-9d99-4fe8-843a-b28d816cf888
-     */
-    public static final String DATA_MOVEMENT_ENGINE_CLASSIFICATION_GUID = "d2ed6621-9d99-4fe8-843a-b28d816cf888";
-
-    /**
-     * DataMovementEngine - inherits from Engine
-     */
-    public static final String DATA_MOVEMENT_ENGINE_CLASSIFICATION_NAME = "DataMovementEngine";
-
-    /**
-     * 03e25cd0-03d7-4d96-b28b-eed671824ed6
-     */
-    public static final String DATA_VIRTUALIZATION_ENGINE_CLASSIFICATION_GUID = "03e25cd0-03d7-4d96-b28b-eed671824ed6";
-
-    /**
-     * DataVirtualizationEngine - inherits from Engine
-     */
-    public static final String DATA_VIRTUALIZATION_ENGINE_CLASSIFICATION_NAME = "DataVirtualizationEngine";
 
     /**
      * 03170ce7-edf1-4e94-b6ab-2d5cbbf1f13c
@@ -2011,27 +2053,12 @@ public enum OpenMetadataType
     /* End1 = Meeting; End 2 = Referenceable */
 
     /**
-     * 95261f26-8fe0-4723-b953-4ae5789ec639
-     */
-    public static final String ACTION_TYPE_GUID = "95261f26-8fe0-4723-b953-4ae5789ec639";
-
-    /**
-     * Action - inherits from Referenceable
-     */
-    public static final String ACTION_TYPE_NAME = "Action";
-
-    /**
-     * d1df6cb0-80af-473f-aacf-f29972fd4c34
-     */
-    public static final String ACTION_TYPE_DEFN = "d1df6cb0-80af-473f-aacf-f29972fd4c34";
-
-    /**
      * 93dbc58d-c826-4bc2-b36f-195148d46f86
      */
     public static final String TO_DO_TYPE_GUID = "93dbc58d-c826-4bc2-b36f-195148d46f86";
 
     /**
-     * ToDo - inherits from Action
+     * To Do - inherits from Action
      */
     public static final String TO_DO_TYPE_NAME = "ToDo";   /* from Area 1 */
 
@@ -2913,15 +2940,6 @@ public enum OpenMetadataType
      */
     public static final String DATA_CONTENT_FOR_DATA_SET_TYPE_NAME = "DataContentForDataSet";
 
-    /**
-     * 68b35c1e-6c28-4ac3-94f9-2c3dbcbb79e9
-     */
-    public static final String DATABASE_MANAGER_TYPE_GUID = "68b35c1e-6c28-4ac3-94f9-2c3dbcbb79e9";
-
-    /**
-     * DatabaseManager - inherits from SoftwareServerCapability
-     */
-    public static final String DATABASE_MANAGER_TYPE_NAME = "DatabaseManager";
 
     /**
      * cab5ba1d-cfd3-4fca-857d-c07711fc4157
@@ -3005,7 +3023,7 @@ public enum OpenMetadataType
     public static final String DEPLOYED_API_TYPE_GUID = "7dbb3e63-138f-49f1-97b4-66313871fc14";  /* from Area 2 */
 
     /**
-     * DeployedAPI - inheirts from Asset
+     * DeployedAPI - inherits from Asset
      */
     public static final String DEPLOYED_API_TYPE_NAME = "DeployedAPI";
 
@@ -3979,9 +3997,6 @@ public enum OpenMetadataType
     /* End1 = EngineAction; End 2 = GovernanceEngine */
 
 
-    public static final String INTEGRATION_GROUP_TYPE_GUID = "4d7c43ec-983b-40e4-af78-6fb66c4f5136";
-    public static final String INTEGRATION_GROUP_TYPE_NAME = "IntegrationGroup";
-
     public static final String INTEGRATION_CONNECTOR_TYPE_GUID = "759da11b-ebb6-4382-bdc9-72adc7c922db";
     public static final String INTEGRATION_CONNECTOR_TYPE_NAME = "IntegrationConnector";
 
@@ -4824,14 +4839,13 @@ public enum OpenMetadataType
     public static final String ANNOTATION_STATUS_ENUM_TYPE_GUID = "71187df6-ef66-4f88-bc03-cd3c7f925165";
     public static final String ANNOTATION_STATUS_ENUM_TYPE_NAME = "AnnotationStatus";
 
-    /**
-     * 24e1e33e-9250-4a6c-8b07-05c7adec3a1d
-     */
     public static final String OPERATIONAL_STATUS_ENUM_TYPE_GUID = "24e1e33e-9250-4a6c-8b07-05c7adec3a1d";
+    public static final String OPERATIONAL_STATUS_ENUM_TYPE_NAME = "OperationalStatus";
 
-    /**
-     * OperationalStatus
-     */
-    public static final String OPERATIONAL_STATUS_ENUM_TYPE_NAME = "OperationalStatus";              /* from Area 1 */
+
+    public static final String KEY_PATTERN_ENUM_TYPE_GUID = "8904df8f-1aca-4de8-9abd-1ef2aadba300";
+    public static final String KEY_PATTERN_ENUM_TYPE_NAME = "KeyPattern";
+    public static final String PERMITTED_SYNC_ENUM_TYPE_GUID = "973a9f4c-93fa-43a5-a0c5-d97dbd164e78";
+    public static final String PERMITTED_SYNC_ENUM_TYPE_NAME = "PermittedSynchronization";
 
 }

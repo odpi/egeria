@@ -17,10 +17,8 @@ import org.odpi.openmetadata.frameworks.integration.ffdc.OIFErrorCode;
 import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.DriverManager;
+import java.util.*;
 
 /**
  * IntegrationConnectorBase is the base class for an integration connector.  It manages the storing of the audit log for the connector
@@ -109,17 +107,16 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
     /**
      * Return a list of requested catalog targets for the connector.  These are extracted from the metadata store.
      *
-     * @return list of requested catalog targets
+     * @param catalogTargetIntegrator the integration component that will process each catalog target
+     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
      */
-    protected List<RequestedCatalogTarget> getRequestedCatalogTargets()
+    protected void refreshCatalogTargets(CatalogTargetIntegrator catalogTargetIntegrator) throws ConnectorCheckedException
     {
-        final String methodName = "getRequestedCatalogTargets";
-
+        final String methodName = "refreshCatalogTargets";
 
         try
         {
             int startFrom = 0;
-            List<RequestedCatalogTarget> requestedCatalogTargets = new ArrayList<>();
 
             int catalogTargetCount = 0;
             List<CatalogTarget> catalogTargetList = integrationContext.getCatalogTargets(startFrom,
@@ -154,19 +151,30 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
                             requestedCatalogTarget.setCatalogTargetConnector(integrationContext.getConnectedAssetContext().getConnectorToAsset(catalogTarget.getCatalogTargetElement().getGUID()));
                         }
 
-                        requestedCatalogTargets.add(requestedCatalogTarget);
+                        auditLog.logMessage(methodName,
+                                            OIFAuditCode.REFRESHING_CATALOG_TARGET.getMessageDefinition(connectorName,
+                                                                                                        requestedCatalogTarget.getCatalogTargetName()));
+                        catalogTargetIntegrator.integrateCatalogTarget(requestedCatalogTarget);
                     }
                 }
 
                 startFrom = startFrom + integrationContext.getMaxPageSize();
-                catalogTargetList = integrationContext.getCatalogTargets(startFrom,
-                                                                         integrationContext.getMaxPageSize());
-            }
+                catalogTargetList = integrationContext.getCatalogTargets(startFrom, integrationContext.getMaxPageSize());
 
-            if (!requestedCatalogTargets.isEmpty())
-            {
-                return requestedCatalogTargets;
+                if (catalogTargetCount == 0)
+                {
+                    auditLog.logMessage(methodName, OIFAuditCode.NO_CATALOG_TARGETS.getMessageDefinition(connectorName));
+                }
+                else
+                {
+                    auditLog.logMessage(methodName, OIFAuditCode.REFRESHED_CATALOG_TARGETS.getMessageDefinition(connectorName,
+                                                                                                                Integer.toString(catalogTargetCount)));
+                }
             }
+        }
+        catch (ConnectorCheckedException exception)
+        {
+            throw exception;
         }
         catch (Exception exception)
         {
@@ -176,8 +184,6 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
                                                                                                  exception.getMessage()),
                                   exception);
         }
-
-        return null;
     }
 
 

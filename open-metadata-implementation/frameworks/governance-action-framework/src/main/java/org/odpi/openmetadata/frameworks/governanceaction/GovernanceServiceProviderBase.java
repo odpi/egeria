@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetTy
 import org.odpi.openmetadata.frameworks.governanceaction.controls.GuardType;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestParameterType;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestTypeType;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 
 import java.util.List;
 
@@ -20,35 +20,36 @@ public abstract class GovernanceServiceProviderBase extends ConnectorProviderBas
      * The type name of the asset that this connector supports.  Initialized to generic type - should be overridden
      * by subclasses.
      */
-    protected static String supportedAssetTypeName = OpenMetadataType.GOVERNANCE_SERVICE.typeName;
+    protected static String supportedAssetTypeName = DeployedImplementationType.GOVERNANCE_SERVICE.getAssociatedTypeName();
+    protected static String supportedDeployedImplementationType = DeployedImplementationType.GOVERNANCE_SERVICE.getDeployedImplementationType();
 
     /**
-     * Map of supported request types, along with their descriptions.
+     * List of supported request types, along with their descriptions.
      */
     protected List<RequestTypeType> supportedRequestTypes = null;
 
     /**
-     * Map of request parameters to use when triggering this governance service, along with their descriptions.
+     * List of request parameters to use when triggering this governance service, along with their descriptions.
      */
     protected List<RequestParameterType> supportedRequestParameters = null;
 
     /**
-     * Map of action targets to use when triggering this governance service, along with their descriptions.
+     * List of action targets to use when triggering this governance service, along with their descriptions.
      */
     protected List<ActionTargetType> supportedActionTargetTypes = null;
 
     /**
-     * Map of request parameters produced by this governance service, along with their descriptions.
+     * List of request parameters produced by this governance service, along with their descriptions.
      */
     protected List<RequestParameterType> producedRequestParameters = null;
 
     /**
-     * Map of action targets produced by this governance service, along with their descriptions.
+     * List of action targets produced by this governance service, along with their descriptions.
      */
     protected List<ActionTargetType> producedActionTargetTypes = null;
 
     /**
-     * Map of guards produced by this governance service, along with their descriptions.
+     * List of guards produced by this governance service, along with their descriptions.
      */
     protected List<GuardType> producedGuards = null;
 

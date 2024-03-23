@@ -115,6 +115,7 @@ public class GovernanceServerServiceInstanceHandler extends AuditableServerServi
         ConnectorReport connectorReport = new ConnectorReport();
 
         connectorReport.setConnectorType(connectorType);
+        connectorReport.setSupportedConfigurationProperties(connectorProvider.getSupportedConfigurationProperties());
 
         if (connectorProvider instanceof ConnectorProviderBase connectorProviderBase)
         {
@@ -138,7 +139,7 @@ public class GovernanceServerServiceInstanceHandler extends AuditableServerServi
             if (connectorProvider instanceof SurveyActionServiceProvider surveyActionServiceProvider)
             {
                 connectorReport.setSupportedAnalysisSteps(surveyActionServiceProvider.getSupportedAnalysisSteps());
-                connectorReport.setSupportedAnnotationTypes(surveyActionServiceProvider.getSupportedAnnotationTypes());
+                connectorReport.setSupportedAnnotationTypes(surveyActionServiceProvider.getProducedAnnotationTypes());
             }
         }
 

@@ -78,6 +78,7 @@ dependencies {
     implementation project(':open-metadata-implementation:admin-services:admin-services-registration')
     runtimeOnly 'org.springdoc:springdoc-openapi-starter-webmvc-ui'
     compileOnly 'io.swagger.core.v3:swagger-annotations-jakarta'
+    runtimeOnly project(':open-metadata-implementation:user-security:token-manager')
 }
 
 description = 'UI Server Platform Chassis for Spring'

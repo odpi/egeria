@@ -902,7 +902,11 @@ public class ApacheAtlasIntegrationConnector extends CatalogIntegratorConnector 
             auditLog.logMessage(methodName, AtlasIntegrationAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName, targetRootURL));
         }
 
-        atlasClient.disconnect();
+        if (atlasClient != null)
+        {
+            atlasClient.disconnect();
+        }
+
         super.disconnect();
     }
 }
