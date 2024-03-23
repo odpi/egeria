@@ -78,6 +78,8 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">TransferCustomizations</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block">TransferCustomizations manages the settings of the configuration properties that select which
+ elements of database metadata should be catalogued.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -129,7 +131,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.util.Map)" class="member-name-link">TransferCustomizations</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Extract the customizations from the configuration properties.</div>
+</div>
 </div>
 </section>
 </li>
@@ -205,112 +209,48 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="INCLUDE_SCHEMA_NAMES">
 <h3>INCLUDE_SCHEMA_NAMES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">INCLUDE_SCHEMA_NAMES</span></div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.customization.TransferCustomizations.INCLUDE_SCHEMA_NAMES">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="EXCLUDE_SCHEMA_NAMES">
 <h3>EXCLUDE_SCHEMA_NAMES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">EXCLUDE_SCHEMA_NAMES</span></div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.customization.TransferCustomizations.EXCLUDE_SCHEMA_NAMES">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="INCLUDE_TABLE_NAMES">
 <h3>INCLUDE_TABLE_NAMES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">INCLUDE_TABLE_NAMES</span></div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.customization.TransferCustomizations.INCLUDE_TABLE_NAMES">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="EXCLUDE_TABLE_NAMES">
 <h3>EXCLUDE_TABLE_NAMES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">EXCLUDE_TABLE_NAMES</span></div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.customization.TransferCustomizations.EXCLUDE_TABLE_NAMES">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="INCLUDE_VIEW_NAMES">
 <h3>INCLUDE_VIEW_NAMES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">INCLUDE_VIEW_NAMES</span></div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.customization.TransferCustomizations.INCLUDE_VIEW_NAMES">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="EXCLUDE_VIEW_NAMES">
 <h3>EXCLUDE_VIEW_NAMES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">EXCLUDE_VIEW_NAMES</span></div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.customization.TransferCustomizations.EXCLUDE_VIEW_NAMES">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="INCLUDE_COLUMN_NAMES">
 <h3>INCLUDE_COLUMN_NAMES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">INCLUDE_COLUMN_NAMES</span></div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.customization.TransferCustomizations.INCLUDE_COLUMN_NAMES">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="EXCLUDE_COLUMN_NAMES">
 <h3>EXCLUDE_COLUMN_NAMES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">EXCLUDE_COLUMN_NAMES</span></div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../../../../constant-values.html#org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.customization.TransferCustomizations.EXCLUDE_COLUMN_NAMES">Constant Field Values</a></li>
-</ul>
-</dd>
-</dl>
 </section>
 </li>
 <li>
@@ -331,6 +271,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;(java.util.Map)">
 <h3>TransferCustomizations</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">TransferCustomizations</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</span></div>
+<div class="block">Extract the customizations from the configuration properties.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>configurationProperties</code> - map of special configuration property from the open metadata connection</dd>
+</dl>
 </section>
 </li>
 </ul>

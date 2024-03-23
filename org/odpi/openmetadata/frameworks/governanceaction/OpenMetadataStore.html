@@ -198,8 +198,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Create an incident report to capture the situation detected by this governance action service.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMetadataElementFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">createMetadataElementFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMetadataElementFromTemplate(java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">createMetadataElementFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
  boolean&nbsp;isOwnAnchor,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
@@ -1246,10 +1245,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createMetadataElementFromTemplate(java.lang.String,java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)">
+<section class="detail" id="createMetadataElementFromTemplate(java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)">
 <h3>createMetadataElementFromTemplate</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createMetadataElementFromTemplate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createMetadataElementFromTemplate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
  boolean&nbsp;isOwnAnchor,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
@@ -1271,7 +1269,6 @@ loadScripts(document, 'script');</script>
  copied in this process.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>userId</code> - caller's userId</dd>
 <dd><code>metadataElementTypeName</code> - type name of the new metadata element</dd>
 <dd><code>anchorGUID</code> - unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
                    or the Anchors classification is included in the initial classifications.</dd>
@@ -1283,7 +1280,7 @@ loadScripts(document, 'script');</script>
                      connection etc)</dd>
 <dd><code>templateProperties</code> - properties of the new metadata element.  These override the template values</dd>
 <dd><code>placeholderProperties</code> - property name-to-property value map to replace any placeholder values in the
-                              template element - and their anchored elements, which are also copied as part of this operaiton.</dd>
+                              template element - and their anchored elements, which are also copied as part of this operation.</dd>
 <dd><code>parentGUID</code> - unique identifier of optional parent entity</dd>
 <dd><code>parentRelationshipTypeName</code> - type of relationship to connect the new element to the parent</dd>
 <dd><code>parentRelationshipProperties</code> - properties to include in parent relationship</dd>

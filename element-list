@@ -418,6 +418,7 @@ org.odpi.openmetadata.accessservices.subjectarea.utils
 org.odpi.openmetadata.accessservices.subjectarea.validators
 org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile
 org.odpi.openmetadata.adapters.adminservices.configurationstore.file
+org.odpi.openmetadata.adapters.connectors.apacheatlas.control
 org.odpi.openmetadata.adapters.connectors.apacheatlas.integration
 org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc
 org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules
@@ -454,6 +455,7 @@ org.odpi.openmetadata.adapters.connectors.integration.egeria.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.elasticsearch
 org.odpi.openmetadata.adapters.connectors.integration.elasticsearch.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.jdbc
+org.odpi.openmetadata.adapters.connectors.integration.jdbc.controls
 org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer
 org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.customization
@@ -468,6 +470,11 @@ org.odpi.openmetadata.adapters.connectors.integration.openapis.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.openapis.properties
 org.odpi.openmetadata.adapters.connectors.integration.openlineage
 org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc
+org.odpi.openmetadata.adapters.connectors.postgres.catalog
+org.odpi.openmetadata.adapters.connectors.postgres.controls
+org.odpi.openmetadata.adapters.connectors.postgres.ffdc
+org.odpi.openmetadata.adapters.connectors.postgres.survey
+org.odpi.openmetadata.adapters.connectors.postgres.utilities
 org.odpi.openmetadata.adapters.connectors.resource.jdbc
 org.odpi.openmetadata.adapters.connectors.resource.jdbc.ffdc
 org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties
@@ -477,7 +484,6 @@ org.odpi.openmetadata.adapters.connectors.restclients.ffdc
 org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions
 org.odpi.openmetadata.adapters.connectors.restclients.spring
 org.odpi.openmetadata.adapters.connectors.secretsstore.envar
-org.odpi.openmetadata.adapters.connectors.surveyaction
 org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc
 org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv
 org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile

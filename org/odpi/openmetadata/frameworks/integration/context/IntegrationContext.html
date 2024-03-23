@@ -101,13 +101,13 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#connectorName" class="member-name-link">connectorName</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#externalSourceGUID" class="member-name-link">externalSourceGUID</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>protected boolean</code></div>
 <div class="col-second even-row-color"><code><a href="#externalSourceIsHome" class="member-name-link">externalSourceIsHome</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#externalSourceName" class="member-name-link">externalSourceName</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>protected final <a href="../../governanceaction/fileclassifier/FileClassifier.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.fileclassifier">FileClassifier</a></code></div>
@@ -304,26 +304,31 @@ loadScripts(document, 'script');</script>
 <div class="block">Set whether an integration report should be assembled and published.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startRecording()" class="member-name-link">startRecording</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMetadataSourceQualifiedName(java.lang.String)" class="member-name-link">setMetadataSourceQualifiedName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceQualifiedName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Clear the report properties ready for a new report.</div>
+<div class="block">Change the metadata collection that is in use when working with open metadata.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterDirectoryListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface,java.io.File)" class="member-name-link">unregisterDirectoryListener</a><wbr>(<a href="../filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startRecording()" class="member-name-link">startRecording</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Clear the report properties ready for a new report.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterDirectoryListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface,java.io.File)" class="member-name-link">unregisterDirectoryListener</a><wbr>(<a href="../filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Unregister a listener object for the directory.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterDirectoryTreeListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface,java.io.File)" class="member-name-link">unregisterDirectoryTreeListener</a><wbr>(<a href="../filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Unregister a listener object for the directory.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterDirectoryTreeListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface,java.io.File)" class="member-name-link">unregisterDirectoryTreeListener</a><wbr>(<a href="../filelistener/FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Unregister a listener object for the directory.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterFileListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileListenerInterface,java.io.File)" class="member-name-link">unregisterFileListener</a><wbr>(<a href="../filelistener/FileListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileListenerInterface</a>&nbsp;listener,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterFileListener(org.odpi.openmetadata.frameworks.integration.filelistener.FileListenerInterface,java.io.File)" class="member-name-link">unregisterFileListener</a><wbr>(<a href="../filelistener/FileListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.integration.filelistener">FileListenerInterface</a>&nbsp;listener,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;fileToMonitor)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Unregister a listener object that will be called each time a specific file is created, changed or deleted.</div>
 </div>
 </div>
@@ -362,24 +367,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="externalSourceGUID">
-<h3>externalSourceGUID</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">externalSourceGUID</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="externalSourceName">
-<h3>externalSourceName</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">externalSourceName</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="externalSourceIsHome">
-<h3>externalSourceIsHome</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">externalSourceIsHome</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="connectorName">
 <h3>connectorName</h3>
 <div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">connectorName</span></div>
@@ -395,6 +382,24 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="permittedSynchronization">
 <h3>permittedSynchronization</h3>
 <div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../contextmanager/PermittedSynchronization.html" title="enum class in org.odpi.openmetadata.frameworks.integration.contextmanager">PermittedSynchronization</a></span>&nbsp;<span class="element-name">permittedSynchronization</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="externalSourceGUID">
+<h3>externalSourceGUID</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">externalSourceGUID</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="externalSourceName">
+<h3>externalSourceName</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">externalSourceName</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="externalSourceIsHome">
+<h3>externalSourceIsHome</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">externalSourceIsHome</span></div>
 </section>
 </li>
 <li>
@@ -510,6 +515,26 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>string name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setMetadataSourceQualifiedName(java.lang.String)">
+<h3>setMetadataSourceQualifiedName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMetadataSourceQualifiedName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataSourceQualifiedName)</span>
+                                    throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Change the metadata collection that is in use when working with open metadata.  It should be the qualified name
+ of a software capability,  The qualified name is supplied through open metadata values and may be incorrect
+ which is why any exceptions from retrieving the software capability are passed through to the caller.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>metadataSourceQualifiedName</code> - supplied qualified name for the metadata collection</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the unique name is null or not known.</dd>
+<dd><code><a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the caller's userId is not able to access the element</dd>
+<dd><code><a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem accessing the metadata store</dd>
 </dl>
 </section>
 </li>

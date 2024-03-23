@@ -107,7 +107,7 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button><button id="method-summary-table-tab6" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab6', 3)" class="table-tab">Deprecated Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel">
 <div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
 <div class="table-header col-first">Modifier and Type</div>
@@ -163,10 +163,11 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of annotation types (survey action service only).</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6"><code><a href="#getSupportedGuards()" class="member-name-link">getSupportedGuards</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6">
-<div class="block"><span class="deprecated-label">Deprecated.</span></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfigurationPropertyType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSupportedConfigurationProperties()" class="member-name-link">getSupportedConfigurationProperties</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of supported configuration property types that describe how the connector's
+ behaviour can be modified.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/controls/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">RequestParameterType</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSupportedRequestParameters()" class="member-name-link">getSupportedRequestParameters</a>()</code></div>
@@ -234,23 +235,29 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the list of annotation types (survey action service only).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSupportedRequestParameters(java.util.List)" class="member-name-link">setSupportedRequestParameters</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/controls/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">RequestParameterType</a>&gt;&nbsp;supportedRequestParameters)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSupportedConfigurationProperties(java.util.List)" class="member-name-link">setSupportedConfigurationProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfigurationPropertyType</a>&gt;&nbsp;supportedConfigurationProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up request parameters returned are used by the governance service to control its behaviour.</div>
+<div class="block">Set up the list of supported configuration property types that describe how the connector's
+ behaviour can be modified.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSupportedRequestTypes(java.util.List)" class="member-name-link">setSupportedRequestTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/controls/RequestTypeType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">RequestTypeType</a>&gt;&nbsp;supportedRequestTypes)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSupportedRequestParameters(java.util.List)" class="member-name-link">setSupportedRequestParameters</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/controls/RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">RequestParameterType</a>&gt;&nbsp;supportedRequestParameters)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the supported request types.</div>
+<div class="block">Set up request parameters returned are used by the governance service to control its behaviour.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUsesBlockingCalls(boolean)" class="member-name-link">setUsesBlockingCalls</a><wbr>(boolean&nbsp;usesBlockingCalls)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSupportedRequestTypes(java.util.List)" class="member-name-link">setSupportedRequestTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/governanceaction/controls/RequestTypeType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">RequestTypeType</a>&gt;&nbsp;supportedRequestTypes)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the supported request types.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUsesBlockingCalls(boolean)" class="member-name-link">setUsesBlockingCalls</a><wbr>(boolean&nbsp;usesBlockingCalls)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up if the connector should be started in its own thread to allow it to block on a listening call.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">JSON-style toString</div>
 </div>
 </div>
@@ -385,6 +392,30 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>usesBlockingCalls</code> - boolean flag</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSupportedConfigurationProperties()">
+<h3>getSupportedConfigurationProperties</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfigurationPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getSupportedConfigurationProperties</span>()</div>
+<div class="block">Return the list of supported configuration property types that describe how the connector's
+ behaviour can be modified.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of configuration property types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setSupportedConfigurationProperties(java.util.List)">
+<h3>setSupportedConfigurationProperties</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSupportedConfigurationProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfigurationPropertyType</a>&gt;&nbsp;supportedConfigurationProperties)</span></div>
+<div class="block">Set up the list of supported configuration property types that describe how the connector's
+ behaviour can be modified.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>supportedConfigurationProperties</code> - list of configuration property types</dd>
 </dl>
 </section>
 </li>
@@ -541,21 +572,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>producedActionTargetTypes</code> - list of action target names with special meaning</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getSupportedGuards()">
-<h3>getSupportedGuards</h3>
-<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getSupportedGuards</span>()</div>
-<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
-<div class="block">The guards describe the output assessment from the governance action service.  The list returned is the complete list of
- guards to expect from the governance action service.  They are used when defining governance action processes that choreograph
- the execution of governance action services using the guards to determine the path in the process to take.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>list of guards produced by this service</dd>
 </dl>
 </section>
 </li>
