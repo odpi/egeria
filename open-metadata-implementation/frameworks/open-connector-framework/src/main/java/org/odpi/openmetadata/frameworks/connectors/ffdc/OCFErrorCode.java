@@ -201,6 +201,43 @@ public enum OCFErrorCode implements ExceptionMessageSet
                            "Change the connector logic to use a different name for the statistic."),
 
     /**
+     * OCF-CONNECTOR-400-005 - Asset {0} is of type {1} but the {2} connector only supports the following asset type(s): {3}
+     */
+    INVALID_ASSET_TYPE(400, "SURVEY-ACTION-SERVICE-400-005",
+                       "Asset {0} is of type {1} but the {2} connector only supports the following asset type(s): {3}",
+                       "The connector terminates.",
+                       "The caller has requested a connector work with the wrong type of asset.  It should be reconfigured with the correct type of asset and rerun."),
+
+
+    /**
+     * OCF-CONNECTOR-400-006 - Asset {0} has a root schema of type {1} but survey action service {2} only supports the following root schema type(s): {3}
+     */
+    INVALID_ROOT_SCHEMA_TYPE(400, "OCF-CONNECTOR-400-006",
+                             "Asset {0} has a root schema of type {1} but connector {2} only supports the following root schema type(s): {3}",
+                             "The connector terminates because it can not proceed.",
+                             "The caller has requested a governance request type that is unable to process a root schema for an asset because its type is unsupported." +
+                                     "  This problem could be resolved by issuing the survey request with " +
+                                     "a governance request type that is compatible with the asset's schema, or changing the connector " +
+                                     "associated with the governance request type to one that supports this type of schema."),
+
+    /**
+     * OCF-CONNECTOR-400-007 - {0} asset {1} describes a resource called {2} which is of type {3} but connector {4} only supports the following type(s) of resources: {5}
+     */
+    INVALID_RESOURCE(400, "OCF-CONNECTOR-400-007",
+                     "{0} asset {1} describes a resource called {2} which is of type {3} but connector {4} only supports the following type(s) of resources: {5}",
+                     "The connector terminates because it does not know how to process this type of resource.",
+                     "There is a mismatch between the asset in the open metadata catalog and the resource that it represents. Update the asset in the asset catalog so that it is matched with more appropriate services."),
+
+    /**
+     * SURVEY-ACTION-SERVICE-400-008 - {0} asset {1} describes a resource called {2} does not exist
+     */
+    NO_RESOURCE(400, "OCF-CONNECTOR-400-008",
+                "{0} asset {1} describes a resource called {2} that does not exist",
+                "The connector terminates because it does not have access to the resource.",
+                "Ensure the resource is correctly identified in the asset. Rerun this request when the resource is created."),
+
+
+    /**
      * OCF-CONNECTOR-404-001 - Endpoint {0} in connection {1} for connector instance {2} is either unknown or unavailable
      */
     UNKNOWN_ENDPOINT(404, "OCF-CONNECTOR-404-001",
@@ -265,6 +302,22 @@ public enum OCFErrorCode implements ExceptionMessageSet
             "Internal error in OCF method {0}",
             "The system detected an error during connection processing.",
             "The root cause of the error is captured in previous reported messages."),
+
+    /**
+     * OCF-CONNECTOR-500-002 - No information about the asset {0} has been returned from the asset store for connector {1}
+     */
+    NO_ASSET(500, "OCF-CONNECTOR-500-002",
+             "No information about the asset {0} has been returned from the asset store for connector {1}",
+             "The connector terminates without running the requested function.",
+             "This is an unexpected condition because if the metadata server was unavailable, an exception would have been caught."),
+
+    /**
+     * OCF-CONNECTOR-500-003 - No type name is available for the asset passed to connector {0}.  The full asset contents are: {1}
+     */
+    NO_ASSET_TYPE(500, "OCF-CONNECTOR-500-003",
+                  "No type name is available for the asset passed to connector {0}.  The full asset contents are: {1}",
+                  "The connector terminates without running the requested function.",
+                  "This is an unexpected condition because this value should always be returned with an asset."),
 
     /**
      * OCF-CONNECTOR-500-006 - The class name for the connector is not set up

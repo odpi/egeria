@@ -272,21 +272,22 @@ public class OpenMetadataTypesArchive2_11
      */
     private EntityDef addAPIManagerEntity()
     {
-        final String guid            = "283a127d-3acd-4d64-b558-1fce9db9a35b";
-        final String name            = "APIManager";
-        final String description     = "A capability that manages callable APIs.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.API_MANAGER.typeGUID;
+        final String name            = OpenMetadataType.API_MANAGER.typeName;
+        final String description     = OpenMetadataType.API_MANAGER.description;
+        final String descriptionGUID = OpenMetadataType.API_MANAGER.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.API_MANAGER.wikiURL;
 
-        final String superTypeName = "SoftwareServerCapability";
+        final String superTypeName = OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
-                                                 descriptionGUID);
+                                                 descriptionGUID,
+                                                 descriptionWiki);
 
     }
-
 
 
     /**
@@ -296,18 +297,20 @@ public class OpenMetadataTypesArchive2_11
      */
     private EntityDef addEventBrokerEntity()
     {
-        final String guid            = "309dfc3c-663b-4732-957b-e4a084436314";
-        final String name            = "EventBroker";
-        final String description     = "A capability that supports event-based services, typically around topics.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.EVENT_BROKER.typeGUID;
+        final String name            = OpenMetadataType.EVENT_BROKER.typeName;
+        final String description     = OpenMetadataType.EVENT_BROKER.description;
+        final String descriptionGUID = OpenMetadataType.EVENT_BROKER.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.EVENT_BROKER.wikiURL;
 
-        final String superTypeName = "SoftwareServerCapability";
+        final String superTypeName = OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
-                                                 descriptionGUID);
+                                                 descriptionGUID,
+                                                 descriptionWiki);
 
     }
 

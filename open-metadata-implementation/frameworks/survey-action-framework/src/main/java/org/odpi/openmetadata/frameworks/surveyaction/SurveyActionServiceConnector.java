@@ -9,6 +9,12 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
+import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
+import org.odpi.openmetadata.frameworks.connectors.properties.Connections;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.surveyaction.ffdc.SAFAuditCode;
 import org.odpi.openmetadata.frameworks.surveyaction.ffdc.SAFErrorCode;
 
@@ -126,6 +132,30 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
         validateIsActive(methodName);
         return surveyContext.getAnnotationStore();
     }
+
+
+    /**
+     * Log that the survey action service can not process the type of asset it has been passed.
+     *
+     * @param assetGUID identifier of the asset
+     * @param assetType type of the asset
+     * @param supportedAssetType supported asset types
+     * @param methodName calling method
+     * @throws ConnectorCheckedException resulting exception
+     */
+    protected void throwWrongTypeOfAsset(String    assetGUID,
+                                         String    assetType,
+                                         String    supportedAssetType,
+                                         String    methodName) throws ConnectorCheckedException
+    {
+        throw new ConnectorCheckedException(SAFErrorCode.INVALID_ASSET_TYPE.getMessageDefinition(assetGUID,
+                                                                                                 assetType,
+                                                                                                 surveyActionServiceName,
+                                                                                                 supportedAssetType),
+                                            this.getClass().getName(),
+                                            methodName);
+    }
+
 
 
     /**

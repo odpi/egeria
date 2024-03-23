@@ -56,6 +56,7 @@ public class QualifiedNamePeerDuplicateGovernanceActionProvider extends Governan
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
+        connectorType.setDeployedImplementationType(supportedDeployedImplementationType);
 
         super.connectorTypeBean = connectorType;
     }

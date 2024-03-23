@@ -2815,8 +2815,8 @@ public class ITInfrastructureRESTServices
                                                requestBody.getExternalSourceName(),
                                                capabilityGUID,
                                                elementGUIDParameterName,
-                                               OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
-                                               OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                               OpenMetadataType.SOFTWARE_CAPABILITY.typeGUID,
+                                               OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                null,
                                                null,
                                                false,
@@ -2856,10 +2856,10 @@ public class ITInfrastructureRESTServices
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public SoftwareCapabilityListResponse findSoftwareCapabilities(String                  serverName,
-                                                                         String                  userId,
-                                                                         int                     startFrom,
-                                                                         int                     pageSize,
-                                                                         SearchStringRequestBody requestBody)
+                                                                   String                  userId,
+                                                                   int                     startFrom,
+                                                                   int                     pageSize,
+                                                                   SearchStringRequestBody requestBody)
     {
         final String methodName                = "findSoftwareCapabilities";
         final String searchStringParameterName = "searchString";
@@ -2880,8 +2880,8 @@ public class ITInfrastructureRESTServices
                 List<SoftwareCapabilityElement> capabilities = handler.findBeans(userId,
                                                                                  requestBody.getSearchString(),
                                                                                  searchStringParameterName,
-                                                                                 OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
-                                                                                 OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                                 OpenMetadataType.SOFTWARE_CAPABILITY.typeGUID,
+                                                                                 OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                                  null,
                                                                                  startFrom,
                                                                                  pageSize,
@@ -2919,10 +2919,10 @@ public class ITInfrastructureRESTServices
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public SoftwareCapabilityListResponse getSoftwareCapabilitiesByName(String          serverName,
-                                                                              String          userId,
-                                                                              int             startFrom,
-                                                                              int             pageSize,
-                                                                              NameRequestBody requestBody)
+                                                                        String          userId,
+                                                                        int             startFrom,
+                                                                        int             pageSize,
+                                                                        NameRequestBody requestBody)
     {
         final String methodName        = "getSoftwareCapabilitiesByName";
         final String nameParameterName = "name";
@@ -2944,14 +2944,13 @@ public class ITInfrastructureRESTServices
                 specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
                 specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
                 specificMatchPropertyNames.add(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
-                specificMatchPropertyNames.add(OpenMetadataType.CAPABILITY_TYPE_PROPERTY_NAME);
-                specificMatchPropertyNames.add(OpenMetadataType.CAPABILITY_TYPE_PROPERTY_NAME_DEP1);
+                specificMatchPropertyNames.add(OpenMetadataProperty.CAPABILITY_TYPE.name);
 
                 List<SoftwareCapabilityElement> capabilities = handler.getBeansByValue(userId,
                                                                                        requestBody.getName(),
                                                                                        nameParameterName,
-                                                                                       OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
-                                                                                       OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                                       OpenMetadataType.SOFTWARE_CAPABILITY.typeGUID,
+                                                                                       OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                                        specificMatchPropertyNames,
                                                                                        true,
                                                                                        null,
@@ -3010,7 +3009,7 @@ public class ITInfrastructureRESTServices
             SoftwareCapabilityElement capability = handler.getBeanFromRepository(userId,
                                                                                  guid,
                                                                                  guidParameterName,
-                                                                                 OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                                 OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                                  false,
                                                                                  false,
                                                                                  new Date(),
@@ -3044,12 +3043,12 @@ public class ITInfrastructureRESTServices
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    private List<SoftwareCapabilityElement> setUpVendorProperties(String                                                           userId,
-                                                                  List<SoftwareCapabilityElement>                            retrievedResults,
+    private List<SoftwareCapabilityElement> setUpVendorProperties(String                                               userId,
+                                                                  List<SoftwareCapabilityElement>                      retrievedResults,
                                                                   SoftwareCapabilityHandler<SoftwareCapabilityElement> handler,
-                                                                  String                                                           methodName) throws InvalidParameterException,
-                                                                                                                                                            UserNotAuthorizedException,
-                                                                                                                                                            PropertyServerException
+                                                                  String                                               methodName) throws InvalidParameterException,
+                                                                                                                                          UserNotAuthorizedException,
+                                                                                                                                          PropertyServerException
     {
         if (retrievedResults != null)
         {
@@ -3156,16 +3155,17 @@ public class ITInfrastructureRESTServices
                                                     requestBody.getExternalSourceName(),
                                                     capabilityGUID,
                                                     capabilityGUIDParameterName,
-                                                    OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                    OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                     assetGUID,
                                                     assetGUIDParameterName,
                                                     OpenMetadataType.ASSET.typeName,
                                                     false,
                                                     false,
-                                                    OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
-                                                    OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
+                                                    OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
+                                                    OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
                                                     this.getServerAssetUseProperties(requestBody.getProperties(),
-                                                                                     instanceHandler.getRepositoryHelper(userId, serverName,
+                                                                                     instanceHandler.getRepositoryHelper(userId,
+                                                                                                                         serverName,
                                                                                                                          methodName),
                                                                                      instanceHandler.getServiceName(),
                                                                                      methodName),
@@ -3181,16 +3181,17 @@ public class ITInfrastructureRESTServices
                                                     null,
                                                     capabilityGUID,
                                                     capabilityGUIDParameterName,
-                                                    OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                    OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                     assetGUID,
                                                     assetGUIDParameterName,
                                                     OpenMetadataType.ASSET.typeName,
                                                     false,
                                                     false,
-                                                    OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
-                                                    OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
+                                                    OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
+                                                    OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
                                                     this.getServerAssetUseProperties(requestBody.getProperties(),
-                                                                                     instanceHandler.getRepositoryHelper(userId, serverName,
+                                                                                     instanceHandler.getRepositoryHelper(userId,
+                                                                                                                         serverName,
                                                                                                                          methodName),
                                                                                      instanceHandler.getServiceName(),
                                                                                      methodName),
@@ -3242,7 +3243,7 @@ public class ITInfrastructureRESTServices
             {
                 instanceProperties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                                null,
-                                                                               OpenMetadataType.MAXIMUM_INSTANCES_PROPERTY_NAME,
+                                                                               OpenMetadataProperty.MAXIMUM_INSTANCES.name,
                                                                                properties.getMaximumInstances(),
                                                                                methodName);
             }
@@ -3251,7 +3252,7 @@ public class ITInfrastructureRESTServices
             {
                 instanceProperties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                                null,
-                                                                               OpenMetadataType.MINIMUM_INSTANCES_PROPERTY_NAME,
+                                                                               OpenMetadataProperty.MINIMUM_INSTANCES.name,
                                                                                properties.getMinimumInstances(),
                                                                                methodName);
             }
@@ -3262,7 +3263,7 @@ public class ITInfrastructureRESTServices
                 {
                     instanceProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                     instanceProperties,
-                                                                                    OpenMetadataType.USE_TYPE_PROPERTY_NAME,
+                                                                                    OpenMetadataProperty.USE_TYPE.name,
                                                                                     OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_GUID,
                                                                                     OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_NAME,
                                                                                     properties.getUseType().getOpenTypeOrdinal(),
@@ -3270,7 +3271,7 @@ public class ITInfrastructureRESTServices
                 }
                 catch (TypeErrorException error)
                 {
-                    throw new InvalidParameterException(error, OpenMetadataType.USE_TYPE_PROPERTY_NAME);
+                    throw new InvalidParameterException(error, OpenMetadataProperty.USE_TYPE.name);
                 }
             }
 
@@ -3322,20 +3323,26 @@ public class ITInfrastructureRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
+            SoftwareCapabilityHandler<SoftwareCapabilityElement> handler = instanceHandler.getSoftwareCapabilityHandler(userId,
+                                                                                                                        serverName,
+                                                                                                                        methodName);
 
             handler.updateRelationshipProperties(userId,
                                                  requestBody.getExternalSourceGUID(),
                                                  requestBody.getExternalSourceName(),
                                                  serverAssetUseGUID,
                                                  elementGUIDParameterName,
-                                                 OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
+                                                 OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
                                                  isMergeUpdate,
                                                  this.getServerAssetUseProperties(requestBody.getProperties(),
-                                                                                  instanceHandler.getRepositoryHelper(userId, serverName, methodName),
+                                                                                  instanceHandler.getRepositoryHelper(userId,
+                                                                                                                      serverName,
+                                                                                                                      methodName),
                                                                                   instanceHandler.getServiceName(),
                                                                                   methodName),
-                                                 false, false, new Date(),
+                                                 false,
+                                                 false,
+                                                 new Date(),
                                                  methodName);
         }
         catch (Exception error)
@@ -3386,7 +3393,7 @@ public class ITInfrastructureRESTServices
                                        requestBody.getExternalSourceName(),
                                        serverAssetUseGUID,
                                        elementGUIDParameterName,
-                                       OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
+                                       OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
                                        false,
                                        false,
                                        null,
@@ -3439,14 +3446,14 @@ public class ITInfrastructureRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             SoftwareCapabilityHandler<SoftwareCapabilityElement> handler      = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
-            AssetHandler<AssetElement>                                 assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement>                           assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             List<Relationship> relationships = handler.getAttachmentLinks(userId,
                                                                           capabilityGUID,
                                                                           elementGUIDParameterName,
-                                                                          OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
-                                                                          OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
-                                                                          OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
+                                                                          OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                                                                          OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
+                                                                          OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
                                                                           null,
                                                                           OpenMetadataType.ASSET.typeName,
                                                                           0,
@@ -3512,16 +3519,16 @@ public class ITInfrastructureRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             SoftwareCapabilityHandler<SoftwareCapabilityElement> handler      = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
-            AssetHandler<AssetElement>                                 assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement>                           assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             List<Relationship> relationships = handler.getAttachmentLinks(userId,
                                                                           assetGUID,
                                                                           elementGUIDParameterName,
                                                                           OpenMetadataType.ASSET.typeName,
-                                                                          OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
-                                                                          OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
+                                                                          OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
+                                                                          OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
                                                                           null,
-                                                                          OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                          OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                           0,
                                                                           false,
                                                                           false,
@@ -3592,9 +3599,9 @@ public class ITInfrastructureRESTServices
             List<Relationship> relationships = handler.getAttachmentLinks(userId,
                                                                           capabilityGUID,
                                                                           capabilityGUIDParameterName,
-                                                                          OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
-                                                                          OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
-                                                                          OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
+                                                                          OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                                                                          OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
+                                                                          OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
                                                                           assetGUID,
                                                                           OpenMetadataType.ASSET.typeName,
                                                                           0,
@@ -3654,12 +3661,12 @@ public class ITInfrastructureRESTServices
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             SoftwareCapabilityHandler<SoftwareCapabilityElement> handler      = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
-            AssetHandler<AssetElement>                                 assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<AssetElement>                           assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             Relationship relationship = handler.getAttachmentLink(userId,
                                                                   guid,
                                                                   elementGUIDParameterName,
-                                                                  OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
+                                                                  OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
                                                                   null,
                                                                   methodName);
 
@@ -3714,8 +3721,8 @@ public class ITInfrastructureRESTServices
                                                                   String                     serviceName,
                                                                   String                     serverName,
                                                                   String                     methodName) throws InvalidParameterException,
-                                                                                                                 UserNotAuthorizedException,
-                                                                                                                 PropertyServerException
+                                                                                                                UserNotAuthorizedException,
+                                                                                                                PropertyServerException
     {
         List<ServerAssetUseElement> results = new ArrayList<>();
 
@@ -3726,7 +3733,14 @@ public class ITInfrastructureRESTServices
             {
                 if (relationship != null)
                 {
-                    ServerAssetUseElement result = getServerAssetUseElement(userId, relationship, useType, assetHandler, repositoryHelper, serviceName, serverName, methodName);
+                    ServerAssetUseElement result = getServerAssetUseElement(userId,
+                                                                            relationship,
+                                                                            useType,
+                                                                            assetHandler,
+                                                                            repositoryHelper,
+                                                                            serviceName,
+                                                                            serverName,
+                                                                            methodName);
 
                     if (result != null)
                     {
@@ -3781,7 +3795,7 @@ public class ITInfrastructureRESTServices
         InstanceProperties instanceProperties = relationship.getProperties();
 
         int propertyUseTypeOrdinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                                OpenMetadataType.USE_TYPE_PROPERTY_NAME,
+                                                                                OpenMetadataProperty.USE_TYPE.name,
                                                                                 instanceProperties,
                                                                                 methodName);
 
@@ -3828,21 +3842,21 @@ public class ITInfrastructureRESTServices
                     {
                         String propertyName = propertyNames.next();
 
-                        if (OpenMetadataType.MAXIMUM_INSTANCES_PROPERTY_NAME.equals(propertyName))
+                        if (OpenMetadataProperty.MAXIMUM_INSTANCES.name.equals(propertyName))
                         {
                             properties.setMaximumInstancesSet(true);
 
                             properties.setMaximumInstances(repositoryHelper.getIntProperty(serviceName,
-                                                                                           OpenMetadataType.MAXIMUM_INSTANCES_PROPERTY_NAME,
+                                                                                           OpenMetadataProperty.MAXIMUM_INSTANCES.name,
                                                                                            relationship.getProperties(),
                                                                                            methodName));
                         }
-                        else if (OpenMetadataType.MINIMUM_INSTANCES_PROPERTY_NAME.equals(propertyName))
+                        else if (OpenMetadataProperty.MINIMUM_INSTANCES.name.equals(propertyName))
                         {
                             properties.setMinimumInstancesSet(true);
 
                             properties.setMinimumInstances(repositoryHelper.getIntProperty(serviceName,
-                                                                                           OpenMetadataType.MAXIMUM_INSTANCES_PROPERTY_NAME,
+                                                                                           OpenMetadataProperty.MAXIMUM_INSTANCES.name,
                                                                                            relationship.getProperties(),
                                                                                            methodName));
                         }
@@ -3853,7 +3867,7 @@ public class ITInfrastructureRESTServices
                                                                                          relationship.getProperties(),
                                                                                          methodName));
                         }
-                        else if (OpenMetadataType.USE_TYPE_PROPERTY_NAME.equals(propertyName))
+                        else if (OpenMetadataProperty.USE_TYPE.name.equals(propertyName))
                         {
 
                             for (ServerAssetUseType useTypeValue : ServerAssetUseType.values())

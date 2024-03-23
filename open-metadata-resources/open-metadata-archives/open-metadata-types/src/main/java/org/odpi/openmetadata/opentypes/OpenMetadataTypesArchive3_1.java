@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
@@ -544,7 +545,7 @@ public class OpenMetadataTypesArchive3_1
         /*
          * Create the Patch
          */
-        final String typeName = "ServerAssetUse";
+        final String typeName = OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -557,12 +558,12 @@ public class OpenMetadataTypesArchive3_1
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "minimumInstances";
-        final String attribute1Description     = "Minimum number of running asset instances controlled by the software server capability.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "maximumInstances";
-        final String attribute2Description     = "Maximum number of running asset instances controlled by the software server capability.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.MINIMUM_INSTANCES.name;
+        final String attribute1Description     = OpenMetadataProperty.MINIMUM_INSTANCES.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.MINIMUM_INSTANCES.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.MAXIMUM_INSTANCES.name;
+        final String attribute2Description     = OpenMetadataProperty.MAXIMUM_INSTANCES.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.MAXIMUM_INSTANCES.descriptionGUID;
 
 
         property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
@@ -673,39 +674,42 @@ public class OpenMetadataTypesArchive3_1
     }
 
 
-
     private EntityDef addCatalogEntity()
     {
-        final String guid = "f4fffcc0-d9eb-4bb9-8aff-0718932f689e";
+        final String guid = OpenMetadataType.CATALOG.typeGUID;
 
-        final String name            = "Catalog";
-        final String description     = "A capability that manages collections of descriptions about people, places, digital assets, things, ...";
-        final String descriptionGUID = null;
+        final String name            = OpenMetadataType.CATALOG.typeName;
+        final String description     = OpenMetadataType.CATALOG.description;
+        final String descriptionGUID = OpenMetadataType.CATALOG.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.CATALOG.wikiURL;
 
-        final String superTypeName = "SoftwareServerCapability";
+        final String superTypeName = OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
-                                                 descriptionGUID);
+                                                 descriptionGUID,
+                                                 descriptionWiki);
     }
 
     private EntityDef addDataManagerEntity()
     {
-        final String guid = "82efa1fa-501f-4ac7-942c-6536c4a1cd61";
+        final String guid = OpenMetadataType.DATA_MANAGER.typeGUID;
 
-        final String name            = "DataManager";
-        final String description     = "A capability that manages collections of data.";
-        final String descriptionGUID = null;
+        final String name            = OpenMetadataType.DATA_MANAGER.typeName;
+        final String description     = OpenMetadataType.DATA_MANAGER.description;
+        final String descriptionGUID = OpenMetadataType.DATA_MANAGER.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.DATA_MANAGER.wikiURL;
 
-        final String superTypeName = "SoftwareServerCapability";
+        final String superTypeName = OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
-                                                 descriptionGUID);
+                                                 descriptionGUID,
+                                                 descriptionWiki);
     }
 
 

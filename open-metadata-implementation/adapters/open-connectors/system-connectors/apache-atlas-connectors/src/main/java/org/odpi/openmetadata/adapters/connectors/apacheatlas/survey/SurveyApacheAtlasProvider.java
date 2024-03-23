@@ -71,6 +71,7 @@ public class SurveyApacheAtlasProvider extends SurveyActionServiceProvider
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(SurveyActionServiceProvider.supportedAssetTypeName);
+        connectorType.setDeployedImplementationType(supportedDeployedImplementationType);
 
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add(AtlasRequestParameter.FINAL_ANALYSIS_STEP.getName());
@@ -83,7 +84,7 @@ public class SurveyApacheAtlasProvider extends SurveyActionServiceProvider
                 AnalysisStep.SCHEMA_EXTRACTION,
                 AnalysisStep.PROFILE_DATA });
 
-        supportedAnnotationTypes = AtlasAnnotationType.getAnnotationTypeTypes();
+        producedAnnotationTypes = AtlasAnnotationType.getAnnotationTypeTypes();
 
         supportedRequestParameters = AtlasRequestParameter.getRequestParameterTypes();
 
@@ -92,8 +93,8 @@ public class SurveyApacheAtlasProvider extends SurveyActionServiceProvider
 
         actionTargetType.setName("*");
         actionTargetType.setDescription("Any Software Server entity that represents an Apache Atlas server linked to the connection for the Apache Atlas REST API connector.");
-        actionTargetType.setTypeName(DeployedImplementationType.APACHE_ATLAS.getAssociatedTypeName());
-        actionTargetType.setDeployedImplementationType(DeployedImplementationType.APACHE_ATLAS.getDeployedImplementationType());
+        actionTargetType.setTypeName(DeployedImplementationType.APACHE_ATLAS_SERVER.getAssociatedTypeName());
+        actionTargetType.setDeployedImplementationType(DeployedImplementationType.APACHE_ATLAS_SERVER.getDeployedImplementationType());
 
         super.supportedActionTargetTypes.add(actionTargetType);
 
