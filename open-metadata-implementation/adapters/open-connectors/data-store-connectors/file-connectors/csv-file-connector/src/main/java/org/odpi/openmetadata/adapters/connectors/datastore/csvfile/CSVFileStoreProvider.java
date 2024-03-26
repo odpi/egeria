@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,6 @@ public class CSVFileStoreProvider extends ConnectorProviderBase
 
 
     private static final String  expectedDataFormat = "csv";
-    private static final String  assetTypeName = "CSVFile";
 
     /**
      * columnNames configuration property
@@ -67,13 +67,15 @@ public class CSVFileStoreProvider extends ConnectorProviderBase
         connectorInterfaces.add(CSVFileStore.class.getName());
 
         ConnectorType connectorType = new ConnectorType();
+
         connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
         connectorType.setQualifiedName(connectorQualifiedName);
         connectorType.setDisplayName(connectorTypeName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
-        connectorType.setSupportedAssetTypeName(assetTypeName);
+        connectorType.setSupportedAssetTypeName(DeployedImplementationType.CSV_FILE.getAssociatedTypeName());
+        connectorType.setDeployedImplementationType(DeployedImplementationType.CSV_FILE.getDeployedImplementationType());
         connectorType.setExpectedDataFormat(expectedDataFormat);
         connectorType.setConnectorInterfaces(connectorInterfaces);
 

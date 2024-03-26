@@ -56,6 +56,7 @@ public class GlossaryDynamicArchiverProvider extends DynamicArchiveProvider
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
+        connectorType.setDeployedImplementationType(supportedDeployedImplementationType);
 
         if (recognizedConfigurationProperties == null)
         {

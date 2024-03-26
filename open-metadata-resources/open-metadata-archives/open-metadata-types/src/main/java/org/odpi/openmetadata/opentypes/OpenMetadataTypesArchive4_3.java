@@ -220,7 +220,7 @@ public class OpenMetadataTypesArchive4_3
         /*
          * Create the Patch
          */
-        final String typeName = "Infrastructure";
+        final String typeName = OpenMetadataType.INFRASTRUCTURE.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -264,7 +264,7 @@ public class OpenMetadataTypesArchive4_3
         /*
          * Create the Patch
          */
-        final String typeName = "ExternalId";
+        final String typeName = OpenMetadataType.EXTERNAL_ID.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -277,21 +277,21 @@ public class OpenMetadataTypesArchive4_3
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "externalInstanceCreatedBy";
-        final String attribute1Description     = "The username of the person or process that created the instance in the external system.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "externalInstanceCreationTime";
-        final String attribute2Description     = "The date/time when the instance in the external system was created.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "externalInstanceLastUpdatedBy";
-        final String attribute3Description     = "The username of the person or process that last updated the instance in the external system.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "externalInstanceLastUpdateTime";
-        final String attribute4Description     = "The date/time when the instance in the external system was last updated.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "externalInstanceVersion";
-        final String attribute5Description     = "The latest version of the element in the external system.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.EXT_INSTANCE_CREATED_BY.name;
+        final String attribute1Description     = OpenMetadataProperty.EXT_INSTANCE_CREATED_BY.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.EXT_INSTANCE_CREATED_BY.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.EXT_INSTANCE_CREATION_TIME.name;
+        final String attribute2Description     = OpenMetadataProperty.EXT_INSTANCE_CREATION_TIME.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.EXT_INSTANCE_CREATION_TIME.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.EXT_INSTANCE_LAST_UPDATED_BY.name;
+        final String attribute3Description     = OpenMetadataProperty.EXT_INSTANCE_LAST_UPDATED_BY.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.EXT_INSTANCE_LAST_UPDATED_BY.descriptionGUID;
+        final String attribute4Name            = OpenMetadataProperty.EXT_INSTANCE_LAST_UPDATE_TIME.name;
+        final String attribute4Description     = OpenMetadataProperty.EXT_INSTANCE_LAST_UPDATE_TIME.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.EXT_INSTANCE_LAST_UPDATE_TIME.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.EXT_INSTANCE_VERSION.name;
+        final String attribute5Description     = OpenMetadataProperty.EXT_INSTANCE_VERSION.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.EXT_INSTANCE_VERSION.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,

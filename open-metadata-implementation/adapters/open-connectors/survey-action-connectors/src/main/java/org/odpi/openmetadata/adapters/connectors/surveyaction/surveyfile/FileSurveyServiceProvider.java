@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImpleme
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * FileSurveyServiceProvider provides the connector provider for the File Survey Action Service
@@ -58,6 +57,7 @@ public class FileSurveyServiceProvider extends SurveyActionServiceProvider
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
+        connectorType.setDeployedImplementationType(supportedDeployedImplementationType);
 
         super.connectorTypeBean = connectorType;
 
@@ -71,7 +71,7 @@ public class FileSurveyServiceProvider extends SurveyActionServiceProvider
 
         super.supportedActionTargetTypes.add(actionTargetType);
 
-        super.supportedAnnotationTypes = SurveyFileAnnotationType.getAnnotationTypeTypes();
+        super.producedAnnotationTypes = SurveyFileAnnotationType.getAnnotationTypeTypes();
 
         /*
          * Set up the component description used in the connector's audit log messages.

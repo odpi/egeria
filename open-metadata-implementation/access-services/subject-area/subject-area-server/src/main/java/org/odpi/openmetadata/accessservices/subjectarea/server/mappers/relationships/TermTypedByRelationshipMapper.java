@@ -39,7 +39,7 @@ public class TermTypedByRelationshipMapper extends RelationshipMapper<TypedBy> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termTYPEDBYRelationship.getSteward(), OpenMetadataType.STEWARD_PROPERTY_NAME);
         }
         if (termTYPEDBYRelationship.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termTYPEDBYRelationship.getSource(), OpenMetadataType.SOURCE_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termTYPEDBYRelationship.getSource(), OpenMetadataProperty.SOURCE.name);
         }
         if (termTYPEDBYRelationship.getStatus() != null) {
             SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, termTYPEDBYRelationship.getStatus(), OpenMetadataType.STATUS_PROPERTY_NAME);
@@ -66,7 +66,7 @@ public class TermTypedByRelationshipMapper extends RelationshipMapper<TypedBy> {
             termTYPEDBYRelationship.setSteward(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataType.SOURCE_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.SOURCE.name)) {
             termTYPEDBYRelationship.setSource(stringValue);
             foundProperty = true;
         }

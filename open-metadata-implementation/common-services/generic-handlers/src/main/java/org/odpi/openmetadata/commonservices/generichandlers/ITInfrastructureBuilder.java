@@ -123,7 +123,7 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataType.USE_TYPE_PROPERTY_NAME,
+                                                                    OpenMetadataProperty.USE_TYPE.name,
                                                                     OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_GUID,
                                                                     OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_NAME,
                                                                     useType,
@@ -131,7 +131,7 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataType.USE_TYPE_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataProperty.USE_TYPE.name);
         }
 
         setEffectivityDates(properties);

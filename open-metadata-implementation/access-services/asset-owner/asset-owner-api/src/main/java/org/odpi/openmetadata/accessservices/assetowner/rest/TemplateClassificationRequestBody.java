@@ -23,8 +23,6 @@ public class TemplateClassificationRequestBody extends AssetOwnerOMASAPIRequestB
 {
     private String              name                 = null;
     private String              description          = null;
-    private Map<String, String> replacementProperties = null;
-    private Map<String, String> placeholderProperties = null;
     private Map<String, String> additionalProperties = null;
 
 
@@ -50,8 +48,6 @@ public class TemplateClassificationRequestBody extends AssetOwnerOMASAPIRequestB
         {
             name = template.getName();
             description = template.getDescription();
-            replacementProperties = template.getReplacementProperties();
-            placeholderProperties = template.getPlaceholderProperties();
             additionalProperties = template.getAdditionalProperties();
         }
     }
@@ -104,50 +100,6 @@ public class TemplateClassificationRequestBody extends AssetOwnerOMASAPIRequestB
 
 
     /**
-     * Return map of attribute names to description that should be replaced in the parent entity.
-     *
-     * @return string map
-     */
-    public Map<String, String> getReplacementProperties()
-    {
-        return replacementProperties;
-    }
-
-
-    /**
-     * Set up map of attribute names to description that should be replaced in the parent entity.
-     *
-     * @param replacementProperties string map
-     */
-    public void setReplacementProperties(Map<String, String> replacementProperties)
-    {
-        this.replacementProperties = replacementProperties;
-    }
-
-
-    /**
-     * Return map of placeholder property names to description used throughout the template.
-     *
-     * @return string map
-     */
-    public Map<String, String> getPlaceholderProperties()
-    {
-        return placeholderProperties;
-    }
-
-
-    /**
-     * Set up map of placeholder property names to description used throughout the template.
-     *
-     * @param placeholderProperties string name
-     */
-    public void setPlaceholderProperties(Map<String, String> placeholderProperties)
-    {
-        this.placeholderProperties = placeholderProperties;
-    }
-
-
-    /**
      * Return a copy of the additional properties.  Null means no additional properties are available.
      *
      * @return AdditionalProperties
@@ -167,8 +119,6 @@ public class TemplateClassificationRequestBody extends AssetOwnerOMASAPIRequestB
     {
         this.additionalProperties = additionalProperties;
     }
-
-
 
 
     /**
@@ -207,8 +157,6 @@ public class TemplateClassificationRequestBody extends AssetOwnerOMASAPIRequestB
         TemplateClassificationRequestBody that = (TemplateClassificationRequestBody) objectToCompare;
         return Objects.equals(name, that.name) &&
                        Objects.equals(description, that.description) &&
-                       Objects.equals(replacementProperties, that.replacementProperties) &&
-                Objects.equals(placeholderProperties, that.placeholderProperties) &&
                 Objects.equals(additionalProperties, that.additionalProperties);
     }
 
@@ -221,6 +169,6 @@ public class TemplateClassificationRequestBody extends AssetOwnerOMASAPIRequestB
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), name, description, replacementProperties, placeholderProperties, additionalProperties);
+        return Objects.hash(super.hashCode(), name, description, additionalProperties);
     }
 }

@@ -140,7 +140,7 @@ public class ExternalIdentifierConverter<B> extends AssetManagerOMASConverter<B>
                             {
                                 if (repositoryHelper.isTypeOf(serviceName,
                                                               relationship.getType().getTypeDefName(),
-                                                              OpenMetadataType.EXTERNAL_ID_SCOPE_TYPE_NAME))
+                                                              OpenMetadataType.EXTERNAL_ID_SCOPE_RELATIONSHIP.typeName))
                                 {
                                     instanceProperties = new InstanceProperties(relationship.getProperties());
 
@@ -155,7 +155,7 @@ public class ExternalIdentifierConverter<B> extends AssetManagerOMASConverter<B>
                                 }
                                 else if (repositoryHelper.isTypeOf(serviceName,
                                                                    relationship.getType().getTypeDefName(),
-                                                                   OpenMetadataType.REFERENCEABLE_TO_EXTERNAL_ID_TYPE_NAME))
+                                                                   OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName))
                                 {
                                     instanceProperties = new InstanceProperties(relationship.getProperties());
 

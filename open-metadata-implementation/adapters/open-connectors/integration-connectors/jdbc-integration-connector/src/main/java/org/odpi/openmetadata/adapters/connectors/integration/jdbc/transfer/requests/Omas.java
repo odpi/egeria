@@ -93,16 +93,6 @@ public class Omas {
         return new OmasCreateEndpoint(databaseIntegratorContext, auditLog).apply(newEndpointProperties);
     }
 
-    /**
-     * Create connection
-     *
-     * @param newConnectionProperties properties
-     *
-     * @return guid
-     */
-    public Optional<String> createConnection(ConnectionProperties newConnectionProperties){
-        return new OmasCreateConnection(databaseIntegratorContext, auditLog).apply(newConnectionProperties);
-    }
 
     /**
      * Create database
@@ -300,6 +290,7 @@ public class Omas {
         return new OmasGetDatabasesByName(databaseIntegratorContext, auditLog).apply(databaseQualifiedName);
     }
 
+
     /**
      * Get connector types by name
      *
@@ -343,36 +334,4 @@ public class Omas {
     public List<DatabaseColumnElement> findDatabaseColumns(String searchBy){
         return new OmasFindDatabaseColumns(databaseIntegratorContext, auditLog).apply(searchBy);
     }
-
-    /**
-     * Setup connector type
-     *
-     * @param connectionGuid guid
-     * @param connectorTypeGuid guid
-     */
-    public void setupConnectorType(String connectionGuid, String connectorTypeGuid){
-        new OmasSetupConnectorType(databaseIntegratorContext, auditLog).accept(connectionGuid, connectorTypeGuid);
-    }
-
-    /**
-     * Setup asset connection
-     *
-     * @param assetGuid guid
-     * @param assetSummary summary
-     * @param connectionGuid guid
-     */
-    public void setupAssetConnection(String assetGuid, String assetSummary, String connectionGuid){
-        new OmasSetupAssetConnection(databaseIntegratorContext, auditLog).accept(assetGuid, assetSummary, connectionGuid);
-    }
-
-    /**
-     * Setup endpoint
-     *
-     * @param connectionGuid guid
-     * @param endpointGuid guid
-     */
-    public void setupEndpoint(String connectionGuid, String endpointGuid){
-        new OmasSetupEndpoint(databaseIntegratorContext, auditLog).accept(connectionGuid, endpointGuid);
-    }
-
 }

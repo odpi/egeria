@@ -10,6 +10,8 @@ import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImpleme
 import org.odpi.openmetadata.frameworks.integration.catalogtarget.CatalogTargetType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
+import java.util.ArrayList;
+
 
 /**
  * DistributeAuditEventsFromKafkaProvider is the connector provider for the LoadAuditEventsFromKafka connector that publishes insights about
@@ -86,9 +88,11 @@ public class DistributeAuditEventsFromKafkaProvider extends IntegrationConnector
 
         CatalogTargetType catalogTargetType = new CatalogTargetType();
 
+        catalogTargetType.setName(CATALOG_TARGET_NAME);
         catalogTargetType.setTypeName(DeployedImplementationType.APACHE_KAFKA_TOPIC.getAssociatedTypeName());
         catalogTargetType.setDeployedImplementationType(DeployedImplementationType.APACHE_KAFKA_TOPIC.getDeployedImplementationType());
 
-        super.catalogTargetTypes.put(CATALOG_TARGET_NAME, catalogTargetType);
+        super.catalogTargets = new ArrayList<>();
+        super.catalogTargets.add(catalogTargetType);
     }
 }

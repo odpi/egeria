@@ -217,8 +217,8 @@ public class SecurityManagerRESTServices
             SoftwareCapabilityHandler<SecurityManagerElement> handler = instanceHandler.getSoftwareCapabilityHandler(userId, serverName, methodName);
 
             response.setGUID(handler.getBeanGUIDByQualifiedName(userId,
-                                                                OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
-                                                                OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                OpenMetadataType.SOFTWARE_CAPABILITY.typeGUID,
+                                                                OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                 qualifiedName,
                                                                 parameterName,
                                                                 false,

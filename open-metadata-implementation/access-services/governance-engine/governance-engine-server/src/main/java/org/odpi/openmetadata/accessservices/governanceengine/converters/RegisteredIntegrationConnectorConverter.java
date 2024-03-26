@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.converters;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.IntegrationConnectorElement;
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.RegisteredIntegrationConnectorElement;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredIntegrationConnectorProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -113,7 +114,7 @@ public class RegisteredIntegrationConnectorConverter
         if (instanceProperties != null)
         {
             int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataType.PERMITTED_SYNC_PROPERTY_NAME,
+                                                                     OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
                                                                      instanceProperties,
                                                                      methodName);
 

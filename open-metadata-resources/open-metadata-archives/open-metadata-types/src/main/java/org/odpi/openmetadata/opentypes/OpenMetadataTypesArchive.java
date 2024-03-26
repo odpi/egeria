@@ -160,6 +160,7 @@ public class OpenMetadataTypesArchive
         update0010BaseModel();
         update0011UpdateTemplates();
         update0021Collections();
+        update0050ApplicationsAndProcesses();
         update0137Actions();
         update0130Projects();
         update0201Connections();
@@ -288,6 +289,119 @@ public class OpenMetadataTypesArchive
      * -------------------------------------------------------------------------------------------------------
      */
 
+    /**
+     * Add more software server capabilities
+     */
+    private void update0050ApplicationsAndProcesses()
+    {
+        this.archiveBuilder.addEntityDef(addRESTAPIManagerEntity());
+        this.archiveBuilder.addEntityDef(addEventManagerEntity());
+        this.archiveBuilder.addEntityDef(addAuthorizationManagerEntity());
+        this.archiveBuilder.addEntityDef(addUserAuthenticationManagerEntity());
+    }
+
+
+    /**
+     * This new subtype of software server capability for API managers.
+     *
+     * @return entity definition
+     */
+    private EntityDef addRESTAPIManagerEntity()
+    {
+        final String guid            = OpenMetadataType.REST_API_MANAGER.typeGUID;
+        final String name            = OpenMetadataType.REST_API_MANAGER.typeName;
+        final String description     = OpenMetadataType.REST_API_MANAGER.description;
+        final String descriptionGUID = OpenMetadataType.REST_API_MANAGER.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.REST_API_MANAGER.wikiURL;
+
+        final String superTypeName = OpenMetadataType.API_MANAGER.typeName;
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID,
+                                                 descriptionWiki);
+
+    }
+
+
+    /**
+     * This new subtype of software server capability for event managers.
+     *
+     * @return entity definition
+     */
+    private EntityDef addEventManagerEntity()
+    {
+        final String guid            = OpenMetadataType.EVENT_MANAGER.typeGUID;
+        final String name            = OpenMetadataType.EVENT_MANAGER.typeName;
+        final String description     = OpenMetadataType.EVENT_MANAGER.description;
+        final String descriptionGUID = OpenMetadataType.EVENT_MANAGER.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.EVENT_MANAGER.wikiURL;
+
+        final String superTypeName = OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName;
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID,
+                                                 descriptionWiki);
+    }
+
+
+    /**
+     * This new subtype of software server capability for event managers.
+     *
+     * @return entity definition
+     */
+    private EntityDef addAuthorizationManagerEntity()
+    {
+        final String guid            = OpenMetadataType.AUTHORIZATION_MANAGER.typeGUID;
+        final String name            = OpenMetadataType.AUTHORIZATION_MANAGER.typeName;
+        final String description     = OpenMetadataType.AUTHORIZATION_MANAGER.description;
+        final String descriptionGUID = OpenMetadataType.AUTHORIZATION_MANAGER.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.AUTHORIZATION_MANAGER.wikiURL;
+
+        final String superTypeName = OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName;
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID,
+                                                 descriptionWiki);
+    }
+
+
+    /**
+     * This new subtype of software server capability for event managers.
+     *
+     * @return entity definition
+     */
+    private EntityDef addUserAuthenticationManagerEntity()
+    {
+        final String guid            = OpenMetadataType.USER_AUTHENTICATION_MANAGER.typeGUID;
+        final String name            = OpenMetadataType.USER_AUTHENTICATION_MANAGER.typeName;
+        final String description     = OpenMetadataType.USER_AUTHENTICATION_MANAGER.description;
+        final String descriptionGUID = OpenMetadataType.USER_AUTHENTICATION_MANAGER.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.USER_AUTHENTICATION_MANAGER.wikiURL;
+
+        final String superTypeName = OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName;
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID,
+                                                 descriptionWiki);
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
 
     /**
      * update0137Actions
@@ -308,10 +422,11 @@ public class OpenMetadataTypesArchive
      */
     private EntityDef addActionEntity()
     {
-        final String guid            = OpenMetadataType.ACTION_TYPE_GUID;
-        final String name            = OpenMetadataType.ACTION_TYPE_NAME;
-        final String description     = "An action that has been identified to support the development, improvement, or remedy of an object or situation.";
-        final String descriptionGUID = OpenMetadataType.ACTION_TYPE_DEFN;
+        final String guid            = OpenMetadataType.ACTION.typeGUID;
+        final String name            = OpenMetadataType.ACTION.typeName;
+        final String description     = OpenMetadataType.ACTION.description;
+        final String descriptionGUID = OpenMetadataType.ACTION.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.ACTION.wikiURL;
 
         final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
@@ -319,7 +434,8 @@ public class OpenMetadataTypesArchive
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
-                                                 descriptionGUID);
+                                                 descriptionGUID,
+                                                 descriptionWiki);
     }
 
 
@@ -334,7 +450,7 @@ public class OpenMetadataTypesArchive
          * Create the Patch
          */
         final String typeName = OpenMetadataType.TO_DO_TYPE_NAME;
-        final String superTypeName = OpenMetadataType.ACTION_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.ACTION.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -374,7 +490,7 @@ public class OpenMetadataTypesArchive
          * Create the Patch
          */
         final String typeName = OpenMetadataType.ENGINE_ACTION_TYPE_NAME;
-        final String superTypeName = OpenMetadataType.ACTION_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.ACTION.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -447,7 +563,7 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.ACTION_TYPE_NAME;
+        final String                     end2EntityType               = OpenMetadataType.ACTION.typeName;
         final String                     end2AttributeName            = "relatedActions";
         final String                     end2AttributeDescription     = "Potentially impacting requests for change.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -632,24 +748,10 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = OpenMetadataProperty.VERSION_IDENTIFIER.name;
         final String attribute1Description     = OpenMetadataProperty.VERSION_IDENTIFIER.description;
         final String attribute1DescriptionGUID = OpenMetadataProperty.VERSION_IDENTIFIER.descriptionGUID;
-        final String attribute3Name            = OpenMetadataProperty.REPLACEMENT_PROPERTIES.name;
-        final String attribute3Description     = OpenMetadataProperty.REPLACEMENT_PROPERTIES.description;
-        final String attribute3DescriptionGUID = OpenMetadataProperty.REPLACEMENT_PROPERTIES.descriptionGUID;
-        final String attribute4Name            = OpenMetadataProperty.PLACEHOLDER_PROPERTIES.name;
-        final String attribute4Description     = OpenMetadataProperty.PLACEHOLDER_PROPERTIES.description;
-        final String attribute4DescriptionGUID = OpenMetadataProperty.PLACEHOLDER_PROPERTIES.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute3Name,
-                                                                    attribute3Description,
-                                                                    attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute4Name,
-                                                                    attribute4Description,
-                                                                    attribute4DescriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);
@@ -1637,10 +1739,18 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
+        final String attribute3Name            = "metadataSourceQualifiedName";
+        final String attribute3Description     = "Qualified name of a software server capability that is the owner/home of the metadata catalogued " +
+                "by the integration connector.";
+        final String attribute3DescriptionGUID = null;
         final String attribute4Name            = "configurationProperties";
         final String attribute4Description     = "Specific configuration properties used to configure the behaviour of the connector.";
         final String attribute4DescriptionGUID = null;
 
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
         property = archiveHelper.getMapStringObjectTypeDefAttribute(attribute4Name,
                                                                     attribute4Description,
                                                                     attribute4DescriptionGUID);
