@@ -321,7 +321,7 @@ public class OpenMetadataTypesArchive2_0
         final String description     = "Identifies a software server capability as a manager of a collection of files and folders.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "SoftwareServerCapability";
+        final String linkedToEntity = OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName;
 
         return archiveHelper.getClassificationDef(guid,
                                                   name,
@@ -366,7 +366,7 @@ public class OpenMetadataTypesArchive2_0
         final String description     = "Identifies a software server capability as a manager of controlled documents and related media.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "SoftwareServerCapability";
+        final String linkedToEntity = OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName;
 
         return archiveHelper.getClassificationDef(guid,
                                                   name,
@@ -393,18 +393,20 @@ public class OpenMetadataTypesArchive2_0
 
     private EntityDef addDatabaseManagerEntity()
     {
-        final String guid            = "68b35c1e-6c28-4ac3-94f9-2c3dbcbb79e9";
-        final String name            = "DatabaseManager";
-        final String description     = "Defines a capability that manages data organized as relational schemas.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.DATABASE_MANAGER.typeGUID;
+        final String name            = OpenMetadataType.DATABASE_MANAGER.typeName;
+        final String description     = OpenMetadataType.DATABASE_MANAGER.description;
+        final String descriptionGUID = OpenMetadataType.DATABASE_MANAGER.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.DATABASE_MANAGER.wikiURL;
 
-        final String superTypeName = "SoftwareServerCapability";
+        final String superTypeName = OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
-                                                 descriptionGUID);
+                                                 descriptionGUID,
+                                                 descriptionWiki);
 
     }
 

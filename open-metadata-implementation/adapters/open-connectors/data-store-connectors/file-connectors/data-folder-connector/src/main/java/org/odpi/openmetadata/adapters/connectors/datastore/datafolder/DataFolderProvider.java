@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 
 
 /**
@@ -33,8 +34,6 @@ public class DataFolderProvider extends ConnectorProviderBase
     private static final String  connectorClass = "org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderConnector";
 
 
-    private static final String  assetTypeName = "DataFolder";
-
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific connector implementation.
      */
@@ -47,12 +46,14 @@ public class DataFolderProvider extends ConnectorProviderBase
         connectorInterfaces.add(BasicFileStore.class.getName());
 
         ConnectorType connectorType = new ConnectorType();
+
         connectorType.setType(ConnectorType.getConnectorTypeType());
         connectorType.setGUID(connectorTypeGUID);
         connectorType.setQualifiedName(connectorQualifiedName);
         connectorType.setDisplayName(connectorTypeName);
         connectorType.setDescription(connectorTypeDescription);
-        connectorType.setSupportedAssetTypeName(assetTypeName);
+        connectorType.setSupportedAssetTypeName(DeployedImplementationType.DATA_FOLDER.getAssociatedTypeName());
+        connectorType.setDeployedImplementationType(DeployedImplementationType.DATA_FOLDER.getDeployedImplementationType());
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setConnectorInterfaces(connectorInterfaces);
 

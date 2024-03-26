@@ -53,6 +53,7 @@ dependencies {
     implementation project(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples')
     implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:spring-rest-client-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-atlas-connectors')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:system-connectors:postgres-server-connectors')
     implementation project(':open-metadata-implementation:adapters:open-connectors:secrets-store-connectors:env-variable-secrets-store-connector')
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-avro-sample')
     implementation project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-csv-sample')

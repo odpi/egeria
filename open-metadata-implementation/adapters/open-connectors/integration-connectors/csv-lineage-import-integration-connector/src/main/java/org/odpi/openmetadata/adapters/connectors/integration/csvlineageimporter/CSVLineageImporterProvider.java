@@ -10,6 +10,8 @@ import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImpleme
 import org.odpi.openmetadata.frameworks.integration.catalogtarget.CatalogTargetType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
+import java.util.ArrayList;
+
 public class CSVLineageImporterProvider extends IntegrationConnectorProvider
 {
     private static final String connectorTypeGUID      = "b6e5fda2-f5ef-4fc9-861f-2e724e74e6ac";
@@ -51,12 +53,16 @@ public class CSVLineageImporterProvider extends IntegrationConnectorProvider
 
         super.connectorTypeBean = connectorType;
 
+        super.catalogTargets = new ArrayList<>();
         CatalogTargetType catalogTargetType = new CatalogTargetType();
 
-        catalogTargetType.setTypeName(OpenMetadataType.CSV_FILE.typeName);
-        catalogTargetType.setDeployedImplementationType(DeployedImplementationType.DATA_FILE.getDeployedImplementationType());
+        catalogTargetType.setName(CATALOG_TARGET_NAME);
+        catalogTargetType.setTypeName(DeployedImplementationType.CSV_FILE.getAssociatedTypeName());
+        catalogTargetType.setDeployedImplementationType(DeployedImplementationType.CSV_FILE.getDeployedImplementationType());
 
-        super.catalogTargetTypes.put(CATALOG_TARGET_NAME, catalogTargetType);
+        super.catalogTargets = new ArrayList<>();
+        super.catalogTargets.add(catalogTargetType);
+
         super.connectorTypeBean = connectorType;
 
         /*

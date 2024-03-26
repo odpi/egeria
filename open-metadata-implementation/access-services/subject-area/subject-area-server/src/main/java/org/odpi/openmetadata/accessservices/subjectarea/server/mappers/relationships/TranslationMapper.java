@@ -40,7 +40,7 @@ public class TranslationMapper extends RelationshipMapper<Translation> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, translation.getSteward(), OpenMetadataType.STEWARD_PROPERTY_NAME);
         }
         if (translation.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, translation.getSource(), OpenMetadataType.SOURCE_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, translation.getSource(), OpenMetadataProperty.SOURCE.name);
         }
         if (translation.getStatus() != null) {
             SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, translation.getStatus(), OpenMetadataType.STATUS_PROPERTY_NAME);
@@ -71,7 +71,7 @@ public class TranslationMapper extends RelationshipMapper<Translation> {
             translation.setSteward(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataType.SOURCE_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.SOURCE.name)) {
             translation.setSource(stringValue);
             foundProperty = true;
         }

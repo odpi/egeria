@@ -9,113 +9,39 @@ import org.odpi.openmetadata.accessservices.datamanager.metadataelements.TopicEl
 import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.TopicProperties;
 import org.odpi.openmetadata.adapters.connectors.integration.kafka.ffdc.KafkaIntegrationConnectorAuditCode;
-import org.odpi.openmetadata.adapters.connectors.integration.kafka.ffdc.KafkaIntegrationConnectorErrorCode;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
+import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
 import org.odpi.openmetadata.integrationservices.topic.connector.TopicIntegratorConnector;
-import org.odpi.openmetadata.integrationservices.topic.connector.TopicIntegratorContext;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
+
 
 
 /**
  * KafkaMonitorIntegrationConnector catalogues active topics in a kafka broker.
  */
-public class KafkaMonitorIntegrationConnector extends TopicIntegratorConnector
+public class KafkaMonitorIntegrationConnector extends TopicIntegratorConnector implements CatalogTargetIntegrator
 {
-    private String templateQualifiedName = null;
-    private String templateGUID = null;
-    private String targetRootURL = "localhost:9092";
+    private final PropertyHelper propertyHelper = new PropertyHelper();
 
-    private TopicIntegratorContext myContext = null;
 
     /**
-     * Indicates that the connector is completely configured and can begin processing.
-     * This call can be used to register with non-blocking services.
-     *
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * A map for template qualified name to templateGUID to remove the need to keep retrieving the template
+     * on each refresh.
      */
-    @Override
-    public void start() throws ConnectorCheckedException
-    {
-        super.start();
-
-        final String methodName = "start";
-
-        myContext = super.getContext();
-
-        /*
-         * Retrieve the configuration
-         */
-        EndpointProperties  endpoint = connectionProperties.getEndpoint();
-
-        if (endpoint != null)
-        {
-            targetRootURL = endpoint.getAddress();
-        }
-
-        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
-
-        if (configurationProperties != null)
-        {
-            templateQualifiedName = configurationProperties.get(KafkaMonitorIntegrationProvider.TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY).toString();
-        }
-
-        /*
-         * Record the configuration
-         */
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                KafkaIntegrationConnectorAuditCode.CONNECTOR_CONFIGURATION.getMessageDefinition(connectorName,
-                                                                                                                targetRootURL,
-                                                                                                                templateQualifiedName));
-        }
-
-        /*
-         * Retrieve the template if one has been requested
-         */
-        if (templateQualifiedName != null)
-        {
-            try
-            {
-                List<TopicElement> templateElements = myContext.getTopicsByName(templateQualifiedName, 0, 0);
-
-                if (templateElements != null)
-                {
-                    for (TopicElement templateElement : templateElements)
-                    {
-                        String qualifiedName = templateElement.getProperties().getQualifiedName();
-
-                        if (templateQualifiedName.equals(qualifiedName))
-                        {
-                            templateGUID = templateElement.getElementHeader().getGUID();
-                        }
-                    }
-                }
-            }
-            catch (Exception error)
-            {
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          KafkaIntegrationConnectorAuditCode.MISSING_TEMPLATE.getMessageDefinition(connectorName, templateQualifiedName),
-                                          error);
-                }
-
-            }
-        }
-    }
+    private final Map<String, String> templateIdentifiers = new HashMap<>();
 
 
     /**
      * Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
      * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
      * as well as any external REST API calls to explicitly refresh the connector.
-     *
      * This method performs two sweeps. It first retrieves the topics from the event broker (Kafka) and validates that are in the
      * catalog - adding or updating them if necessary. The second sweep is to ensure that all the topics catalogued
      * actually exist in the event broker.
@@ -125,7 +51,196 @@ public class KafkaMonitorIntegrationConnector extends TopicIntegratorConnector
     @Override
     public void refresh() throws ConnectorCheckedException
     {
-        final String methodName = "refresh";
+        this.refreshEndpointTarget();
+        this.refreshCatalogTargets(this);
+    }
+
+
+    /**
+     * Processes any event broker configured in this connector's connection.
+     *
+     * @throws ConnectorCheckedException there is a problem within the connector.
+     */
+    public void refreshEndpointTarget() throws ConnectorCheckedException
+    {
+        final String methodName = "refreshEndpointTarget";
+
+        try
+        {
+            /*
+             * Retrieve the configuration
+             */
+            EndpointProperties endpoint = connectionProperties.getEndpoint();
+
+            if ((endpoint != null) && (endpoint.getAddress() != null))
+            {
+                String targetRootURL         = endpoint.getAddress();
+                String templateQualifiedName = getTemplateQualifiedName(connectionProperties.getConfigurationProperties());
+                String templateGUID          = null;
+
+                if (templateQualifiedName != null)
+                {
+                    templateGUID = templateIdentifiers.get(templateQualifiedName);
+                }
+
+                this.refreshEventBroker(targetRootURL, templateGUID, templateQualifiedName);
+            }
+        }
+        catch (ConnectorCheckedException error)
+        {
+            throw error;
+        }
+        catch (Exception exception)
+        {
+            auditLog.logException(methodName,
+                                  KafkaIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                               exception.getClass().getName(),
+                                                                                                               exception.getMessage()),
+                                  exception);
+        }
+    }
+
+
+    /**
+     * Return the optional template qualified name from the configuration properties.  If this property is set, it
+     * tries to locate the associated template.
+     *
+     * @param configurationProperties configuration properties
+     * @return template qualified name
+     */
+    String getTemplateQualifiedName(Map<String, Object> configurationProperties) throws Exception
+    {
+        final String methodName = "getTemplateQualifiedName";
+
+        String templateQualifiedName = null;
+
+        if (configurationProperties != null)
+        {
+            templateQualifiedName = configurationProperties.get(KafkaMonitorIntegrationProvider.TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY).toString();
+        }
+
+        if (templateQualifiedName != null)
+        {
+            String templateGUID = templateIdentifiers.get(templateQualifiedName);
+
+            if (templateGUID == null)
+            {
+                try
+                {
+                    List<TopicElement> templateElements = getContext().getTopicsByName(templateQualifiedName, 0, 0);
+
+                    if (templateElements != null)
+                    {
+                        for (TopicElement templateElement : templateElements)
+                        {
+                            String qualifiedName = templateElement.getProperties().getQualifiedName();
+
+                            if (templateQualifiedName.equals(qualifiedName))
+                            {
+                                templateGUID = templateElement.getElementHeader().getGUID();
+                                templateIdentifiers.put(templateQualifiedName, templateGUID);
+                            }
+                        }
+                    }
+                }
+                catch (ConnectorCheckedException error)
+                {
+                    throw error;
+                }
+                catch (Exception error)
+                {
+                    auditLog.logException(methodName,
+                                          KafkaIntegrationConnectorAuditCode.MISSING_TEMPLATE.getMessageDefinition(connectorName,
+                                                                                                                   templateQualifiedName),
+                                          error);
+
+                    throw error;
+                }
+            }
+        }
+
+        return templateQualifiedName;
+    }
+
+
+    /**
+     * Perform the required integration logic for the assigned catalog target.
+     *
+     * @param requestedCatalogTarget the catalog target
+     * @throws ConnectorCheckedException there is an unrecoverable error and the connector should stop processing.
+     */
+    @Override
+    public void integrateCatalogTarget(RequestedCatalogTarget requestedCatalogTarget) throws ConnectorCheckedException
+    {
+        final String methodName = "integrateCatalogTarget";
+
+        if (propertyHelper.isTypeOf(requestedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.EVENT_BROKER.typeName))
+        {
+            try
+            {
+                Connector connector = getContext().getConnectedAssetContext().getConnectorToAsset(requestedCatalogTarget.getCatalogTargetElement().getGUID());
+
+                if ((connector != null) && (connector.getConnection() != null) && (connector.getConnection().getEndpoint() != null))
+                {
+                    String targetRootURL         = connector.getConnection().getEndpoint().getAddress();
+                    String templateQualifiedName = getTemplateQualifiedName(connectionProperties.getConfigurationProperties());
+                    String templateGUID          = null;
+
+                    if (templateQualifiedName != null)
+                    {
+                        templateGUID = templateIdentifiers.get(templateQualifiedName);
+                    }
+
+                    this.refreshEventBroker(targetRootURL, templateGUID, templateQualifiedName);
+
+                    refreshEventBroker(targetRootURL, templateGUID, templateQualifiedName);
+                }
+            }
+            catch (Exception exception)
+            {
+                auditLog.logException(methodName,
+                                      KafkaIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                   exception.getClass().getName(),
+                                                                                                                   exception.getMessage()),
+                                      exception);
+            }
+        }
+        else
+        {
+            super.throwWrongTypeOfAsset(requestedCatalogTarget.getCatalogTargetElement().getGUID(),
+                                        requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName(),
+                                        DeployedImplementationType.EVENT_BROKER.getAssociatedTypeName(),
+                                        connectorName,
+                                        methodName);
+        }
+    }
+
+
+
+    /**
+     * Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
+     * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
+     * as well as any external REST API calls to explicitly refresh the connector.
+     * This method performs two sweeps. It first retrieves the topics from the event broker (Kafka) and validates that are in the
+     * catalog - adding or updating them if necessary. The second sweep is to ensure that all the topics catalogued
+     * actually exist in the event broker.
+     *
+     * @param targetRootURL URL to the Kafka Broker
+     * @param templateGUID optional template to use when creating new topics
+     * @param templateQualifiedName qualifiedName for template - only set if templateGUID is set
+     *
+     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
+     */
+    public void refreshEventBroker(String targetRootURL,
+                                   String templateGUID,
+                                   String templateQualifiedName) throws ConnectorCheckedException
+    {
+        final String methodName = "refreshEventBroker";
+
+        auditLog.logMessage(methodName,
+                            KafkaIntegrationConnectorAuditCode.CONNECTOR_CONFIGURATION.getMessageDefinition(connectorName,
+                                                                                                            targetRootURL,
+                                                                                                            templateQualifiedName));
 
         try
         {
@@ -140,13 +255,10 @@ public class KafkaMonitorIntegrationConnector extends TopicIntegratorConnector
 
             if (activeTopicNames != null)
             {
-                if (auditLog != null)
-                {
-                    auditLog.logMessage(methodName,
-                                        KafkaIntegrationConnectorAuditCode.RETRIEVED_TOPICS.getMessageDefinition(connectorName,
-                                                                                                                 "localhost:9092",
-                                                                                                                 Integer.toString(activeTopicNames.size())));
-                }
+                auditLog.logMessage(methodName,
+                                    KafkaIntegrationConnectorAuditCode.RETRIEVED_TOPICS.getMessageDefinition(connectorName,
+                                                                                                             targetRootURL,
+                                                                                                             Integer.toString(activeTopicNames.size())));
 
                 /*
                  * Retrieve the topics that are catalogued for this event broker.
@@ -156,11 +268,11 @@ public class KafkaMonitorIntegrationConnector extends TopicIntegratorConnector
                  * topics that are not catalogued.
                  */
                 int startFrom = 0;
-                List<TopicElement> cataloguedTopics = myContext.getMyTopics(startFrom, myContext.getMaxPageSize());
+                List<TopicElement> cataloguedTopics = getContext().getMyTopics(startFrom, getContext().getMaxPageSize());
 
                 while (cataloguedTopics != null)
                 {
-                    startFrom = startFrom + myContext.getMaxPageSize();
+                    startFrom = startFrom + getContext().getMaxPageSize();
 
                     for (TopicElement topicElement : cataloguedTopics)
                     {
@@ -172,15 +284,12 @@ public class KafkaMonitorIntegrationConnector extends TopicIntegratorConnector
                             /*
                              * The topic no longer exists so delete it from the catalog.
                              */
-                            myContext.removeTopic(topicGUID, topicName);
+                            getContext().removeTopic(topicGUID, topicName);
 
-                            if (auditLog != null)
-                            {
-                                auditLog.logMessage(methodName,
-                                                    KafkaIntegrationConnectorAuditCode.TOPIC_DELETED.getMessageDefinition(connectorName,
-                                                                                                                          topicName,
-                                                                                                                          topicGUID));
-                            }
+                            auditLog.logMessage(methodName,
+                                                KafkaIntegrationConnectorAuditCode.TOPIC_DELETED.getMessageDefinition(connectorName,
+                                                                                                                      topicName,
+                                                                                                                      topicGUID));
                         }
                         else
                         {
@@ -188,7 +297,7 @@ public class KafkaMonitorIntegrationConnector extends TopicIntegratorConnector
                         }
                     }
 
-                    cataloguedTopics = myContext.getMyTopics(startFrom, myContext.getMaxPageSize());
+                    cataloguedTopics = getContext().getMyTopics(startFrom, getContext().getMaxPageSize());
                 }
 
 
@@ -204,19 +313,16 @@ public class KafkaMonitorIntegrationConnector extends TopicIntegratorConnector
                         TopicProperties topicProperties = new TopicProperties();
 
                         topicProperties.setQualifiedName(topicName);
-                        topicProperties.setTypeName("KafkaTopic");
+                        topicProperties.setTypeName(OpenMetadataType.KAFKA_TOPIC_TYPE_NAME);
 
-                        topicGUID = myContext.createTopic(topicProperties);
+                        topicGUID = getContext().createTopic(topicProperties);
 
                         if (topicGUID != null)
                         {
-                            if (auditLog != null)
-                            {
-                                auditLog.logMessage(methodName,
-                                                    KafkaIntegrationConnectorAuditCode.TOPIC_CREATED.getMessageDefinition(connectorName,
-                                                                                                                          topicName,
-                                                                                                                          topicGUID));
-                            }
+                            auditLog.logMessage(methodName,
+                                                KafkaIntegrationConnectorAuditCode.TOPIC_CREATED.getMessageDefinition(connectorName,
+                                                                                                                      topicName,
+                                                                                                                      topicGUID));
                         }
                     }
                     else
@@ -225,19 +331,16 @@ public class KafkaMonitorIntegrationConnector extends TopicIntegratorConnector
 
                         templateProperties.setQualifiedName(topicName);
 
-                        topicGUID = myContext.createTopicFromTemplate(templateGUID, templateProperties);
+                        topicGUID = getContext().createTopicFromTemplate(templateGUID, templateProperties);
 
                         if (topicGUID != null)
                         {
-                            if (auditLog != null)
-                            {
-                                auditLog.logMessage(methodName,
-                                                    KafkaIntegrationConnectorAuditCode.TOPIC_CREATED_FROM_TEMPLATE.getMessageDefinition(connectorName,
-                                                                                                                                        topicName,
-                                                                                                                                        topicGUID,
-                                                                                                                                        templateQualifiedName,
-                                                                                                                                        templateGUID));
-                            }
+                            auditLog.logMessage(methodName,
+                                                KafkaIntegrationConnectorAuditCode.TOPIC_CREATED_FROM_TEMPLATE.getMessageDefinition(connectorName,
+                                                                                                                                    topicName,
+                                                                                                                                    topicGUID,
+                                                                                                                                    templateQualifiedName,
+                                                                                                                                    templateGUID));
                         }
                     }
                 }
@@ -245,24 +348,12 @@ public class KafkaMonitorIntegrationConnector extends TopicIntegratorConnector
         }
         catch (Exception error)
         {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      KafkaIntegrationConnectorAuditCode.UNABLE_TO_RETRIEVE_TOPICS.getMessageDefinition(connectorName,
-                                                                                                                        "localhost:9092",
-                                                                                                                        error.getClass().getName(),
-                                                                                                                        error.getMessage()),
-                                      error);
-
-
-            }
-
-            throw new ConnectorCheckedException(KafkaIntegrationConnectorErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                             error.getClass().getName(),
-                                                                                                                             error.getMessage()),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                error);
+            auditLog.logException(methodName,
+                                  KafkaIntegrationConnectorAuditCode.UNABLE_TO_RETRIEVE_TOPICS.getMessageDefinition(connectorName,
+                                                                                                                    targetRootURL,
+                                                                                                                    error.getClass().getName(),
+                                                                                                                    error.getMessage()),
+                                  error);
         }
     }
 
