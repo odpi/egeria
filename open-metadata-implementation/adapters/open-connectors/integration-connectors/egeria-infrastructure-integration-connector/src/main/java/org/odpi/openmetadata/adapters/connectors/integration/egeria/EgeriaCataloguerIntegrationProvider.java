@@ -10,6 +10,8 @@ import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImpleme
 import org.odpi.openmetadata.frameworks.integration.catalogtarget.CatalogTargetType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 
+import java.util.ArrayList;
+
 
 /**
  * EgeriaCataloguerIntegrationProvider is the connector provider for the Egeria infrastructure integration connector that catalogues
@@ -89,7 +91,7 @@ public class EgeriaCataloguerIntegrationProvider extends IntegrationConnectorPro
 
         componentDescription.setComponentId(connectorComponentId);
         componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.IN_DEVELOPMENT);
-        componentDescription.setComponentName(connectorQualifiedName);
+        componentDescription.setComponentName(connectorDisplayName);
         componentDescription.setComponentDescription(connectorDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);
 
@@ -97,9 +99,11 @@ public class EgeriaCataloguerIntegrationProvider extends IntegrationConnectorPro
 
         CatalogTargetType catalogTargetType = new CatalogTargetType();
 
+        catalogTargetType.setName(CATALOG_TARGET_NAME);
         catalogTargetType.setTypeName(DeployedImplementationType.OMAG_SERVER_PLATFORM.getAssociatedTypeName());
         catalogTargetType.setDeployedImplementationType(DeployedImplementationType.OMAG_SERVER_PLATFORM.getDeployedImplementationType());
 
-        super.catalogTargetTypes.put(CATALOG_TARGET_NAME, catalogTargetType);
+        super.catalogTargets = new ArrayList<>();
+        super.catalogTargets.add(catalogTargetType);
     }
 }

@@ -7,7 +7,14 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConfigurationPropertyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.GuardType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestParameterType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestTypeType;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStepType;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,15 +32,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConnectorReport
 {
-    private ComponentDescription componentDescription        = null;
-    private ConnectorType        connectorType               = null;
-    private long                 refreshTimeInterval         = 0L;
-    private boolean              usesBlockingCalls           = false;
-    private List<String>         supportedRequestTypes       = null;
-    private List<String>         supportedRequestParameters  = null;
-    private List<String>         supportedRequestSourceNames = null;
-    private List<String>         supportedActionTargetNames  = null;
-    private List<String>         supportedGuards             = null;
+    private ComponentDescription            componentDescription             = null;
+    private ConnectorType                   connectorType                    = null;
+    private long                            refreshTimeInterval              = 0L;
+    private boolean                         usesBlockingCalls                = false;
+    private List<ConfigurationPropertyType> supportedConfigurationProperties = null;
+    private List<RequestTypeType>           supportedRequestTypes            = null;
+    private List<RequestParameterType>      supportedRequestParameters       = null;
+    private List<ActionTargetType>          supportedActionTargetTypes       = null;
+    private List<AnalysisStepType>          supportedAnalysisSteps           = null;
+    private List<AnnotationTypeType>        supportedAnnotationTypes         = null;
+    private List<RequestParameterType>      producedRequestParameters        = null;
+    private List<ActionTargetType>          producedActionTargetTypes        = null;
+    private List<GuardType>                 producedGuards                   = null;
 
 
     /**
@@ -54,15 +65,19 @@ public class ConnectorReport
     {
         if (template != null)
         {
-            this.componentDescription        = template.getComponentDescription();
-            this.connectorType               = template.getConnectorType();
-            this.refreshTimeInterval         = template.getRefreshTimeInterval();
-            this.usesBlockingCalls           = template.getUsesBlockingCalls();
-            this.supportedRequestTypes       = template.getSupportedRequestTypes();
-            this.supportedRequestParameters  = template.getSupportedRequestParameters();
-            this.supportedRequestSourceNames = template.getSupportedRequestSourceNames();
-            this.supportedActionTargetNames  = template.getSupportedActionTargetNames();
-            this.supportedGuards             = template.getSupportedGuards();
+            this.componentDescription             = template.getComponentDescription();
+            this.connectorType                    = template.getConnectorType();
+            this.refreshTimeInterval              = template.getRefreshTimeInterval();
+            this.usesBlockingCalls                = template.getUsesBlockingCalls();
+            this.supportedConfigurationProperties = template.getSupportedConfigurationProperties();
+            this.supportedRequestTypes            = template.getSupportedRequestTypes();
+            this.supportedRequestParameters       = template.getSupportedRequestParameters();
+            this.supportedActionTargetTypes       = template.getSupportedActionTargetTypes();
+            this.supportedAnalysisSteps           = template.getSupportedAnalysisSteps();
+            this.supportedAnnotationTypes         = template.getSupportedAnnotationTypes();
+            this.producedRequestParameters        = template.getProducedRequestParameters();
+            this.producedActionTargetTypes        = template.getProducedActionTargetTypes();
+            this.producedGuards                   = template.getProducedGuards();
         }
     }
 
@@ -160,12 +175,36 @@ public class ConnectorReport
 
 
     /**
-     * The request types returned are those that affect the governance action service's behaviour.  Other request types may be used
-     * to call the governance action service but they result in default behaviour.
+     * Return the list of supported configuration property types that describe how the connector's
+     * behaviour can be modified.
+     *
+     * @return list of configuration property types
+     */
+    public List<ConfigurationPropertyType> getSupportedConfigurationProperties()
+    {
+        return supportedConfigurationProperties;
+    }
+
+
+    /**
+     * Set up the list of supported configuration property types that describe how the connector's
+     * behaviour can be modified.
+     *
+     * @param supportedConfigurationProperties list of configuration property types
+     */
+    public void setSupportedConfigurationProperties(List<ConfigurationPropertyType> supportedConfigurationProperties)
+    {
+        this.supportedConfigurationProperties = supportedConfigurationProperties;
+    }
+
+
+    /**
+     * The request types returned are those that affect the governance service's behaviour.  Other request types may be used
+     * to call the governance service, but they result in default behaviour.
      *
      * @return list of request types with special meaning
      */
-    public List<String> getSupportedRequestTypes()
+    public List<RequestTypeType> getSupportedRequestTypes()
     {
         return supportedRequestTypes;
     }
@@ -176,78 +215,143 @@ public class ConnectorReport
      *
      * @param supportedRequestTypes list of request types with special meaning
      */
-    public void setSupportedRequestTypes(List<String> supportedRequestTypes)
+    public void setSupportedRequestTypes(List<RequestTypeType> supportedRequestTypes)
     {
         this.supportedRequestTypes = supportedRequestTypes;
     }
 
 
     /**
-     * The request parameters returned are used by the governance action service to control its behaviour.
+     * The request parameters returned are used by the governance service to control its behaviour.
      *
      * @return list of parameter names with special meaning
      */
-    public List<String> getSupportedRequestParameters()
+    public List<RequestParameterType> getSupportedRequestParameters()
     {
         return supportedRequestParameters;
     }
 
 
     /**
-     * Set up request parameters returned are used by the governance action service to control its behaviour.
+     * Set up request parameters returned are used by the governance service to control its behaviour.
      *
      * @param supportedRequestParameters list of parameter names with special meaning
      */
-    public void setSupportedRequestParameters(List<String> supportedRequestParameters)
+    public void setSupportedRequestParameters(List<RequestParameterType> supportedRequestParameters)
     {
         this.supportedRequestParameters = supportedRequestParameters;
     }
 
 
     /**
-     * The request source names returned are the request source names that affect the governance action service's behaviour.  Other request
-     * source names may be used in a call the governance action service but they result in default behaviour.
-     *
-     * @return list of request source names with special meaning
-     */
-    public List<String> getSupportedRequestSourceNames()
-    {
-        return supportedRequestSourceNames;
-    }
-
-
-    /**
-     * Set up the request source names.
-     *
-     * @param supportedRequestSourceNames list of request source names with special meaning
-     */
-    public void setSupportedRequestSourceNames(List<String> supportedRequestSourceNames)
-    {
-        this.supportedRequestSourceNames = supportedRequestSourceNames;
-    }
-
-
-    /**
-     * The action target names returned are those that affect the governance action service's behaviour.  Other action target names may be used
-     * in a call the governance action service but they result in default behaviour.
+     * The action target names returned are those that affect the governance service's behaviour.  Other action target names may be used
+     * in a call the governance service, but they result in default behaviour.
      *
      * @return list of action target names with special meaning
      */
-    public List<String> getSupportedActionTargetNames()
+    public List<ActionTargetType> getSupportedActionTargetTypes()
     {
-        return supportedActionTargetNames;
+        return supportedActionTargetTypes;
     }
 
 
     /**
      * Set up the supported action target names
      *
-     * @param supportedActionTargetNames list of action target names with special meaning
+     * @param supportedActionTargetTypes list of action target names with special meaning
      */
-    public void setSupportedActionTargetNames(List<String> supportedActionTargetNames)
+    public void setSupportedActionTargetTypes(List<ActionTargetType> supportedActionTargetTypes)
     {
-        this.supportedActionTargetNames = supportedActionTargetNames;
+        this.supportedActionTargetTypes = supportedActionTargetTypes;
     }
+
+    /**
+     * Return the list of analysis steps (survey action service only).
+     *
+     * @return list
+     */
+    public List<AnalysisStepType> getSupportedAnalysisSteps()
+    {
+        return supportedAnalysisSteps;
+    }
+
+
+    /**
+     * Set up the list of analysis steps (survey action service only).
+     *
+     * @param supportedAnalysisSteps list
+     */
+    public void setSupportedAnalysisSteps(List<AnalysisStepType> supportedAnalysisSteps)
+    {
+        this.supportedAnalysisSteps = supportedAnalysisSteps;
+    }
+
+
+    /**
+     * Return the list of annotation types (survey action service only).
+     *
+     * @return list
+     */
+    public List<AnnotationTypeType> getSupportedAnnotationTypes()
+    {
+        return supportedAnnotationTypes;
+    }
+
+
+    /**
+     * Set up the list of annotation types (survey action service only).
+     *
+     * @param supportedAnnotationTypes list
+     */
+    public void setSupportedAnnotationTypes(List<AnnotationTypeType> supportedAnnotationTypes)
+    {
+        this.supportedAnnotationTypes = supportedAnnotationTypes;
+    }
+
+
+    /**
+     * The request parameters returned are produced by the governance service.
+     *
+     * @return list of parameter names with special meaning
+     */
+    public List<RequestParameterType> getProducedRequestParameters()
+    {
+        return producedRequestParameters;
+    }
+
+
+    /**
+     * Set up request parameters returned are returned by the governance service.
+     *
+     * @param producedRequestParameters list of parameter names with special meaning
+     */
+    public void setProducedRequestParameters(List<RequestParameterType> producedRequestParameters)
+    {
+        this.producedRequestParameters = producedRequestParameters;
+    }
+
+
+    /**
+     * The action target names returned are those produced by the governance service.
+     *
+     * @return list of action target names with special meaning
+     */
+    public List<ActionTargetType> getProducedActionTargetTypes()
+    {
+        return producedActionTargetTypes;
+    }
+
+
+    /**
+     * Set up the produced action target names
+     *
+     * @param producedActionTargetTypes list of action target names with special meaning
+     */
+    public void setProducedActionTargetTypes(List<ActionTargetType> producedActionTargetTypes)
+    {
+        this.producedActionTargetTypes = producedActionTargetTypes;
+    }
+
 
 
     /**
@@ -255,22 +359,22 @@ public class ConnectorReport
      * guards to expect from the governance action service.  They are used when defining governance action processes that choreograph
      * the execution of governance action services using the guards to determine the path in the process to take.
      *
-     * @return list of guards produced by this service
+     * @return list of guards produced by this service with descriptions
      */
-    public List<String> getSupportedGuards()
+    public List<GuardType> getProducedGuards()
     {
-        return supportedGuards;
+        return producedGuards;
     }
 
 
     /**
      * Set up the supported guards
      *
-     * @param supportedGuards list of guards produced by this service
+     * @param producedGuards list of guards produced by this service with descriptions
      */
-    public void setSupportedGuards(List<String> supportedGuards)
+    public void setProducedGuards(List<GuardType> producedGuards)
     {
-        this.supportedGuards = supportedGuards;
+        this.producedGuards = producedGuards;
     }
 
 
@@ -283,18 +387,21 @@ public class ConnectorReport
     public String toString()
     {
         return "ConnectorReport{" +
-                       "componentDescription=" + componentDescription +
-                       ", connectorType=" + connectorType +
-                       ", refreshTimeInterval=" + refreshTimeInterval +
-                       ", usesBlockingCalls=" + usesBlockingCalls +
-                       ", supportedRequestTypes=" + supportedRequestTypes +
-                       ", supportedRequestParameters=" + supportedRequestParameters +
-                       ", supportedRequestSourceNames=" + supportedRequestSourceNames +
-                       ", supportedActionTargetNames=" + supportedActionTargetNames +
-                       ", supportedGuards=" + supportedGuards +
-                       '}';
+                "componentDescription=" + componentDescription +
+                ", connectorType=" + connectorType +
+                ", refreshTimeInterval=" + refreshTimeInterval +
+                ", usesBlockingCalls=" + usesBlockingCalls +
+                ", supportedConfigurationProperties=" + supportedConfigurationProperties +
+                ", supportedRequestTypes=" + supportedRequestTypes +
+                ", supportedRequestParameters=" + supportedRequestParameters +
+                ", supportedActionTargetTypes=" + supportedActionTargetTypes +
+                ", supportedAnalysisSteps=" + supportedAnalysisSteps +
+                ", supportedAnnotationTypes=" + supportedAnnotationTypes +
+                ", producedRequestParameters=" + producedRequestParameters +
+                ", producedActionTargetTypes=" + producedActionTargetTypes +
+                ", producedGuards=" + producedGuards +
+                '}';
     }
-
 
     /**
      * Return comparison result based on the content of the properties.
@@ -318,11 +425,15 @@ public class ConnectorReport
                        usesBlockingCalls == that.usesBlockingCalls &&
                        Objects.equals(componentDescription, that.componentDescription) &&
                        Objects.equals(connectorType, that.connectorType) &&
+                       Objects.equals(supportedConfigurationProperties, that.supportedConfigurationProperties) &&
                        Objects.equals(supportedRequestTypes, that.supportedRequestTypes) &&
                        Objects.equals(supportedRequestParameters, that.supportedRequestParameters) &&
-                       Objects.equals(supportedRequestSourceNames, that.supportedRequestSourceNames) &&
-                       Objects.equals(supportedActionTargetNames, that.supportedActionTargetNames) &&
-                       Objects.equals(supportedGuards, that.supportedGuards);
+                       Objects.equals(supportedActionTargetTypes, that.supportedActionTargetTypes) &&
+                       Objects.equals(supportedAnalysisSteps, that.supportedAnalysisSteps) &&
+                       Objects.equals(supportedAnnotationTypes, that.supportedAnnotationTypes) &&
+                       Objects.equals(producedRequestParameters, that.producedRequestParameters) &&
+                       Objects.equals(producedActionTargetTypes, that.producedActionTargetTypes) &&
+                       Objects.equals(producedGuards, that.producedGuards);
     }
 
 
@@ -334,7 +445,10 @@ public class ConnectorReport
     @Override
     public int hashCode()
     {
-        return Objects.hash(componentDescription, connectorType, refreshTimeInterval, usesBlockingCalls, supportedRequestTypes,
-                            supportedRequestParameters, supportedRequestSourceNames, supportedActionTargetNames, supportedGuards);
+        return Objects.hash(componentDescription, connectorType, refreshTimeInterval, usesBlockingCalls,
+                            supportedConfigurationProperties, supportedRequestTypes,
+                            supportedRequestParameters, supportedActionTargetTypes, supportedAnalysisSteps,
+                            supportedAnnotationTypes, producedRequestParameters, producedActionTargetTypes,
+                            producedGuards);
     }
 }

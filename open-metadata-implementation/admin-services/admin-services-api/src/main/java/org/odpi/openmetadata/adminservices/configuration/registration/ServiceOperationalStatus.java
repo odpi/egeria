@@ -11,9 +11,9 @@ import java.io.Serializable;
 public enum ServiceOperationalStatus implements Serializable
 {
     /**
-     * Code for this service is not available.
+     * Code for this service is not available/applicable.
      */
-    NOT_IMPLEMENTED  (0, "Not Implemented", "Code for this service is not available."),
+    NOT_IMPLEMENTED  (0, "Not Implemented", "Code for this service is not available/applicable."),
 
     /**
      * The service is available and running.

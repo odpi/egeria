@@ -42,7 +42,6 @@ class ConnectedDeployedAPISchemaType extends DeployedAPISchemaType
                                                              platformURLRoot,
                                                              this.getGUID(),
                                                              maxCacheSize,
-                                                             this.getOperationCount(),
                                                              restClient);
 
         }

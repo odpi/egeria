@@ -325,8 +325,7 @@ public class InvalidParameterHandler
                                                 pageSizeParameterName);
         }
 
-
-        if (pageSize > maxPagingSize)
+        if ((maxPagingSize != 0) && (pageSize > maxPagingSize))
         {
             throw new InvalidParameterException(OMAGCommonErrorCode.MAX_PAGE_SIZE.getMessageDefinition(Integer.toString(pageSize),
                                                                                                        pageSizeParameterName,

@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the Egeria project. -->
 
+![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
+
 # My Profile OMVS 
 
 The My Profile OMVS enables the caller to maintain information about themselves as well as set up and use personalized collections of metadata elements.

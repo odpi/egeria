@@ -37,7 +37,7 @@ public interface MetadataElementInterface
      *
      * @return metadata element properties
      * @throws InvalidParameterException the unique identifier is null or not known.
-     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     OpenMetadataElement getMetadataElementByGUID(String  userId,
@@ -61,7 +61,7 @@ public interface MetadataElementInterface
      *
      * @return metadata element properties
      * @throws InvalidParameterException the unique identifier is null or not known.
-     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     OpenMetadataElement getMetadataElementByUniqueName(String  userId,
@@ -86,7 +86,7 @@ public interface MetadataElementInterface
      *
      * @return metadata element unique identifier (guid)
      * @throws InvalidParameterException the unique identifier is null or not known.
-     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     String getMetadataElementGUIDByUniqueName(String  userId,
@@ -112,7 +112,7 @@ public interface MetadataElementInterface
      *
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException the qualified name is null
-     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     List<OpenMetadataElement> findMetadataElementsWithString(String  userId,
@@ -140,7 +140,7 @@ public interface MetadataElementInterface
      *
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException the qualified name is null
-     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     List<OpenMetadataElement> findMetadataElementsWithString(String  userId,
@@ -170,7 +170,7 @@ public interface MetadataElementInterface
      *
      * @return list of related elements
      * @throws InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
-     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     List<RelatedMetadataElement> getRelatedMetadataElements(String  userId,
@@ -201,7 +201,7 @@ public interface MetadataElementInterface
      *
      * @return list of related elements
      * @throws InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
-     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     List<RelatedMetadataElements> getMetadataElementRelationships(String  userId,
@@ -239,7 +239,7 @@ public interface MetadataElementInterface
      *
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
      * @throws InvalidParameterException one of the search parameters are is invalid
-     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     List<OpenMetadataElement> findMetadataElements(String                userId,
@@ -277,7 +277,7 @@ public interface MetadataElementInterface
      *
      * @return a list of relationships.  Null means no matching relationships.
      * @throws InvalidParameterException one of the search parameters are is invalid
-     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     List<RelatedMetadataElements> findRelationshipsBetweenMetadataElements(String           userId,
@@ -307,7 +307,7 @@ public interface MetadataElementInterface
      *
      * @return relationship properties
      * @throws InvalidParameterException the unique identifier is null or not known.
-     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     RelatedMetadataElements getRelationshipByGUID(String  userId,
@@ -333,13 +333,11 @@ public interface MetadataElementInterface
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
-     *                     connection etc)
      *
      * @return unique identifier of the new metadata element
      *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
-     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     String createMetadataElementInStore(String            userId,
@@ -347,10 +345,9 @@ public interface MetadataElementInterface
                                         ElementStatus     initialStatus,
                                         Date              effectiveFrom,
                                         Date              effectiveTo,
-                                        ElementProperties properties,
-                                        String            templateGUID) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException;
+                                        ElementProperties properties) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException;
 
 
     /**
@@ -367,13 +364,11 @@ public interface MetadataElementInterface
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
-     *                     connection etc)
      *
      * @return unique identifier of the new metadata element
      *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
-     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     String createMetadataElementInStore(String            userId,
@@ -383,10 +378,54 @@ public interface MetadataElementInterface
                                         ElementStatus     initialStatus,
                                         Date              effectiveFrom,
                                         Date              effectiveTo,
-                                        ElementProperties properties,
-                                        String            templateGUID) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException;
+                                        ElementProperties properties) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException;
+
+
+    /**
+     * Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
+     * The selected type also controls the names and types of the properties that are allowed.
+     * This version of the method allows access to advanced features such as multiple states and
+     * effectivity dates.
+     *
+     * @param userId caller's userId
+     * @param metadataElementTypeName type name of the new metadata element
+     * @param initialStatus initial status of the metadata element
+     * @param initialClassifications map of classification names to classification properties to include in the entity creation request
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
+     * @param effectiveFrom the date when this element is active - null for active on creation
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param properties properties of the new metadata element
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException the type name, status or one of the properties is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    String createMetadataElementInStore(String                         userId,
+                                        String                         metadataElementTypeName,
+                                        ElementStatus                  initialStatus,
+                                        Map<String, ElementProperties> initialClassifications,
+                                        String                         anchorGUID,
+                                        boolean                        isOwnAnchor,
+                                        Date                           effectiveFrom,
+                                        Date                           effectiveTo,
+                                        ElementProperties              properties,
+                                        String                         parentGUID,
+                                        String                         parentRelationshipTypeName,
+                                        ElementProperties              parentRelationshipProperties,
+                                        boolean                        parentAtEnd1) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException;
 
 
     /**
@@ -403,11 +442,11 @@ public interface MetadataElementInterface
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
      * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
      *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
-     *                     connection etc)
      * @param parentGUID unique identifier of optional parent entity
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
@@ -416,7 +455,7 @@ public interface MetadataElementInterface
      * @return unique identifier of the new metadata element
      *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
-     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     String createMetadataElementInStore(String                         userId,
@@ -426,10 +465,10 @@ public interface MetadataElementInterface
                                         ElementStatus                  initialStatus,
                                         Map<String, ElementProperties> initialClassifications,
                                         String                         anchorGUID,
+                                        boolean                        isOwnAnchor,
                                         Date                           effectiveFrom,
                                         Date                           effectiveTo,
                                         ElementProperties              properties,
-                                        String                         templateGUID,
                                         String                         parentGUID,
                                         String                         parentRelationshipTypeName,
                                         ElementProperties              parentRelationshipProperties,
@@ -437,6 +476,106 @@ public interface MetadataElementInterface
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException;
 
+
+
+    /**
+     * Create a new metadata element in the metadata store using the template identified by the templateGUID.
+     * The type name comes from the open metadata types.
+     * The selected type also controls the names and types of the properties that are allowed.
+     * The template and any similar anchored objects are
+     * copied in this process.
+     *
+     * @param userId caller's userId
+     * @param metadataElementTypeName type name of the new metadata element
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
+     * @param effectiveFrom the date when this element is active - null for active on creation
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                     connection etc)
+     * @param templateProperties properties of the new metadata element.  These override the template values
+     * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
+     *                              template element - and their anchored elements, which are also copied as part of this operation.
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException the type name, status or one of the properties is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    String createMetadataElementFromTemplate(String                         userId,
+                                             String                         metadataElementTypeName,
+                                             String                         anchorGUID,
+                                             boolean                        isOwnAnchor,
+                                             Date                           effectiveFrom,
+                                             Date                           effectiveTo,
+                                             String                         templateGUID,
+                                             ElementProperties              templateProperties,
+                                             Map<String, String>            placeholderProperties,
+                                             String                         parentGUID,
+                                             String                         parentRelationshipTypeName,
+                                             ElementProperties              parentRelationshipProperties,
+                                             boolean                        parentAtEnd1) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException;
+
+
+    /**
+     * Create a new metadata element in the metadata store using the template identified by the templateGUID.
+     * The type name comes from the open metadata types.
+     * The selected type also controls the names and types of the properties that are allowed.
+     * The template and any similar anchored objects are
+     * copied in this process.
+     *
+     * @param userId caller's userId
+     * @param externalSourceGUID      unique identifier of the software capability that owns this collection
+     * @param externalSourceName      unique name of the software capability that owns this collection
+     * @param metadataElementTypeName type name of the new metadata element
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
+     * @param effectiveFrom the date when this element is active - null for active on creation
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                     connection etc)
+     * @param templateProperties properties of the new metadata element.  These override the template values
+     * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
+     *                              template element - and their anchored elements, which are also copied as part of this operation.
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException the type name, status or one of the properties is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    String createMetadataElementFromTemplate(String                         userId,
+                                             String                         externalSourceGUID,
+                                             String                         externalSourceName,
+                                             String                         metadataElementTypeName,
+                                             String                         anchorGUID,
+                                             boolean                        isOwnAnchor,
+                                             Date                           effectiveFrom,
+                                             Date                           effectiveTo,
+                                             String                         templateGUID,
+                                             ElementProperties              templateProperties,
+                                             Map<String, String>            placeholderProperties,
+                                             String                         parentGUID,
+                                             String                         parentRelationshipTypeName,
+                                             ElementProperties              parentRelationshipProperties,
+                                             boolean                        parentAtEnd1) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException;
 
 
     /**
@@ -454,7 +593,7 @@ public interface MetadataElementInterface
      * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @throws InvalidParameterException either the unique identifier or the properties are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void updateMetadataElementInStore(String            userId,
@@ -485,7 +624,7 @@ public interface MetadataElementInterface
      * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @throws InvalidParameterException either the unique identifier or the properties are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void updateMetadataElementInStore(String            userId,
@@ -513,7 +652,7 @@ public interface MetadataElementInterface
      * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void updateMetadataElementStatusInStore(String        userId,
@@ -540,7 +679,7 @@ public interface MetadataElementInterface
      * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void updateMetadataElementStatusInStore(String        userId,
@@ -567,7 +706,7 @@ public interface MetadataElementInterface
      * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void updateMetadataElementEffectivityInStore(String        userId,
@@ -595,7 +734,7 @@ public interface MetadataElementInterface
      * @param effectiveTime only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void updateMetadataElementEffectivityInStore(String        userId,
@@ -621,7 +760,7 @@ public interface MetadataElementInterface
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier is null or invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to delete this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void deleteMetadataElementInStore(String  userId,
@@ -645,7 +784,7 @@ public interface MetadataElementInterface
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier is null or invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to delete this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void deleteMetadataElementInStore(String  userId,
@@ -670,7 +809,7 @@ public interface MetadataElementInterface
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier is null or invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to archive this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void archiveMetadataElementInStore(String            userId,
@@ -696,7 +835,7 @@ public interface MetadataElementInterface
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier is null or invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to archive this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void archiveMetadataElementInStore(String            userId,
@@ -728,7 +867,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void classifyMetadataElementInStore(String            userId,
@@ -763,7 +902,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void classifyMetadataElementInStore(String            userId,
@@ -796,7 +935,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element/classification
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void reclassifyMetadataElementInStore(String            userId,
@@ -828,7 +967,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element/classification
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void reclassifyMetadataElementInStore(String            userId,
@@ -859,7 +998,7 @@ public interface MetadataElementInterface
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void updateClassificationEffectivityInStore(String  userId,
@@ -890,7 +1029,7 @@ public interface MetadataElementInterface
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void updateClassificationEffectivityInStore(String  userId,
@@ -918,7 +1057,7 @@ public interface MetadataElementInterface
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to remove this classification
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void declassifyMetadataElementInStore(String  userId,
@@ -945,7 +1084,7 @@ public interface MetadataElementInterface
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to remove this classification
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void declassifyMetadataElementInStore(String  userId,
@@ -980,7 +1119,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
-     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     String createRelatedElementsInStore(String            userId,
@@ -1019,7 +1158,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
-     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     String createRelatedElementsInStore(String            userId,
@@ -1052,7 +1191,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this relationship
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void updateRelatedElementsInStore(String            userId,
@@ -1082,7 +1221,7 @@ public interface MetadataElementInterface
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this relationship
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void updateRelatedElementsInStore(String            userId,
@@ -1113,7 +1252,7 @@ public interface MetadataElementInterface
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void updateRelatedElementsEffectivityInStore(String  userId,
@@ -1142,7 +1281,7 @@ public interface MetadataElementInterface
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void updateRelatedElementsEffectivityInStore(String  userId,
@@ -1166,7 +1305,7 @@ public interface MetadataElementInterface
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to delete this relationship
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void deleteRelatedElementsInStore(String  userId,
@@ -1190,7 +1329,7 @@ public interface MetadataElementInterface
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to delete this relationship
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     void deleteRelatedElementsInStore(String  userId,

@@ -273,6 +273,7 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                   supportedZones,
                                                                   deepCopy,
                                                                   false,
+                                                                  null,
                                                                   methodName);
 
         if (glossaryCategoryGUID != null)
@@ -623,6 +624,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                              false,
                                                                              false,
                                                                              null,
+                                                                             null,
+                                                                             null,
                                                                              forLineage,
                                                                              forDuplicateProcessing,
                                                                              0,
@@ -860,6 +863,8 @@ public class GlossaryCategoryHandler<B> extends ReferenceableHandler<B>
                                                                              specificMatchPropertyNames,
                                                                              true,
                                                                              false,
+                                                                             null,
+                                                                             null,
                                                                              null,
                                                                              forLineage,
                                                                              forDuplicateProcessing,

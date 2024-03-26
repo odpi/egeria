@@ -131,8 +131,8 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                                           patchLevel,
                                                                           source,
                                                                           additionalProperties,
-                                                                          OpenMetadataType.DATA_MANAGER_TYPE_GUID,
-                                                                          OpenMetadataType.DATA_MANAGER_TYPE_NAME,
+                                                                          OpenMetadataType.DATA_MANAGER.typeGUID,
+                                                                          OpenMetadataType.DATA_MANAGER.typeName,
                                                                           null,
                                                                           repositoryHelper,
                                                                           serviceName,
@@ -145,9 +145,10 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
         String fileSystemGUID = this.createBeanInRepository(userId,
                                                             externalSourceGUID,
                                                             externalSourceName,
-                                                            OpenMetadataType.DATA_MANAGER_TYPE_GUID,
-                                                            OpenMetadataType.DATA_MANAGER_TYPE_NAME,
+                                                            OpenMetadataType.DATA_MANAGER.typeGUID,
+                                                            OpenMetadataType.DATA_MANAGER.typeName,
                                                             builder,
+                                                            true,
                                                             effectiveTime,
                                                             methodName);
 
@@ -173,7 +174,7 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
      * @param uniqueName qualified name for the software capability
      * @param displayName short display name
      * @param description description of the file system
-     * @param type type of file system
+     * @param deployedImplementationType type of file system
      * @param version version of file system
      * @param patchLevel patchLevel of software supporting the file system
      * @param source supplier of the software for this file system
@@ -201,7 +202,7 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                              String               uniqueName,
                                              String               displayName,
                                              String               description,
-                                             String               type,
+                                             String               deployedImplementationType,
                                              String               version,
                                              String               patchLevel,
                                              String               source,
@@ -217,14 +218,14 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        String typeGUID = OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID;
-        String typeName = OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME;
+        String typeGUID = OpenMetadataType.SOFTWARE_CAPABILITY.typeGUID;
+        String typeName = OpenMetadataType.SOFTWARE_CAPABILITY.typeName;
 
         if (specializedTypeName != null)
         {
             typeName = specializedTypeName;
             typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                 serviceName,
                                                                 methodName,
                                                                 repositoryHelper);
@@ -233,7 +234,7 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
         SoftwareCapabilityBuilder builder = new SoftwareCapabilityBuilder(uniqueName,
                                                                           displayName,
                                                                           description,
-                                                                          type,
+                                                                          deployedImplementationType,
                                                                           version,
                                                                           patchLevel,
                                                                           source,
@@ -258,6 +259,7 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                             typeGUID,
                                                             typeName,
                                                             builder,
+                                                            true,
                                                             effectiveTime,
                                                             methodName);
 
@@ -316,17 +318,22 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                                           serviceName,
                                                                           serverName);
 
+        builder.setAnchors(userId, null, OpenMetadataType.SOFTWARE_CAPABILITY.typeName, methodName);
+
         return this.createBeanFromTemplate(userId,
                                            externalSourceGUID,
                                            externalSourceName,
                                            templateGUID,
                                            templateGUIDParameterName,
-                                           OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
-                                           OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                           OpenMetadataType.SOFTWARE_CAPABILITY.typeGUID,
+                                           OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                            qualifiedName,
                                            OpenMetadataProperty.QUALIFIED_NAME.name,
                                            builder,
                                            supportedZones,
+                                           true,
+                                           false,
+                                           null,
                                            methodName);
     }
 
@@ -381,7 +388,7 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            softwareCapabilityGUID,
                                            softwareCapabilityGUIDParameterName,
-                                           OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                           OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                            classificationTypeGUID,
                                            classificationName,
                                            this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
@@ -450,8 +457,8 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        String typeGUID = OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID;
-        String typeName = OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME;
+        String typeGUID = OpenMetadataType.SOFTWARE_CAPABILITY.typeGUID;
+        String typeName = OpenMetadataType.SOFTWARE_CAPABILITY.typeName;
 
         SoftwareCapabilityBuilder builder = new SoftwareCapabilityBuilder(uniqueName,
                                                                           displayName,
@@ -610,7 +617,7 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                                                             PropertyServerException
     {
         return this.getBeansByClassification(userId,
-                                             OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                             OpenMetadataType.SOFTWARE_CAPABILITY.typeGUID,
                                              classificationName,
                                              forLineage,
                                              forDuplicateProcessing,
@@ -651,7 +658,7 @@ public class SoftwareCapabilityHandler<B> extends ReferenceableHandler<B>
                                                                                               PropertyServerException
     {
         return this.getBeanGUIDsByClassification(userId,
-                                                 OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
+                                                 OpenMetadataType.SOFTWARE_CAPABILITY.typeGUID,
                                                  classificationName,
                                                  forLineage,
                                                  forDuplicateProcessing,

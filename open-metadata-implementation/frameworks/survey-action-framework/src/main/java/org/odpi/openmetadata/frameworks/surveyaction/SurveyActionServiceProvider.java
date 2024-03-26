@@ -2,8 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.surveyaction;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.search.GovernanceServiceProviderBase;
+import org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.*;
+
+import java.util.List;
 
 
 /**
@@ -13,6 +16,43 @@ public abstract class SurveyActionServiceProvider extends GovernanceServiceProvi
 {
     static
     {
-        supportedAssetTypeName = OpenMetadataType.SURVEY_ACTION_SERVICE.typeName;
+        supportedAssetTypeName = DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName();
+        supportedDeployedImplementationType = DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType();
+    }
+
+    protected List<AnalysisStepType>   supportedAnalysisSteps  = null;
+    protected List<AnnotationTypeType> producedAnnotationTypes = null;
+
+
+    /**
+     * Base provider for all survey action services.
+     */
+    public SurveyActionServiceProvider()
+    {
+        super.supportedRequestParameters = SurveyRequestParameter.getRequestParameterTypes();
+        super.producedGuards = SurveyActionGuard.getGuardTypes();
+        super.producedActionTargetTypes = SurveyActionTarget.getActionTargetTypes();
+    }
+
+
+    /**
+     * Return the analysis steps that the service supports.
+     *
+     * @return list of analysis steps
+     */
+    public List<AnalysisStepType> getSupportedAnalysisSteps()
+    {
+        return supportedAnalysisSteps;
+    }
+
+
+    /**
+     * Return the supported annotation types.
+     *
+     * @return list of annotation types
+     */
+    public List<AnnotationTypeType> getProducedAnnotationTypes()
+    {
+        return producedAnnotationTypes;
     }
 }

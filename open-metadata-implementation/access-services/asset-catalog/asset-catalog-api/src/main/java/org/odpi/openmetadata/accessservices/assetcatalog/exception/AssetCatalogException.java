@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetcatalog.exception;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.OMAGCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
+import java.io.Serial;
 import java.util.Map;
 
 /**
@@ -16,8 +17,9 @@ import java.util.Map;
  * The aim is to be able to uniquely identify the cause and remedy for the error.
  */
 public class AssetCatalogException extends OMAGCheckedExceptionBase {
-   
-    private static final long    serialVersionUID = 1L;
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * This is the typical constructor used for creating an AssetCatalogException.

@@ -141,6 +141,21 @@ public interface ActionControlInterface
                                                                         PropertyServerException;
 
 
+    /**
+     * Request that execution of an engine action is stopped.
+     *
+     * @param userId identifier of calling user
+     * @param engineActionGUID identifier of the engine action request.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem detected by the metadata store.
+     */
+    void cancelEngineAction(String userId,
+                            String engineActionGUID) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException;
+
 
     /**
      * Retrieve the engine actions that are known to the server.

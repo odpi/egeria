@@ -9,6 +9,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOpe
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 
+import java.io.Serial;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -26,7 +27,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class IntegrationServiceConfig extends OMAGServerClientConfig
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private int                              integrationServiceId                  = 0;
     private ComponentDevelopmentStatus       integrationServiceDevelopmentStatus   = null;

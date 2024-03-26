@@ -8,7 +8,7 @@ import org.odpi.openmetadata.frameworkservices.gaf.client.OpenGovernanceClientBa
 import org.odpi.openmetadata.frameworkservices.gaf.client.OpenMetadataClientBase;
 
 /**
- * OpenGovernanceClientBase provides an interface to the services that build, monitor and trigger governance actions.
+ * OpenGovernanceClient provides an interface to the services that build, monitor and trigger governance actions.
  * This is part of the Governance Action Framework (GAF).
  */
 public class OpenGovernanceClient extends OpenGovernanceClientBase

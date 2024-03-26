@@ -16,9 +16,8 @@ import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandl
 import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.FilesAndFoldersHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.DataFieldHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.AnnotationHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.DiscoveryAnalysisReportHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.SurveyReportHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
@@ -26,9 +25,8 @@ import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
-import org.odpi.openmetadata.frameworks.discovery.properties.DataField;
-import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.SurveyReport;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -53,9 +51,8 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
 
     private final ValidValuesHandler<ValidValueElement> validValuesHandler;
 
-    private final DataFieldHandler<DataField>                             dataFieldHandler;
-    private final AnnotationHandler<Annotation>                           annotationHandler;
-    private final DiscoveryAnalysisReportHandler<DiscoveryAnalysisReport> discoveryAnalysisReportHandler;
+    private final AnnotationHandler<Annotation>     annotationHandler;
+    private final SurveyReportHandler<SurveyReport> surveyReportHandler;
 
     private final ConnectionHandler<ConnectionElement>       connectionHandler;
     private final ConnectorTypeHandler<ConnectorTypeElement> connectorTypeHandler;
@@ -193,19 +190,6 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
                                                            publishZones,
                                                            auditLog);
 
-        this.dataFieldHandler               = new DataFieldHandler<>(new DataFieldConverter<>(repositoryHelper, serviceName, serverName),
-                                                                     DataField.class,
-                                                                     serviceName,
-                                                                     serverName,
-                                                                     invalidParameterHandler,
-                                                                     repositoryHandler,
-                                                                     repositoryHelper,
-                                                                     localServerUserId,
-                                                                     securityVerifier,
-                                                                     supportedZones,
-                                                                     defaultZones,
-                                                                     publishZones,
-                                                                     auditLog);
 
         this.annotationHandler              = new AnnotationHandler<>(new AnnotationConverter<>(repositoryHelper, serviceName, serverName),
                                                                       Annotation.class,
@@ -221,21 +205,21 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
                                                                       publishZones,
                                                                       auditLog);
 
-        this.discoveryAnalysisReportHandler = new DiscoveryAnalysisReportHandler<>(new DiscoveryAnalysisReportConverter<>(repositoryHelper,
-                                                                                                                          serviceName,
-                                                                                                                          serverName),
-                                                                                   DiscoveryAnalysisReport.class,
-                                                                                   serviceName,
-                                                                                   serverName,
-                                                                                   invalidParameterHandler,
-                                                                                   repositoryHandler,
-                                                                                   repositoryHelper,
-                                                                                   localServerUserId,
-                                                                                   securityVerifier,
-                                                                                   supportedZones,
-                                                                                   defaultZones,
-                                                                                   publishZones,
-                                                                                   auditLog);
+        this.surveyReportHandler = new SurveyReportHandler<>(new SurveyReportConverter<>(repositoryHelper,
+                                                                                         serviceName,
+                                                                                         serverName),
+                                                             SurveyReport.class,
+                                                             serviceName,
+                                                             serverName,
+                                                             invalidParameterHandler,
+                                                             repositoryHandler,
+                                                             repositoryHelper,
+                                                             localServerUserId,
+                                                             securityVerifier,
+                                                             supportedZones,
+                                                             defaultZones,
+                                                             publishZones,
+                                                             auditLog);
 
         this.connectionHandler = new ConnectionHandler<>(new ConnectionConverter<>(repositoryHelper, serviceName, serverName),
                                                          ConnectionElement.class,
@@ -439,13 +423,13 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    DiscoveryAnalysisReportHandler<DiscoveryAnalysisReport> getDiscoveryAnalysisReportHandler() throws PropertyServerException
+    SurveyReportHandler<SurveyReport> getSurveyReportHandler() throws PropertyServerException
     {
-        final String methodName = "getDiscoveryAnalysisReportHandler";
+        final String methodName = "getSurveyReportHandler";
 
         validateActiveRepository(methodName);
 
-        return discoveryAnalysisReportHandler;
+        return surveyReportHandler;
     }
 
 
@@ -462,22 +446,6 @@ public class AssetOwnerServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return annotationHandler;
-    }
-
-
-    /**
-     * Return the handler for managing data field objects.
-     *
-     * @return  handler object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    DataFieldHandler<DataField> getDataFieldHandler() throws PropertyServerException
-    {
-        final String methodName = "getDataFieldHandler";
-
-        validateActiveRepository(methodName);
-
-        return dataFieldHandler;
     }
 
 

@@ -349,6 +349,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                               supportedZones,
                                                               deepCopy,
                                                               templateSubstitute,
+                                                              null,
                                                               methodName);
 
         if (glossaryTermGUID != null)
@@ -2098,6 +2099,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                                          true,
                                                                          false,
                                                                          null,
+                                                                         limitResultsByStatus,
+                                                                         null,
                                                                          forLineage,
                                                                          forDuplicateProcessing,
                                                                          0,
@@ -2105,7 +2108,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                                          effectiveTime,
                                                                          methodName);
 
-        List<B> results = new ArrayList<>();
+        List<B>      results = new ArrayList<>();
+        List<String> validatedAnchors = new ArrayList<>();
 
         while ((iterator.moreToReceive()) && ((queryPageSize == 0) || (results.size() < queryPageSize)))
         {
@@ -2117,24 +2121,34 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
             {
                 try
                 {
-                    this.validateAnchorEntity(userId,
-                                              entity.getGUID(),
-                                              entity.getType().getTypeDefName(),
-                                              entity,
-                                              entityGUIDParameterName,
-                                              false,
-                                              false,
-                                              forLineage,
-                                              forDuplicateProcessing,
-                                              supportedZones,
-                                              effectiveTime,
-                                              methodName);
+                    AnchorIdentifiers termAnchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
 
-                    AnchorIdentifiers anchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(entity, methodName);
-
-                    if (((glossaryGUID == null) || (glossaryGUID.equals(anchorIdentifiers.anchorGUID))) &&
-                        ((limitResultsByStatus == null) || (limitResultsByStatus.contains(entity.getStatus()))))
+                    if ((glossaryGUID == null) || (glossaryGUID.equals(termAnchorIdentifiers.anchorGUID)))
                     {
+                        /*
+                         * The term matches so check the anchor/security.  We only want to check each glossary GUID anchor once.
+                         */
+                        if ((termAnchorIdentifiers.anchorGUID == null) || (! validatedAnchors.contains(termAnchorIdentifiers.anchorGUID)))
+                        {
+                            this.validateAnchorEntity(userId,
+                                                      entity.getGUID(),
+                                                      entity.getType().getTypeDefName(),
+                                                      entity,
+                                                      entityGUIDParameterName,
+                                                      false,
+                                                      false,
+                                                      forLineage,
+                                                      forDuplicateProcessing,
+                                                      supportedZones,
+                                                      effectiveTime,
+                                                      methodName);
+
+                            if (termAnchorIdentifiers.anchorGUID != null)
+                            {
+                                validatedAnchors.add(termAnchorIdentifiers.anchorGUID);
+                            }
+                        }
+
                         matchCount ++;
                         if (matchCount > startFrom)
                         {
@@ -2206,6 +2220,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                                          false,
                                                                          false,
                                                                          null,
+                                                                         limitResultsByStatus,
+                                                                         null,
                                                                          forLineage,
                                                                          forDuplicateProcessing,
                                                                          0,
@@ -2213,7 +2229,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                                          effectiveTime,
                                                                          methodName);
 
-        List<B> results = new ArrayList<>();
+        List<B>      results = new ArrayList<>();
+        List<String> validatedAnchors = new ArrayList<>();
 
         while ((iterator.moreToReceive()) && ((queryPageSize == 0) || (results.size() < queryPageSize)))
         {
@@ -2225,24 +2242,34 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
             {
                 try
                 {
-                    this.validateAnchorEntity(userId,
-                                              termEntity.getGUID(),
-                                              OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
-                                              termEntity,
-                                              entityGUIDParameterName,
-                                              false,
-                                              false,
-                                              forLineage,
-                                              forDuplicateProcessing,
-                                              supportedZones,
-                                              effectiveTime,
-                                              methodName);
-
                     AnchorIdentifiers termAnchorIdentifiers = this.getAnchorGUIDFromAnchorsClassification(termEntity, methodName);
 
-                    if (((glossaryGUID == null) || (glossaryGUID.equals(termAnchorIdentifiers.anchorGUID))) &&
-                        ((limitResultsByStatus == null) || (limitResultsByStatus.contains(termEntity.getStatus()))))
+                    if ((glossaryGUID == null) || (glossaryGUID.equals(termAnchorIdentifiers.anchorGUID)))
                     {
+                        /*
+                         * The term matches so check the anchor/security.  We only want to check each glossary GUID anchor once.
+                         */
+                        if ((termAnchorIdentifiers.anchorGUID == null) || (! validatedAnchors.contains(termAnchorIdentifiers.anchorGUID)))
+                        {
+                            this.validateAnchorEntity(userId,
+                                                      termEntity.getGUID(),
+                                                      OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                                      termEntity,
+                                                      entityGUIDParameterName,
+                                                      false,
+                                                      false,
+                                                      forLineage,
+                                                      forDuplicateProcessing,
+                                                      supportedZones,
+                                                      effectiveTime,
+                                                      methodName);
+
+                            if (termAnchorIdentifiers.anchorGUID != null)
+                            {
+                                validatedAnchors.add(termAnchorIdentifiers.anchorGUID);
+                            }
+                        }
+
                         matchCount ++;
                         if (matchCount > startFrom)
                         {

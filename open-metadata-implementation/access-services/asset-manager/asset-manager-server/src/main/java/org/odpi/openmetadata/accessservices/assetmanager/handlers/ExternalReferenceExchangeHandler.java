@@ -994,7 +994,7 @@ public class ExternalReferenceExchangeHandler extends ExchangeHandlerBase
         List<EntityDetail> externalReferenceEntities = externalIdentifierHandler.getElementEntitiesForScope(userId,
                                                                                                             assetManagerGUID,
                                                                                                             assetManagerGUIDParameterName,
-                                                                                                            OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                                                            OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                                                             OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
                                                                                                             startFrom,
                                                                                                             pageSize,

@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDef
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serial;
 import java.util.Map;
 
 /**
@@ -17,7 +18,8 @@ import java.util.Map;
  */
 public class ConnectionCheckedException extends OCFCheckedExceptionBase
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private static final Logger log = LoggerFactory.getLogger(ConnectionCheckedException.class);
 

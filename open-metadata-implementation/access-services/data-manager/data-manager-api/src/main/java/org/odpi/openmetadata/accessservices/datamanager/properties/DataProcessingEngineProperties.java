@@ -51,7 +51,7 @@ public class DataProcessingEngineProperties extends SoftwareCapabilitiesProperti
         return "DataProcessingEngineProperties{" +
                        "displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
-                       ", typeDescription='" + getTypeDescription() + '\'' +
+                       ", typeDescription='" + getDeployedImplementationType() + '\'' +
                        ", version='" + getVersion() + '\'' +
                        ", patchLevel='" + getPatchLevel() + '\'' +
                        ", source='" + getSource() + '\'' +

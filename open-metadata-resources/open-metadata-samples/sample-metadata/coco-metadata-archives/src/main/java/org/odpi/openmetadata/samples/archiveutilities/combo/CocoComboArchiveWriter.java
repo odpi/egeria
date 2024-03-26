@@ -65,11 +65,11 @@ public class CocoComboArchiveWriter extends CocoBaseArchiveWriter
      */
     public void getArchiveContent()
     {
-        CocoClinicalTrialsArchiveWriter    clinicalTrialsArchiveWriter    = new CocoClinicalTrialsArchiveWriter();
+        CocoOrganizationArchiveWriter      organizationArchiveWriter      = new CocoOrganizationArchiveWriter();
         CocoGovernanceProgramArchiveWriter governanceProgramArchiveWriter = new CocoGovernanceProgramArchiveWriter();
+        CocoClinicalTrialsArchiveWriter    clinicalTrialsArchiveWriter    = new CocoClinicalTrialsArchiveWriter();
         CocoGovernanceEnginesArchiveWriter governanceEnginesArchiveWriter = new CocoGovernanceEnginesArchiveWriter();
         CocoBusinessSystemsArchiveWriter   businessSystemsArchiveWriter   = new CocoBusinessSystemsArchiveWriter();
-        CocoOrganizationArchiveWriter      organizationArchiveWriter      = new CocoOrganizationArchiveWriter();
         CocoSustainabilityArchiveWriter    sustainabilityArchiveWriter    = new CocoSustainabilityArchiveWriter();
 
         /*
@@ -80,11 +80,11 @@ public class CocoComboArchiveWriter extends CocoBaseArchiveWriter
         organizationArchiveWriter.setArchiveBuilder(archiveBuilder, archiveHelper);
         organizationArchiveWriter.getArchiveContent();
 
-        clinicalTrialsArchiveWriter.setArchiveBuilder(archiveBuilder, archiveHelper);
-        clinicalTrialsArchiveWriter.getArchiveContent();
-
         governanceProgramArchiveWriter.setArchiveBuilder(archiveBuilder,archiveHelper);
         governanceProgramArchiveWriter.getArchiveContent();
+
+        clinicalTrialsArchiveWriter.setArchiveBuilder(archiveBuilder, archiveHelper);
+        clinicalTrialsArchiveWriter.getArchiveContent();
 
         governanceEnginesArchiveWriter.setArchiveBuilder(archiveBuilder,archiveHelper);
         governanceEnginesArchiveWriter.getArchiveContent();

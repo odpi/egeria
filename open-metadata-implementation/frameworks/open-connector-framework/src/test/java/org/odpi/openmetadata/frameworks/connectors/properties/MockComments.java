@@ -4,16 +4,21 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
 
 /**
- * MockComments implements the abstract methods for Comments so it can be tested.
+ * MockComments implements the abstract methods for Comments, so it can be tested.
  */
 public class MockComments extends Comments
 {
-    private static final long     serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    int totalElementCount = 0;
+
 
     /**
      * Typical Constructor creates an iterator with the supplied list of elements.
@@ -25,7 +30,10 @@ public class MockComments extends Comments
     public MockComments(int             totalElementCount,
                         int             maxCacheSize)
     {
-        super(totalElementCount, maxCacheSize);
+        super(maxCacheSize);
+
+        this.totalElementCount = totalElementCount;
+
     }
 
 
@@ -34,9 +42,11 @@ public class MockComments extends Comments
      *
      * @param template - type-specific iterator to copy; null to create an empty iterator
      */
-    public MockComments( Comments template)
+    public MockComments(MockComments template)
     {
-        super( template);
+        super(template);
+
+        this.totalElementCount = template.totalElementCount;
     }
 
 
@@ -64,13 +74,18 @@ public class MockComments extends Comments
         int                            numberOfEntries;
         List<ElementBase>        propertyList = new ArrayList<>();
 
-        if (cacheStartPointer + maximumSize > super.pagingIterator.getElementCount())
+        if (cacheStartPointer + maximumSize > totalElementCount)
         {
-            numberOfEntries = super.pagingIterator.getElementCount() - cacheStartPointer;
+            numberOfEntries = totalElementCount - cacheStartPointer;
         }
         else
         {
             numberOfEntries = maximumSize;
+        }
+
+        if (numberOfEntries <= 0)
+        {
+            return null;
         }
 
         for (int i=0; i< numberOfEntries ; i++)

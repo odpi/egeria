@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetowner.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,8 +25,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AnnotationListResponse extends AssetOwnerOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private List<Annotation> annotations = null;
 
     /**

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.integrationservices.files.contextmanager;
 
 import org.odpi.openmetadata.accessservices.datamanager.client.*;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -171,7 +172,10 @@ public class FilesIntegratorContextManager extends IntegrationContextManager
                                                                                                              permittedSynchronizationName,
                                                                                                              serviceOptionsString));
 
-            String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName, "DataManager", "FileSystem");
+            String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName,
+                                                                 DeployedImplementationType.FILE_SYSTEM.getAssociatedTypeName(),
+                                                                 DeployedImplementationType.FILE_SYSTEM.getAssociatedClassification(),
+                                                                 DeployedImplementationType.FILE_SYSTEM.getDeployedImplementationType());
             String externalSourceName = metadataSourceQualifiedName;
 
             if (externalSourceGUID == null)

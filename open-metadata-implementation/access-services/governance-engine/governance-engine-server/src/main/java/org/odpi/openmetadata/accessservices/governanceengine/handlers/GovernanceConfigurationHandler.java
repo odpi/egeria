@@ -7,15 +7,8 @@ import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.*;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.CatalogTargetProperties;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.IntegrationGroupProperties;
 import org.odpi.openmetadata.accessservices.governanceengine.properties.RegisteredGovernanceServiceProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.ConnectionConverter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.ConnectionHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.ConnectorTypeHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.EndpointHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIDummyBeanConverter;
-import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityBuilder;
-import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryRelationshipsIterator;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -23,14 +16,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -39,16 +29,12 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
  * GovernanceConfigurationHandler provides the open metadata server side implementation of
- * GovernanceConfigurationServer which is part of the Open Governance Framework (ODF).
+ * GovernanceConfigurationServer which is part of the Governance Action Framework (GAF).
  */
 public class GovernanceConfigurationHandler
 {
@@ -61,8 +47,6 @@ public class GovernanceConfigurationHandler
     private final AssetHandler<GovernanceServiceElement>             governanceServiceHandler;
     private final AssetHandler<IntegrationConnectorElement>          integrationConnectorHandler;
     private final ConnectionHandler<Connection>                      connectionHandler;
-    private final ConnectorTypeHandler<ConnectorType>                connectorTypeHandler;
-    private final EndpointHandler<Endpoint>                          endpointHandler;
     private final InvalidParameterHandler                            invalidParameterHandler;
     private final RegisteredIntegrationConnectorConverter            registeredIntegrationConnectorConverter;
     private final CatalogTargetConverter<CatalogTarget>              catalogTargetConverter;
@@ -173,34 +157,6 @@ public class GovernanceConfigurationHandler
                                                          defaultZones,
                                                          publishZones,
                                                          auditLog);
-
-        this.connectorTypeHandler = new ConnectorTypeHandler<>(new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
-                                                               ConnectorType.class,
-                                                               serviceName,
-                                                               serverName,
-                                                               invalidParameterHandler,
-                                                               repositoryHandler,
-                                                               repositoryHelper,
-                                                               localServerUserId,
-                                                               securityVerifier,
-                                                               supportedZones,
-                                                               defaultZones,
-                                                               publishZones,
-                                                               auditLog);
-
-        this.endpointHandler = new EndpointHandler<>(new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
-                                                     Endpoint.class,
-                                                     serviceName,
-                                                     serverName,
-                                                     invalidParameterHandler,
-                                                     repositoryHandler,
-                                                     repositoryHelper,
-                                                     localServerUserId,
-                                                     securityVerifier,
-                                                     supportedZones,
-                                                     defaultZones,
-                                                     publishZones,
-                                                     auditLog);
     }
 
 
@@ -241,7 +197,7 @@ public class GovernanceConfigurationHandler
                                                                 qualifiedName,
                                                                 displayName,
                                                                 description,
-                                                                null,
+                                                                DeployedImplementationType.GOVERNANCE_ENGINE.getDeployedImplementationType(),
                                                                 null,
                                                                 null,
                                                                 null,
@@ -321,6 +277,7 @@ public class GovernanceConfigurationHandler
                                                       specificMatchPropertyNames,
                                                       false,
                                                       false,
+                                                      null,
                                                       null,
                                                       methodName);
     }
@@ -501,8 +458,6 @@ public class GovernanceConfigurationHandler
         final String methodName = "createGovernanceService";
         final String connectionParameterName = "createGovernanceService";
         final String assetGUIDParameterName = "assetGUID";
-        final String connectorTypeGUIDParameterName = "connectorTypeGUID";
-        final String embeddedConnectionGUIDParameterName = "embeddedConnectionGUID ";
         final String typeNameParameterName = "typeName";
 
         invalidParameterHandler.validateName(typeName, typeNameParameterName, methodName);
@@ -528,177 +483,21 @@ public class GovernanceConfigurationHandler
 
         if (assetGUID != null)
         {
-            Endpoint      endpoint     = connection.getEndpoint();
-            String        endpointGUID = null;
-            String        endpointParameterName = "connection.getEndpoint()";
-
-            if (endpoint != null)
-            {
-                if (endpoint.getGUID() != null)
-                {
-                    endpointGUID = endpoint.getGUID();
-                }
-                else
-                {
-                    String endpointTypeName = OpenMetadataType.ENDPOINT_TYPE_NAME;
-
-                    if ((endpoint.getType() != null) && (endpoint.getType().getTypeName() != null))
-                    {
-                        endpointTypeName = endpoint.getType().getTypeName();
-                    }
-
-                    endpointGUID = endpointHandler.createEndpoint(userId,
-                                                                  null,
-                                                                  null,
-                                                                  assetGUID,
-                                                                  endpoint.getQualifiedName(),
-                                                                  endpoint.getDisplayName(),
-                                                                  endpoint.getDescription(),
-                                                                  endpoint.getAddress(),
-                                                                  endpoint.getProtocol(),
-                                                                  endpoint.getEncryptionMethod(),
-                                                                  endpoint.getAdditionalProperties(),
-                                                                  endpointTypeName,
-                                                                  endpoint.getExtendedProperties(),
-                                                                  null,
-                                                                  null,
-                                                                  null,
-                                                                  methodName);
-                }
-            }
-
-            ConnectorType connectorType = connection.getConnectorType();
-
-            String connectorTypeGUID = connectorTypeHandler.getConnectorTypeForConnection(userId,
-                                                                                          null,
-                                                                                          null,
-                                                                                          assetGUID,
-                                                                                          connectorType.getQualifiedName(),
-                                                                                          connectorType.getDisplayName(),
-                                                                                          connectorType.getDescription(),
-                                                                                          connectorType.getSupportedAssetTypeName(),
-                                                                                          connectorType.getExpectedDataFormat(),
-                                                                                          connectorType.getConnectorProviderClassName(),
-                                                                                          connectorType.getConnectorFrameworkName(),
-                                                                                          connectorType.getConnectorInterfaceLanguage(),
-                                                                                          connectorType.getConnectorInterfaces(),
-                                                                                          connectorType.getTargetTechnologySource(),
-                                                                                          connectorType.getTargetTechnologyName(),
-                                                                                          connectorType.getTargetTechnologyInterfaces(),
-                                                                                          connectorType.getTargetTechnologyVersions(),
-                                                                                          connectorType.getRecognizedAdditionalProperties(),
-                                                                                          connectorType.getRecognizedSecuredProperties(),
-                                                                                          connectorType.getRecognizedConfigurationProperties(),
-                                                                                          connectorType.getAdditionalProperties(),
-                                                                                          false,
-                                                                                          false,
-                                                                                          effectiveTime,
-                                                                                          methodName);
-
-            if (connectorTypeGUID != null)
-            {
-                if (connection instanceof VirtualConnection)
-                {
-                    /*
-                     * OpenGovernancePipelines are represented using a VirtualConnection that
-                     * nests all the Connections for services to call.
-                     */
-                    final String connectionGUIDParameterName = "connection.getGUID";
-
-                    String connectionGUID = connectionHandler.createVirtualConnection(userId,
-                                                                                      null,
-                                                                                      null,
-                                                                                      assetGUID,
-                                                                                      assetGUIDParameterName,
-                                                                                      connection.getAssetSummary(),
-                                                                                      connection.getQualifiedName(),
-                                                                                      connection.getDisplayName(),
-                                                                                      connection.getDescription(),
-                                                                                      connection.getAdditionalProperties(),
-                                                                                      connection.getSecuredProperties(),
-                                                                                      connection.getConfigurationProperties(),
-                                                                                      connection.getUserId(),
-                                                                                      connection.getClearPassword(),
-                                                                                      connection.getEncryptedPassword(),
-                                                                                      connectorTypeGUID,
-                                                                                      connectorTypeGUIDParameterName,
-                                                                                      null,
-                                                                                      null,
-                                                                                      false,
-                                                                                      false,
-                                                                                      effectiveTime,
-                                                                                      methodName);
-
-                    List<EmbeddedConnection> embeddedConnections = ((VirtualConnection) connection).getEmbeddedConnections();
-
-                    if (embeddedConnections != null)
-                    {
-                        for (EmbeddedConnection embeddedConnection : embeddedConnections)
-                        {
-                            if (embeddedConnection != null)
-                            {
-                                String embeddedConnectionGUID = connectionHandler.saveConnection(userId,
-                                                                                                 null,
-                                                                                                 null,
-                                                                                                 assetGUID,
-                                                                                                 null,
-                                                                                                 assetGUIDParameterName,
-                                                                                                 OpenMetadataType.GOVERNANCE_SERVICE.typeName,
-                                                                                                 embeddedConnection.getEmbeddedConnection(),
-                                                                                                 null,
-                                                                                                 false,
-                                                                                                 false,
-                                                                                                 effectiveTime,
-                                                                                                 methodName);
-                                connectionHandler.addEmbeddedConnection(userId,
-                                                                        null,
-                                                                        null,
-                                                                        connectionGUID,
-                                                                        connectionGUIDParameterName,
-                                                                        embeddedConnection.getPosition(),
-                                                                        embeddedConnection.getDisplayName(),
-                                                                        embeddedConnection.getArguments(),
-                                                                        embeddedConnectionGUID,
-                                                                        embeddedConnectionGUIDParameterName,
-                                                                        null,
-                                                                        null,
-                                                                        false,
-                                                                        false,
-                                                                        effectiveTime,
-                                                                        methodName);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    connectionHandler.createConnection(userId,
-                                                       null,
-                                                       null,
-                                                       assetGUID,
-                                                       assetGUIDParameterName,
-                                                       connection.getAssetSummary(),
-                                                       connection.getQualifiedName(),
-                                                       connection.getDisplayName(),
-                                                       connection.getDescription(),
-                                                       connection.getAdditionalProperties(),
-                                                       connection.getSecuredProperties(),
-                                                       connection.getConfigurationProperties(),
-                                                       connection.getUserId(),
-                                                       connection.getClearPassword(),
-                                                       connection.getEncryptedPassword(),
-                                                       connectorTypeGUID,
-                                                       connectorTypeGUIDParameterName,
-                                                       endpointGUID,
-                                                       endpointParameterName,
-                                                       null,
-                                                       null,
-                                                       false,
-                                                       false,
-                                                       effectiveTime,
-                                                       methodName);
-                }
-            }
+            connectionHandler.saveConnection(userId,
+                                             null,
+                                             null,
+                                             assetGUID,
+                                             assetGUID,
+                                             assetGUIDParameterName,
+                                             typeName,
+                                             qualifiedName,
+                                             connection,
+                                             "Connection to create governance service",
+                                             false,
+                                             false,
+                                             governanceEngineHandler.getSupportedZones(),
+                                             effectiveTime,
+                                             methodName);
         }
 
         return assetGUID;
@@ -731,6 +530,7 @@ public class GovernanceConfigurationHandler
                                                                OpenMetadataType.GOVERNANCE_SERVICE.typeName,
                                                                false,
                                                                false,
+                                                               governanceServiceHandler.getSupportedZones(),
                                                                new Date(),
                                                                methodName);
     }
@@ -763,6 +563,7 @@ public class GovernanceConfigurationHandler
                                                                      OpenMetadataType.GOVERNANCE_SERVICE.typeName,
                                                                      false,
                                                                      false,
+                                                                     governanceServiceHandler.getSupportedZones(),
                                                                      new Date(),
                                                                      methodName);
     }
@@ -796,6 +597,7 @@ public class GovernanceConfigurationHandler
                                                                    maximumResults,
                                                                    false,
                                                                    false,
+                                                                   governanceServiceHandler.getSupportedZones(),
                                                                    new Date(),
                                                                    methodName);
     }
@@ -929,6 +731,7 @@ public class GovernanceConfigurationHandler
                                                            connection,
                                                            false,
                                                            false,
+                                                           governanceServiceHandler.getSupportedZones(),
                                                            new Date(),
                                                            methodName);
     }
@@ -1481,12 +1284,12 @@ public class GovernanceConfigurationHandler
         return integrationGroupHandler.createSoftwareCapability(userId,
                                                                 null,
                                                                 null,
-                                                                OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
+                                                                OpenMetadataType.INTEGRATION_GROUP.typeName,
                                                                 null,
                                                                 properties.getQualifiedName(),
                                                                 properties.getDisplayName(),
                                                                 properties.getDescription(),
-                                                                properties.getTypeDescription(),
+                                                                DeployedImplementationType.INTEGRATION_GROUP.getDeployedImplementationType(),
                                                                 properties.getVersion(),
                                                                 properties.getPatchLevel(),
                                                                 properties.getSource(),
@@ -1526,7 +1329,7 @@ public class GovernanceConfigurationHandler
         return integrationGroupHandler.getBeanFromRepository(userId,
                                                              guid,
                                                              guidParameter,
-                                                             OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
+                                                             OpenMetadataType.INTEGRATION_GROUP.typeName,
                                                              false,
                                                              false,
                                                              new Date(),
@@ -1561,11 +1364,12 @@ public class GovernanceConfigurationHandler
         return integrationGroupHandler.getBeanByValue(userId,
                                                       name,
                                                       nameParameter,
-                                                      OpenMetadataType.INTEGRATION_GROUP_TYPE_GUID,
-                                                      OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
+                                                      OpenMetadataType.INTEGRATION_GROUP.typeGUID,
+                                                      OpenMetadataType.INTEGRATION_GROUP.typeName,
                                                       specificMatchPropertyNames,
                                                       false,
                                                       false,
+                                                      null,
                                                       null,
                                                       methodName);
     }
@@ -1592,8 +1396,8 @@ public class GovernanceConfigurationHandler
         final String methodName = "getAllIntegrationGroups";
 
         return integrationGroupHandler.getBeansByType(userId,
-                                                      OpenMetadataType.INTEGRATION_GROUP_TYPE_GUID,
-                                                      OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
+                                                      OpenMetadataType.INTEGRATION_GROUP.typeGUID,
+                                                      OpenMetadataType.INTEGRATION_GROUP.typeName,
                                                       null,
                                                       startingFrom,
                                                       maximumResults,
@@ -1641,8 +1445,8 @@ public class GovernanceConfigurationHandler
                                                                           properties.getPatchLevel(),
                                                                           properties.getSource(),
                                                                           properties.getAdditionalProperties(),
-                                                                          OpenMetadataType.INTEGRATION_GROUP_TYPE_GUID,
-                                                                          OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
+                                                                          OpenMetadataType.INTEGRATION_GROUP.typeGUID,
+                                                                          OpenMetadataType.INTEGRATION_GROUP.typeName,
                                                                           null,
                                                                           repositoryHelper,
                                                                           serviceName,
@@ -1655,8 +1459,8 @@ public class GovernanceConfigurationHandler
                                                        null,
                                                        guid,
                                                        guidParameter,
-                                                       OpenMetadataType.INTEGRATION_GROUP_TYPE_GUID,
-                                                       OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
+                                                       OpenMetadataType.INTEGRATION_GROUP.typeGUID,
+                                                       OpenMetadataType.INTEGRATION_GROUP.typeName,
                                                        instanceProperties,
                                                        isMergeUpdate,
                                                        methodName);
@@ -1693,8 +1497,8 @@ public class GovernanceConfigurationHandler
                                                        null,
                                                        guid,
                                                        guidParameter,
-                                                       OpenMetadataType.INTEGRATION_GROUP_TYPE_GUID,
-                                                       OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
+                                                       OpenMetadataType.INTEGRATION_GROUP.typeGUID,
+                                                       OpenMetadataType.INTEGRATION_GROUP.typeName,
                                                        qualifiedNameParameter,
                                                        qualifiedName,
                                                        false,
@@ -1738,8 +1542,6 @@ public class GovernanceConfigurationHandler
         final String methodName = "createIntegrationConnector";
         final String connectionParameterName = "createIntegrationConnector";
         final String assetGUIDParameterName = "assetGUID";
-        final String connectorTypeGUIDParameterName = "connectorTypeGUID";
-        final String embeddedConnectionGUIDParameterName = "embeddedConnectionGUID ";
 
         invalidParameterHandler.validateConnection(connection, connectionParameterName, methodName);
 
@@ -1757,7 +1559,7 @@ public class GovernanceConfigurationHandler
                                                                                versionIdentifier,
                                                                                description,
                                                                                additionalProperties,
-                                                                               OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                               OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                                                extendedProperties,
                                                                                InstanceStatus.ACTIVE,
                                                                                null,
@@ -1767,177 +1569,21 @@ public class GovernanceConfigurationHandler
 
         if (assetGUID != null)
         {
-            Endpoint      endpoint     = connection.getEndpoint();
-            String        endpointGUID = null;
-            String        endpointParameterName = "connection.getEndpoint()";
-
-            if (endpoint != null)
-            {
-                if (endpoint.getGUID() != null)
-                {
-                    endpointGUID = endpoint.getGUID();
-                }
-                else
-                {
-                    String typeName = OpenMetadataType.ENDPOINT_TYPE_NAME;
-
-                    if ((endpoint.getType() != null) && (endpoint.getType().getTypeName() != null))
-                    {
-                        typeName = endpoint.getType().getTypeName();
-                    }
-
-                    endpointGUID = endpointHandler.createEndpoint(userId,
-                                                                  null,
-                                                                  null,
-                                                                  assetGUID,
-                                                                  endpoint.getQualifiedName(),
-                                                                  endpoint.getDisplayName(),
-                                                                  endpoint.getDescription(),
-                                                                  endpoint.getAddress(),
-                                                                  endpoint.getProtocol(),
-                                                                  endpoint.getEncryptionMethod(),
-                                                                  endpoint.getAdditionalProperties(),
-                                                                  typeName,
-                                                                  endpoint.getExtendedProperties(),
-                                                                  null,
-                                                                  null,
-                                                                  null,
-                                                                  methodName);
-                }
-            }
-
-            ConnectorType connectorType = connection.getConnectorType();
-
-            String connectorTypeGUID = connectorTypeHandler.getConnectorTypeForConnection(userId,
-                                                                                          null,
-                                                                                          null,
-                                                                                          assetGUID,
-                                                                                          connectorType.getQualifiedName(),
-                                                                                          connectorType.getDisplayName(),
-                                                                                          connectorType.getDescription(),
-                                                                                          connectorType.getSupportedAssetTypeName(),
-                                                                                          connectorType.getExpectedDataFormat(),
-                                                                                          connectorType.getConnectorProviderClassName(),
-                                                                                          connectorType.getConnectorFrameworkName(),
-                                                                                          connectorType.getConnectorInterfaceLanguage(),
-                                                                                          connectorType.getConnectorInterfaces(),
-                                                                                          connectorType.getTargetTechnologySource(),
-                                                                                          connectorType.getTargetTechnologyName(),
-                                                                                          connectorType.getTargetTechnologyInterfaces(),
-                                                                                          connectorType.getTargetTechnologyVersions(),
-                                                                                          connectorType.getRecognizedAdditionalProperties(),
-                                                                                          connectorType.getRecognizedSecuredProperties(),
-                                                                                          connectorType.getRecognizedConfigurationProperties(),
-                                                                                          connectorType.getAdditionalProperties(),
-                                                                                          false,
-                                                                                          false,
-                                                                                          effectiveTime,
-                                                                                          methodName);
-
-            if (connectorTypeGUID != null)
-            {
-                if (connection instanceof VirtualConnection)
-                {
-                    /*
-                     * OpenGovernancePipelines are represented using a VirtualConnection that
-                     * nests all the Connections for services to call.
-                     */
-                    final String connectionGUIDParameterName = "connection.getGUID";
-
-                    String connectionGUID = connectionHandler.createVirtualConnection(userId,
-                                                                                      null,
-                                                                                      null,
-                                                                                      assetGUID,
-                                                                                      assetGUIDParameterName,
-                                                                                      connection.getAssetSummary(),
-                                                                                      connection.getQualifiedName(),
-                                                                                      connection.getDisplayName(),
-                                                                                      connection.getDescription(),
-                                                                                      connection.getAdditionalProperties(),
-                                                                                      connection.getSecuredProperties(),
-                                                                                      connection.getConfigurationProperties(),
-                                                                                      connection.getUserId(),
-                                                                                      connection.getClearPassword(),
-                                                                                      connection.getEncryptedPassword(),
-                                                                                      connectorTypeGUID,
-                                                                                      connectorTypeGUIDParameterName,
-                                                                                      null,
-                                                                                      null,
-                                                                                      false,
-                                                                                      false,
-                                                                                      effectiveTime,
-                                                                                      methodName);
-
-                    List<EmbeddedConnection> embeddedConnections = ((VirtualConnection) connection).getEmbeddedConnections();
-
-                    if (embeddedConnections != null)
-                    {
-                        for (EmbeddedConnection embeddedConnection : embeddedConnections)
-                        {
-                            if (embeddedConnection != null)
-                            {
-                                String embeddedConnectionGUID = connectionHandler.saveConnection(userId,
-                                                                                                 null,
-                                                                                                 null,
-                                                                                                 assetGUID,
-                                                                                                 null,
-                                                                                                 assetGUIDParameterName,
-                                                                                                 OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
-                                                                                                 embeddedConnection.getEmbeddedConnection(),
-                                                                                                 null,
-                                                                                                 false,
-                                                                                                 false,
-                                                                                                 effectiveTime,
-                                                                                                 methodName);
-                                connectionHandler.addEmbeddedConnection(userId,
-                                                                        null,
-                                                                        null,
-                                                                        connectionGUID,
-                                                                        connectionGUIDParameterName,
-                                                                        embeddedConnection.getPosition(),
-                                                                        embeddedConnection.getDisplayName(),
-                                                                        embeddedConnection.getArguments(),
-                                                                        embeddedConnectionGUID,
-                                                                        embeddedConnectionGUIDParameterName,
-                                                                        null,
-                                                                        null,
-                                                                        false,
-                                                                        false,
-                                                                        effectiveTime,
-                                                                        methodName);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    connectionHandler.createConnection(userId,
-                                                       null,
-                                                       null,
-                                                       assetGUID,
-                                                       assetGUIDParameterName,
-                                                       connection.getAssetSummary(),
-                                                       connection.getQualifiedName(),
-                                                       connection.getDisplayName(),
-                                                       connection.getDescription(),
-                                                       connection.getAdditionalProperties(),
-                                                       connection.getSecuredProperties(),
-                                                       connection.getConfigurationProperties(),
-                                                       connection.getUserId(),
-                                                       connection.getClearPassword(),
-                                                       connection.getEncryptedPassword(),
-                                                       connectorTypeGUID,
-                                                       connectorTypeGUIDParameterName,
-                                                       endpointGUID,
-                                                       endpointParameterName,
-                                                       null,
-                                                       null,
-                                                       false,
-                                                       false,
-                                                       effectiveTime,
-                                                       methodName);
-                }
-            }
+            connectionHandler.saveConnection(userId,
+                                             null,
+                                             null,
+                                             assetGUID,
+                                             assetGUID,
+                                             assetGUIDParameterName,
+                                             OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                             qualifiedName,
+                                             connection,
+                                             "Connection to create integration connector",
+                                             false,
+                                             false,
+                                             connectionHandler.getSupportedZones(),
+                                             effectiveTime,
+                                             methodName);
         }
 
         return assetGUID;
@@ -1967,9 +1613,10 @@ public class GovernanceConfigurationHandler
         return integrationConnectorHandler.getAssetWithConnection(userId,
                                                                   guid,
                                                                   guidParameter,
-                                                                  OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                  OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                                   false,
                                                                   false,
+                                                                  integrationConnectorHandler.getSupportedZones(),
                                                                   new Date(),
                                                                   methodName);
     }
@@ -1998,10 +1645,11 @@ public class GovernanceConfigurationHandler
         return integrationConnectorHandler.getAssetByNameWithConnection(userId,
                                                                         name,
                                                                         nameParameter,
-                                                                        OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_GUID,
-                                                                        OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                        OpenMetadataType.INTEGRATION_CONNECTOR.typeGUID,
+                                                                        OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                                         false,
                                                                         false,
+                                                                        integrationConnectorHandler.getSupportedZones(),
                                                                         new Date(),
                                                                         methodName);
     }
@@ -2029,12 +1677,13 @@ public class GovernanceConfigurationHandler
         final  String   methodName = "getAllIntegrationConnectors";
 
         return integrationConnectorHandler.getAllAssetsWithConnection(userId,
-                                                                      OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_GUID,
-                                                                      OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                      OpenMetadataType.INTEGRATION_CONNECTOR.typeGUID,
+                                                                      OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                                       startingFrom,
                                                                       maximumResults,
                                                                       false,
                                                                       false,
+                                                                      integrationConnectorHandler.getSupportedZones(),
                                                                       new Date(),
                                                                       methodName);
     }
@@ -2071,7 +1720,7 @@ public class GovernanceConfigurationHandler
         connectionHandler.getEntityFromRepository(userId,
                                                   integrationConnectorGUID,
                                                   guidParameter,
-                                                  OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                  OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                   null,
                                                   null,
                                                   false,
@@ -2081,7 +1730,7 @@ public class GovernanceConfigurationHandler
 
         List<Relationship>  relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                      integrationConnectorGUID,
-                                                                                     OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                                     OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                                                      OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID,
                                                                                      OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
                                                                                      1,
@@ -2165,8 +1814,8 @@ public class GovernanceConfigurationHandler
                                                               versionIdentifier,
                                                               description,
                                                               additionalProperties,
-                                                              OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_GUID,
-                                                              OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                              OpenMetadataType.INTEGRATION_CONNECTOR.typeGUID,
+                                                              OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                               extendedProperties,
                                                               null,
                                                               null,
@@ -2175,6 +1824,7 @@ public class GovernanceConfigurationHandler
                                                               connection,
                                                               false,
                                                               false,
+                                                              integrationConnectorHandler.getSupportedZones(),
                                                               new Date(),
                                                               methodName);
     }
@@ -2208,8 +1858,8 @@ public class GovernanceConfigurationHandler
                                                  null,
                                                  guid,
                                                  guidParameter,
-                                                 OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_GUID,
-                                                 OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                 OpenMetadataType.INTEGRATION_CONNECTOR.typeGUID,
+                                                 OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                  qualifiedNameParameter,
                                                  qualifiedName,
                                                  false,
@@ -2284,7 +1934,7 @@ public class GovernanceConfigurationHandler
 
         instanceProperties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                         instanceProperties,
-                                                                        OpenMetadataType.START_DATE_PROPERTY_NAME,
+                                                                        OpenMetadataProperty.START_DATE.name,
                                                                         startDate,
                                                                         methodName);
 
@@ -2306,7 +1956,7 @@ public class GovernanceConfigurationHandler
             {
                 instanceProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                 instanceProperties,
-                                                                                OpenMetadataType.PERMITTED_SYNC_PROPERTY_NAME,
+                                                                                OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
                                                                                 OpenMetadataType.PERMITTED_SYNC_ENUM_TYPE_GUID,
                                                                                 OpenMetadataType.PERMITTED_SYNC_ENUM_TYPE_NAME,
                                                                                 permittedSynchronization.getOpenTypeOrdinal(),
@@ -2314,7 +1964,7 @@ public class GovernanceConfigurationHandler
             }
             catch (TypeErrorException error)
             {
-                throw new InvalidParameterException(error, OpenMetadataType.KEY_PATTERN_PROPERTY_NAME);
+                throw new InvalidParameterException(error, OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name);
             }
         }
 
@@ -2323,10 +1973,10 @@ public class GovernanceConfigurationHandler
                                                      null,
                                                      integrationGroupGUID,
                                                      integrationGroupGUIDParameter,
-                                                     OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
+                                                     OpenMetadataType.INTEGRATION_GROUP.typeName,
                                                      integrationConnectorGUID,
                                                      integrationConnectorGUIDParameter,
-                                                     OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                     OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                      false,
                                                      false,
                                                      integrationGroupHandler.getSupportedZones(),
@@ -2369,7 +2019,7 @@ public class GovernanceConfigurationHandler
 
         List<Relationship> relationships = repositoryHandler.getRelationshipsBetweenEntities(userId,
                                                                                              integrationConnectorGUID,
-                                                                                             OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                                             OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                                                              integrationGroupGUID,
                                                                                              OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID,
                                                                                              OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
@@ -2382,8 +2032,7 @@ public class GovernanceConfigurationHandler
 
         if (relationships != null)
         {
-
-            if (relationships.size() > 0)
+            if (!relationships.isEmpty())
             {
                 return registeredIntegrationConnectorConverter.getBean(this.getIntegrationConnectorByGUID(userId, integrationConnectorGUID), relationships.get(0));
             }
@@ -2420,11 +2069,11 @@ public class GovernanceConfigurationHandler
         List<Relationship> relationships = integrationGroupHandler.getAttachmentLinks(userId,
                                                                                       integrationGroupGUID,
                                                                                       integrationGroupGUIDParameter,
-                                                                                      OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
+                                                                                      OpenMetadataType.INTEGRATION_GROUP.typeName,
                                                                                       OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID,
                                                                                       OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_NAME,
                                                                                       null,
-                                                                                      OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                                      OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                                                       2,
                                                                                       false,
                                                                                       false,
@@ -2482,11 +2131,11 @@ public class GovernanceConfigurationHandler
                                                          null,
                                                          integrationGroupGUID,
                                                          integrationGroupGUIDParameter,
-                                                         OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
+                                                         OpenMetadataType.INTEGRATION_GROUP.typeName,
                                                          integrationConnectorGUID,
                                                          integrationConnectorGUIDParameter,
-                                                         OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_GUID,
-                                                         OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                         OpenMetadataType.INTEGRATION_CONNECTOR.typeGUID,
+                                                         OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                          false,
                                                          false,
                                                          OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_TYPE_GUID,
@@ -2538,7 +2187,7 @@ public class GovernanceConfigurationHandler
                                                      null,
                                                      integrationConnectorGUID,
                                                      integrationConnectorGUIDParameter,
-                                                     OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                     OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                      metadataElementGUID,
                                                      metadataElementGUIDParameter,
                                                      OpenMetadataType.OPEN_METADATA_ROOT.typeName,
@@ -2582,7 +2231,7 @@ public class GovernanceConfigurationHandler
 
         List<Relationship> relationships = repositoryHandler.getRelationshipsBetweenEntities(userId,
                                                                                              integrationConnectorGUID,
-                                                                                             OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_GUID,
+                                                                                             OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                                                              metadataElementGUID,
                                                                                              OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_GUID,
                                                                                              OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
@@ -2595,8 +2244,7 @@ public class GovernanceConfigurationHandler
 
         if (relationships != null)
         {
-
-            if (relationships.size() > 0)
+            if (!relationships.isEmpty())
             {
                 return catalogTargetConverter.getNewBean(CatalogTarget.class, relationships.get(0), methodName);
             }
@@ -2637,7 +2285,7 @@ public class GovernanceConfigurationHandler
         List<Relationship> relationships = integrationGroupHandler.getAttachmentLinks(userId,
                                                                                       integrationConnectorGUID,
                                                                                       integrationConnectorGUIDParameter,
-                                                                                      OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                                      OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                                                       OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_GUID,
                                                                                       OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
                                                                                       null,
@@ -2697,7 +2345,7 @@ public class GovernanceConfigurationHandler
                                                          null,
                                                          integrationConnectorGUID,
                                                          integrationConnectorGUIDParameter,
-                                                         OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                         OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                          metadataElementGUID,
                                                          metadataElementGUIDParameter,
                                                          OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,

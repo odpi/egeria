@@ -6,12 +6,14 @@ package org.odpi.openmetadata.adapters.connectors.dynamicarchivers.glossary;
 
 import org.odpi.openmetadata.adapters.connectors.dynamicarchivers.DynamicArchiveProvider;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 
 import java.util.ArrayList;
 
 /**
  * GlossaryDynamicArchiverProvider is the OCF connector provider for the Glossary Dynamic Archiving Service.
- * This is a Archive Service as defined by the Archive Manager OMES.
+ * This is an Archive Service as defined by the Archive Manager OMES.
  */
 public class GlossaryDynamicArchiverProvider extends DynamicArchiveProvider
 {
@@ -20,7 +22,6 @@ public class GlossaryDynamicArchiverProvider extends DynamicArchiveProvider
     private static final String  connectorTypeDisplayName   = "Glossary Dynamic Archive Service";
     private static final String  connectorTypeDescription   = "Archive Service that writes a glossary to an archive as the glossary is developed.";
 
-    static final String GLOSSARY_NAME_PROPERTY   = "glossaryName";
 
     private static final String connectorClassName = GlossaryDynamicArchiverConnector.class.getName();
 
@@ -34,17 +35,16 @@ public class GlossaryDynamicArchiverProvider extends DynamicArchiveProvider
         super();
         super.setConnectorClassName(connectorClassName);
 
-        if (supportedRequestParameters == null)
-        {
-            supportedRequestParameters = new ArrayList<>();
-        }
-        supportedRequestParameters.add(GLOSSARY_NAME_PROPERTY);
+        supportedRequestParameters = DynamicGlossaryArchiveRequestParameter.getRequestParameterTypes();
 
-        if (supportedTargetActionNames == null)
-        {
-            supportedTargetActionNames = new ArrayList<>();
-        }
-        supportedTargetActionNames.add(GLOSSARY_NAME_PROPERTY);
+        supportedActionTargetTypes = new ArrayList<>();
+        ActionTargetType actionTargetType = new ActionTargetType();
+
+        actionTargetType.setName(DynamicGlossaryArchiveRequestParameter.GLOSSARY_NAME.getName());
+        actionTargetType.setDescription(DynamicGlossaryArchiveRequestParameter.GLOSSARY_NAME.getDescription());
+        actionTargetType.setTypeName(OpenMetadataType.GLOSSARY_TYPE_NAME);
+
+        super.supportedActionTargetTypes.add(actionTargetType);
 
         super.setConnectorClassName(connectorClassName);
 
@@ -56,12 +56,13 @@ public class GlossaryDynamicArchiverProvider extends DynamicArchiveProvider
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
+        connectorType.setDeployedImplementationType(supportedDeployedImplementationType);
 
         if (recognizedConfigurationProperties == null)
         {
             recognizedConfigurationProperties = new ArrayList<>();
         }
-        recognizedConfigurationProperties.add(GLOSSARY_NAME_PROPERTY);
+        recognizedConfigurationProperties.add(DynamicGlossaryArchiveRequestParameter.GLOSSARY_NAME.getName());
 
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.viewservices.myprofile.server;
 
 import org.odpi.openmetadata.accessservices.communityprofile.client.OrganizationManagement;
+import org.odpi.openmetadata.accessservices.communityprofile.client.ToDoActionManagement;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -18,6 +19,7 @@ public class MyProfileInstance extends OMVSServiceInstance
     private static final ViewServiceDescription myDescription = ViewServiceDescription.MY_PROFILE;
 
     private final OrganizationManagement   organizationManagement;
+    private final ToDoActionManagement     toDoActionManagement;
 
 
     /**
@@ -46,7 +48,8 @@ public class MyProfileInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-        organizationManagement   = new OrganizationManagement(remoteServerName, remoteServerURL, auditLog);
+        organizationManagement = new OrganizationManagement(remoteServerName, remoteServerURL, auditLog);
+        toDoActionManagement   = new ToDoActionManagement(remoteServerName, remoteServerURL, auditLog);
     }
 
 
@@ -58,5 +61,16 @@ public class MyProfileInstance extends OMVSServiceInstance
     public OrganizationManagement getOrganizationManagement()
     {
         return organizationManagement;
+    }
+
+
+    /**
+     * Return the to do management client.  This client is from Community Profile OMAS and is for maintaining information .
+     *
+     * @return client
+     */
+    public ToDoActionManagement getToDoActionManagement()
+    {
+        return toDoActionManagement;
     }
 }

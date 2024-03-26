@@ -1188,7 +1188,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
         List<EntityDetail> glossaryEntities = externalIdentifierHandler.getElementEntitiesForScope(userId,
                                                                                                    assetManagerGUID,
                                                                                                    assetManagerGUIDParameterName,
-                                                                                                   OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                                                   OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                                                    OpenMetadataType.GLOSSARY_TYPE_NAME,
                                                                                                    startFrom,
                                                                                                    pageSize,

@@ -209,7 +209,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
     /**
      * Returns a comprehensive collection of properties about the requested asset.
      *
-     * @param serviceName name of the calling service
+     * @param serviceURLMarker name of the calling service
      * @param userId         userId of user making request.
      * @param assetGUID      unique identifier for asset.
      *
@@ -219,7 +219,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public AssetUniverse getAssetProperties(String serviceName,
+    public AssetUniverse getAssetProperties(String serviceURLMarker,
                                             String userId,
                                             String assetGUID) throws InvalidParameterException,
                                                                      PropertyServerException,
@@ -237,7 +237,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
              * Make use of the ConnectedAsset OMAS Service which provides the metadata services for the
              * Open Connector Framework (OCF).
              */
-            return ConnectedAssetUniverse.create(serviceName, serverName, serverPlatformURLRoot, userId, assetGUID);
+            return ConnectedAssetUniverse.create(serviceURLMarker, serverName, serverPlatformURLRoot, userId, assetGUID);
         }
         catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException error)
         {
@@ -548,6 +548,87 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
                                                                          guid);
 
         return restResult.getAsset();
+    }
+
+
+    /**
+     * Returns the unique identifier corresponding to the supplied connection.
+     *
+     * @param userId calling user
+     * @param connection   the connection object that contains the properties needed to create the connection.
+     *
+     * @return guid
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                      the creation of a connector.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     */
+    public String saveConnection(String     userId,
+                                 Connection connection) throws InvalidParameterException,
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException,
+                                                               ConnectionCheckedException,
+                                                               ConnectorCheckedException
+    {
+        final String methodName = "saveConnection";
+        final String connectionParameterName = "connection";
+        final String urlTemplate = "/servers/{0}/open-metadata/framework-services/{1}/connected-asset/users/{2}/connections";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(connection, connectionParameterName, methodName);
+
+        GUIDResponse restResult = ocfRESTClient.callGUIDPostRESTCall(methodName,
+                                                                    serverPlatformURLRoot + urlTemplate,
+                                                                    connection,
+                                                                    serverName,
+                                                                    serviceURLMarker,
+                                                                    userId);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Returns the unique identifier corresponding to the supplied connection.
+     *
+     * @param userId calling user
+     * @param assetGUID the unique identifier of an asset to attach the connection to
+     * @param connection   the connection object that contains the properties needed to create the connection.
+     *
+     * @return guid
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                      the creation of a connector.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     */
+    public String saveConnection(String     userId,
+                                 String     assetGUID,
+                                 Connection connection) throws InvalidParameterException,
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException,
+                                                               ConnectionCheckedException,
+                                                               ConnectorCheckedException
+    {
+        final String methodName = "saveConnection";
+        final String connectionParameterName = "connection";
+        final String assetParameterName = "assetGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/framework-services/{1}/connected-asset/users/{2}/connections?assetGUID={3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetParameterName, methodName);
+        invalidParameterHandler.validateObject(connection, connectionParameterName, methodName);
+
+        GUIDResponse restResult = ocfRESTClient.callGUIDPostRESTCall(methodName,
+                                                                     serverPlatformURLRoot + urlTemplate,
+                                                                     connection,
+                                                                     serverName,
+                                                                     serviceURLMarker,
+                                                                     userId,
+                                                                     assetGUID);
+
+        return restResult.getGUID();
     }
 
 

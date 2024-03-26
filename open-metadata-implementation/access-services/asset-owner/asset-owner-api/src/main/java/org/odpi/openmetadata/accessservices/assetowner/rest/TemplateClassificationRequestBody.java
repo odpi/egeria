@@ -21,8 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TemplateClassificationRequestBody extends AssetOwnerOMASAPIRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
     private String              name                 = null;
     private String              description          = null;
     private Map<String, String> additionalProperties = null;
@@ -108,18 +106,7 @@ public class TemplateClassificationRequestBody extends AssetOwnerOMASAPIRequestB
      */
     public Map<String, String> getAdditionalProperties()
     {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
+        return additionalProperties;
     }
 
 
@@ -132,8 +119,6 @@ public class TemplateClassificationRequestBody extends AssetOwnerOMASAPIRequestB
     {
         this.additionalProperties = additionalProperties;
     }
-
-
 
 
     /**
@@ -172,7 +157,7 @@ public class TemplateClassificationRequestBody extends AssetOwnerOMASAPIRequestB
         TemplateClassificationRequestBody that = (TemplateClassificationRequestBody) objectToCompare;
         return Objects.equals(name, that.name) &&
                        Objects.equals(description, that.description) &&
-                       Objects.equals(additionalProperties, that.additionalProperties);
+                Objects.equals(additionalProperties, that.additionalProperties);
     }
 
 

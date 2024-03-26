@@ -8,11 +8,12 @@ import org.odpi.openmetadata.accessservices.datamanager.metadataelements.FileFol
 import org.odpi.openmetadata.accessservices.datamanager.properties.ArchiveProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.DataFileProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.TemplateProperties;
-import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreProvider;
+import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.BasicFilesIntegrationConnectorsErrorCode;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exception.FileException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.slf4j.Logger;
@@ -46,7 +47,7 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
         return super.getFolderElement(dataFolderFile,
                                       DeployedImplementationType.FILE_FOLDER.getAssociatedTypeName(),
                                       DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType(),
-                                      BasicFileStoreProvider.class.getName());
+                                      BasicFolderProvider.class.getName());
     }
 
 
@@ -278,28 +279,35 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                 {
                     if (fileTemplateQualifiedName == null)
                     {
-                        FileClassifier fileClassifier = new FileClassifier(this.getContext().getIntegrationGovernanceContext().getOpenMetadataAccess(), file);
+                        FileClassifier fileClassifier = this.getContext().getFileClassifier();
+                        FileClassification fileClassification = fileClassifier.classifyFile(file);
 
-                        /*
-                         * Create the file ...
-                         */
-                        DataFileProperties properties = new DataFileProperties();
-
-                        properties.setTypeName(fileClassifier.getAssetTypeName());
-                        properties.setDeployedImplementationType(fileClassifier.getDeployedImplementationType());
-                        properties.setPathName(fileClassifier.getPathName());
-                        properties.setName(fileClassifier.getFileName());
-                        properties.setFileType(fileClassifier.getFileType());
-                        properties.setModifiedTime(new Date(file.lastModified()));
-
-                        List<String> guids = this.getContext().addDataFileToCatalog(properties, null);
-
-                        if ((guids != null) && (!guids.isEmpty()) && (auditLog != null))
+                        if ((! catalogClassifiedFiles) ||
+                                (fileClassification.getFileType() != null) ||
+                                (fileClassification.getAssetTypeName() != null) ||
+                                (fileClassification.getDeployedImplementationType() != null))
                         {
-                            auditLog.logMessage(methodName,
-                                                BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_CREATED.getMessageDefinition(connectorName,
-                                                                                                                                properties.getPathName(),
-                                                                                                                                guids.get(guids.size() - 1)));
+                            /*
+                             * Create the file ...
+                             */
+                            DataFileProperties properties = new DataFileProperties();
+
+                            properties.setTypeName(fileClassification.getAssetTypeName());
+                            properties.setDeployedImplementationType(fileClassification.getDeployedImplementationType());
+                            properties.setPathName(fileClassification.getPathName());
+                            properties.setName(fileClassification.getFileName());
+                            properties.setFileType(fileClassification.getFileType());
+                            properties.setModifiedTime(new Date(file.lastModified()));
+
+                            List<String> guids = this.getContext().addDataFileToCatalog(properties, null);
+
+                            if ((guids != null) && (!guids.isEmpty()) && (auditLog != null))
+                            {
+                                auditLog.logMessage(methodName,
+                                                    BasicFilesIntegrationConnectorsAuditCode.DATA_FILE_CREATED.getMessageDefinition(connectorName,
+                                                                                                                                    properties.getPathName(),
+                                                                                                                                    guids.get(guids.size() - 1)));
+                            }
                         }
                     }
                     else
@@ -510,10 +518,6 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                                                                                                                                dataFileInCatalog.toString()));
                         }
                     }
-                }
-                else
-                {
-                    this.catalogFile(file, methodName);
                 }
             }
             catch (Exception error)

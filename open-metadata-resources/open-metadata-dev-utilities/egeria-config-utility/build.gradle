@@ -19,6 +19,7 @@ dependencies {
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:admin-services:admin-services-client')
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
+    runtimeOnly project(':open-metadata-implementation:user-security:token-manager')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     runtimeOnly 'ch.qos.logback:logback-classic'
 }

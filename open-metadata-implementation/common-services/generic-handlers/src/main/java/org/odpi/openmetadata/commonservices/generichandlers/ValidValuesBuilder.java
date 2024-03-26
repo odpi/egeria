@@ -22,6 +22,7 @@ public class ValidValuesBuilder extends ReferenceableBuilder
     private final String  usage;
     private final String  scope;
     private final String  preferredValue;
+    private final String  dataType;
     private final boolean isDeprecated;
     private final boolean isCaseSensitive;
 
@@ -36,6 +37,7 @@ public class ValidValuesBuilder extends ReferenceableBuilder
      * @param usage guidance on how the schema should be used.
      * @param scope arena where this valid value is applicable.
      * @param preferredValue preferredValue where the schema is defined.
+     * @param dataType the data type of the preferred value.
      * @param isDeprecated is the valid value deprecated
      * @param isCaseSensitive is the valid value case-sensitive
      * @param additionalProperties additional properties
@@ -51,6 +53,7 @@ public class ValidValuesBuilder extends ReferenceableBuilder
                        String               usage,
                        String               scope,
                        String               preferredValue,
+                       String               dataType,
                        boolean              isDeprecated,
                        boolean              isCaseSensitive,
                        Map<String, String>  additionalProperties,
@@ -74,6 +77,7 @@ public class ValidValuesBuilder extends ReferenceableBuilder
         this.usage = usage;
         this.scope = scope;
         this.preferredValue = preferredValue;
+        this.dataType = dataType;
         this.isDeprecated = isDeprecated;
         this.isCaseSensitive = isCaseSensitive;
     }
@@ -125,6 +129,12 @@ public class ValidValuesBuilder extends ReferenceableBuilder
                                                                   properties,
                                                                   OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME,
                                                                   preferredValue,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataType.DATA_TYPE_PROPERTY_NAME,
+                                                                  dataType,
                                                                   methodName);
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,

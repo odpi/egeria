@@ -24,16 +24,14 @@ public abstract class PropertyIteratorBase extends PropertyBase
     /**
      * Typical Constructor creates an iterator with the supplied list of comments.
      *
-     * @param totalElementCount the total number of elements to process.  A negative value is converted to 0.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      */
-    protected PropertyIteratorBase(int                          totalElementCount,
-                                   int                          maxCacheSize)
+    protected PropertyIteratorBase(int maxCacheSize)
     {
         super();
 
-        pagingIterator = new PagingIterator(this, totalElementCount, maxCacheSize);
+        pagingIterator = new PagingIterator(this, maxCacheSize);
     }
 
 
@@ -49,24 +47,6 @@ public abstract class PropertyIteratorBase extends PropertyBase
         if (template != null)
         {
             pagingIterator = new PagingIterator(this, template.pagingIterator);
-        }
-    }
-
-
-    /**
-     * Return the number of elements in the list.
-     *
-     * @return elementCount
-     */
-    public int getElementCount()
-    {
-        if (pagingIterator == null)
-        {
-            return 0;
-        }
-        else
-        {
-            return pagingIterator.getElementCount();
         }
     }
 

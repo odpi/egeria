@@ -48,28 +48,6 @@ public class TestLikes
 
 
     /**
-     * Validate that a clone can be created
-     */
-    @Test public void  testClonedIterator()
-    {
-        Likes propertyIterator = getPropertyIterator(10, 100);
-
-        propertyIterator.next();
-
-        Likes propertyIteratorClone = new MockLikes( propertyIterator);
-
-        int elementCount = 0;
-        while (propertyIteratorClone.hasNext())
-        {
-            assertTrue(propertyIteratorClone.next() != null);
-            elementCount ++;
-        }
-
-        assertTrue(elementCount == 10);
-    }
-
-
-    /**
      * Test that the iterator works well if there are no elements
      */
     @Test public void testEmptyIterator()
@@ -115,25 +93,6 @@ public class TestLikes
     {
         validatePropertyIterator(30,
                                  10);
-    }
-
-
-    /**
-     * Validate that element count is set.
-     */
-    @Test public void testElementCount()
-    {
-        Likes propertyIterator = getPropertyIterator(30, 10);
-
-        assertTrue(propertyIterator.getElementCount() == 30);
-
-        Likes clonedPropertyIterator = new MockLikes( propertyIterator);
-
-        assertTrue(clonedPropertyIterator.getElementCount() == 30);
-
-        clonedPropertyIterator = new MockLikes( null);
-
-        assertTrue(clonedPropertyIterator.getElementCount() == 0);
     }
 
 

@@ -27,7 +27,7 @@ public class BigGlossariesArchiveWriter extends OMRSArchiveWriter
      */
     private void writeOpenMetadataArchives()
     {
-        String indexes[] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
+        String indexes[] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
         List<String> glossaryIdentifiers = new ArrayList<>(Arrays.asList(indexes));
         try

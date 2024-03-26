@@ -26,14 +26,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FindRequestBody
 {
-    private String                metadataElementTypeName    = null;
-    private List<String>          metadataElementSubtypeName = null;
-    private SearchProperties      searchProperties           = null;
-    private List<ElementStatus>   limitResultsByStatus       = null;
-    private SearchClassifications matchClassifications       = null;
-    private String                sequencingProperty         = null;
-    private SequencingOrder       sequencingOrder            = null;
-    private Date                  asOfTime                   = null;
+    private String                metadataElementTypeName     = null;
+    private List<String>          metadataElementSubtypeNames = null;
+    private SearchProperties      searchProperties            = null;
+    private List<ElementStatus>   limitResultsByStatus        = null;
+    private SearchClassifications matchClassifications        = null;
+    private String                sequencingProperty          = null;
+    private SequencingOrder       sequencingOrder             = null;
+    private Date                  asOfTime                    = null;
 
 
     /**
@@ -54,9 +54,9 @@ public class FindRequestBody
     {
         if (template != null)
         {
-            metadataElementTypeName = template.getMetadataElementTypeName();
-            metadataElementSubtypeName = template.getMetadataElementSubtypeName();
-            searchProperties = template.getSearchProperties();
+            metadataElementTypeName     = template.getMetadataElementTypeName();
+            metadataElementSubtypeNames = template.getMetadataElementSubtypeNames();
+            searchProperties            = template.getSearchProperties();
             limitResultsByStatus = template.getLimitResultsByStatus();
             matchClassifications = template.getMatchClassifications();
             asOfTime = template.getAsOfTime();
@@ -93,20 +93,20 @@ public class FindRequestBody
      *
      * @return open metadata type names
      */
-    public List<String> getMetadataElementSubtypeName()
+    public List<String> getMetadataElementSubtypeNames()
     {
-        return metadataElementSubtypeName;
+        return metadataElementSubtypeNames;
     }
 
 
     /**
      * Set up the list of valid subtypes that the returned metadata elements must belong to.
      *
-     * @param metadataElementSubtypeName open metadata type names
+     * @param metadataElementSubtypeNames open metadata type names
      */
-    public void setMetadataElementSubtypeName(List<String> metadataElementSubtypeName)
+    public void setMetadataElementSubtypeNames(List<String> metadataElementSubtypeNames)
     {
-        this.metadataElementSubtypeName = metadataElementSubtypeName;
+        this.metadataElementSubtypeNames = metadataElementSubtypeNames;
     }
 
 
@@ -252,7 +252,7 @@ public class FindRequestBody
     {
         return "FindRequestBody{" +
                        "metadataElementTypeName='" + metadataElementTypeName + '\'' +
-                       ", metadataElementSubtypeName=" + metadataElementSubtypeName +
+                       ", metadataElementSubtypeName=" + metadataElementSubtypeNames +
                        ", searchProperties=" + searchProperties +
                        ", limitResultsByStatus=" + limitResultsByStatus +
                        ", matchClassifications=" + matchClassifications +
@@ -281,8 +281,8 @@ public class FindRequestBody
             return false;
         }
         FindRequestBody that = (FindRequestBody) objectToCompare;
-        return Objects.equals(metadataElementTypeName, that.metadataElementTypeName) && Objects.equals(metadataElementSubtypeName,
-                                                                                                       that.metadataElementSubtypeName) && Objects.equals(
+        return Objects.equals(metadataElementTypeName, that.metadataElementTypeName) && Objects.equals(metadataElementSubtypeNames,
+                                                                                                       that.metadataElementSubtypeNames) && Objects.equals(
                 searchProperties, that.searchProperties) && Objects.equals(limitResultsByStatus,
                                                                            that.limitResultsByStatus) && Objects.equals(
                 matchClassifications, that.matchClassifications) && Objects.equals(sequencingProperty,
@@ -299,7 +299,7 @@ public class FindRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(metadataElementTypeName, metadataElementSubtypeName, searchProperties, limitResultsByStatus, matchClassifications,
+        return Objects.hash(metadataElementTypeName, metadataElementSubtypeNames, searchProperties, limitResultsByStatus, matchClassifications,
                             asOfTime, sequencingProperty, sequencingOrder);
     }
 }

@@ -5,12 +5,15 @@ package org.odpi.openmetadata.frameworks.discovery.ffdc;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 
+import java.io.Serial;
+
 /**
  * DiscoveryEngineException indicates there is a problem with a request to a specific discovery engine.  The
  * error codes and messages indicate the cause of the problem and guidance on finding a remedy.
  */
 public class DiscoveryEngineException extends OCFCheckedExceptionBase
 {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**

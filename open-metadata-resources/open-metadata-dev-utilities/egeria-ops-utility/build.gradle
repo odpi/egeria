@@ -10,13 +10,14 @@ plugins {
 
 dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-api')
-    implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-client')
+    implementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-api')
+    implementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-client')
     implementation project(':open-metadata-implementation:platform-services:platform-services-client')
     implementation project(':open-metadata-implementation:server-operations:server-operations-api')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:admin-services:admin-services-client')
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
+    runtimeOnly project(':open-metadata-implementation:user-security:token-manager')
     runtimeOnly 'ch.qos.logback:logback-classic'
     compileOnly "com.fasterxml.jackson.core:jackson-annotations"
 }

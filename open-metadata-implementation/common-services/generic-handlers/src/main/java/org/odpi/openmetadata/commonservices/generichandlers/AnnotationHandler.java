@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
-import org.odpi.openmetadata.frameworks.discovery.properties.*;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.*;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -24,7 +24,7 @@ import java.util.*;
 
 /**
  * AnnotationHandler manages the storage and retrieval of metadata relating to annotations
- * as defined in the Open Discovery Framework (ODF).  It has both specific support for creating annotations from
+ * as defined in the Survey Action Framework (ODF).  It has both specific support for creating annotations from
  * ODF annotation beans and generic support for retrieving annotations.  The reason for this hybrid approach is that there are a huge range
  * of annotation types in ODF and currently all OMASs that work with discovery metadata use the ODF beans on their API.
  * Therefore, it makes sense to have support for these beans in a common location so that the implementation can be shared.
@@ -183,34 +183,34 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                                   dataClassAnnotation.getMatchingValues(),
                                                   dataClassAnnotation.getNonMatchingValues());
         }
-        else if (annotation instanceof DataProfileAnnotation dataProfileAnnotation)
+        else if (annotation instanceof ResourceProfileAnnotation resourceProfileAnnotation)
         {
-            builder.setDataProfileSubtypeProperties(dataProfileAnnotation.getLength(),
-                                                    dataProfileAnnotation.getInferredDataType(),
-                                                    dataProfileAnnotation.getInferredFormat(),
-                                                    dataProfileAnnotation.getInferredLength(),
-                                                    dataProfileAnnotation.getInferredPrecision(),
-                                                    dataProfileAnnotation.getInferredScale(),
-                                                    dataProfileAnnotation.getProfileProperties(),
-                                                    dataProfileAnnotation.getProfileFlags(),
-                                                    dataProfileAnnotation.getProfileCounts(),
-                                                    dataProfileAnnotation.getValueList(),
-                                                    dataProfileAnnotation.getValueCount(),
-                                                    dataProfileAnnotation.getValueRangeFrom(),
-                                                    dataProfileAnnotation.getValueRangeTo(),
-                                                    dataProfileAnnotation.getAverageValue());
+            builder.setResourceProfileSubtypeProperties(resourceProfileAnnotation.getLength(),
+                                                        resourceProfileAnnotation.getInferredDataType(),
+                                                        resourceProfileAnnotation.getInferredFormat(),
+                                                        resourceProfileAnnotation.getInferredLength(),
+                                                        resourceProfileAnnotation.getInferredPrecision(),
+                                                        resourceProfileAnnotation.getInferredScale(),
+                                                        resourceProfileAnnotation.getProfileProperties(),
+                                                        resourceProfileAnnotation.getProfileFlags(),
+                                                        resourceProfileAnnotation.getProfileCounts(),
+                                                        resourceProfileAnnotation.getValueList(),
+                                                        resourceProfileAnnotation.getValueCount(),
+                                                        resourceProfileAnnotation.getValueRangeFrom(),
+                                                        resourceProfileAnnotation.getValueRangeTo(),
+                                                        resourceProfileAnnotation.getAverageValue());
         }
-        else if (annotation instanceof DataSourcePhysicalStatusAnnotation dataSourcePhysicalStatusAnnotation)
+        else if (annotation instanceof ResourcePhysicalStatusAnnotation resourcePhysicalStatusAnnotation)
         {
-            builder.setDataSourcePhysicalStatusSubtypeProperties(dataSourcePhysicalStatusAnnotation.getDataSourceProperties(),
-                                                                 dataSourcePhysicalStatusAnnotation.getCreateTime(),
-                                                                 dataSourcePhysicalStatusAnnotation.getModifiedTime(),
-                                                                 dataSourcePhysicalStatusAnnotation.getSize(),
-                                                                 dataSourcePhysicalStatusAnnotation.getEncoding());
+            builder.setResourcePhysicalStatusSubtypeProperties(resourcePhysicalStatusAnnotation.getResourceProperties(),
+                                                               resourcePhysicalStatusAnnotation.getCreateTime(),
+                                                               resourcePhysicalStatusAnnotation.getModifiedTime(),
+                                                               resourcePhysicalStatusAnnotation.getSize(),
+                                                               resourcePhysicalStatusAnnotation.getEncoding());
         }
-        else if (annotation instanceof DataSourceMeasurementAnnotation dataSourceMeasurementAnnotation)
+        else if (annotation instanceof ResourceMeasureAnnotation resourceMeasureAnnotation)
         {
-            builder.setDataSourceMeasurementSubtypeProperties(dataSourceMeasurementAnnotation.getDataSourceProperties());
+            builder.setResourceMeasurementSubtypeProperties(resourceMeasureAnnotation.getResourceProperties());
         }
         else if (annotation instanceof QualityAnnotation qualityAnnotation)
         {
@@ -225,7 +225,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
         }
         else if (annotation instanceof RequestForActionAnnotation requestForActionAnnotation)
         {
-            builder.setRequestForActionSubtypeProperties(requestForActionAnnotation.getDiscoveryActivity(),
+            builder.setRequestForActionSubtypeProperties(requestForActionAnnotation.getSurveyActivity(),
                                                          requestForActionAnnotation.getActionRequested(),
                                                          requestForActionAnnotation.getActionProperties());
         }
@@ -275,9 +275,9 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
     {
         if (annotation != null)
         {
-            if (annotation.getTypeName() != null)
+            if (annotation.getOpenMetadataTypeName() != null)
             {
-                return annotation.getTypeName();
+                return annotation.getOpenMetadataTypeName();
             }
         }
 
@@ -340,7 +340,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
      * Add a new annotation to the annotation store as a top level annotation linked directly off of the report.
      *
      * @param userId identifier of calling user
-     * @param discoveryReportGUID unique identifier of the discovery analysis report
+     * @param surveyReportGUID unique identifier of the discovery analysis report
      * @param annotation annotation object
      * @param methodName calling method
      * @return unique identifier of new annotation
@@ -348,15 +348,15 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem retrieving adding the annotation to the annotation store.
      */
-    public  String  addAnnotationToDiscoveryReport(String     userId,
-                                                   String     discoveryReportGUID,
-                                                   Annotation annotation,
-                                                   String     methodName) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    public  String  addAnnotationToSurveyReport(String     userId,
+                                                String     surveyReportGUID,
+                                                Annotation annotation,
+                                                String     methodName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         final String annotationParameterName = "annotation";
-        final String discoveryReportGUIDParameterName = "discoveryReportGUID";
+        final String discoveryReportGUIDParameterName = "surveyReportGUID";
 
         invalidParameterHandler.validateObject(annotation, annotationParameterName, methodName);
 
@@ -364,9 +364,9 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
 
         String assetGUID          = null;
         EntityDetail anchorEntity = this.validateAnchorEntity(userId,
-                                                              discoveryReportGUID,
+                                                              surveyReportGUID,
                                                               discoveryReportGUIDParameterName,
-                                                              OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
+                                                              OpenMetadataType.SURVEY_REPORT.typeName,
                                                               true,
                                                               false,
                                                               false,
@@ -390,14 +390,14 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                       annotationGUID,
                                       annotationParameterName,
                                       OpenMetadataType.ANNOTATION.typeName,
-                                      discoveryReportGUID,
+                                      surveyReportGUID,
                                       discoveryReportGUIDParameterName,
-                                      OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
+                                      OpenMetadataType.SURVEY_REPORT.typeName,
                                       false,
                                       false,
                                       supportedZones,
-                                      OpenMetadataType.REPORT_TO_ANNOTATIONS_TYPE_GUID,
-                                      OpenMetadataType.REPORT_TO_ANNOTATIONS_TYPE_NAME,
+                                      OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
                                       null,
                                       null,
                                       null,
@@ -408,80 +408,6 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
         return annotationGUID;
     }
 
-
-    /**
-     * Add a new annotation and link it to an existing data field.
-     *
-     * @param userId identifier of calling user
-     * @param parentDataFieldGUID unique identifier of the data field that this new one is to be attached to
-     * @param annotation data field object
-     * @param methodName calling method
-     * @return unique identifier of new annotation
-     * @throws InvalidParameterException one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user id not authorized to issue this request
-     * @throws PropertyServerException there was a problem saving data fields in the annotation store.
-     */
-    public String  addAnnotationToDataField(String     userId,
-                                            String     parentDataFieldGUID,
-                                            Annotation annotation,
-                                            String     methodName) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
-    {
-        final String   dataFieldGUIDParameterName = "parentDataFieldGUID";
-        final String   annotationParameterName = "annotation";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(parentDataFieldGUID, dataFieldGUIDParameterName, methodName);
-        invalidParameterHandler.validateObject(annotation, annotationParameterName, methodName);
-
-        Date effectiveTime = new Date();
-
-        String assetGUID          = null;
-        EntityDetail anchorEntity = this.validateAnchorEntity(userId,
-                                                              parentDataFieldGUID,
-                                                              dataFieldGUIDParameterName,
-                                                              OpenMetadataType.DATA_FIELD_ANNOTATION.typeName,
-                                                              true,
-                                                              false,
-                                                              false,
-                                                              false,
-                                                              supportedZones,
-                                                              effectiveTime,
-                                                              methodName);
-
-        if (anchorEntity != null)
-        {
-            assetGUID = anchorEntity.getGUID();
-        }
-
-        String annotationGUID = this.addNewAnnotation(userId, assetGUID, annotation, methodName);
-
-        if (annotationGUID != null)
-        {
-            this.linkElementToElement(userId,
-                                      null,
-                                      null,
-                                      annotationGUID,
-                                      annotationParameterName,
-                                      OpenMetadataType.DATA_FIELD_ANNOTATION.typeName,
-                                      annotationGUID,
-                                      annotationParameterName,
-                                      OpenMetadataType.DATA_FIELD_TYPE_NAME,
-                                      false,
-                                      false,
-                                      supportedZones,
-                                      OpenMetadataType.DATA_FIELD_ANALYSIS_RELATIONSHIP.typeGUID,
-                                      OpenMetadataType.DATA_FIELD_ANALYSIS_RELATIONSHIP.typeName,
-                                      null,
-                                      null,
-                                      null,
-                                      effectiveTime,
-                                      methodName);
-        }
-
-        return annotationGUID;
-    }
 
 
     /**
@@ -1039,7 +965,7 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
      * Return the annotations linked direction to the report.
      *
      * @param userId identifier of calling user
-     * @param discoveryReportGUID identifier of the discovery request.
+     * @param surveyReportGUID identifier of the discovery request.
      * @param startingFrom initial position in the stored list.
      * @param pageSize maximum number of definitions to return on this call.
      * @param methodName calling method
@@ -1050,22 +976,22 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
-    public List<B> getDiscoveryReportAnnotations(String           userId,
-                                                 String           discoveryReportGUID,
-                                                 int              startingFrom,
-                                                 int              pageSize,
-                                                 String           methodName) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public List<B> getSurveyReportAnnotations(String           userId,
+                                              String           surveyReportGUID,
+                                              int              startingFrom,
+                                              int              pageSize,
+                                              String           methodName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
-        final String   reportGUIDParameterName = "discoveryReportGUID";
+        final String   reportGUIDParameterName = "surveyReportGUID";
 
         return this.getLinkedAnnotations(userId,
-                                         discoveryReportGUID,
+                                         surveyReportGUID,
                                          reportGUIDParameterName,
-                                         OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
-                                         OpenMetadataType.REPORT_TO_ANNOTATIONS_TYPE_GUID,
-                                         OpenMetadataType.REPORT_TO_ANNOTATIONS_TYPE_NAME,
+                                         OpenMetadataType.SURVEY_REPORT.typeName,
+                                         OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeGUID,
+                                         OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
                                          startingFrom,
                                          pageSize,
                                          methodName);
@@ -1076,9 +1002,9 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
      * Return the annotations linked direction to the report.
      *
      * @param userId identifier of calling user
-     * @param discoveryReportGUID identifier of the discovery request.
+     * @param surveyReportGUID identifier of the survey report
      * @param annotationStatus status of the desired annotations - null means all statuses.
-     * @param startingFrom initial position in the stored list.
+     * @param startingFrom initial position in the stored list
      * @param pageSize maximum number of definitions to return on this call.
      * @param methodName calling method
      *
@@ -1088,23 +1014,23 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
-    public List<B> getDiscoveryReportAnnotations(String           userId,
-                                                 String           discoveryReportGUID,
-                                                 int              annotationStatus,
-                                                 int              startingFrom,
-                                                 int              pageSize,
-                                                 String           methodName) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public List<B> getSurveyReportAnnotations(String           userId,
+                                              String           surveyReportGUID,
+                                              int              annotationStatus,
+                                              int              startingFrom,
+                                              int              pageSize,
+                                              String           methodName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
-        final String   reportGUIDParameterName = "discoveryReportGUID";
+        final String   reportGUIDParameterName = "surveyReportGUID";
 
         return this.getLinkedAnnotations(userId,
-                                         discoveryReportGUID,
+                                         surveyReportGUID,
                                          reportGUIDParameterName,
-                                         OpenMetadataType.DISCOVERY_ANALYSIS_REPORT_TYPE_NAME,
-                                         OpenMetadataType.REPORT_TO_ANNOTATIONS_TYPE_GUID,
-                                         OpenMetadataType.REPORT_TO_ANNOTATIONS_TYPE_NAME,
+                                         OpenMetadataType.SURVEY_REPORT.typeName,
+                                         OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeGUID,
+                                         OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
                                          annotationStatus,
                                          startingFrom,
                                          pageSize,
@@ -1187,65 +1113,5 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
                                          startingFrom,
                                          pageSize,
                                          methodName);
-    }
-
-
-    /**
-     * Return the list of annotations from previous runs of the discovery services that are set to
-     * reviewed, approved and/or actioned status that are returned from
-     * discovery reports that are not waiting or in progress.
-     *
-     * @param userId calling user
-     * @param assetGUID unique identifier of the asset
-     * @param startingFrom starting position in the list.
-     * @param pageSize maximum number of elements that can be returned
-     * @param methodName calling method
-     * @return list of annotation (or null if none are registered)
-     * @throws InvalidParameterException one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user id not authorized to issue this request
-     * @throws PropertyServerException there was a problem retrieving annotations from the annotation store.
-     */
-    public List<B> getAnnotationsForAsset(String userId,
-                                          String assetGUID,
-                                          int    startingFrom,
-                                          int    pageSize,
-                                          String methodName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
-    {
-        final String   assetGUIDParameterName = "assetGUID";
-
-        // todo
-        return null;
-    }
-
-
-    /**
-     * Return the list of annotations from previous runs of the discovery services that are set to a specific status.
-     *
-     * @param userId calling user
-     * @param assetGUID unique identifier of the asset
-     * @param status status value to use on the query
-     * @param startingFrom starting position in the list.
-     * @param pageSize maximum number of elements that can be returned
-     * @param methodName calling method
-     * @return list of annotation (or null if none are registered)
-     * @throws InvalidParameterException one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user id not authorized to issue this request
-     * @throws PropertyServerException there was a problem retrieving annotations from the annotation store.
-     */
-    public List<B> getAnnotationsForAssetByStatus(String userId,
-                                                  String assetGUID,
-                                                  int    status,
-                                                  int    startingFrom,
-                                                  int    pageSize,
-                                                  String methodName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
-    {
-        final String   assetGUIDParameterName = "assetGUID";
-
-        // todo
-        return null;
     }
 }

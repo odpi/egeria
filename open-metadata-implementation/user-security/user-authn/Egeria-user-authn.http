@@ -1,0 +1,27 @@
+# Egeria-user-authn
+
+###
+# @name Application info
+GET {{baseURL}}/api/public/app/info
+
+###
+# @name About
+GET {{baseURL}}/api/about
+
+###
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+    "userId" : "peterprofile",
+    "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
+# @name Token (Request Parms)
+POST {{baseURL}}/api/token?
+    username=garygeeke&
+    password=secret

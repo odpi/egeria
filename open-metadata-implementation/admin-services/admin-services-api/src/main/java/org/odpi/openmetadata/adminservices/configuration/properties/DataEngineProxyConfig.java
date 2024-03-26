@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
+import java.io.Serial;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -23,7 +24,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DataEngineProxyConfig extends AdminServicesConfigHeader
 {
-    private static final long    serialVersionUID = 2L;
+    @Serial
+    private static final long serialVersionUID = 2L;
 
     /* Properties needed to call the access service REST APIs */
     private String     accessServiceRootURL    = null;

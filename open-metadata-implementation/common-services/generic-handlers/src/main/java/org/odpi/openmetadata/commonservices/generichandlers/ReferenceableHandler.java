@@ -29,7 +29,7 @@ import java.util.Map;
 /**
  * ReferenceableHandler manages methods on generic referenceables.
  */
-public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
+public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
 {
     /**
      * Construct the handler information needed to interact with the repository services
@@ -1262,7 +1262,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_PROPERTY_NAME, steward, methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME, stewardTypeName, methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME, stewardPropertyName, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.SOURCE_PROPERTY_NAME, source, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataProperty.SOURCE.name, source, methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.NOTES_PROPERTY_NAME, notes, methodName);
         properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataType.LEVEL_IDENTIFIER_PROPERTY_NAME, levelIdentifier, methodName);
 
@@ -1507,7 +1507,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_PROPERTY_NAME, steward, methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME, stewardTypeName, methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME, stewardPropertyName, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.SOURCE_PROPERTY_NAME, source, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataProperty.SOURCE.name, source, methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.NOTES_PROPERTY_NAME, notes, methodName);
         properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataType.BASIS_IDENTIFIER_PROPERTY_NAME, basisIdentifier, methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.RETENTION_ASSOCIATED_GUID_PROPERTY_NAME, associatedGUID, methodName);
@@ -3226,7 +3226,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.SOURCE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.SOURCE.name,
                                                                   source,
                                                                   methodName);
 
@@ -4994,7 +4994,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.SOURCE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.SOURCE.name,
                                                                   source,
                                                                   methodName);
 
@@ -5518,7 +5518,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
                 InstanceProperties relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                                          null,
-                                                                                                         OpenMetadataType.SOURCE_PROPERTY_NAME,
+                                                                                                         OpenMetadataProperty.SOURCE.name,
                                                                                                          serviceName,
                                                                                                          methodName);
                 linkElementToElement(userId,

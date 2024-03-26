@@ -141,6 +141,26 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                                                               UserNotAuthorizedException;
 
 
+    /**
+     * Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the
+     * type has no subtypes.     *
+     * @param userId       unique identifier for requesting user.
+     * @param typeName     name of the standard null means any.
+     *
+     * @return TypeDefs list  each entry in the list contains a TypeDef.  This is a structure
+     * describing the TypeDef's category and properties.  If null is returned as the TypeDef list it means the type
+     * has no known subtypes
+     *
+     * @throws InvalidParameterException  all attributes of the external id are null.
+     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public abstract List<OpenMetadataTypeDef> getSubTypes(String userId,
+                                                          String typeName) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException;
+
 
     /**
      * Return the TypeDef identified by the GUID.
@@ -233,7 +253,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @return metadata element properties
      * @throws InvalidParameterException the unique identifier is null or not known.
-     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
@@ -258,7 +278,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @return metadata element properties or null if not found
      * @throws InvalidParameterException the unique identifier is null.
-     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
@@ -283,8 +303,8 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param effectiveTime only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element unique identifier (guid)
-     * @throws InvalidParameterException the unique identifier is null or not known.
-     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws InvalidParameterException the unique name is null or not known.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
@@ -311,7 +331,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException the qualified name is null
-     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
@@ -340,7 +360,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @return list of matching metadata elements (or null if no elements match the name)
      * @throws InvalidParameterException the qualified name is null
-     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
@@ -371,7 +391,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @return list of related elements
      * @throws InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
-     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
@@ -403,7 +423,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @return list of related elements
      * @throws InvalidParameterException the unique identifier is null or not known; the relationship type is invalid
-     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
@@ -442,7 +462,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
      * @throws InvalidParameterException one of the search parameters are is invalid
-     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
@@ -481,7 +501,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @return a list of relationships.  Null means no matching relationships.
      * @throws InvalidParameterException one of the search parameters are is invalid
-     * @throws UserNotAuthorizedException the governance action service is not able to access the elements
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
@@ -509,7 +529,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @return relationship properties
      * @throws InvalidParameterException the unique identifier is null or not known.
-     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     @Override
@@ -534,13 +554,11 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
-     *                     connection etc)
      *
      * @return unique identifier of the new metadata element
      *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
-     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
@@ -549,10 +567,9 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                         ElementStatus     initialStatus,
                                                         Date              effectiveFrom,
                                                         Date              effectiveTo,
-                                                        ElementProperties properties,
-                                                        String            templateGUID) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException;
+                                                        ElementProperties properties) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException;
 
 
     /**
@@ -567,11 +584,11 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
      * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
      *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
      * @param effectiveFrom the date when this element is active - null for active on creation
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      * @param properties properties of the new metadata element
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
-     *                     connection etc)
      * @param parentGUID unique identifier of optional parent entity
      * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
      * @param parentRelationshipProperties properties to include in parent relationship
@@ -580,24 +597,75 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @return unique identifier of the new metadata element
      *
      * @throws InvalidParameterException the type name, status or one of the properties is invalid
-     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
+    @Override
     public abstract String createMetadataElementInStore(String                         userId,
                                                         String                         metadataElementTypeName,
                                                         ElementStatus                  initialStatus,
                                                         Map<String, ElementProperties> initialClassifications,
                                                         String                         anchorGUID,
+                                                        boolean                        isOwnAnchor,
                                                         Date                           effectiveFrom,
                                                         Date                           effectiveTo,
                                                         ElementProperties              properties,
-                                                        String                         templateGUID,
                                                         String                         parentGUID,
                                                         String                         parentRelationshipTypeName,
                                                         ElementProperties              parentRelationshipProperties,
                                                         boolean                        parentAtEnd1) throws InvalidParameterException,
                                                                                                             UserNotAuthorizedException,
                                                                                                             PropertyServerException;
+
+
+    /**
+     * Create a new metadata element in the metadata store using the template identified by the templateGUID.
+     * The type name comes from the open metadata types.
+     * The selected type also controls the names and types of the properties that are allowed.
+     * The template and any similar anchored objects are
+     * copied in this process.
+     *
+     * @param userId caller's userId
+     * @param metadataElementTypeName type name of the new metadata element
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
+     * @param effectiveFrom the date when this element is active - null for active on creation
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                     connection etc)
+     * @param templateProperties properties of the new metadata element.  These override the template values
+     * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
+     *                              template element - and their anchored elements, which are also copied as part of this operaiton.
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException the type name, status or one of the properties is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws PropertyServerException there is a problem with the metadata store
+     */
+    @Override
+    public abstract String createMetadataElementFromTemplate(String                         userId,
+                                                             String                         metadataElementTypeName,
+                                                             String                         anchorGUID,
+                                                             boolean                        isOwnAnchor,
+                                                             Date                           effectiveFrom,
+                                                             Date                           effectiveTo,
+                                                             String                         templateGUID,
+                                                             ElementProperties              templateProperties,
+                                                             Map<String, String>            placeholderProperties,
+                                                             String                         parentGUID,
+                                                             String                         parentRelationshipTypeName,
+                                                             ElementProperties              parentRelationshipProperties,
+                                                             boolean                        parentAtEnd1) throws InvalidParameterException,
+                                                                                                                 UserNotAuthorizedException,
+                                                                                                                 PropertyServerException;
+
 
 
     /**
@@ -615,7 +683,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException either the unique identifier or the properties are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
@@ -642,7 +710,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
@@ -668,7 +736,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
@@ -693,7 +761,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier is null or invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to delete this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
@@ -723,7 +791,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
@@ -755,7 +823,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way; properties do not match the
      *                                   valid properties associated with the classification's type definition
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element/classification
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
@@ -784,7 +852,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param effectiveTo the date when this element becomes inactive - null for active until deleted
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
@@ -811,7 +879,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier or classification name is null or invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to remove this classification
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
@@ -845,7 +913,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException the unique identifier's of the metadata elements are null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
-     * @throws UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
@@ -877,7 +945,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way; the properties are
      *                                    not valid for this type of relationship
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this relationship
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
@@ -905,7 +973,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException either the unique identifier or the status are invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update this element
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
@@ -930,7 +998,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      *
      * @throws InvalidParameterException the unique identifier of the relationship is null or invalid in some way
-     * @throws UserNotAuthorizedException the governance action service is not authorized to delete this relationship
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override
@@ -944,20 +1012,20 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
 
 
     /**
-     * Using the named governance action process as a template, initiate a chain of governance actions.
+     * Using the named governance action process as a template, initiate a chain of engine actions.
      *
      * @param userId caller's userId
      * @param processQualifiedName unique name of the governance action process to use
-     * @param requestSourceGUIDs  request source elements for the resulting governance action service
-     * @param actionTargets map of action target names to GUIDs for the resulting governance action service
+     * @param requestSourceGUIDs  request source elements for the resulting governance service
+     * @param actionTargets map of action target names to GUIDs for the resulting governance service
      * @param startTime future start time or null for "as soon as possible"
-     * @param requestParameters request properties to be passed to the first governance action
+     * @param requestParameters request properties to be passed to the first engine action
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
      * @param originatorEngineName optional unique name of the governance engine (if initiated by a governance engine).
      *
      * @return unique identifier of the first governance action of the process
      * @throws InvalidParameterException null or unrecognized qualified name of the process
-     * @throws UserNotAuthorizedException this governance action service is not authorized to create a governance action process
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public abstract String initiateGovernanceActionProcess(String                userId,
@@ -973,7 +1041,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
 
 
     /**
-     * Create an incident report to capture the situation detected by this governance action service.
+     * Create an incident report to capture the situation detected by this governance service.
      * This incident report will be processed by other governance activities.
      *
      * @param userId caller's userId
@@ -988,7 +1056,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      *
      * @return unique identifier of the resulting incident report
      * @throws InvalidParameterException null or non-unique qualified name for the incident report
-     * @throws UserNotAuthorizedException this governance action service is not authorized to create a incident report
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     @Override

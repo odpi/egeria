@@ -48,7 +48,7 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
 
 
     /*
-     * Attributes for the DataProfileAnnotation
+     * Attributes for the ResourceProfileAnnotation
      */
     private int                  length            = 0;
     private String               inferredDataType  = null;
@@ -66,13 +66,13 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     private String               averageValue      = null;
 
     /*
-     * Attributes for the DataSourceMeasurementAnnotation and DataSourcePhysicalStatusAnnotation
+     * Attributes for the ResourceMeasurementAnnotation and ResourcePhysicalStatusAnnotation
      */
-    private Map<String, String> dataSourceProperties = null;
+    private Map<String, String> resourceProperties = null;
 
     private Date   createTime     = null;
     private Date   modifiedTime   = null;
-    private int    size           = 0;
+    private long   size           = 0;
     private String encoding       = null;
 
     /*
@@ -92,9 +92,9 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     /*
      * Attributes for RequestForActionAnnotation
      */
-    private String              discoveryActivity = null;
-    private String              actionRequested   = null;
-    private Map<String, String> actionProperties  = null;
+    private String              surveyActivity   = null;
+    private String              actionRequested  = null;
+    private Map<String, String> actionProperties = null;
 
     /*
      * Attributes for the SchemaAnalysisAnnotation
@@ -218,20 +218,20 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
      * @param valueRangeTo the upper value of the data stored in this data field
      * @param averageValue the average (mean) value of the values stored in the data field
      */
-    void setDataProfileSubtypeProperties(int                  length,
-                                         String               inferredDataType,
-                                         String               inferredFormat,
-                                         int                  inferredLength,
-                                         int                  inferredPrecision,
-                                         int                  inferredScale,
-                                         Map<String, String>  profileProperties,
-                                         Map<String, Boolean> profileFlags,
-                                         Map<String, Long>    profileCounts,
-                                         List<String>         valueList,
-                                         Map<String, Integer> valueCount,
-                                         String               valueRangeFrom,
-                                         String               valueRangeTo,
-                                         String               averageValue)
+    void setResourceProfileSubtypeProperties(int                  length,
+                                             String               inferredDataType,
+                                             String               inferredFormat,
+                                             int                  inferredLength,
+                                             int                  inferredPrecision,
+                                             int                  inferredScale,
+                                             Map<String, String>  profileProperties,
+                                             Map<String, Boolean> profileFlags,
+                                             Map<String, Long>    profileCounts,
+                                             List<String>         valueList,
+                                             Map<String, Integer> valueCount,
+                                             String               valueRangeFrom,
+                                             String               valueRangeTo,
+                                             String               averageValue)
     {
         this.length            = length;
         this.inferredDataType  = inferredDataType;
@@ -253,31 +253,31 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     /**
      * Add properties for annotation subtype.
      *
-     * @param dataSourceProperties properties of the data source
+     * @param resourceProperties properties of the data source
      */
-    void setDataSourceMeasurementSubtypeProperties(Map<String, String> dataSourceProperties)
+    void setResourceMeasurementSubtypeProperties(Map<String, String> resourceProperties)
     {
-        this.dataSourceProperties = dataSourceProperties;
+        this.resourceProperties = resourceProperties;
     }
 
 
     /**
      * Add properties for annotation subtype.
      *
-     * @param dataSourceProperties properties of the data source
+     * @param resourceProperties properties of the data source
      * @param createTime the date and time that the data source was created
      * @param modifiedTime the time that the file was last modified.
      * @param size the size in bytes of the data source
      * @param encoding the encoding of the data source
      */
-    void setDataSourcePhysicalStatusSubtypeProperties(Map<String, String> dataSourceProperties,
-                                                      Date                createTime,
-                                                      Date                modifiedTime,
-                                                      int                 size,
-                                                      String              encoding)
+    void setResourcePhysicalStatusSubtypeProperties(Map<String, String> resourceProperties,
+                                                    Date                createTime,
+                                                    Date                modifiedTime,
+                                                    long                size,
+                                                    String              encoding)
     {
-        this.dataSourceProperties = dataSourceProperties;
-        this.createTime = createTime;
+        this.resourceProperties = resourceProperties;
+        this.createTime         = createTime;
         this.modifiedTime = modifiedTime;
         this.size = size;
         this.encoding = encoding;
@@ -326,7 +326,7 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
                                               String              actionRequested,
                                               Map<String, String> actionProperties)
     {
-        this.discoveryActivity = discoveryActivity;
+        this.surveyActivity  = discoveryActivity;
         this.actionRequested = actionRequested;
         this.actionProperties = actionProperties;
     }
@@ -432,17 +432,17 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
         {
             return addDataClassAnnotationInstanceProperties(properties, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.DATA_PROFILE_ANNOTATION.typeName))
+        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName))
         {
-            return addDataProfileAnnotationInstanceProperties(properties, methodName);
+            return addResourceProfileAnnotationInstanceProperties(properties, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.DS_PHYSICAL_STATUS_ANNOTATION.typeName))
+        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.RESOURCE_PHYSICAL_STATUS_ANNOTATION.typeName))
         {
-            return addDataSourcePhysicalStatusAnnotationInstanceProperties(properties, methodName);
+            return addResourcePhysicalStatusAnnotationInstanceProperties(properties, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.DATA_SOURCE_MEASUREMENT_ANNOTATION.typeName))
+        else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName))
         {
-            return addDataSourceMeasurementAnnotationInstanceProperties(properties, methodName);
+            return addResourceMeasurementAnnotationInstanceProperties(properties, methodName);
         }
         else if (repositoryHelper.isTypeOf(serviceName, typeName, OpenMetadataType.QUALITY_ANNOTATION.typeName))
         {
@@ -464,7 +464,6 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
         {
             return addSemanticAnnotationInstanceProperties(properties, methodName);
         }
-
 
         return properties;
     }
@@ -529,8 +528,8 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
      * @param methodName name of the calling method
      * @return InstanceProperties object
      */
-    private InstanceProperties addDataProfileAnnotationInstanceProperties(InstanceProperties properties,
-                                                                          String             methodName)
+    private InstanceProperties addResourceProfileAnnotationInstanceProperties(InstanceProperties properties,
+                                                                              String             methodName)
     {
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
@@ -627,20 +626,20 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
      * @param methodName name of the calling method
      * @return InstanceProperties object
      */
-    private InstanceProperties addDataSourcePhysicalStatusAnnotationInstanceProperties(InstanceProperties properties,
-                                                                                       String             methodName)
+    private InstanceProperties addResourcePhysicalStatusAnnotationInstanceProperties(InstanceProperties properties,
+                                                                                     String             methodName)
     {
-        properties = this.addDataSourceMeasurementAnnotationInstanceProperties(properties, methodName);
+        properties = this.addResourceMeasurementAnnotationInstanceProperties(properties, methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataProperty.SOURCE_CREATE_TIME.name,
+                                                                OpenMetadataProperty.RESOURCE_CREATE_TIME.name,
                                                                 createTime,
                                                                 methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataProperty.SOURCE_UPDATE_TIME.name,
+                                                                OpenMetadataProperty.RESOURCE_UPDATE_TIME.name,
                                                                 modifiedTime,
                                                                 methodName);
 
@@ -667,13 +666,13 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
      * @param methodName name of the calling method
      * @return InstanceProperties object
      */
-    private InstanceProperties addDataSourceMeasurementAnnotationInstanceProperties(InstanceProperties properties,
-                                                                                    String             methodName)
+    private InstanceProperties addResourceMeasurementAnnotationInstanceProperties(InstanceProperties properties,
+                                                                                  String             methodName)
     {
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                      properties,
-                                                                     OpenMetadataProperty.DATA_SOURCE_PROPERTIES.name,
-                                                                     dataSourceProperties,
+                                                                     OpenMetadataProperty.RESOURCE_PROPERTIES.name,
+                                                                     resourceProperties,
                                                                      methodName);
 
         return properties;
@@ -751,7 +750,7 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
                                                                   OpenMetadataProperty.ACTION_SOURCE_NAME.name,
-                                                                  discoveryActivity,
+                                                                  surveyActivity,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,

@@ -35,7 +35,7 @@ public enum EngineServiceDescription
      * Executes requested governance action services to monitor, assess and maintain metadata and its real-world counterparts.
      */
     GOVERNANCE_ACTION_OMES(401,
-                           ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                           ComponentDevelopmentStatus.STABLE,
                            "Governance Action",
                            "Governance Action OMES",
                            "governance-action",
@@ -68,26 +68,26 @@ public enum EngineServiceDescription
     /**
      * Executes requested event action services to monitor, assess and maintain context events.
      */
-    EVENT_ACTION_OMES(403,
-                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
-                      "Event Action",
-                      "Event Action OMES",
-                      "event-action",
-                      "Executes requested event action services to monitor, assess and maintain context events.",
-                      "https://egeria-project.org/services/omes/event-action/overview/",
-                      AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceFullName(),
-                      DeployedImplementationType.EVENT_ACTION_ENGINE.getAssociatedTypeName(),
-                      DeployedImplementationType.EVENT_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
-                      DeployedImplementationType.EVENT_ACTION_ENGINE.getDeployedImplementationType(),
-                      DeployedImplementationType.EVENT_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
+    CONTEXT_EVENT_OMES(403,
+                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                       "Context Event",
+                       "Context Event OMES",
+                       "context-event",
+                       "Executes requested context event services to monitor, assess and maintain context events.",
+                       "https://egeria-project.org/services/omes/context-event/overview/",
+                       AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName(),
+                       DeployedImplementationType.CONTEXT_EVENT_ENGINE.getAssociatedTypeName(),
+                       DeployedImplementationType.CONTEXT_EVENT_SERVICE_CONNECTOR.getAssociatedTypeName(),
+                       DeployedImplementationType.CONTEXT_EVENT_ENGINE.getDeployedImplementationType(),
+                       DeployedImplementationType.CONTEXT_EVENT_SERVICE_CONNECTOR.getDeployedImplementationType()),
 
 
     /**
      * Analyses the content of an asset's real world counterpart (resource), generates annotations
-     * in a discovery analysis report that is attached to the asset in the open metadata repositories.
+     * in a survey report that is attached to the asset in the open metadata repositories.
      */
     SURVEY_ACTION_OMES(404,
-                        ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                        ComponentDevelopmentStatus.STABLE,
                         "Survey Action",
                         "Survey Action OMES",
                         "survey-action",

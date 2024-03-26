@@ -2,16 +2,21 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.archiveutilities.openconnectors;
 
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.control.AtlasPlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTProvider;
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
-import org.odpi.openmetadata.adapters.connectors.discoveryservices.discoveratlas.DiscoverApacheAtlasProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.OriginSeekerGovernanceActionProvider;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.QualifiedNamePeerDuplicateGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.ZonePublisherGovernanceActionProvider;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.*;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.verification.VerifyAssetGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
-import org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter.CSVLineageImporterProvider;
@@ -20,42 +25,36 @@ import org.odpi.openmetadata.adapters.connectors.integration.jdbc.JDBCIntegratio
 import org.odpi.openmetadata.adapters.connectors.integration.kafka.KafkaMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.DistributeAuditEventsFromKafkaProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.OpenAPIMonitorIntegrationProvider;
-import org.odpi.openmetadata.adapters.connectors.integration.openlineage.APIBasedOpenLineageLogStoreProvider;
-import org.odpi.openmetadata.adapters.connectors.integration.openlineage.FileBasedOpenLineageLogStoreProvider;
-import org.odpi.openmetadata.adapters.connectors.integration.openlineage.GovernanceActionOpenLineageIntegrationProvider;
-import org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageCataloguerIntegrationProvider;
-import org.odpi.openmetadata.adapters.connectors.integration.openlineage.OpenLineageEventReceiverIntegrationProvider;
-import org.odpi.openmetadata.adapters.connectors.resource.apacheatlas.ApacheAtlasRESTProvider;
+import org.odpi.openmetadata.adapters.connectors.integration.openlineage.*;
+import org.odpi.openmetadata.adapters.connectors.postgres.catalog.PostgresServerIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresPlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresDatabaseSurveyActionProvider;
+import org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresServerSurveyActionProvider;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
 import org.odpi.openmetadata.adapters.connectors.secretsstore.envar.EnvVarSecretsStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv.CSVSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.IntegrationServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
-import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
-import org.odpi.openmetadata.frameworks.governanceaction.actiontargettype.ActionTargetType;
+import org.odpi.openmetadata.adminservices.configuration.registration.*;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.*;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.*;
+import org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase;
+import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStepType;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveWriter;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.samples.archiveutilities.GovernanceArchiveHelper;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues.constructValidValueCategory;
 import static org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
@@ -118,7 +117,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     /**
      * Default constructor initializes the archive.
      */
-    private OpenConnectorArchiveWriter()
+    public OpenConnectorArchiveWriter()
     {
         List<OpenMetadataArchive> dependentOpenMetadataArchives = new ArrayList<>();
 
@@ -152,7 +151,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      *
      * @return populated open metadata archive object
      */
-    private OpenMetadataArchive getOpenMetadataArchive()
+    public OpenMetadataArchive getOpenMetadataArchive()
     {
         String connectorDirectoryTypeGUID = archiveHelper.addConnectorTypeDirectory(connectorTypeDirectoryQualifiedName,
                                                                                     connectorTypeDirectoryDisplayName,
@@ -296,8 +295,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         /*
          * The access services are found in the Metadata Access Server and Metadata Access Point OMAG Servers.
          */
-        String serverTypeGUID = serverTypeGUIDs.get(ServerTypeClassification.METADATA_ACCESS_POINT.getServerTypeName());
-        String serverTypeGUID2 = serverTypeGUIDs.get(ServerTypeClassification.METADATA_SERVER.getServerTypeName());
+        String serverTypeGUID = serverTypeGUIDs.get(ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName());
+        String serverTypeGUID2 = serverTypeGUIDs.get(ServerTypeClassification.METADATA_ACCESS_STORE.getServerTypeName());
 
         for (AccessServiceDescription accessServiceDescription : AccessServiceDescription.values())
         {
@@ -437,6 +436,15 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         }
 
         /*
+         * Add the list of reference value assignment relationship attribute names
+         */
+        for (ReferenceValueAttributeName attributeName : ReferenceValueAttributeName.values())
+        {
+            this.addAttributeName(attributeName.getAttributeName(),
+                                  attributeName.getDescription());
+        }
+
+        /*
          * Integration Connector Types may need to link to deployedImplementationType valid value element.
          * This information is in the connector provider.
          */
@@ -462,70 +470,111 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         archiveHelper.addConnectorType(null, new OpenLineageCataloguerIntegrationProvider());
         archiveHelper.addConnectorType(null, new OpenLineageEventReceiverIntegrationProvider());
         archiveHelper.addConnectorType(null, new EnvVarSecretsStoreProvider());
+        archiveHelper.addConnectorType(null, new PostgresServerIntegrationProvider());
 
         /*
          * Create the default integration group.
          */
-        archiveHelper.addSoftwareCapability(OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
-                                            OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME,
-                                            OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_NAME,
-                                            "Dynamic integration group to use with an Integration Daemon configuration.",
-                                            DeployedImplementationType.INTEGRATION_GROUP.getDeployedImplementationType(),
-                                            null,
-                                            null,
-                                            archiveFileName,
-                                            null,
-                                            null);
+        String integrationGroupGUID = archiveHelper.addIntegrationGroup(OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME,
+                                                                        OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_NAME,
+                                                                        "Dynamic integration group to use with an Integration Daemon configuration.",
+                                                                        null,
+                                                                        null,
+                                                                        archiveFileName,
+                                                                        null,
+                                                                        null);
+
+        Map<String, Object> configurationProperties = new HashMap<>();
+        configurationProperties.put("waitForDirectory", "true");
+
+        String filesIntegrationConnectorGUID = archiveHelper.addIntegrationConnector(DataFilesMonitorIntegrationProvider.class.getName(),
+                                                                                     configurationProperties,
+                                                                                     OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":DataFilesMonitorIntegrationConnector",
+                                                                                     "DataFilesMonitorIntegrationConnector",
+                                                                                     "Catalogs files found under the starting directory (folder).",
+                                                                                     "sample-data",
+                                                                                     null);
+
+        archiveHelper.addRegisteredIntegrationConnector(integrationGroupGUID,
+                                                        "FilesMonitor",
+                                                        "generalnpa",
+                                                        "cocoDataLake",
+                                                        60,
+                                                        filesIntegrationConnectorGUID);
 
         /*
          * Register the governance services that are going to be in the default governance engines.
          */
-        GovernanceActionDescription fileProvisionerGUID = this.getFileProvisioningGovernanceActionService();
-        GovernanceActionDescription watchDogServiceGUID = this.getWatchdogGovernanceActionService();
-        GovernanceActionDescription originSeekerGUID = this.getOriginSeekerGovernanceActionService();
-        GovernanceActionDescription zonePublisherGUID = this.getZonePublisherGovernanceActionService();
-        GovernanceActionDescription csvSurveyGUID = this.getCSVFileSurveyService();
-        GovernanceActionDescription fileSurveyGUID = this.getDataFileSurveyService();
-        GovernanceActionDescription folderSurveyGUID = this.getFolderSurveyService();
+        GovernanceActionDescription fileProvisionerDescription        = this.getFileProvisioningGovernanceActionService();
+        GovernanceActionDescription watchDogServiceDescription        = this.getWatchdogGovernanceActionService();
+        GovernanceActionDescription originSeekerDescription           = this.getOriginSeekerGovernanceActionService();
+        GovernanceActionDescription qualifiedNameDeDupDescription     = this.getQualifiedNameDeDupGovernanceActionService();
+        GovernanceActionDescription zonePublisherDescription          = this.getZonePublisherGovernanceActionService();
+        GovernanceActionDescription evaluateAnnotationsDescription    = this.getEvaluateAnnotationsGovernanceActionService();
+        GovernanceActionDescription writeAuditLogDescription          = this.getWriteAuditLogGovernanceActionService();
+        GovernanceActionDescription dayOfWeekDescription              = this.getDayOfWeekGovernanceActionService();
+        GovernanceActionDescription verifyAssetDescription            = this.getVerifyAssetGovernanceActionService();
+        GovernanceActionDescription csvSurveyDescription              = this.getCSVFileSurveyService();
+        GovernanceActionDescription fileSurveyDescription             = this.getDataFileSurveyService();
+        GovernanceActionDescription folderSurveyDescription           = this.getFolderSurveyService();
+        GovernanceActionDescription atlasSurveyDescription            = this.getAtlasSurveyService();
+        GovernanceActionDescription postgresServerSurveyDescription   = this.getPostgresServerSurveyService();
+        GovernanceActionDescription postgresDatabaseSurveyDescription = this.getPostgresDatabaseSurveyService();
 
         /*
-         * Define the file provisioning engine.
+         * Define the FileProvisioning engine.
          */
-        String fileProvisioningEngineGUID = this.getFileProvisioningEngine();
+        String fileProvisioningEngineName = "FileProvisioning";
+        String fileProvisioningEngineGUID = this.getFileProvisioningEngine(fileProvisioningEngineName);
 
-        this.addCopyFileRequestType(fileProvisioningEngineGUID, fileProvisionerGUID);
-        this.addMoveFileRequestType(fileProvisioningEngineGUID, fileProvisionerGUID);
-        this.addDeleteFileRequestType(fileProvisioningEngineGUID, fileProvisionerGUID);
+        this.addCopyFileRequestType(fileProvisioningEngineGUID, fileProvisioningEngineName, fileProvisionerDescription);
+        this.addMoveFileRequestType(fileProvisioningEngineGUID, fileProvisioningEngineName, fileProvisionerDescription);
+        this.addDeleteFileRequestType(fileProvisioningEngineGUID, fileProvisioningEngineName, fileProvisionerDescription);
 
         /*
-         * Define the AssetGovernance engine
+         * Define the AssetOnboarding engine
          */
-        String assetGovernanceEngineGUID = this.getAssetGovernanceEngine();
+        String assetOnboardingEngineName = "AssetOnboarding";
+        String assetOnboardingEngineGUID = this.getAssetOnboardingEngine(assetOnboardingEngineName);
 
-        this.addFTPFileRequestType(assetGovernanceEngineGUID, fileProvisionerGUID);
-        this.addWatchNestedInFolderRequestType(assetGovernanceEngineGUID, watchDogServiceGUID);
-        this.addSeekOriginRequestType(assetGovernanceEngineGUID, originSeekerGUID);
-        this.addSetZoneMembershipRequestType(assetGovernanceEngineGUID, zonePublisherGUID);
-        this.addMoveFileRequestType(assetGovernanceEngineGUID, fileProvisionerGUID);
-        this.addDeleteFileRequestType(assetGovernanceEngineGUID, fileProvisionerGUID);
+        this.addWatchNestedInFolderRequestType(assetOnboardingEngineGUID, assetOnboardingEngineName, watchDogServiceDescription);
+        this.addSeekOriginRequestType(assetOnboardingEngineGUID, assetOnboardingEngineName, originSeekerDescription);
+        this.addSetZoneMembershipRequestType(assetOnboardingEngineGUID, assetOnboardingEngineName, zonePublisherDescription);
+        this.addVerifyAssetRequestType(assetOnboardingEngineGUID, assetOnboardingEngineName, verifyAssetDescription);
 
         /*
-         * Define the AssetDiscovery Engine (deprecated)
-         *
-        String assetDiscoveryEngineGUID = this.getAssetDiscoveryEngine();
-
-        this.addSmallCSVRequestType(assetDiscoveryEngineGUID, csvDiscoveryGUID);
-        this.addApacheAtlasRequestType(assetDiscoveryEngineGUID, atlasDiscoveryGUID);
+         * Define the Stewardship engine
          */
+        String stewardshipEngineName = "Stewardship";
+        String stewardshipEngineGUID = this.getStewardshipEngine(stewardshipEngineName);
+
+        this.addEvaluateAnnotationsRequestType(stewardshipEngineGUID, stewardshipEngineName, evaluateAnnotationsDescription);
+        this.addWriteAuditLogRequestType(stewardshipEngineGUID, stewardshipEngineName, writeAuditLogDescription);
+        this.addDayOfWeekRequestType(stewardshipEngineGUID, stewardshipEngineName, dayOfWeekDescription);
+        this.addQualifiedNameDeDupRequestType(stewardshipEngineGUID, stewardshipEngineName, qualifiedNameDeDupDescription);
+
+        this.createDailyGovernanceActionProcess(stewardshipEngineGUID);
 
         /*
-         * Define the asset survey engine
+         * Define the AssetSurvey engine
          */
-        String assetSurveyEngineGUID = this.getAssetSurveyEngine();
+        String assetSurveyEngineName = "AssetSurvey";
+        String assetSurveyEngineGUID = this.getAssetSurveyEngine(assetSurveyEngineName);
 
-        this.addCSVFileRequestType(assetSurveyEngineGUID, csvSurveyGUID);
-        this.addDataFileRequestType(assetSurveyEngineGUID, fileSurveyGUID);
-        this.addFolderRequestType(assetSurveyEngineGUID, folderSurveyGUID);
+        this.addCSVFileRequestType(assetSurveyEngineGUID, assetSurveyEngineName, csvSurveyDescription);
+        this.addDataFileRequestType(assetSurveyEngineGUID, assetSurveyEngineName, fileSurveyDescription);
+        this.addFolderRequestType(assetSurveyEngineGUID, assetSurveyEngineName, folderSurveyDescription);
+        this.addAtlasRequestType(assetSurveyEngineGUID, assetSurveyEngineName, atlasSurveyDescription);
+        this.addPostgresServerRequestType(assetSurveyEngineGUID, assetSurveyEngineName, postgresServerSurveyDescription);
+        this.addPostgresDatabaseRequestType(assetSurveyEngineGUID, assetSurveyEngineName, postgresDatabaseSurveyDescription);
+
+        /*
+         * Add catalog templates
+         */
+        this.addPostgresServerCatalogTemplate();
+        this.addPostgresDatabaseCatalogTemplate();
+        this.addPostgresDatabaseSchemaCatalogTemplate();
+        this.addAtlasServerCatalogTemplate();
 
         /*
          * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.
@@ -537,6 +586,339 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
          */
         return this.archiveBuilder.getOpenMetadataArchive();
     }
+
+
+    /**
+     * Create a template got a software server and link it to the associated deployed implementation type.
+     * The template consists of a SoftwareServer asset linked to a software capability, plus a connection, linked
+     * to the supplied connector type and an endpoint,
+     *
+     * @param deployedImplementationType deployed implementation type for the technology
+     * @param softwareCapabilityType type of the associated capability
+     * @param softwareCapabilityName name for the associated capability
+     * @param serverName name for the server
+     * @param userId userId for the connection
+     * @param password password for the connection
+     * @param connectorTypeGUID connector type to link to the connection
+     * @param networkAddress network address for the endpoint
+     * @param replacementAttributeTypes attributes that should have a replacement value to successfully use the template
+     * @param placeholderPropertyTypes placeholder variables used in the supplied parameters
+     */
+    private   void createSoftwareServerCatalogTemplate(DeployedImplementationType     deployedImplementationType,
+                                                       DeployedImplementationType     softwareCapabilityType,
+                                                       String                         softwareCapabilityName,
+                                                       String                         serverName,
+                                                       String                         userId,
+                                                       String                         password,
+                                                       String                         connectorTypeGUID,
+                                                       String                         networkAddress,
+                                                       List<ReplacementAttributeType> replacementAttributeTypes,
+                                                       List<PlaceholderPropertyType>  placeholderPropertyTypes)
+    {
+        final String methodName = "createSoftwareServerCatalogTemplate";
+
+        String               qualifiedName = deployedImplementationType.getDeployedImplementationType() + ":" + serverName;
+        String               versionIdentifier = "V1.0";
+        String               description = deployedImplementationType.getDescription();
+        Map<String, Object>  extendedProperties = new HashMap<>();
+        List<Classification> classifications = new ArrayList<>();
+
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                               deployedImplementationType.getDeployedImplementationType());
+
+        classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
+                                                                    null, "V1.0", null, methodName));
+
+        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                  qualifiedName,
+                                                  serverName,
+                                                  versionIdentifier,
+                                                  description,
+                                                  null,
+                                                  extendedProperties,
+                                                  classifications);
+
+        archiveHelper.addSoftwareCapability(softwareCapabilityType.getAssociatedTypeName(),
+                                            qualifiedName + ":" + softwareCapabilityName,
+                                            softwareCapabilityName,
+                                            null,
+                                            softwareCapabilityType.getDeployedImplementationType(),
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+                                            assetGUID,
+                                            deployedImplementationType.getAssociatedTypeName());
+
+        archiveHelper.addSupportedSoftwareCapabilityRelationship(qualifiedName + ":" + softwareCapabilityName,
+                                                                 qualifiedName,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 1);
+
+        String endpointGUID = archiveHelper.addEndpoint(assetGUID,
+                                                        deployedImplementationType.getAssociatedTypeName(),
+                                                        qualifiedName + ":Endpoint",
+                                                        serverName + " endpoint",
+                                                        null,
+                                                        networkAddress,
+                                                        null,
+                                                        null);
+
+        String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
+                                                            serverName + " connection",
+                                                            null,
+                                                            userId,
+                                                            password,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            connectorTypeGUID,
+                                                            endpointGUID,
+                                                            assetGUID,
+                                                            deployedImplementationType.getAssociatedTypeName());
+
+        archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
+
+        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
+
+        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
+
+        archiveHelper.addReplacementAttributes(assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               replacementAttributeTypes);
+
+        archiveHelper.addPlaceholderProperties(assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               placeholderPropertyTypes);
+    }
+
+
+    /**
+     * Create a catalog template for a PostgreSQL database server
+     */
+    private void addPostgresServerCatalogTemplate()
+    {
+        JDBCResourceConnectorProvider provider = new JDBCResourceConnectorProvider();
+
+        List<PlaceholderPropertyType>  placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholderType());
+
+        this.createSoftwareServerCatalogTemplate(DeployedImplementationType.POSTGRESQL_SERVER,
+                                                 DeployedImplementationType.POSTGRESQL_DATABASE_MANAGER,
+                                                 "DBMS",
+                                                 PostgresPlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholder(),
+                                                 PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholder(),
+                                                 provider.getConnectorType().getGUID(),
+                                                 "jdbc:postgresql://" +
+                                                         PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                         PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/postgres",
+                                                 null,
+                                                 placeholderPropertyTypes);
+    }
+
+
+    /**
+     * Create a catalog template for Apache Atlas
+     */
+    private void addAtlasServerCatalogTemplate()
+    {
+        ApacheAtlasRESTProvider provider = new ApacheAtlasRESTProvider();
+
+        List<PlaceholderPropertyType>  placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(AtlasPlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(AtlasPlaceholderProperty.PORT_NUMBER.getPlaceholderType());
+        placeholderPropertyTypes.add(AtlasPlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(AtlasPlaceholderProperty.CONNECTION_USER_ID.getPlaceholderType());
+        placeholderPropertyTypes.add(AtlasPlaceholderProperty.CONNECTION_PASSWORD.getPlaceholderType());
+
+        this.createSoftwareServerCatalogTemplate(DeployedImplementationType.APACHE_ATLAS_SERVER,
+                                                 DeployedImplementationType.ASSET_CATALOG,
+                                                 "MetadataCatalog",
+                                                 AtlasPlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 AtlasPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
+                                                 AtlasPlaceholderProperty.CONNECTION_PASSWORD.getPlaceholder(),
+                                                 provider.getConnectorType().getGUID(),
+                                                 "http://" +
+                                                         AtlasPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                         AtlasPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                                                 null,
+                                                 placeholderPropertyTypes);
+    }
+
+
+    /**
+     * Create a template got a type of asset and link it to the associated deployed implementation type.
+     * The template consists of a asset linked to a connection, that is in turn linked
+     * to the supplied connector type and an endpoint,
+     *
+     * @param deployedImplementationType deployed implementation type for the technology
+     * @param assetName name for the asset
+     * @param serverName optional server name
+     * @param userId userId for the connection
+     * @param password password for the connection
+     * @param connectorTypeGUID connector type to link to the connection
+     * @param networkAddress network address for the endpoint
+     * @param replacementAttributeTypes attributes that should have a replacement value to successfully use the template
+     * @param placeholderPropertyTypes placeholder variables used in the supplied parameters
+     */
+    private   void createServerAssetCatalogTemplate(DeployedImplementationType     deployedImplementationType,
+                                                    String                         assetName,
+                                                    String                         serverName,
+                                                    String                         userId,
+                                                    String                         password,
+                                                    String                         connectorTypeGUID,
+                                                    String                         networkAddress,
+                                                    List<ReplacementAttributeType> replacementAttributeTypes,
+                                                    List<PlaceholderPropertyType>  placeholderPropertyTypes)
+    {
+        final String methodName = "createServerAssetCatalogTemplate";
+
+        String               qualifiedName;
+
+        if (serverName == null)
+        {
+            qualifiedName = deployedImplementationType.getDeployedImplementationType() + ":" + assetName;
+        }
+        else
+        {
+            qualifiedName = deployedImplementationType.getDeployedImplementationType() + ":" + serverName + ":" + assetName;
+        }
+
+        String               versionIdentifier = "V1.0";
+        String               description = deployedImplementationType.getDescription();
+        Map<String, Object>  extendedProperties = new HashMap<>();
+        List<Classification> classifications = new ArrayList<>();
+
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                               deployedImplementationType.getDeployedImplementationType());
+
+        classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
+                                                                    null, "V1.0", null, methodName));
+
+        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                  qualifiedName,
+                                                  assetName,
+                                                  versionIdentifier,
+                                                  description,
+                                                  null,
+                                                  extendedProperties,
+                                                  classifications);
+
+
+        String endpointGUID = archiveHelper.addEndpoint(assetGUID,
+                                                        deployedImplementationType.getAssociatedTypeName(),
+                                                        qualifiedName + ":Endpoint",
+                                                        assetName + " endpoint",
+                                                        null,
+                                                        networkAddress,
+                                                        null,
+                                                        null);
+
+        String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
+                                                            assetName + " connection",
+                                                            null,
+                                                            userId,
+                                                            password,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            connectorTypeGUID,
+                                                            endpointGUID,
+                                                            assetGUID,
+                                                            deployedImplementationType.getAssociatedTypeName());
+
+        archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
+
+        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
+
+        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
+
+        archiveHelper.addReplacementAttributes(assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               replacementAttributeTypes);
+
+        archiveHelper.addPlaceholderProperties(assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               placeholderPropertyTypes);
+    }
+
+
+    /**
+     * Create a catalog template for a PostgreSQL database
+     */
+    private void addPostgresDatabaseCatalogTemplate()
+    {
+        JDBCResourceConnectorProvider provider = new JDBCResourceConnectorProvider();
+
+        List<PlaceholderPropertyType>  placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholderType());
+
+        this.createServerAssetCatalogTemplate(DeployedImplementationType.POSTGRESQL_DATABASE,
+                                              PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                                              PostgresPlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                              PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholder(),
+                                              PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholder(),
+                                              provider.getConnectorType().getGUID(),
+                                              "jdbc:postgresql://" +
+                                                         PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                         PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" + PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                                              null,
+                                              placeholderPropertyTypes);
+    }
+
+
+    /**
+     * Create a catalog template for a PostgreSQL database schema
+     */
+    private void addPostgresDatabaseSchemaCatalogTemplate()
+    {
+        JDBCResourceConnectorProvider provider = new JDBCResourceConnectorProvider();
+
+        List<PlaceholderPropertyType>  placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholderType());
+
+        this.createServerAssetCatalogTemplate(DeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA,
+                                              PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
+                                              PostgresPlaceholderProperty.SERVER_NAME.getPlaceholder() + "." + PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                                              PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholder(),
+                                              PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholder(),
+                                              provider.getConnectorType().getGUID(),
+                                              "jdbc:postgresql://" +
+                                                      PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                      PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" +
+                                                      PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "?currentSchema=" +
+                                                      PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
+                                              null,
+                                              placeholderPropertyTypes);
+    }
+
+
 
 
     /**
@@ -605,6 +987,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         if (openMetadataType.wikiURL != null)
         {
             String externalReferenceGUID = this.archiveHelper.addExternalReference(null,
+                                                                                   validValueGUID,
+                                                                                   OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                                                                    qualifiedName + "_wikiLink",
                                                                                    "More information about open metadata type: " + openMetadataType.typeName,
                                                                                    null,
@@ -618,7 +1002,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                                                    null,
                                                                                    null,
                                                                                    null,
-                                                                                   null,
+                                                                                   openMetadataType.wikiURL,
                                                                                    null,
                                                                                    null,
                                                                                    null,
@@ -681,6 +1065,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         if (wikiLink != null)
         {
             String externalReferenceGUID = this.archiveHelper.addExternalReference(null,
+                                                                                   validValueGUID,
+                                                                                   OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
                                                                                    qualifiedName + "_wikiLink",
                                                                                    "More information about deployedImplementationType: " + deployedImplementationType,
                                                                                    null,
@@ -694,7 +1080,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                                                    null,
                                                                                    null,
                                                                                    null,
-                                                                                   null,
+                                                                                   wikiLink,
                                                                                    null,
                                                                                    null,
                                                                                    null,
@@ -901,6 +1287,46 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
 
     /**
+     * Add reference data for a file extension.
+     *
+     * @param attributeName   name of the attribute
+     * @param attributeDescription  description of the attribute
+     */
+    private void addAttributeName(String attributeName,
+                                  String attributeDescription)
+    {
+        String qualifiedName = constructValidValueQualifiedName(OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                OpenMetadataType.ATTRIBUTE_NAME_PROPERTY_NAME,
+                                                                null,
+                                                                attributeName);
+
+        String category = constructValidValueCategory(OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                      OpenMetadataType.ATTRIBUTE_NAME_PROPERTY_NAME,
+                                                      null);
+
+        String parentSetGUID = this.getParentSet(OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                 OpenMetadataType.ATTRIBUTE_NAME_PROPERTY_NAME,
+                                                 null);
+
+        this.archiveHelper.addValidValue(null,
+                                         parentSetGUID,
+                                         parentSetGUID,
+                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                         qualifiedName,
+                                         attributeName,
+                                         attributeDescription,
+                                         category,
+                                         OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                         OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                         attributeName,
+                                         false,
+                                         false,
+                                         null);
+    }
+
+
+    /**
      * Find or create the parent set for a valid value.
      *
      * @param typeName name of the type (can be null)
@@ -965,11 +1391,11 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     /**
      * Create an entity for the FileProvisioner governance engine.
      *
+     * @param governanceEngineName name
      * @return unique identifier for the governance engine
      */
-    private String getFileProvisioningEngine()
+    private String getFileProvisioningEngine(String governanceEngineName)
     {
-        final String governanceEngineName        = "FileProvisioning";
         final String governanceEngineDisplayName = "File Provisioning Engine";
         final String governanceEngineDescription = "Copies, moves or deletes a file on request.";
 
@@ -987,20 +1413,20 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
 
     /**
-     * Create an entity for the AssetGovernance governance engine.
+     * Create an entity for the AssetOnboarding governance engine.
      *
+     * @param assetOnboardingEngineName name
      * @return unique identifier for the governance engine
      */
-    private String getAssetGovernanceEngine()
+    private String getAssetOnboardingEngine(String assetOnboardingEngineName)
     {
-        final String assetGovernanceEngineName        = "AssetGovernance";
-        final String assetGovernanceEngineDisplayName = "Asset Governance Engine";
-        final String assetGovernanceEngineDescription = "Monitors, validates and enriches metadata relating to assets.";
+        final String assetOnboardingEngineDisplayName = "Asset Onboarding Engine";
+        final String assetOnboardingEngineDescription = "Monitors, validates and enriches metadata relating to assets as they are catalogued.";
 
         return archiveHelper.addGovernanceEngine(OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
-                                                 assetGovernanceEngineName,
-                                                 assetGovernanceEngineDisplayName,
-                                                 assetGovernanceEngineDescription,
+                                                 assetOnboardingEngineName,
+                                                 assetOnboardingEngineDisplayName,
+                                                 assetOnboardingEngineDescription,
                                                  null,
                                                  null,
                                                  null,
@@ -1008,23 +1434,24 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                  null,
                                                  null);
     }
+
 
 
     /**
-     * Create an entity for the AssetDiscovery governance engine.
+     * Create an entity for the Stewardship governance engine.
      *
+     * @param stewardshipEngineName name
      * @return unique identifier for the governance engine
      */
-    private String getAssetDiscoveryEngine()
+    private String getStewardshipEngine(String stewardshipEngineName)
     {
-        final String assetDiscoveryEngineName        = "AssetDiscovery";
-        final String assetDiscoveryEngineDisplayName = "AssetDiscovery Open Discovery Engine";
-        final String assetDiscoveryEngineDescription = "Extracts metadata about a digital resource and attach it to its asset description.";
+        final String stewardshipEngineDisplayName = "Stewardship Engine";
+        final String stewardshipEngineDescription = "Liaises with stewards to make corrections to open metadata.";
 
-        return archiveHelper.addGovernanceEngine(OpenMetadataType.OPEN_DISCOVERY_ENGINE.typeName,
-                                                 assetDiscoveryEngineName,
-                                                 assetDiscoveryEngineDisplayName,
-                                                 assetDiscoveryEngineDescription,
+        return archiveHelper.addGovernanceEngine(OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
+                                                 stewardshipEngineName,
+                                                 stewardshipEngineDisplayName,
+                                                 stewardshipEngineDescription,
                                                  null,
                                                  null,
                                                  null,
@@ -1032,17 +1459,16 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                  null,
                                                  null);
     }
-
 
 
     /**
      * Create an entity for the AssetSurvey governance engine.
      *
+     * @param assetSurveyEngineName name
      * @return unique identifier for the governance engine
      */
-    private String getAssetSurveyEngine()
+    private String getAssetSurveyEngine(String assetSurveyEngineName)
     {
-        final String assetSurveyEngineName        = "AssetSurvey";
         final String assetSurveyEngineDisplayName = "Asset Survey Engine";
         final String assetSurveyEngineDescription = "Extracts metadata about a digital resource and attach it to its asset description.";
 
@@ -1061,7 +1487,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
 
     /**
-     * Create an entity for the FileProvisioning governance action service.
+     * Create an entity for the File Provisioning governance action service.
      *
      * @return descriptive information on the governance service
      */
@@ -1070,24 +1496,21 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         final String governanceServiceName        = "file-provisioning-governance-action-service";
         final String governanceServiceDisplayName = "File {move, copy, delete} Governance Action Service";
         final String governanceServiceDescription = "Works with files.  The request type defines which action is taken.  " +
-                                                            "The request parameters define the source file and destination, along with lineage options";
+                                                            "The request parameters define the source file and destination folder, along with lineage options";
         final String ftpGovernanceServiceProviderClassName = MoveCopyFileGovernanceActionProvider.class.getName();
 
         MoveCopyFileGovernanceActionProvider provider = new MoveCopyFileGovernanceActionProvider();
 
-        GovernanceActionDescription governanceActionDescription = new GovernanceActionDescription();
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.PROVISION_RESOURCE,
+                                                                                                 provider,
+                                                                                                 governanceServiceDescription);
 
-        governanceActionDescription.resourceUse = ResourceUse.PROVISION_RESOURCE;
-        governanceActionDescription.supportedGuards = provider.getSupportedGuards();
-        governanceActionDescription.actionTargetTypes = provider.getActionTargetTypes();
-        governanceActionDescription.governanceServiceDescription = governanceServiceDescription;
-        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeName,
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                                                                                                ftpGovernanceServiceProviderClassName,
                                                                                                null,
                                                                                                governanceServiceName,
                                                                                                governanceServiceDisplayName,
                                                                                                governanceServiceDescription,
-                                                                                               null,
                                                                                                null);
 
         return governanceActionDescription;
@@ -1101,34 +1524,64 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      */
     private GovernanceActionDescription getWatchdogGovernanceActionService()
     {
-        final String governanceServiceName = "new-measurements-watchdog-governance-action-service";
-        final String governanceServiceDisplayName = "New Measurements Watchdog Governance Action Service";
-        final String governanceServiceDescription = "Initiates a governance action process when a new weekly measurements file arrives.";
+        final String governanceServiceName              = "new-files-watchdog-governance-action-service";
+        final String governanceServiceDisplayName       = "New Files Watchdog Governance Action Service";
+        final String governanceServiceDescription       = "Initiates a governance action process when a new file arrives.";
         final String governanceServiceProviderClassName = GenericFolderWatchdogGovernanceActionProvider.class.getName();
 
         GenericFolderWatchdogGovernanceActionProvider provider = new GenericFolderWatchdogGovernanceActionProvider();
 
-        GovernanceActionDescription governanceActionDescription = new GovernanceActionDescription();
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.WATCH_DOG,
+                                                                                                 provider,
+                                                                                                 governanceServiceDescription);
 
-        governanceActionDescription.resourceUse = ResourceUse.WATCH_DOG;
-        governanceActionDescription.supportedGuards = provider.getSupportedGuards();
-        governanceActionDescription.actionTargetTypes = provider.getActionTargetTypes();
-        governanceActionDescription.governanceServiceDescription = governanceServiceDescription;
-        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeName,
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                                                                                                governanceServiceProviderClassName,
                                                                                                null,
                                                                                                governanceServiceName,
                                                                                                governanceServiceDisplayName,
                                                                                                governanceServiceDescription,
-                                                                                               null,
                                                                                                null);
         return governanceActionDescription;
     }
 
 
     /**
-     * Add a governance service that walks backwards through an asset's lineage to find an origin classification.  If found, the same origin is added
-     * to the asset.
+     * Create a governance action description from the governance service's provider.
+     *
+     * @param resourceUse how is this
+     * @param provider connector provider
+     * @return governance action description
+     */
+    private GovernanceActionDescription getGovernanceActionDescription(ResourceUse                   resourceUse,
+                                                                       GovernanceServiceProviderBase provider,
+                                                                       String                        governanceServiceDescription)
+    {
+        GovernanceActionDescription governanceActionDescription = new GovernanceActionDescription();
+
+        governanceActionDescription.resourceUse                  = resourceUse;
+        governanceActionDescription.supportedRequestTypes        = provider.getSupportedRequestTypes();
+        governanceActionDescription.supportedRequestParameters   = provider.getSupportedRequestParameters();
+        governanceActionDescription.supportedActionTargets       = provider.getSupportedActionTargetTypes();
+        governanceActionDescription.producedRequestParameters    = provider.getProducedRequestParameters();
+        governanceActionDescription.producedActionTargets        = provider.getProducedActionTargetTypes();
+        governanceActionDescription.producedGuards               = provider.getProducedGuards();
+
+        if (provider instanceof SurveyActionServiceProvider surveyActionServiceProvider)
+        {
+            governanceActionDescription.supportedAnalysisSteps = surveyActionServiceProvider.getSupportedAnalysisSteps();
+            governanceActionDescription.supportedAnnotationTypes = surveyActionServiceProvider.getProducedAnnotationTypes();
+        }
+
+        governanceActionDescription.governanceServiceDescription = governanceServiceDescription;
+
+        return governanceActionDescription;
+    }
+
+
+    /**
+     * Add a governance service that walks backwards through an asset's lineage to find an origin classification.
+     * If found, the same origin is added to the asset.
      *
      * @return descriptive information on the governance service
      */
@@ -1136,24 +1589,167 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     {
         final String governanceServiceName = "zone-publisher-governance-action-service";
         final String governanceServiceDisplayName = "Update Asset's Zone Membership Governance Action Service";
-        final String governanceServiceDescription = "Set up the zone membership for one or more assets supplied as action targets.";
         final String governanceServiceProviderClassName = ZonePublisherGovernanceActionProvider.class.getName();
 
         ZonePublisherGovernanceActionProvider provider = new ZonePublisherGovernanceActionProvider();
 
-        GovernanceActionDescription governanceActionDescription = new GovernanceActionDescription();
+        final String governanceServiceDescription = provider.getConnectorType().getDescription();
 
-        governanceActionDescription.resourceUse = ResourceUse.IMPROVE_METADATA;
-        governanceActionDescription.supportedGuards = provider.getSupportedGuards();
-        governanceActionDescription.actionTargetTypes = provider.getActionTargetTypes();
-        governanceActionDescription.governanceServiceDescription = governanceServiceDescription;
-        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeName,
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.IMPROVE_METADATA,
+                                                                                                 provider,
+                                                                                                 governanceServiceDescription);
+
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                                                                                                governanceServiceProviderClassName,
                                                                                                null,
                                                                                                governanceServiceName,
                                                                                                governanceServiceDisplayName,
                                                                                                governanceServiceDescription,
+                                                                                               null);
+        return governanceActionDescription;
+    }
+
+
+    /**
+     * Add a governance service that links elements with the same qualified name.
+     *
+     * @return descriptive information on the governance service
+     */
+    private GovernanceActionDescription getQualifiedNameDeDupGovernanceActionService()
+    {
+        final String governanceServiceName = "qualified-name-deduplication-governance-action-service";
+        final String governanceServiceDisplayName = "Qualified Name De-duplicator Governance Action Service";
+        final String governanceServiceDescription = "Detect elements with the same qualified names.";
+        final String governanceServiceProviderClassName = QualifiedNamePeerDuplicateGovernanceActionProvider.class.getName();
+
+        QualifiedNamePeerDuplicateGovernanceActionProvider provider = new QualifiedNamePeerDuplicateGovernanceActionProvider();
+
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.IMPROVE_METADATA,
+                                                                                                 provider,
+                                                                                                 governanceServiceDescription);
+
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                                                                                               governanceServiceProviderClassName,
                                                                                                null,
+                                                                                               governanceServiceName,
+                                                                                               governanceServiceDisplayName,
+                                                                                               governanceServiceDescription,
+                                                                                               null);
+        return governanceActionDescription;
+    }
+
+
+    /**
+     * Add a governance service that checks for request for action annotations in a survey report.
+     *
+     * @return descriptive information on the governance service
+     */
+    private GovernanceActionDescription getEvaluateAnnotationsGovernanceActionService()
+    {
+        final String governanceServiceName = "evaluate-annotations-governance-action-service";
+        final String governanceServiceDisplayName = "Verify annotations in a Survey Report";
+        final String governanceServiceProviderClassName = EvaluateAnnotationsGovernanceActionProvider.class.getName();
+
+        EvaluateAnnotationsGovernanceActionProvider provider = new EvaluateAnnotationsGovernanceActionProvider();
+        final String governanceServiceDescription = provider.getConnectorType().getDescription();
+
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.IMPROVE_METADATA,
+                                                                                                 provider,
+                                                                                                 governanceServiceDescription);
+
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                                                                                               governanceServiceProviderClassName,
+                                                                                               null,
+                                                                                               governanceServiceName,
+                                                                                               governanceServiceDisplayName,
+                                                                                               governanceServiceDescription,
+                                                                                               null);
+        return governanceActionDescription;
+    }
+
+
+    /**
+     * Add a governance service that writes an audit log message to the audit log destinations.
+     *
+     * @return descriptive information on the governance service
+     */
+    private GovernanceActionDescription getWriteAuditLogGovernanceActionService()
+    {
+        final String governanceServiceName = "write-audit-log-governance-action-service";
+        final String governanceServiceDisplayName = "Write an Audit Log Message";
+        final String governanceServiceProviderClassName = WriteAuditLogMessageGovernanceActionProvider.class.getName();
+
+        WriteAuditLogMessageGovernanceActionProvider provider = new WriteAuditLogMessageGovernanceActionProvider();
+        final String governanceServiceDescription = provider.getConnectorType().getDescription();
+
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.INFORM_STEWARD,
+                                                                                                 provider,
+                                                                                                 governanceServiceDescription);
+
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                                                                                               governanceServiceProviderClassName,
+                                                                                               null,
+                                                                                               governanceServiceName,
+                                                                                               governanceServiceDisplayName,
+                                                                                               governanceServiceDescription,
+                                                                                               null);
+        return governanceActionDescription;
+    }
+
+
+    /**
+     * Add a governance service that writes an audit log message to the audit log destinations.
+     *
+     * @return descriptive information on the governance service
+     */
+    private GovernanceActionDescription getDayOfWeekGovernanceActionService()
+    {
+        final String governanceServiceName = "get-day-of-week-governance-action-service";
+        final String governanceServiceDisplayName = "Detect the day of the week";
+        final String governanceServiceProviderClassName = DaysOfWeekGovernanceActionProvider.class.getName();
+
+        DaysOfWeekGovernanceActionProvider provider = new DaysOfWeekGovernanceActionProvider();
+        final String governanceServiceDescription = provider.getConnectorType().getDescription();
+
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.CHOOSE_PATH,
+                                                                                                 provider,
+                                                                                                 governanceServiceDescription);
+
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                                                                                               governanceServiceProviderClassName,
+                                                                                               null,
+                                                                                               governanceServiceName,
+                                                                                               governanceServiceDisplayName,
+                                                                                               governanceServiceDescription,
+                                                                                               null);
+        return governanceActionDescription;
+    }
+
+
+    /**
+     * Add a governance service that verifies and asset.
+     *
+     * @return descriptive information on the governance service
+     */
+    private GovernanceActionDescription getVerifyAssetGovernanceActionService()
+    {
+        final String governanceServiceName = "verify-asset-governance-action-service";
+        final String governanceServiceDisplayName = "Verify an Asset Governance Action Service";
+        final String governanceServiceProviderClassName = VerifyAssetGovernanceActionProvider.class.getName();
+
+        VerifyAssetGovernanceActionProvider provider = new VerifyAssetGovernanceActionProvider();
+        final String governanceServiceDescription = provider.getConnectorType().getDescription();
+
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.IMPROVE_METADATA,
+                                                                                                 provider,
+                                                                                                 governanceServiceDescription);
+
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                                                                                               governanceServiceProviderClassName,
+                                                                                               null,
+                                                                                               governanceServiceName,
+                                                                                               governanceServiceDisplayName,
+                                                                                               governanceServiceDescription,
                                                                                                null);
         return governanceActionDescription;
     }
@@ -1173,19 +1769,16 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
         OriginSeekerGovernanceActionProvider provider = new OriginSeekerGovernanceActionProvider();
 
-        GovernanceActionDescription governanceActionDescription = new GovernanceActionDescription();
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.IMPROVE_METADATA,
+                                                                                                 provider,
+                                                                                                 governanceServiceDescription);
 
-        governanceActionDescription.resourceUse = ResourceUse.IMPROVE_METADATA;
-        governanceActionDescription.supportedGuards = provider.getSupportedGuards();
-        governanceActionDescription.actionTargetTypes = provider.getActionTargetTypes();
-        governanceActionDescription.governanceServiceDescription = governanceServiceDescription;
-        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeName,
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                                                                                                governanceServiceProviderClassName,
                                                                                                null,
                                                                                                governanceServiceName,
                                                                                                governanceServiceDisplayName,
                                                                                                governanceServiceDescription,
-                                                                                               null,
                                                                                                null);
         return governanceActionDescription;
     }
@@ -1196,14 +1789,34 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      */
     static class GovernanceActionDescription
     {
-        String                        governanceServiceGUID = null;
-        String                        governanceServiceDescription = null;
-        Map<String, ActionTargetType> actionTargetTypes     = null;
-        List<String>                  supportedGuards       = null;
-        ResourceUse                   resourceUse           = null;
+        String                     governanceServiceGUID        = null;
+        String                     governanceServiceDescription = null;
+        List<RequestTypeType>      supportedRequestTypes        = null;
+        List<RequestParameterType> supportedRequestParameters   = null;
+        List<ActionTargetType>     supportedActionTargets       = null;
+        List<AnalysisStepType>     supportedAnalysisSteps       = null;
+        List<AnnotationTypeType>   supportedAnnotationTypes     = null;
+        List<RequestParameterType> producedRequestParameters    = null;
+        List<ActionTargetType>     producedActionTargets        = null;
+        List<GuardType>            producedGuards               = null;
+        ResourceUse                resourceUse                  = null;
     }
 
+
+    /**
+     * Add details of a request type to the engine.
+     *
+     * @param governanceEngineGUID unique identifier of the engine
+     * @param governanceEngineName name of the governance engine
+     * @param governanceEngineTypeName type of engine
+     * @param governanceRequestType name of request type
+     * @param serviceRequestType internal name of the request type
+     * @param requestParameters any request parameters
+     * @param governanceActionDescription description of the governance action if and
+     */
     private void addRequestType(String                      governanceEngineGUID,
+                                String                      governanceEngineName,
+                                String                      governanceEngineTypeName,
                                 String                      governanceRequestType,
                                 String                      serviceRequestType,
                                 Map<String, String>         requestParameters,
@@ -1215,14 +1828,22 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                     requestParameters,
                                                     governanceActionDescription.governanceServiceGUID);
 
-        if (governanceActionDescription.actionTargetTypes != null)
+        if (governanceActionDescription.supportedActionTargets != null)
         {
             String governanceActionTypeGUID = archiveHelper.addGovernanceActionType(null,
+                                                                                    governanceEngineGUID,
+                                                                                    governanceEngineTypeName,
                                                                                     "Egeria:GovernanceActionType:" + governanceEngineGUID + governanceRequestType,
-                                                                                    governanceRequestType,
+                                                                                    governanceRequestType + ":" + governanceEngineName,
                                                                                     governanceActionDescription.governanceServiceDescription,
                                                                                     0,
-                                                                                    governanceActionDescription.supportedGuards,
+                                                                                    governanceActionDescription.supportedRequestParameters,
+                                                                                    governanceActionDescription.supportedActionTargets,
+                                                                                    governanceActionDescription.supportedAnalysisSteps,
+                                                                                    governanceActionDescription.supportedAnnotationTypes,
+                                                                                    governanceActionDescription.producedRequestParameters,
+                                                                                    governanceActionDescription.producedActionTargets,
+                                                                                    governanceActionDescription.producedGuards,
                                                                                     0,
                                                                                     null,
                                                                                     null,
@@ -1239,42 +1860,37 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                           null,
                                                           governanceEngineGUID);
 
-                for (String actionTargetTypeName : governanceActionDescription.actionTargetTypes.keySet())
+                for (ActionTargetType actionTargetType : governanceActionDescription.supportedActionTargets)
                 {
-                    if (actionTargetTypeName != null)
+                    if (actionTargetType != null)
                     {
-                        ActionTargetType actionTargetType = governanceActionDescription.actionTargetTypes.get(actionTargetTypeName);
-
-                        if (actionTargetType != null)
+                        if (actionTargetType.getTypeName() != null)
                         {
-                            if (actionTargetType.getTypeName() != null)
-                            {
-                                String openMetadataTypeGUID = openMetadataTypeGUIDs.get(actionTargetType.getTypeName());
+                            String openMetadataTypeGUID = openMetadataTypeGUIDs.get(actionTargetType.getTypeName());
 
-                                if (openMetadataTypeGUID != null)
-                                {
-                                    archiveHelper.addResourceListRelationshipByGUID(openMetadataTypeGUID,
-                                                                                    governanceActionTypeGUID,
-                                                                                    governanceActionDescription.resourceUse.getResourceUse(),
-                                                                                    governanceActionDescription.governanceServiceDescription,
-                                                                                    requestParameters,
-                                                                                    false);
-                                }
+                            if (openMetadataTypeGUID != null)
+                            {
+                                archiveHelper.addResourceListRelationshipByGUID(openMetadataTypeGUID,
+                                                                                governanceActionTypeGUID,
+                                                                                governanceActionDescription.resourceUse.getResourceUse(),
+                                                                                governanceActionDescription.governanceServiceDescription,
+                                                                                requestParameters,
+                                                                                false);
                             }
+                        }
 
-                            if (actionTargetType.getDeployedImplementationType() != null)
+                        if (actionTargetType.getDeployedImplementationType() != null)
+                        {
+                            String deployedImplementationTypeGUID = deployedImplementationTypeGUIDs.get(actionTargetType.getDeployedImplementationType());
+
+                            if (deployedImplementationTypeGUID != null)
                             {
-                                String deployedImplementationTypeGUID = deployedImplementationTypeGUIDs.get(actionTargetType.getDeployedImplementationType());
-
-                                if (deployedImplementationTypeGUID != null)
-                                {
-                                    archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
-                                                                                    governanceActionTypeGUID,
-                                                                                    governanceActionDescription.resourceUse.getResourceUse(),
-                                                                                    governanceActionDescription.governanceServiceDescription,
-                                                                                    requestParameters,
-                                                                                    false);
-                                }
+                                archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
+                                                                                governanceActionTypeGUID,
+                                                                                governanceActionDescription.resourceUse.getResourceUse(),
+                                                                                governanceActionDescription.governanceServiceDescription,
+                                                                                requestParameters,
+                                                                                false);
                             }
                         }
                     }
@@ -1283,44 +1899,24 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         }
     }
 
-    /**
-     * Set up the request type that links the governance engine to the governance service.
-     *
-     * @param governanceEngineGUID unique identifier of the governance engine
-     * @param governanceActionDescription details for calling the governance service
-     */
-    private void addFTPFileRequestType(String                      governanceEngineGUID,
-                                       GovernanceActionDescription governanceActionDescription)
-    {
-        final String governanceRequestType = "simulate-ftp";
-        final String serviceRequestType = "copy-file";
-        final String noLineagePropertyName = "noLineage";
-
-        Map<String, String> requestParameters = new HashMap<>();
-
-        requestParameters.put(noLineagePropertyName, "");
-
-        this.addRequestType(governanceEngineGUID,
-                            governanceRequestType,
-                            serviceRequestType,
-                            requestParameters,
-                            governanceActionDescription);
-    }
-
 
     /**
      * Set up the request type that links the governance engine to the governance service.
      *
      * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceEngineName unique name of the governance engine
      * @param governanceActionDescription details for calling the governance service
      */
     private void addWatchNestedInFolderRequestType(String                      governanceEngineGUID,
+                                                   String                      governanceEngineName,
                                                    GovernanceActionDescription governanceActionDescription)
     {
-        final String governanceRequestType = "watch-for-new-files";
+        final String governanceRequestType = "watch-for-new-files-in-folder";
         final String serviceRequestType = "watch-nested-in-folder";
 
         this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
                             governanceRequestType,
                             serviceRequestType,
                             null,
@@ -1332,14 +1928,18 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      * Set up the request type that links the governance engine to the governance service.
      *
      * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceEngineName unique name of the governance engine
      * @param governanceActionDescription details for calling the governance service
      */
     private void addCopyFileRequestType(String                      governanceEngineGUID,
+                                        String                      governanceEngineName,
                                         GovernanceActionDescription governanceActionDescription)
     {
         final String governanceRequestType = "copy-file";
 
         this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
                             governanceRequestType,
                             null,
                             null,
@@ -1352,14 +1952,18 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      * Set up the request type that links the governance engine to the governance service.
      *
      * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceEngineName unique name of the governance engine
      * @param governanceActionDescription details for calling the governance service
      */
     private void addMoveFileRequestType(String                      governanceEngineGUID,
+                                        String                      governanceEngineName,
                                         GovernanceActionDescription governanceActionDescription)
     {
         final String governanceRequestType = "move-file";
 
         this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
                             governanceRequestType,
                             null,
                             null,
@@ -1371,14 +1975,18 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      * Set up the request type that links the governance engine to the governance service.
      *
      * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceEngineName unique name of the governance engine
      * @param governanceActionDescription details for calling the governance service
      */
     private void addDeleteFileRequestType(String                      governanceEngineGUID,
+                                          String                      governanceEngineName,
                                           GovernanceActionDescription governanceActionDescription)
     {
         final String governanceRequestType = "delete-file";
 
         this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
                             governanceRequestType,
                             null,
                             null,
@@ -1390,14 +1998,18 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      * Set up the request type that links the governance engine to the governance service.
      *
      * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceEngineName unique name of the governance engine
      * @param governanceActionDescription details for calling the governance service
      */
     private void addSeekOriginRequestType(String                      governanceEngineGUID,
+                                          String                      governanceEngineName,
                                           GovernanceActionDescription governanceActionDescription)
     {
-        final String governanceRequestType = "seek-origin";
+        final String governanceRequestType = "seek-origin-of-asset";
 
         this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
                             governanceRequestType,
                             null,
                             null,
@@ -1409,14 +2021,18 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      * Set up the request type that links the governance engine to the governance service.
      *
      * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceEngineName unique name of the governance engine
      * @param governanceActionDescription details for calling the governance service
      */
     private void addSetZoneMembershipRequestType(String                      governanceEngineGUID,
+                                                 String                      governanceEngineName,
                                                  GovernanceActionDescription governanceActionDescription)
     {
-        final String governanceRequestType = "set-zone-membership";
+        final String governanceRequestType = "set-zone-membership-for-asset";
 
         this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
                             governanceRequestType,
                             null,
                             null,
@@ -1425,29 +2041,117 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
 
     /**
-     * Create an entity for the Apache Atlas Survey governance service.
+     * Set up the request type that links the governance engine to the governance service.
      *
-     * @return unique identifier for the governance service
+     * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceEngineName unique name of the governance engine
+     * @param governanceActionDescription details for calling the governance service
      */
-    private GovernanceActionDescription getApacheAtlasDiscoveryService()
+    private void addVerifyAssetRequestType(String                      governanceEngineGUID,
+                                           String                      governanceEngineName,
+                                           GovernanceActionDescription governanceActionDescription)
     {
-        final String discoveryServiceName = "apache-atlas-discovery-service";
-        final String discoveryServiceDisplayName = "Apache Atlas Discovery Service";
-        final String discoveryServiceDescription = "Discovers the types and instances found in an Apache Atlas server.";
-        final String discoveryServiceProviderClassName = DiscoverApacheAtlasProvider.class.getName();
+        final String governanceRequestType = "verify-asset";
 
-        GovernanceActionDescription governanceActionDescription = new GovernanceActionDescription();
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
+                            governanceRequestType,
+                            null,
+                            null,
+                            governanceActionDescription);
+    }
 
-        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(OpenMetadataType.OPEN_DISCOVERY_SERVICE.typeName,
-                                                                                               discoveryServiceProviderClassName,
-                                                                                               null,
-                                                                                               discoveryServiceName,
-                                                                                               discoveryServiceDisplayName,
-                                                                                               discoveryServiceDescription,
-                                                                                               null,
-                                                                                               null);
 
-        return governanceActionDescription;
+    /**
+     * Set up the request type that links the governance engine to the governance service.
+     *
+     * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceEngineName unique name of the governance engine
+     * @param governanceActionDescription details for calling the governance service
+     */
+    private void addEvaluateAnnotationsRequestType(String                      governanceEngineGUID,
+                                                   String                      governanceEngineName,
+                                                   GovernanceActionDescription governanceActionDescription)
+    {
+        final String governanceRequestType = "evaluate-annotations";
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
+                            governanceRequestType,
+                            null,
+                            null,
+                            governanceActionDescription);
+    }
+
+
+    /**
+     * Set up the request type that links the governance engine to the governance service.
+     *
+     * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceEngineName unique name of the governance engine
+     * @param governanceActionDescription details for calling the governance service
+     */
+    private void addWriteAuditLogRequestType(String                      governanceEngineGUID,
+                                             String                      governanceEngineName,
+                                             GovernanceActionDescription governanceActionDescription)
+    {
+        final String governanceRequestType = "write-to-audit-log";
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
+                            governanceRequestType,
+                            null,
+                            null,
+                            governanceActionDescription);
+    }
+
+
+    /**
+     * Set up the request type that links the governance engine to the governance service.
+     *
+     * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceEngineName unique name of the governance engine
+     * @param governanceActionDescription details for calling the governance service
+     */
+    private void addDayOfWeekRequestType(String                      governanceEngineGUID,
+                                         String                      governanceEngineName,
+                                         GovernanceActionDescription governanceActionDescription)
+    {
+        final String governanceRequestType = "get-day-of-week";
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
+                            governanceRequestType,
+                            null,
+                            null,
+                            governanceActionDescription);
+    }
+
+
+    /**
+     * Set up the request type that links the governance engine to the governance service.
+     *
+     * @param governanceEngineGUID unique identifier of the governance engine
+     * @param governanceEngineName unique name of the governance engine
+     * @param governanceActionDescription details for calling the governance service
+     */
+    private void addQualifiedNameDeDupRequestType(String                      governanceEngineGUID,
+                                                  String                      governanceEngineName,
+                                                  GovernanceActionDescription governanceActionDescription)
+    {
+        final String governanceRequestType = "qualified-name-de-dup";
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
+                            governanceRequestType,
+                            null,
+                            null,
+                            governanceActionDescription);
     }
 
 
@@ -1465,19 +2169,16 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
         CSVSurveyServiceProvider provider = new CSVSurveyServiceProvider();
 
-        GovernanceActionDescription governanceActionDescription = new GovernanceActionDescription();
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.SURVEY_RESOURCE,
+                                                                                                 provider,
+                                                                                                 surveyServiceDescription);
 
-        governanceActionDescription.resourceUse = ResourceUse.SURVEY_RESOURCE;
-        governanceActionDescription.supportedGuards = provider.getSupportedGuards();
-        governanceActionDescription.actionTargetTypes = provider.getActionTargetTypes();
-        governanceActionDescription.governanceServiceDescription = surveyServiceDescription;
-        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(OpenMetadataType.SURVEY_ACTION_SERVICE.typeName,
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
                                                                                                surveyServiceProviderClassName,
                                                                                                null,
                                                                                                surveyServiceName,
                                                                                                surveyServiceDisplayName,
                                                                                                surveyServiceDescription,
-                                                                                               null,
                                                                                                null);
 
         return governanceActionDescription;
@@ -1498,19 +2199,16 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
         FileSurveyServiceProvider provider = new FileSurveyServiceProvider();
 
-        GovernanceActionDescription governanceActionDescription = new GovernanceActionDescription();
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.SURVEY_RESOURCE,
+                                                                                                 provider,
+                                                                                                 surveyServiceDescription);
 
-        governanceActionDescription.resourceUse = ResourceUse.SURVEY_RESOURCE;
-        governanceActionDescription.supportedGuards = provider.getSupportedGuards();
-        governanceActionDescription.actionTargetTypes = provider.getActionTargetTypes();
-        governanceActionDescription.governanceServiceDescription = surveyServiceDescription;
-        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(OpenMetadataType.SURVEY_ACTION_SERVICE.typeName,
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
                                                                           surveyServiceProviderClassName,
                                                                           null,
                                                                           surveyServiceName,
                                                                           surveyServiceDisplayName,
                                                                           surveyServiceDescription,
-                                                                          null,
                                                                           null);
 
         return governanceActionDescription;
@@ -1531,20 +2229,110 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
         FolderSurveyServiceProvider provider = new FolderSurveyServiceProvider();
 
-        GovernanceActionDescription governanceActionDescription = new GovernanceActionDescription();
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.SURVEY_RESOURCE,
+                                                                                                 provider,
+                                                                                                 surveyServiceDescription);
 
-        governanceActionDescription.resourceUse = ResourceUse.SURVEY_RESOURCE;
-        governanceActionDescription.supportedGuards = provider.getSupportedGuards();
-        governanceActionDescription.actionTargetTypes = provider.getActionTargetTypes();
-        governanceActionDescription.governanceServiceDescription = surveyServiceDescription;
-        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(OpenMetadataType.SURVEY_ACTION_SERVICE.typeName,
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
                                                                           surveyServiceProviderClassName,
                                                                           null,
                                                                           surveyServiceName,
                                                                           surveyServiceDisplayName,
                                                                           surveyServiceDescription,
-                                                                          null,
                                                                           null);
+
+        return governanceActionDescription;
+    }
+
+
+    /**
+     * Create an entity for the Apache Atlas Survey governance service.
+     *
+     * @return unique identifier for the governance service
+     */
+    private GovernanceActionDescription getAtlasSurveyService()
+    {
+        final String surveyServiceName = "apache-atlas-survey-service";
+        final String surveyServiceDisplayName = "Apache Atlas Survey Service";
+        final String surveyServiceProviderClassName = SurveyApacheAtlasProvider.class.getName();
+
+        SurveyApacheAtlasProvider provider = new SurveyApacheAtlasProvider();
+
+        final String surveyServiceDescription = provider.getConnectorType().getDescription();
+
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.SURVEY_RESOURCE,
+                                                                                                 provider,
+                                                                                                 surveyServiceDescription);
+
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                                                                                               surveyServiceProviderClassName,
+                                                                                               null,
+                                                                                               surveyServiceName,
+                                                                                               surveyServiceDisplayName,
+                                                                                               surveyServiceDescription,
+                                                                                               null);
+
+        return governanceActionDescription;
+    }
+
+
+    /**
+     * Create an entity for the Postgres Server Survey governance service.
+     *
+     * @return unique identifier for the governance service
+     */
+    private GovernanceActionDescription getPostgresServerSurveyService()
+    {
+        final String surveyServiceName = "postgres-server-survey-service";
+        final String surveyServiceDisplayName = "PostgreSQL Server Survey Service";
+        final String surveyServiceProviderClassName = PostgresServerSurveyActionProvider.class.getName();
+
+        PostgresServerSurveyActionProvider provider = new PostgresServerSurveyActionProvider();
+
+        final String surveyServiceDescription = provider.getConnectorType().getDescription();
+
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.SURVEY_RESOURCE,
+                                                                                                 provider,
+                                                                                                 surveyServiceDescription);
+
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                                                                                               surveyServiceProviderClassName,
+                                                                                               null,
+                                                                                               surveyServiceName,
+                                                                                               surveyServiceDisplayName,
+                                                                                               surveyServiceDescription,
+                                                                                               null);
+
+        return governanceActionDescription;
+    }
+
+
+    /**
+     * Create an entity for the Postgres Database Survey governance service.
+     *
+     * @return unique identifier for the governance service
+     */
+    private GovernanceActionDescription getPostgresDatabaseSurveyService()
+    {
+        final String surveyServiceName = "postgres-database-survey-service";
+        final String surveyServiceDisplayName = "PostgreSQL Database Survey Service";
+        final String surveyServiceProviderClassName = PostgresDatabaseSurveyActionProvider.class.getName();
+
+        PostgresDatabaseSurveyActionProvider provider = new PostgresDatabaseSurveyActionProvider();
+
+        final String surveyServiceDescription = provider.getConnectorType().getDescription();
+
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.SURVEY_RESOURCE,
+                                                                                                 provider,
+                                                                                                 surveyServiceDescription);
+
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                                                                                               surveyServiceProviderClassName,
+                                                                                               null,
+                                                                                               surveyServiceName,
+                                                                                               surveyServiceDisplayName,
+                                                                                               surveyServiceDescription,
+                                                                                               null);
 
         return governanceActionDescription;
     }
@@ -1554,14 +2342,18 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      * Create the relationship between a governance engine and a governance service that defines the request type.
      *
      * @param governanceEngineGUID unique identifier of the engine
+     * @param governanceEngineName unique name of the governance engine
      * @param governanceActionDescription details for calling the governance service
      */
     private void addCSVFileRequestType(String                      governanceEngineGUID,
+                                       String                      governanceEngineName,
                                        GovernanceActionDescription governanceActionDescription)
     {
-        final String governanceRequestType = "csv-file";
+        final String governanceRequestType = "survey-csv-file";
 
         this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
                             governanceRequestType,
                             null,
                             null,
@@ -1573,14 +2365,18 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      * Create the relationship between a governance engine and a governance service that defines the request type.
      *
      * @param governanceEngineGUID unique identifier of the engine
+     * @param governanceEngineName unique name of the governance engine
      * @param governanceActionDescription details for calling the governance service
      */
     private void addDataFileRequestType(String                      governanceEngineGUID,
+                                        String                      governanceEngineName,
                                         GovernanceActionDescription governanceActionDescription)
     {
-        final String governanceRequestType = "data-file";
+        final String governanceRequestType = "survey-data-file";
 
         this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
                             governanceRequestType,
                             null,
                             null,
@@ -1592,19 +2388,404 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      * Create the relationship between a governance engine and a governance service that defines the request type.
      *
      * @param governanceEngineGUID unique identifier of the engine
+     * @param governanceEngineName unique name of the governance engine
      * @param governanceActionDescription details for calling the governance service
      */
     private void addFolderRequestType(String                      governanceEngineGUID,
+                                      String                      governanceEngineName,
                                       GovernanceActionDescription governanceActionDescription)
     {
-        final String governanceRequestType = "folder";
+        final String governanceRequestType = "survey-folder";
 
         this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
                             governanceRequestType,
                             null,
                             null,
                             governanceActionDescription);
     }
+
+
+    /**
+     * Create the relationship between a governance engine and a governance service that defines the request type.
+     *
+     * @param governanceEngineGUID unique identifier of the engine
+     * @param governanceEngineName unique name of the governance engine
+     * @param governanceActionDescription details for calling the governance service
+     */
+    private void addAtlasRequestType(String                      governanceEngineGUID,
+                                     String                      governanceEngineName,
+                                     GovernanceActionDescription governanceActionDescription)
+    {
+        final String governanceRequestType = "survey-apache-atlas-server";
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
+                            governanceRequestType,
+                            null,
+                            null,
+                            governanceActionDescription);
+    }
+
+
+    /**
+     * Create the relationship between a governance engine and a governance service that defines the request type.
+     *
+     * @param governanceEngineGUID unique identifier of the engine
+     * @param governanceEngineName unique name of the governance engine
+     * @param governanceActionDescription details for calling the governance service
+     */
+    private void addPostgresServerRequestType(String                      governanceEngineGUID,
+                                              String                      governanceEngineName,
+                                              GovernanceActionDescription governanceActionDescription)
+    {
+        final String governanceRequestType = "survey-postgres-server";
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
+                            governanceRequestType,
+                            null,
+                            null,
+                            governanceActionDescription);
+    }
+
+
+    /**
+     * Create the relationship between a governance engine and a governance service that defines the request type.
+     *
+     * @param governanceEngineGUID unique identifier of the engine
+     * @param governanceEngineName unique name of the governance engine
+     * @param governanceActionDescription details for calling the governance service
+     */
+    private void addPostgresDatabaseRequestType(String                      governanceEngineGUID,
+                                                String                      governanceEngineName,
+                                                GovernanceActionDescription governanceActionDescription)
+    {
+        final String governanceRequestType = "survey-postgres-database";
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
+                            governanceRequestType,
+                            null,
+                            null,
+                            governanceActionDescription);
+    }
+
+
+    private void createDailyGovernanceActionProcess(String governanceEngineGUID)
+    {
+        String processGUID = archiveHelper.addGovernanceActionProcess(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                      "Egeria:DailyGovernanceActionProcess",
+                                                                      "DailyGovernanceActionProcess",
+                                                                      null,
+                                                                      null,
+                                                                      null,
+                                                                      0,
+                                                                      null,
+                                                                      null,
+                                                                      null);
+
+        String step1GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                        processGUID,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        "Egeria:DailyGovernanceActionProcess:GetDayOfWeek",
+                                                                        "Get the day of the Week",
+                                                                        null,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        true,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
+        if (step1GUID != null)
+        {
+            archiveHelper.addGovernanceActionExecutor(step1GUID,
+                                                      "get-day-of-week",
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      governanceEngineGUID);
+
+            archiveHelper.addGovernanceActionProcessFlow(processGUID,
+                                                         null,
+                                                         step1GUID);
+        }
+
+        String step2GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                        processGUID,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        "Egeria:DailyGovernanceActionProcess:MondayTask",
+                                                                        "Output Monday's task",
+                                                                        null,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        true,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
+        if (step2GUID != null)
+        {
+            Map<String, String> requestParameters = new HashMap<>();
+
+            requestParameters.put(WriteAuditLogRequestParameter.MESSAGE_TEXT.getName(), "Action For Monday is: Wash");
+            archiveHelper.addGovernanceActionExecutor(step2GUID,
+                                                      "write-to-audit-log",
+                                                      requestParameters,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      governanceEngineGUID);
+
+            archiveHelper.addNextGovernanceActionProcessStep(step1GUID, "monday", false, step2GUID);
+        }
+
+        String step3GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                        processGUID,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        "Egeria:DailyGovernanceActionProcess:TuesdayTask",
+                                                                        "Output Tuesday's task",
+                                                                        null,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        true,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
+        if (step3GUID != null)
+        {
+            Map<String, String> requestParameters = new HashMap<>();
+
+            requestParameters.put(WriteAuditLogRequestParameter.MESSAGE_TEXT.getName(), "Action For Tuesday is: Iron");
+            archiveHelper.addGovernanceActionExecutor(step3GUID,
+                                                      "write-to-audit-log",
+                                                      requestParameters,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      governanceEngineGUID);
+
+            archiveHelper.addNextGovernanceActionProcessStep(step1GUID, "tuesday", false, step3GUID);
+        }
+
+        String step4GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                        processGUID,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        "Egeria:DailyGovernanceActionProcess:WednesdayTask",
+                                                                        "Output Wednesday's task",
+                                                                        null,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        true,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
+        if (step4GUID != null)
+        {
+            Map<String, String> requestParameters = new HashMap<>();
+
+            requestParameters.put(WriteAuditLogRequestParameter.MESSAGE_TEXT.getName(), "Action For Wednesday is: Mend");
+            archiveHelper.addGovernanceActionExecutor(step4GUID,
+                                                      "write-to-audit-log",
+                                                      requestParameters,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      governanceEngineGUID);
+
+            archiveHelper.addNextGovernanceActionProcessStep(step1GUID, "wednesday", false, step4GUID);
+        }
+
+        String step5GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                        processGUID,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        "Egeria:DailyGovernanceActionProcess:ThursdayTask",
+                                                                        "Output Thursday's task",
+                                                                        null,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        true,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
+        if (step5GUID != null)
+        {
+            Map<String, String> requestParameters = new HashMap<>();
+
+            requestParameters.put(WriteAuditLogRequestParameter.MESSAGE_TEXT.getName(), "Action For Thursday is: Market");
+            archiveHelper.addGovernanceActionExecutor(step5GUID,
+                                                      "write-to-audit-log",
+                                                      requestParameters,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      governanceEngineGUID);
+
+            archiveHelper.addNextGovernanceActionProcessStep(step1GUID, "thursday", false, step5GUID);
+        }
+
+        String step6GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                        processGUID,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        "Egeria:DailyGovernanceActionProcess:FridayTask",
+                                                                        "Output Friday's task",
+                                                                        null,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        true,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
+        if (step6GUID != null)
+        {
+            Map<String, String> requestParameters = new HashMap<>();
+
+            requestParameters.put(WriteAuditLogRequestParameter.MESSAGE_TEXT.getName(), "Action For Friday is: Clean");
+            archiveHelper.addGovernanceActionExecutor(step6GUID,
+                                                      "write-to-audit-log",
+                                                      requestParameters,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      governanceEngineGUID);
+
+            archiveHelper.addNextGovernanceActionProcessStep(step1GUID, "friday", false, step6GUID);
+        }
+
+        String step7GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                        processGUID,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        "Egeria:DailyGovernanceActionProcess:SaturdayTask",
+                                                                        "Output Saturday's task",
+                                                                        null,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        true,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
+        if (step7GUID != null)
+        {
+            Map<String, String> requestParameters = new HashMap<>();
+
+            requestParameters.put(WriteAuditLogRequestParameter.MESSAGE_TEXT.getName(), "Action For Saturday is: Bake");
+            archiveHelper.addGovernanceActionExecutor(step7GUID,
+                                                      "write-to-audit-log",
+                                                      requestParameters,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      governanceEngineGUID);
+
+            archiveHelper.addNextGovernanceActionProcessStep(step1GUID, "saturday", false, step7GUID);
+        }
+
+
+        String step8GUID = archiveHelper.addGovernanceActionProcessStep(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP_TYPE_NAME,
+                                                                        processGUID,
+                                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                        "Egeria:DailyGovernanceActionProcess:SundayTask",
+                                                                        "Output Sunday's task",
+                                                                        null,
+                                                                        0,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        0,
+                                                                        true,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
+        if (step8GUID != null)
+        {
+            Map<String, String> requestParameters = new HashMap<>();
+
+            requestParameters.put(WriteAuditLogRequestParameter.MESSAGE_TEXT.getName(), "Action For Sunday is: Rest");
+            archiveHelper.addGovernanceActionExecutor(step8GUID,
+                                                      "write-to-audit-log",
+                                                      requestParameters,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      null,
+                                                      governanceEngineGUID);
+
+            archiveHelper.addNextGovernanceActionProcessStep(step1GUID, "sunday", false, step8GUID);
+        }
+    }
+
 
 
     /**

@@ -361,6 +361,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
                                                                    connectionProperties.getEffectiveTo(),
                                                                    false,
                                                                    false,
+                                                                   connectionHandler.getSupportedZones(),
                                                                    null,
                                                                    methodName);
 
@@ -830,6 +831,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
                                                     properties.getEffectiveTo(),
                                                     forLineage,
                                                     forDuplicateProcessing,
+                                                    connectionHandler.getSupportedZones(),
                                                     effectiveTime,
                                                     methodName);
         }
@@ -849,6 +851,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
                                                     null,
                                                     forLineage,
                                                     forDuplicateProcessing,
+                                                    connectionHandler.getSupportedZones(),
                                                     effectiveTime,
                                                     methodName);
         }
@@ -900,6 +903,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
                                                    embeddedConnectionGUIDParameterName,
                                                    forLineage,
                                                    forDuplicateProcessing,
+                                                   connectionHandler.getSupportedZones(),
                                                    effectiveTime,
                                                    methodName);
     }
@@ -1242,7 +1246,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
         List<EntityDetail> entities = externalIdentifierHandler.getElementEntitiesForScope(userId,
                                                                                            assetManagerGUID,
                                                                                            assetManagerGUIDParameterName,
-                                                                                           OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                                           OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                                            OpenMetadataType.CONNECTION_TYPE_NAME,
                                                                                            startFrom,
                                                                                            validatedPageSize,
@@ -1770,7 +1774,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
         List<EntityDetail> entities = externalIdentifierHandler.getElementEntitiesForScope(userId,
                                                                                            assetManagerGUID,
                                                                                            assetManagerGUIDParameterName,
-                                                                                           OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                                           OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                                            OpenMetadataType.ENDPOINT_TYPE_NAME,
                                                                                            startFrom,
                                                                                            validatedPageSize,
@@ -2317,7 +2321,7 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
         List<EntityDetail> entities = externalIdentifierHandler.getElementEntitiesForScope(userId,
                                                                                            assetManagerGUID,
                                                                                            assetManagerGUIDParameterName,
-                                                                                           OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                                           OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                                            OpenMetadataType.CONNECTOR_TYPE_TYPE_NAME,
                                                                                            startFrom,
                                                                                            validatedPageSize,

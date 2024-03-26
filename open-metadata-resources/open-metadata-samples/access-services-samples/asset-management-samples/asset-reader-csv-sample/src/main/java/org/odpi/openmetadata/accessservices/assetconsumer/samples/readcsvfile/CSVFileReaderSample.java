@@ -332,7 +332,7 @@ public class CSVFileReaderSample
     {
 
         String  fileName = "open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples/ContactList.csv";
-        String  serverName = "simple-metadata-store";
+        String  serverName = "active-metadata-store";
         String  serverURLRoot = "https://localhost:9443";
         String  clientUserId = "erinoverview";
 

@@ -9,10 +9,16 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFErrorCode;
+import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
 
-import java.util.List;
+import java.sql.DriverManager;
+import java.util.*;
 
 /**
  * IntegrationConnectorBase is the base class for an integration connector.  It manages the storing of the audit log for the connector
@@ -28,6 +34,7 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
     protected IntegrationContext       integrationContext          = null;
     protected List<Connector>          embeddedConnectors          = null;
 
+    private final PropertyHelper propertyHelper = new PropertyHelper();
 
     /**
      * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
@@ -62,7 +69,7 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
     /**
      * Set up the list of connectors that this virtual connector will use to support its interface.
      * The connectors are initialized waiting to start.  When start() is called on the
-     * virtual connector, it needs to pass start() to each of the embedded connectors. Similarly for
+     * virtual connector, it needs to pass start() to each of the embedded connectors. Similarly, for
      * disconnect().
      *
      * @param embeddedConnectors  list of connectors
@@ -98,12 +105,94 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
 
 
     /**
+     * Return a list of requested catalog targets for the connector.  These are extracted from the metadata store.
+     *
+     * @param catalogTargetIntegrator the integration component that will process each catalog target
+     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
+     */
+    protected void refreshCatalogTargets(CatalogTargetIntegrator catalogTargetIntegrator) throws ConnectorCheckedException
+    {
+        final String methodName = "refreshCatalogTargets";
+
+        try
+        {
+            int startFrom = 0;
+
+            int catalogTargetCount = 0;
+            List<CatalogTarget> catalogTargetList = integrationContext.getCatalogTargets(startFrom,
+                                                                                         integrationContext.getMaxPageSize());
+
+            while (catalogTargetList != null)
+            {
+                for (CatalogTarget catalogTarget : catalogTargetList)
+                {
+                    if (catalogTarget != null)
+                    {
+                        catalogTargetCount = catalogTargetCount + 1;
+
+                        RequestedCatalogTarget requestedCatalogTarget = new RequestedCatalogTarget(catalogTarget);
+
+                        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+
+                        if (catalogTarget.getConfigurationProperties() != null)
+                        {
+                            if (configurationProperties == null)
+                            {
+                                configurationProperties = new HashMap<>();
+                            }
+
+                            configurationProperties.putAll(catalogTarget.getConfigurationProperties());
+                        }
+
+                        requestedCatalogTarget.setConfigurationProperties(configurationProperties);
+
+                        if (propertyHelper.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.ASSET.typeName))
+                        {
+                            requestedCatalogTarget.setCatalogTargetConnector(integrationContext.getConnectedAssetContext().getConnectorToAsset(catalogTarget.getCatalogTargetElement().getGUID()));
+                        }
+
+                        auditLog.logMessage(methodName,
+                                            OIFAuditCode.REFRESHING_CATALOG_TARGET.getMessageDefinition(connectorName,
+                                                                                                        requestedCatalogTarget.getCatalogTargetName()));
+                        catalogTargetIntegrator.integrateCatalogTarget(requestedCatalogTarget);
+                    }
+                }
+
+                startFrom = startFrom + integrationContext.getMaxPageSize();
+                catalogTargetList = integrationContext.getCatalogTargets(startFrom, integrationContext.getMaxPageSize());
+
+                if (catalogTargetCount == 0)
+                {
+                    auditLog.logMessage(methodName, OIFAuditCode.NO_CATALOG_TARGETS.getMessageDefinition(connectorName));
+                }
+                else
+                {
+                    auditLog.logMessage(methodName, OIFAuditCode.REFRESHED_CATALOG_TARGETS.getMessageDefinition(connectorName,
+                                                                                                                Integer.toString(catalogTargetCount)));
+                }
+            }
+        }
+        catch (ConnectorCheckedException exception)
+        {
+            throw exception;
+        }
+        catch (Exception exception)
+        {
+            auditLog.logException(methodName,
+                                  OIFAuditCode.GET_CATALOG_TARGET_EXCEPTION.getMessageDefinition(exception.getClass().getName(),
+                                                                                                 connectorName,
+                                                                                                 exception.getMessage()),
+                                  exception);
+        }
+    }
+
+
+    /**
      * This method is for blocking calls to wait for new metadata.  It is called from its own thread iff
      * the connector is configured to have its own thread.  It is recommended that the implementation
      * returns when each blocking call completes.  The integration daemon will pause a second and then
      * call engage() again.  This pattern enables the calling thread to detect the shutdown of the integration
      * daemon.
-     *
      * This method should be overridden if the connector needs to issue calls that wait for new metadata.
      * If this specific implementation is called a message is logged in the audit log because there is probably
      * a mismatch between the configuration and the connector implementation.

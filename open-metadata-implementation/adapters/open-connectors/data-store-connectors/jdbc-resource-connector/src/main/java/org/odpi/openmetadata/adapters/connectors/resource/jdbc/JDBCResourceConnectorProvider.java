@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class JDBCResourceConnectorProvider extends ConnectorProviderBase
     /*
      * Unique identifier of the connector for the audit log.
      */
-    private static final int    connectorComponentId   = 662;
+    private static final int    connectorComponentId   = 93;
 
     /*
      * Unique identifier for the connector type.
@@ -31,10 +32,6 @@ public class JDBCResourceConnectorProvider extends ConnectorProviderBase
     private static final String connectorTypeDescription = "Connector supports access to relational databases using exclusively the JDBC API.  This includes both data and metadata.";
     private static final String connectorWikiPage = "https://egeria-project.org/connectors/resource/jdbc-resource-connector/";
 
-    /*
-     * The type name of the asset that this connector supports.
-     */
-    private static final String  assetTypeName = "RelationalDatabase";
 
     /**
      * An optional configuration property that causes the named class to be loaded and registered as a driver.
@@ -92,7 +89,8 @@ public class JDBCResourceConnectorProvider extends ConnectorProviderBase
         /*
          * Information about the type of assets this type of connector works with and the interface it supports.
          */
-        connectorType.setSupportedAssetTypeName(assetTypeName);
+        connectorType.setSupportedAssetTypeName(DeployedImplementationType.JDBC_RELATIONAL_DATABASE.getAssociatedTypeName());
+        connectorType.setDeployedImplementationType(DeployedImplementationType.JDBC_RELATIONAL_DATABASE.getDeployedImplementationType());
         connectorInterfaces.add(DataSource.class.getName());
         connectorType.setConnectorInterfaces(connectorInterfaces);
 
@@ -105,7 +103,7 @@ public class JDBCResourceConnectorProvider extends ConnectorProviderBase
 
         componentDescription.setComponentId(connectorComponentId);
         componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.STABLE);
-        componentDescription.setComponentName(connectorQualifiedName);
+        componentDescription.setComponentName(connectorDisplayName);
         componentDescription.setComponentDescription(connectorTypeDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);
 

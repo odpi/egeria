@@ -42,7 +42,7 @@ public class SynonymMapper extends RelationshipMapper<Synonym> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, synonym.getSteward(), OpenMetadataType.STEWARD_PROPERTY_NAME);
         }
         if (synonym.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, synonym.getSource(), OpenMetadataType.SOURCE_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, synonym.getSource(), OpenMetadataProperty.SOURCE.name);
         }
         if (synonym.getStatus() != null) {
             SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, synonym.getStatus(), OpenMetadataType.STATUS_PROPERTY_NAME);
@@ -73,7 +73,7 @@ public class SynonymMapper extends RelationshipMapper<Synonym> {
             synonym.setSteward(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataType.SOURCE_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.SOURCE.name)) {
             synonym.setSource(stringValue);
             foundProperty = true;
         }

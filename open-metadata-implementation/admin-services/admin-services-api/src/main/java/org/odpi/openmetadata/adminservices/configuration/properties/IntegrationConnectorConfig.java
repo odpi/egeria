@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 
+import java.io.Serial;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -34,7 +35,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class IntegrationConnectorConfig extends AdminServicesConfigHeader
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private String                   connectorId                 = UUID.randomUUID().toString();
     private String                   connectorName               = null;

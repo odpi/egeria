@@ -6,6 +6,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ExternalIdentifier;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.KeyPattern;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -63,7 +64,7 @@ public class ExternalIdentifierConverter<B> extends OCFConverter<B>
                 /*
                  * Check that the entity is of the correct type.
                  */
-                this.setUpElementHeader(bean, entity, OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_NAME, methodName);
+                this.setUpElementHeader(bean, entity, OpenMetadataType.EXTERNAL_ID.typeName, methodName);
 
                 /*
                  * The initial set of values come from the entity properties.  The super class properties are removed from a copy of the entities
@@ -134,7 +135,7 @@ public class ExternalIdentifierConverter<B> extends OCFConverter<B>
         if (instanceProperties != null)
         {
             int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataType.KEY_PATTERN_PROPERTY_NAME,
+                                                                     OpenMetadataProperty.KEY_PATTERN.name,
                                                                      instanceProperties,
                                                                      methodName);
 

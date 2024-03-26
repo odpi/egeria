@@ -125,7 +125,7 @@ public class CommunityProfileRESTServices
                                                                   requestBody.getQualifiedName(),
                                                                   requestBody.getDisplayName(),
                                                                   requestBody.getDescription(),
-                                                                  requestBody.getTypeDescription(),
+                                                                  requestBody.getDeployedImplementationType(),
                                                                   requestBody.getVersion(),
                                                                   requestBody.getPatchLevel(),
                                                                   requestBody.getSource(),
@@ -187,8 +187,8 @@ public class CommunityProfileRESTServices
             SoftwareCapabilityHandler<MetadataSourceElement> handler = instanceHandler.getMetadataSourceHandler(userId, serverName, methodName);
 
             response.setGUID(handler.getBeanGUIDByQualifiedName(userId,
-                                                                OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
-                                                                OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                OpenMetadataType.SOFTWARE_CAPABILITY.typeGUID,
+                                                                OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                 qualifiedName,
                                                                 parameterName,
                                                                 false,
@@ -241,7 +241,7 @@ public class CommunityProfileRESTServices
             response.setElement(handler.getBeanFromRepository(userId,
                                                               metadataSourceGUID,
                                                               metadataSourceGUIDParameterName,
-                                                              OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                              OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                               false,
                                                               false,
                                                               new Date(),

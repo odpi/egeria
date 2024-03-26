@@ -3,18 +3,20 @@
 package org.odpi.openmetadata.frameworks.connectors;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
+import org.odpi.openmetadata.frameworks.connectors.properties.Connections;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * The ConnectorBase is an implementation of the Connector interface.
@@ -189,6 +191,341 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
 
 
     /**
+     * Pass the configuration properties as placeholder properties.  This allows the caller to supply additional
+     * properties to a template beyond those envisaged in the connector implementation.
+     * The templating process is not affected if properties not use in the template are supplied
+     *
+     * @param configurationProperties supplied configuration properties
+     * @return placeholder properties map
+     */
+    protected Map<String, String> getSuppliedPlaceholderProperties(Map<String, Object> configurationProperties)
+    {
+        if (configurationProperties != null)
+        {
+            Map<String, String> placeholderProperties = new HashMap<>();
+
+            for (String configurationPropertyName : configurationProperties.keySet())
+            {
+                if (configurationProperties.get(configurationPropertyName) == null)
+                {
+                    placeholderProperties.put(configurationPropertyName, null);
+                }
+                else
+                {
+                    placeholderProperties.put(configurationPropertyName, configurationProperties.get(configurationPropertyName).toString());
+                }
+            }
+
+            if (! placeholderProperties.isEmpty())
+            {
+                return placeholderProperties;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve a configuration property that is a comma-separated list of strings.
+     *
+     * @param propertyName name of property
+     * @param configurationProperties configuration properties
+     * @return list of strings or null if not set
+     */
+    protected List<String> getArrayConfigurationProperty(String              propertyName,
+                                                         Map<String, Object> configurationProperties)
+    {
+        if (configurationProperties != null)
+        {
+            if (configurationProperties.containsKey(propertyName))
+            {
+                Object arrayOption = configurationProperties.get(propertyName);
+
+                String[] options = arrayOption.toString().split(",");
+
+                return new ArrayList<>(Arrays.asList(options));
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve a configuration property that is a boolean.  If any non-null value is set it returns true unless
+     * the value is set to FALSE, False or false.
+     *
+     * @param propertyName name of property
+     * @param configurationProperties configuration properties
+     * @return boolean flag or false if not set
+     */
+    protected boolean getBooleanConfigurationProperty(String              propertyName,
+                                                      Map<String, Object> configurationProperties)
+    {
+        if (configurationProperties != null)
+        {
+            if (configurationProperties.containsKey(propertyName))
+            {
+                Object booleanOption = configurationProperties.get(propertyName);
+
+                return ((! "FALSE".equals(booleanOption)) && (! "false".equals(booleanOption)) && (! "False".equals(booleanOption)));
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Retrieve a configuration property that is an integer.
+     *
+     * @param propertyName name of property
+     * @param configurationProperties configuration properties
+     * @return integer value or zero if not supplied
+     */
+    protected int getIntConfigurationProperty(String              propertyName,
+                                              Map<String, Object> configurationProperties)
+    {
+        if (configurationProperties != null)
+        {
+            if (configurationProperties.get(propertyName) != null)
+            {
+                Object integerOption = configurationProperties.get(propertyName);
+
+                if (integerOption != null)
+                {
+                    return Integer.parseInt(integerOption.toString());
+                }
+            }
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * Retrieve a configuration property that is a string or null if not set.
+     *
+     * @param propertyName name of property
+     * @param configurationProperties configuration properties
+     * @return string value of property or null if not supplied
+     */
+    protected String getStringConfigurationProperty(String              propertyName,
+                                                    Map<String, Object> configurationProperties)
+    {
+        if (configurationProperties != null)
+        {
+            if (configurationProperties.get(propertyName) != null)
+            {
+                return configurationProperties.get(propertyName).toString();
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Log that no asset has been returned to the connector.  It is unable to proceed without this basic information.
+     *
+     * @param assetGUID the unique identifier of the asset from the discovery context
+     * @param connectorName name of the connector
+     * @param methodName calling method
+     *
+     * @throws ConnectorCheckedException resulting exception
+     */
+    protected void throwNoAsset(String    assetGUID,
+                                String    connectorName,
+                                String    methodName) throws ConnectorCheckedException
+    {
+        throw new ConnectorCheckedException(OCFErrorCode.NO_ASSET.getMessageDefinition(assetGUID,
+                                                                                       connectorName),
+                                            this.getClass().getName(),
+                                            methodName);
+    }
+
+    /**
+     * Log that the survey action service can not process the type of asset it has been passed.
+     *
+     * @param assetGUID identifier of the asset
+     * @param assetType type of the asset
+     * @param supportedAssetType supported asset types
+     * @param connectorName name of the connector
+     * @param methodName calling method
+     * @throws ConnectorCheckedException resulting exception
+     */
+    protected void throwWrongTypeOfAsset(String    assetGUID,
+                                         String    assetType,
+                                         String    supportedAssetType,
+                                         String    connectorName,
+                                         String    methodName) throws ConnectorCheckedException
+    {
+        throw new ConnectorCheckedException(OCFErrorCode.INVALID_ASSET_TYPE.getMessageDefinition(assetGUID,
+                                                                                                 assetType,
+                                                                                                 connectorName,
+                                                                                                 supportedAssetType),
+                                            this.getClass().getName(),
+                                            methodName);
+    }
+
+
+    /**
+     * Log that the survey action service can not process the type of asset it has been passed.
+     *
+     * @param assetGUID identifier of the asset
+     * @param assetTypeName type of the asset
+     * @param assetResourceName name of the resource
+     * @param assetResourceType type of the resource
+     * @param supportedResourceType supported resource types
+     * @param connectorName name of the connector
+     * @param methodName calling method
+     * @throws ConnectorCheckedException resulting exception
+     */
+    protected void throwWrongTypeOfResource(String assetGUID,
+                                            String assetTypeName,
+                                            String assetResourceName,
+                                            String assetResourceType,
+                                            String supportedResourceType,
+                                            String connectorName,
+                                            String methodName) throws ConnectorCheckedException
+    {
+        throw new ConnectorCheckedException(OCFErrorCode.INVALID_RESOURCE.getMessageDefinition(assetTypeName,
+                                                                                               assetGUID,
+                                                                                               assetResourceName,
+                                                                                               assetResourceType,
+                                                                                               connectorName,
+                                                                                               supportedResourceType),
+                                            this.getClass().getName(),
+                                            methodName);
+    }
+
+
+    /**
+     * Log that the survey action service can not process the type of asset it has been passed.
+     *
+     * @param assetGUID identifier of the asset
+     * @param assetTypeName type of the asset
+     * @param assetResourceName name of the resource
+     * @param methodName calling method
+     * @throws ConnectorCheckedException resulting exception
+     */
+    protected void throwMissingResource(String assetGUID,
+                                        String assetTypeName,
+                                        String assetResourceName,
+                                        String methodName) throws ConnectorCheckedException
+    {
+        throw new ConnectorCheckedException(OCFErrorCode.NO_RESOURCE.getMessageDefinition(assetTypeName,
+                                                                                          assetGUID,
+                                                                                          assetResourceName),
+                                            this.getClass().getName(),
+                                            methodName);
+    }
+
+
+    /**
+     * Log that the survey action service can not process the type of root schema it has been passed.
+     *
+     * @param assetGUID identifier of the asset
+     * @param rootSchemaType type of the root schema
+     * @param supportedRootSchemaType supported root schema types
+     * @param connectorName name of the connector
+     * @param methodName calling method
+     * @throws ConnectorCheckedException resulting exception
+     */
+    protected void throwWrongTypeOfRootSchema(String    assetGUID,
+                                              String    rootSchemaType,
+                                              String    supportedRootSchemaType,
+                                              String    connectorName,
+                                              String    methodName) throws ConnectorCheckedException
+    {
+        throw new ConnectorCheckedException(OCFErrorCode.INVALID_ROOT_SCHEMA_TYPE.getMessageDefinition(assetGUID,
+                                                                                                       rootSchemaType,
+                                                                                                       connectorName,
+                                                                                                       supportedRootSchemaType),
+                                            this.getClass().getName(),
+                                            methodName);
+    }
+
+
+    /**
+     * Return the type name for the asset.  An exception is thrown if the type name is not available.
+     *
+     * @param asset asset universe
+     * @param connectorName name of the connector
+     * @param methodName calling method
+     * @return asset's type name
+     * @throws ConnectorCheckedException resulting exception
+     */
+    protected String getAssetTypeName(AssetUniverse asset,
+                                      String        connectorName,
+                                      String        methodName) throws ConnectorCheckedException
+    {
+        ElementType elementType = asset.getType();
+
+        if (elementType != null)
+        {
+            return elementType.getTypeName();
+        }
+
+        throw new ConnectorCheckedException(OCFErrorCode.NO_ASSET_TYPE.getMessageDefinition(asset.toString(), connectorName),
+                                            this.getClass().getName(),
+                                            methodName);
+    }
+
+
+    /**
+     * Return the network address of this asset.
+     *
+     * @param asset asset to extract address from
+     * @return the list of network addresses
+     */
+    protected List<String> getNetworkAddresses(AssetUniverse asset)
+    {
+        if (asset != null)
+        {
+            Connections connections = asset.getConnections();
+
+            if (connections != null)
+            {
+                List<String>  networkAddresses = new ArrayList<>();
+
+                while (connections.hasNext())
+                {
+                    Connection connectionProperties = connections.next();
+
+                    if (connectionProperties != null)
+                    {
+                        Endpoint endpointProperties = connectionProperties.getEndpoint();
+
+                        if (endpointProperties != null)
+                        {
+                            if (endpointProperties.getAddress() != null)
+                            {
+                                /*
+                                 * Only add one copy of a specific address.
+                                 */
+                                if (! networkAddresses.contains(endpointProperties.getAddress()))
+                                {
+                                    networkAddresses.add(endpointProperties.getAddress());
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (! networkAddresses.isEmpty())
+                {
+                    return networkAddresses;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
      * Free up any resources held since the connector is no longer needed.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
@@ -201,7 +538,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
 
 
     /**
-     * Disconnect all of the connectors in the supplied list.  Any failures are ignored.
+     * Disconnect all the connectors in the supplied list.  Any failures are ignored.
      * This method is typically used by virtual connectors to disconnect their embedded connectors.
      *
      * @param activeConnectors connectors to disconnect.

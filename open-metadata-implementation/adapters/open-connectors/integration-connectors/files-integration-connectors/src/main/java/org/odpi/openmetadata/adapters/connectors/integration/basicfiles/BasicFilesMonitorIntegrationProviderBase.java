@@ -35,6 +35,12 @@ class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvi
     static public final String ALLOW_CATALOG_DELETE_CONFIGURATION_PROPERTY     = "allowCatalogDelete";
 
     /**
+     * An optional boolean flag to indicate that all files should be catalogued, whether they are classified or not.
+     */
+    static public final String CATALOG_ALL_FILES_CONFIGURATION_PROPERTY     = "catalogAllFiles";
+
+
+    /**
      * An optional qualified name of a template To Do entity that is created if there is confusion identifying the correct
      * reference data for a file being catalogued.
      */
@@ -99,6 +105,7 @@ class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvi
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add(FILE_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY);
         recognizedConfigurationProperties.add(DIRECTORY_TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY);
+        recognizedConfigurationProperties.add(CATALOG_ALL_FILES_CONFIGURATION_PROPERTY);
         recognizedConfigurationProperties.add(ALLOW_CATALOG_DELETE_CONFIGURATION_PROPERTY);
         recognizedConfigurationProperties.add(TO_DO_TEMPLATE_CONFIGURATION_PROPERTY);
         recognizedConfigurationProperties.add(INCIDENT_REPORT_TEMPLATE_CONFIGURATION_PROPERTY);
@@ -117,7 +124,7 @@ class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvi
 
         componentDescription.setComponentId(connectorComponentId);
         componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.STABLE);
-        componentDescription.setComponentName(connectorQualifiedName);
+        componentDescription.setComponentName(connectorDisplayName);
         componentDescription.setComponentDescription(connectorDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);
 

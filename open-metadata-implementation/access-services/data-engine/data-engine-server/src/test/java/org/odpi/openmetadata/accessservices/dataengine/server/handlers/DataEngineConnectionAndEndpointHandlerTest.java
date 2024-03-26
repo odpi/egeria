@@ -123,7 +123,7 @@ class DataEngineConnectionAndEndpointHandlerTest {
                                                              ASSET_GUID, ASSET_GUID, null, connectionQualifiedName, connectionQualifiedName, null, null,
                                                              null, null, null, null, null,
                                                              OpenMetadataType.CONNECTION_TYPE_NAME, null, CONNECTOR_TYPE_GUID, CONNECTOR_TYPE_GUID_PARAMETER_NAME, ENDPOINT_GUID,
-                                                             ENDPOINT_GUID, null, null, false, false, null, UPSERT_CONNECTION_AND_ENDPOINT_METHOD_NAME);
+                                                             ENDPOINT_GUID, null, null, false, false, connectionHandler.getSupportedZones(), null, UPSERT_CONNECTION_AND_ENDPOINT_METHOD_NAME);
     }
 
     @Test

@@ -55,30 +55,40 @@ implementation.
 * **[framework-services](framework-services)** - the framework services provide REST APIs to support the interfaces
 defined in the frameworks.  they are incorporated into the [access services](access-services).
 
-* **[governance-servers](governance-servers)** - the governance server services provide the 
-server frameworks that support the different types of governance servers that can run in the OMAG Server Platform.
+* **[governance-server-services](governance-server-services)** - the governance server services provide the 
+specialist services that support the different types of governance servers that can run in the OMAG Server Platform.
 
 * **[integration-services](integration-services)** - the integration services support the hosting of
 integration connectors to drive the exchange of metadata with third party technologies.
 These services run in the integration daemon governance server on top of the OMAG Server Platform.
 
-* **[platform-services](platform-services)** - the platform services provides the APIs for
-configuring the Open Metadata and Governance (OMAG) Server Platform and discovering information about the
-OMAG Servers that it is hosting.
+* **[platform-services](platform-services)** - the platform services provides the APIs for configuring the 
+[Open Metadata and Governance (OMAG) Server Platform](https://egeria-project.org/concepts/omag-server-runtime/)
+and discovering information about the [OMAG Servers](https://egeria-project.org/concepts/omag-server/) that it is hosting.
+
+* **[platform-chassis](platform-chassis)** - the platform chassis is the base component for the 
+[OMAG Server Platform](https://egeria-project.org/concepts/omag-server-platform/).
+It includes the web server that receives the REST API requests for both the OMAG Server Platform
+and the [OMAG Servers](https://egeria-project.org/concepts/omag-server/) that run on it.
 
 * **[repository-services](repository-services)** - the repository services provides the events, interfaces and
 implementation of the metadata exchange and federation capabilities for a metadata
 repository that supports the open metadata standards.
 
-* **[platform-chassis](platform-chassis)** - the platform chassis is the base component for the OMAG Server Platform.
-It includes the web server that receives the REST API requests for both the OMAG Server Platform
-and the servers that run on it.
+* **[server-chassis](platform-chassis)** - the server chassis is the base component for the
+[OMAG Server Runtime](https://egeria-project.org/concepts/omag-server-runtime/).
+This minimal runtime supports the execution of a single OMAG Server and is set up to run in a cloud-native manner.
+It includes the web server that receives the REST API requests for the OMAG Server that runs on it.
+
+* **[server-operations](server-operations)** - the server operations supports the starting and shutdown of
+[OMAG Servers](https://egeria-project.org/concepts/omag-server/) on either the OMAG Server Platform or 
+OMAG Server Runtime.
 
 * **[user-interfaces](user-interfaces)** - basic user interfaces to demonstrate the power of the open
 metadata and governance capabilities.
 
 * **[user-security](user-security)** - modules to enable token-based authentication/authorization for the 
-OMAG Server Platform and OMAG Server runtimes.
+OMAG Server Platform and OMAG Server Runtime.
 
 * **[view-services](view-services)** - the view services support the REST API interfaces
 called by the user interfaces.  These services run in a view server on the OMAG Server Platform.

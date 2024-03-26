@@ -274,25 +274,37 @@ Content-Type: application/json
 ###
 # group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
 # @name Enable the in-memory repository
-# Set up the local reposiotry to use the in-memory implementation.
+# Set up the local repository to use the in-memory implementation.
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/mode/in-memory-repository
 
 ###
 # group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
 # @name Enable the read-only repository
-# Set up the local reposiotry to use the in-memory implementation.
+# Set up the local repository to use the in-memory implementation.
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/mode/read-only-repository
 
 ###
 # group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
+# @name Enable the XTDB In-Memory Repository
+# Set up the local repository to use the XTDB in-memory implementation.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/mode/xtdb-in-memory-repository
+
+###
+# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
+# @name Enable the XTDB KV Repository
+# Set up the local repository to use the XTDB KV implementation.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/mode/xtdb-local-kv-repository
+
+###
+# group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
 # @name Enable the graph repository
-# Set the local reposiotry to use the JanusGraph implementation.  It will store your repository in a file under the home of your OMAG Server Platform.
+# Set the local repository to use the JanusGraph implementation.  It will store your repository in a file under the home of your OMAG Server Platform.
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/mode/local-graph-repository
 
 ###
 # group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers
 # @name Enable the graph repository with hbase and elastic search
-# Set the local reposiotry to use the JanusGraph implementation.  It will store your repository in a file under the home of your OMAG Server Platform.
+# Set the local repository to use the JanusGraph implementation.  It will store your repository in a file under the home of your OMAG Server Platform.
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/local-repository/mode/local-graph-repository
 Content-Type: application/json
 
@@ -383,19 +395,19 @@ GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ser
 ###
 # group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points
 # @name Get the configuration for a specific access service
-# Retrieve the configuration information for a specific Open Metadata Access Services (OMAS) configured for this server.
+# Retrieve the configuration information for a specific Open Metadata Access Services (OMASs) configured for this server.
 GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/{{accessService}}
 
 ###
 # group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points
 # @name Enable all of the access services
-# Turn on all of the registered Open Metadata Access Services (OMAS)
+# Turn on all of the registered, undeprecated Open Metadata Access Services (OMASs)
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services
 
 ###
 # group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points
 # @name Enable all of the access services with no topics
-# Turn on all of the registered Open Metadata Access Services (OMAS)
+# Turn on all of the registered, undeprecated Open Metadata Access Services (OMASs)
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/access-services/no-topics
 
 ###
@@ -538,7 +550,7 @@ GET {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{ser
 ###
 # group: Configuring OMAG Servers / Configuration for Cohort Members
 # @name Disable access to a cohort
-# Unregister server from an Opern Metadata Repository Cohort.
+# Unregister server from an Open Metadata Repository Cohort.
 DELETE {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/cohorts/{{cohort}}
 
 ###
