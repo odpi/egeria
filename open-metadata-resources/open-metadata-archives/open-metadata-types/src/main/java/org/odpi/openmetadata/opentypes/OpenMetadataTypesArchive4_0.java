@@ -579,10 +579,11 @@ public class OpenMetadataTypesArchive4_0
 
     private EntityDef getDataFileCollectionDataSetEntity()
     {
-        final String guid            = "962de053-ab51-40eb-b843-85b98013f5ca";
-        final String name            = "DataFileCollection";
-        final String description     = "A data set that consists of a collection files (do not need to be co-located).";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.DATA_FILE_COLLECTION.typeGUID;
+        final String name            = OpenMetadataType.DATA_FILE_COLLECTION.typeName;
+        final String description     = OpenMetadataType.DATA_FILE_COLLECTION.description;
+        final String descriptionGUID = OpenMetadataType.DATA_FILE_COLLECTION.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.DATA_FILE_COLLECTION.wikiURL;
 
         final String superTypeName = OpenMetadataType.DATA_SET.typeName;
 
@@ -590,7 +591,8 @@ public class OpenMetadataTypesArchive4_0
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
-                                                 descriptionGUID);
+                                                 descriptionGUID,
+                                                 descriptionWiki);
     }
 
     /*
@@ -605,10 +607,11 @@ public class OpenMetadataTypesArchive4_0
 
     private EntityDef getTableDataSetEntity()
     {
-        final String guid            = "20c45531-5d2e-4eb6-9a47-035cb1067b82";
-        final String name            = "TableDataSet";
-        final String description     = "A tabular data source (typically a database table) that is an asset in its own right.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.TABLE_DATA_SET.typeGUID;
+        final String name            = OpenMetadataType.TABLE_DATA_SET.typeName;
+        final String description     = OpenMetadataType.TABLE_DATA_SET.description;
+        final String descriptionGUID = OpenMetadataType.TABLE_DATA_SET.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.TABLE_DATA_SET.wikiURL;
 
         final String superTypeName = OpenMetadataType.DATA_SET.typeName;
 
@@ -616,7 +619,8 @@ public class OpenMetadataTypesArchive4_0
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
-                                                 descriptionGUID);
+                                                 descriptionGUID,
+                                                 descriptionWiki);
     }
 
     /*
@@ -780,10 +784,11 @@ public class OpenMetadataTypesArchive4_0
 
     private EntityDef addIntegrationGroupEntity()
     {
-        final String guid            = "4d7c43ec-983b-40e4-af78-6fb66c4f5136";
-        final String name            = "IntegrationGroup";
-        final String description     = "A collection of integration connectors to run together.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.INTEGRATION_GROUP.typeGUID;
+        final String name            = OpenMetadataType.INTEGRATION_GROUP.typeName;
+        final String description     = OpenMetadataType.INTEGRATION_GROUP.description;
+        final String descriptionGUID = OpenMetadataType.INTEGRATION_GROUP.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.INTEGRATION_GROUP.wikiURL;
 
         final String superTypeName = "SoftwareServerCapability";
 
@@ -791,15 +796,17 @@ public class OpenMetadataTypesArchive4_0
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
-                                                 descriptionGUID);
+                                                 descriptionGUID,
+                                                 descriptionWiki);
     }
 
     private EntityDef addIntegrationConnectorEntity()
     {
-        final String guid            = "759da11b-ebb6-4382-bdc9-72adc7c922db";
-        final String name            = "IntegrationConnector";
-        final String description     = "A definition to control the execution of an integration connector.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.INTEGRATION_CONNECTOR.typeGUID;
+        final String name            = OpenMetadataType.INTEGRATION_CONNECTOR.typeName;
+        final String description     = OpenMetadataType.INTEGRATION_CONNECTOR.description;
+        final String descriptionGUID = OpenMetadataType.INTEGRATION_CONNECTOR.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.INTEGRATION_CONNECTOR.wikiURL;
 
         final String superTypeName = "DeployedConnector";
 
@@ -807,7 +814,8 @@ public class OpenMetadataTypesArchive4_0
                                                                 name,
                                                                 this.archiveBuilder.getEntityDef(superTypeName),
                                                                 description,
-                                                                descriptionGUID);
+                                                                descriptionGUID,
+                                                                descriptionWiki);
 
         /*
          * Build the attributes
@@ -815,10 +823,9 @@ public class OpenMetadataTypesArchive4_0
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "usesBlockingCalls";
-        final String attribute1Description     = "The integration connector needs to use blocking calls to a third party technology and so needs to" +
-                " run in its own thread.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.USES_BLOCKING_CALLS.name;
+        final String attribute1Description     = OpenMetadataProperty.USES_BLOCKING_CALLS.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.USES_BLOCKING_CALLS.descriptionGUID;
 
         property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
                                                             attribute1Description,

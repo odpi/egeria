@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopic;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicProvider;
 
@@ -25,7 +26,6 @@ public class KafkaOpenMetadataTopicProvider extends OpenMetadataTopicProvider
     /*
      * Unique identifier for the connector type.
      */
-    @SuppressWarnings("SpellCheckingInspection")
     private static final String connectorTypeGUID      = "3851e8d0-e343-400c-82cb-3918fed81da6";
 
     /*
@@ -42,7 +42,6 @@ public class KafkaOpenMetadataTopicProvider extends OpenMetadataTopicProvider
     private static final String connectorClassName       = "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicConnector";
 
     private static final String expectedDataFormat     = "PLAINTEXT";
-    private static final String supportedAssetTypeName = "KafkaTopic";
 
     public static final String producerPropertyName       = "producer";
     public static final String consumerPropertyName       = "consumer";
@@ -74,7 +73,8 @@ public class KafkaOpenMetadataTopicProvider extends OpenMetadataTopicProvider
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 
-        connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
+        connectorType.setSupportedAssetTypeName(DeployedImplementationType.APACHE_KAFKA_TOPIC.getAssociatedTypeName());
+        connectorType.setDeployedImplementationType(DeployedImplementationType.APACHE_KAFKA_TOPIC.getDeployedImplementationType());
         connectorType.setExpectedDataFormat(expectedDataFormat);
 
         connectorInterfaces.add(OpenMetadataTopic.class.getName());

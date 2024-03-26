@@ -203,10 +203,11 @@ public class OpenMetadataTypesArchive3_5
 
     private EntityDef getSoftwareCapabilityEntity()
     {
-        final String guid            = "54055c38-b9ad-4a66-a75b-14dc643d4c69";
-        final String name            = "SoftwareCapability";
-        final String description     = "A software capability such as an software service or engine.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.SOFTWARE_CAPABILITY.typeGUID;
+        final String name            = OpenMetadataType.SOFTWARE_CAPABILITY.typeName;
+        final String description     = OpenMetadataType.SOFTWARE_CAPABILITY.description;
+        final String descriptionGUID = OpenMetadataType.SOFTWARE_CAPABILITY.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.SOFTWARE_CAPABILITY.wikiURL;
 
         final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
@@ -214,7 +215,8 @@ public class OpenMetadataTypesArchive3_5
                                                                 name,
                                                                 this.archiveBuilder.getEntityDef(superTypeName),
                                                                 description,
-                                                                descriptionGUID);
+                                                                descriptionGUID,
+                                                                descriptionWiki);
 
         /*
          * Build the attributes
@@ -222,24 +224,24 @@ public class OpenMetadataTypesArchive3_5
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "name";
-        final String attribute1Description     = "Name of the software capability.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the software capability.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "capabilityType";
-        final String attribute3Description     = "Type of the software capability.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "capabilityVersion";
-        final String attribute4Description     = "Version number of the software capability.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "patchLevel";
-        final String attribute5Description     = "Patch level of the software server capability.";
-        final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "source";
-        final String attribute6Description     = "Supplier of the software server capability.";
-        final String attribute6DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.CAPABILITY_TYPE.name;
+        final String attribute3Description     = OpenMetadataProperty.CAPABILITY_TYPE.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.CAPABILITY_TYPE.descriptionGUID;
+        final String attribute4Name            = OpenMetadataProperty.CAPABILITY_VERSION.name;
+        final String attribute4Description     = OpenMetadataProperty.CAPABILITY_VERSION.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.CAPABILITY_VERSION.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.PATCH_LEVEL.name;
+        final String attribute5Description     = OpenMetadataProperty.PATCH_LEVEL.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.PATCH_LEVEL.descriptionGUID;
+        final String attribute6Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute6Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute6DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
         final String attribute7Name            = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name;
         final String attribute7Description     = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.description;
         final String attribute7DescriptionGUID = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.descriptionGUID;
@@ -282,10 +284,11 @@ public class OpenMetadataTypesArchive3_5
 
     private RelationshipDef getSupportedSoftwareCapabilityRelationship()
     {
-        final String guid            = "2480aa71-44c5-414d-8b32-9c4340786d77";
-        final String name            = "SupportedSoftwareCapability";
-        final String description     = "Identifies a software capability that is deployed to an instance of IT infrastructure.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeGUID;
+        final String name            = OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName;
+        final String description     = OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.description;
+        final String descriptionGUID = OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.wikiURL;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
@@ -294,6 +297,7 @@ public class OpenMetadataTypesArchive3_5
                                                                                 null,
                                                                                 description,
                                                                                 descriptionGUID,
+                                                                                descriptionWiki,
                                                                                 classificationPropagationRule);
 
         RelationshipEndDef relationshipEndDef;
@@ -301,7 +305,7 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "ITInfrastructure";
+        final String                     end1EntityType               = OpenMetadataType.IT_INFRASTRUCTURE_TYPE_NAME;
         final String                     end1AttributeName            = "hostedByDeployedITInfrastructure";
         final String                     end1AttributeDescription     = "IT infrastructure hosting this capability.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -318,7 +322,7 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "SoftwareCapability";
+        final String                     end2EntityType               = OpenMetadataType.SOFTWARE_CAPABILITY.typeName;
         final String                     end2AttributeName            = "capabilities";
         final String                     end2AttributeDescription     = "Capabilities deployed on this IT infrastructure.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -387,13 +391,11 @@ public class OpenMetadataTypesArchive3_5
          * Create the Patch
          */
         final String typeName = "SoftwareServerSupportedCapability";
-        final String superTypeName = "SupportedSoftwareCapability";
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getRelationshipDef(superTypeName));
         typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
 
         return typeDefPatch;
@@ -405,8 +407,8 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Create the Patch
          */
-        final String typeName = "SoftwareServerCapability";
-        final String superTypeName = "SoftwareCapability";
+        final String typeName = OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName;
+        final String superTypeName = OpenMetadataType.SOFTWARE_CAPABILITY.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 

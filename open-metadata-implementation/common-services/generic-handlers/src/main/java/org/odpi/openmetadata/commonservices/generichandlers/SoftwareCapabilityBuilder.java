@@ -98,8 +98,8 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
-              OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+              OpenMetadataType.SOFTWARE_CAPABILITY.typeGUID,
+              OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
               null,
               repositoryHelper,
               serviceName,
@@ -254,19 +254,19 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.CAPABILITY_VERSION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.CAPABILITY_VERSION.name,
                                                                   version,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.PATCH_LEVEL_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.PATCH_LEVEL.name,
                                                                   patchLevel,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.SOURCE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.SOURCE.name,
                                                                   source,
                                                                   methodName);
 

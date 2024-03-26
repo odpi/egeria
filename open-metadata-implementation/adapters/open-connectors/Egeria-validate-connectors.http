@@ -1,0 +1,64 @@
+
+
+@baseURL=https://localhost:9443
+@integrationDaemon=integration-daemon
+@engineHost=engine-host
+@userId=garygeeke
+
+###
+# @name Get Connector Type (for any connector)
+GET {{baseURL}}/open-metadata/platform-services/users/{{userId}}/server-platform/connector-types/org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationProvider
+
+
+###
+# Catalog Integration Connectors
+
+###
+# @name Validate Apache Atlas Integration Connector
+GET {{baseURL}}/servers/{{integrationDaemon}}/open-metadata/integration-services/catalog-integrator/users/{{userId}}/validate-connector/org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationProvider
+
+
+###
+# Infrastructure Integration Connectors
+
+###
+# @name Validate PostgreSQL Server Integration Connector
+GET {{baseURL}}/servers/{{integrationDaemon}}/open-metadata/integration-services/infrastructure-integrator/users/{{userId}}/validate-connector/org.odpi.openmetadata.adapters.connectors.postgres.catalog.PostgresServerIntegrationProvider
+
+
+###
+# Governance Action Services
+
+###
+# @name Validate File Provisioning Governance Action Connector
+GET {{baseURL}}/servers/{{engineHost}}/open-metadata/engine-services/governance-action/users/{{userId}}/validate-connector/org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionProvider
+
+
+###
+# Survey Action Services
+###
+# @name Validate Folder Survey Action Connector
+GET {{baseURL}}/servers/{{engineHost}}/open-metadata/engine-services/survey-action/users/{{userId}}/validate-connector/org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyServiceProvider
+
+###
+# @name Validate File Survey Action Connector
+GET {{baseURL}}/servers/{{engineHost}}/open-metadata/engine-services/survey-action/users/{{userId}}/validate-connector/org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileSurveyServiceProvider
+
+###
+# @name Validate CSV File Survey Action Connector
+GET {{baseURL}}/servers/{{engineHost}}/open-metadata/engine-services/survey-action/users/{{userId}}/validate-connector/org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv.CSVSurveyServiceProvider
+
+###
+# @name Validate Apache Atlas Survey Action Connector
+GET {{baseURL}}/servers/{{engineHost}}/open-metadata/engine-services/survey-action/users/{{userId}}/validate-connector/org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasProvider
+
+###
+# @name Validate PostgeSQL Server Survey Action Connector
+GET {{baseURL}}/servers/{{engineHost}}/open-metadata/engine-services/survey-action/users/{{userId}}/validate-connector/org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresServerSurveyActionProvider
+
+###
+# @name Validate PostgeSQL Database Survey Action Connector
+GET {{baseURL}}/servers/{{engineHost}}/open-metadata/engine-services/survey-action/users/{{userId}}/validate-connector/org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresDatabaseSurveyActionProvider
+
+
+

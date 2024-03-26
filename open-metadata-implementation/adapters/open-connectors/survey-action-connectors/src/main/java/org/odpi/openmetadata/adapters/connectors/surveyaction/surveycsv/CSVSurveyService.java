@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreConnector;
-import org.odpi.openmetadata.adapters.connectors.surveyaction.AuditableSurveyService;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -22,6 +21,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.ArchivePrope
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
+import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyOpenMetadataStore;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
@@ -37,7 +37,7 @@ import java.util.*;
  * CSVSurveyService is a survey action service implementation for analysing CSV Files to
  * columns and profile the data in them.
  */
-public class CSVSurveyService extends AuditableSurveyService
+public class CSVSurveyService extends SurveyActionServiceConnector
 {
     private final static String STRING_TYPE_NAME  = "string";
     private final static String CHAR_TYPE_NAME    = "char";
@@ -184,7 +184,7 @@ public class CSVSurveyService extends AuditableSurveyService
 
             if (assetUniverse == null)
             {
-                super.throwNoAsset(assetStore.getAssetGUID(), methodName);
+                super.throwNoAsset(assetStore.getAssetGUID(), surveyActionServiceName, methodName);
                 return;
             }
             else if (! propertyHelper.isTypeOf(assetUniverse, OpenMetadataType.CSV_FILE.typeName))
@@ -231,6 +231,7 @@ public class CSVSurveyService extends AuditableSurveyService
                     super.throwWrongTypeOfRootSchema(assetUniverse.getGUID(),
                                                      nestedSchemaType.getType().getTypeName(),
                                                      schemaType,
+                                                     surveyActionServiceName,
                                                      methodName);
                     return;
                 }
@@ -245,6 +246,7 @@ public class CSVSurveyService extends AuditableSurveyService
                 super.throwWrongTypeOfRootSchema(assetUniverse.getGUID(),
                                                  rootSchemaType.getType().getTypeName(),
                                                  schemaType,
+                                                 surveyActionServiceName,
                                                  methodName);
                 return;
             }

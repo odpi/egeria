@@ -26,10 +26,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CatalogTarget
 {
-    private String              relationshipGUID        = null;
-    private String              catalogTargetName       = null;
-    private Map<String, Object> configurationProperties = null;
-    private ElementStub         catalogTargetElement    = null;
+    private String              relationshipGUID            = null;
+    private String              catalogTargetName           = null;
+    private String              metadataSourceQualifiedName = null;
+    private Map<String, Object> configurationProperties     = null;
+    private ElementStub         catalogTargetElement        = null;
 
 
     /**
@@ -52,6 +53,7 @@ public class CatalogTarget
         {
             relationshipGUID = template.getRelationshipGUID();
             catalogTargetName = template.getCatalogTargetName();
+            metadataSourceQualifiedName = template.getMetadataSourceQualifiedName();
             configurationProperties = template.getConfigurationProperties();
             catalogTargetElement = template.getCatalogTargetElement();
         }
@@ -100,6 +102,31 @@ public class CatalogTarget
     {
         this.catalogTargetName = catalogTargetName;
     }
+
+
+    /**
+     * Return the qualified name used for the metadata collection of catalogued elements.  It is the
+     * qualified name of a software capability.
+     *
+     * @return name
+     */
+    public String getMetadataSourceQualifiedName()
+    {
+        return metadataSourceQualifiedName;
+    }
+
+
+    /**
+     * Set up the qualified name used for the metadata collection of catalogued elements.  It is the
+     * qualified name of a software capability.
+     *
+     * @param metadataSourceQualifiedName name
+     */
+    public void setMetadataSourceQualifiedName(String metadataSourceQualifiedName)
+    {
+        this.metadataSourceQualifiedName = metadataSourceQualifiedName;
+    }
+
 
     /**
      * Set up the configuration properties for this action target.  These are used to override the configuration
@@ -169,6 +196,7 @@ public class CatalogTarget
         return "CatalogTarget{" +
                 "relationshipGUID='" + relationshipGUID + '\'' +
                 ", catalogTargetName='" + catalogTargetName + '\'' +
+                ", metadataSourceQualifiedName='" + metadataSourceQualifiedName + '\'' +
                 ", configurationProperties='" + configurationProperties + '\'' +
                 ", catalogTargetElement=" + catalogTargetElement +
                 '}';
@@ -194,6 +222,7 @@ public class CatalogTarget
         }
         return Objects.equals(relationshipGUID, that.relationshipGUID) &&
                 Objects.equals(catalogTargetName, that.catalogTargetName) &&
+                Objects.equals(metadataSourceQualifiedName, that.metadataSourceQualifiedName) &&
                 Objects.equals(configurationProperties, that.configurationProperties) &&
                 Objects.equals(catalogTargetElement, that.catalogTargetElement);
     }
@@ -207,6 +236,6 @@ public class CatalogTarget
     @Override
     public int hashCode()
     {
-        return Objects.hash(relationshipGUID, catalogTargetName, configurationProperties, catalogTargetElement);
+        return Objects.hash(relationshipGUID, catalogTargetName, metadataSourceQualifiedName, configurationProperties, catalogTargetElement);
     }
 }

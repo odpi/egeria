@@ -42,7 +42,7 @@ public class ReplacementTermMapper extends RelationshipMapper<ReplacementTerm> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, replacementTerm.getSteward(), OpenMetadataType.STEWARD_PROPERTY_NAME);
         }
         if (replacementTerm.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, replacementTerm.getSource(), OpenMetadataType.SOURCE_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, replacementTerm.getSource(), OpenMetadataProperty.SOURCE.name);
         }
         if (replacementTerm.getStatus() != null) {
             SubjectAreaUtils.setStatusPropertyInInstanceProperties(properties, replacementTerm.getStatus(), OpenMetadataType.STATUS_PROPERTY_NAME);
@@ -73,7 +73,7 @@ public class ReplacementTermMapper extends RelationshipMapper<ReplacementTerm> {
             replacementTerm.setSteward(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataType.SOURCE_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.SOURCE.name)) {
             replacementTerm.setSource(stringValue);
             foundProperty = true;
         }

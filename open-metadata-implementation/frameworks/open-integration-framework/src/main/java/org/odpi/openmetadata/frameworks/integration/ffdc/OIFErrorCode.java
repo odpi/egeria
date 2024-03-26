@@ -44,6 +44,7 @@ public enum OIFErrorCode implements ExceptionMessageSet
                         "The system is unable to process the request without this object.",
                         "Correct the code in the caller to provide the object."),
 
+
     ;
 
     private final int    httpErrorCode;
