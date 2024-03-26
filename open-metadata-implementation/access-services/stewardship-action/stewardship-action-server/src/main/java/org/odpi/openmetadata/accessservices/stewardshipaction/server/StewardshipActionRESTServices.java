@@ -16,6 +16,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -436,7 +437,7 @@ public class StewardshipActionRESTServices
                                                                                                           relationship.getProperties(),
                                                                                                           methodName));
                             duplicateProperties.setSource(repositoryHelper.getStringProperty(instanceHandler.getServiceName(),
-                                                                                             OpenMetadataType.SOURCE_PROPERTY_NAME,
+                                                                                             OpenMetadataProperty.SOURCE.name,
                                                                                              relationship.getProperties(),
                                                                                              methodName));
                             duplicateProperties.setNotes(repositoryHelper.getStringProperty(instanceHandler.getServiceName(),
@@ -542,7 +543,7 @@ public class StewardshipActionRESTServices
 
                 properties = repositoryHelper.addStringPropertyToInstance(instanceHandler.getServiceName(),
                                                                           properties,
-                                                                          OpenMetadataType.SOURCE_PROPERTY_NAME,
+                                                                          OpenMetadataProperty.SOURCE.name,
                                                                           requestBody.getSource(),
                                                                           methodName);
 

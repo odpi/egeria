@@ -20,34 +20,70 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
  */
 public enum JDBCIntegrationConnectorAuditCode implements AuditLogMessageSet
 {
-
-    EXITING_ON_CONNECTION_FAIL("JDBC-INTEGRATION-CONNECTOR-0001",
+    /**
+     * JDBC-INTEGRATION-CONNECTOR-0001 - Connector {0} is preparing to extract metadata from database {1}
+     */
+    STARTING_METADATA_TRANSFER("JDBC-INTEGRATION-CONNECTOR-0001",
                                AuditLogRecordSeverityLevel.INFO,
-                               "Exiting from method {0} as a result of a failed connection",
-                               "Stopping execution",
-                               "Investigate log for additional details"),
-    EXITING_ON_COMPLETE("JDBC-INTEGRATION-CONNECTOR-0002",
+                               "Connector {0} is preparing to extract metadata from database {1}",
+                               "The connector is about to connect to the named database to extract details of its schemas tables and columns.",
+                               "Check that this is an appropriate database for the connector to be accessing."),
+
+    /**
+     * JDBC-INTEGRATION-CONNECTOR-0002 - Connector {0} is unable to extract metadata for database {1}
+     */
+    CONNECTION_FAILED("JDBC-INTEGRATION-CONNECTOR-0002",
+                               AuditLogRecordSeverityLevel.ERROR,
+                               "Connector {0} is unable to connect to database {1}; the {2} exception returned a message of {3}",
+                               "The connector requested a connection to the database and the exception occurred.",
+                               "Check the set up of the open metadata connection attached to the database asset, or directly to this connector.  Are the userId and password correct?  Is the jdbc connection string specified in the endpoint's address correct?  Is the database server set up correctly to receive the connection request?"),
+
+    /**
+     * JDBC-INTEGRATION-CONNECTOR-0001 - Connector {0} is unable to extract metadata for database {1}
+     */
+    EXITING_ON_CONNECTION_FAIL("JDBC-INTEGRATION-CONNECTOR-0001",
+                               AuditLogRecordSeverityLevel.ERROR,
+                               "Connector {0} is unable to extract metadata for database {1}",
+                               "Stopping metadata extraction for this database.",
+                               "Investigate audit log for additional messages that describes the source of the error."),
+
+    /**
+     * JDBC-INTEGRATION-CONNECTOR-0003 - Connector {0} has successfully extracted metadata from database {1}
+     */
+    EXITING_ON_COMPLETE("JDBC-INTEGRATION-CONNECTOR-0003",
                         AuditLogRecordSeverityLevel.INFO,
-                        "Execution of method {0} is complete",
-                        "Stopping execution",
-                        "No user actions necessary"),
+                        "Connector {0} has successfully extracted metadata from database {1}",
+                        "The connector has completed its refresh of this database.",
+                        "No user actions are necessary.  The connector will connect again with this database after the next refresh interval."),
+
+    /**
+     * JDBC-INTEGRATION-CONNECTOR-0003 - The JDBC Integration Connector {0} received an unexpected {1} exception during method {2}; the error message was: {3}
+     */
+    UNEXPECTED_EXCEPTION("JDBC-INTEGRATION-CONNECTOR-0003",
+                         AuditLogRecordSeverityLevel.EXCEPTION,
+                         "The JDBC Integration Connector {0} received an unexpected {1} exception during method {2} while working with database {3}; the error message was: {4}",
+                         "The connector is unable to process the current request.",
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+
     EXITING_ON_INTEGRATION_CONTEXT_FAIL("JDBC-INTEGRATION-CONNECTOR-0004",
-                                        AuditLogRecordSeverityLevel.INFO,
+                                        AuditLogRecordSeverityLevel.ERROR,
                                         "Exiting from method {0} as a result of a failed integration context retrieval",
                                         "Stopping execution",
                                         "Consult logs for further details"),
+
     EXCEPTION_READING_JDBC("JDBC-INTEGRATION-CONNECTOR-0005",
                            AuditLogRecordSeverityLevel.EXCEPTION,
-                           "An SQL exception was received by method {0}. Exception message is: {1}",
-                           "Reading JDBC",
-                           "Take appropriate action to remedy the issue described in the exception message"),
+                           "An {0} exception while connecting to database {1}. Exception message is: {2}",
+                           "The connector issued a SQL call to the database and the exception occurred.",
+                           "Use the message from the exception to guide you in locating the error. "),
+
     EXCEPTION_WRITING_OMAS("JDBC-INTEGRATION-CONNECTOR-0006",
                            AuditLogRecordSeverityLevel.EXCEPTION,
                            "An exception was received by method {0}. Exception message is: {1}",
                            "Upserting an entity into the Metadata Access Server failed.",
                            "Investigate OMAS availability. If it is available then contact the Egeria team for support"),
     EXITING_ON_DATABASE_TRANSFER_FAIL("JDBC-INTEGRATION-CONNECTOR-0007",
-                                      AuditLogRecordSeverityLevel.INFO,
+                                      AuditLogRecordSeverityLevel.ERROR,
                                       "Exiting from method {0} as a result of a failed database transfer",
                                       "Stopping execution",
                                       "Consult logs for further details"),
@@ -62,7 +98,7 @@ public enum JDBCIntegrationConnectorAuditCode implements AuditLogMessageSet
                                              "Transferring metadata information",
                                              "None"),
     EXCEPTION_WHEN_REMOVING_ELEMENT_IN_OMAS("JDBC-INTEGRATION-CONNECTOR-0010",
-                                            AuditLogRecordSeverityLevel.INFO,
+                                            AuditLogRecordSeverityLevel.EXCEPTION,
                                             "Unknown error when removing element from Metadata Access Server with guid {0} and qualified name {1}.",
                                             "Removing element in OMAS",
                                             "Consult logs for further details"),
@@ -81,11 +117,15 @@ public enum JDBCIntegrationConnectorAuditCode implements AuditLogMessageSet
                                       "Metadata transfer skipped for following {0}: {1}",
                                       "Continue execution",
                                       "None"),
-    EXITING_ON_METADATA_TEST("JDBC-INTEGRATION-CONNECTOR-00014",
-                             AuditLogRecordSeverityLevel.INFO,
+    EXITING_ON_METADATA_TEST("JDBC-INTEGRATION-CONNECTOR-0014",
+                             AuditLogRecordSeverityLevel.ERROR,
                              "Exiting from method {0} as a result of a failed metadata query test",
                              "Stopping execution",
-                             "Investigate log for additional details");
+                             "Investigate log for additional details"),
+
+
+
+    ;
 
 
     private final String                      logMessageId;

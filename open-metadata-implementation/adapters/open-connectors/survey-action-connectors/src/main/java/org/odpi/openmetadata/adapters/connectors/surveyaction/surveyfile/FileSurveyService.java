@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStore;
-import org.odpi.openmetadata.adapters.connectors.surveyaction.AuditableSurveyService;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
@@ -12,6 +11,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClas
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
+import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourcePhysicalStatusAnnotation;
@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * FileSurveyService is a survey action service implementation for extracting properties about a file.
  */
-public class FileSurveyService extends AuditableSurveyService
+public class FileSurveyService extends SurveyActionServiceConnector
 {
     private final PropertyHelper propertyHelper = new PropertyHelper();
 
@@ -58,7 +58,7 @@ public class FileSurveyService extends AuditableSurveyService
 
             if (assetUniverse == null)
             {
-                super.throwNoAsset(assetStore.getAssetGUID(), methodName);
+                super.throwNoAsset(assetStore.getAssetGUID(), surveyActionServiceName, methodName);
                 return;
             }
             else if (! propertyHelper.isTypeOf(assetUniverse, OpenMetadataType.DATA_FILE.typeName))

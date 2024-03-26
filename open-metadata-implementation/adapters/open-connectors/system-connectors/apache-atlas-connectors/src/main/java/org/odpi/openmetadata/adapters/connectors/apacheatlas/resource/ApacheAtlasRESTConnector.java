@@ -112,7 +112,7 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
     /**
      * Set up the list of connectors that this virtual connector will use to support its interface.
      * The connectors are initialized waiting to start.  When start() is called on the
-     * virtual connector, it needs to pass start() to each of the embedded connectors. Similarly for
+     * virtual connector, it needs to pass start() to each of the embedded connectors. Similarly, for
      * disconnect().
      *
      * @param embeddedConnectors  list of connectors

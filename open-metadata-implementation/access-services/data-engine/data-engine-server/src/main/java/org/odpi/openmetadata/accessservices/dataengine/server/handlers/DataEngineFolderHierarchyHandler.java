@@ -105,8 +105,8 @@ public class DataEngineFolderHierarchyHandler {
             relationshipTypeName = OpenMetadataType.FOLDER_HIERARCHY_TYPE_NAME;
         }
 
-        dataEngineCommonHandler.upsertExternalRelationship(userId, externalSourceGuid, folderGuid, OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
-                                                           OpenMetadataType.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, OpenMetadataType.FILE_FOLDER.typeName, externalSourceName, null);
+        dataEngineCommonHandler.upsertExternalRelationship(userId, externalSourceGuid, folderGuid, OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
+                                                           OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName, OpenMetadataType.FILE_FOLDER.typeName, externalSourceName, null);
     }
 
     /**

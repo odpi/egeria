@@ -71,7 +71,7 @@ public class GovernanceServerOutTopicPublisher
                                                 GovernanceServerAuditCode.REFRESH_INTEGRATION_DAEMON.getMessageDefinition(newEvent.getEventType().getEventTypeName(),
                                                                                                                           integrationGroupName,
                                                                                                                           integrationGroupGUID,
-                                                                                                                          OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME));
+                                                                                                                          OpenMetadataType.INTEGRATION_GROUP.typeName));
                 }
             }
             catch (Exception error)
@@ -111,7 +111,7 @@ public class GovernanceServerOutTopicPublisher
                                                 GovernanceServerAuditCode.REFRESH_INTEGRATION_DAEMON.getMessageDefinition(newEvent.getEventType().getEventTypeName(),
                                                                                                                           integrationConnectorName,
                                                                                                                           integrationConnectorGUID,
-                                                                                                                          OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME));
+                                                                                                                          OpenMetadataType.INTEGRATION_CONNECTOR.typeName));
                 }
             }
             catch (Exception error)

@@ -42,7 +42,7 @@ public class UsedInContextMapper extends RelationshipMapper<UsedInContext> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, usedInContext.getSteward(), OpenMetadataType.STEWARD_PROPERTY_NAME);
         }
         if (usedInContext.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, usedInContext.getSource(), OpenMetadataType.SOURCE_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, usedInContext.getSource(), OpenMetadataProperty.SOURCE.name);
         }
         if (usedInContext.getStatus() != null) {
             SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, usedInContext.getStatus(), OpenMetadataType.STATUS_PROPERTY_NAME);
@@ -73,7 +73,7 @@ public class UsedInContextMapper extends RelationshipMapper<UsedInContext> {
             usedInContext.setSteward(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataType.SOURCE_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.SOURCE.name)) {
             usedInContext.setSource(stringValue);
             foundProperty = true;
         }
