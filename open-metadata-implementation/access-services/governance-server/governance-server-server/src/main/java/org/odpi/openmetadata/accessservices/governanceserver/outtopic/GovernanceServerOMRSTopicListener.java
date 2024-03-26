@@ -110,7 +110,7 @@ public class GovernanceServerOMRSTopicListener extends OMRSTopicListenerBase
             {
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME))
+                                              OpenMetadataType.INTEGRATION_GROUP.typeName))
                 {
                     eventPublisher.publishRefreshIntegrationGroupEvent(entity.getGUID(),
                                                                        repositoryHelper.getStringProperty(sourceName,
@@ -220,7 +220,7 @@ public class GovernanceServerOMRSTopicListener extends OMRSTopicListenerBase
             {
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME))
+                                              OpenMetadataType.INTEGRATION_GROUP.typeName))
                 {
                     eventPublisher.publishRefreshIntegrationGroupEvent(entity.getGUID(),
                                                                        repositoryHelper.getStringProperty(sourceName,
@@ -256,7 +256,7 @@ public class GovernanceServerOMRSTopicListener extends OMRSTopicListenerBase
             {
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME))
+                                              OpenMetadataType.INTEGRATION_CONNECTOR.typeName))
                 {
                     eventPublisher.publishRefreshIntegrationConnectorEvent(entity.getGUID(),
                                                                            repositoryHelper.getStringProperty(sourceName,

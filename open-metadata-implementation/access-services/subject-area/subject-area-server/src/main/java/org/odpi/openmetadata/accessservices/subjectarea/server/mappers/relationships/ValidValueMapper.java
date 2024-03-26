@@ -42,7 +42,7 @@ public class ValidValueMapper extends RelationshipMapper<ValidValue> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, validValue.getSteward(), OpenMetadataType.STEWARD_PROPERTY_NAME);
         }
         if (validValue.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, validValue.getSource(), OpenMetadataType.SOURCE_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, validValue.getSource(), OpenMetadataProperty.SOURCE.name);
         }
         if (validValue.getStatus() != null) {
             SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, validValue.getStatus(), OpenMetadataType.STATUS_PROPERTY_NAME);
@@ -73,7 +73,7 @@ public class ValidValueMapper extends RelationshipMapper<ValidValue> {
             validValue.setSteward(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataType.SOURCE_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.SOURCE.name)) {
             validValue.setSource(stringValue);
             foundProperty = true;
         }

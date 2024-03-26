@@ -1494,7 +1494,7 @@ public class DataAssetExchangeHandler extends ExchangeHandlerBase
         List<EntityDetail> assetEntities = externalIdentifierHandler.getElementEntitiesForScope(userId,
                                                                                                 assetManagerGUID,
                                                                                                 assetManagerGUIDParameterName,
-                                                                                                OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                                                OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                                                 OpenMetadataType.ASSET.typeName,
                                                                                                 startFrom,
                                                                                                 pageSize,

@@ -86,17 +86,17 @@ public class ExternalDataEnginePropertiesBuilder extends ReferenceableBuilder {
 
         if (capabilityVersion != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                                                                      OpenMetadataType.CAPABILITY_VERSION_PROPERTY_NAME, capabilityVersion, methodName);
+                                                                      OpenMetadataProperty.CAPABILITY_VERSION.name, capabilityVersion, methodName);
         }
 
         if (patchLevel != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                                                                      OpenMetadataType.PATCH_LEVEL_PROPERTY_NAME, patchLevel, methodName);
+                                                                      OpenMetadataProperty.PATCH_LEVEL.name, patchLevel, methodName);
         }
 
         if (source != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                                                                      OpenMetadataType.SOURCE_PROPERTY_NAME, source, methodName);
+                                                                      OpenMetadataProperty.SOURCE.name, source, methodName);
         }
 
         if(MapUtils.isNotEmpty(additionalProperties)) {

@@ -4,7 +4,6 @@ package org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder;
 
 import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderConnector;
-import org.odpi.openmetadata.adapters.connectors.surveyaction.AuditableSurveyService;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc.SurveyServiceAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -18,6 +17,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClas
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
+import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.*;
@@ -28,10 +28,9 @@ import java.util.*;
 
 
 /**
- * CSVSurveyService is a survey action service implementation for analysing CSV Files to
- * columns and profile the data in them.
+ * FolderSurveyService is a survey action service implementation for analysing the files nested in a folder.
  */
-public class FolderSurveyService extends AuditableSurveyService
+public class FolderSurveyService extends SurveyActionServiceConnector
 {
     private final PropertyHelper propertyHelper = new PropertyHelper();
     private       Connector      connector      = null;
@@ -99,7 +98,7 @@ public class FolderSurveyService extends AuditableSurveyService
 
             if (assetUniverse == null)
             {
-                super.throwNoAsset(assetStore.getAssetGUID(), methodName);
+                super.throwNoAsset(assetStore.getAssetGUID(), surveyActionServiceName, methodName);
                 return;
             }
             else if (! propertyHelper.isTypeOf(assetUniverse, OpenMetadataType.FILE_FOLDER.typeName))
@@ -128,6 +127,7 @@ public class FolderSurveyService extends AuditableSurveyService
                                          rootFolder.getName(),
                                          "file",
                                          "directory (folder)",
+                                         surveyActionServiceName,
                                          methodName);
             }
 

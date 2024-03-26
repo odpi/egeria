@@ -43,7 +43,7 @@ public class TermIsATypeOfRelationshipDeprecatedMapper extends RelationshipMappe
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOfDeprecated.getSteward(), OpenMetadataType.STEWARD_PROPERTY_NAME);
         }
         if (isATypeOfDeprecated.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOfDeprecated.getSource(), OpenMetadataType.SOURCE_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOfDeprecated.getSource(), OpenMetadataProperty.SOURCE.name);
         }
         if (isATypeOfDeprecated.getStatus() != null) {
             SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, isATypeOfDeprecated.getStatus(), OpenMetadataType.STATUS_PROPERTY_NAME);
@@ -72,7 +72,7 @@ public class TermIsATypeOfRelationshipDeprecatedMapper extends RelationshipMappe
             isATypeOfDeprecated.setSteward(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataType.SOURCE_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.SOURCE.name)) {
             isATypeOfDeprecated.setSource(stringValue);
             foundProperty = true;
         }

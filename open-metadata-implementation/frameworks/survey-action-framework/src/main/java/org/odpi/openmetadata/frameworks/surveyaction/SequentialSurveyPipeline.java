@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adapters.connectors.surveyaction;
+package org.odpi.openmetadata.frameworks.surveyaction;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionPipelineConnector;

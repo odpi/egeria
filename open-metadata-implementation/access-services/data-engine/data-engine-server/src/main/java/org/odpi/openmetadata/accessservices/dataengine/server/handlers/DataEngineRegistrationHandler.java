@@ -93,7 +93,7 @@ public class DataEngineRegistrationHandler {
         invalidParameterHandler.validateName(externalEngineName, QUALIFIED_NAME_PROPERTY_NAME,
                 methodName);
 
-        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, OpenMetadataType.ENGINE_TYPE_NAME);
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, OpenMetadataType.ENGINE.typeName);
 
         String externalEngineGUID = getExternalDataEngine(userId, externalEngineName);
         if (externalEngineGUID == null) {
@@ -131,7 +131,7 @@ public class DataEngineRegistrationHandler {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
-        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, OpenMetadataType.ENGINE_TYPE_NAME);
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, OpenMetadataType.ENGINE.typeName);
         EntityDetail retrievedEntity = softwareServerCapabilityHandler.getEntityByValue(userId, qualifiedName, CommonMapper.QUALIFIED_NAME_PROPERTY_NAME,
                 entityTypeDef.getGUID(), entityTypeDef.getName(), Collections.singletonList(CommonMapper.QUALIFIED_NAME_PROPERTY_NAME),
                 false, false, clockService.getNow(), methodName);
@@ -200,7 +200,7 @@ public class DataEngineRegistrationHandler {
                 newSyncDatesByKey, methodName);
 
         softwareServerCapabilityHandler.setClassificationInRepository(userId, null, null,
-                externalSourceGUID, EXTERNAL_ENGINE_PARAMETER_NAME, OpenMetadataType.ENGINE_TYPE_NAME, OpenMetadataType.PROCESSING_STATE_CLASSIFICATION_TYPE_GUID,
+                externalSourceGUID, EXTERNAL_ENGINE_PARAMETER_NAME, OpenMetadataType.ENGINE.typeName, OpenMetadataType.PROCESSING_STATE_CLASSIFICATION_TYPE_GUID,
                                                                       OpenMetadataType.PROCESSING_STATE_CLASSIFICATION_TYPE_NAME, instanceProperties, true, false,
                 false, clockService.getNow(), methodName);
     }
@@ -230,7 +230,7 @@ public class DataEngineRegistrationHandler {
     }
 
     private EntityDetail getDataEngineEntity(String userId, String externalSourceName, String methodName) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, OpenMetadataType.ENGINE_TYPE_NAME);
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, OpenMetadataType.ENGINE.typeName);
         return softwareServerCapabilityHandler.getEntityByValue(userId, externalSourceName, CommonMapper.QUALIFIED_NAME_PROPERTY_NAME,
                 entityTypeDef.getGUID(), entityTypeDef.getName(), Collections.singletonList(CommonMapper.QUALIFIED_NAME_PROPERTY_NAME),
                 false, false, clockService.getNow(), methodName);
