@@ -84,7 +84,7 @@ public enum EngineServiceDescription
 
     /**
      * Analyses the content of an asset's real world counterpart (resource), generates annotations
-     * in a discovery analysis report that is attached to the asset in the open metadata repositories.
+     * in a survey report that is attached to the asset in the open metadata repositories.
      */
     SURVEY_ACTION_OMES(404,
                         ComponentDevelopmentStatus.STABLE,

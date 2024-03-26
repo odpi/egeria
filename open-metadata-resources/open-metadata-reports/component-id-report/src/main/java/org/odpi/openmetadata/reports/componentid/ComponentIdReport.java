@@ -61,10 +61,12 @@ public class ComponentIdReport
     private static final String envVarSecretsStoreProviderClassName = "org.odpi.openmetadata.adapters.connectors.secretsstore.envar.EnvVarSecretsStoreProvider";
     private static final String apacheAtlasRESTConnectorProviderClassName = "org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTProvider";
     private static final String apacheAtlasDiscoveryServiceProviderClassName = "org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasProvider";
-    private static final String sequentialSurveyPipelineProviderClassName = "org.odpi.openmetadata.adapters.connectors.surveyaction.SequentialSurveyPipelineProvider";
+    private static final String sequentialSurveyPipelineProviderClassName = "org.odpi.openmetadata.frameworks.surveyaction.SequentialSurveyPipelineProvider";
     private static final String folderSurveyActionProviderClassName = "org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyServiceProvider";
     private static final String fileSurveyActionProviderClassName = "org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileSurveyServiceProvider";
     private static final String csvFileSurveyActionProviderClassName = "org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv.CSVSurveyServiceProvider";
+    private static final String postgresServerSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresServerSurveyServiceProvider";
+    private static final String postgresServerCatalogProviderClassName = "org.odpi.openmetadata.adapters.connectors.postgres.catalog.PostgresServerIntegrationProvider";
 
 
     /**
@@ -243,6 +245,8 @@ public class ComponentIdReport
         this.addConnectorDescription(fileSurveyActionProviderClassName, report);
         this.addConnectorDescription(csvFileSurveyActionProviderClassName, report);
         this.addConnectorDescription(sequentialSurveyPipelineProviderClassName, report);
+        this.addConnectorDescription(postgresServerCatalogProviderClassName, report);
+        this.addConnectorDescription(postgresServerSurveyProviderClassName, report);
 
         File reportFile = new File(reportFileName);
 

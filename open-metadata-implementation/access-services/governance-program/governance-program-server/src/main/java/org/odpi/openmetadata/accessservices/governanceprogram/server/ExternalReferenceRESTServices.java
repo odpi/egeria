@@ -561,7 +561,7 @@ public class ExternalReferenceRESTServices
                                                        requestBody.getSearchString(),
                                                        resourceIdParameterName,
                                                        OpenMetadataType.EXTERNAL_REFERENCE_TYPE_GUID,
-                                                       OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_NAME,
+                                                       OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
                                                        null,
                                                        startFrom,
                                                        pageSize,

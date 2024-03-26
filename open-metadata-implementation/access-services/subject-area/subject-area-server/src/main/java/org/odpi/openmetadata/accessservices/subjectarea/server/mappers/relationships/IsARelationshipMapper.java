@@ -43,7 +43,7 @@ public class IsARelationshipMapper extends RelationshipMapper<IsA> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, iSARelationship.getSteward(), OpenMetadataType.STEWARD_PROPERTY_NAME);
         }
         if (iSARelationship.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, iSARelationship.getSource(), OpenMetadataType.SOURCE_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, iSARelationship.getSource(), OpenMetadataProperty.SOURCE.name);
         }
         if (iSARelationship.getStatus() != null) {
             SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, iSARelationship.getStatus(), OpenMetadataType.STATUS_PROPERTY_NAME);
@@ -74,7 +74,7 @@ public class IsARelationshipMapper extends RelationshipMapper<IsA> {
             iSARelationship.setSteward(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataType.SOURCE_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.SOURCE.name)) {
             iSARelationship.setSource(stringValue);
             foundProperty = true;
         }

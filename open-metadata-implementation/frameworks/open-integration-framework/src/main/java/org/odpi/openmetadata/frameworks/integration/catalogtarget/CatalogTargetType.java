@@ -12,6 +12,12 @@ import java.util.Objects;
 public class CatalogTargetType
 {
     /**
+     * Catalog target name.
+     */
+    private String name = null;
+
+
+    /**
      * The open metadata type name of the element that can be a catalog target.
      */
     private String typeName = null;
@@ -46,10 +52,33 @@ public class CatalogTargetType
     {
         if (template != null)
         {
+            this.name = template.getName();
             this.typeName = template.getTypeName();
             this.deployedImplementationType = template.getDeployedImplementationType();
             this.otherPropertyValues = template.getOtherPropertyValues();
         }
+    }
+
+
+    /**
+     * Return the catalog target name.
+     *
+     * @return string name
+     */
+    public String getName()
+    {
+        return name;
+    }
+
+
+    /**
+     * Set up the catalog target name.
+     *
+     * @param name string name
+     */
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
 
@@ -128,7 +157,8 @@ public class CatalogTargetType
     public String toString()
     {
         return "CatalogTargetType{" +
-                       "typeName='" + typeName + '\'' +
+                "catalogTargetName='" + name + '\'' +
+                "typeName='" + typeName + '\'' +
                        "deployedImplementationType='" + deployedImplementationType + '\'' +
                        ", otherPropertyValues='" + otherPropertyValues + '\'' +
                        '}';
@@ -152,7 +182,8 @@ public class CatalogTargetType
         {
             return false;
         }
-        return Objects.equals(typeName, that.typeName) &&
+        return Objects.equals(name, that.name) &&
+                       Objects.equals(typeName, that.typeName) &&
                        Objects.equals(deployedImplementationType, that.deployedImplementationType) &&
                        Objects.equals(otherPropertyValues, that.otherPropertyValues);
     }
@@ -166,6 +197,6 @@ public class CatalogTargetType
     @Override
     public int hashCode()
     {
-        return Objects.hash(typeName, deployedImplementationType, otherPropertyValues);
+        return Objects.hash(name, typeName, deployedImplementationType, otherPropertyValues);
     }
 }

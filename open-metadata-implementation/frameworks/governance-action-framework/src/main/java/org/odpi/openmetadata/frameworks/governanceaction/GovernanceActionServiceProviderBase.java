@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.governanceaction;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 
 
 /**
@@ -12,6 +12,7 @@ public abstract class GovernanceActionServiceProviderBase extends GovernanceServ
 {
     static
     {
-        supportedAssetTypeName = OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeName;
+        supportedAssetTypeName = DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName();
+        supportedDeployedImplementationType = DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType();
     }
 }

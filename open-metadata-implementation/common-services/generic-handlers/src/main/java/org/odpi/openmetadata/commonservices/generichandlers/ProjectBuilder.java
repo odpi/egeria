@@ -206,7 +206,7 @@ public class ProjectBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.IDENTIFIER_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.IDENTIFIER.name,
                                                                   identifier,
                                                                   methodName);
 
@@ -224,7 +224,7 @@ public class ProjectBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataType.START_DATE_PROPERTY_NAME,
+                                                                OpenMetadataProperty.START_DATE.name,
                                                                 startDate,
                                                                 methodName);
 

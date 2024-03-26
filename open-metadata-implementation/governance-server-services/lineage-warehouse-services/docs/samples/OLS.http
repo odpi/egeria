@@ -1,0 +1,287 @@
+# OLS
+
+###
+# @name 0.1 Event Bus
+POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/event-bus?
+    connectorProvider=org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider&
+    topicURLRoot=OMRSTopic
+Authorization: Basic YWRtaW46YWRtaW4=
+User-Agent: frfx
+Content-Type: application/json
+
+{"consumer": {
+	"bootstrap.servers" : "{{kafka-url}}",
+	"key.deserializer": "org.apache.kafka.common.serialization.StringDeserializer",
+	"value.deserializer": "org.apache.kafka.common.serialization.StringDeserializer",
+	"kafka.omrs.topic.id": "OMRSTopic"
+},
+"producer": {
+	"bootstrap.servers" : "{{kafka-url}}",
+	"key.serializer": "org.apache.kafka.common.serialization.StringSerializer",
+	"value.serializer": "org.apache.kafka.common.serialization.StringSerializer",
+	"kafka.omrs.topic.id" : "OMRSTopic"
+}
+}
+
+> {%
+    // TODO: migrate to HTTP Client Response handler API
+    // pm.test("Status code is 200", function () {
+    //     pm.response.to.have.status(200);
+    // });
+%}
+
+###
+# @name 0.2 Set Server URL
+POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/server-url-root?
+    url={{base-url}}
+Authorization: Basic YWRtaW46YWRtaW4=
+User-Agent: frfx
+Content-Type: application/json
+
+> {%
+    // TODO: migrate to HTTP Client Response handler API
+    // pm.test("Status code is 200", function () {
+    //     pm.response.to.have.status(200);
+    // });
+%}
+
+###
+# @name 0.3 Cohort
+POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/cohorts/cohort1
+User-Agent: Mozzzzz
+Authorization: Basic YWRtaW46YWRtaW4=
+Content-Type: application/json
+
+> {%
+    // TODO: migrate to HTTP Client Response handler API
+    // pm.test("Status code is 200", function () {
+    //     pm.response.to.have.status(200);
+    // });
+%}
+
+###
+# @name 0.4.1 Configure OLS - Embedded
+POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/lineage-warehouse/configuration
+Authorization: Basic YWRtaW46YWRtaW4=
+User-Agent: frfx
+Content-Type: application/json
+
+{
+	"class": "OpenLineageConfig",
+	"openLineageDescription": "Open Lineage Service is used for the storage and querying of lineage",
+	"openLineageWiki": "wiki URL",
+	"jobIntervalInSeconds" : "120",
+	"lineageGraphConnection":{
+        "class": "Connection",
+        "displayName": "Lineage Graph Connection",
+        "description": "Used for storing lineage in the Open Metadata format",
+        "connectorType":{
+        	"class": "ConnectorType",
+        	"connectorProviderClassName": "org.odpi.openmetadata.openconnectors.governancedaemonconnectors.lineagewarehouseconnectors.janusconnector.graph.LineageGraphConnectorProvider"
+    	},
+    "configurationProperties": {
+            "gremlin.graph": "org.janusgraph.core.JanusGraphFactory",
+            "storage.backend": "berkeleyje",
+            "storage.directory": "./egeria-lineage-repositories/lineageGraph/berkeley",
+            "index.search.backend": "lucene",
+            "index.search.directory": "./egeria-lineage-repositories/lineageGraph/searchindex"
+        }
+    }
+}
+
+> {%
+    // TODO: migrate to HTTP Client Response handler API
+    // pm.test("Status code is 200", function () {
+    //     pm.response.to.have.status(200);
+    // });
+%}
+
+###
+# @name 0.4.1 Configure OLS - Remote
+POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/lineage-warehouse/configuration
+Authorization: Basic YWRtaW46YWRtaW4=
+User-Agent: frfx
+Content-Type: application/json
+
+{
+    "class": "OpenLineageConfig",
+    "openLineageDescription": "Open Lineage Service is used for the storage and querying of lineage",
+    "openLineageWiki": "wiki URL",
+    "lineageGraphConnection": {
+        "class": "Connection",
+        "displayName": "Lineage Graph Connection",
+        "description": "Used for storing lineage in the Open Metadata format",
+        "connectorType": {
+            "class": "ConnectorType",
+            "connectorProviderClassName": "org.odpi.openmetadata.openconnectors.governancedaemonconnectors.lineagewarehouseconnectors.janusconnector.graph.LineageGraphRemoteConnectorProvider"
+        },
+        "configurationProperties": {
+            "port": "8182",
+            "hosts": [
+                "localhost"
+            ],
+            "serializer.className": "org.apache.tinkerpop.gremlin.driver.ser.GryoMessageSerializerV3d0",
+            "serializer.config.ioRegistries": [
+                "org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerIoRegistryV3d0",
+                "org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry"
+            ],
+            "gremlin.remote.driver.sourceName": "g",
+            "remote.schemaManagement.enable": true
+        }
+    },
+    "jobIntervalInSeconds": 120
+}
+
+> {%
+    // TODO: migrate to HTTP Client Response handler API
+    // pm.test("Status code is 200", function () {
+    //     pm.response.to.have.status(200);
+    // });
+%}
+
+###
+# @name 0.4.2 Get Configuration OLS
+GET {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/configuration
+Authorization: Basic YWRtaW46YWRtaW4=
+User-Agent: frfx
+Content-Type: application/json
+
+{
+	"class": "OpenLineageConfig",
+	"openLineageDescription": "Open Lineage Service is used for the storage and querying of lineage",
+	"openLineageWiki": "wiki URL",
+	"jobIntervalInSeconds" : "120",
+	"lineageGraphConnection":{
+        "class": "Connection",
+        "displayName": "Lineage Graph Connection",
+        "description": "Used for storing lineage in the Open Metadata format",
+        "connectorType":{
+        	"class": "ConnectorType",
+        	"connectorProviderClassName": "org.odpi.openmetadata.openconnectors.governancedaemonconnectors.lineagewarehouseconnectors.janusconnector.graph.LineageGraphConnectorProvider"
+    	},
+    "configurationProperties": {
+            "gremlin.graph": "org.janusgraph.core.JanusGraphFactory",
+            "storage.backend": "berkeleyje",
+            "storage.directory": "./egeria-lineage-repositories/lineageGraph/berkeley",
+            "index.search.backend": "lucene",
+            "index.search.directory": "./egeria-lineage-repositories/lineageGraph/searchindex"
+        }
+    }
+}
+
+> {%
+    // TODO: migrate to HTTP Client Response handler API
+    // pm.test("Status code is 200", function () {
+    //     pm.response.to.have.status(200);
+    // });
+%}
+
+###
+# @name 0.5 Start
+POST {{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/instance
+Authorization: Basic demo demo
+
+> {%
+    // TODO: migrate to HTTP Client Response handler API
+    // pm.test("Status code is 200", function () {
+    //     pm.response.to.have.status(200);
+    // });
+%}
+
+###
+# @name 1. Query Lineage - End to end
+POST {{base-url}}/servers/{{server-id}}/open-metadata/lineage-warehouse/users/{{user-id}}/lineage/entities/data_file_field@a7a7faad-fa91-4d4b-958e-9dc03ba54fa7:b1c497ce.60641b50.001mupjue.rjmi3rm.2r6dbn.4ufrhb60vcofd0mjuha4q
+Content-Type: application/json
+
+{
+  "class": "LineageQueryParameters",
+  "scope": "END_TO_END",
+  "displayNameMustContain": "",
+  "includeProcesses": true
+}
+
+###
+# @name 2. Query Lineage - Vertical
+POST {{base-url}}/servers/{{server-id}}/open-metadata/lineage-warehouse/users/{{user-id}}/lineage/entities/data_file_field@a7a7faad-fa91-4d4b-958e-9dc03ba54fa7:b1c497ce.60641b50.001mupjue.rjmi3rm.2r6dbn.4ufrhb60vcofd0mjuha4q
+Content-Type: application/json
+
+{
+  "class": "LineageQueryParameters",
+  "scope": "VERTICAL",
+  "displayNameMustContain": "",
+  "includeProcesses": true
+}
+
+###
+# @name 3. Query Lineage - Source and Destination
+POST {{base-url}}/servers/{{server-id}}/open-metadata/lineage-warehouse/users/{{user-id}}/lineage/entities/data_file_field@a7a7faad-fa91-4d4b-958e-9dc03ba54fa7:b1c497ce.60641b50.001mupjue.rjmi3rm.2r6dbn.4ufrhb60vcofd0mjuha4q
+Content-Type: application/json
+
+
+{
+  "class": "LineageQueryParameters",
+  "scope": "SOURCE_AND_DESTINATION",
+  "displayNameMustContain": "",
+  "includeProcesses": true
+}
+
+###
+# @name 4. Query Lineage - Types
+GET {{base-url}}/servers/{{server-id}}/open-metadata/lineage-warehouse/users/{{user-id}}/lineage/types
+Content-Type: application/json
+
+###
+# @name 5. Query Lineage - Nodes
+GET {{base-url}}/servers/{{server-id}}/open-metadata/lineage-warehouse/users/{{user-id}}/lineage/nodes?
+    type={{type}}&
+    name={{name}}&
+    limit={{limit}}
+Content-Type: application/json
+
+###
+# @name 6. Search Database
+POST {{base-url}}/servers/{{server-id}}/open-metadata/lineage-warehouse/users/{{user-id}}/lineage/search
+Content-Type: application/json
+
+{
+    "queriedNode": {
+        "type": "Process"
+    },
+    "relatedNodes": [
+        {
+            "type": "RelationalTable",
+            "name": "table_name"
+        }
+        
+    ]
+}
+
+###
+# @name 7.1 Get Element Hierarchy upward
+POST {{base-url}}/servers/{{server-id}}/open-metadata/lineage-warehouse/users/{{user-id}}/elements/hierarchy
+Content-Type: application/json
+
+{
+     "guid": "{{entity-guid}}",
+    "hierarchyType": "UPWARD"
+}
+
+###
+# @name 7.2 Get Element Hierarchy downward
+POST {{base-url}}/servers/{{server-id}}/open-metadata/lineage-warehouse/users/{{user-id}}/elements/hierarchy
+Content-Type: application/json
+
+{
+     "guid": "{{entity-guid}}",
+    "hierarchyType": "DOWNWARD"
+}
+
+###
+# @name 7.3 Get Element Hierarchy all
+POST {{base-url}}/servers/{{server-id}}/open-metadata/lineage-warehouse/users/{{user-id}}/elements/hierarchy
+Content-Type: application/json
+
+{
+     "guid": "{{entity-guid}}",
+    "hierarchyType": "ALL"
+}

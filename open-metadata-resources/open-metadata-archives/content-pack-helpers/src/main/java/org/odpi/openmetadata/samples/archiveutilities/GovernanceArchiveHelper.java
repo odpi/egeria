@@ -3,15 +3,14 @@
 package org.odpi.openmetadata.samples.archiveutilities;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConfigurationPropertyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.GuardType;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestParameterType;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestTypeType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.*;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.ReferenceValueAttributeName;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStepType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
@@ -102,8 +101,6 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
     }
 
 
-
-
     /**
      * Create an integration connector entity.
      *
@@ -164,6 +161,10 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                   description,
                                                   additionalProperties,
                                                   extendedProperties);
+
+            this.addSupportedConfigurationProperties(connectorGUID,
+                                                     DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                                     serviceProvider.getSupportedConfigurationProperties());
 
             String endpointGUID = null;
             if (endpointAddress != null)
@@ -240,7 +241,9 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                            patchLevel,
                                            source,
                                            additionalProperties,
-                                           extendedProperties);
+                                           extendedProperties,
+                                           null,
+                                           null);
     }
 
 
@@ -346,6 +349,10 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
             if (serviceGUID != null)
             {
+                this.addSupportedConfigurationProperties(serviceGUID,
+                                                         deployedImplementationType.getAssociatedTypeName(),
+                                                         serviceProvider.getSupportedConfigurationProperties());
+
                 String connectionGUID = super.addConnection(qualifiedName + "_implementation",
                                                             displayName + " Governance Service Provider Implementation",
                                                             "Connection for governance service: " + qualifiedName,
@@ -397,9 +404,9 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                   deployedImplementationType.getAssociatedTypeName(),
                                                   surveyActionServiceProvider.getSupportedAnalysisSteps());
 
-                        addSupportedAnnotationTypes(serviceGUID,
-                                                    deployedImplementationType.getAssociatedTypeName(),
-                                                    surveyActionServiceProvider.getSupportedAnnotationTypes());
+                        addProducedAnnotationTypes(serviceGUID,
+                                                   deployedImplementationType.getAssociatedTypeName(),
+                                                   surveyActionServiceProvider.getProducedAnnotationTypes());
                     }
                 }
             }
@@ -412,6 +419,206 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         }
 
         return null;
+    }
+
+
+    /**
+     * Add reference data for catalog templates.
+     *
+     * @param parentGUID unique identifier of template
+     * @param parentTypeName type of template
+     * @param replacementAttributeTypes list of reference values
+     */
+    public void addReplacementAttributes(String                         parentGUID,
+                                         String                         parentTypeName,
+                                         List<ReplacementAttributeType> replacementAttributeTypes)
+    {
+        if (replacementAttributeTypes != null)
+        {
+            for (ReplacementAttributeType replacementAttributeType : replacementAttributeTypes)
+            {
+                Map<String, String> additionalProperties = replacementAttributeType.getOtherPropertyValues();
+
+                if (additionalProperties == null)
+                {
+                    additionalProperties = new HashMap<>();
+                }
+
+                String required = "false";
+
+                if (replacementAttributeType.getRequired())
+                {
+                    required = "true";
+                }
+
+                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, replacementAttributeType.getDescription());
+                additionalProperties.put(OpenMetadataProperty.DATA_TYPE.name, replacementAttributeType.getDataType());
+                additionalProperties.put(OpenMetadataProperty.EXAMPLE.name, replacementAttributeType.getExample());
+                additionalProperties.put(OpenMetadataProperty.REQUIRED.name, required);
+
+                String validValueGUID = this.addValidValue(null,
+                                                           null,
+                                                           parentGUID,
+                                                           parentTypeName,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                           parentTypeName + ":" + parentGUID + ":PlaceholderProperty:" + replacementAttributeType.getName(),
+                                                           replacementAttributeType.getName(),
+                                                           ReferenceValueAttributeName.REPLACEMENT_ATTRIBUTE.getDescription(),
+                                                           ReferenceValueAttributeName.REPLACEMENT_ATTRIBUTE.getAttributeName(),
+                                                           null,
+                                                           null,
+                                                           replacementAttributeType.getName(),
+                                                           false,
+                                                           true,
+                                                           additionalProperties);
+
+                if (validValueGUID != null)
+                {
+                    addReferenceValueAssignmentRelationship(parentGUID,
+                                                            validValueGUID,
+                                                            ReferenceValueAttributeName.REPLACEMENT_ATTRIBUTE.getAttributeName(),
+                                                            100,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Add reference data for catalog templates.
+     *
+     * @param parentGUID unique identifier of template
+     * @param parentTypeName type of template
+     * @param placeholderPropertyTypes list of reference values
+     */
+    public void addPlaceholderProperties(String                        parentGUID,
+                                         String                        parentTypeName,
+                                         List<PlaceholderPropertyType> placeholderPropertyTypes)
+    {
+        if (placeholderPropertyTypes != null)
+        {
+            for (PlaceholderPropertyType placeholderPropertyType : placeholderPropertyTypes)
+            {
+                Map<String, String> additionalProperties = placeholderPropertyType.getOtherPropertyValues();
+
+                if (additionalProperties == null)
+                {
+                    additionalProperties = new HashMap<>();
+                }
+
+                String required = "false";
+
+                if (placeholderPropertyType.getRequired())
+                {
+                    required = "true";
+                }
+
+                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, placeholderPropertyType.getDescription());
+                additionalProperties.put(OpenMetadataProperty.DATA_TYPE.name, placeholderPropertyType.getDataType());
+                additionalProperties.put(OpenMetadataProperty.EXAMPLE.name, placeholderPropertyType.getExample());
+                additionalProperties.put(OpenMetadataProperty.REQUIRED.name, required);
+
+                String validValueGUID = this.addValidValue(null,
+                                                           null,
+                                                           parentGUID,
+                                                           parentTypeName,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                           parentTypeName + ":" + parentGUID + ":PlaceholderProperty:" + placeholderPropertyType.getName(),
+                                                           placeholderPropertyType.getName(),
+                                                           ReferenceValueAttributeName.PLACEHOLDER_PROPERTY.getDescription(),
+                                                           ReferenceValueAttributeName.PLACEHOLDER_PROPERTY.getAttributeName(),
+                                                           null,
+                                                           null,
+                                                           placeholderPropertyType.getName(),
+                                                           false,
+                                                           true,
+                                                           additionalProperties);
+
+                if (validValueGUID != null)
+                {
+                    addReferenceValueAssignmentRelationship(parentGUID,
+                                                            validValueGUID,
+                                                            ReferenceValueAttributeName.PLACEHOLDER_PROPERTY.getAttributeName(),
+                                                            100,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Add reference data for connectors.
+     *
+     * @param parentGUID unique identifier of governance service/action
+     * @param parentTypeName type of parent
+     * @param configurationPropertyTypes list of reference values
+     */
+    public void addSupportedConfigurationProperties(String                          parentGUID,
+                                                    String                          parentTypeName,
+                                                    List<ConfigurationPropertyType> configurationPropertyTypes)
+    {
+        if (configurationPropertyTypes != null)
+        {
+            for (ConfigurationPropertyType configurationPropertyType : configurationPropertyTypes)
+            {
+                Map<String, String> additionalProperties = configurationPropertyType.getOtherPropertyValues();
+
+                if (additionalProperties == null)
+                {
+                    additionalProperties = new HashMap<>();
+                }
+
+                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, configurationPropertyType.getDescription());
+                additionalProperties.put(OpenMetadataProperty.DATA_TYPE.name, configurationPropertyType.getDataType());
+                additionalProperties.put(OpenMetadataProperty.EXAMPLE.name, configurationPropertyType.getExample());
+                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, configurationPropertyType.getDescription());
+
+                String required = "false";
+
+                if (configurationPropertyType.getRequired())
+                {
+                    required = "true";
+                }
+
+                additionalProperties.put(OpenMetadataProperty.REQUIRED.name, required);
+
+                String validValueGUID = this.addValidValue(null,
+                                                           null,
+                                                           parentGUID,
+                                                           parentTypeName,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                           parentTypeName + ":" + parentGUID + ":SupportedConfigurationProperty:" + configurationPropertyType.getName(),
+                                                           configurationPropertyType.getName(),
+                                                           ReferenceValueAttributeName.SUPPORTED_CONFIGURATION_PROPERTY.getDescription(),
+                                                           ReferenceValueAttributeName.SUPPORTED_CONFIGURATION_PROPERTY.getAttributeName(),
+                                                           null,
+                                                           null,
+                                                           configurationPropertyType.getName(),
+                                                           false,
+                                                           true,
+                                                           additionalProperties);
+
+                if (validValueGUID != null)
+                {
+                    addReferenceValueAssignmentRelationship(parentGUID,
+                                                            validValueGUID,
+                                                            ReferenceValueAttributeName.SUPPORTED_CONFIGURATION_PROPERTY.getAttributeName(),
+                                                            100,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null);
+                }
+            }
+        }
     }
 
 
@@ -446,8 +653,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                            parentTypeName + ":" + parentGUID + ":SupportedRequestType:" + supportedRequestType.getRequestType(),
                                                            supportedRequestType.getRequestType(),
-                                                           OpenMetadataProperty.SUPPORTED_REQUEST_TYPE.description,
-                                                           OpenMetadataProperty.SUPPORTED_REQUEST_TYPE.name,
+                                                           ReferenceValueAttributeName.SUPPORTED_REQUEST_TYPE.getDescription(),
+                                                           ReferenceValueAttributeName.SUPPORTED_REQUEST_TYPE.getAttributeName(),
                                                            null,
                                                            null,
                                                            supportedRequestType.getRequestType(),
@@ -459,7 +666,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                 {
                     addReferenceValueAssignmentRelationship(parentGUID,
                                                             validValueGUID,
-                                                            OpenMetadataProperty.SUPPORTED_REQUEST_TYPE.name + "s",
+                                                            ReferenceValueAttributeName.SUPPORTED_REQUEST_TYPE.getAttributeName(),
                                                             100,
                                                             null,
                                                             null,
@@ -512,8 +719,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                            parentTypeName + ":" + parentGUID + ":SupportedRequestParameter:" + supportedRequestParameter.getName(),
                                                            supportedRequestParameter.getName(),
-                                                           OpenMetadataProperty.SUPPORTED_REQUEST_PARAMETER.description,
-                                                           OpenMetadataProperty.SUPPORTED_REQUEST_PARAMETER.name,
+                                                           ReferenceValueAttributeName.SUPPORTED_REQUEST_PARAMETER.getDescription(),
+                                                           ReferenceValueAttributeName.SUPPORTED_REQUEST_PARAMETER.getAttributeName(),
                                                            null,
                                                            null,
                                                            supportedRequestParameter.getName(),
@@ -525,7 +732,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                 {
                     addReferenceValueAssignmentRelationship(parentGUID,
                                                             validValueGUID,
-                                                            OpenMetadataProperty.SUPPORTED_REQUEST_PARAMETER.name + "s",
+                                                            ReferenceValueAttributeName.SUPPORTED_REQUEST_PARAMETER.getAttributeName(),
                                                             100,
                                                             null,
                                                             null,
@@ -578,8 +785,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                            parentTypeName + ":" + parentGUID + ":SupportedActionTarget:" + supportedActionTarget.getName(),
                                                            supportedActionTarget.getName(),
-                                                           OpenMetadataProperty.SUPPORTED_ACTION_TARGET.description,
-                                                           OpenMetadataProperty.SUPPORTED_ACTION_TARGET.name,
+                                                           ReferenceValueAttributeName.SUPPORTED_ACTION_TARGET.getDescription(),
+                                                           ReferenceValueAttributeName.SUPPORTED_ACTION_TARGET.getAttributeName(),
                                                            null,
                                                            null,
                                                            supportedActionTarget.getName(),
@@ -591,7 +798,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                 {
                     addReferenceValueAssignmentRelationship(parentGUID,
                                                             validValueGUID,
-                                                            OpenMetadataProperty.SUPPORTED_ACTION_TARGET.name + "s",
+                                                            ReferenceValueAttributeName.SUPPORTED_ACTION_TARGET.getAttributeName(),
                                                             100,
                                                             null,
                                                             null,
@@ -634,8 +841,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                            parentTypeName + ":" + parentGUID + ":SupportedAnalysisStep:" + analysisStepType.getName(),
                                                            analysisStepType.getName(),
-                                                           OpenMetadataProperty.SUPPORTED_ANALYSIS_STEP.description,
-                                                           OpenMetadataProperty.SUPPORTED_ANALYSIS_STEP.name,
+                                                           ReferenceValueAttributeName.SUPPORTED_ANALYSIS_STEP.getDescription(),
+                                                           ReferenceValueAttributeName.SUPPORTED_ANALYSIS_STEP.getAttributeName(),
                                                            null,
                                                            null,
                                                            analysisStepType.getName(),
@@ -647,7 +854,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                 {
                     addReferenceValueAssignmentRelationship(parentGUID,
                                                             validValueGUID,
-                                                            OpenMetadataProperty.SUPPORTED_ANALYSIS_STEP.name + "s",
+                                                            ReferenceValueAttributeName.SUPPORTED_ANALYSIS_STEP.getAttributeName(),
                                                             100,
                                                             null,
                                                             null,
@@ -666,9 +873,9 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
      * @param parentTypeName type of parent
      * @param annotationTypeTypes list of reference values
      */
-    public void addSupportedAnnotationTypes(String                   parentGUID,
-                                            String                   parentTypeName,
-                                            List<AnnotationTypeType> annotationTypeTypes)
+    public void addProducedAnnotationTypes(String                   parentGUID,
+                                           String                   parentTypeName,
+                                           List<AnnotationTypeType> annotationTypeTypes)
     {
         if (annotationTypeTypes != null)
         {
@@ -692,10 +899,10 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            parentGUID,
                                                            parentTypeName,
                                                            OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
-                                                           parentTypeName + ":" + parentGUID + ":SupportedAnnotationType:" + annotationTypeType.getName(),
+                                                           parentTypeName + ":" + parentGUID + ":ProducedAnnotationType:" + annotationTypeType.getName(),
                                                            annotationTypeType.getOpenMetadataTypeName() + ":" + annotationTypeType.getName(),
-                                                           OpenMetadataProperty.SUPPORTED_ANNOTATION_TYPE.description,
-                                                           OpenMetadataProperty.SUPPORTED_ANNOTATION_TYPE.name,
+                                                           ReferenceValueAttributeName.PRODUCED_ANNOTATION_TYPE.getDescription(),
+                                                           ReferenceValueAttributeName.PRODUCED_ANNOTATION_TYPE.getAttributeName(),
                                                            null,
                                                            null,
                                                            annotationTypeType.getName(),
@@ -707,7 +914,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                 {
                     addReferenceValueAssignmentRelationship(parentGUID,
                                                             validValueGUID,
-                                                            OpenMetadataProperty.SUPPORTED_ANNOTATION_TYPE.name + "s",
+                                                            ReferenceValueAttributeName.PRODUCED_ANNOTATION_TYPE.getAttributeName(),
                                                             100,
                                                             null,
                                                             null,
@@ -760,8 +967,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                            parentTypeName + ":" + parentGUID + ":ProducedRequestParameter:" + producedRequestParameter.getName(),
                                                            producedRequestParameter.getName(),
-                                                           OpenMetadataProperty.PRODUCED_REQUEST_PARAMETER.description,
-                                                           OpenMetadataProperty.PRODUCED_REQUEST_PARAMETER.name,
+                                                           ReferenceValueAttributeName.PRODUCED_REQUEST_PARAMETER.getDescription(),
+                                                           ReferenceValueAttributeName.PRODUCED_REQUEST_PARAMETER.getAttributeName(),
                                                            null,
                                                            null,
                                                            producedRequestParameter.getName(),
@@ -773,7 +980,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                 {
                     addReferenceValueAssignmentRelationship(parentGUID,
                                                             validValueGUID,
-                                                            OpenMetadataProperty.PRODUCED_REQUEST_PARAMETER.name + "s",
+                                                            ReferenceValueAttributeName.PRODUCED_REQUEST_PARAMETER.getAttributeName(),
                                                             100,
                                                             null,
                                                             null,
@@ -819,7 +1026,6 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                 additionalProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, actionTargetType.getDeployedImplementationType());
                 additionalProperties.put(OpenMetadataProperty.REQUIRED.name, required);
 
-
                 String validValueGUID = this.addValidValue(null,
                                                            null,
                                                            parentGUID,
@@ -827,8 +1033,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                            parentTypeName + ":" + parentGUID + ":ProducedActionTarget:" + actionTargetType.getName(),
                                                            actionTargetType.getName(),
-                                                           OpenMetadataProperty.PRODUCED_ACTION_TARGET.description,
-                                                           OpenMetadataProperty.PRODUCED_ACTION_TARGET.name,
+                                                           ReferenceValueAttributeName.PRODUCED_ACTION_TARGET.getDescription(),
+                                                           ReferenceValueAttributeName.PRODUCED_ACTION_TARGET.getAttributeName(),
                                                            null,
                                                            null,
                                                            actionTargetType.getName(),
@@ -840,7 +1046,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                 {
                     addReferenceValueAssignmentRelationship(parentGUID,
                                                             validValueGUID,
-                                                            OpenMetadataProperty.PRODUCED_ACTION_TARGET.name + "s",
+                                                            ReferenceValueAttributeName.PRODUCED_ACTION_TARGET.getAttributeName(),
                                                             100,
                                                             null,
                                                             null,
@@ -867,6 +1073,17 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         {
             for (GuardType guardType : guardTypes)
             {
+                Map<String, String> additionalProperties = guardType.getOtherPropertyValues();
+
+                if (additionalProperties == null)
+                {
+                    additionalProperties = new HashMap<>();
+                }
+
+                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, guardType.getDescription());
+                additionalProperties.put("completionStatus", guardType.getCompletionStatus().getName());
+                additionalProperties.put("completionStatusDescription", guardType.getCompletionStatus().getDescription());
+
                 String validValueGUID = this.addValidValue(null,
                                                            null,
                                                            parentGUID,
@@ -874,8 +1091,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
                                                            parentTypeName + ":" + parentGUID + ":ProducedGuard:" + guardType.getGuard(),
                                                            guardType.getGuard(),
-                                                           guardType.getDescription(),
-                                                           null,
+                                                           ReferenceValueAttributeName.PRODUCED_GUARD.getDescription(),
+                                                           ReferenceValueAttributeName.PRODUCED_GUARD.getAttributeName(),
                                                            guardType.getCompletionStatus().getName(),
                                                            null,
                                                            guardType.getGuard(),
@@ -887,7 +1104,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                 {
                     addReferenceValueAssignmentRelationship(parentGUID,
                                                             validValueGUID,
-                                                            "producedGuards",
+                                                            ReferenceValueAttributeName.PRODUCED_GUARD.getAttributeName(),
                                                             100,
                                                             null,
                                                             null,
@@ -933,7 +1150,18 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
             engineTypeName = typeName;
         }
 
-        return super.addSoftwareCapability(engineTypeName, qualifiedName, displayName, description, capabilityType, capabilityVersion, patchLevel, source, additionalProperties, extendedProperties);
+        return super.addSoftwareCapability(engineTypeName,
+                                           qualifiedName,
+                                           displayName,
+                                           description,
+                                           capabilityType,
+                                           capabilityVersion,
+                                           patchLevel,
+                                           source,
+                                           additionalProperties,
+                                           extendedProperties,
+                                           null,
+                                           null);
     }
 
 
@@ -1120,9 +1348,9 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                   actionTypeName,
                                   supportedAnalysisSteps);
 
-        addSupportedAnnotationTypes(assetEntity.getGUID(),
-                                    actionTypeName,
-                                    supportedAnnotationTypes);
+        addProducedAnnotationTypes(assetEntity.getGUID(),
+                                   actionTypeName,
+                                   supportedAnnotationTypes);
 
         addProducedRequestParameters(assetEntity.getGUID(),
                                      actionTypeName,
@@ -1235,9 +1463,9 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                   actionTypeName,
                                   supportedAnalysisSteps);
 
-        addSupportedAnnotationTypes(assetEntity.getGUID(),
-                                    actionTypeName,
-                                    supportedAnnotationTypes);
+        addProducedAnnotationTypes(assetEntity.getGUID(),
+                                   actionTypeName,
+                                   supportedAnnotationTypes);
 
         addProducedRequestParameters(assetEntity.getGUID(),
                                      actionTypeName,

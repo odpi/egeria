@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +71,9 @@ public class ApacheAtlasRESTProvider extends ConnectorProviderBase
         connectorType.setDisplayName(connectorDisplayName);
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
-        connectorType.setSupportedAssetTypeName("SoftwareServer");
+        connectorType.setSupportedAssetTypeName(DeployedImplementationType.APACHE_ATLAS_SERVER.getAssociatedTypeName());
+        connectorType.setDeployedImplementationType(DeployedImplementationType.APACHE_ATLAS_SERVER.getDeployedImplementationType());
+
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add(ATLAS_SERVER_NAME_CONFIGURATION_PROPERTY);
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);

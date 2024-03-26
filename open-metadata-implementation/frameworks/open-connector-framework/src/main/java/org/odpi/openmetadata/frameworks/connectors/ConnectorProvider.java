@@ -6,24 +6,32 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedExcepti
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConfigurationPropertyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
+import java.util.List;
+
 /**
  * The ConnectorProvider is a formal plug-in interface for the Open Connector Framework (OCF).  It provides a factory
- * class for a specific type of connector.  Therefore is it typical to find the ConnectorProvider and Connector
+ * class for a specific type of connector.  Therefore, is it typical to find the ConnectorProvider and Connector
  * implementation written as a pair.
- *
  * The ConnectorProvider uses the properties stored in a Connection object to initialize itself and its Connector instances.
  * the Connection object has the endpoint properties for the server that the connector must communicate with
  * as well as optional additional properties that may be needed for a particular type of connector.
- *
  * It is suggested that the ConnectorProvider validates the contents of the connection and throws
  * ConnectionErrorExceptions if the connection has missing or invalid properties.  If there are errors detected in the
  * instantiations or initialization of the connector, then these should be thrown as ConnectorErrorExceptions.
  */
 public abstract class ConnectorProvider
 {
+    /**
+     * The list of supported configuration property types that describe how the connector's
+     * behaviour can be modified.
+     */
+    protected List<ConfigurationPropertyType> supportedConfigurationProperties = null;
+
+
     /**
      * Returns the properties about the type of connector that this ConnectorTypeManager supports.
      *
@@ -40,6 +48,18 @@ public abstract class ConnectorProvider
      * and any specific connection properties that are recognized by this connector.
      */
     public abstract ConnectorType getConnectorType();
+
+
+    /**
+     * Return the list of supported configuration property types that describe how the connector's
+     * behaviour can be modified.
+     *
+     * @return list of configuration property types
+     */
+    public List<ConfigurationPropertyType> getSupportedConfigurationProperties()
+    {
+        return supportedConfigurationProperties;
+    }
 
 
     /**

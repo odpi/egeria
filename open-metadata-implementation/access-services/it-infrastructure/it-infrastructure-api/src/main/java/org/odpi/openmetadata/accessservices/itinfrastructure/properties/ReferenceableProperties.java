@@ -2,16 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.itinfrastructure.properties;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -34,10 +27,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ActorProfileProperties.class, name = "ActorProfileProperties"),
                 @JsonSubTypes.Type(value = UserIdentityProperties.class, name = "UserIdentityProperties"),
         })
-public class ReferenceableProperties implements Serializable
+public class ReferenceableProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String               qualifiedName        = null;
     private Map<String, String>  additionalProperties = null;
 

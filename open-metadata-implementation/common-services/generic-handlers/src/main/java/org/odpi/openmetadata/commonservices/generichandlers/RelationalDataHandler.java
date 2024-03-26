@@ -372,7 +372,7 @@ public class RelationalDataHandler<DATABASE,
             {
                 InstanceProperties relationshipProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                                        null,
-                                                                                                       OpenMetadataType.USE_TYPE_PROPERTY_NAME,
+                                                                                                       OpenMetadataProperty.USE_TYPE.name,
                                                                                                        OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_GUID,
                                                                                                        OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_NAME,
                                                                                                        OpenMetadataType.SERVER_ASSET_USE_TYPE_OWNS_ORDINAL,
@@ -383,14 +383,14 @@ public class RelationalDataHandler<DATABASE,
                                                      databaseManagerName,
                                                      databaseManagerGUID,
                                                      databaseManagerGUIDParameterName,
-                                                     OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                     OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                      databaseGUID,
                                                      databaseGUIDParameterName,
                                                      OpenMetadataType.DATABASE_TYPE_NAME,
                                                      forLineage,
                                                      forDuplicateProcessing,
-                                                     OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
+                                                     OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
+                                                     OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
                                                      relationshipProperties,
                                                      effectiveFrom,
                                                      effectiveTo,
@@ -399,7 +399,7 @@ public class RelationalDataHandler<DATABASE,
             }
             catch (TypeErrorException error)
             {
-                throw new InvalidParameterException(error, OpenMetadataType.USE_TYPE_PROPERTY_NAME);
+                throw new InvalidParameterException(error, OpenMetadataProperty.USE_TYPE.name);
             }
         }
 
@@ -565,7 +565,7 @@ public class RelationalDataHandler<DATABASE,
             {
                 InstanceProperties relationshipProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                                        null,
-                                                                                                       OpenMetadataType.USE_TYPE_PROPERTY_NAME,
+                                                                                                       OpenMetadataProperty.USE_TYPE.name,
                                                                                                        OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_GUID,
                                                                                                        OpenMetadataType.SERVER_ASSET_USE_TYPE_TYPE_NAME,
                                                                                                        OpenMetadataType.SERVER_ASSET_USE_TYPE_OWNS_ORDINAL,
@@ -576,14 +576,14 @@ public class RelationalDataHandler<DATABASE,
                                                      databaseManagerName,
                                                      databaseManagerGUID,
                                                      databaseManagerGUIDParameterName,
-                                                     OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                     OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                      databaseGUID,
                                                      databaseGUIDParameterName,
                                                      OpenMetadataType.DATABASE_TYPE_NAME,
                                                      forLineage,
                                                      forDuplicateProcessing,
-                                                     OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
-                                                     OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
+                                                     OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
+                                                     OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
                                                      relationshipProperties,
                                                      effectiveFrom,
                                                      effectiveTo,
@@ -592,7 +592,7 @@ public class RelationalDataHandler<DATABASE,
             }
             catch (TypeErrorException error)
             {
-                throw new InvalidParameterException(error, OpenMetadataType.USE_TYPE_PROPERTY_NAME);
+                throw new InvalidParameterException(error, OpenMetadataProperty.USE_TYPE.name);
             }
         }
 
@@ -1411,9 +1411,9 @@ public class RelationalDataHandler<DATABASE,
         return databaseHandler.getAttachedElements(userId,
                                                    databaseManagerGUID,
                                                    databaseManagerGUIDParameterName,
-                                                   OpenMetadataType.DATABASE_MANAGER_TYPE_NAME,
-                                                   OpenMetadataType.SERVER_ASSET_USE_TYPE_GUID,
-                                                   OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME,
+                                                   OpenMetadataType.DATABASE_MANAGER.typeName,
+                                                   OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
+                                                   OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
                                                    OpenMetadataType.DATABASE_TYPE_NAME,
                                                    null,
                                                    null,

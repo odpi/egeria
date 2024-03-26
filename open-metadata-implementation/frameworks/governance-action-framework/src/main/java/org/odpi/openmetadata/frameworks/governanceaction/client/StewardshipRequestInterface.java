@@ -19,7 +19,7 @@ import java.util.Map;
 public interface StewardshipRequestInterface
 {
     /**
-     * Create an incident report to capture the situation detected by this governance action service.
+     * Create an incident report to capture the situation detected by the caller.
      * This incident report will be processed by other governance activities.
      *
      * @param userId caller's userId
@@ -34,7 +34,7 @@ public interface StewardshipRequestInterface
      *
      * @return unique identifier of the resulting incident report
      * @throws InvalidParameterException null or non-unique qualified name for the incident report
-     * @throws UserNotAuthorizedException this governance action service is not authorized to create an incident report
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     String createIncidentReport(String                        userId,
@@ -69,7 +69,7 @@ public interface StewardshipRequestInterface
      * @return unique identifier of new to do element
      *
      * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
-     * @throws UserNotAuthorizedException the governance action service is not authorized to create a "to do" entity
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
      */
     String openToDo(String                userId,
