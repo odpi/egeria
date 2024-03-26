@@ -26,9 +26,9 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
-import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
-import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
-import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.AnnotationStatus;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.SurveyReport;
 
 import java.util.Date;
 import java.util.List;
@@ -2541,6 +2541,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
+    @Override
     public void addTemplateClassification(String              userId,
                                           String              assetGUID,
                                           String              name,
@@ -4081,7 +4082,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
 
 
     /**
-     * Return the discovery analysis reports about the asset.
+     * Return the survey reports about the asset.
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the asset
@@ -4093,31 +4094,31 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
     @Override
-    public List<DiscoveryAnalysisReport>   getDiscoveryAnalysisReports(String  userId,
-                                                                       String  assetGUID,
-                                                                       int     startingFrom,
-                                                                       int     maximumResults) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+    public List<SurveyReport>   getSurveyReports(String  userId,
+                                                 String  assetGUID,
+                                                 int     startingFrom,
+                                                 int     maximumResults) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
-        final String   methodName = "getDiscoveryAnalysisReports";
+        final String   methodName = "getSurveyReports";
 
         final String   assetGUIDParameter = "assetGUID";
-        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/discovery-analysis-reports?startingFrom={4}&maximumResults={5}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/survey-reports?startingFrom={4}&maximumResults={5}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
-        DiscoveryAnalysisReportListResponse restResult = restClient.callDiscoveryAnalysisReportListGetRESTCall(methodName,
-                                                                                                               urlTemplate,
-                                                                                                               serverName,
-                                                                                                               userId,
-                                                                                                               assetGUID,
-                                                                                                               Integer.toString(startingFrom),
-                                                                                                               Integer.toString(maximumResults));
+        SurveyReportListResponse restResult = restClient.callSurveyReportListGetRESTCall(methodName,
+                                                                                         urlTemplate,
+                                                                                         serverName,
+                                                                                         userId,
+                                                                                         assetGUID,
+                                                                                         Integer.toString(startingFrom),
+                                                                                         Integer.toString(maximumResults));
 
-        return restResult.getDiscoveryAnalysisReports();
+        return restResult.getSurveyReports();
     }
 
 
@@ -4181,7 +4182,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
      * Return the annotations linked directly to the report.
      *
      * @param userId identifier of calling user
-     * @param discoveryReportGUID identifier of the discovery request.
+     * @param surveyReportGUID identifier of the survey report.
      * @param annotationStatus status of the desired annotations - null means all statuses.
      * @param startingFrom initial position in the stored list.
      * @param maximumResults maximum number of definitions to return on this call.
@@ -4193,21 +4194,21 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
     @Override
-    public List<Annotation> getDiscoveryReportAnnotations(String           userId,
-                                                          String           discoveryReportGUID,
-                                                          AnnotationStatus annotationStatus,
-                                                          int              startingFrom,
-                                                          int              maximumResults) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException
+    public List<Annotation> getSurveyReportAnnotations(String           userId,
+                                                       String           surveyReportGUID,
+                                                       AnnotationStatus annotationStatus,
+                                                       int              startingFrom,
+                                                       int              maximumResults) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
-        final String   methodName = "getDiscoveryReportAnnotations";
+        final String   methodName = "getSurveyReportAnnotations";
 
-        final String   discoveryReportGUIDParameter = "discoveryReportGUID";
-        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/discovery-analysis-reports/{2}?startingFrom={3}&maxPageSize={4}";
+        final String   discoveryReportGUIDParameter = "surveyReportGUID";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/survey-reports/{2}?startingFrom={3}&maxPageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(discoveryReportGUID, discoveryReportGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(surveyReportGUID, discoveryReportGUIDParameter, methodName);
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         StatusRequestBody requestBody = new StatusRequestBody();
@@ -4219,7 +4220,7 @@ public class AssetOwner extends AssetOwnerBaseClient implements AssetKnowledgeIn
                                                                                       requestBody,
                                                                                       serverName,
                                                                                       userId,
-                                                                                      discoveryReportGUID,
+                                                                                      surveyReportGUID,
                                                                                       Integer.toString(startingFrom),
                                                                                       Integer.toString(maximumResults));
 

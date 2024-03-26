@@ -18,6 +18,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
     runtimeOnly 'ch.qos.logback:logback-classic'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    runtimeOnly project(':open-metadata-implementation:user-security:token-manager')
 }
 
 description = 'Issues requests to retrieve assets and display all the metadata known about it.'
@@ -27,6 +28,6 @@ java {
 }
 
 shadowJar {
-    mainClassName = 'org.odpi.openmetadata.accessservices.assetconsumer.sample.assetlookup.AssetLookUp'
+    mainClassName = 'org.odpi.openmetadata.accessservices.assetconsumer.samples.assetlookup.AssetLookUp'
     archiveClassifier = 'jar-with-dependencies'
 }

@@ -8,8 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.integration.catalogtarget.CatalogTargetType;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 /**
  * The IntegrationConnectorProvider provides a base class for the connector provider supporting
@@ -32,9 +31,9 @@ public class IntegrationConnectorProvider extends ConnectorProviderBase
     private boolean usesBlockingCalls   = false;
 
     /**
-     * Map of the supported catalog target names to the types of entity to map it to.
+     * List of the supported catalog targets describing the types of entity that the connector works with.
      */
-    protected final Map<String, CatalogTargetType> catalogTargetTypes = new HashMap<>();
+    protected List<CatalogTargetType> catalogTargets = null;
 
     /**
      * The type name of the asset that the connection object for this connector should be linked to.
@@ -120,9 +119,9 @@ public class IntegrationConnectorProvider extends ConnectorProviderBase
 
 
     /**
-     * Return the map of supported catalog target types for this connector.
+     * Return the list of supported catalog target types for this connector.
      *
-     * @return map of catalog target name to open metadata type name.  Map is empty if no catalog target types are defined.
+     * @return list of catalog target name to open metadata type name.  Map is empty if no catalog target types are defined.
      */
-    public Map<String, CatalogTargetType> getCatalogTargetTypes() { return catalogTargetTypes; }
+    public List<CatalogTargetType> getCatalogTargets() { return catalogTargets; }
 }

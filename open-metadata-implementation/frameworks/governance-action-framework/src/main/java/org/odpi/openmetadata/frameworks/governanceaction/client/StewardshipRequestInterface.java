@@ -19,7 +19,7 @@ import java.util.Map;
 public interface StewardshipRequestInterface
 {
     /**
-     * Create an incident report to capture the situation detected by this governance action service.
+     * Create an incident report to capture the situation detected by the caller.
      * This incident report will be processed by other governance activities.
      *
      * @param userId caller's userId
@@ -34,7 +34,7 @@ public interface StewardshipRequestInterface
      *
      * @return unique identifier of the resulting incident report
      * @throws InvalidParameterException null or non-unique qualified name for the incident report
-     * @throws UserNotAuthorizedException this governance action service is not authorized to create an incident report
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem with the metadata store
      */
     String createIncidentReport(String                        userId,
@@ -62,13 +62,14 @@ public interface StewardshipRequestInterface
      * @param dueDate date/time this needs to be completed
      * @param additionalProperties additional arbitrary properties for the incident reports
      * @param assignTo qualified name of the Actor element for the recipient
-     * @param causeGUID unique identifier of the element that describes the rule, project that this is on behalf of
+     * @param sponsorGUID unique identifier of the element that describes the rule, project that this is on behalf of
+     * @param originatorGUID unique identifier of the source of the to do
      * @param actionTargets the list of elements that should be acted upon
      *
      * @return unique identifier of new to do element
      *
      * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
-     * @throws UserNotAuthorizedException the governance action service is not authorized to create a "to do" entity
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
      * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
      */
     String openToDo(String                userId,
@@ -80,7 +81,8 @@ public interface StewardshipRequestInterface
                     Date                  dueDate,
                     Map<String, String>   additionalProperties,
                     String                assignTo,
-                    String                causeGUID,
+                    String                sponsorGUID,
+                    String                originatorGUID,
                     List<NewActionTarget> actionTargets) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException;

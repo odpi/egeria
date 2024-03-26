@@ -12,26 +12,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionTypeProperties;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.ConsolidatedDuplicatesRequestBody;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.EngineActionElementResponse;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.EngineActionElementsResponse;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.EngineActionRequestBody;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.GovernanceActionProcessElementResponse;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.GovernanceActionProcessElementsResponse;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.GovernanceActionProcessRequestBody;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.GovernanceActionTypeRequestBody;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.GovernanceActionProcessStepResponse;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.GovernanceActionProcessStepsResponse;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.GovernanceActionTypeResponse;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.GovernanceActionTypesResponse;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.GovernanceActionRequestBody;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.NewGovernanceActionProcessRequestBody;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.NextGovernanceActionProcessStepRequestBody;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.NextGovernanceActionProcessStepsResponse;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.PeerDuplicatesRequestBody;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateGovernanceActionProcessRequestBody;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateGovernanceActionTypeRequestBody;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.UpdateGovernanceActionProcessStepRequestBody;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.frameworkservices.gaf.server.OpenGovernanceRESTServices;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,7 +40,7 @@ public class OpenGovernanceResource
 
 
     /* =====================================================================================================================
-     * A governance action governanceActionType describes a step in a governance action process
+     * A governance action type describes a template to invoke a governance service in a governance engine.
      */
 
     /**
@@ -75,7 +56,7 @@ public class OpenGovernanceResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/governance-action-types/new")
+    @PostMapping(path = "/governance-action-types")
     @Operation(summary="createGovernanceActionType",
             description="Create a new metadata element to represent a governance action type.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -262,7 +243,7 @@ public class OpenGovernanceResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/governance-action-processes/new")
+    @PostMapping(path = "/governance-action-processes")
     @Operation(summary="createGovernanceActionProcess",
                description="Create a new metadata element to represent a governance action process.",
                externalDocs=@ExternalDocumentation(description="Further Information",
@@ -496,6 +477,37 @@ public class OpenGovernanceResource
     }
 
 
+    /**
+     * Retrieve the governance action process metadata element with the supplied unique identifier
+     * along with the flow definition describing its implementation.
+     *
+     * @param serverName name of the service to route the request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId calling user
+     * @param processGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @GetMapping(path = "/governance-action-processes/{processGUID}/graph")
+    @Operation(summary="getGovernanceActionProcessGraph",
+            description="Retrieve the governance action process metadata element with the supplied " +
+                    "unique identifier along with the flow definition describing its implementation.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-action-process"))
+
+    public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(@PathVariable String serverName,
+                                                                                @PathVariable String serviceURLMarker,
+                                                                                @PathVariable String userId,
+                                                                                @PathVariable String processGUID)
+    {
+        return restAPI.getGovernanceActionProcessGraph(serverName, serviceURLMarker, userId, processGUID);
+    }
+
+
+
     /* =====================================================================================================================
      * A governance action process step describes a step in a governance action process
      */
@@ -513,7 +525,7 @@ public class OpenGovernanceResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/governance-action-process-steps/new")
+    @PostMapping(path = "/governance-action-process-steps")
     @Operation(summary="createGovernanceActionProcessStep",
                description="Create a new metadata element to represent a governance action process step.",
                externalDocs=@ExternalDocumentation(description="Further Information",
@@ -698,7 +710,7 @@ public class OpenGovernanceResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/governance-action-processes/{processGUID}/first-process-step/{processStepGUID}/new")
+    @PostMapping(path = "/governance-action-processes/{processGUID}/first-process-step/{processStepGUID}")
     @Operation(summary="setupFirstProcessStep",
                description="Set up a link between a governance action process and a governance action process step.  This defines the first step in the process.",
                externalDocs=@ExternalDocumentation(description="Further Information",
@@ -734,10 +746,10 @@ public class OpenGovernanceResource
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/governance-action-process"))
 
-    public GovernanceActionProcessStepResponse getFirstProcessStep(@PathVariable String serverName,
-                                                                   @PathVariable String serviceURLMarker,
-                                                                   @PathVariable String userId,
-                                                                   @PathVariable String processGUID)
+    public FirstGovernanceActionProcessStepResponse getFirstProcessStep(@PathVariable String serverName,
+                                                                        @PathVariable String serviceURLMarker,
+                                                                        @PathVariable String userId,
+                                                                        @PathVariable String processGUID)
     {
         return restAPI.getFirstProcessStep(serverName, serviceURLMarker, userId, processGUID);
     }
@@ -790,7 +802,7 @@ public class OpenGovernanceResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/governance-action-process-steps/{currentProcessStepGUID}/next-process-steps/{nextProcessStepGUID}/new")
+    @PostMapping(path = "/governance-action-process-steps/{currentProcessStepGUID}/next-process-steps/{nextProcessStepGUID}")
     @Operation(summary="removeFirstProcessStep",
                description="Remove the link between a governance process and that governance action process step that defines its first step.",
                externalDocs=@ExternalDocumentation(description="Further Information",
@@ -926,7 +938,7 @@ public class OpenGovernanceResource
                                              @PathVariable String                  serviceURLMarker,
                                              @PathVariable String                  userId,
                                              @PathVariable String                  governanceEngineName,
-                                             @RequestBody  EngineActionRequestBody requestBody)
+                                             @RequestBody InitiateEngineActionRequestBody requestBody)
     {
         return restAPI.initiateEngineAction(serverName, serviceURLMarker, userId, governanceEngineName, requestBody);
     }
@@ -986,7 +998,7 @@ public class OpenGovernanceResource
     public GUIDResponse initiateGovernanceActionType(@PathVariable String                          serverName,
                                                      @PathVariable String                          serviceURLMarker,
                                                      @PathVariable String                          userId,
-                                                     @RequestBody  GovernanceActionTypeRequestBody requestBody)
+                                                     @RequestBody InitiateGovernanceActionTypeRequestBody requestBody)
     {
         return restAPI.initiateGovernanceActionType(serverName, serviceURLMarker, userId, requestBody);
     }
@@ -1006,6 +1018,7 @@ public class OpenGovernanceResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/governance-action-processes/initiate")
+
     @Operation(summary="initiateGovernanceActionProcess",
             description="Using the named governance action process as a template, initiate a chain of engine actions.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -1014,7 +1027,7 @@ public class OpenGovernanceResource
     public GUIDResponse initiateGovernanceActionProcess(@PathVariable String                             serverName,
                                                         @PathVariable String                             serviceURLMarker,
                                                         @PathVariable String                             userId,
-                                                        @RequestBody  GovernanceActionProcessRequestBody requestBody)
+                                                        @RequestBody InitiateGovernanceActionProcessRequestBody requestBody)
     {
         return restAPI.initiateGovernanceActionProcess(serverName, serviceURLMarker, userId, requestBody);
     }
@@ -1034,6 +1047,7 @@ public class OpenGovernanceResource
      *  PropertyServerException there was a problem detected by the metadata store.
      */
     @GetMapping(path = "/engine-actions/{engineActionGUID}")
+
     @Operation(summary="getEngineAction",
                description="Request the status and properties of an executing engine action request.",
                externalDocs=@ExternalDocumentation(description="Further Information",
@@ -1046,6 +1060,38 @@ public class OpenGovernanceResource
     {
         return restAPI.getEngineAction(serverName, serviceURLMarker, userId, engineActionGUID);
     }
+
+
+    /**
+     * Request that execution of an engine action is stopped.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user
+     * @param engineActionGUID identifier of the engine action request.
+     * @param requestBody null request body
+     *
+     * @return void or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  UserNotAuthorizedException user not authorized to issue this request.
+     *  PropertyServerException there was a problem detected by the metadata store.
+     */
+    @PostMapping(path = "/engine-actions/{engineActionGUID}/cancel")
+
+    @Operation(summary="cancelEngineAction",
+            description="Request that an engine action request is cancelled and any running governance service is stopped.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/engine-action"))
+
+    public VoidResponse cancelEngineAction(@PathVariable                  String          serverName,
+                                           @PathVariable                  String          serviceURLMarker,
+                                           @PathVariable                  String          userId,
+                                           @PathVariable                  String          engineActionGUID,
+                                           @RequestBody(required = false) NullRequestBody requestBody)
+    {
+        return restAPI.cancelEngineAction(serverName, serviceURLMarker, userId, engineActionGUID, requestBody);
+    }
+
 
 
     /**

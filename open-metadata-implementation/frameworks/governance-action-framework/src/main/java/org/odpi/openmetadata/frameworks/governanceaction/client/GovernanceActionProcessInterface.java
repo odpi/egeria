@@ -2,15 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.governanceaction.client;
 
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.NextGovernanceActionProcessStepElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ProcessStatus;
 
 import java.util.List;
 
@@ -182,6 +177,25 @@ public interface GovernanceActionProcessInterface
                                                                                                PropertyServerException;
 
 
+    /**
+     * Retrieve the governance action process metadata element with the supplied unique identifier
+     * along with its process flow implementation.  This includes the process steps and the links
+     * between them
+     *
+     * @param userId calling user
+     * @param processGUID unique identifier of the requested metadata element
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    GovernanceActionProcessGraph getGovernanceActionProcessGraph(String userId,
+                                                                 String processGUID) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException;
+
 
     /* =====================================================================================================================
      * A governance action process step describes a step in a governance action process
@@ -331,16 +345,16 @@ public interface GovernanceActionProcessInterface
      * @param userId calling user
      * @param processGUID unique identifier of the governance action process
      *
-     * @return properties of the governance action process step
+     * @return properties of the first governance action process step
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    GovernanceActionProcessStepElement getFirstActionProcessStep(String userId,
-                                                                 String processGUID) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException;
+    FirstGovernanceActionProcessStepElement getFirstActionProcessStep(String userId,
+                                                                      String processGUID) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException;
 
 
     /**

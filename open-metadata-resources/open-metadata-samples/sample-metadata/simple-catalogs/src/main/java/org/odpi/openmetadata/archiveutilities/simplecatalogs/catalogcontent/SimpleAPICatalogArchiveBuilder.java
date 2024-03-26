@@ -147,6 +147,7 @@ public class SimpleAPICatalogArchiveBuilder
                                                   null);
 
         String apiSchemaTypeGUID = archiveHelper.addTopLevelSchemaType(assetGUID,
+                                                                       apiAssetTypeName,
                                                                        apiSchemaTypeTypeName,
                                                                        customerQualifiedName + "_api_schema_type",
                                                                        customerDisplayName + " API Schema Type",

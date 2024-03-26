@@ -144,7 +144,7 @@ abstract public class OpenMetadataStoreConverter<B> extends OCFConverter<B>
     private EngineActionStatus getActionStatus(String               propertyName,
                                                InstanceProperties   properties)
     {
-        EngineActionStatus governanceActionStatus = EngineActionStatus.OTHER;
+        EngineActionStatus engineActionStatus = EngineActionStatus.OTHER;
 
         if (properties != null)
         {
@@ -154,53 +154,27 @@ abstract public class OpenMetadataStoreConverter<B> extends OCFConverter<B>
             {
                 InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(propertyName);
 
-                if (instancePropertyValue instanceof EnumPropertyValue)
+                if (instancePropertyValue instanceof EnumPropertyValue enumPropertyValue)
                 {
-                    EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
-
-                    switch (enumPropertyValue.getOrdinal())
+                    engineActionStatus = switch (enumPropertyValue.getOrdinal())
                     {
-                        case 0:
-                            governanceActionStatus = EngineActionStatus.REQUESTED;
-                            break;
-
-                        case 1:
-                            governanceActionStatus = EngineActionStatus.APPROVED;
-                            break;
-
-                        case 2:
-                            governanceActionStatus = EngineActionStatus.WAITING;
-                            break;
-
-                        case 3:
-                            governanceActionStatus = EngineActionStatus.ACTIVATING;
-                            break;
-
-                        case 4:
-                            governanceActionStatus = EngineActionStatus.IN_PROGRESS;
-                            break;
-
-                        case 10:
-                            governanceActionStatus = EngineActionStatus.ACTIONED;
-                            break;
-
-                        case 11:
-                            governanceActionStatus = EngineActionStatus.INVALID;
-                            break;
-
-                        case 12:
-                            governanceActionStatus = EngineActionStatus.IGNORED;
-                            break;
-
-                        case 13:
-                            governanceActionStatus = EngineActionStatus.FAILED;
-                            break;
-                    }
+                        case 0 -> EngineActionStatus.REQUESTED;
+                        case 1 -> EngineActionStatus.APPROVED;
+                        case 2 -> EngineActionStatus.WAITING;
+                        case 3 -> EngineActionStatus.ACTIVATING;
+                        case 4 -> EngineActionStatus.IN_PROGRESS;
+                        case 10 -> EngineActionStatus.ACTIONED;
+                        case 11 -> EngineActionStatus.INVALID;
+                        case 12 -> EngineActionStatus.IGNORED;
+                        case 13 -> EngineActionStatus.FAILED;
+                        case 14 -> EngineActionStatus.CANCELLED;
+                        default -> engineActionStatus;
+                    };
                 }
             }
         }
 
-        return governanceActionStatus;
+        return engineActionStatus;
     }
 
 

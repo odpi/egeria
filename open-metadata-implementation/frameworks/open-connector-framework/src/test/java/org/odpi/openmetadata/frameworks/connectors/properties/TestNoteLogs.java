@@ -48,28 +48,6 @@ public class TestNoteLogs
 
 
     /**
-     * Validate that a clone can be created
-     */
-    @Test public void  testClonedIterator()
-    {
-        NoteLogs propertyIterator = getPropertyIterator(10, 100);
-
-        propertyIterator.next();
-
-        NoteLogs propertyIteratorClone = new MockNoteLogs( propertyIterator);
-
-        int elementCount = 0;
-        while (propertyIteratorClone.hasNext())
-        {
-            assertTrue(propertyIteratorClone.next() != null);
-            elementCount ++;
-        }
-
-        assertTrue(elementCount == 10);
-    }
-
-
-    /**
      * Test that the iterator works well if there are no elements
      */
     @Test public void testEmptyIterator()
@@ -115,25 +93,6 @@ public class TestNoteLogs
     {
         validatePropertyIterator(30,
                                  10);
-    }
-
-
-    /**
-     * Validate that element count is set.
-     */
-    @Test public void testElementCount()
-    {
-        NoteLogs propertyIterator = getPropertyIterator(30, 10);
-
-        assertTrue(propertyIterator.getElementCount() == 30);
-
-        NoteLogs clonedPropertyIterator = new MockNoteLogs( propertyIterator);
-
-        assertTrue(clonedPropertyIterator.getElementCount() == 30);
-
-        clonedPropertyIterator = new MockNoteLogs( null);
-
-        assertTrue(clonedPropertyIterator.getElementCount() == 0);
     }
 
 

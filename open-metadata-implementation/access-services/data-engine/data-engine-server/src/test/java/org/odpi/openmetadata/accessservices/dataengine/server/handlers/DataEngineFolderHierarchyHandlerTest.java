@@ -92,7 +92,7 @@ class DataEngineFolderHierarchyHandlerTest {
         //        NESTED_FILE_TYPE_NAME, FILE_FOLDER.typeName, FILE_FOLDER.typeName, EXTERNAL_SOURCE_NAME,null);
 
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, EXTERNAL_SOURCE_GUID,
-                GUID_VALUE_2, OpenMetadataType.SERVER_ASSET_USE_TYPE_NAME, OpenMetadataType.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                GUID_VALUE_2, OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName, OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName,
                                                                              OpenMetadataType.FILE_FOLDER.typeName, EXTERNAL_SOURCE_NAME,
                 null);
     }

@@ -81,7 +81,6 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
      * @param domainIdentifier governance domain for this governance action
      * @param displayName short display name for the governance action
      * @param description description of the governance action
-     * @param supportedGuards list of guards that triggered this governance action
      * @param additionalProperties additional properties for a governance action
      * @param governanceEngineGUID unique identifier of governance engine to execute the request
      * @param requestType type of request
@@ -107,7 +106,6 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
                                                     int                  domainIdentifier,
                                                     String               displayName,
                                                     String               description,
-                                                    List<String>         supportedGuards,
                                                     Map<String, String>  additionalProperties,
                                                     String               governanceEngineGUID,
                                                     String               requestType,
@@ -133,7 +131,6 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
                                                                                             domainIdentifier,
                                                                                             displayName,
                                                                                             description,
-                                                                                            supportedGuards,
                                                                                             ignoreMultipleTriggers,
                                                                                             waitTime,
                                                                                             additionalProperties,
@@ -254,7 +251,6 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
      * @param domainIdentifier governance domain for this governance action
      * @param displayName short display name for the governance action
      * @param description description of the governance action
-     * @param supportedGuards list of guards that triggered this governance action
      * @param additionalProperties additional properties for a governance action
      * @param governanceEngineGUID unique identifier of governance engine to execute the request
      * @param requestType type of request
@@ -280,7 +276,6 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
                                                   int                 domainIdentifier,
                                                   String              displayName,
                                                   String              description,
-                                                  List<String>        supportedGuards,
                                                   Map<String, String> additionalProperties,
                                                   String              governanceEngineGUID,
                                                   String              requestType,
@@ -424,7 +419,6 @@ public class GovernanceActionProcessStepHandler<B> extends OpenMetadataAPIGeneri
                                                                                             domainIdentifier,
                                                                                             displayName,
                                                                                             description,
-                                                                                            supportedGuards,
                                                                                             ignoreMultipleTriggers,
                                                                                             waitTime,
                                                                                             additionalProperties,

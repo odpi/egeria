@@ -13,8 +13,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
+import org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
+import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -114,30 +115,32 @@ public class GovernanceServerServiceInstanceHandler extends AuditableServerServi
         ConnectorReport connectorReport = new ConnectorReport();
 
         connectorReport.setConnectorType(connectorType);
+        connectorReport.setSupportedConfigurationProperties(connectorProvider.getSupportedConfigurationProperties());
 
-        if (connectorProvider instanceof ConnectorProviderBase)
+        if (connectorProvider instanceof ConnectorProviderBase connectorProviderBase)
         {
-            ConnectorProviderBase connectorProviderBase = (ConnectorProviderBase)connectorProvider;
-
             connectorReport.setComponentDescription(connectorProviderBase.getConnectorComponentDescription());
         }
 
-        if (connectorProvider instanceof IntegrationConnectorProvider)
+        if (connectorProvider instanceof IntegrationConnectorProvider integrationConnectorProvider)
         {
-            IntegrationConnectorProvider integrationConnectorProvider = (IntegrationConnectorProvider)connectorProvider;
-
             connectorReport.setRefreshTimeInterval(integrationConnectorProvider.getRefreshTimeInterval());
             connectorReport.setUsesBlockingCalls(integrationConnectorProvider.getUsesBlockingCalls());
         }
-
-        if (connectorProvider instanceof GovernanceActionServiceProviderBase)
+        else if (connectorProvider instanceof GovernanceServiceProviderBase governanceActionServiceProvider)
         {
-            GovernanceActionServiceProviderBase governanceActionServiceProvider = (GovernanceActionServiceProviderBase)connectorProvider;
             connectorReport.setSupportedRequestTypes(governanceActionServiceProvider.getSupportedRequestTypes());
             connectorReport.setSupportedRequestParameters(governanceActionServiceProvider.getSupportedRequestParameters());
-            connectorReport.setSupportedRequestSourceNames(governanceActionServiceProvider.getSupportedRequestSourceNames());
-            connectorReport.setSupportedActionTargetNames(governanceActionServiceProvider.getSupportedActionTargetNames());
-            connectorReport.setSupportedGuards(governanceActionServiceProvider.getSupportedGuards());
+            connectorReport.setSupportedActionTargetTypes(governanceActionServiceProvider.getSupportedActionTargetTypes());
+            connectorReport.setProducedRequestParameters(governanceActionServiceProvider.getProducedRequestParameters());
+            connectorReport.setProducedActionTargetTypes(governanceActionServiceProvider.getProducedActionTargetTypes());
+            connectorReport.setProducedGuards(governanceActionServiceProvider.getProducedGuards());
+
+            if (connectorProvider instanceof SurveyActionServiceProvider surveyActionServiceProvider)
+            {
+                connectorReport.setSupportedAnalysisSteps(surveyActionServiceProvider.getSupportedAnalysisSteps());
+                connectorReport.setSupportedAnnotationTypes(surveyActionServiceProvider.getProducedAnnotationTypes());
+            }
         }
 
         connector.disconnect();

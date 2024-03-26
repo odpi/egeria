@@ -1,0 +1,706 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.frameworkservices.oif.server.spring;
+
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworks.integration.properties.CatalogTargetProperties;
+import org.odpi.openmetadata.frameworks.integration.properties.IntegrationConnectorProperties;
+import org.odpi.openmetadata.frameworks.integration.properties.IntegrationGroupProperties;
+import org.odpi.openmetadata.frameworks.integration.properties.RegisteredIntegrationConnectorProperties;
+import org.odpi.openmetadata.frameworkservices.oif.rest.*;
+import org.odpi.openmetadata.frameworkservices.oif.server.IntegrationConfigRESTServices;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ * GroupConfigurationResource provides the Spring wrapper for the Integration Group Configuration Services
+ */
+@RestController
+@RequestMapping("/servers/{serverName}/open-metadata/framework-services/{serviceURLMarker}/governance-configuration-service/users/{userId}")
+
+@Tag(name="Framework Services: Integration Group Configuration",
+        description="The Integration Group Configuration Service provides support for defining integration groups in open metadata.",
+        externalDocs=@ExternalDocumentation(description="Further Information",
+                                            url="https://egeria-project.org/concepts/integration-group/"))
+
+public class IntegrationGroupConfigurationResource
+{
+    private final IntegrationConfigRESTServices restAPI = new IntegrationConfigRESTServices();
+
+
+    /**
+     * Create a new integration group definition.
+     *
+     * @param serverName name of the service to route the request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user
+     * @param requestBody containing properties of integration group.
+     *
+     * @return unique identifier (guid) of the integration group definition or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration group definition.
+     */
+    @PostMapping(path = "/integration-groups/new")
+
+    @Operation(summary="createIntegrationGroup",
+               description="Create a new integration group definition.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
+
+    public GUIDResponse createIntegrationGroup(@PathVariable String                     serverName,
+                                               @PathVariable String                     serviceURLMarker,
+                                               @PathVariable String                     userId,
+                                               @RequestBody  IntegrationGroupProperties requestBody)
+    {
+        return restAPI.createIntegrationGroup(serverName, serviceURLMarker, userId, requestBody);
+    }
+
+
+    /**
+     * Return the properties from an integration group definition.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user.
+     * @param guid unique identifier (guid) of the integration group definition.
+     *
+     * @return properties from the integration group definition or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration group definition.
+     */
+    @GetMapping(path = "/integration-groups/{guid}")
+
+    @Operation(summary="getIntegrationGroupByGUID",
+               description="Return the properties from an integration group definition.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
+
+    public IntegrationGroupElementResponse getIntegrationGroupByGUID(@PathVariable String serverName,
+                                                                     @PathVariable String serviceURLMarker,
+                                                                     @PathVariable String userId,
+                                                                     @PathVariable String guid)
+    {
+        return restAPI.getIntegrationGroupByGUID(serverName, serviceURLMarker, userId, guid);
+    }
+
+
+    /**
+     * Return the properties from an integration group definition.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user.
+     * @param name qualified name or display name (if unique).
+     *
+     * @return properties from the integration group definition or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration group definition.
+     */
+    @GetMapping(path = "/integration-groups/by-name/{name}")
+
+    @Operation(summary="getIntegrationGroupByName",
+               description="Return the properties from an integration group definition.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
+
+    public IntegrationGroupElementResponse getIntegrationGroupByName(@PathVariable String serverName,
+                                                                     @PathVariable String serviceURLMarker,
+                                                                     @PathVariable String userId,
+                                                                     @PathVariable String name)
+    {
+        return restAPI.getIntegrationGroupByName(serverName, serviceURLMarker, userId, name);
+    }
+
+
+    /**
+     * Return the list of integration group definitions that are stored.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user.
+     * @param startingFrom initial position in the stored list.
+     * @param maximumResults maximum number of definitions to return on this call.
+     *
+     * @return list of integration group definitions or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration group definition.
+     */
+    @GetMapping(path = "/integration-groups")
+
+    @Operation(summary="getAllIntegrationGroups",
+               description="Return the list of integration group definitions that are stored.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
+
+    public IntegrationGroupElementsResponse getAllIntegrationGroups(@PathVariable String serverName,
+                                                                    @PathVariable String serviceURLMarker,
+                                                                    @PathVariable String userId,
+                                                                    @RequestParam int    startingFrom,
+                                                                    @RequestParam int    maximumResults)
+    {
+        return restAPI.getAllIntegrationGroups(serverName, serviceURLMarker, userId, startingFrom, maximumResults);
+    }
+
+
+    /**
+     * Update the properties of an existing integration group definition.  Use the current value to
+     * keep a property value the same, or use the new value.  Null means remove the property from
+     * the definition.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user.
+     * @param guid unique identifier of the integration group - used to locate the definition.
+     * @param isMergeUpdate should the supplied properties be merged with existing properties (true) only replacing the properties with
+     *                      matching names, or should the entire properties of the instance be replaced?
+     * @param requestBody containing the new properties of the integration group.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration group definition.
+     */
+    @PostMapping(path = "/integration-groups/{guid}/update")
+
+    @Operation(summary="updateIntegrationGroup",
+               description="Update the properties of an existing integration group definition.  Use the current value to" +
+                                   " keep a property value the same, or use the new value.  Null means remove the property from" +
+                                   " the definition.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
+
+    public VoidResponse updateIntegrationGroup(@PathVariable String                     serverName,
+                                               @PathVariable String                     serviceURLMarker,
+                                               @PathVariable String                     userId,
+                                               @PathVariable String                     guid,
+                                               @RequestParam boolean                    isMergeUpdate,
+                                               @RequestBody  IntegrationGroupProperties requestBody)
+    {
+        return restAPI.updateIntegrationGroup(serverName, serviceURLMarker, userId, guid, isMergeUpdate, requestBody);
+    }
+
+
+    /**
+     * Remove the properties of the integration group.  Both the guid and the qualified name is supplied
+     * to validate that the correct integration group is being deleted.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user.
+     * @param guid unique identifier of the integration group - used to locate the definition.
+     * @param requestBody containing the unique name for the integration group.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration group definition.
+     */
+    @PostMapping(path = "/integration-groups/{guid}/delete")
+
+    @Operation(summary="deleteIntegrationGroup",
+               description="Remove the properties of the integration group.  Both the guid and the qualified name is supplied" +
+                                   " to validate that the correct integration group is being deleted.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
+
+    public  VoidResponse   deleteIntegrationGroup(@PathVariable String            serverName,
+                                                  @PathVariable String            serviceURLMarker,
+                                                  @PathVariable String            userId,
+                                                  @PathVariable String            guid,
+                                                  @RequestBody  DeleteRequestBody requestBody)
+    {
+        return restAPI.deleteIntegrationGroup(serverName, serviceURLMarker, userId, guid, requestBody);
+    }
+
+
+    /**
+     * Create an integration connector definition.  The same integration connector can be associated with multiple
+     * integration groups.
+     *
+     * @param serverName name of the service to route the request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user
+     * @param requestBody containing:
+     *                    qualifiedName - unique name for the integration connector;
+     *                    displayName -  display name for the integration connector;
+     *                    description - description of the analysis provided by the integration connector;
+     *                    connection -  connection to instantiate the integration connector implementation.
+     *
+     * @return unique identifier of the integration connector or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration group definition.
+     */
+    @PostMapping(path = "/integration-connectors/new")
+
+    @Operation(summary="createIntegrationConnector",
+               description="Create an integration connector definition.  The same integration connector can be associated with multiple" +
+                                   " integration groups.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-connector/"))
+
+    public  GUIDResponse createIntegrationConnector(@PathVariable String                         serverName,
+                                                    @PathVariable String                         serviceURLMarker,
+                                                    @PathVariable String                         userId,
+                                                    @RequestBody  IntegrationConnectorProperties requestBody)
+    {
+        return restAPI.createIntegrationConnector(serverName, serviceURLMarker, userId, requestBody);
+    }
+
+
+    /**
+     * Return the properties from an integration connector definition.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user.
+     * @param guid unique identifier (guid) of the integration connector definition.
+     *
+     * @return properties of the integration connector or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration group definition.
+     */
+    @GetMapping(path = "/integration-connectors/{guid}")
+
+    @Operation(summary="getIntegrationConnectorByGUID",
+               description="Return the properties from an integration connector definition.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-connector/"))
+
+    public IntegrationConnectorElementResponse getIntegrationConnectorByGUID(@PathVariable String serverName,
+                                                                             @PathVariable String serviceURLMarker,
+                                                                             @PathVariable String userId,
+                                                                             @PathVariable String guid)
+    {
+        return restAPI.getIntegrationConnectorByGUID(serverName, serviceURLMarker, userId, guid);
+    }
+
+
+    /**
+     * Return the properties from an integration connector definition.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user.
+     * @param name qualified name or display name (if unique).
+     *
+     * @return properties from the integration group definition or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration group definition.
+     */
+    @GetMapping(path = "/integration-connectors/by-name/{name}")
+
+    @Operation(summary="getIntegrationConnectorByName",
+               description="Return the properties from an integration connector definition.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-connector/"))
+
+    public  IntegrationConnectorElementResponse getIntegrationConnectorByName(@PathVariable String serverName,
+                                                                              @PathVariable String serviceURLMarker,
+                                                                              @PathVariable String userId,
+                                                                              @PathVariable String name)
+    {
+        return restAPI.getIntegrationConnectorByName(serverName, serviceURLMarker, userId, name);
+    }
+
+
+    /**
+     * Return the list of integration connectors definitions that are stored.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user.
+     * @param startingFrom initial position in the stored list.
+     * @param maximumResults maximum number of definitions to return on this call.
+     *
+     * @return list of integration connector definitions or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration group definition.
+     */
+    @GetMapping(path = "/integration-connectors")
+
+    @Operation(summary="getAllIntegrationConnectors",
+               description="Return the list of integration connectors definitions that are stored.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-connector/"))
+
+    public IntegrationConnectorElementsResponse getAllIntegrationConnectors(@PathVariable String serverName,
+                                                                            @PathVariable String serviceURLMarker,
+                                                                            @PathVariable String userId,
+                                                                            @RequestParam int    startingFrom,
+                                                                            @RequestParam int    maximumResults)
+    {
+        return restAPI.getAllIntegrationConnectors(serverName, serviceURLMarker, userId, startingFrom, maximumResults);
+    }
+
+
+    /**
+     * Return the list of integration groups that a specific integration connector is registered with.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user.
+     * @param guid integration connector to search for.
+     *
+     * @return list of integration group unique identifiers (guids) or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration group definition.
+     */
+    @GetMapping(path = "/integration-connectors/{guid}/registrations")
+
+    @Operation(summary="getIntegrationConnectorRegistrations",
+               description="Return the list of integration groups that a specific integration connector is registered with.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
+
+    public GUIDListResponse getIntegrationConnectorRegistrations(@PathVariable String serverName,
+                                                                 @PathVariable String serviceURLMarker,
+                                                                 @PathVariable String userId,
+                                                                 @PathVariable String guid)
+    {
+        return restAPI.getIntegrationConnectorRegistrations(serverName, serviceURLMarker, userId, guid);
+    }
+
+
+    /**
+     * Update the properties of an existing integration connector definition.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user.
+     * @param guid unique identifier of the integration connector - used to locate the definition.
+     * @param isMergeUpdate should the supplied properties be merged with existing properties (true) only replacing the properties with
+     *                      matching names, or should the entire properties of the instance be replaced?
+     * @param requestBody containing the new parameters for the integration connector.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration group definition.
+     */
+    @PostMapping(path = "/integration-connectors/{guid}/update")
+
+    @Operation(summary="updateIntegrationConnector",
+               description="Update the properties of an existing integration connector definition. The isMergeUpdate request parameter is " +
+                                   "used to indicate whether supplied null values mean keep existing value (true) or remove existing value (false).",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-connector/"))
+
+    public VoidResponse updateIntegrationConnector(@PathVariable String                         serverName,
+                                                   @PathVariable String                         serviceURLMarker,
+                                                   @PathVariable String                         userId,
+                                                   @PathVariable String                         guid,
+                                                   @RequestParam boolean                        isMergeUpdate,
+                                                   @RequestBody  IntegrationConnectorProperties requestBody)
+    {
+        return restAPI.updateIntegrationConnector(serverName, serviceURLMarker, userId, guid, isMergeUpdate, requestBody);
+    }
+
+
+    /**
+     * Remove the properties of the integration connector.  Both the guid and the qualified name is supplied
+     * to validate that the correct integration connector is being deleted.  The integration connector is also
+     * unregistered from its integration groups.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user.
+     * @param guid unique identifier of the integration connector - used to locate the definition.
+     * @param requestBody containing the unique name for the integration connector.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration group definition.
+     */
+    @PostMapping(path = "/integration-connectors/{guid}/delete")
+
+    @Operation(summary="deleteIntegrationConnector",
+               description="Remove the properties of the integration connector.  Both the guid and the qualified name is supplied" +
+                                   " to validate that the correct integration connector is being deleted.  The integration connector is also" +
+                                   " unregistered from its integration groups.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-connector/"))
+
+    public VoidResponse deleteIntegrationConnector(@PathVariable String            serverName,
+                                                   @PathVariable String            serviceURLMarker,
+                                                   @PathVariable String            userId,
+                                                   @PathVariable String            guid,
+                                                   @RequestBody  DeleteRequestBody requestBody)
+    {
+        return restAPI.deleteIntegrationConnector(serverName, serviceURLMarker, userId, guid, requestBody);
+    }
+
+
+    /**
+     * Register an integration connector with a specific integration group.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user.
+     * @param integrationGroupGUID unique identifier of the integration group.
+     * @param integrationConnectorGUID unique identifier of the integration connector.
+     * @param requestBody containing:
+     *                    integrationGroupGUID - unique identifier of the integration connector;
+     *                    governanceRequestTypes - list of asset governance types that this integration connector is able to process.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration group definition.
+     */
+    @PostMapping(path = "/integration-groups/{integrationGroupGUID}/integration-connectors/{integrationConnectorGUID}")
+
+    @Operation(summary="registerIntegrationConnectorWithGroup",
+               description="Register an integration connector with a specific integration group.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
+
+    public VoidResponse registerIntegrationConnectorWithGroup(@PathVariable String                                   serverName,
+                                                              @PathVariable String                                   serviceURLMarker,
+                                                              @PathVariable String                                   userId,
+                                                              @PathVariable String                                   integrationGroupGUID,
+                                                              @PathVariable String                                   integrationConnectorGUID,
+                                                              @RequestBody RegisteredIntegrationConnectorProperties requestBody)
+    {
+        return restAPI.registerIntegrationConnectorWithGroup(serverName, serviceURLMarker, userId, integrationGroupGUID, integrationConnectorGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve a specific integration connector registered with an integration group.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user.
+     * @param integrationGroupGUID unique identifier of the integration group.
+     * @param integrationConnectorGUID unique identifier of the integration connector.
+     *
+     * @return details of the integration connector and the asset types it is registered for or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration group definition.
+     */
+    @GetMapping(path = "/integration-groups/{integrationGroupGUID}/integration-connectors/{integrationConnectorGUID}")
+
+    @Operation(summary="getRegisteredIntegrationConnector",
+               description="Retrieve a specific integration connector registered with an integration group.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
+
+    public RegisteredIntegrationConnectorResponse getRegisteredIntegrationConnector(@PathVariable String serverName,
+                                                                                    @PathVariable String serviceURLMarker,
+                                                                                    @PathVariable String userId,
+                                                                                    @PathVariable String integrationGroupGUID,
+                                                                                    @PathVariable String integrationConnectorGUID)
+    {
+        return restAPI.getRegisteredIntegrationConnector(serverName, serviceURLMarker, userId, integrationGroupGUID, integrationConnectorGUID);
+    }
+
+
+    /**
+     * Retrieve the details of the integration connectors registered with an integration group.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user.
+     * @param integrationGroupGUID unique identifier of the integration group.
+     * @param startingFrom initial position in the stored list.
+     * @param maximumResults maximum number of definitions to return on this call.
+     *
+     * @return list of unique identifiers or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration group definition.
+     */
+    @GetMapping(path = "/integration-groups/{integrationGroupGUID}/integration-connectors")
+
+    @Operation(summary="getRegisteredIntegrationConnectors",
+               description="Retrieve the details of the integration connectors registered with an integration group.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
+
+    public RegisteredIntegrationConnectorsResponse getRegisteredIntegrationConnectors(@PathVariable String serverName,
+                                                                                      @PathVariable String serviceURLMarker,
+                                                                                      @PathVariable String userId,
+                                                                                      @PathVariable String integrationGroupGUID,
+                                                                                      @RequestParam int    startingFrom,
+                                                                                      @RequestParam int    maximumResults)
+    {
+        return restAPI.getRegisteredIntegrationConnectors(serverName, serviceURLMarker, userId, integrationGroupGUID, startingFrom, maximumResults);
+    }
+
+
+    /**
+     * Unregister an integration connector from the integration group.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user.
+     * @param integrationGroupGUID unique identifier of the integration group.
+     * @param integrationConnectorGUID unique identifier of the integration connector.
+     * @param requestBody null request body.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration group definition.
+     */
+    @PostMapping(path = "/integration-groups/{integrationGroupGUID}/integration-connectors/{integrationConnectorGUID}/delete")
+
+    @Operation(summary="unregisterIntegrationConnectorFromGroup",
+               description="Unregister an integration connector from the integration group.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-group/"))
+
+    public VoidResponse unregisterIntegrationConnectorFromGroup(@PathVariable                  String          serverName,
+                                                                @PathVariable                  String          serviceURLMarker,
+                                                                @PathVariable                  String          userId,
+                                                                @PathVariable                  String          integrationGroupGUID,
+                                                                @PathVariable                  String          integrationConnectorGUID,
+                                                                @RequestBody(required = false) NullRequestBody requestBody)
+    {
+        return restAPI.unregisterIntegrationConnectorFromGroup(serverName, serviceURLMarker, userId, integrationGroupGUID, integrationConnectorGUID, requestBody);
+    }
+
+
+    /**
+     * Add a catalog target to an integration connector.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user.
+     * @param integrationConnectorGUID unique identifier of the integration service.
+     * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.
+     * @param requestBody properties for the relationship.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the catalog target definition.
+     */
+    @PostMapping(path = "/integration-connectors/{integrationConnectorGUID}/catalog-targets/{metadataElementGUID}")
+
+    @Operation(summary="addCatalogTarget",
+               description="Add a catalog target to an integration connector.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-connector/"))
+
+    public VoidResponse addCatalogTarget(@PathVariable String                  serverName,
+                                         @PathVariable String                  serviceURLMarker,
+                                         @PathVariable String                  userId,
+                                         @PathVariable String                  integrationConnectorGUID,
+                                         @PathVariable String                  metadataElementGUID,
+                                         @RequestBody  CatalogTargetProperties requestBody)
+    {
+        return restAPI.addCatalogTarget(serverName, serviceURLMarker, userId, integrationConnectorGUID, metadataElementGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve a specific catalog target associated with an integration connector.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user.
+     * @param integrationConnectorGUID unique identifier of the integration service.
+     * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.
+     *
+     * @return details of the governance service and the asset types it is registered for or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration connector definition.
+     */
+    @GetMapping(path = "/integration-connectors/{integrationConnectorGUID}/catalog-targets/{metadataElementGUID}")
+
+    @Operation(summary="getCatalogTarget",
+               description="Retrieve a specific catalog target associated with an integration connector.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-connector/"))
+
+    public CatalogTargetResponse getCatalogTarget(@PathVariable String serverName,
+                                                  @PathVariable String serviceURLMarker,
+                                                  @PathVariable String userId,
+                                                  @PathVariable String integrationConnectorGUID,
+                                                  @PathVariable String metadataElementGUID)
+    {
+         return restAPI.getCatalogTarget(serverName, serviceURLMarker, userId, integrationConnectorGUID, metadataElementGUID);
+    }
+
+
+    /**
+     * Retrieve the details of the metadata elements identified as catalog targets with an integration connector.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user.
+     * @param integrationConnectorGUID unique identifier of the integration connector.
+     * @param startingFrom initial position in the stored list.
+     * @param maximumResults maximum number of definitions to return on this call.
+     *
+     * @return list of unique identifiers or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration connector definition.
+     */
+    @GetMapping(path = "/integration-connectors/{integrationConnectorGUID}/catalog-targets")
+
+    @Operation(summary="getCatalogTargets",
+               description="Retrieve the details of the metadata elements identified as catalog targets with an integration connector.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-connector/"))
+
+    public CatalogTargetsResponse  getCatalogTargets(@PathVariable String  serverName,
+                                                     @PathVariable String  serviceURLMarker,
+                                                     @PathVariable String  userId,
+                                                     @PathVariable String  integrationConnectorGUID,
+                                                     @RequestParam int     startingFrom,
+                                                     @RequestParam int     maximumResults)
+    {
+        return restAPI.getCatalogTargets(serverName, serviceURLMarker, userId, integrationConnectorGUID, startingFrom, maximumResults);
+    }
+
+
+    /**
+     * Unregister a catalog target from the integration connector.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId identifier of calling user.
+     * @param integrationConnectorGUID unique identifier of the integration connector.
+     * @param metadataElementGUID unique identifier of the governance service.
+     * @param requestBody null request body.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration connector definition.
+     */
+    @PostMapping(path = "/integration-connectors/{integrationConnectorGUID}/catalog-targets/{metadataElementGUID}/delete")
+
+    @Operation(summary="removeCatalogTarget",
+               description="Unregister a catalog target from the integration connector.",
+               externalDocs=@ExternalDocumentation(description="Further Information",
+                                                   url="https://egeria-project.org/concepts/integration-connector/"))
+
+    public VoidResponse removeCatalogTarget(@PathVariable String          serverName,
+                                            @PathVariable String          serviceURLMarker,
+                                            @PathVariable String          userId,
+                                            @PathVariable String          integrationConnectorGUID,
+                                            @PathVariable String          metadataElementGUID,
+                                            @RequestBody  NullRequestBody requestBody)
+    {
+        return restAPI.removeCatalogTarget(serverName, serviceURLMarker, userId, integrationConnectorGUID, metadataElementGUID, requestBody);
+    }
+}

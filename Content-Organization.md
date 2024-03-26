@@ -54,7 +54,7 @@ The Egeria core repository contains the core Egeria functionality, and is organi
       * **[dynamic-archiver-connectors](open-metadata-implementation/adapters/open-connectors/dynamic-archiver-connectors)** contains dynamic archiver services implementations.
       * **[event-bus-connectors](open-metadata-implementation/adapters/open-connectors/event-bus-connectors)** supports different event/messaging infrastructures.  They can be plugged into the topic connectors from the access-service-connectors and repository-service-connectors.
       * **[governance-action-connectors](open-metadata-implementation/adapters/open-connectors/governance-action-connectors)** contains GAF governance action implementations.
-      * **[governance-daemon-connectors](open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors)** contains connectors for the governance daemon servers that monitor activity or synchronize metadata and configuration asynchronously between different tools.
+      * **[lineage-warehouse-connectors](open-metadata-implementation/adapters/open-connectors/lineage-warehouse-connectors)** contains connectors for the lineage warehouse servers that maintain stores of optimized lineage information.
       * **[integration-connectors](open-metadata-implementation/adapters/open-connectors/integration-connectors)** contains connectors synchronously exchanging between different third party technologies.
       * **[repository-services-connectors](open-metadata-implementation/adapters/open-connectors/repository-services-connectors)** contains connector implementations for each type of connector supported by the Open Metadata Repository Services (OMRS).
         * **[audit-log-connectors](open-metadata-implementation/adapters/open-connectors/repository-services-connectors/audit-log-connectors)** supports different destinations for audit log messages.
@@ -65,6 +65,9 @@ The Egeria core repository contains the core Egeria functionality, and is organi
           * **[inmemory-repository-connector](open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/inmemory-repository-connector)** - provides a local repository that is entirely in memory.  It is useful for testing/developing OMASs and demos.
           * **[omrs-rest-repository-connector](open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/omrs-rest-repository-connector)** - enables IBM Information Governance Catalog to support open metadata.
       * **[rest-client-connectors](open-metadata-implementation/adapters/open-connectors/rest-client-connectors)** contains connector implementations for issuing REST calls.
+      * **[secrets-store-connectors](open-metadata-implementation/adapters/open-connectors/rest-client-connectors)** contains connector implementations for retrieving secrets from external sources.
+      * **[survey-action-connectors](open-metadata-implementation/adapters/open-connectors/survey-action-connectors)** contains connector implementations for survey action services.
+      * **[system-connectors](open-metadata-implementation/adapters/open-connectors/sustem-connectors)** contains connector implementations for issuing REST calls to different types of systems.
   
   * **[admin-services](open-metadata-implementation/admin-services)** - supports the configuration of the OMAG Server Platform.  This configuration determines which of the open metadata and governance services are active.
   
@@ -95,7 +98,7 @@ The Egeria core repository contains the core Egeria functionality, and is organi
     * **[data-engine-proxy-services](open-metadata-implementation/governance-servers/data-engine-proxy-services)** - supports automated metadata cataloguing from data engines.
     * **[engine-host-services](open-metadata-implementation/governance-servers/engine-host-services)** - supports the core function of the [Engine Host](https://egeria-project.org/concepts/engine-host) OMAG Server.
     * **[integration-daemon-services](open-metadata-implementation/governance-servers/integration-daemon-services)** - supports the core function of the [Integration Daemon](https://egeria-project.org/concepts/integration-daemon) OMAG Server.
-    * **[open-lineage-services](open-metadata-implementation/governance-servers/open-lineage-services)** - provides historic warehouse for lineage.
+    * **[lineage-warehouse-services](open-metadata-implementation/governance-servers/lineage-warehouse-services)** - provides historic warehouse for lineage.
  
   * **[integration-services](open-metadata-implementation/integration-services)** - services that host integration connectors.  These run in the [Integration Daemon](https://egeria-project.org/concepts/integration-daemon) OMAG Server.
     * **[analytics-integrator](open-metadata-implementation/integration-services/analytics-integrator)** - services to catalog analytics services.
@@ -113,10 +116,14 @@ The Egeria core repository contains the core Egeria functionality, and is organi
   * **[platform-services](open-metadata-implementation/platform-services)** - the platform services support REST APIs for the OMAG Server Platform.
 
   * **[repository-services](open-metadata-implementation/repository-services)** - metadata exchange and federation - aka the Open Metadata Repository Services (OMRS).
- 
+
   * **[platform-chassis](open-metadata-implementation/platform-chassis)** - the platform chassis provides the runtime framework for the OMAG Server Platform.
- 
+  * **[platform-services](open-metadata-implementation/platform-services)** - the services for querying the status of the OMAG Server Platform that can run multiple OMAG Servers simultaneously.
+  * **[server-chassis](open-metadata-implementation/server-chassis)** - the service chassis provides the runtime framework for a single OMAG Server.  This is call the OMAG Server Runtime.
+  * **[server-operations](open-metadata-implementation/server-operations)** - the services to start and stop OMAG Server's in either the OMAG Server Runtime or OMAG Server Platform.
+
   * **[user-interfaces](open-metadata-implementation/user-interfaces)** - browser based user interfaces.
+  * **[user-security](open-metadata-implementation/user-security)** - support for authenticating users calling through the UIs.
  
   * **[view-services](open-metadata-implementation/view-services)** - services that provide services for user interfaces.  These run in the [View Server](https://egeria-project.org/concepts/view-server) OMAG Server.
 

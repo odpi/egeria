@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworkservices.gaf.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
@@ -43,7 +44,7 @@ public class OpenMetadataStoreResource
 
     /**
      * Returns the list of different types of metadata organized into two groups.  The first are the
-     * attribute type definitions (AttributeTypeDefs).  These provide types for properties in full
+     * attribute type definitions (AttributeTypeDefs).  These provide types for attributes in full
      * type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
      * and classifications.
      *
@@ -55,7 +56,12 @@ public class OpenMetadataStoreResource
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @GetMapping(path = "/open-metadata-types/all")
+    @GetMapping(path = "/open-metadata-types")
+
+    @Operation(summary="getAllTypes",
+            description="Return the list of types loaded into this server.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/"))
 
     public TypeDefGalleryResponse getAllTypes(@PathVariable String   serverName,
                                               @PathVariable String   serviceURLMarker,
@@ -80,6 +86,11 @@ public class OpenMetadataStoreResource
      */
     @GetMapping(path = "/open-metadata-types/category/{category}")
 
+    @Operation(summary="findTypeDefsByCategory",
+            description="Returns all the TypeDefs for a specific category.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/"))
+
     public TypeDefListResponse findTypeDefsByCategory(@PathVariable String                      serverName,
                                                       @PathVariable String                      serviceURLMarker,
                                                       @PathVariable String                      userId,
@@ -103,6 +114,11 @@ public class OpenMetadataStoreResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-attribute-types/category/{category}")
+
+    @Operation(summary="findAttributeTypeDefsByCategory",
+            description="Returns all the AttributeTypeDefs for a specific category.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/"))
 
     public AttributeTypeDefListResponse findAttributeTypeDefsByCategory(@PathVariable String                               serverName,
                                                                         @PathVariable String                               serviceURLMarker,
@@ -130,6 +146,11 @@ public class OpenMetadataStoreResource
      */
     @GetMapping(path = "/open-metadata-types/external-id")
 
+    @Operation(summary="findTypesByExternalId",
+            description="Return the types that are linked to the elements from the specified standard.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/"))
+
     public TypeDefListResponse findTypesByExternalId(@PathVariable                   String    serverName,
                                                      @PathVariable                   String    serviceURLMarker,
                                                      @PathVariable                   String    userId,
@@ -138,6 +159,36 @@ public class OpenMetadataStoreResource
                                                      @RequestParam(required = false) String    identifier)
     {
         return restAPI.findTypesByExternalId(serverName, serviceURLMarker, userId, standard, organization, identifier);
+    }
+
+
+    /**
+     * Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the
+     * type has no subtypes.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId unique identifier for requesting user.
+     * @param typeName name of type to retrieve against.
+     * @return TypeDefsGalleryResponse:
+     * A list of types or
+     * InvalidParameterException all attributes of the external id are null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @GetMapping(path = "/open-metadata-types/sub-types")
+
+    @Operation(summary="getSubTypes",
+            description="Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the type has no subtypes.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/"))
+
+    public TypeDefListResponse getSubTypes(@PathVariable String serverName,
+                                           @PathVariable String serviceURLMarker,
+                                           @PathVariable String userId,
+                                           @RequestParam String typeName)
+    {
+        return restAPI.getSubTypes(serverName, serviceURLMarker, userId, typeName);
     }
 
 
@@ -157,6 +208,11 @@ public class OpenMetadataStoreResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/guid/{guid}")
+
+    @Operation(summary="getTypeDefByGUID",
+            description="Return the TypeDef identified by the GUID.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/"))
 
     public TypeDefResponse getTypeDefByGUID(@PathVariable String    serverName,
                                             @PathVariable String    serviceURLMarker,
@@ -184,6 +240,11 @@ public class OpenMetadataStoreResource
      */
     @GetMapping(path = "/open-metadata-attribute-types/guid/{guid}")
 
+    @Operation(summary="getAttributeTypeDefByGUID",
+            description="Return the AttributeTypeDef identified by the GUID.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/"))
+
     public AttributeTypeDefResponse getAttributeTypeDefByGUID(@PathVariable String    serverName,
                                                               @PathVariable String    serviceURLMarker,
                                                               @PathVariable String    userId,
@@ -191,7 +252,6 @@ public class OpenMetadataStoreResource
     {
         return restAPI.getAttributeTypeDefByGUID(serverName, serviceURLMarker, userId, guid);
     }
-
 
 
     /**
@@ -210,6 +270,11 @@ public class OpenMetadataStoreResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/name/{name}")
+
+    @Operation(summary="getTypeDefByName",
+            description="Return the TypeDef identified by the unique name.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/"))
 
     public TypeDefResponse getTypeDefByName(@PathVariable String    serverName,
                                             @PathVariable String    serviceURLMarker,
@@ -236,6 +301,11 @@ public class OpenMetadataStoreResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-attribute-types/name/{name}")
+
+    @Operation(summary="getAttributeTypeDefByName",
+            description="Return the AttributeTypeDef identified by the unique name.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/"))
 
     public  AttributeTypeDefResponse getAttributeTypeDefByName(@PathVariable String    serverName,
                                                                @PathVariable String    serviceURLMarker,
@@ -264,6 +334,11 @@ public class OpenMetadataStoreResource
      */
     @GetMapping(path = "/metadata-elements/{elementGUID}")
 
+    @Operation(summary="getMetadataElementByGUID",
+            description="Retrieve the metadata element using its unique identifier.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
     public OpenMetadataElementResponse getMetadataElementByGUID(@PathVariable String  serverName,
                                                                 @PathVariable String  serviceURLMarker,
                                                                 @PathVariable String  userId,
@@ -272,7 +347,8 @@ public class OpenMetadataStoreResource
                                                                               boolean forLineage,
                                                                 @RequestParam (required = false, defaultValue = "false")
                                                                               boolean forDuplicateProcessing,
-                                                                @RequestParam long    effectiveTime)
+                                                                @RequestParam (required = false, defaultValue = "0")
+                                                                              long    effectiveTime)
     {
         return restAPI.getMetadataElementByGUID(serverName, serviceURLMarker, userId, elementGUID, forLineage, forDuplicateProcessing, effectiveTime);
     }
@@ -294,6 +370,11 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/by-unique-name")
+
+    @Operation(summary="getMetadataElementByUniqueName",
+            description="Retrieve the metadata element using its unique name (typically the qualified name, but it is possible to specify a different property name in the request body as long as it is unique).  If multiple matching instances are found, and exception is thrown.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
 
     public OpenMetadataElementResponse getMetadataElementByUniqueName(@PathVariable String          serverName,
                                                                       @PathVariable String          serviceURLMarker,
@@ -324,6 +405,11 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/guid-by-unique-name")
+
+    @Operation(summary="getMetadataElementGUIDByUniqueName",
+            description="Retrieve the metadata element GUID using its unique name (typically the qualified name, but it is possible to specify a different property name in the request body as long as it is unique).  If multiple matching instances are found, and exception is thrown.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
 
     public GUIDResponse getMetadataElementGUIDByUniqueName(@PathVariable String          serverName,
                                                            @PathVariable String          serviceURLMarker,
@@ -356,6 +442,11 @@ public class OpenMetadataStoreResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/by-search-string")
+
+    @Operation(summary="findMetadataElementsWithString",
+            description="Retrieve the metadata elements that contain the requested string.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
 
     public OpenMetadataElementsResponse findMetadataElementsWithString(@PathVariable String                  serverName,
                                                                        @PathVariable String                  serviceURLMarker,
@@ -395,6 +486,11 @@ public class OpenMetadataStoreResource
      */
     @GetMapping(path = "/related-elements/{elementGUID}/any-type")
 
+    @Operation(summary="getAllRelatedMetadataElements",
+            description="Retrieve the metadata elements connected to the supplied element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/gaf-metadata-management/"))
+
     public RelatedMetadataElementListResponse getAllRelatedMetadataElements(@PathVariable String  serverName,
                                                                             @PathVariable String  serviceURLMarker,
                                                                             @PathVariable String  userId,
@@ -427,7 +523,7 @@ public class OpenMetadataStoreResource
 
 
     /**
-     * Retrieve the metadata elements connected to the supplied element.
+     * Retrieve the metadata elements connected to the supplied element via a specific relationship type.
      *
      * @param serverName     name of server instance to route request to
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
@@ -482,7 +578,7 @@ public class OpenMetadataStoreResource
 
 
     /**
-     * Retrieve the relationships linking to the supplied elements.
+     * Retrieve the relationships linking the supplied elements.
      *
      * @param serverName     name of server instance to route request to
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
@@ -533,7 +629,7 @@ public class OpenMetadataStoreResource
 
 
     /**
-     * Retrieve the metadata elements connected to the supplied element.
+     * Retrieve the relationships linking the supplied elements via a specific type of relationship.
      *
      * @param serverName     name of server instance to route request to
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
@@ -643,7 +739,7 @@ public class OpenMetadataStoreResource
      *  UserNotAuthorizedException the governance action service is not able to access the elements
      *  PropertyServerException there is a problem accessing the metadata store
      */
-    @PostMapping(path = "/related-elements/by-search-specification")
+    @PostMapping(path = "/relationships/by-search-specification")
 
     public RelatedMetadataElementsListResponse findRelationshipsBetweenMetadataElements(@PathVariable String          serverName,
                                                                                         @PathVariable String          serviceURLMarker,
@@ -658,7 +754,7 @@ public class OpenMetadataStoreResource
                                                                                                       int             startFrom,
                                                                                         @RequestParam  (required = false, defaultValue = "0")
                                                                                                       int             pageSize,
-                                                                                        @RequestBody  FindRequestBody requestBody)
+                                                                                        @RequestBody  FindRelationshipRequestBody requestBody)
     {
         return restAPI.findRelationshipsBetweenMetadataElements(serverName, serviceURLMarker, userId, forLineage, forDuplicateProcessing, effectiveTime, startFrom, pageSize, requestBody);
     }
@@ -680,7 +776,7 @@ public class OpenMetadataStoreResource
      *  UserNotAuthorizedException the governance action service is not able to access the element
      *  PropertyServerException there is a problem accessing the metadata store
      */
-    @GetMapping(path = "/related-elements/relationship/{relationshipGUID}")
+    @GetMapping(path = "/relationships/by-guid/{relationshipGUID}")
 
     public RelatedMetadataElementsResponse getRelationshipByGUID(@PathVariable String  serverName,
                                                                  @PathVariable String  serviceURLMarker,
@@ -713,7 +809,7 @@ public class OpenMetadataStoreResource
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of element
      *  PropertyServerException there is a problem with the metadata store
      */
-    @PostMapping(path = "/metadata-elements/new")
+    @PostMapping(path = "/metadata-elements")
 
     public GUIDResponse createMetadataElementInStore(@PathVariable String                        serverName,
                                                      @PathVariable String                        serviceURLMarker,
@@ -721,6 +817,31 @@ public class OpenMetadataStoreResource
                                                      @RequestBody  NewMetadataElementRequestBody requestBody)
     {
         return restAPI.createMetadataElementInStore(serverName, serviceURLMarker, userId, requestBody);
+    }
+
+
+    /**
+     * Create a new metadata element in the metadata store using a template.  The type name comes from the open metadata types.
+     * The selected type also controls the names and types of the properties that are allowed.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId caller's userId
+     * @param requestBody properties for the new element
+     *
+     * @return unique identifier of the new metadata element
+     *  InvalidParameterException the type name, status or one of the properties is invalid
+     *  UserNotAuthorizedException the governance action service is not authorized to create this type of element
+     *  PropertyServerException there is a problem with the metadata store
+     */
+    @PostMapping(path = "/metadata-elements/from-template")
+
+    public GUIDResponse createMetadataElementFromTemplate(@PathVariable String              serverName,
+                                                          @PathVariable String              serviceURLMarker,
+                                                          @PathVariable String              userId,
+                                                          @RequestBody  TemplateRequestBody requestBody)
+    {
+        return restAPI.createMetadataElementFromTemplate(serverName, serviceURLMarker, userId, requestBody);
     }
 
 
@@ -876,7 +997,7 @@ public class OpenMetadataStoreResource
      *  UserNotAuthorizedException the governance action service is not authorized to update this element
      *  PropertyServerException there is a problem with the metadata store
      */
-    @PostMapping(path = "/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/new")
+    @PostMapping(path = "/metadata-elements/{metadataElementGUID}/classifications/{classificationName}")
 
     public VoidResponse classifyMetadataElementInStore(@PathVariable String                       serverName,
                                                        @PathVariable String                       serviceURLMarker,
@@ -990,7 +1111,7 @@ public class OpenMetadataStoreResource
      *  UserNotAuthorizedException the governance action service is not authorized to create this type of relationship
      *  PropertyServerException there is a problem with the metadata store
      */
-    @PostMapping(path = "/related-elements/new")
+    @PostMapping(path = "/related-elements")
 
     public GUIDResponse createRelatedElementsInStore(@PathVariable String                        serverName,
                                                      @PathVariable String                        serviceURLMarker,
@@ -1078,55 +1199,6 @@ public class OpenMetadataStoreResource
                                                      @RequestBody  UpdateRequestBody requestBody)
     {
         return restAPI.deleteRelatedElementsInStore(serverName, serviceURLMarker, userId, relationshipGUID, requestBody);
-    }
-
-
-    /**
-     * Create an incident report to capture the situation detected by this governance action service.
-     * This incident report will be processed by other governance activities.
-     *
-     * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param userId caller's userId
-     * @param requestBody properties for the new incident report
-     *
-     * @return unique identifier of the resulting incident report or
-     *  InvalidParameterException null or non-unique qualified name for the incident report
-     *  UserNotAuthorizedException this governance action service is not authorized to create an incident report
-     *  PropertyServerException there is a problem with the metadata store
-     */
-    @PostMapping(path = "/incident-reports")
-
-    public GUIDResponse createIncidentReport(@PathVariable String                    serverName,
-                                             @PathVariable String                    serviceURLMarker,
-                                             @PathVariable String                    userId,
-                                             @RequestBody  IncidentReportRequestBody requestBody)
-    {
-        return restAPI.createIncidentReport(serverName, serviceURLMarker, userId, requestBody);
-    }
-
-
-    /**
-     * Create a To-Do request for someone to work on.
-     *
-     * @param serverName     name of server instance to route request to
-     * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param userId caller's userId
-     * @param requestBody unique name for the to do and other characteristics
-     *
-     * @return unique identifier of new to do element or
-     * InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
-     * UserNotAuthorizedException the governance action service is not authorized to create a to-do
-     * PropertyServerException there is a problem connecting to (or inside) the metadata store
-     */
-    @PostMapping(path = "/to-dos")
-
-    public GUIDResponse openToDo(@PathVariable String          serverName,
-                                 @PathVariable String          serviceURLMarker,
-                                 @PathVariable String          userId,
-                                 @RequestBody  ToDoRequestBody requestBody)
-    {
-        return restAPI.openToDo(serverName, serviceURLMarker, userId, requestBody);
     }
 
 

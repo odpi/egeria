@@ -74,42 +74,6 @@ public class CertificationHandler<B> extends GovernanceDefinitionHandler<B>
 
 
     /**
-     * Count the number of Certifications attached to a referenceable entity.
-     *
-     * @param userId     calling user
-     * @param connectedEntityGUID identifier for the entity that the object is attached to
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     * @return count of attached objects
-     * @throws InvalidParameterException  the parameters are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public int countCertifications(String  userId,
-                                   String  connectedEntityGUID,
-                                   boolean forLineage,
-                                   boolean forDuplicateProcessing,
-                                   Date    effectiveTime,
-                                   String  methodName) throws InvalidParameterException,
-                                                               PropertyServerException,
-                                                               UserNotAuthorizedException
-    {
-        return super.countAttachments(userId,
-                                      connectedEntityGUID,
-                                      OpenMetadataType.REFERENCEABLE.typeName,
-                                      OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_GUID,
-                                      OpenMetadataType.CERTIFICATION_OF_REFERENCEABLE_TYPE_NAME,
-                                      2,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      effectiveTime,
-                                      methodName);
-    }
-
-
-    /**
      * Return the Certifications attached to a referenceable entity.
      *
      * @param userId     calling user

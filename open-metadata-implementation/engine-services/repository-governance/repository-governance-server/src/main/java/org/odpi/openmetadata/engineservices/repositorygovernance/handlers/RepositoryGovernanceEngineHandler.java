@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.repositorygovernance.handlers;
 
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceContextClient;
-import org.odpi.openmetadata.accessservices.governanceengine.client.GovernanceEngineConfigurationClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceContextClient;
+import org.odpi.openmetadata.accessservices.governanceserver.client.GovernanceEngineConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -12,7 +12,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTarget
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceCache;
-import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceHandler;
 import org.odpi.openmetadata.repositoryservices.clients.EnterpriseRepositoryServicesClient;
 
 import java.util.*;
@@ -35,7 +34,7 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
      * @param serverName the name of the engine host server where the repository governance engine is running
      * @param serverUserId user id for the server to use
      * @param configurationClient client to retrieve the configuration
-     * @param serverClient client used by the engine host services to control the execution of governance action requests
+     * @param engineActionClient client used by the engine host services to control the execution of governance action requests
      * @param repositoryGovernanceEngineClient REST client for direct REST Calls to OMRS - used by repository governance services
      * @param auditLog logging destination
      * @param maxPageSize maximum number of results that can be returned in a single request
@@ -44,7 +43,7 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
                                              String                              serverName,
                                              String                              serverUserId,
                                              GovernanceEngineConfigurationClient configurationClient,
-                                             GovernanceContextClient             serverClient,
+                                             GovernanceContextClient             engineActionClient,
                                              EnterpriseRepositoryServicesClient  repositoryGovernanceEngineClient,
                                              AuditLog                            auditLog,
                                              int                                 maxPageSize)
@@ -54,7 +53,7 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
               serverUserId,
               EngineServiceDescription.REPOSITORY_GOVERNANCE_OMES.getEngineServiceFullName(),
               configurationClient,
-              serverClient,
+              engineActionClient,
               auditLog,
               maxPageSize);
 
@@ -67,24 +66,26 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
      *
      * @param engineActionGUID unique identifier of the asset to analyse
      * @param governanceRequestType governance request type to use when calling the governance engine
-     * @param startDate date/time to start the governance action service
+     * @param requesterUserId original user requesting this governance service
+     * @param requestedStartDate date/time to start the governance action service
      * @param requestParameters name-value properties to control the governance action service
      * @param requestSourceElements metadata elements associated with the request to the governance action service
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
      *
-     * @return service handler for this request
-     *
      * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem detected by the governance action engine.
      */
     @Override
-    public GovernanceServiceHandler runGovernanceService(String                     engineActionGUID,
-                                                         String                     governanceRequestType,
-                                                         Date                       startDate,
-                                                         Map<String, String>        requestParameters,
-                                                         List<RequestSourceElement> requestSourceElements,
-                                                         List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,
-                                                                                                                 PropertyServerException
+    public void runGovernanceService(String                     engineActionGUID,
+                                     String                     governanceRequestType,
+                                     String                     requesterUserId,
+                                     Date                       requestedStartDate,
+                                     Map<String, String>        requestParameters,
+                                     List<RequestSourceElement> requestSourceElements,
+                                     List<ActionTargetElement>  actionTargetElements) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
         final String methodName = "runGovernanceService";
 
@@ -97,18 +98,17 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
             RepositoryGovernanceServiceHandler repositoryGovernanceServiceHandler = this.getRepositoryGovernanceServiceHandler(governanceServiceCache.getGovernanceServiceName(),
                                                                                                                                governanceServiceCache.getServiceRequestType(),
                                                                                                                                governanceServiceCache.getRequestParameters(requestParameters),
+                                                                                                                               requesterUserId,
                                                                                                                                requestSourceElements,
                                                                                                                                actionTargetElements,
                                                                                                                                engineActionGUID,
+                                                                                                                               requestedStartDate,
                                                                                                                                governanceServiceCache);
 
-            Thread thread = new Thread(repositoryGovernanceServiceHandler, governanceServiceCache.getGovernanceServiceName() + new Date());
-            thread.start();
-
-            return repositoryGovernanceServiceHandler;
+            startServiceExecutionThread(engineActionGUID,
+                                        repositoryGovernanceServiceHandler,
+                                        governanceServiceCache.getGovernanceServiceName() + new Date());
         }
-
-        return null;
     }
 
 
@@ -118,9 +118,11 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
      * @param repositoryGovernanceServiceName name of repository governance service
      * @param repositoryGovernanceRequestType type of repository governance request
      * @param requestParameters name-value properties to control the governance action service
+     * @param requesterUserId original user requesting this governance service
      * @param requestSourceElements metadata elements associated with the request to the governance action service
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
-     * @param governanceActionGUID unique identifier of the associated governance action entity
+     * @param engineActionGUID unique identifier of the associated engine action entity
+     * @param requestedStartDate date/time that the governance service should start executing
      * @param governanceServiceCache factory for repository governance services
      *
      * @return unique identifier for this request.
@@ -131,9 +133,11 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
     private RepositoryGovernanceServiceHandler getRepositoryGovernanceServiceHandler(String                     repositoryGovernanceServiceName,
                                                                                      String                     repositoryGovernanceRequestType,
                                                                                      Map<String, String>        requestParameters,
+                                                                                     String                     requesterUserId,
                                                                                      List<RequestSourceElement> requestSourceElements,
                                                                                      List<ActionTargetElement>  actionTargetElements,
-                                                                                     String                     governanceActionGUID,
+                                                                                     String                     engineActionGUID,
+                                                                                     Date                       requestedStartDate,
                                                                                      GovernanceServiceCache     governanceServiceCache) throws InvalidParameterException,
                                                                                                                                                PropertyServerException
     {
@@ -141,6 +145,7 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
                                                                                                                 repositoryGovernanceServiceName,
                                                                                                                 repositoryGovernanceRequestType,
                                                                                                                 requestParameters,
+                                                                                                                requesterUserId,
                                                                                                                 requestSourceElements,
                                                                                                                 actionTargetElements,
                                                                                                                 repositoryGovernanceEngineClient);
@@ -148,13 +153,14 @@ public class RepositoryGovernanceEngineHandler extends GovernanceEngineHandler
         RepositoryGovernanceServiceHandler repositoryGovernanceServiceHandler = new RepositoryGovernanceServiceHandler(governanceEngineProperties,
                                                                                                                        governanceEngineGUID,
                                                                                                                        serverUserId,
-                                                                                                                       governanceActionGUID,
-                                                                                                                       serverClient,
+                                                                                                                       engineActionGUID,
+                                                                                                                       engineActionClient,
                                                                                                                        repositoryGovernanceRequestType,
                                                                                                                        governanceServiceCache.getGovernanceServiceGUID(),
                                                                                                                        governanceServiceCache.getGovernanceServiceName(),
                                                                                                                        governanceServiceCache.getNextGovernanceService(),
                                                                                                                        repositoryGovernanceContext,
+                                                                                                                       requestedStartDate,
                                                                                                                        auditLog);
 
         repositoryGovernanceContext.setRepositoryGovernanceServiceHandler(repositoryGovernanceServiceHandler);

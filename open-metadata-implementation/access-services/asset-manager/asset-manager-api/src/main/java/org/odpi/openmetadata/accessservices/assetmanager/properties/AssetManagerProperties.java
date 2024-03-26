@@ -49,7 +49,7 @@ public class AssetManagerProperties extends SoftwareCapabilitiesProperties
         return "AssetManagerProperties{" +
                        "technicalName='" + getTechnicalName() + '\'' +
                        ", technicalDescription='" + getTechnicalDescription() + '\'' +
-                       ", typeDescription='" + getTypeDescription() + '\'' +
+                       ", typeDescription='" + getDeployedImplementationType() + '\'' +
                        ", version='" + getVersion() + '\'' +
                        ", patchLevel='" + getPatchLevel() + '\'' +
                        ", source='" + getSource() + '\'' +

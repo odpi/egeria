@@ -79,6 +79,7 @@ public class ValidValueConverter<B> extends AssetManagerConverterBase<B>
                     validValueProperties.setIsDeprecated(this.removeIsDeprecated(elementProperties));
                     validValueProperties.setIsDeprecated(this.removeIsCaseSensitive(elementProperties));
                     validValueProperties.setPreferredValue(this.removePreferredValue(elementProperties));
+                    validValueProperties.setDataType(this.removeDataType(elementProperties));
                     validValueProperties.setEffectiveFrom(openMetadataElement.getEffectiveFromTime());
                     validValueProperties.setEffectiveTo(openMetadataElement.getEffectiveToTime());
 

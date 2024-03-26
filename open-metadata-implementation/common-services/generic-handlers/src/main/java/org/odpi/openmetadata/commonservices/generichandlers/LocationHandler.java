@@ -207,6 +207,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                                               serviceName,
                                                               serverName);
 
+        locationBuilder.setAnchors(userId, null, OpenMetadataType.LOCATION_TYPE_NAME, methodName);
+
+
         return this.createBeanFromTemplate(userId,
                                            externalSourceGUID,
                                            externalSourceName,
@@ -218,6 +221,9 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataProperty.QUALIFIED_NAME.name,
                                            locationBuilder,
                                            supportedZones,
+                                           true,
+                                           false,
+                                           null,
                                            methodName);
     }
 
@@ -1309,43 +1315,6 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
     }
 
 
-
-    /**
-     * Count the number of locations attached to an entity.
-     *
-     * @param userId     calling user
-     * @param elementGUID identifier for the entity that the object is attached to
-     * @param methodName calling method
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @return count of attached objects
-     * @throws InvalidParameterException  the parameters are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public int countKnownLocations(String  userId,
-                                   String  elementGUID,
-                                   boolean forLineage,
-                                   boolean forDuplicateProcessing,
-                                   Date    effectiveTime,
-                                   String  methodName) throws InvalidParameterException,
-                                                              PropertyServerException,
-                                                              UserNotAuthorizedException
-    {
-        return super.countAttachments(userId,
-                                      elementGUID,
-                                      OpenMetadataType.ASSET.typeName,
-                                      OpenMetadataType.ASSET_LOCATION_TYPE_GUID,
-                                      OpenMetadataType.ASSET_LOCATION_TYPE_NAME,
-                                      1,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      effectiveTime,
-                                      methodName);
-    }
-
-
     /**
      * Return the locations attached to an asset.
      *
@@ -1616,7 +1585,7 @@ public class LocationHandler<B> extends ReferenceableHandler<B>
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
-        specificMatchPropertyNames.add(OpenMetadataType.IDENTIFIER_PROPERTY_NAME);
+        specificMatchPropertyNames.add(OpenMetadataProperty.IDENTIFIER.name);
         specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
 
         return this.getBeansByValue(userId,

@@ -30,8 +30,6 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
     private final AssetHandler<OpenMetadataAPIDummyBean>         assetHandler;
     private final CommentHandler<OpenMetadataAPIDummyBean>       commentHandler;
     private final ConnectionHandler<OpenMetadataAPIDummyBean>    connectionHandler;
-    private final ConnectorTypeHandler<OpenMetadataAPIDummyBean> connectorTypeHandler;
-    private final EndpointHandler<OpenMetadataAPIDummyBean>      endpointHandler;
     private final GlossaryTermHandler<MeaningElement>            glossaryTermHandler;
     private final InformalTagHandler<InformalTagElement>         informalTagHandler;
     private final LikeHandler<OpenMetadataAPIDummyBean>          likeHandler;
@@ -39,12 +37,14 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
     private final LoggingHandler                                 loggingHandler;
 
     /**
-     * Set up the handlers for this server.
+     * Set up the handlers for this server.  They reflect the range of open metadata elements returned
+     * by this OMAS.
      *
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
      * @param supportedZones list of zones that AssetConsumer is allowed to serve Assets from.
      * @param auditLog destination for audit log events.
      * @param localServerUserId userId used for server initiated actions
+     * @param supportedTypesForSearch affects the list of supported asset types seen by the caller
      * @param maxPageSize maximum number of results that can be returned on a single call
      * @param outTopicEventBusConnection inner event bus connection to use to build topic connection to send to client if they which
      *                                   to listen on the out topic.
@@ -54,6 +54,7 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
                                          List<String>            supportedZones,
                                          AuditLog                auditLog,
                                          String                  localServerUserId,
+                                         List<String>            supportedTypesForSearch,
                                          int                     maxPageSize,
                                          Connection              outTopicEventBusConnection) throws NewInstanceException
     {
@@ -91,6 +92,7 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
                                                    supportedZones,
                                                    defaultZones,
                                                    publishZones,
+                                                   supportedTypesForSearch,
                                                    auditLog);
 
             this.commentHandler = new CommentHandler<>(dummyConverter,
@@ -120,34 +122,6 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
                                                              defaultZones,
                                                              publishZones,
                                                              auditLog);
-
-            this.connectorTypeHandler = new ConnectorTypeHandler<>(dummyConverter,
-                                                                   OpenMetadataAPIDummyBean.class,
-                                                                   serviceName,
-                                                                   serverName,
-                                                                   invalidParameterHandler,
-                                                                   repositoryHandler,
-                                                                   repositoryHelper,
-                                                                   localServerUserId,
-                                                                   securityVerifier,
-                                                                   supportedZones,
-                                                                   defaultZones,
-                                                                   publishZones,
-                                                                   auditLog);
-
-            this.endpointHandler = new EndpointHandler<>(dummyConverter,
-                                                         OpenMetadataAPIDummyBean.class,
-                                                         serviceName,
-                                                         serverName,
-                                                         invalidParameterHandler,
-                                                         repositoryHandler,
-                                                         repositoryHelper,
-                                                         localServerUserId,
-                                                         securityVerifier,
-                                                         supportedZones,
-                                                         defaultZones,
-                                                         publishZones,
-                                                         auditLog);
 
             this.glossaryTermHandler = new GlossaryTermHandler<>(new MeaningConverter<>(repositoryHelper, serviceName, serverName),
                                                                  MeaningElement.class,
@@ -271,38 +245,6 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return connectionHandler;
-    }
-
-
-    /**
-     * Return the handler for managing connector type objects.
-     *
-     * @return  handler object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    ConnectorTypeHandler<OpenMetadataAPIDummyBean> getConnectorTypeHandler() throws PropertyServerException
-    {
-        final String methodName = "getConnectorTypeHandler";
-
-        validateActiveRepository(methodName);
-
-        return connectorTypeHandler;
-    }
-
-
-    /**
-     * Return the handler for managing endpoint objects.
-     *
-     * @return  handler object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    EndpointHandler<OpenMetadataAPIDummyBean> getEndpointHandler() throws PropertyServerException
-    {
-        final String methodName = "getEndpointHandler";
-
-        validateActiveRepository(methodName);
-
-        return endpointHandler;
     }
 
 

@@ -11,6 +11,7 @@ import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInsta
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworkservices.oif.ffdc.OpenIntegrationErrorCode;
+import org.odpi.openmetadata.frameworkservices.oif.handlers.IntegrationGroupConfigurationHandler;
 import org.odpi.openmetadata.frameworkservices.oif.handlers.OpenIntegrationHandler;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -24,7 +25,8 @@ public class OpenIntegrationInstance extends OMASServiceInstance
     private final static CommonServicesDescription myDescription = CommonServicesDescription.OIF_METADATA_MANAGEMENT;
 
     private final SoftwareCapabilityHandler<Object> metadataSourceHandler;
-    private final OpenIntegrationHandler            openIntegrationHandler;
+    private final OpenIntegrationHandler               openIntegrationHandler;
+    private final IntegrationGroupConfigurationHandler integrationGroupConfigurationHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -84,6 +86,18 @@ public class OpenIntegrationInstance extends OMASServiceInstance
                                                                      defaultZones,
                                                                      publishZones,
                                                                      auditLog);
+
+            this.integrationGroupConfigurationHandler = new IntegrationGroupConfigurationHandler(serviceName,
+                                                                                                 serverName,
+                                                                                                 invalidParameterHandler,
+                                                                                                 repositoryHandler,
+                                                                                                 repositoryHelper,
+                                                                                                 localServerUserId,
+                                                                                                 securityVerifier,
+                                                                                                 supportedZones,
+                                                                                                 defaultZones,
+                                                                                                 publishZones,
+                                                                                                 auditLog);
         }
         else
         {
@@ -123,5 +137,21 @@ public class OpenIntegrationInstance extends OMASServiceInstance
         validateActiveRepository(methodName);
 
         return openIntegrationHandler;
+    }
+
+
+    /**
+     * Return the handler for integration group configuration requests.
+     *
+     * @return handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    IntegrationGroupConfigurationHandler getGovernanceConfigurationHandler() throws PropertyServerException
+    {
+        final String methodName = "getGovernanceConfigurationHandler";
+
+        validateActiveRepository(methodName);
+
+        return integrationGroupConfigurationHandler;
     }
 }

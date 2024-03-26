@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
-  
-# Open Metadata View Services (OMVS)
 
-![In Development](../../../images/egeria-content-status-in-development.png)
+![Technical Preview](../../../images/egeria-content-status-tech-preview.png)
+
+# Open Metadata View Services (OMVS)
 
 Develop an explorer interface to support the Type Explorer UI, which enables a technical user (such as an Enterprise Architect) to 
 retrieve open metadata type information from repositories and explore the attributes of each type and the possible combinations of 

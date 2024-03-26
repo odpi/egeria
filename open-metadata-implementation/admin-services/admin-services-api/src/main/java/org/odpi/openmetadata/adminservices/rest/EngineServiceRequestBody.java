@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig;
 
+import java.io.Serial;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -23,7 +24,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class EngineServiceRequestBody extends OMAGServerClientConfig
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private Map<String, Object> engineServiceOptions = null;
     private List<EngineConfig>  engines              = null;

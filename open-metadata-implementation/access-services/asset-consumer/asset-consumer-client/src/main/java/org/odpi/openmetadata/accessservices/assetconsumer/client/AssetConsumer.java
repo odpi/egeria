@@ -44,14 +44,11 @@ import java.util.List;
  * connection to the appropriate method to retrieve a connector.  The Asset Consumer OMAS retrieves the connection
  * from the metadata repository and creates an appropriate connector as described the connection and
  * returns it to the caller.
- *
  * The Asset Consumer OMAS supports access to the asset properties either through the connector, or by a direct
  * call to Asset Consumer API.  It is also possible to look up the definitions of terms associated with the assets.
- *
  * It supports the ability to add and remove feedback for an asset.
  * This feedback may be in the form of reviews, likes and comments.
  * Asset Consumer OMAS also supports the maintenance of informal tags and their attachments to assets.
- *
  * Finally, Asset Consumer OMAS supports the ability to add audit log records to the local server's audit log
  * about an asset.
  */
@@ -374,7 +371,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @return a list of unique identifiers for the matching assets
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
+     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
@@ -424,7 +421,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @return a comprehensive collection of properties about the asset.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
+     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
@@ -838,7 +835,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                          UserNotAuthorizedException
     {
         final String   methodName = "getMeaningByName";
-        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/meanings/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/meanings/by-name?startFrom={2}&pageSize={3}";
         final String   nameParameter = "term";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -883,7 +880,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                      UserNotAuthorizedException
     {
         final String   methodName = "findMeanings";
-        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/meanings/by-search-string/{2}?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/meanings/by-search-string?startFrom={2}&pageSize={3}";
         final String   nameParameter = "term";
 
         invalidParameterHandler.validateUserId(userId, methodName);

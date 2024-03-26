@@ -58,9 +58,8 @@ public class DataFileConverter<B> extends AssetOwnerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof FileElement)
+            if (returnBean instanceof FileElement bean)
             {
-                FileElement bean = (FileElement) returnBean;
                 FileProperties fileProperties = new FileProperties();
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));

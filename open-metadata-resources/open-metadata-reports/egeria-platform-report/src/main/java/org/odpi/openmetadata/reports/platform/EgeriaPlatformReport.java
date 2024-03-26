@@ -610,18 +610,18 @@ public class EgeriaPlatformReport
 
                 if (configuration.getOpenLineageServerConfig() != null)
                 {
-                    OMAGServiceDetails currentDetails = serviceDetailsMap.get(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName());
+                    OMAGServiceDetails currentDetails = serviceDetailsMap.get(GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName());
 
                     if (currentDetails == null)
                     {
-                        currentDetails = new OMAGServiceDetails(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName());
+                        currentDetails = new OMAGServiceDetails(GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName());
                     }
 
                     currentDetails.setPartnerService(configuration.getOpenLineageServerConfig().getAccessServiceConfig().getServerName(),
                                                      configuration.getOpenLineageServerConfig().getAccessServiceConfig().getServerPlatformUrlRoot(),
                                                      AccessServiceDescription.ASSET_LINEAGE_OMAS.getAccessServiceFullName());
 
-                    serviceDetailsMap.put(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
+                    serviceDetailsMap.put(GovernanceServicesDescription.LINEAGE_WAREHOUSE_SERVICES.getServiceName(),
                                           currentDetails);
                 }
             }

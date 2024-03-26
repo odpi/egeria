@@ -5,11 +5,10 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.remediation;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
-import org.odpi.openmetadata.frameworks.governanceaction.actiontargettype.ActionTargetType;
-import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -23,20 +22,8 @@ public class ZonePublisherGovernanceActionProvider extends GovernanceActionServi
     private static final String  connectorTypeDisplayName = "Zone Publisher Governance Action Service";
     private static final String  connectorTypeDescription = "Assigns the configured zone(s) to the requested asset.";
 
-    static final String PUBLISH_ZONES_PROPERTY = "publishZones";
-
-
-    static final String ZONE_ASSIGNED_GUARD          = "zone-assigned";
-    static final String NO_ZONES_DETECTED_GUARD      = "no-zones-detected";
-    static final String NO_TARGETS_DETECTED_GUARD    = "no-targets-detected";
-    static final String ZONE_PUBLISHING_FAILED_GUARD = "zone-publishing-failed";
-
     private static final String connectorClassName = ZonePublisherGovernanceActionConnector.class.getName();
 
-    /**
-     * Name of the target action where the asset's unique identifier.
-     */
-    private static final String ACTION_TARGET_NAME      = "assetGUID";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -47,14 +34,15 @@ public class ZonePublisherGovernanceActionProvider extends GovernanceActionServi
         super();
         super.setConnectorClassName(connectorClassName);
 
-        supportedRequestParameters = new ArrayList<>();
-        supportedRequestParameters.add(PUBLISH_ZONES_PROPERTY);
+        supportedRequestParameters = ZonePublisherRequestParameter.getRequestParameterTypes();
 
-        supportedGuards = new ArrayList<>();
-        supportedGuards.add(ZONE_ASSIGNED_GUARD);
-        supportedGuards.add(NO_ZONES_DETECTED_GUARD);
-        supportedGuards.add(NO_TARGETS_DETECTED_GUARD);
-        supportedGuards.add(ZONE_PUBLISHING_FAILED_GUARD);
+        supportedActionTargetTypes = new ArrayList<>();
+
+        ActionTargetType actionTargetType = ActionTarget.ANY_ASSET.getActionTargetType();
+
+        supportedActionTargetTypes.add(actionTargetType);
+
+        producedGuards = ZonePublisherGuard.getGuardTypes();
 
         super.setConnectorClassName(connectorClassName);
 
@@ -66,19 +54,12 @@ public class ZonePublisherGovernanceActionProvider extends GovernanceActionServi
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
+        connectorType.setDeployedImplementationType(supportedDeployedImplementationType);
 
         List<String> recognizedConfigurationProperties = new ArrayList<>();
-        recognizedConfigurationProperties.add(PUBLISH_ZONES_PROPERTY);
+        recognizedConfigurationProperties.add(ZonePublisherRequestParameter.PUBLISH_ZONES.getName());
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 
         super.connectorTypeBean = connectorType;
-
-        actionTargetTypes = new HashMap<>();
-        ActionTargetType actionTargetType = new ActionTargetType();
-
-        actionTargetType.setTypeName(DeployedImplementationType.DATA_ASSET.getAssociatedTypeName());
-        actionTargetType.setDeployedImplementationType(DeployedImplementationType.DATA_ASSET.getDeployedImplementationType());
-
-        super.actionTargetTypes.put(ACTION_TARGET_NAME, actionTargetType);
     }
 }

@@ -161,7 +161,7 @@ public class ConfigMetadataServerSample
         System.out.println();
         System.out.println("Configuration complete");
         System.out.println("  Local Metadata collection id: " + configurationClient.getLocalMetadataCollectionId());
-        System.out.println("  Server classification:        " + configurationClient.getServerClassification().toString());
+        System.out.println("  Server classification:        " + configurationClient.getServerTypeClassification().getServerTypeName());
         System.out.println("  Cohort topic:                 " + configurationClient.getCohortTopicName(cohortName));
         System.out.println("  Access Service topics:        " + configurationClient.getAllAccessServiceTopicNames());
         System.out.println("  Full configuration:           " + configurationClient.getOMAGServerConfig().toString());

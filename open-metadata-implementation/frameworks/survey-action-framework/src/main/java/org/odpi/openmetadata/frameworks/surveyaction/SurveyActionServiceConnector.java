@@ -9,6 +9,13 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
+import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
+import org.odpi.openmetadata.frameworks.connectors.properties.Connections;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.frameworks.surveyaction.ffdc.SAFAuditCode;
 import org.odpi.openmetadata.frameworks.surveyaction.ffdc.SAFErrorCode;
 
 import java.util.ArrayList;
@@ -107,16 +114,77 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
      * method is called.  If called before disconnect(), it may only contain partial results.
      *
      * @return survey context containing the results discovered (so far) by the survey action service.
+     * @throws ConnectorCheckedException the service is no longer active
      */
-    public synchronized SurveyContext getSurveyContext()
+    protected synchronized SurveyContext getSurveyContext() throws ConnectorCheckedException
     {
+        final String methodName = "getSurveyContext";
+
+        validateIsActive(methodName);
         return surveyContext;
     }
 
 
+    protected synchronized AnnotationStore getAnnotationStore() throws ConnectorCheckedException
+    {
+        final String methodName = "getAnnotationStore";
+
+        validateIsActive(methodName);
+        return surveyContext.getAnnotationStore();
+    }
+
+
+    /**
+     * Log that the survey action service can not process the type of asset it has been passed.
+     *
+     * @param assetGUID identifier of the asset
+     * @param assetType type of the asset
+     * @param supportedAssetType supported asset types
+     * @param methodName calling method
+     * @throws ConnectorCheckedException resulting exception
+     */
+    protected void throwWrongTypeOfAsset(String    assetGUID,
+                                         String    assetType,
+                                         String    supportedAssetType,
+                                         String    methodName) throws ConnectorCheckedException
+    {
+        throw new ConnectorCheckedException(SAFErrorCode.INVALID_ASSET_TYPE.getMessageDefinition(assetGUID,
+                                                                                                 assetType,
+                                                                                                 surveyActionServiceName,
+                                                                                                 supportedAssetType),
+                                            this.getClass().getName(),
+                                            methodName);
+    }
+
+
+
+    /**
+     * Verify that the connector is still active.
+     *
+     * @param methodName calling method
+     * @throws ConnectorCheckedException exception thrown if connector is no longer active
+     */
+    private void validateIsActive(String methodName) throws ConnectorCheckedException
+    {
+        if (! isActive())
+        {
+            if (auditLog != null)
+            {
+                auditLog.logMessage(methodName,
+                                    SAFAuditCode.DISCONNECT_DETECTED.getMessageDefinition(surveyActionServiceName));
+            }
+
+            throw new ConnectorCheckedException(SAFErrorCode.DISCONNECT_DETECTED.getMessageDefinition(surveyActionServiceName),
+                                                this.getClass().getName(),
+                                                methodName);
+        }
+    }
+
+
+
     /**
      * Retrieve and validate the list of embedded connectors and cast them to survey action service connector.
-     * This is used by DiscoveryPipelines and DiscoveryScanningServices.
+     * This is used by SurveyPipelines and SurveyScanningServices.
      *
      * @return list of survey action service connectors
      *
@@ -124,7 +192,7 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
      */
     protected List<SurveyActionServiceConnector> getEmbeddedSurveyActionServices() throws ConnectorCheckedException
     {
-        final String           methodName        = "getEmbeddedSurveyActionServices";
+        final String methodName = "getEmbeddedSurveyActionServices";
         
         List<SurveyActionServiceConnector> surveyActionServiceConnectors = null;
 
@@ -210,6 +278,11 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
     @Override
     public  synchronized void disconnect() throws ConnectorCheckedException
     {
+        if (surveyContext!= null)
+        {
+            surveyContext.disconnect();
+        }
+
         super.disconnectConnectors(this.embeddedConnectors);
         super.disconnect();
     }

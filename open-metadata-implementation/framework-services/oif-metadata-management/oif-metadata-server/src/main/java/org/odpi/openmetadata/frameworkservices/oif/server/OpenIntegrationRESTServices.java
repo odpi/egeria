@@ -49,6 +49,7 @@ public class OpenIntegrationRESTServices
      * Retrieve the unique identifier of the external metadata source.
      *
      * @param serverName name of the server to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId calling user
      * @param requestBody unique name of the software capability
      *
@@ -58,6 +59,7 @@ public class OpenIntegrationRESTServices
      * PropertyServerException    problem accessing the property server
      */
     public GUIDResponse getMetadataSourceGUID(String          serverName,
+                                              String          serviceURLMarker,
                                               String          userId,
                                               NameRequestBody requestBody)
     {
@@ -78,8 +80,8 @@ public class OpenIntegrationRESTServices
                 SoftwareCapabilityHandler<Object> handler = instanceHandler.getMetadataSourceHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.getBeanGUIDByQualifiedName(userId,
-                                                                    OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
-                                                                    OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+                                                                    OpenMetadataType.SOFTWARE_CAPABILITY.typeGUID,
+                                                                    OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                     requestBody.getName(),
                                                                     parameterName,
                                                                     false,
@@ -107,6 +109,7 @@ public class OpenIntegrationRESTServices
      * Create a new metadata element to represent a software capability.  This describes the metadata source.
      *
      * @param serverName name of the server to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId calling user
      * @param requestBody properties of the software capability
      *
@@ -115,7 +118,9 @@ public class OpenIntegrationRESTServices
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException    problem accessing the property server
      */
+    @SuppressWarnings(value = "unused")
     public GUIDResponse createMetadataSource(String                    serverName,
+                                             String                    serviceURLMarker,
                                              String                    userId,
                                              MetadataSourceRequestBody requestBody)
     {
@@ -142,7 +147,7 @@ public class OpenIntegrationRESTServices
                                                                   requestBody.getQualifiedName(),
                                                                   null,
                                                                   null,
-                                                                  null,
+                                                                  requestBody.getDeployedImplementationType(),
                                                                   null,
                                                                   null,
                                                                   null,
@@ -176,6 +181,7 @@ public class OpenIntegrationRESTServices
      * Retrieve the identifiers of the metadata elements identified as catalog targets with an integration connector.
      *
      * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId identifier of calling user.
      * @param integrationConnectorGUID unique identifier of the integration connector.
      * @param startingFrom initial position in the stored list.
@@ -187,6 +193,7 @@ public class OpenIntegrationRESTServices
      * PropertyServerException problem retrieving the integration connector definition.
      */
     public CatalogTargetsResponse  getCatalogTargets(String  serverName,
+                                                     String  serviceURLMarker,
                                                      String  userId,
                                                      String  integrationConnectorGUID,
                                                      int     startingFrom,
@@ -221,6 +228,7 @@ public class OpenIntegrationRESTServices
      * Create a new integration report for an element (identified by anchorGUID).
      *
      * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId calling user
      * @param anchorGUID element to attach the integration report to
      * @param anchorTypeName typeName of the anchor for the integration report
@@ -232,6 +240,7 @@ public class OpenIntegrationRESTServices
      *  PropertyServerException problem with the metadata server.
      */
     public VoidResponse publishIntegrationReport(String                      serverName,
+                                                 String                      serviceURLMarker,
                                                  String                      userId,
                                                  String                      anchorGUID,
                                                  String                      anchorTypeName,
@@ -266,6 +275,7 @@ public class OpenIntegrationRESTServices
      * Retrieve a specific integration report by unique identifier.
      *
      * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId calling user
      * @param reportGUID unique identifier of the integration report
      *
@@ -275,6 +285,7 @@ public class OpenIntegrationRESTServices
      *  PropertyServerException problem with the metadata server.
      */
     public IntegrationReportResponse getIntegrationReport(String serverName,
+                                                          String serviceURLMarker,
                                                           String userId,
                                                           String reportGUID)
     {
@@ -308,6 +319,7 @@ public class OpenIntegrationRESTServices
      * paging options if there are many integration reports.
      *
      * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId calling user
      * @param elementGUID calling user
      * @param afterCompletionDate restrict reports to those that completed after the requested time (null for any completion time).
@@ -321,6 +333,7 @@ public class OpenIntegrationRESTServices
      *  PropertyServerException problem with the metadata server.
      */
     public IntegrationReportsResponse getIntegrationReportsForElement(String  serverName,
+                                                                      String  serviceURLMarker,
                                                                       String  userId,
                                                                       String  elementGUID,
                                                                       Date    afterCompletionDate,
@@ -358,6 +371,7 @@ public class OpenIntegrationRESTServices
      * paging options if there are many integration reports.
      *
      * @param serverName name of the service to route the request to.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId calling user
      * @param afterCompletionDate restrict reports to those that completed after the requested time (null for any completion time).
      * @param beforeStartDate restrict reports to those that started before the requested time (null for any start time).
@@ -370,6 +384,7 @@ public class OpenIntegrationRESTServices
      *  PropertyServerException problem with the metadata server.
      */
     public IntegrationReportsResponse getIntegrationReports(String  serverName,
+                                                            String  serviceURLMarker,
                                                             String  userId,
                                                             Date    afterCompletionDate,
                                                             Date    beforeStartDate,

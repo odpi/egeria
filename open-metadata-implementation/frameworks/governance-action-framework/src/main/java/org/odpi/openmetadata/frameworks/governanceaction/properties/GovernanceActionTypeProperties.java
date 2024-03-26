@@ -6,8 +6,10 @@ package org.odpi.openmetadata.frameworks.governanceaction.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.GuardType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestParameterType;
 
-import java.io.Serial;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -23,20 +25,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceActionTypeProperties extends ReferenceableProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    private int                 domainIdentifier     = 0;
-    private String              displayName          = null;
-    private String              description          = null;
-
-    private List<String>        supportedGuards      = null;
-
-    private String              governanceEngineGUID = null;
-    private String              requestType          = null;
-    private Map<String, String> requestParameters    = null;
-
-    private int                 waitTime               = 0;
+    private int                        domainIdentifier           = 0;
+    private String                     displayName                = null;
+    private String                     description                = null;
+    private List<RequestParameterType> supportedRequestParameters = null;
+    private List<ActionTargetType>     supportedActionTargetTypes = null;
+    private List<RequestParameterType> producedRequestParameters  = null;
+    private List<ActionTargetType>     producedActionTargetTypes  = null;
+    private List<GuardType>            producedGuards             = null;
+    private String                     governanceEngineGUID       = null;
+    private String                     requestType                = null;
+    private Map<String, String>        fixedRequestParameters     = null;
+    private int                        waitTime                   = 0;
 
 
     /**
@@ -63,11 +63,15 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
             displayName = template.getDisplayName();
             description = template.getDescription();
 
-            supportedGuards = template.getSupportedGuards();
+            supportedRequestParameters = template.getSupportedRequestParameters();
+            supportedActionTargetTypes = template.getSupportedActionTargetTypes();
+            producedRequestParameters = template.getProducedRequestParameters();
+            producedActionTargetTypes = template.getProducedActionTargetTypes();
+            producedGuards            = template.getProducedGuards();
 
             governanceEngineGUID = template.getGovernanceEngineGUID();
-            requestType = template.getRequestType();
-            requestParameters = template.getRequestParameters();
+            requestType            = template.getRequestType();
+            fixedRequestParameters = template.getFixedRequestParameters();
 
             waitTime               = template.getWaitTime();
         }
@@ -141,24 +145,112 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
 
 
     /**
-     * Return the list of guards provided by the previous governance service.
+     * Return the required request parameters to supply when using this governance acton type to initiate an action.
      *
-     * @return list of guards
+     * @return list
      */
-    public List<String> getSupportedGuards()
+    public List<RequestParameterType> getSupportedRequestParameters()
     {
-        return supportedGuards;
+        return supportedRequestParameters;
     }
 
 
     /**
-     * Set up the list of guards provided by the previous governance service.
+     * Set up the required request parameters to supply when using this governance acton type to initiate an action.
      *
-     * @param supportedGuards list of guards
+     * @param supportedRequestParameters list
      */
-    public void setSupportedGuards(List<String> supportedGuards)
+    public void setSupportedRequestParameters(List<RequestParameterType> supportedRequestParameters)
     {
-        this.supportedGuards = supportedGuards;
+        this.supportedRequestParameters = supportedRequestParameters;
+    }
+
+
+    /**
+     * Return the required action targets to supply when using this governance acton type to initiate an action.
+     *
+     * @return list
+     */
+    public List<ActionTargetType> getSupportedActionTargetTypes()
+    {
+        return supportedActionTargetTypes;
+    }
+
+
+    /**
+     * Set up the required action targets to supply when using this governance acton type to initiate an action.
+     *
+     * @param supportedActionTargetTypes list
+     */
+    public void setSupportedActionTargetTypes(List<ActionTargetType> supportedActionTargetTypes)
+    {
+        this.supportedActionTargetTypes = supportedActionTargetTypes;
+    }
+
+
+    /**
+     * Return the request parameters that are produced by the governance service.
+     *
+     * @return list
+     */
+    public List<RequestParameterType> getProducedRequestParameters()
+    {
+        return producedRequestParameters;
+    }
+
+
+    /**
+     * Set up the request parameters that are produced by the governance service.
+     *
+     * @param producedRequestParameters list
+     */
+    public void setProducedRequestParameters(List<RequestParameterType> producedRequestParameters)
+    {
+        this.producedRequestParameters = producedRequestParameters;
+    }
+
+
+    /**
+     * Return the action targets that are produced by the governance service.
+     *
+     * @return list
+     */
+    public List<ActionTargetType> getProducedActionTargetTypes()
+    {
+        return producedActionTargetTypes;
+    }
+
+
+    /**
+     * Set up the action targets that are produced by the governance service.
+     *
+     * @param producedActionTargetTypes list
+     */
+    public void setProducedActionTargetTypes(List<ActionTargetType> producedActionTargetTypes)
+    {
+        this.producedActionTargetTypes = producedActionTargetTypes;
+    }
+
+
+    /**
+     * Return the list of guards produced by the governance service.
+     *
+     * @return list of guards
+     */
+    public List<GuardType> getProducedGuards()
+    {
+        return producedGuards;
+    }
+
+
+    /**
+     * Set up the list of guards produced by the governance service.
+     *
+     * @param producedGuards list of guards
+     */
+    public void setProducedGuards(List<GuardType> producedGuards)
+    {
+        this.producedGuards = producedGuards;
     }
 
 
@@ -211,30 +303,30 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
      *
      * @return map of properties
      */
-    public Map<String, String> getRequestParameters()
+    public Map<String, String> getFixedRequestParameters()
     {
-        if (requestParameters == null)
+        if (fixedRequestParameters == null)
         {
             return null;
         }
 
-        if (requestParameters.isEmpty())
+        if (fixedRequestParameters.isEmpty())
         {
             return null;
         }
 
-        return requestParameters;
+        return fixedRequestParameters;
     }
 
 
     /**
      * Set up the parameters to pass onto the governance service.
      *
-     * @param requestParameters map of properties
+     * @param fixedRequestParameters list of properties
      */
-    public void setRequestParameters(Map<String, String> requestParameters)
+    public void setFixedRequestParameters(Map<String, String> fixedRequestParameters)
     {
-        this.requestParameters = requestParameters;
+        this.fixedRequestParameters = fixedRequestParameters;
     }
 
 
@@ -272,10 +364,14 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
                        "domainIdentifier=" + domainIdentifier +
                        ", displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
-                       ", supportedGuards=" + supportedGuards +
+                       ", requiredRequestParameters=" + supportedRequestParameters +
+                       ", requiredActionTargets=" + supportedActionTargetTypes +
+                       ", producedRequestParameters=" + producedRequestParameters +
+                       ", producedActionTargets=" + producedActionTargetTypes +
+                       ", producedGuards=" + producedGuards +
                        ", governanceEngineGUID='" + governanceEngineGUID + '\'' +
                        ", requestType='" + requestType + '\'' +
-                       ", requestParameters=" + requestParameters +
+                       ", requestParameters=" + fixedRequestParameters +
                        ", waitTime=" + waitTime +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
@@ -309,10 +405,14 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
                        Objects.equals(displayName, that.displayName) &&
                        Objects.equals(description, that.description) &&
                        waitTime == that.waitTime &&
-                       Objects.equals(supportedGuards, that.supportedGuards) &&
+                       Objects.equals(supportedRequestParameters, that.supportedRequestParameters) &&
+                       Objects.equals(supportedActionTargetTypes, that.supportedActionTargetTypes) &&
+                       Objects.equals(producedRequestParameters, that.producedRequestParameters) &&
+                       Objects.equals(producedActionTargetTypes, that.producedActionTargetTypes) &&
+                       Objects.equals(producedGuards, that.producedGuards) &&
                        Objects.equals(governanceEngineGUID, that.governanceEngineGUID) &&
                        Objects.equals(requestType, that.requestType) &&
-                       Objects.equals(requestParameters, that.requestParameters);
+                       Objects.equals(fixedRequestParameters, that.fixedRequestParameters);
     }
 
 
@@ -324,7 +424,8 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), domainIdentifier, displayName, description,
-                            supportedGuards, governanceEngineGUID, requestType, requestParameters, waitTime);
+        return Objects.hash(super.hashCode(), domainIdentifier, displayName, description, supportedRequestParameters,
+                            supportedActionTargetTypes, producedRequestParameters, producedActionTargetTypes,
+                            producedGuards, governanceEngineGUID, requestType, fixedRequestParameters, waitTime);
     }
 }

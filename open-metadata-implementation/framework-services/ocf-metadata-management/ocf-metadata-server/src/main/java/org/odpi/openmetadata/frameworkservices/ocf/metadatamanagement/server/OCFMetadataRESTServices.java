@@ -53,7 +53,6 @@ public class OCFMetadataRESTServices
      * @param message        message to log
      *
      * @return void or
-     *
      *  InvalidParameterException one of the parameters is null or invalid.
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
@@ -87,7 +86,6 @@ public class OCFMetadataRESTServices
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
 
 
     /**
@@ -317,6 +315,111 @@ public class OCFMetadataRESTServices
 
 
     /**
+     * Save the connection optionally linked to the supplied asset GUID.
+     *
+     * @param serverName  name of the server instances for this request
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
+     * @param userId      userId of user making request.
+     * @param assetGUID   the unique id for the asset within the metadata repository. This optional.
+     *                    However, if specified then the new connection is attached to the asset
+     * @param connection connection to save
+     *
+     * @return connection object or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UnrecognizedConnectionNameException there is no connection defined for this name or
+     * PropertyServerException there is a problem retrieving information from the property (metadata) server or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse saveConnectionForAsset(String     serverName,
+                                               String     serviceURLName,
+                                               String     userId,
+                                               String     assetGUID,
+                                               Connection connection)
+    {
+        final String assetGUIDParameterName = "assetGUID";
+        final String methodName = "saveConnectionForAsset";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse  response = new GUIDResponse();
+        AuditLog            auditLog = null;
+
+        try
+        {
+            ConnectionHandler<Connection> connectionHandler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (assetGUID == null)
+            {
+                response.setGUID(connectionHandler.saveConnection(userId,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  connection,
+                                                                  null,
+                                                                  false,
+                                                                  false,
+                                                                  instanceHandler.getSupportedZones(userId,
+                                                                                                    serverName,
+                                                                                                    serviceURLName,
+                                                                                                    methodName),
+                                                                  new Date(),
+                                                                  methodName));
+            }
+            else
+            {
+                AssetHandler<Asset> assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+                Asset asset = assetHandler.getBeanFromRepository(userId,
+                                                                 assetGUID,
+                                                                 assetGUIDParameterName,
+                                                                 OpenMetadataType.ASSET.typeName,
+                                                                 false,
+                                                                 false,
+                                                                 instanceHandler.getSupportedZones(userId,
+                                                                                                   serverName,
+                                                                                                   serviceURLName,
+                                                                                                   methodName),
+                                                                 new Date(),
+                                                                 methodName);
+
+                response.setGUID(connectionHandler.saveConnection(userId,
+                                                                  null,
+                                                                  null,
+                                                                  assetGUID,
+                                                                  assetGUID,
+                                                                  assetGUIDParameterName,
+                                                                  asset.getType().getTypeName(),
+                                                                  asset.getQualifiedName(),
+                                                                  connection,
+                                                                  null,
+                                                                  false,
+                                                                  false,
+                                                                  instanceHandler.getSupportedZones(userId,
+                                                                                                    serverName,
+                                                                                                    serviceURLName,
+                                                                                                    methodName),
+                                                                  new Date(),
+                                                                  methodName));
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
      * Returns the basic information about the asset.  The connection guid allows the short description for the
      * asset to be filled out.
      *
@@ -352,28 +455,8 @@ public class OCFMetadataRESTServices
         {
             List<String>  supportedZones = instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName);
 
-            AssetHandler<Asset>                 assetHandler         = instanceHandler.getAssetHandler(userId, serverName, methodName);
-            RelatedAssetHandler<RelatedAsset>   relatedAssetHandler  = instanceHandler.getRelatedAssetHandler(userId, serverName, methodName);
-            CertificationHandler<Certification> certificationHandler = instanceHandler.getCertificationHandler(userId, serverName, methodName);
-            CommentHandler<Comment>             commentHandler       = instanceHandler.getCommentHandler(userId, serverName, methodName);
-            ConnectionHandler<Connection>       connectionHandler    = instanceHandler.getConnectionHandler(userId, serverName, methodName);
-            ExternalIdentifierHandler<ExternalIdentifier, Object> externalIdentifierHandler = instanceHandler.getExternalIdentifierHandler(userId,
-                                                                                                                                           serverName,
-                                                                                                                                           methodName);
-            ExternalReferenceLinkHandler<ExternalReference> externalReferenceHandler  = instanceHandler.getExternalReferenceHandler(userId,
-                                                                                                                                    serverName,
-                                                                                                                                    methodName);
-            InformalTagHandler<InformalTag> informalTagHandler  = instanceHandler.getInformalTagHandler(userId, serverName,
-                                                                                                        methodName);
-            LicenseHandler<License> licenseHandler      = instanceHandler.getLicenseHandler(userId, serverName,
-                                                                                            methodName);
-            LikeHandler<Like>             likeHandler     = instanceHandler.getLikeHandler(userId, serverName, methodName);
-            LocationHandler<Location>     locationHandler = instanceHandler.getLocationHandler(userId, serverName, methodName);
-            NoteLogHandler<NoteLogHeader>              noteLogHandler      = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
-            RatingHandler<Rating>                      ratingHandler       = instanceHandler.getRatingHandler(userId, serverName, methodName);
-            RelatedMediaHandler<RelatedMediaReference> relatedMediaHandler = instanceHandler.getRelatedMediaHandler(userId, serverName, methodName);
-            SearchKeywordHandler<SearchKeyword>        keywordHandler      = instanceHandler.getKeywordHandler(userId, serverName, methodName);
-            SchemaTypeHandler<SchemaType>              schemaTypeHandler   = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
+            AssetHandler<Asset>                 assetHandler      = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            SchemaTypeHandler<SchemaType>       schemaTypeHandler = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
             OMRSRepositoryHelper                repositoryHelper  = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
 
 
@@ -451,30 +534,6 @@ public class OCFMetadataRESTServices
                                                                       methodName));
                 }
                 response.setAsset(asset);
-                response.setCertificationCount(certificationHandler.countCertifications(userId, assetGUID, false, false, effectiveTime, methodName));
-                response.setCommentCount(commentHandler.countAttachedComments(userId, assetGUID, false, false,effectiveTime, methodName));
-                response.setConnectionCount(connectionHandler.countConnections(userId, assetGUID, false, false, effectiveTime, methodName));
-                response.setExternalIdentifierCount(externalIdentifierHandler.countExternalIdentifiers(userId, assetGUID, false, false, effectiveTime, methodName));
-                response.setExternalReferencesCount(externalReferenceHandler.countExternalReferences(userId, assetGUID, false, false, effectiveTime, methodName));
-                response.setInformalTagCount(informalTagHandler.countTags(userId, assetGUID, false, false, effectiveTime, methodName));
-                response.setLicenseCount(licenseHandler.countLicenses(userId, assetGUID, false, false, effectiveTime, methodName));
-                response.setLikeCount(likeHandler.countLikes(userId, assetGUID, false, false, effectiveTime, methodName));
-                response.setKeywordCount(keywordHandler.countKeywords(userId, assetGUID, false, false, effectiveTime, methodName));
-                response.setKnownLocationsCount(locationHandler.countKnownLocations(userId, assetGUID, false, false, effectiveTime, methodName));
-                response.setNoteLogsCount(noteLogHandler.countAttachedNoteLogs(userId, assetGUID, false, false, effectiveTime, methodName));
-                response.setRatingsCount(ratingHandler.countRatings(userId, assetGUID, false, false, effectiveTime, methodName));
-                response.setRelatedAssetCount(relatedAssetHandler.getRelatedAssetCount(userId,
-                                                                                       assetGUID,
-                                                                                       assetGUIDParameterName,
-                                                                                       OpenMetadataType.ASSET.typeName,
-                                                                                       null,
-                                                                                       null,
-                                                                                       supportedZones,
-                                                                                       false,
-                                                                                       false,
-                                                                                       effectiveTime,
-                                                                                       methodName));
-                response.setRelatedMediaReferenceCount(relatedMediaHandler.countRelatedMedia(userId, assetGUID,  false, false, effectiveTime, methodName));
                 response.setSchemaType(schemaTypeHandler.getSchemaTypeForAsset(userId, assetGUID, assetGUIDParameterName,  false, false, effectiveTime, methodName));
             }
         }
@@ -667,7 +726,6 @@ public class OCFMetadataRESTServices
                         CommentResponse commentResponse = new CommentResponse();
 
                         commentResponse.setComment(comment);
-                        commentResponse.setReplyCount(handler.countAttachedComments(userId, comment.getGUID(), false, false, new Date(), methodName));
 
                         results.add(commentResponse);
                     }
@@ -1230,7 +1288,6 @@ public class OCFMetadataRESTServices
 
             if (noteLogs != null)
             {
-                NoteHandler<Note> noteHandler = instanceHandler.getNoteHandler(userId, serverName, methodName);
                 for (NoteLogHeader noteLog : noteLogs)
                 {
                     if (noteLog != null)
@@ -1238,7 +1295,6 @@ public class OCFMetadataRESTServices
                         NoteLogResponse noteLogResponse = new NoteLogResponse();
 
                         noteLogResponse.setNoteLog(noteLog);
-                        noteLogResponse.setNoteCount(noteHandler.countAttachedNotes(userId, noteLog.getGUID(), false, false, new Date(), methodName));
 
                         results.add(noteLogResponse);
                     }

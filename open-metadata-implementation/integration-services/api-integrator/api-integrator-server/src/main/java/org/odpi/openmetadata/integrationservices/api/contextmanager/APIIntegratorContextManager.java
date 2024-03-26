@@ -6,6 +6,7 @@ package org.odpi.openmetadata.integrationservices.api.contextmanager;
 import org.odpi.openmetadata.accessservices.datamanager.client.*;
 import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
 import org.odpi.openmetadata.accessservices.datamanager.properties.APIManagerProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.integration.context.*;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -208,7 +209,10 @@ public class APIIntegratorContextManager extends IntegrationContextManager
                                                                                                            permittedSynchronizationName,
                                                                                                            serviceOptionsString));
 
-            String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName);
+            String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName,
+                                                                 DeployedImplementationType.API_MANAGER.getAssociatedTypeName(),
+                                                                 DeployedImplementationType.API_MANAGER.getAssociatedClassification(),
+                                                                 DeployedImplementationType.API_MANAGER.getDeployedImplementationType());
             String externalSourceName = metadataSourceQualifiedName;
             if (externalSourceGUID == null)
             {

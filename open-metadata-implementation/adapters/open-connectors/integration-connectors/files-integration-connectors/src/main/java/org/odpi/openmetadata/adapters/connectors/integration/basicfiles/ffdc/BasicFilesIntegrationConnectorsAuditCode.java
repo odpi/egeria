@@ -180,7 +180,7 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
      * The error message was {3}
      */
     UNEXPECTED_EXC_DATA_FILE_UPDATE("BASIC-FILES-INTEGRATION-CONNECTORS-0014",
-                                    AuditLogRecordSeverityLevel.ERROR,
+                                    AuditLogRecordSeverityLevel.EXCEPTION,
                                  "An unexpected {0} exception was returned to the {1} integration connector when it tried to update the " +
                                          "DataFile in the metadata repositories for file {2}.  The error message was {3}",
                                  "The exception is logged and the integration connector continues to synchronize metadata.  " +
@@ -261,16 +261,22 @@ public enum BasicFilesIntegrationConnectorsAuditCode implements AuditLogMessageS
                                                   "Use the message in the nested exception to determine the root cause of the error. Report the situation to the Egeria community."),
 
     /**
-     * BASIC-FILES-INTEGRATION-CONNECTORS-500-004 - An unexpected {0} exception was returned to the {1} integration
+     * BASIC-FILES-INTEGRATION-CONNECTORS-0022 - An unexpected {0} exception was returned to the {1} integration
      * connector by the Files Integrator OMIS {2} method when trying to retrieve the catalog targets for connector {3}.  The error message was {4}
      */
-    UNEXPECTED_EXC_RETRIEVING_CATALOG_TARGETS("BASIC-FILES-INTEGRATION-CONNECTORS-500-004",
+    UNEXPECTED_EXC_RETRIEVING_CATALOG_TARGETS("BASIC-FILES-INTEGRATION-CONNECTORS-0022",
                                               AuditLogRecordSeverityLevel.ERROR,
                                               "An unexpected {0} exception was returned to the {1} integration connector by the " +
                                                       "Files Integrator OMIS {2} method when trying to retrieve the catalog targets for connector {3}.  The error message was {4}",
                                               "The exception is returned to the integration daemon that is hosting this connector to enable it to " +
                                                       "perform error handling since this is likely to be a set up error. This exception is not expected if there are no catalog targets.",
                                               "Use the message in the nested exception to determine the root cause of the error. Fix the configuration error and restart the connector."),
+
+    FILES_LOCATION_NOT_FOUND( "BASIC-FILES-INTEGRATION-CONNECTORS-0023",
+                              AuditLogRecordSeverityLevel.ERROR,
+                              "The directory named {0} does not exist.  Connector {1} retrieved this path name from source {2}",
+                             "The connector is unable to locate the directory (folder) it has been asked to work with.",
+                             "Ensure that the path name of the folder matches the location of the directory that the connector is to monitor.  Correct it if necessary, otherwise, once the directory has been created, the connector will start monitoring it on the next refresh."),
     ;
 
     private final String                      logMessageId;

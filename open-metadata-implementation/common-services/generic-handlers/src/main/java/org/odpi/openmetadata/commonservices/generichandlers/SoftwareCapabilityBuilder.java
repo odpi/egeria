@@ -22,7 +22,7 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
     private final String displayName;
     private final String description;
 
-    private String type;
+    private String deployedImplementationType;
     private String version;
     private String patchLevel;
     private String source;
@@ -34,7 +34,7 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
      * @param qualifiedName qualified name for the file system
      * @param displayName short display name
      * @param description description of the file system
-     * @param type type of file system
+     * @param deployedImplementationType type of file system
      * @param version version of file system
      * @param patchLevel patchLevel of software supporting the file system
      * @param source supplier of the software for this file system
@@ -49,7 +49,7 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
     public SoftwareCapabilityBuilder(String               qualifiedName,
                                      String               displayName,
                                      String               description,
-                                     String               type,
+                                     String               deployedImplementationType,
                                      String               version,
                                      String               patchLevel,
                                      String               source,
@@ -70,12 +70,12 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
               serviceName,
               serverName);
 
-        this.displayName = displayName;
-        this.description = description;
-        this.type = type;
-        this.version = version;
-        this.patchLevel = patchLevel;
-        this.source = source;
+        this.displayName                = displayName;
+        this.description                = description;
+        this.deployedImplementationType = deployedImplementationType;
+        this.version                    = version;
+        this.patchLevel                 = patchLevel;
+        this.source                     = source;
     }
 
 
@@ -98,8 +98,8 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_GUID,
-              OpenMetadataType.SOFTWARE_CAPABILITY_TYPE_NAME,
+              OpenMetadataType.SOFTWARE_CAPABILITY.typeGUID,
+              OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
               null,
               repositoryHelper,
               serviceName,
@@ -126,9 +126,9 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
               serverName);
 
         this.displayName = null;
-        this.description = null;
-        this.type = null;
-        this.version = null;
+        this.description                = null;
+        this.deployedImplementationType = null;
+        this.version                    = null;
         this.patchLevel = null;
         this.source = null;
     }
@@ -248,25 +248,25 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.CAPABILITY_TYPE_PROPERTY_NAME,
-                                                                  type,
+                                                                  OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                                  deployedImplementationType,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.CAPABILITY_VERSION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.CAPABILITY_VERSION.name,
                                                                   version,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.PATCH_LEVEL_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.PATCH_LEVEL.name,
                                                                   patchLevel,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.SOURCE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.SOURCE.name,
                                                                   source,
                                                                   methodName);
 

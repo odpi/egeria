@@ -339,7 +339,7 @@ public class OMAGServerAdminServices
             configAuditTrail = new ArrayList<>();
         }
 
-        if (description != null && (description.length() == 0))
+        if ((description != null) && (description.isEmpty()))
         {
             description = null;
         }

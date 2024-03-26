@@ -171,6 +171,9 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                  builder,
                                                                  supportedZones,
+                                                                 true,
+                                                                 false,
+                                                                 null,
                                                                  methodName);
 
         if (schemaAttributeGUID != null)

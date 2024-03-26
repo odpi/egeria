@@ -10,6 +10,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:frameworks:open-integration-framework')
     implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
+    implementation project(':open-metadata-implementation:frameworks:survey-action-framework')
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-server')
     implementation project(':open-metadata-implementation:server-operations:server-operations-api')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
@@ -17,9 +18,9 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-apis')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:admin-services:admin-services-registration')
-    implementation project(':open-metadata-implementation:governance-servers:engine-host-services:engine-host-services-registration')
-    implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-api')
-    implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-registration')
+    implementation project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-registration')
+    implementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-api')
+    implementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-registration')
     testImplementation 'org.testng:testng'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }

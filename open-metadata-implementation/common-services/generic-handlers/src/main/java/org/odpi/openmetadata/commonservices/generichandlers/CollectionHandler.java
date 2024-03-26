@@ -305,6 +305,9 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                            OpenMetadataProperty.QUALIFIED_NAME.name,
                                            builder,
                                            supportedZones,
+                                           true,
+                                           false,
+                                           null,
                                            methodName);
     }
 
@@ -715,7 +718,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.SOURCE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.SOURCE.name,
                                                                   source,
                                                                   methodName);
 

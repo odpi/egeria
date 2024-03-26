@@ -50,6 +50,8 @@ public class GovernanceListenerManager
      */
     public synchronized void processEvent(WatchdogGovernanceEvent event) throws InvalidParameterException
     {
+        final String actionDescription = "Process Watchdog Event";
+
         if (event != null)
         {
             for (String connectorId : listenerMap.keySet())
@@ -60,7 +62,21 @@ public class GovernanceListenerManager
 
                     if (watchdogListener != null)
                     {
-                        watchdogListener.processWatchdogEvent(event);
+                        try
+                        {
+                            watchdogListener.processWatchdogEvent(event);
+                        }
+                        catch (Exception error)
+                        {
+                            auditLog.logException(actionDescription,
+                                                  OpenMetadataStoreAuditCode.WATCHDOG_EVENT_FAILURE.getMessageDefinition(
+                                                          error.getClass().getName(),
+                                                          connectorId,
+                                                          event.getEventType().toString(),
+                                                          error.getMessage()),
+                                                  event.toString(),
+                                                  error);
+                        }
                     }
                 }
             }
@@ -73,11 +89,9 @@ public class GovernanceListenerManager
      * There can be only one registered listener.  If this method is called more than once, the new parameters
      * replace the existing parameters.  This means the watchdog governance action service can change the
      * listener and the parameters that control the types of events received while it is running.
-     *
      * The types of events passed to the listener are controlled by the combination of the interesting event types and
      * the interesting metadata types.  That is an event is only passed to the listener if it matches both
      * the interesting event types and the interesting metadata types.
-     *
      * If specific instance, interestingEventTypes or interestingMetadataTypes are null, it defaults to "any".
      * If the listener parameter is null, no more events are passed to the listener.
      *
@@ -167,14 +181,12 @@ public class GovernanceListenerManager
                      * The event type is of interest, cast the event to its specific type and call the registered listener if
                      * the event is interesting.
                      */
-                    if (event instanceof WatchdogClassificationEvent)
+                    if (event instanceof WatchdogClassificationEvent watchdogClassificationEvent)
                     {
                         final String elementParameterName = "watchdogClassificationEvent.getMetadataElement()";
                         final String classificationParameterName = "watchdogClassificationEvent.getChangedClassification()";
                         final String elementGUIDParameterName = "watchdogClassificationEvent.getMetadataElement().getElementGUID()";
                         final String typeNameParameterName    = "watchdogClassificationEvent.getChangedClassification().getClassificationName()";
-
-                        WatchdogClassificationEvent watchdogClassificationEvent = (WatchdogClassificationEvent)event;
 
                         invalidParameterHandler.validateObject(watchdogClassificationEvent.getMetadataElement(), elementParameterName, methodName);
                         invalidParameterHandler.validateObject(watchdogClassificationEvent.getChangedClassification(), classificationParameterName, methodName);
@@ -188,14 +200,12 @@ public class GovernanceListenerManager
                             this.callListener(event);
                         }
                     }
-                    else if (event instanceof WatchdogMetadataElementEvent)
+                    else if (event instanceof WatchdogMetadataElementEvent watchdogMetadataElementEvent)
                     {
                         final String elementParameterName     = "watchdogMetadataElementEvent.getMetadataElement()";
                         final String elementTypeParameterName = "watchdogMetadataElementEvent.getElementType()";
                         final String elementGUIDParameterName = "watchdogMetadataElementEvent.getMetadataElement().getElementGUID()";
                         final String typeNameParameterName    = "watchdogMetadataElementEvent.getMetadataElement().getElementType().getElementTypeName()";
-
-                        WatchdogMetadataElementEvent watchdogMetadataElementEvent = (WatchdogMetadataElementEvent)event;
 
                         invalidParameterHandler.validateObject(watchdogMetadataElementEvent.getMetadataElement(), elementParameterName, methodName);
                         invalidParameterHandler.validateObject(watchdogMetadataElementEvent.getMetadataElement().getType(), elementTypeParameterName, methodName);
@@ -209,9 +219,8 @@ public class GovernanceListenerManager
                             this.callListener(event);
                         }
                     }
-                    else if (event instanceof WatchdogRelatedElementsEvent)
+                    else if (event instanceof WatchdogRelatedElementsEvent relatedElementsEvent)
                     {
-                        WatchdogRelatedElementsEvent relatedElementsEvent = (WatchdogRelatedElementsEvent)event;
 
                         if (this.elementIsInteresting(relatedElementsEvent.getRelatedMetadataElements().getRelationshipGUID(),
                                                       relatedElementsEvent.getRelatedMetadataElements().getRelationshipType().getTypeName(),

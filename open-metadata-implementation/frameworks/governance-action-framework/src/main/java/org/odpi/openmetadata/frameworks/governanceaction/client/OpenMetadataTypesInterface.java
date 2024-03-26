@@ -103,6 +103,27 @@ public interface OpenMetadataTypesInterface
                                                                 PropertyServerException,
                                                                 UserNotAuthorizedException;
 
+
+    /**
+     * Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the
+     * type has no subtypes.     *
+     * @param userId       unique identifier for requesting user.
+     * @param typeName     name of the standard null means any.
+     *
+     * @return TypeDefs list  each entry in the list contains a TypeDef.  This is a structure
+     * describing the TypeDef's category and properties.  If null is returned as the TypeDef list it means the type
+     * has no known subtypes
+     *
+     * @throws InvalidParameterException  all attributes of the external id are null.
+     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    List<OpenMetadataTypeDef> getSubTypes(String userId,
+                                          String typeName) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException;
+
+
     /**
      * Return the AttributeTypeDef identified by the GUID.
      *

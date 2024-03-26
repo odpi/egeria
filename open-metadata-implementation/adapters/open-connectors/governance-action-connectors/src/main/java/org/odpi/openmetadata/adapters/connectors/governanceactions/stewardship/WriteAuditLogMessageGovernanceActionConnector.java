@@ -1,0 +1,63 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
+package org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship;
+
+import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * WriteAuditLogMessageGovernanceActionConnector writes requested messages to the Audit Log.
+ */
+public class WriteAuditLogMessageGovernanceActionConnector extends GeneralGovernanceActionService
+{
+    /**
+     * Default constructor
+     */
+    public WriteAuditLogMessageGovernanceActionConnector()
+    {
+    }
+
+
+    /**
+     * Indicates that the governance action service is completely configured and can begin processing.
+     * This is a standard method from the Open Connector Framework (OCF) so
+     * be sure to call super.start() at the start of your overriding version.
+     *
+     * @throws ConnectorCheckedException there is a problem within the governance action service.
+     */
+    @Override
+    public void start() throws ConnectorCheckedException
+    {
+        final String methodName = "start";
+
+        String messageText = getProperty(WriteAuditLogRequestParameter.MESSAGE_TEXT.getName(), "This is the default Message Text");
+
+        super.start();
+
+        try
+        {
+            List<String> outputGuards = new ArrayList<>();
+
+            auditLog.logMessage(methodName, GovernanceActionConnectorsAuditCode.BLANK_INFO_LOG_MESSAGE.getMessageDefinition(messageText));
+
+            outputGuards.add(WriteAuditLogGuard.MESSAGE_WRITTEN.getName());
+            governanceContext.recordCompletionStatus(WriteAuditLogGuard.MESSAGE_WRITTEN.getCompletionStatus(), outputGuards);
+        }
+        catch (Exception error)
+        {
+            throw new ConnectorCheckedException(GovernanceActionConnectorsErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(governanceServiceName,
+                                                                                                                              error.getClass().getName(),
+                                                                                                                              error.getMessage()),
+                                                error.getClass().getName(),
+                                                methodName,
+                                                error);
+        }
+    }
+}

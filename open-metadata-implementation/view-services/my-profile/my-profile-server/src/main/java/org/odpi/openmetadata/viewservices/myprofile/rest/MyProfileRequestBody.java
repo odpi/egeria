@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class MyProfileRequestBody extends CommunityProfileOMASAPIRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
     private String              qualifiedName        = null;
     private String              fullName             = null;
     private String              knownName            = null;

@@ -39,7 +39,7 @@ public enum GlossaryAuthorViewAuditCode implements AuditLogMessageSet
      */
     SERVICE_INITIALIZED("OMVS-GLOSSARY-AUTHOR-0002",
             OMRSAuditLogRecordSeverity.STARTUP,
-            "The Glossary Author View Service (OMVS) is initialized",
+            "The Glossary Author View Service (OMVS) is initialized in server {0}",
             "The Glossary Author OMVS has completed initialization. Calls will be accepted by this service, if OMRS is also configured and the view server has been started. ",
             "No action is required.  This is part of the normal operation of the Glossary Author OMVS. Once the OMRS is configured and the server is started, Glossary Author view service requests can be accepted."),
 

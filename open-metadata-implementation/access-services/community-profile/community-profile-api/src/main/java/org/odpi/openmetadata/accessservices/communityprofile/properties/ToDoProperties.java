@@ -19,15 +19,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ToDoProperties extends ReferenceableProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String     name           = null;
     private String     description    = null;
+    private String     toDoType       = null;
     private Date       creationTime   = null;
     private int        priority       = 0;
     private Date       dueTime        = null;
+    private Date       lastReviewTime = null;
     private Date       completionTime = null;
-    private ToDoStatus status         = null;
+    private ToDoStatus status         = ToDoStatus.OPEN;
 
 
 
@@ -51,10 +51,12 @@ public class ToDoProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            this.name = template.getName();
-            this.description = template.getDescription();
+            name = template.getName();
+            description = template.getDescription();
+            toDoType = template.getToDoType();
             creationTime = template.getCreationTime();
             priority = template.getPriority();
+            lastReviewTime = template.getLastReviewTime();
             dueTime = template.getDueTime();
             completionTime = template.getCompletionTime();
             status = template.getStatus();
@@ -107,6 +109,21 @@ public class ToDoProperties extends ReferenceableProperties
 
 
     /**
+     * Return the
+     * @return
+     */
+    public String getToDoType()
+    {
+        return toDoType;
+    }
+
+    public void setToDoType(String toDoType)
+    {
+        this.toDoType = toDoType;
+    }
+
+
+    /**
      * Return the time that this action was created.
      *
      * @return date
@@ -147,6 +164,28 @@ public class ToDoProperties extends ReferenceableProperties
     public void setPriority(int priority)
     {
         this.priority = priority;
+    }
+
+
+    /**
+     * Return the last time the action was reviewed for priority, ownership etc.
+     *
+     * @return date
+     */
+    public Date getLastReviewTime()
+    {
+        return lastReviewTime;
+    }
+
+
+    /**
+     * Set up the last time the action was reviewed for priority, ownership etc.
+     *
+     * @param lastReviewTime data
+     */
+    public void setLastReviewTime(Date lastReviewTime)
+    {
+        this.lastReviewTime = lastReviewTime;
     }
 
 
@@ -229,6 +268,7 @@ public class ToDoProperties extends ReferenceableProperties
                        ", description='" + description + '\'' +
                        ", creationTime=" + creationTime +
                        ", priority=" + priority +
+                       ", lastReviewTime=" + lastReviewTime +
                        ", dueTime=" + dueTime +
                        ", completionTime=" + completionTime +
                        ", status=" + status +
@@ -269,6 +309,7 @@ public class ToDoProperties extends ReferenceableProperties
                        Objects.equals(name, that.name) &&
                        Objects.equals(description, that.description) &&
                        Objects.equals(creationTime, that.creationTime) &&
+                       Objects.equals(lastReviewTime, that.lastReviewTime) &&
                        Objects.equals(dueTime, that.dueTime) &&
                        Objects.equals(completionTime, that.completionTime) &&
                        status == that.status;
@@ -283,7 +324,8 @@ public class ToDoProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getName(), getDescription(), getCreationTime(), getPriority(), getDueTime(), getCompletionTime(),
+        return Objects.hash(super.hashCode(), getName(), getDescription(), getCreationTime(), getPriority(),
+                            getLastReviewTime(), getDueTime(), getCompletionTime(),
                             getStatus(), getExtendedProperties(), getAdditionalProperties());
     }
 }

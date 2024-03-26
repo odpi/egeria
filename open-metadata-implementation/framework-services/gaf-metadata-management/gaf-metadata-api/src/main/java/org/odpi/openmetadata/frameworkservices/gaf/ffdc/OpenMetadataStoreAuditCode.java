@@ -85,6 +85,14 @@ public enum OpenMetadataStoreAuditCode implements AuditLogMessageSet
                      "This is part of the normal shutdown of the service.  Verify that all resources have been released."),
 
     /**
+     * OMES-GOVERNANCE-ACTION-0015 - The Governance Action Framework received an {0} exception from the {1} governance action service while it was processing a watchdog event of type {2}; error message is {3}
+     */
+    WATCHDOG_EVENT_FAILURE("OMES-GOVERNANCE-ACTION-0015",
+                           AuditLogRecordSeverityLevel.ERROR,
+                           "The Governance Action Framework received an {0} exception from the {1} governance action service while it was processing a watchdog event of type {2}; error message is {3}",
+                           "The engine services detected an error while processing a watchdog event.",
+                           "Review the error message and any other reported failures to determine the cause of the problem.  It may also be necessary to initiate the action that did not occur due to the failure to process this event."),
+    /**
      * OPEN-METADATA-STORE-0020 - Log message for asset {0} from governance service {1}: {2}
      */
     ASSET_AUDIT_LOG("OPEN-METADATA-STORE-0020",

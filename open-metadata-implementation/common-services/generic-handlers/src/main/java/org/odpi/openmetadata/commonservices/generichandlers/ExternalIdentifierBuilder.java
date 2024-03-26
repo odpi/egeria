@@ -39,8 +39,8 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
                               String               serviceName,
                               String               serverName)
     {
-        super(OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_GUID,
-              OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_NAME,
+        super(OpenMetadataType.EXTERNAL_ID.typeGUID,
+              OpenMetadataType.EXTERNAL_ID.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -73,8 +73,8 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
                               String               serverName)
     {
         super(identifier + UUID.randomUUID(),
-              OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_GUID,
-              OpenMetadataType.EXTERNAL_IDENTIFIER_TYPE_NAME,
+              OpenMetadataType.EXTERNAL_ID.typeGUID,
+              OpenMetadataType.EXTERNAL_ID.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -103,7 +103,7 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.IDENTIFIER_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.IDENTIFIER.name,
                                                                   identifier,
                                                                   methodName);
 
@@ -111,7 +111,7 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataType.KEY_PATTERN_PROPERTY_NAME,
+                                                                    OpenMetadataProperty.KEY_PATTERN.name,
                                                                     OpenMetadataType.KEY_PATTERN_ENUM_TYPE_GUID,
                                                                     OpenMetadataType.KEY_PATTERN_ENUM_TYPE_NAME,
                                                                     keyPattern,
@@ -119,36 +119,36 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataType.KEY_PATTERN_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataProperty.KEY_PATTERN.name);
         }
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.EXT_INSTANCE_CREATED_BY_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.EXT_INSTANCE_CREATED_BY.name,
                                                                   externalInstanceCreatedBy,
                                                                   methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataType.EXT_INSTANCE_CREATION_TIME_PROPERTY_NAME,
+                                                                OpenMetadataProperty.EXT_INSTANCE_CREATION_TIME.name,
                                                                 externalInstanceCreationTime,
                                                                 methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.EXT_INSTANCE_LAST_UPDATED_BY_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.EXT_INSTANCE_LAST_UPDATED_BY.name,
                                                                   externalInstanceLastUpdatedBy,
                                                                   methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataType.EXT_INSTANCE_LAST_UPDATE_TIME_PROPERTY_NAME,
+                                                                OpenMetadataProperty.EXT_INSTANCE_LAST_UPDATE_TIME.name,
                                                                 externalInstanceLastUpdateTime,
                                                                 methodName);
 
         properties = repositoryHelper.addLongPropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataType.EXT_INSTANCE_VERSION_PROPERTY_NAME,
+                                                                OpenMetadataProperty.EXT_INSTANCE_VERSION.name,
                                                                 externalInstanceVersion,
                                                                 methodName);
 
@@ -188,19 +188,19 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.SOURCE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.SOURCE.name,
                                                                   source,
                                                                   methodName);
 
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                      properties,
-                                                                     OpenMetadataType.MAPPING_PROPERTIES_PROPERTY_NAME,
+                                                                     OpenMetadataProperty.MAPPING_PROPERTIES.name,
                                                                      mappingProperties,
                                                                      methodName);
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataType.LAST_SYNCHRONIZED_PROPERTY_NAME,
+                                                                OpenMetadataProperty.LAST_SYNCHRONIZED.name,
                                                                 new Date(),
                                                                 methodName);
 
@@ -235,7 +235,7 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataType.PERMITTED_SYNC_PROPERTY_NAME,
+                                                                    OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
                                                                     OpenMetadataType.PERMITTED_SYNC_ENUM_TYPE_GUID,
                                                                     OpenMetadataType.PERMITTED_SYNC_ENUM_TYPE_NAME,
                                                                     permittedSynchronization,
@@ -243,7 +243,7 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataType.KEY_PATTERN_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name);
         }
 
         setEffectivityDates(properties);

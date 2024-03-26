@@ -59,7 +59,7 @@ public class GovernanceActionProcessRESTServices
 
 
     /* =====================================================================================================================
-     * A governance action process describes a well defined series of steps that gets something done.
+     * A governance action process describes a well-defined series of steps that gets something done.
      * The steps are defined using GovernanceActionTypes.
      */
 
@@ -97,7 +97,8 @@ public class GovernanceActionProcessRESTServices
 
                 Map<String, Object> extendedProperties = new HashMap<>();
                 extendedProperties.put(OpenMetadataProperty.FORMULA.name, processProperties.getFormula());
-                extendedProperties.put(OpenMetadataType.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME, processProperties.getImplementationLanguage());
+                extendedProperties.put(OpenMetadataProperty.FORMULA_TYPE.name, processProperties.getFormulaType());
+                extendedProperties.put(OpenMetadataType.DOMAIN_IDENTIFIER_PROPERTY_NAME, processProperties.getDomainIdentifier());
 
                 Date effectiveTime = new Date();
 
@@ -105,9 +106,9 @@ public class GovernanceActionProcessRESTServices
                                                                  null,
                                                                  null,
                                                                  processProperties.getQualifiedName(),
-                                                                 processProperties.getTechnicalName(),
+                                                                 processProperties.getDisplayName(),
                                                                  processProperties.getVersionIdentifier(),
-                                                                 processProperties.getTechnicalDescription(),
+                                                                 processProperties.getDescription(),
                                                                  processProperties.getAdditionalProperties(),
                                                                  OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
                                                                  extendedProperties,
@@ -116,27 +117,6 @@ public class GovernanceActionProcessRESTServices
                                                                  null,
                                                                  effectiveTime,
                                                                  methodName));
-
-                final String guidParameter = "processGUID";
-
-                if (response.getGUID() != null)
-                {
-                    handler.maintainSupplementaryProperties(userId,
-                                                            response.getGUID(),
-                                                            guidParameter,
-                                                            OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
-                                                            processProperties.getQualifiedName(),
-                                                            processProperties.getDisplayName(),
-                                                            processProperties.getSummary(),
-                                                            processProperties.getDescription(),
-                                                            processProperties.getAbbreviation(),
-                                                            processProperties.getUsage(),
-                                                            false,
-                                                            false,
-                                                            false,
-                                                            effectiveTime,
-                                                            methodName);
-                }
             }
             else
             {
@@ -163,23 +143,14 @@ public class GovernanceActionProcessRESTServices
     {
         if (processStatus != null)
         {
-            switch (processStatus)
+            return switch (processStatus)
             {
-                case UNKNOWN:
-                    return InstanceStatus.UNKNOWN;
-
-                case DRAFT:
-                    return InstanceStatus.DRAFT;
-
-                case PROPOSED:
-                    return InstanceStatus.PROPOSED;
-
-                case APPROVED:
-                    return InstanceStatus.APPROVED;
-
-                case ACTIVE:
-                    return InstanceStatus.ACTIVE;
-            }
+                case UNKNOWN -> InstanceStatus.UNKNOWN;
+                case DRAFT -> InstanceStatus.DRAFT;
+                case PROPOSED -> InstanceStatus.PROPOSED;
+                case APPROVED -> InstanceStatus.APPROVED;
+                case ACTIVE -> InstanceStatus.ACTIVE;
+            };
         }
 
         return InstanceStatus.ACTIVE;
@@ -224,7 +195,7 @@ public class GovernanceActionProcessRESTServices
 
                 Map<String, Object> extendedProperties = new HashMap<>();
                 extendedProperties.put(OpenMetadataProperty.FORMULA.name, processProperties.getFormula());
-                extendedProperties.put(OpenMetadataType.IMPLEMENTATION_LANGUAGE_PROPERTY_NAME, processProperties.getImplementationLanguage());
+                extendedProperties.put(OpenMetadataProperty.FORMULA_TYPE.name, processProperties.getFormulaType());
 
                 Date effectiveTime = new Date();
 
@@ -235,8 +206,8 @@ public class GovernanceActionProcessRESTServices
                                     processGUIDParameterName,
                                     processProperties.getQualifiedName(),
                                     processProperties.getVersionIdentifier(),
-                                    processProperties.getTechnicalName(),
-                                    processProperties.getTechnicalDescription(),
+                                    processProperties.getDisplayName(),
+                                    processProperties.getDescription(),
                                     processProperties.getAdditionalProperties(),
                                     OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_GUID,
                                     OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
@@ -265,22 +236,6 @@ public class GovernanceActionProcessRESTServices
                                                          effectiveTime,
                                                          methodName);
                 }
-
-                handler.maintainSupplementaryProperties(userId,
-                                                        processGUID,
-                                                        processGUIDParameterName,
-                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
-                                                        processProperties.getQualifiedName(),
-                                                        processProperties.getDisplayName(),
-                                                        processProperties.getSummary(),
-                                                        processProperties.getDescription(),
-                                                        processProperties.getAbbreviation(),
-                                                        processProperties.getUsage(),
-                                                        requestBody.getMergeUpdate(),
-                                                        false,
-                                                        false,
-                                                        effectiveTime,
-                                                        methodName);
             }
             else
             {
@@ -669,7 +624,6 @@ public class GovernanceActionProcessRESTServices
                                                                            requestBody.getDomainIdentifier(),
                                                                            requestBody.getDisplayName(),
                                                                            requestBody.getDescription(),
-                                                                           requestBody.getSupportedGuards(),
                                                                            requestBody.getAdditionalProperties(),
                                                                            requestBody.getGovernanceEngineGUID(),
                                                                            requestBody.getRequestType(),
@@ -746,7 +700,6 @@ public class GovernanceActionProcessRESTServices
                                                           properties.getDomainIdentifier(),
                                                           properties.getDisplayName(),
                                                           properties.getDescription(),
-                                                          properties.getSupportedGuards(),
                                                           properties.getAdditionalProperties(),
                                                           properties.getGovernanceEngineGUID(),
                                                           properties.getRequestType(),
@@ -1098,7 +1051,6 @@ public class GovernanceActionProcessRESTServices
             GovernanceActionProcessStepHandler<GovernanceActionTypeElement> handler = instanceHandler.getGovernanceActionProcessStepHandler(userId,
                                                                                                                                             serverName,
                                                                                                                                             methodName);
-
             response.setElement(handler.getFirstProcessStep(userId,
                                                             processGUID,
                                                             null,

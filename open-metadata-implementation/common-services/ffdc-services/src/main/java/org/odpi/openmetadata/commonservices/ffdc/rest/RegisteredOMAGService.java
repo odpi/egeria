@@ -27,6 +27,9 @@ public class RegisteredOMAGService
     private String                     serviceURLMarker         = null;
     private String                     serviceDescription       = null;
     private String                     serviceWiki              = null;
+    private String                     serverType               = null;
+    public  String                     partnerServiceName       = null;
+    public  String                     partnerServerType        = null;
 
 
     /**
@@ -52,6 +55,9 @@ public class RegisteredOMAGService
             this.serviceURLMarker = template.getServiceURLMarker();
             this.serviceDescription = template.getServiceDescription();
             this.serviceWiki = template.getServiceWiki();
+            this.serverType = template.getServerType();
+            this.partnerServiceName = template.getPartnerServiceName();
+            this.partnerServerType = template.getPartnerServerType();
         }
     }
 
@@ -193,6 +199,72 @@ public class RegisteredOMAGService
 
 
     /**
+     * Return the type of the service that this service sits in.
+     *
+     * @return name of the type of server
+     */
+    public String getServerType()
+    {
+        return serverType;
+    }
+
+
+    /**
+     * Set up the name of the server that this service sits in.
+     *
+     * @param serverType  name of the type of server
+     */
+    public void setServerType(String serverType)
+    {
+        this.serverType = serverType;
+    }
+
+
+    /**
+     * Return the service in a remote server that this service depends on.
+     *
+     * @return name of the service
+     */
+    public String getPartnerServiceName()
+    {
+        return partnerServiceName;
+    }
+
+
+    /**
+     * Set up the service in a remote server that this service depends on.
+     *
+     * @param partnerServiceName name of the service
+     */
+    public void setPartnerServiceName(String partnerServiceName)
+    {
+        this.partnerServiceName = partnerServiceName;
+    }
+
+
+    /**
+     * Return the type of the server that the partner service resides on.
+     *
+     * @return name of the type of server
+     */
+    public String getPartnerServerType()
+    {
+        return partnerServerType;
+    }
+
+
+    /**
+     * Set up the type of the server that the partner service resides on.
+     *
+     * @param partnerServerType name of the type of server
+     */
+    public void setPartnerServerType(String partnerServerType)
+    {
+        this.partnerServerType = partnerServerType;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -201,13 +273,16 @@ public class RegisteredOMAGService
     public String toString()
     {
         return "RegisteredOMAGService{" +
-                       "serviceId=" + serviceId +
-                       ", serviceName='" + serviceName + '\'' +
-                       ", serviceDevelopmentStatus=" + serviceDevelopmentStatus +
-                       ", serviceURLMarker='" + serviceURLMarker + '\'' +
-                       ", serviceDescription='" + serviceDescription + '\'' +
-                       ", serviceWiki='" + serviceWiki + '\'' +
-                       '}';
+                "serviceId=" + serviceId +
+                ", serviceName='" + serviceName + '\'' +
+                ", serviceDevelopmentStatus=" + serviceDevelopmentStatus +
+                ", serviceURLMarker='" + serviceURLMarker + '\'' +
+                ", serviceDescription='" + serviceDescription + '\'' +
+                ", serviceWiki='" + serviceWiki + '\'' +
+                ", serverType='" + serverType + '\'' +
+                ", partnerServiceName='" + partnerServiceName + '\'' +
+                ", partnerServerType='" + partnerServerType + '\'' +
+                '}';
     }
 
 
@@ -220,23 +295,19 @@ public class RegisteredOMAGService
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         RegisteredOMAGService that = (RegisteredOMAGService) objectToCompare;
         return serviceId == that.serviceId &&
-                       Objects.equals(serviceName, that.serviceName) &&
-                       serviceDevelopmentStatus == that.serviceDevelopmentStatus &&
-                       Objects.equals(serviceURLMarker, that.serviceURLMarker) &&
-                       Objects.equals(serviceDescription, that.serviceDescription) &&
-                       Objects.equals(serviceWiki, that.serviceWiki);
+                Objects.equals(serviceName, that.serviceName) &&
+                serviceDevelopmentStatus == that.serviceDevelopmentStatus &&
+                Objects.equals(serviceURLMarker, that.serviceURLMarker) &&
+                Objects.equals(serviceDescription, that.serviceDescription) &&
+                Objects.equals(serviceWiki, that.serviceWiki) &&
+                Objects.equals(serverType, that.serverType) &&
+                Objects.equals(partnerServiceName, that.partnerServiceName) &&
+                Objects.equals(partnerServerType, that.partnerServerType);
     }
-
 
     /**
      * Return hash code for this object
@@ -246,7 +317,8 @@ public class RegisteredOMAGService
     @Override
     public int hashCode()
     {
-        return Objects.hash(serviceId, serviceName, serviceDevelopmentStatus, serviceURLMarker, serviceDescription, serviceWiki);
+        return Objects.hash(serviceId, serviceName, serviceDevelopmentStatus, serviceURLMarker, serviceDescription,
+                            serviceWiki, serverType, partnerServiceName, partnerServerType);
     }
 }
 

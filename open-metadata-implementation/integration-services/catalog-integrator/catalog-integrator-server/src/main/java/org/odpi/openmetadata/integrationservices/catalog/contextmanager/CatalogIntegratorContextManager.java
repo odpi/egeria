@@ -16,11 +16,11 @@ import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.Lineage
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.StewardshipExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.exchange.ValidValuesExchangeClient;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.IntegrationContextManager;
@@ -212,42 +212,6 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
 
 
     /**
-     * Retrieve the metadata source's unique identifier (GUID) or if it is not defined, create the software server capability
-     * for this integrator.
-     *
-     * @param metadataSourceQualifiedName unique name of the software server capability that represents this integration service
-     *
-     * @return unique identifier of the metadata source
-     *
-     * @throws InvalidParameterException one of the parameters passed (probably on initialize) is invalid
-     * @throws UserNotAuthorizedException the integration daemon's userId does not have access to the partner OMAS
-     * @throws PropertyServerException there is a problem in the remote server running the partner OMAS
-     */
-    private String setUpMetadataSource(String   metadataSourceQualifiedName) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
-    {
-        if (metadataSourceQualifiedName != null)
-        {
-            String metadataSourceGUID = assetManagerClient.getExternalAssetManagerGUID(localServerUserId, metadataSourceQualifiedName);
-
-            if (metadataSourceGUID == null)
-            {
-                AssetManagerProperties properties = new AssetManagerProperties();
-
-                properties.setQualifiedName(metadataSourceQualifiedName);
-
-                metadataSourceGUID = assetManagerClient.createExternalAssetManager(localServerUserId, properties);
-            }
-
-            return metadataSourceGUID;
-        }
-
-        return null;
-    }
-
-
-    /**
      * Set up the context in the supplied connector. This is called between initialize() and start() on the connector.
      *
      * @param connectorId unique identifier of the connector (used to configure the event listener)
@@ -308,7 +272,10 @@ public class CatalogIntegratorContextManager extends IntegrationContextManager
                                                                               auditLog,
                                                                               connectorId);
 
-            String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName);
+            String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName,
+                                                                 DeployedImplementationType.ASSET_CATALOG.getAssociatedTypeName(),
+                                                                 DeployedImplementationType.ASSET_CATALOG.getAssociatedClassification(),
+                                                                 DeployedImplementationType.ASSET_CATALOG.getDeployedImplementationType());
             String externalSourceName = metadataSourceQualifiedName;
             if (externalSourceGUID == null)
             {

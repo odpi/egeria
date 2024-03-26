@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
@@ -181,11 +182,11 @@ public class OpenMetadataTypesArchive1_7
      */
     private void update0045ServersAndAssets()
     {
-        this.archiveBuilder.addTypeDefPatch(updateServerAssetUseRelationship());
+        this.archiveBuilder.addTypeDefPatch(updateAssetServerUseRelationship());
     }
 
 
-    private TypeDefPatch updateServerAssetUseRelationship()
+    private TypeDefPatch updateAssetServerUseRelationship()
     {
         /*
          * Create the Patch
@@ -203,9 +204,9 @@ public class OpenMetadataTypesArchive1_7
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Additional information on how the asset is used by the software server capability.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,

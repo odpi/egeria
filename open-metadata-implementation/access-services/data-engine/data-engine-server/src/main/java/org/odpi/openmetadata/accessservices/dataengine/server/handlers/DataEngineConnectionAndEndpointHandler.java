@@ -176,7 +176,7 @@ public class DataEngineConnectionAndEndpointHandler {
                                                                    null, null, null, null, null,
                                                                    OpenMetadataType.CONNECTION_TYPE_NAME, null, connectorTypeGUID, CONNECTOR_TYPE_GUID_PARAMETER_NAME,
                                                                    endpointGUID, ENDPOINT_GUID_PARAMETER_NAME, null, null, false,
-                                                                   false, now, methodName);
+                                                                   false, connectionHandler.getSupportedZones(), now, methodName);
 
         log.debug(CONNECTION_CREATED, assetQualifiedName, connectionQualifiedName, connectionGUID, endpointGUID, connectorTypeGUID);
     }

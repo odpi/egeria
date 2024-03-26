@@ -675,9 +675,9 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0617_DATA_FIELD_ANALYSIS          = "https://egeria-project.org/types/6/0617-Data-Field-Analysis/";
 
     /**
-     * <a href="https://egeria-project.org/types/6/0620-Data-Profiling/">...</a>
+     * <a href="https://egeria-project.org/types/6/0620-Resource-Profiling/">...</a>
      */
-    public static final String MODEL_0620_DATA_PROFILING               = "https://egeria-project.org/types/6/0620-Data-Profiling/";
+    public static final String MODEL_0620_RESOURCE_PROFILING = "https://egeria-project.org/types/6/0620-Resource-Profiling/";
 
     /**
      * <a href="https://egeria-project.org/types/6/0625-Data-Class-Discovery/">...</a>
@@ -705,9 +705,9 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0650_RELATIONSHIP_DISCOVERY       = "https://egeria-project.org/types/6/0650-Relationship-Discovery/";
 
     /**
-     * <a href="https://egeria-project.org/types/6/0660-Data-Source-Measurements/">...</a>
+     * <a href="https://egeria-project.org/types/6/0660-Resource-Measures/">...</a>
      */
-    public static final String MODEL_0660_MEASUREMENTS                 = "https://egeria-project.org/types/6/0660-Data-Source-Measurements/";
+    public static final String MODEL_0660_MEASUREMENTS                 = "https://egeria-project.org/types/6/0660-Resource-Measures/";
 
     /**
      * <a href="https://egeria-project.org/types/6/0690-Request-for-Action/">...</a>

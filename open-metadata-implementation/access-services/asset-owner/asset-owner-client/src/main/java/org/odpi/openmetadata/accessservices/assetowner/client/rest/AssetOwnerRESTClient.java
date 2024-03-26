@@ -503,16 +503,16 @@ public class AssetOwnerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public DiscoveryAnalysisReportListResponse callDiscoveryAnalysisReportListGetRESTCall(String    methodName,
-                                                                                          String    urlTemplate,
-                                                                                          Object... params) throws InvalidParameterException,
+    public SurveyReportListResponse callSurveyReportListGetRESTCall(String    methodName,
+                                                                    String    urlTemplate,
+                                                                    Object... params) throws InvalidParameterException,
                                                                                                                    UserNotAuthorizedException,
                                                                                                                    PropertyServerException
     {
-        DiscoveryAnalysisReportListResponse restResult = this.callGetRESTCall(methodName,
-                                                                              DiscoveryAnalysisReportListResponse.class,
-                                                                              urlTemplate,
-                                                                              params);
+        SurveyReportListResponse restResult = this.callGetRESTCall(methodName,
+                                                                   SurveyReportListResponse.class,
+                                                                   urlTemplate,
+                                                                   params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 
@@ -533,18 +533,18 @@ public class AssetOwnerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public DiscoveryAnalysisReportListResponse callDiscoveryAnalysisReportListPostRESTCall(String    methodName,
-                                                                                           String    urlTemplate,
-                                                                                           Object    requestBody,
-                                                                                           Object... params) throws InvalidParameterException,
+    public SurveyReportListResponse callDiscoveryAnalysisReportListPostRESTCall(String    methodName,
+                                                                                String    urlTemplate,
+                                                                                Object    requestBody,
+                                                                                Object... params) throws InvalidParameterException,
                                                                                                                     UserNotAuthorizedException,
                                                                                                                     PropertyServerException
     {
-        DiscoveryAnalysisReportListResponse restResult = this.callPostRESTCall(methodName,
-                                                                               DiscoveryAnalysisReportListResponse.class,
-                                                                               urlTemplate,
-                                                                               requestBody,
-                                                                               params);
+        SurveyReportListResponse restResult = this.callPostRESTCall(methodName,
+                                                                    SurveyReportListResponse.class,
+                                                                    urlTemplate,
+                                                                    requestBody,
+                                                                    params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 

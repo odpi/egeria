@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc;
 
+import org.odpi.openmetadata.adapters.connectors.integration.jdbc.controls.JDBCConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.integration.jdbc.controls.JDBCDatabaseCatalogTarget;
 import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.customization.TransferCustomizations;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
@@ -78,15 +80,9 @@ public class JDBCIntegrationConnectorProvider extends IntegrationConnectorProvid
         connectorType.setDisplayName(connectorDisplayName);
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
-        List<String> recognizedConfigurationProperties = new ArrayList<>();
-        recognizedConfigurationProperties.add(TransferCustomizations.INCLUDE_SCHEMA_NAMES);
-        recognizedConfigurationProperties.add(TransferCustomizations.EXCLUDE_SCHEMA_NAMES);
-        recognizedConfigurationProperties.add(TransferCustomizations.INCLUDE_TABLE_NAMES);
-        recognizedConfigurationProperties.add(TransferCustomizations.EXCLUDE_TABLE_NAMES);
-        recognizedConfigurationProperties.add(TransferCustomizations.INCLUDE_COLUMN_NAMES);
-        recognizedConfigurationProperties.add(TransferCustomizations.EXCLUDE_COLUMN_NAMES);
-        connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
+        connectorType.setRecognizedConfigurationProperties(JDBCConfigurationProperty.getRecognizedConfigurationProperties());
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
+        connectorType.setDeployedImplementationType(DeployedImplementationType.DATABASE_INTEGRATION_CONNECTOR.getDeployedImplementationType());
 
         super.connectorTypeBean = connectorType;
 
@@ -97,17 +93,13 @@ public class JDBCIntegrationConnectorProvider extends IntegrationConnectorProvid
 
         componentDescription.setComponentId(connectorComponentId);
         componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.TECHNICAL_PREVIEW);
-        componentDescription.setComponentName(connectorQualifiedName);
+        componentDescription.setComponentName(connectorDisplayName);
         componentDescription.setComponentDescription(connectorDescription);
         componentDescription.setComponentWikiURL(connectorWikiPage);
 
         super.setConnectorComponentDescription(componentDescription);
 
-        CatalogTargetType catalogTargetType = new CatalogTargetType();
-
-        catalogTargetType.setTypeName(DeployedImplementationType.JDBC_RELATIONAL_DATABASE.getAssociatedTypeName());
-        catalogTargetType.setDeployedImplementationType(DeployedImplementationType.JDBC_RELATIONAL_DATABASE.getDeployedImplementationType());
-
-        super.catalogTargetTypes.put(CATALOG_TARGET_NAME, catalogTargetType);
+        super.supportedConfigurationProperties = JDBCConfigurationProperty.getConfigurationPropertyTypes();
+        super.catalogTargets = JDBCDatabaseCatalogTarget.getCatalogTargetTypes();
     }
 }

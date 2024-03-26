@@ -9,9 +9,8 @@ import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandl
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
-import org.odpi.openmetadata.frameworks.discovery.properties.DataField;
-import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.SurveyReport;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
 
 
 /**
@@ -224,9 +223,9 @@ class AssetOwnerInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
-    public DiscoveryAnalysisReportHandler<DiscoveryAnalysisReport> getDiscoveryAnalysisReportHandler(String userId,
-                                                                                                     String serverName,
-                                                                                                     String serviceOperationName) throws InvalidParameterException,
+    public SurveyReportHandler<SurveyReport> getSurveyReportHandler(String userId,
+                                                                    String serverName,
+                                                                    String serviceOperationName) throws InvalidParameterException,
                                                                                                                                          UserNotAuthorizedException,
                                                                                                                                          PropertyServerException
     {
@@ -237,7 +236,7 @@ class AssetOwnerInstanceHandler extends OMASServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getDiscoveryAnalysisReportHandler();
+            return instance.getSurveyReportHandler();
         }
 
         return null;
@@ -268,36 +267,6 @@ class AssetOwnerInstanceHandler extends OMASServiceInstanceHandler
         if (instance != null)
         {
             return instance.getAnnotationHandler();
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Retrieve the specific handler for the access service.
-     *
-     * @param userId calling user
-     * @param serverName name of the server tied to the request
-     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
-     * @return handler for use by the requested instance
-     * @throws InvalidParameterException no available instance for the requested server
-     * @throws UserNotAuthorizedException user does not have access to the requested server
-     * @throws PropertyServerException error in the requested server
-     */
-    public DataFieldHandler<DataField> getDataFieldHandler(String userId,
-                                                           String serverName,
-                                                           String serviceOperationName) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
-    {
-        AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
-                                                                                                         serverName,
-                                                                                                         serviceOperationName);
-
-        if (instance != null)
-        {
-            return instance.getDataFieldHandler();
         }
 
         return null;

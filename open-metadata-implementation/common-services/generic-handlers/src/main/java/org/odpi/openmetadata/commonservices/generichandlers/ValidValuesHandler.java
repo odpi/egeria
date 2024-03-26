@@ -94,6 +94,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
      * @param isDeprecated         is the valid value deprecated
      * @param isCaseSensitive         is the valid value case-sensitive
      * @param preferredValue       value to use to represent this option.
+     * @param dataType the data type of the preferred value.
      * @param additionalProperties additional properties for this set.
      * @param suppliedTypeName     optional type name (default is ValidValueSet since it is the most flexible)
      * @param extendedProperties   properties that need to be populated into a subtype.
@@ -119,6 +120,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                    boolean             isDeprecated,
                                    boolean             isCaseSensitive,
                                    String              preferredValue,
+                                   String              dataType,
                                    Map<String, String> additionalProperties,
                                    String              suppliedTypeName,
                                    Map<String, Object> extendedProperties,
@@ -149,6 +151,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                 usage,
                                 scope,
                                 preferredValue,
+                                dataType,
                                 isDeprecated,
                                 isCaseSensitive,
                                 additionalProperties,
@@ -225,6 +228,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                 usage,
                                 scope,
                                 null,
+                                null,
                                 isDeprecated,
                                 isCaseSensitive,
                                 additionalProperties,
@@ -254,6 +258,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
      * @param usage                how/when should this value be used.
      * @param scope                what is the scope of the values.
      * @param preferredValue       the value that should be used in an implementation if possible.
+     * @param dataType the data type of the preferred value.
      * @param isDeprecated         is the valid value deprecated
      * @param isCaseSensitive         is the valid value case-sensitive
      * @param additionalProperties additional properties for this definition.
@@ -282,6 +287,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                              String              usage,
                                              String              scope,
                                              String              preferredValue,
+                                             String              dataType,
                                              boolean             isDeprecated,
                                              boolean             isCaseSensitive,
                                              Map<String, String> additionalProperties,
@@ -310,6 +316,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                 usage,
                                 scope,
                                 preferredValue,
+                                dataType,
                                 isDeprecated,
                                 isCaseSensitive,
                                 additionalProperties,
@@ -341,6 +348,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
      * @param usage                how/when should this value be used.
      * @param scope                what is the scope of the values.
      * @param preferredValue       the value that should be used in an implementation if possible.
+     * @param dataType             the data type of the preferred value.
      * @param isDeprecated         is the valid value deprecated
      * @param isCaseSensitive         is the valid value case-sensitive
      * @param additionalProperties additional properties for this definition.
@@ -371,6 +379,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                    String              usage,
                                    String              scope,
                                    String              preferredValue,
+                                   String              dataType,
                                    boolean             isDeprecated,
                                    boolean             isCaseSensitive,
                                    Map<String, String> additionalProperties,
@@ -409,6 +418,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                                             usage,
                                                             scope,
                                                             preferredValue,
+                                                            dataType,
                                                             isDeprecated,
                                                             isCaseSensitive,
                                                             additionalProperties,
@@ -481,6 +491,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
      * @param usage                how/when should this value be used.
      * @param scope                what is the scope of the values.
      * @param preferredValue       the value that should be used in an implementation if possible.
+     * @param dataType the data type of the preferred value.
      * @param isDeprecated         is the valid value deprecated
      * @param isCaseSensitive      is the valid value case-sensitive
      * @param additionalProperties additional properties for this valid value.
@@ -510,6 +521,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                  boolean             isDeprecated,
                                  boolean             isCaseSensitive,
                                  String              preferredValue,
+                                 String              dataType,
                                  Map<String, String> additionalProperties,
                                  Map<String, Object> extendedProperties,
                                  List<String>        suppliedSupportedZones,
@@ -541,6 +553,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
                                                             usage,
                                                             scope,
                                                             preferredValue,
+                                                            dataType,
                                                             isDeprecated,
                                                             isCaseSensitive,
                                                             additionalProperties,

@@ -1,0 +1,237 @@
+#
+# These commands rebuild the sample configuration documents for simple-metadata-server, active-metadata-server,
+# view-server, engine-host and integration-daemon.  They use IntelliJ's HTTP Client.
+#
+@baseURL=https://localhost:9443
+@adminUserId=garygeeke
+@auditLogTopic=logging
+
+# ---------------------------------------------
+# Metadata Assess Store: simple-metadata-store
+#
+###
+# Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simple-metadata-store/server-user-id?id=simplenpa
+
+###
+# Set up the description of this server.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simple-metadata-store/server-description
+Content-Type: text/plain
+
+A metadata store that supports Open Metadata Access Services (OMASs) without event notifications.
+
+###
+# Set up the local repository to use the in-memory implementation.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simple-metadata-store/local-repository/mode/in-memory-repository
+
+###
+# Set up all of the registered, undeprecated Open Metadata Access Services (OMASs) with the topics disabled so Apache Kafka is not required.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simple-metadata-store/access-services/no-topics
+
+###
+# ---------------------------------------------
+# Metadata Assess Store: active-metadata-store
+#
+###
+# Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/server-user-id?id=activenpa
+
+###
+# Set up the description of this server.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/server-description
+Content-Type: text/plain
+
+A metadata store that supports Open Metadata Access Services (OMASs) with event notifications.  It provides metadata to view-server, engine-host and integration-daemon.
+
+###
+# Set up the local repository to use the XTDB KV implementation.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/local-repository/mode/xtdb-local-kv-repository
+
+###
+# Set up the common properties needed to call your event bus.  The value of {{kafkaEndpoint}} is resolved in the
+# application.properties file using the `platform.placeholder.variables` property.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/event-bus
+Content-Type: application/json
+
+{
+"producer":
+{
+"bootstrap.servers":"{{kafkaEndpoint}}"
+},
+"consumer":
+{
+"bootstrap.servers":"{{kafkaEndpoint}}"
+}
+}
+
+
+###
+# Set up all of the registered, undeprecated Open Metadata Access Services (OMASs) with kafka notifications enabled.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/access-services
+
+###
+# Add the file name for an open Metadata Archive that should be loaded each time the server starts.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/open-metadata-archives/file
+Content-Type: text/plain
+
+content-packs/OpenConnectorsArchive.omarchive
+
+
+###
+# -------------------------
+# View Server: view-server
+#
+###
+# Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/view-server/server-user-id?id=viewnpa
+
+###
+# Set up the description of this server.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/view-server/server-description
+Content-Type: text/plain
+
+A server that supplies REST API endpoints for User Interfaces and non-Java environments such as Python.
+
+###
+# Set up all of the registered, undeprecated Open Metadata View Services (OMVSs).  The request body lists the platforms
+# and servers that will appear on the appropriate UI dropdowns.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/view-server/view-services
+Content-Type: application/json
+
+{
+  "class": "ViewServiceRequestBody",
+  "omagserverName": "active-metadata-store",
+  "omagserverPlatformRootURL": "{{baseURL}}",
+  "resourceEndpoints": [
+    {
+      "class": "ResourceEndpointConfig",
+      "resourceCategory": "Platform",
+      "platformName": "Platform:9443",
+      "platformRootURL": "{{baseURL}}",
+      "description": "This is the default OMAG Server Platform."
+    },
+    {
+      "class": "ResourceEndpointConfig",
+      "resourceCategory": "Server",
+      "platformName": "Platform:9443",
+      "serverInstanceName": "Active Metadata Access Store",
+      "serverName": "active-metadata-store",
+      "description": "Metadata server with XTDB repository and supporting Apache Kafka notifications."
+    },
+    {
+      "class": "ResourceEndpointConfig",
+      "resourceCategory": "Server",
+      "platformName": "Platform:9443",
+      "serverInstanceName": "Simple Metadata Access Store",
+      "serverName": "simple-metadata-store",
+      "description": "Metadata server with in-memory repository and no event notifications."
+    },
+    {
+      "class": "ResourceEndpointConfig",
+      "resourceCategory": "Server",
+      "platformName": "Platform:9443",
+      "serverInstanceName": "Integration Daemon",
+      "serverName": "integration-daemon",
+      "description": "Integration daemon supporting the synchronization of metadata with third party platforms and tools."
+    },
+    {
+      "class": "ResourceEndpointConfig",
+      "resourceCategory": "Server",
+      "platformName": "Platform:9443",
+      "serverInstanceName": "Engine Host",
+      "serverName": "engine-host",
+      "description": "Engine host server running the AssetSurvey and Asset Governance governance engines."
+    },
+    {
+      "class": "ResourceEndpointConfig",
+      "resourceCategory": "Server",
+      "platformName": "Platform:9443",
+      "serverInstanceName": "View Server",
+      "serverName": "view-server",
+      "description": "View server providing REST API support to user interfaces and non-Java environments."
+    }
+  ]
+}
+
+###
+# -------------------------
+# Engine Host: engine-host
+#
+###
+# Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/engine-host/server-user-id?id=enginenpa
+
+###
+# Set up the description of this server.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/engine-host/server-description
+Content-Type: text/plain
+
+A server that runs governance service requests, triggered by engine actions created in active-metadata-store.
+
+###
+# Set up the address of the active-metadata-store that will supply the engine host with metadata along with the
+# qualified names of the governance engines it will run.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/engine-host/engine-host-services
+Content-Type: application/json
+
+{
+  "class": "EngineHostServicesConfig",
+  "engineList": [
+    {
+      "class": "EngineConfig",
+      "engineId": "4fe58760-ec4c-4f23-89c2-f7ae979e0e8b",
+      "engineQualifiedName": "AssetSurvey",
+      "engineUserId": "generalnpa"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "a80b17a8-ce6f-4cbc-b8bc-ff71b594f175",
+      "engineQualifiedName": "FileProvisioning",
+      "engineUserId": "generalnpa"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "6a86651a-c9c1-4aee-8a83-4c028d89f775",
+      "engineQualifiedName": "AssetOnboarding",
+      "engineUserId": "generalnpa"
+    },
+    {
+      "class": "EngineConfig",
+      "engineId": "947248ee-a6eb-4f99-8376-7ff488b6281e",
+      "engineQualifiedName": "Stewardship",
+      "engineUserId": "generalnpa"
+    }
+  ],
+  "omagserverPlatformRootURL": "{{baseURL}}",
+  "omagserverName": "active-metadata-store"
+}
+
+###
+# ---------------------------------------
+# Integration Daemon: integration-daemon
+#
+###
+# Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/integration-daemon/server-user-id?id=daemonnpa
+
+###
+# Set up the description of this server.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/integration-daemon/server-description
+Content-Type: text/plain
+
+A server that runs integration connectors that synchronize and exchange metadata with different types of technologies and tools.
+
+###
+# Set up the qualified name of the integration group that this server supports and the location of the
+# metadata access store active-metadata-store
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/integration-daemon/integration-groups/configuration
+Content-Type: application/json
+
+{
+    "class": "IntegrationGroupConfig",
+    "omagserverPlatformRootURL": "{{baseURL}}",
+    "omagserverName" : "active-metadata-store",
+    "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:DefaultIntegrationGroup"
+}
+
+###

@@ -19,6 +19,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -62,10 +63,13 @@ public class AssetConsumerAdmin extends AccessServiceAdmin
                                                                       accessServiceConfig.getAccessServiceName(),
                                                                       auditLog);
 
+            List<String> supportedTypesForSearch = getSupportedTypesForSearchOption(accessServiceConfig);
+
             this.instance = new AssetConsumerServicesInstance(repositoryConnector,
                                                               supportedZones,
                                                               auditLog,
                                                               serverUserName,
+                                                              supportedTypesForSearch,
                                                               repositoryConnector.getMaxPageSize(),
                                                               accessServiceConfig.getAccessServiceOutTopic());
             this.serverName = instance.getServerName();

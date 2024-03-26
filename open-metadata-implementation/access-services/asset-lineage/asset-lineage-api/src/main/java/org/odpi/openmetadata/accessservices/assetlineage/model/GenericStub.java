@@ -2,10 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.model;
 
-import java.io.Serializable;
 
-public class GenericStub implements Serializable {
-
-
-
+public class GenericStub
+{
 }

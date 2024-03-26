@@ -67,7 +67,7 @@ public class CocoBusinessSystemsArchiveWriter extends CocoBaseArchiveWriter
             Map<String, String> additionalProperties = new HashMap<>();
 
             additionalProperties.put(OpenMetadataType.OPERATING_SYSTEM_PROPERTY_NAME, hostDefinition.getOperatingSystem());
-            additionalProperties.put(OpenMetadataType.PATCH_LEVEL_PROPERTY_NAME, hostDefinition.getPatchLevel());
+            additionalProperties.put(OpenMetadataProperty.PATCH_LEVEL.name, hostDefinition.getPatchLevel());
 
             archiveHelper.addAsset(hostDefinition.getHostType().getOpenMetadataTypeName(),
                                    hostDefinition.getQualifiedName(),
@@ -130,7 +130,9 @@ public class CocoBusinessSystemsArchiveWriter extends CocoBaseArchiveWriter
                                                         null,
                                                         null,
                                                         null,
-                                                        null);
+                                                        null,
+                                                        serverGUID,
+                                                        OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME);
                     archiveHelper.addSupportedSoftwareCapabilityRelationship(softwareCapabilityQName,
                                                                              systemDefinition.getQualifiedName(),
                                                                              null,
