@@ -831,7 +831,7 @@ public class OpenMetadataTypesArchive2_6
         final String descriptionGUID = OpenMetadataType.GOVERNANCE_ENGINE.descriptionGUID;
         final String descriptionWiki = OpenMetadataType.GOVERNANCE_ENGINE.wikiURL;
 
-        final String superTypeName   = OpenMetadataType.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME;
+        final String superTypeName   = OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,

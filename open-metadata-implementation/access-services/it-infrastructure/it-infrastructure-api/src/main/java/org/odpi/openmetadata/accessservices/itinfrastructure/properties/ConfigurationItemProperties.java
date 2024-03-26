@@ -29,8 +29,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class ConfigurationItemProperties extends ReferenceableProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private Date effectiveFrom = null;
     private Date effectiveTo   = null;
 

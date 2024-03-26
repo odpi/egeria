@@ -151,8 +151,8 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
         final String methodName = "writeWeeklyMeasurementsTemplate";
         Map<String, Object>  extendedProperties = new HashMap<>();
 
-        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, "{{pathName}}");
-        extendedProperties.put(OpenMetadataProperty.FILE_NAME.name, "{{fileName}}");
+        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.PATH_NAME.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.FILE_NAME.name, PlaceholderProperty.FILE_NAME.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, FileType.CSV_FILE.getDeployedImplementationType().getDeployedImplementationType());
         extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, FileType.CSV_FILE.getFileTypeName());
         extendedProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, "csv");
@@ -164,36 +164,24 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
         List<String> zones = new ArrayList<>();
         zones.add(CocoGovernanceZoneDefinition.LANDING_AREA.getZoneName());
         zones.add(CocoGovernanceZoneDefinition.QUARANTINE.getZoneName());
-        zones.add("{{clinicalTrialId}}");
+        zones.add(PlaceholderProperty.CLINICAL_TRIAL_ID.getPlaceholder());
         classifications.add(archiveHelper.getAssetZoneMembershipClassification(zones));
 
         Map<String, String> otherOriginValues = new HashMap<>();
-        otherOriginValues.put("contact", "{{contactName}}");
-        otherOriginValues.put("dept", "{{contactDept}}");
+        otherOriginValues.put("contact", PlaceholderProperty.CONTACT_NAME.getPlaceholder());
+        otherOriginValues.put("dept", PlaceholderProperty.CONTACT_DEPT.getPlaceholder());
 
-        classifications.add(archiveHelper.getAssetOriginClassification("{{hospitalName}}",
+        classifications.add(archiveHelper.getAssetOriginClassification(PlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
                                                                        OpenMetadataProperty.NAME.name,
                                                                        null,
                                                                        null,
                                                                        otherOriginValues));
 
-        Map<String, String> placeholderProperties = new HashMap<>();
-
-        placeholderProperties.put("clinicalTrialId", "Add the identifier of the clinical trial.");
-        placeholderProperties.put("clinicalTrialName", "Add the display name of the clinical trial.");
-        placeholderProperties.put("hospitalName", "Add the name of the hospital that sent the measurements.");
-        placeholderProperties.put("contactName", "Add the name of the person at the hospital who is responsible for supplying the measurements.");
-        placeholderProperties.put("contactDept", "Add the hospital department where the contact name works.");
-        placeholderProperties.put("receivedDate", "Add the date that the measurements were received.");
-        placeholderProperties.put("pathName", "Add the full name (absolute file name) of the file and its enclosing directory structure.");
-        placeholderProperties.put("fileName", "Add the name of the file without directory information.");
 
         classifications.add(archiveHelper.getTemplateClassification("Weekly teddy bear measurements for drop foot clinical trial",
                                                                     "This template supports the cataloguing of weekly measurement files. " +
                                                                             "Use it to catalog the files as they come into the landing area.",
                                                                     "2.4",
-                                                                    null,
-                                                                    placeholderProperties,
                                                                     null,
                                                                     methodName));
 
@@ -234,6 +222,8 @@ public class CocoClinicalTrialsArchiveWriter extends CocoBaseArchiveWriter
                                                             FileType.CSV_FILE.getAssetSubTypeName());
 
         archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
+
+        archiveHelper.addPlaceholderProperties(assetGUID, FileType.CSV_FILE.getAssetSubTypeName(), PlaceholderProperty.getPlaceholderPropertyTypes());
 
         String licenseTypeGUID = archiveHelper.getGUID(LicenseTypeDefinition.CLINICAL_TRIAL_LICENSE.getQualifiedName());
 

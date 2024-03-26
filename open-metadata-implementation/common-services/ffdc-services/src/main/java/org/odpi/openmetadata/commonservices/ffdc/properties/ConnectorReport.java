@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConfigurationPropertyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.GuardType;
@@ -15,7 +16,6 @@ import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestTypeTyp
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStepType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,18 +32,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConnectorReport
 {
-    private ComponentDescription       componentDescription       = null;
-    private ConnectorType              connectorType              = null;
-    private long                       refreshTimeInterval        = 0L;
-    private boolean                    usesBlockingCalls          = false;
-    private List<RequestTypeType>      supportedRequestTypes      = null;
-    private List<RequestParameterType> supportedRequestParameters = null;
-    private List<ActionTargetType>     supportedActionTargetTypes = null;
-    private List<AnalysisStepType>     supportedAnalysisSteps     = null;
-    private List<AnnotationTypeType>   supportedAnnotationTypes   = null;
-    private List<RequestParameterType> producedRequestParameters  = null;
-    private List<ActionTargetType>     producedActionTargetTypes  = null;
-    private List<GuardType>            producedGuards             = null;
+    private ComponentDescription            componentDescription             = null;
+    private ConnectorType                   connectorType                    = null;
+    private long                            refreshTimeInterval              = 0L;
+    private boolean                         usesBlockingCalls                = false;
+    private List<ConfigurationPropertyType> supportedConfigurationProperties = null;
+    private List<RequestTypeType>           supportedRequestTypes            = null;
+    private List<RequestParameterType>      supportedRequestParameters       = null;
+    private List<ActionTargetType>          supportedActionTargetTypes       = null;
+    private List<AnalysisStepType>          supportedAnalysisSteps           = null;
+    private List<AnnotationTypeType>        supportedAnnotationTypes         = null;
+    private List<RequestParameterType>      producedRequestParameters        = null;
+    private List<ActionTargetType>          producedActionTargetTypes        = null;
+    private List<GuardType>                 producedGuards                   = null;
 
 
     /**
@@ -64,18 +65,19 @@ public class ConnectorReport
     {
         if (template != null)
         {
-            this.componentDescription       = template.getComponentDescription();
-            this.connectorType              = template.getConnectorType();
-            this.refreshTimeInterval        = template.getRefreshTimeInterval();
-            this.usesBlockingCalls          = template.getUsesBlockingCalls();
-            this.supportedRequestTypes      = template.getSupportedRequestTypes();
-            this.supportedRequestParameters = template.getSupportedRequestParameters();
-            this.supportedActionTargetTypes = template.getSupportedActionTargetTypes();
-            this.supportedAnalysisSteps     = template.getSupportedAnalysisSteps();
-            this.supportedAnnotationTypes   = template.getSupportedAnnotationTypes();
-            this.producedRequestParameters  = template.getProducedRequestParameters();
-            this.producedActionTargetTypes  = template.getProducedActionTargetTypes();
-            this.producedGuards             = template.getProducedGuards();
+            this.componentDescription             = template.getComponentDescription();
+            this.connectorType                    = template.getConnectorType();
+            this.refreshTimeInterval              = template.getRefreshTimeInterval();
+            this.usesBlockingCalls                = template.getUsesBlockingCalls();
+            this.supportedConfigurationProperties = template.getSupportedConfigurationProperties();
+            this.supportedRequestTypes            = template.getSupportedRequestTypes();
+            this.supportedRequestParameters       = template.getSupportedRequestParameters();
+            this.supportedActionTargetTypes       = template.getSupportedActionTargetTypes();
+            this.supportedAnalysisSteps           = template.getSupportedAnalysisSteps();
+            this.supportedAnnotationTypes         = template.getSupportedAnnotationTypes();
+            this.producedRequestParameters        = template.getProducedRequestParameters();
+            this.producedActionTargetTypes        = template.getProducedActionTargetTypes();
+            this.producedGuards                   = template.getProducedGuards();
         }
     }
 
@@ -169,6 +171,30 @@ public class ConnectorReport
     public void setUsesBlockingCalls(boolean usesBlockingCalls)
     {
         this.usesBlockingCalls = usesBlockingCalls;
+    }
+
+
+    /**
+     * Return the list of supported configuration property types that describe how the connector's
+     * behaviour can be modified.
+     *
+     * @return list of configuration property types
+     */
+    public List<ConfigurationPropertyType> getSupportedConfigurationProperties()
+    {
+        return supportedConfigurationProperties;
+    }
+
+
+    /**
+     * Set up the list of supported configuration property types that describe how the connector's
+     * behaviour can be modified.
+     *
+     * @param supportedConfigurationProperties list of configuration property types
+     */
+    public void setSupportedConfigurationProperties(List<ConfigurationPropertyType> supportedConfigurationProperties)
+    {
+        this.supportedConfigurationProperties = supportedConfigurationProperties;
     }
 
 
@@ -323,33 +349,9 @@ public class ConnectorReport
      */
     public void setProducedActionTargetTypes(List<ActionTargetType> producedActionTargetTypes)
     {
-        this.supportedActionTargetTypes = producedActionTargetTypes;
+        this.producedActionTargetTypes = producedActionTargetTypes;
     }
 
-
-    /**
-     * The guards describe the output assessment from the governance action service.  The list returned is the complete list of
-     * guards to expect from the governance action service.  They are used when defining governance action processes that choreograph
-     * the execution of governance action services using the guards to determine the path in the process to take.
-     *
-     * @return list of guards produced by this service
-     */
-    @Deprecated
-    public List<String> getSupportedGuards()
-    {
-        if (producedGuards != null)
-        {
-            List<String> supportedGuards = new ArrayList<>();
-
-            for (GuardType guardType : producedGuards)
-            {
-                supportedGuards.add(guardType.getGuard());
-            }
-            return supportedGuards;
-        }
-
-        return null;
-    }
 
 
     /**
@@ -389,6 +391,7 @@ public class ConnectorReport
                 ", connectorType=" + connectorType +
                 ", refreshTimeInterval=" + refreshTimeInterval +
                 ", usesBlockingCalls=" + usesBlockingCalls +
+                ", supportedConfigurationProperties=" + supportedConfigurationProperties +
                 ", supportedRequestTypes=" + supportedRequestTypes +
                 ", supportedRequestParameters=" + supportedRequestParameters +
                 ", supportedActionTargetTypes=" + supportedActionTargetTypes +
@@ -422,6 +425,7 @@ public class ConnectorReport
                        usesBlockingCalls == that.usesBlockingCalls &&
                        Objects.equals(componentDescription, that.componentDescription) &&
                        Objects.equals(connectorType, that.connectorType) &&
+                       Objects.equals(supportedConfigurationProperties, that.supportedConfigurationProperties) &&
                        Objects.equals(supportedRequestTypes, that.supportedRequestTypes) &&
                        Objects.equals(supportedRequestParameters, that.supportedRequestParameters) &&
                        Objects.equals(supportedActionTargetTypes, that.supportedActionTargetTypes) &&
@@ -441,8 +445,10 @@ public class ConnectorReport
     @Override
     public int hashCode()
     {
-        return Objects.hash(componentDescription, connectorType, refreshTimeInterval, usesBlockingCalls, supportedRequestTypes,
+        return Objects.hash(componentDescription, connectorType, refreshTimeInterval, usesBlockingCalls,
+                            supportedConfigurationProperties, supportedRequestTypes,
                             supportedRequestParameters, supportedActionTargetTypes, supportedAnalysisSteps,
-                            supportedAnnotationTypes, producedRequestParameters, producedActionTargetTypes, producedGuards);
+                            supportedAnnotationTypes, producedRequestParameters, producedActionTargetTypes,
+                            producedGuards);
     }
 }

@@ -229,7 +229,7 @@ public class DataEngineRESTServices {
         }
 
         dataEngineRegistrationHandler.removeExternalDataEngine(userId, qualifiedName, externalSourceName, deleteSemantic);
-        log.debug(DEBUG_DELETE_MESSAGE, dataEngineGUID, OpenMetadataType.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
+        log.debug(DEBUG_DELETE_MESSAGE, dataEngineGUID, OpenMetadataType.SOFTWARE_SERVER_CAPABILITY.typeName);
     }
 
     /**

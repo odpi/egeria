@@ -40,7 +40,7 @@ public class ApacheAtlasIntegrationProvider extends IntegrationConnectorProvider
     /*
      * Class of the connector.
      */
-    private static final String connectorClassName       = "org.odpi.openmetadata.adapters.connectors.integration.apacheatlas.ApacheAtlasIntegrationConnector";
+    private static final String connectorClassName       = "org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationConnector";
 
     /**
      * This connector needs to add open metadata types to Apache Atlas to store particular types of open metadata
@@ -233,6 +233,8 @@ public class ApacheAtlasIntegrationProvider extends IntegrationConnectorProvider
         connectorType.setDescription(connectorDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
+        connectorType.setDeployedImplementationType(DeployedImplementationType.CATALOG_INTEGRATION_CONNECTOR.getDeployedImplementationType());
+
         List<String> recognizedConfigurationProperties = new ArrayList<>();
         recognizedConfigurationProperties.add(OPEN_METADATA_TYPES_POLICY_CONFIGURATION_PROPERTY);
         recognizedConfigurationProperties.add(IGNORE_OPEN_METADATA_TYPES_CONFIGURATION_PROPERTY);
@@ -264,9 +266,11 @@ public class ApacheAtlasIntegrationProvider extends IntegrationConnectorProvider
 
         CatalogTargetType catalogTargetType = new CatalogTargetType();
 
-        catalogTargetType.setTypeName(DeployedImplementationType.APACHE_ATLAS.getAssociatedTypeName());
-        catalogTargetType.setDeployedImplementationType(DeployedImplementationType.APACHE_ATLAS.getDeployedImplementationType());
+        catalogTargetType.setName(CATALOG_TARGET_NAME);
+        catalogTargetType.setTypeName(DeployedImplementationType.APACHE_ATLAS_SERVER.getAssociatedTypeName());
+        catalogTargetType.setDeployedImplementationType(DeployedImplementationType.APACHE_ATLAS_SERVER.getDeployedImplementationType());
 
-        super.catalogTargetTypes.put(CATALOG_TARGET_NAME, catalogTargetType);
+        super.catalogTargets = new ArrayList<>();
+        super.catalogTargets.add(catalogTargetType);
     }
 }

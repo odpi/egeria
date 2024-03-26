@@ -42,64 +42,62 @@ public class JdbcMetadataTransfer
     private final Jdbc jdbc;
     private final Omas omas;
     private final String databaseManagerName;
+    private DatabaseElement databaseElement;
     private final String address;
-    private final String connectorTypeQualifiedName;
     private final String catalog;
     private final TransferCustomizations transferCustomizations;
 
     private final AuditLog auditLog;
 
-    public JdbcMetadataTransfer(JdbcMetadata jdbcMetadata,
+    public JdbcMetadataTransfer(JdbcMetadata              jdbcMetadata,
                                 DatabaseIntegratorContext databaseIntegratorContext,
-                                String address,
-                                String connectorTypeQualifiedName,
-                                String catalog,
-                                TransferCustomizations transferCustomizations,
-                                AuditLog auditLog)
+                                DatabaseElement           databaseElement,
+                                String                    endpointJDBCConnectionURL,
+                                String                    catalogName,
+                                TransferCustomizations    transferCustomizations,
+                                AuditLog                  auditLog)
     {
         this.jdbc = new Jdbc(jdbcMetadata, auditLog);
         this.omas = new Omas(databaseIntegratorContext, auditLog);
         this.databaseManagerName = databaseIntegratorContext.getDatabaseManagerName();
-        this.address = address;
-        this.connectorTypeQualifiedName = connectorTypeQualifiedName;
-        this.catalog = catalog;
+        this.databaseElement     = databaseElement;
+        this.address             = endpointJDBCConnectionURL;
+        this.catalog = catalogName;
         this.transferCustomizations = transferCustomizations;
         this.auditLog = auditLog;
     }
 
     /**
      * Triggers database, schema, table and column metadata transfer. Will do the best it can to transfer as much of the
-     * metadata as possible. If available will also build the asset (database) connection structure
+     * metadata as possible.
      */
     public void execute()
     {
         String methodName = "JdbcMetadataTransfer.execute";
 
-        DatabaseElement database = new DatabaseTransfer(jdbc, databaseManagerName, address, catalog, omas, auditLog).execute();
-        if (database == null)
+        databaseElement = new DatabaseTransfer(jdbc, databaseManagerName, this.databaseElement, address, catalog, omas, auditLog).execute();
+        if (databaseElement == null)
         {
             auditLog.logMessage("Verifying database metadata transferred. None found. Stopping transfer",
                     EXITING_ON_DATABASE_TRANSFER_FAIL.getMessageDefinition(methodName));
             return;
         }
 
-        createAssetConnection(database);
+        transferTablesWithoutSchema(databaseElement);
+        transferViewsWithoutSchema(databaseElement);
+        transferColumnsOfTablesWithoutSchema(databaseElement);
+        transferForeignKeysIgnoringSchemas(databaseElement);
 
-        transferTablesWithoutSchema(database);
-        transferViewsWithoutSchema(database);
-        transferColumnsOfTablesWithoutSchema(database);
-        transferForeignKeysIgnoringSchemas(database);
-
-        transferSchemas(database);
-        List<DatabaseSchemaElement> schemas = omas.getSchemas(database.getElementHeader().getGUID());
+        transferSchemas(databaseElement);
+        List<DatabaseSchemaElement> schemas = omas.getSchemas(databaseElement.getElementHeader().getGUID());
         if (schemas.isEmpty())
         {
             return;
         }
-        transferTables(database, schemas);
-        transferViews(database, schemas);
-        transferColumns(database, schemas);
-        transferForeignKeys(database);
+        transferTables(databaseElement, schemas);
+        transferViews(databaseElement, schemas);
+        transferColumns(databaseElement, schemas);
+        transferForeignKeys(databaseElement);
     }
 
     /**
@@ -118,10 +116,10 @@ public class JdbcMetadataTransfer
         List<DatabaseTableElement> omasTables = omas.getTables(databaseGuid);
         // a table update will always occur as long as the table is returned by jdbc
         List<DatabaseTableElement> omasTablesUpdated = jdbc.getTables(catalog,"").parallelStream()
-                .filter(jdbcTable -> jdbcTable.getTableSchem() == null || jdbcTable.getTableSchem().length() < 1 )
+                .filter(jdbcTable -> jdbcTable.getTableSchem() == null || jdbcTable.getTableSchem().isEmpty())
                 .filter(table -> transferCustomizations.shouldTransferTable(table.getTableName()))
                 .map(new TableTransfer(omas, auditLog, omasTables, databaseQualifiedName, databaseGuid))
-                .collect(Collectors.toList());
+                .toList();
 
         // will remove all updated tables, and what remains are the ones deleted in jdbc
         omasTables.removeAll(omasTablesUpdated);
@@ -154,10 +152,10 @@ public class JdbcMetadataTransfer
         List<DatabaseViewElement> omasViews = omas.getViews(databaseGuid);
         // a view update will always occur as long as the view is returned by jdbc
         List<DatabaseViewElement> omasViewsUpdated = jdbc.getViews(catalog,"").parallelStream()
-                .filter(jdbcView -> jdbcView.getTableSchem() == null || jdbcView.getTableSchem().length() < 1 )
+                .filter(jdbcView -> jdbcView.getTableSchem() == null || jdbcView.getTableSchem().isEmpty())
                 .filter(view -> transferCustomizations.shouldTransferTable(view.getTableName()))
                 .map(new ViewTransfer(omas, auditLog, omasViews, databaseQualifiedName, databaseGuid))
-                .collect(Collectors.toList());
+                .toList();
 
         // will remove all updated views, and what remains are the ones deleted in jdbc
         omasViews.removeAll(omasViewsUpdated);
@@ -197,7 +195,7 @@ public class JdbcMetadataTransfer
                     // a column update will always occur as long as the column is returned by jdbc
                     List<DatabaseColumnElement> omasUpdatedColumns = jdbc.getColumns(catalog, schemaName, tableName).parallelStream()
                             .filter(column -> transferCustomizations.shouldTransferColumn(column.getColumnName()))
-                            .map(new ColumnTransfer(omas, auditLog, omasColumns, jdbcPrimaryKeys, table)).collect(Collectors.toList());
+                            .map(new ColumnTransfer(omas, auditLog, omasColumns, jdbcPrimaryKeys, table)).toList();
 
                     // will remove all updated column, and what remains are the ones deleted in jdbc
                     omasColumns.removeAll(omasUpdatedColumns);
@@ -241,11 +239,6 @@ public class JdbcMetadataTransfer
                         .getMessageDefinition("foreign keys between columns of tables without schemas", "" + (end - start)/1000));
     }
 
-    private void createAssetConnection(DatabaseElement databaseElement){
-        CreateConnectionStructure createConnectionStructure = new CreateConnectionStructure(omas, jdbc,
-                connectorTypeQualifiedName, auditLog);
-        createConnectionStructure.accept(databaseElement);
-    }
 
     /**
      * Triggers the transfer of all available schemas, depending also on inclusions and exclusions
@@ -265,7 +258,7 @@ public class JdbcMetadataTransfer
                 jdbc.getSchemas(catalog).parallelStream()
                         .filter(schema -> transferCustomizations.shouldTransferSchema(schema.getTableSchem()))
                         .map(new SchemaTransfer(omas, auditLog, omasSchemas, databaseQualifiedName, databaseGuid))
-                        .collect(Collectors.toList());
+                        .toList();
 
         // will remove all updated schemas, and what remains are the ones deleted in jdbc
         omasSchemas.removeAll(omasSchemasUpdated);
@@ -304,7 +297,7 @@ public class JdbcMetadataTransfer
             List<DatabaseTableElement> omasTablesUpdated = jdbc.getTables(catalog, schemaDisplayName).parallelStream()
                     .filter(table -> transferCustomizations.shouldTransferTable(table.getTableName()))
                     .map(new TableTransfer(omas, auditLog, omasTables, schemaQualifiedName, schemaGuid))
-                    .collect(Collectors.toList());
+                    .toList();
 
             // will remove all updated tables, and what remains are the ones deleted in jdbc
             omasTables.removeAll(omasTablesUpdated);
@@ -344,7 +337,7 @@ public class JdbcMetadataTransfer
                     List<DatabaseViewElement> omasViewsUpdated = jdbc.getViews(catalog, schemaDisplayName).parallelStream()
                             .filter(jdbcView -> transferCustomizations.shouldTransferTable(jdbcView.getTableName()))
                             .map(new ViewTransfer(omas, auditLog, omasViews, schemaQualifiedName, schemaGuid))
-                            .collect(Collectors.toList());
+                            .toList();
 
                     // will remove all updated tables, and what remains are the ones deleted in jdbc
                     omasViews.removeAll(omasViewsUpdated);

@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 
 
 /**
@@ -31,8 +32,6 @@ public class BasicFileStoreProvider extends ConnectorProviderBase
 
     private static final String  connectorClass = "org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreConnector";
 
-    private static final String  assetTypeName = OpenMetadataType.DATA_FILE.typeName;
-
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
      * store implementation.
@@ -51,7 +50,8 @@ public class BasicFileStoreProvider extends ConnectorProviderBase
         connectorType.setQualifiedName(connectorQualifiedName);
         connectorType.setDisplayName(connectorTypeName);
         connectorType.setDescription(connectorTypeDescription);
-        connectorType.setSupportedAssetTypeName(assetTypeName);
+        connectorType.setSupportedAssetTypeName(DeployedImplementationType.DATA_FILE.getAssociatedTypeName());
+        connectorType.setDeployedImplementationType(DeployedImplementationType.DATA_FILE.getDeployedImplementationType());
         connectorType.setConnectorInterfaces(connectorInterfaces);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 

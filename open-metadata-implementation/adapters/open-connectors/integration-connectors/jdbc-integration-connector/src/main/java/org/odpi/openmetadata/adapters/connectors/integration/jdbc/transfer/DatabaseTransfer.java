@@ -23,12 +23,21 @@ public class DatabaseTransfer {
     private final String databaseManagerName;
     private final String address;
     private final String catalog;
+    private final DatabaseElement databaseElement;
     private final Omas omas;
     private final AuditLog auditLog;
 
-    public DatabaseTransfer(Jdbc jdbc, String databaseManagerName, String address, String catalog, Omas omas, AuditLog auditLog) {
+    public DatabaseTransfer(Jdbc jdbc,
+                            String databaseManagerName,
+                            DatabaseElement databaseElement,
+                            String address,
+                            String catalog,
+                            Omas omas,
+                            AuditLog auditLog)
+    {
         this.jdbc = jdbc;
         this.databaseManagerName = databaseManagerName;
+        this.databaseElement = databaseElement;
         this.address = address;
         this.catalog = catalog;
         this.omas = omas;
@@ -40,29 +49,48 @@ public class DatabaseTransfer {
      *
      * @return database element
      */
-    public DatabaseElement execute() {
-        DatabaseProperties databaseProperties = buildDatabaseProperties();
-        String multipleDatabasesFoundMessage = "Querying for a database with qualified name "
-                + databaseProperties.getQualifiedName() + " and found multiple. Expecting only one";
+    public DatabaseElement execute()
+    {
+        /*
+         * If the database element is already known, just return it.
+         */
+        if (databaseElement != null)
+        {
+            return databaseElement;
+        }
+        else
+        {
+            /*
+             * Locate the database asset
+             */
+            DatabaseProperties databaseProperties = buildDatabaseProperties();
+            String multipleDatabasesFoundMessage = "Querying for a database with qualified name "
+                    + databaseProperties.getQualifiedName() + " and found multiple. Expecting only one";
 
-        List<DatabaseElement> databasesInOmas = omas.getDatabasesByName(databaseProperties.getQualifiedName());
-        if (databasesInOmas.isEmpty()) {
-            omas.createDatabase(databaseProperties);
-        } else {
-            if(databasesInOmas.size() > 1){
-                auditLog.logMessage(multipleDatabasesFoundMessage, null);
-                return null;
+            List<DatabaseElement> databasesInOmas = omas.getDatabasesByName(databaseProperties.getQualifiedName());
+            if (databasesInOmas.isEmpty())
+            {
+                omas.createDatabase(databaseProperties);
             }
-            omas.updateDatabase(databasesInOmas.get(0).getElementHeader().getGUID(), databaseProperties);
-        }
+            else
+            {
+                if (databasesInOmas.size() > 1)
+                {
+                    auditLog.logMessage(multipleDatabasesFoundMessage, null);
+                    return null;
+                }
+                omas.updateDatabase(databasesInOmas.get(0).getElementHeader().getGUID(), databaseProperties);
+            }
 
-        databasesInOmas = omas.getDatabasesByName(databaseProperties.getQualifiedName());
-        if(databasesInOmas.size() == 1){
-            auditLog.logMessage("Transferred database with qualified name " + databaseProperties.getQualifiedName(),
-                    TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("database " + databaseProperties.getQualifiedName()));
-            return databasesInOmas.get(0);
+            databasesInOmas = omas.getDatabasesByName(databaseProperties.getQualifiedName());
+            if (databasesInOmas.size() == 1)
+            {
+                auditLog.logMessage("Transferred database with qualified name " + databaseProperties.getQualifiedName(),
+                                    TRANSFER_COMPLETE_FOR_DB_OBJECT.getMessageDefinition("database " + databaseProperties.getQualifiedName()));
+                return databasesInOmas.get(0);
+            }
+            auditLog.logMessage(multipleDatabasesFoundMessage, null);
         }
-        auditLog.logMessage(multipleDatabasesFoundMessage, null);
         return null;
     }
 
@@ -71,7 +99,8 @@ public class DatabaseTransfer {
      *
      * @return properties
      */
-    private DatabaseProperties buildDatabaseProperties() {
+    private DatabaseProperties buildDatabaseProperties()
+    {
         String driverName = jdbc.getDriverName();
         String databaseProductVersion = jdbc.getDatabaseProductVersion();
         String databaseProductName = jdbc.getDatabaseProductName();

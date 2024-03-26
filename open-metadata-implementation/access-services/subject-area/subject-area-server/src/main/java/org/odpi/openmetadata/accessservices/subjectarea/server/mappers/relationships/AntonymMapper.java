@@ -43,7 +43,7 @@ public class AntonymMapper extends RelationshipMapper<Antonym> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, antonym.getSteward(), OpenMetadataType.STEWARD_PROPERTY_NAME);
         }
         if (antonym.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, antonym.getSource(), OpenMetadataType.SOURCE_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, antonym.getSource(), OpenMetadataProperty.SOURCE.name);
         }
         if (antonym.getStatus() != null) {
             SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, antonym.getStatus(), OpenMetadataType.STATUS_PROPERTY_NAME);
@@ -74,7 +74,7 @@ public class AntonymMapper extends RelationshipMapper<Antonym> {
             antonym.setSteward(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataType.SOURCE_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.SOURCE.name)) {
             antonym.setSource(stringValue);
             foundProperty = true;
         }

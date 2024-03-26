@@ -6,11 +6,19 @@ package org.odpi.openmetadata.reports.validvalues;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.OpenMetadataStoreClient;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.ReferenceDataManager;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ValidValueElement;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.reports.EgeriaReport;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +32,9 @@ public class ValidValuesReport
     private final String       serverName;
     private final String       platformURLRoot;
     private final String       clientUserId;
+    private final String       validValueRootName;
     private final EgeriaReport report;
+    private final PropertyHelper propertyHelper = new PropertyHelper();
 
     /**
      * Set up the parameters for the sample.
@@ -32,17 +42,20 @@ public class ValidValuesReport
      * @param serverName server to call
      * @param platformURLRoot location of server
      * @param clientUserId userId to access the server
+     * @param validValueRootName the qualified name of the root of the valid values of interest
      * @throws IOException problem writing file
      */
     private ValidValuesReport(String serverName,
                               String platformURLRoot,
-                              String clientUserId) throws IOException
+                              String clientUserId,
+                              String validValueRootName) throws IOException
     {
-        final String reportFileName  = "valid-values-report.md";
+        final String reportFileName  = "valid-values-report-" + validValueRootName + ".md";
 
         this.serverName = serverName;
         this.platformURLRoot = platformURLRoot;
         this.clientUserId = clientUserId;
+        this.validValueRootName = validValueRootName;
 
         report = new EgeriaReport(reportFileName);
     }
@@ -53,6 +66,8 @@ public class ValidValuesReport
      */
     private void run()
     {
+        final String methodName = "run";
+
         int indentLevel = 0;
 
         try
@@ -66,50 +81,150 @@ public class ValidValuesReport
             /*
              * This outputs the report title
              */
-            final String reportTitle = "Valid Values report for: ";
+            final String reportTitle = "Valid Values Report for: ";
 
-            report.printReportTitle(indentLevel, reportTitle + serverName + " on " + platformURLRoot);
+            report.printReportTitle(indentLevel, reportTitle + validValueRootName);
 
             int detailIndentLevel = indentLevel + 1;
 
-            report.printReportSubheading(detailIndentLevel, "Valid Metadata Values");
+            report.printReportSubheading(detailIndentLevel, "Retrieved from " + serverName + "@" + platformURLRoot+ " on " + new Date());
 
             int startFrom = 0;
             int maxPageSize = 100;
+            List<ValidValueInformation> validValueInformationList = new ArrayList<>();
 
-            List<ValidValueElement> validValueElements = referenceDataManager.findValidValues(clientUserId, ".*", startFrom, maxPageSize);
+            List<ValidValueElement> validValueElements = referenceDataManager.getValidValueByName(clientUserId, validValueRootName, startFrom, maxPageSize);
 
             while (validValueElements != null)
             {
                 for (ValidValueElement validValueElement : validValueElements)
                 {
-                    if (validValueElement != null)
-                    {
-                        /*
-                         * It is possible to decide if the valid value is for metadata because the qualified name begins "Egeria:ValidMetadataValue:"
-                         */
-                        if (validValueElement.getValidValueProperties().getQualifiedName().startsWith(OpenMetadataValidValues.VALID_METADATA_VALUES_QUALIFIED_NAME_PREFIX))
-                        {
-                            /*
-                             * Valid metadata value.
-                             */
-
-                        }
-                        else
-                        {
-                            /*
-                             * Valid value for data.
-                             */
-                        }
-                    }
+                    this.gatherValidValues(validValueElement,
+                                           validValueInformationList,
+                                           1,
+                                           referenceDataManager);
                 }
 
                 startFrom = startFrom + maxPageSize;
 
-                validValueElements = referenceDataManager.findValidValues(clientUserId, ".*", startFrom, maxPageSize);
+                validValueElements = referenceDataManager.getValidValueByName(clientUserId, validValueRootName, startFrom, maxPageSize);
             }
 
+            for (ValidValueInformation validValueInformation : validValueInformationList)
+            {
+                report.printReportSubheading(validValueInformation.indentLevel,  validValueInformation.element.getValidValueProperties().getQualifiedName() );
 
+                if (validValueInformation.element.getValidValueProperties().getPreferredValue() != null)
+                {
+                    report.printReportLine(validValueInformation.indentLevel + 1, "Preferred value", validValueInformation.element.getValidValueProperties().getPreferredValue());
+                    report.printReportLine(validValueInformation.indentLevel + 1, "Description", validValueInformation.element.getValidValueProperties().getDescription());
+
+                    startFrom = 0;
+                    List<RelatedMetadataElement> relatedElements = openMetadataStoreClient.getRelatedMetadataElements(clientUserId,
+                                                                                                                      validValueInformation.element.getElementHeader().getGUID(),
+                                                                                                                      0,
+                                                                                                                      null,
+                                                                                                                      false,
+                                                                                                                      false,
+                                                                                                                      new Date(),
+                                                                                                                      startFrom,
+                                                                                                                      500);
+
+                    while (relatedElements != null)
+                    {
+                        for (RelatedMetadataElement relatedElement : relatedElements)
+                        {
+                            if (! propertyHelper.isTypeOf(relatedElement, OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME))
+                            {
+                                report.printReportLine(validValueInformation.indentLevel + 2, "Relationship type", relatedElement.getType().getTypeName());
+                                if (relatedElement.getRelationshipProperties() != null)
+                                {
+                                    report.printReportSubheading(validValueInformation.indentLevel + 3, "Relationship properties:");
+
+                                    for (String propertyName : relatedElement.getRelationshipProperties().getPropertiesAsStrings().keySet())
+                                    {
+                                        report.printReportLine(validValueInformation.indentLevel + 4, propertyName, relatedElement.getRelationshipProperties().getPropertiesAsStrings().get(propertyName));
+                                    }
+                                }
+
+                                if (relatedElement.getElement().getElementProperties() != null)
+                                {
+                                    report.printReportSubheading(validValueInformation.indentLevel + 4, "Related" + relatedElement.getElement().getType().getTypeName() + "Element properties:");
+
+                                    for (String propertyName : relatedElement.getElement().getElementProperties().getPropertiesAsStrings().keySet())
+                                    {
+                                        report.printReportLine(validValueInformation.indentLevel + 4, propertyName, relatedElement.getElement().getElementProperties().getPropertiesAsStrings().get(propertyName));
+                                    }
+                                }
+
+                                if ((propertyHelper.isTypeOf(relatedElement, OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName)) ||
+                                    (propertyHelper.isTypeOf(relatedElement, OpenMetadataType.CATALOG_TEMPLATE_RELATIONSHIP.typeName)))
+                                {
+                                    report.printReportSubheading(validValueInformation.indentLevel + 4, "Assigned reference values: ");
+
+                                    int refDataStartFrom = 0;
+
+                                    List<RelatedMetadataElement> relatedRefElements = openMetadataStoreClient.getRelatedMetadataElements(clientUserId,
+                                                                                                                                         relatedElement.getElement().getElementGUID(),
+                                                                                                                                         0,
+                                                                                                                                         OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                                                                                         false,
+                                                                                                                                         false,
+                                                                                                                                         new Date(),
+                                                                                                                                         refDataStartFrom,
+                                                                                                                                         500);
+
+                                    while (relatedRefElements != null)
+                                    {
+                                        for (RelatedMetadataElement relatedRefElement : relatedRefElements)
+                                        {
+                                            if (relatedRefElement != null)
+                                            {
+                                                String attributeName = propertyHelper.getStringProperty(reportTitle,
+                                                                                                        OpenMetadataType.ATTRIBUTE_NAME_PROPERTY_NAME,
+                                                                                                        relatedRefElement.getRelationshipProperties(),
+                                                                                                        methodName);
+
+                                                report.printReportSubheading(validValueInformation.indentLevel + 5, "Assigned reference value: " + attributeName);
+
+                                                if (relatedRefElement.getElement().getElementProperties() != null)
+                                                {
+                                                    for (String propertyName : relatedRefElement.getElement().getElementProperties().getPropertiesAsStrings().keySet())
+                                                    {
+                                                        report.printReportLine(validValueInformation.indentLevel + 6, propertyName, relatedRefElement.getElement().getElementProperties().getPropertiesAsStrings().get(propertyName));
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        refDataStartFrom = refDataStartFrom + 500;
+                                        relatedRefElements = openMetadataStoreClient.getRelatedMetadataElements(clientUserId,
+                                                                                                                validValueInformation.element.getElementHeader().getGUID(),
+                                                                                                                0,
+                                                                                                                OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                                                                false,
+                                                                                                                false,
+                                                                                                                new Date(),
+                                                                                                                refDataStartFrom,
+                                                                                                                500);
+                                    }
+                                }
+                            }
+                        }
+
+                        startFrom = startFrom + 500;
+                        relatedElements = openMetadataStoreClient.getRelatedMetadataElements(clientUserId,
+                                                                                             validValueInformation.element.getElementHeader().getGUID(),
+                                                                                             0,
+                                                                                             null,
+                                                                                             false,
+                                                                                             false,
+                                                                                             new Date(),
+                                                                                             startFrom,
+                                                                                             500);
+                    }
+                }
+            }
 
             report.closeReport();
         }
@@ -122,16 +237,68 @@ public class ValidValuesReport
 
 
     /**
+     * Iterate through the hierarchy of valid values to discover the tree structure of valid values.
+     *
+     * @param element last retrieved element
+     * @param validValueInformationList current list of valid values
+     * @param currentIndent current indent
+     * @param referenceDataManager client
+     */
+    private void gatherValidValues(ValidValueElement           element,
+                                   List<ValidValueInformation> validValueInformationList,
+                                   int                         currentIndent,
+                                   ReferenceDataManager        referenceDataManager) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        ValidValueInformation validValueInformation = new ValidValueInformation();
+
+        validValueInformation.element = element;
+        validValueInformation.indentLevel = currentIndent;
+        validValueInformation.position = validValueInformationList.size();
+
+        validValueInformationList.add(validValueInformation);
+
+        if (propertyHelper.isTypeOf(element.getElementHeader(), OpenMetadataType.VALID_VALUE_SET_TYPE_NAME))
+        {
+            int                     startFrom = 0;
+            List<ValidValueElement> nestedElements = referenceDataManager.getValidValueSetMembers(clientUserId,
+                                                                                                  element.getElementHeader().getGUID(),
+                                                                                                  startFrom,
+                                                                                                  100);
+
+            while (nestedElements != null)
+            {
+                for (ValidValueElement nestedElement : nestedElements)
+                {
+                    gatherValidValues(nestedElement,
+                                      validValueInformationList,
+                                      currentIndent + 1,
+                                      referenceDataManager);
+                }
+
+                startFrom = startFrom + 100;
+                nestedElements = referenceDataManager.getValidValueSetMembers(clientUserId,
+                                                                              element.getElementHeader().getGUID(),
+                                                                              startFrom,
+                                                                              100);
+            }
+        }
+    }
+
+
+    /**
      * Main program that controls the operation of the valid values report.  The parameters are passed space separated.
      * They are used to override the report's default values.
      *
-     * @param args 1. service platform URL root, 2. client userId, 3. server name,
+     * @param args 1. service platform URL root, 2. client userId, 3. server name, 4. valid value set name
      */
     public static void main(String[] args)
     {
-        String  serverName = "simple-metadata-store";
+        String  serverName = "active-metadata-store";
         String  platformURLRoot = "https://localhost:9443";
         String  clientUserId = "erinoverview";
+        String  validValueRoot = OpenMetadataValidValues.VALID_METADATA_VALUES_QUALIFIED_NAME_PREFIX;
 
         if (args.length > 0)
         {
@@ -148,19 +315,25 @@ public class ValidValuesReport
             serverName = args[2];
         }
 
+        if (args.length > 3)
+        {
+            validValueRoot = args[3];
+        }
+
         System.out.println("===============================");
         System.out.println("Valid Values Report:    " + new Date());
         System.out.println("===============================");
         System.out.println("Running against platform: " + platformURLRoot);
         System.out.println("Focused on server: " + serverName);
         System.out.println("Using userId: " + clientUserId);
+        System.out.println("Valid Value Root: " + validValueRoot);
         System.out.println();
 
         HttpHelper.noStrictSSL();
 
         try
         {
-            ValidValuesReport report = new ValidValuesReport(serverName, platformURLRoot, clientUserId);
+            ValidValuesReport report = new ValidValuesReport(serverName, platformURLRoot, clientUserId, validValueRoot);
 
             report.run();
         }
@@ -169,5 +342,16 @@ public class ValidValuesReport
             System.out.println("Exception: " + error.getClass().getName() + " with message " + error.getMessage());
             System.exit(-1);
         }
+    }
+
+
+    /**
+     * ValidValueInformation gathers information about a specific valid value.
+     */
+    static class ValidValueInformation
+    {
+        ValidValueElement element = null;
+        int               indentLevel = 0;
+        int               position = 0;
     }
 }
