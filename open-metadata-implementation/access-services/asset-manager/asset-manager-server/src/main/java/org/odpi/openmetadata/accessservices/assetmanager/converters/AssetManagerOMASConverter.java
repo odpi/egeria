@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.converters;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
@@ -139,7 +140,7 @@ public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGeneri
         if (instanceProperties != null)
         {
             int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataType.KEY_PATTERN_PROPERTY_NAME,
+                                                                     OpenMetadataProperty.KEY_PATTERN.name,
                                                                      instanceProperties,
                                                                      methodName);
 
@@ -169,7 +170,7 @@ public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGeneri
         if (instanceProperties != null)
         {
             int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataType.PERMITTED_SYNC_PROPERTY_NAME,
+                                                                     OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
                                                                      instanceProperties,
                                                                      methodName);
 

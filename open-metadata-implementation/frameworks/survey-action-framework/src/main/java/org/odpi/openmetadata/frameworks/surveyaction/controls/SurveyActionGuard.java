@@ -3,8 +3,12 @@
 
 package org.odpi.openmetadata.frameworks.surveyaction.controls;
 
+import org.odpi.openmetadata.frameworks.governanceaction.controls.Guard;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.GuardType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The SurveyActionGuard enum describes the standard guards that are automatically set up for all
@@ -70,7 +74,35 @@ public enum SurveyActionGuard
         return description;
     }
 
+    /**
+     * Return details of all defined guards.
+     *
+     * @return guard types
+     */
+    public static List<GuardType> getGuardTypes()
+    {
+        List<GuardType> guardTypes = new ArrayList<>();
 
+        for (SurveyActionGuard guard : SurveyActionGuard.values())
+        {
+            GuardType guardType = new GuardType();
+
+            guardType.setGuard(guard.getName());
+            guardType.setDescription(guard.getDescription());
+            guardType.setCompletionStatus(guard.getCompletionStatus());
+
+            guardTypes.add(guardType);
+        }
+
+        return guardTypes;
+    }
+
+
+    /**
+     * Return the details of a specific guard.
+     *
+     * @return guard type
+     */
     public GuardType getGuardType()
     {
         GuardType guardType = new GuardType();

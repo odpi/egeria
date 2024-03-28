@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface;
@@ -25,6 +26,7 @@ import org.odpi.openmetadata.frameworks.integration.reports.IntegrationReportWri
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -39,12 +41,13 @@ public class IntegrationContext
     protected final OpenIntegrationClient    openIntegrationClient;
     protected final OpenMetadataClient       openMetadataStoreClient;
     protected final String                   userId;
-    protected final String                   externalSourceGUID;
-    protected final String                   externalSourceName;
-    protected       boolean                  externalSourceIsHome    = true;
     protected final String                   connectorName;
     protected final String                   integrationConnectorGUID;
     protected final PermittedSynchronization permittedSynchronization;
+
+    protected       String                   externalSourceGUID;
+    protected       String                   externalSourceName;
+    protected       boolean                  externalSourceIsHome = true;
 
     protected final FileClassifier           fileClassifier;
 
@@ -213,6 +216,43 @@ public class IntegrationContext
         return externalSourceName;
     }
 
+
+    /**
+     * Change the metadata collection that is in use when working with open metadata.  It should be the qualified name
+     * of a software capability,  The qualified name is supplied through open metadata values and may be incorrect
+     * which is why any exceptions from retrieving the software capability are passed through to the caller.
+     *
+     * @param metadataSourceQualifiedName supplied qualified name for the metadata collection
+     *
+     * @throws InvalidParameterException the unique name is null or not known.
+     * @throws UserNotAuthorizedException the caller's userId is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    public void setMetadataSourceQualifiedName(String metadataSourceQualifiedName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        if (metadataSourceQualifiedName == null)
+        {
+            this.externalSourceName = null;
+            this.externalSourceGUID = null;
+        }
+        else
+        {
+            String metadataSourceGUID = openMetadataStoreClient.getMetadataElementGUIDByUniqueName(userId,
+                                                                                                   metadataSourceQualifiedName,
+                                                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                   false,
+                                                                                                   false,
+                                                                                                   new Date());
+
+            if (metadataSourceGUID != null)
+            {
+                this.externalSourceName = metadataSourceQualifiedName;
+                this.externalSourceGUID = metadataSourceGUID;
+            }
+        }
+    }
 
     /**
      * Return the permitted synchronization direction.  This setting may affect which method in the context are available to the integration

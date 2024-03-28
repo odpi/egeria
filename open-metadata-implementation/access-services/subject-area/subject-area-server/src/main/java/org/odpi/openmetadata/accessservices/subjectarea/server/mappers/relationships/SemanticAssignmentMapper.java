@@ -48,7 +48,7 @@ public class SemanticAssignmentMapper extends RelationshipMapper<SemanticAssignm
             SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getSteward(), OpenMetadataType.STEWARD_PROPERTY_NAME);
         }
         if (semanticAssignment.getSource() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getSource(), OpenMetadataType.SOURCE_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getSource(), OpenMetadataProperty.SOURCE.name);
         }
 
         Map<String, InstancePropertyValue> instancePropertyMap = properties.getInstanceProperties();
@@ -88,7 +88,7 @@ public class SemanticAssignmentMapper extends RelationshipMapper<SemanticAssignm
             semanticAssignment.setSteward(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataType.SOURCE_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.SOURCE.name)) {
             semanticAssignment.setSource(stringValue);
             foundProperty = true;
         }

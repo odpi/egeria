@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.archiveutilities.openconnectors;
 
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.control.AtlasPlaceholderProperty;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTProvider;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasProvider;
@@ -25,6 +26,10 @@ import org.odpi.openmetadata.adapters.connectors.integration.kafka.KafkaMonitorI
 import org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.DistributeAuditEventsFromKafkaProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.openapis.OpenAPIMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.*;
+import org.odpi.openmetadata.adapters.connectors.postgres.catalog.PostgresServerIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresPlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresDatabaseSurveyActionProvider;
+import org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresServerSurveyActionProvider;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider;
 import org.odpi.openmetadata.adapters.connectors.secretsstore.envar.EnvVarSecretsStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv.CSVSurveyServiceProvider;
@@ -32,10 +37,7 @@ import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileSur
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.adminservices.configuration.registration.*;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.GuardType;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestParameterType;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestTypeType;
+import org.odpi.openmetadata.frameworks.governanceaction.controls.*;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
@@ -49,6 +51,7 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuil
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveWriter;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.samples.archiveutilities.GovernanceArchiveHelper;
 
 import java.util.*;
@@ -433,6 +436,15 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         }
 
         /*
+         * Add the list of reference value assignment relationship attribute names
+         */
+        for (ReferenceValueAttributeName attributeName : ReferenceValueAttributeName.values())
+        {
+            this.addAttributeName(attributeName.getAttributeName(),
+                                  attributeName.getDescription());
+        }
+
+        /*
          * Integration Connector Types may need to link to deployedImplementationType valid value element.
          * This information is in the connector provider.
          */
@@ -458,6 +470,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         archiveHelper.addConnectorType(null, new OpenLineageCataloguerIntegrationProvider());
         archiveHelper.addConnectorType(null, new OpenLineageEventReceiverIntegrationProvider());
         archiveHelper.addConnectorType(null, new EnvVarSecretsStoreProvider());
+        archiveHelper.addConnectorType(null, new PostgresServerIntegrationProvider());
 
         /*
          * Create the default integration group.
@@ -492,19 +505,21 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         /*
          * Register the governance services that are going to be in the default governance engines.
          */
-        GovernanceActionDescription fileProvisionerDescription     = this.getFileProvisioningGovernanceActionService();
-        GovernanceActionDescription watchDogServiceDescription     = this.getWatchdogGovernanceActionService();
-        GovernanceActionDescription originSeekerDescription        = this.getOriginSeekerGovernanceActionService();
-        GovernanceActionDescription qualifiedNameDeDupDescription  = this.getQualifiedNameDeDupGovernanceActionService();
-        GovernanceActionDescription zonePublisherDescription       = this.getZonePublisherGovernanceActionService();
-        GovernanceActionDescription evaluateAnnotationsDescription = this.getEvaluateAnnotationsGovernanceActionService();
-        GovernanceActionDescription writeAuditLogDescription       = this.getWriteAuditLogGovernanceActionService();
-        GovernanceActionDescription dayOfWeekDescription           = this.getDayOfWeekGovernanceActionService();
-        GovernanceActionDescription verifyAssetDescription         = this.getVerifyAssetGovernanceActionService();
-        GovernanceActionDescription csvSurveyDescription           = this.getCSVFileSurveyService();
-        GovernanceActionDescription fileSurveyDescription          = this.getDataFileSurveyService();
-        GovernanceActionDescription folderSurveyDescription        = this.getFolderSurveyService();
-        GovernanceActionDescription atlasSurveyDescription         = this.getAtlasSurveyService();
+        GovernanceActionDescription fileProvisionerDescription        = this.getFileProvisioningGovernanceActionService();
+        GovernanceActionDescription watchDogServiceDescription        = this.getWatchdogGovernanceActionService();
+        GovernanceActionDescription originSeekerDescription           = this.getOriginSeekerGovernanceActionService();
+        GovernanceActionDescription qualifiedNameDeDupDescription     = this.getQualifiedNameDeDupGovernanceActionService();
+        GovernanceActionDescription zonePublisherDescription          = this.getZonePublisherGovernanceActionService();
+        GovernanceActionDescription evaluateAnnotationsDescription    = this.getEvaluateAnnotationsGovernanceActionService();
+        GovernanceActionDescription writeAuditLogDescription          = this.getWriteAuditLogGovernanceActionService();
+        GovernanceActionDescription dayOfWeekDescription              = this.getDayOfWeekGovernanceActionService();
+        GovernanceActionDescription verifyAssetDescription            = this.getVerifyAssetGovernanceActionService();
+        GovernanceActionDescription csvSurveyDescription              = this.getCSVFileSurveyService();
+        GovernanceActionDescription fileSurveyDescription             = this.getDataFileSurveyService();
+        GovernanceActionDescription folderSurveyDescription           = this.getFolderSurveyService();
+        GovernanceActionDescription atlasSurveyDescription            = this.getAtlasSurveyService();
+        GovernanceActionDescription postgresServerSurveyDescription   = this.getPostgresServerSurveyService();
+        GovernanceActionDescription postgresDatabaseSurveyDescription = this.getPostgresDatabaseSurveyService();
 
         /*
          * Define the FileProvisioning engine.
@@ -538,6 +553,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         this.addDayOfWeekRequestType(stewardshipEngineGUID, stewardshipEngineName, dayOfWeekDescription);
         this.addQualifiedNameDeDupRequestType(stewardshipEngineGUID, stewardshipEngineName, qualifiedNameDeDupDescription);
 
+        this.createDailyGovernanceActionProcess(stewardshipEngineGUID);
+
         /*
          * Define the AssetSurvey engine
          */
@@ -548,8 +565,16 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         this.addDataFileRequestType(assetSurveyEngineGUID, assetSurveyEngineName, fileSurveyDescription);
         this.addFolderRequestType(assetSurveyEngineGUID, assetSurveyEngineName, folderSurveyDescription);
         this.addAtlasRequestType(assetSurveyEngineGUID, assetSurveyEngineName, atlasSurveyDescription);
+        this.addPostgresServerRequestType(assetSurveyEngineGUID, assetSurveyEngineName, postgresServerSurveyDescription);
+        this.addPostgresDatabaseRequestType(assetSurveyEngineGUID, assetSurveyEngineName, postgresDatabaseSurveyDescription);
 
-        this.createDailyGovernanceActionProcess(stewardshipEngineGUID);
+        /*
+         * Add catalog templates
+         */
+        this.addPostgresServerCatalogTemplate();
+        this.addPostgresDatabaseCatalogTemplate();
+        this.addPostgresDatabaseSchemaCatalogTemplate();
+        this.addAtlasServerCatalogTemplate();
 
         /*
          * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.
@@ -561,6 +586,339 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
          */
         return this.archiveBuilder.getOpenMetadataArchive();
     }
+
+
+    /**
+     * Create a template got a software server and link it to the associated deployed implementation type.
+     * The template consists of a SoftwareServer asset linked to a software capability, plus a connection, linked
+     * to the supplied connector type and an endpoint,
+     *
+     * @param deployedImplementationType deployed implementation type for the technology
+     * @param softwareCapabilityType type of the associated capability
+     * @param softwareCapabilityName name for the associated capability
+     * @param serverName name for the server
+     * @param userId userId for the connection
+     * @param password password for the connection
+     * @param connectorTypeGUID connector type to link to the connection
+     * @param networkAddress network address for the endpoint
+     * @param replacementAttributeTypes attributes that should have a replacement value to successfully use the template
+     * @param placeholderPropertyTypes placeholder variables used in the supplied parameters
+     */
+    private   void createSoftwareServerCatalogTemplate(DeployedImplementationType     deployedImplementationType,
+                                                       DeployedImplementationType     softwareCapabilityType,
+                                                       String                         softwareCapabilityName,
+                                                       String                         serverName,
+                                                       String                         userId,
+                                                       String                         password,
+                                                       String                         connectorTypeGUID,
+                                                       String                         networkAddress,
+                                                       List<ReplacementAttributeType> replacementAttributeTypes,
+                                                       List<PlaceholderPropertyType>  placeholderPropertyTypes)
+    {
+        final String methodName = "createSoftwareServerCatalogTemplate";
+
+        String               qualifiedName = deployedImplementationType.getDeployedImplementationType() + ":" + serverName;
+        String               versionIdentifier = "V1.0";
+        String               description = deployedImplementationType.getDescription();
+        Map<String, Object>  extendedProperties = new HashMap<>();
+        List<Classification> classifications = new ArrayList<>();
+
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                               deployedImplementationType.getDeployedImplementationType());
+
+        classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
+                                                                    null, "V1.0", null, methodName));
+
+        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                  qualifiedName,
+                                                  serverName,
+                                                  versionIdentifier,
+                                                  description,
+                                                  null,
+                                                  extendedProperties,
+                                                  classifications);
+
+        archiveHelper.addSoftwareCapability(softwareCapabilityType.getAssociatedTypeName(),
+                                            qualifiedName + ":" + softwareCapabilityName,
+                                            softwareCapabilityName,
+                                            null,
+                                            softwareCapabilityType.getDeployedImplementationType(),
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+                                            assetGUID,
+                                            deployedImplementationType.getAssociatedTypeName());
+
+        archiveHelper.addSupportedSoftwareCapabilityRelationship(qualifiedName + ":" + softwareCapabilityName,
+                                                                 qualifiedName,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 null,
+                                                                 1);
+
+        String endpointGUID = archiveHelper.addEndpoint(assetGUID,
+                                                        deployedImplementationType.getAssociatedTypeName(),
+                                                        qualifiedName + ":Endpoint",
+                                                        serverName + " endpoint",
+                                                        null,
+                                                        networkAddress,
+                                                        null,
+                                                        null);
+
+        String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
+                                                            serverName + " connection",
+                                                            null,
+                                                            userId,
+                                                            password,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            connectorTypeGUID,
+                                                            endpointGUID,
+                                                            assetGUID,
+                                                            deployedImplementationType.getAssociatedTypeName());
+
+        archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
+
+        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
+
+        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
+
+        archiveHelper.addReplacementAttributes(assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               replacementAttributeTypes);
+
+        archiveHelper.addPlaceholderProperties(assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               placeholderPropertyTypes);
+    }
+
+
+    /**
+     * Create a catalog template for a PostgreSQL database server
+     */
+    private void addPostgresServerCatalogTemplate()
+    {
+        JDBCResourceConnectorProvider provider = new JDBCResourceConnectorProvider();
+
+        List<PlaceholderPropertyType>  placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholderType());
+
+        this.createSoftwareServerCatalogTemplate(DeployedImplementationType.POSTGRESQL_SERVER,
+                                                 DeployedImplementationType.POSTGRESQL_DATABASE_MANAGER,
+                                                 "DBMS",
+                                                 PostgresPlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholder(),
+                                                 PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholder(),
+                                                 provider.getConnectorType().getGUID(),
+                                                 "jdbc:postgresql://" +
+                                                         PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                         PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/postgres",
+                                                 null,
+                                                 placeholderPropertyTypes);
+    }
+
+
+    /**
+     * Create a catalog template for Apache Atlas
+     */
+    private void addAtlasServerCatalogTemplate()
+    {
+        ApacheAtlasRESTProvider provider = new ApacheAtlasRESTProvider();
+
+        List<PlaceholderPropertyType>  placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(AtlasPlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(AtlasPlaceholderProperty.PORT_NUMBER.getPlaceholderType());
+        placeholderPropertyTypes.add(AtlasPlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(AtlasPlaceholderProperty.CONNECTION_USER_ID.getPlaceholderType());
+        placeholderPropertyTypes.add(AtlasPlaceholderProperty.CONNECTION_PASSWORD.getPlaceholderType());
+
+        this.createSoftwareServerCatalogTemplate(DeployedImplementationType.APACHE_ATLAS_SERVER,
+                                                 DeployedImplementationType.ASSET_CATALOG,
+                                                 "MetadataCatalog",
+                                                 AtlasPlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 AtlasPlaceholderProperty.CONNECTION_USER_ID.getPlaceholder(),
+                                                 AtlasPlaceholderProperty.CONNECTION_PASSWORD.getPlaceholder(),
+                                                 provider.getConnectorType().getGUID(),
+                                                 "http://" +
+                                                         AtlasPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                         AtlasPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                                                 null,
+                                                 placeholderPropertyTypes);
+    }
+
+
+    /**
+     * Create a template got a type of asset and link it to the associated deployed implementation type.
+     * The template consists of a asset linked to a connection, that is in turn linked
+     * to the supplied connector type and an endpoint,
+     *
+     * @param deployedImplementationType deployed implementation type for the technology
+     * @param assetName name for the asset
+     * @param serverName optional server name
+     * @param userId userId for the connection
+     * @param password password for the connection
+     * @param connectorTypeGUID connector type to link to the connection
+     * @param networkAddress network address for the endpoint
+     * @param replacementAttributeTypes attributes that should have a replacement value to successfully use the template
+     * @param placeholderPropertyTypes placeholder variables used in the supplied parameters
+     */
+    private   void createServerAssetCatalogTemplate(DeployedImplementationType     deployedImplementationType,
+                                                    String                         assetName,
+                                                    String                         serverName,
+                                                    String                         userId,
+                                                    String                         password,
+                                                    String                         connectorTypeGUID,
+                                                    String                         networkAddress,
+                                                    List<ReplacementAttributeType> replacementAttributeTypes,
+                                                    List<PlaceholderPropertyType>  placeholderPropertyTypes)
+    {
+        final String methodName = "createServerAssetCatalogTemplate";
+
+        String               qualifiedName;
+
+        if (serverName == null)
+        {
+            qualifiedName = deployedImplementationType.getDeployedImplementationType() + ":" + assetName;
+        }
+        else
+        {
+            qualifiedName = deployedImplementationType.getDeployedImplementationType() + ":" + serverName + ":" + assetName;
+        }
+
+        String               versionIdentifier = "V1.0";
+        String               description = deployedImplementationType.getDescription();
+        Map<String, Object>  extendedProperties = new HashMap<>();
+        List<Classification> classifications = new ArrayList<>();
+
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                               deployedImplementationType.getDeployedImplementationType());
+
+        classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
+                                                                    null, "V1.0", null, methodName));
+
+        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                  qualifiedName,
+                                                  assetName,
+                                                  versionIdentifier,
+                                                  description,
+                                                  null,
+                                                  extendedProperties,
+                                                  classifications);
+
+
+        String endpointGUID = archiveHelper.addEndpoint(assetGUID,
+                                                        deployedImplementationType.getAssociatedTypeName(),
+                                                        qualifiedName + ":Endpoint",
+                                                        assetName + " endpoint",
+                                                        null,
+                                                        networkAddress,
+                                                        null,
+                                                        null);
+
+        String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
+                                                            assetName + " connection",
+                                                            null,
+                                                            userId,
+                                                            password,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            connectorTypeGUID,
+                                                            endpointGUID,
+                                                            assetGUID,
+                                                            deployedImplementationType.getAssociatedTypeName());
+
+        archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
+
+        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
+
+        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
+
+        archiveHelper.addReplacementAttributes(assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               replacementAttributeTypes);
+
+        archiveHelper.addPlaceholderProperties(assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               placeholderPropertyTypes);
+    }
+
+
+    /**
+     * Create a catalog template for a PostgreSQL database
+     */
+    private void addPostgresDatabaseCatalogTemplate()
+    {
+        JDBCResourceConnectorProvider provider = new JDBCResourceConnectorProvider();
+
+        List<PlaceholderPropertyType>  placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholderType());
+
+        this.createServerAssetCatalogTemplate(DeployedImplementationType.POSTGRESQL_DATABASE,
+                                              PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                                              PostgresPlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                              PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholder(),
+                                              PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholder(),
+                                              provider.getConnectorType().getGUID(),
+                                              "jdbc:postgresql://" +
+                                                         PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                         PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" + PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                                              null,
+                                              placeholderPropertyTypes);
+    }
+
+
+    /**
+     * Create a catalog template for a PostgreSQL database schema
+     */
+    private void addPostgresDatabaseSchemaCatalogTemplate()
+    {
+        JDBCResourceConnectorProvider provider = new JDBCResourceConnectorProvider();
+
+        List<PlaceholderPropertyType>  placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholderType());
+
+        this.createServerAssetCatalogTemplate(DeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA,
+                                              PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
+                                              PostgresPlaceholderProperty.SERVER_NAME.getPlaceholder() + "." + PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                                              PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholder(),
+                                              PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholder(),
+                                              provider.getConnectorType().getGUID(),
+                                              "jdbc:postgresql://" +
+                                                      PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                      PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" +
+                                                      PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "?currentSchema=" +
+                                                      PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
+                                              null,
+                                              placeholderPropertyTypes);
+    }
+
+
 
 
     /**
@@ -644,7 +1002,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                                                    null,
                                                                                    null,
                                                                                    null,
-                                                                                   null,
+                                                                                   openMetadataType.wikiURL,
                                                                                    null,
                                                                                    null,
                                                                                    null,
@@ -722,7 +1080,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                                                    null,
                                                                                    null,
                                                                                    null,
-                                                                                   null,
+                                                                                   wikiLink,
                                                                                    null,
                                                                                    null,
                                                                                    null,
@@ -925,6 +1283,46 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                 this.archiveHelper.addConsistentValidValueRelationship(qualifiedName, fileTypeQName);
             }
         }
+    }
+
+
+    /**
+     * Add reference data for a file extension.
+     *
+     * @param attributeName   name of the attribute
+     * @param attributeDescription  description of the attribute
+     */
+    private void addAttributeName(String attributeName,
+                                  String attributeDescription)
+    {
+        String qualifiedName = constructValidValueQualifiedName(OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                OpenMetadataType.ATTRIBUTE_NAME_PROPERTY_NAME,
+                                                                null,
+                                                                attributeName);
+
+        String category = constructValidValueCategory(OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                      OpenMetadataType.ATTRIBUTE_NAME_PROPERTY_NAME,
+                                                      null);
+
+        String parentSetGUID = this.getParentSet(OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                 OpenMetadataType.ATTRIBUTE_NAME_PROPERTY_NAME,
+                                                 null);
+
+        this.archiveHelper.addValidValue(null,
+                                         parentSetGUID,
+                                         parentSetGUID,
+                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                         qualifiedName,
+                                         attributeName,
+                                         attributeDescription,
+                                         category,
+                                         OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                         OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                         attributeName,
+                                         false,
+                                         false,
+                                         null);
     }
 
 
@@ -1172,7 +1570,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         if (provider instanceof SurveyActionServiceProvider surveyActionServiceProvider)
         {
             governanceActionDescription.supportedAnalysisSteps = surveyActionServiceProvider.getSupportedAnalysisSteps();
-            governanceActionDescription.supportedAnnotationTypes = surveyActionServiceProvider.getSupportedAnnotationTypes();
+            governanceActionDescription.supportedAnnotationTypes = surveyActionServiceProvider.getProducedAnnotationTypes();
         }
 
         governanceActionDescription.governanceServiceDescription = governanceServiceDescription;
@@ -1757,7 +2155,6 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     }
 
 
-
     /**
      * Create an entity for the CSV File Survey governance service.
      *
@@ -1880,6 +2277,68 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
 
     /**
+     * Create an entity for the Postgres Server Survey governance service.
+     *
+     * @return unique identifier for the governance service
+     */
+    private GovernanceActionDescription getPostgresServerSurveyService()
+    {
+        final String surveyServiceName = "postgres-server-survey-service";
+        final String surveyServiceDisplayName = "PostgreSQL Server Survey Service";
+        final String surveyServiceProviderClassName = PostgresServerSurveyActionProvider.class.getName();
+
+        PostgresServerSurveyActionProvider provider = new PostgresServerSurveyActionProvider();
+
+        final String surveyServiceDescription = provider.getConnectorType().getDescription();
+
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.SURVEY_RESOURCE,
+                                                                                                 provider,
+                                                                                                 surveyServiceDescription);
+
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                                                                                               surveyServiceProviderClassName,
+                                                                                               null,
+                                                                                               surveyServiceName,
+                                                                                               surveyServiceDisplayName,
+                                                                                               surveyServiceDescription,
+                                                                                               null);
+
+        return governanceActionDescription;
+    }
+
+
+    /**
+     * Create an entity for the Postgres Database Survey governance service.
+     *
+     * @return unique identifier for the governance service
+     */
+    private GovernanceActionDescription getPostgresDatabaseSurveyService()
+    {
+        final String surveyServiceName = "postgres-database-survey-service";
+        final String surveyServiceDisplayName = "PostgreSQL Database Survey Service";
+        final String surveyServiceProviderClassName = PostgresDatabaseSurveyActionProvider.class.getName();
+
+        PostgresDatabaseSurveyActionProvider provider = new PostgresDatabaseSurveyActionProvider();
+
+        final String surveyServiceDescription = provider.getConnectorType().getDescription();
+
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.SURVEY_RESOURCE,
+                                                                                                 provider,
+                                                                                                 surveyServiceDescription);
+
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                                                                                               surveyServiceProviderClassName,
+                                                                                               null,
+                                                                                               surveyServiceName,
+                                                                                               surveyServiceDisplayName,
+                                                                                               surveyServiceDescription,
+                                                                                               null);
+
+        return governanceActionDescription;
+    }
+
+
+    /**
      * Create the relationship between a governance engine and a governance service that defines the request type.
      *
      * @param governanceEngineGUID unique identifier of the engine
@@ -1960,6 +2419,52 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                      GovernanceActionDescription governanceActionDescription)
     {
         final String governanceRequestType = "survey-apache-atlas-server";
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
+                            governanceRequestType,
+                            null,
+                            null,
+                            governanceActionDescription);
+    }
+
+
+    /**
+     * Create the relationship between a governance engine and a governance service that defines the request type.
+     *
+     * @param governanceEngineGUID unique identifier of the engine
+     * @param governanceEngineName unique name of the governance engine
+     * @param governanceActionDescription details for calling the governance service
+     */
+    private void addPostgresServerRequestType(String                      governanceEngineGUID,
+                                              String                      governanceEngineName,
+                                              GovernanceActionDescription governanceActionDescription)
+    {
+        final String governanceRequestType = "survey-postgres-server";
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
+                            governanceRequestType,
+                            null,
+                            null,
+                            governanceActionDescription);
+    }
+
+
+    /**
+     * Create the relationship between a governance engine and a governance service that defines the request type.
+     *
+     * @param governanceEngineGUID unique identifier of the engine
+     * @param governanceEngineName unique name of the governance engine
+     * @param governanceActionDescription details for calling the governance service
+     */
+    private void addPostgresDatabaseRequestType(String                      governanceEngineGUID,
+                                                String                      governanceEngineName,
+                                                GovernanceActionDescription governanceActionDescription)
+    {
+        final String governanceRequestType = "survey-postgres-database";
 
         this.addRequestType(governanceEngineGUID,
                             governanceEngineName,

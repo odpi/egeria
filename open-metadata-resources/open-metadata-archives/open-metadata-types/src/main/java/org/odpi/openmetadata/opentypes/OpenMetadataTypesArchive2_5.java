@@ -471,7 +471,7 @@ public class OpenMetadataTypesArchive2_5
         /*
          * Create the Patch
          */
-        final String typeName = "ExternalIdScope";
+        final String typeName = OpenMetadataType.EXTERNAL_ID_SCOPE_RELATIONSHIP.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -484,16 +484,15 @@ public class OpenMetadataTypesArchive2_5
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "permittedSynchronization";
-        final String attribute1Description     =
-                "Defines the permitted directions of flow of metadata updates between open metadata and a third party technology.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Additional description of the type of synchronization occurring.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name;
+        final String attribute1Description     = OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
 
-        property = archiveHelper.getEnumTypeDefAttribute("PermittedSynchronization",
+        property = archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.type,
                                                          attribute1Name,
                                                          attribute1Description,
                                                          attribute1DescriptionGUID);
@@ -515,7 +514,7 @@ public class OpenMetadataTypesArchive2_5
         /*
          * Create the Patch
          */
-        final String typeName = "ExternalIdLink";
+        final String typeName = OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -547,13 +546,12 @@ public class OpenMetadataTypesArchive2_5
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "lastSynchronized";
-        final String attribute1Description     =
-                "Timestamp documenting the last time the metadata in the external metadata source was synchronized with open metadata element.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "mappingProperties";
-        final String attribute2Description     = "Additional properties to aid the mapping to the the element in an external metadata source.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.LAST_SYNCHRONIZED.name;
+        final String attribute1Description     = OpenMetadataProperty.LAST_SYNCHRONIZED.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.LAST_SYNCHRONIZED.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.MAPPING_PROPERTIES.name;
+        final String attribute2Description     = OpenMetadataProperty.MAPPING_PROPERTIES.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.MAPPING_PROPERTIES.descriptionGUID;
 
         property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
                                                          attribute1Description,

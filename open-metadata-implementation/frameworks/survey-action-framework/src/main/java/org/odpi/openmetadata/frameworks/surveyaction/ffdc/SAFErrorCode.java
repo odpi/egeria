@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.frameworks.surveyaction.ffdc;
 
 
-import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
@@ -29,45 +28,56 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum SAFErrorCode implements ExceptionMessageSet
 {
     /**
-     * SAF-SURVEY-ACTION-SERVICE-400-001 - No survey context supplied to the survey action service {0}
+     * SURVEY-ACTION-SERVICE-400-001 - No survey context supplied to the survey action service {0}
      */
-    NULL_SURVEY_CONTEXT(400, "SAF-SURVEY-ACTION-SERVICE-400-001",
+    NULL_SURVEY_CONTEXT(400, "SURVEY-ACTION-SERVICE-400-001",
             "No survey context supplied to the survey action service {0}",
             "The survey action service is not able to determine which asset to analyze.",
             "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action service.  Once the cause is resolved, retry the survey action request."),
 
     /**
-     * SAF-SURVEY-ACTION-SERVICE-400-002 - No embedded survey action services supplied to the survey action pipeline {0}
+     * SURVEY-ACTION-SERVICE-400-002 - No embedded survey action services supplied to the survey action pipeline {0}
      */
-    NO_EMBEDDED_SURVEY_ACTION_SERVICES(400, "SAF-SURVEY-ACTION-SERVICE-400-002",
+    NO_EMBEDDED_SURVEY_ACTION_SERVICES(400, "SURVEY-ACTION-SERVICE-400-002",
             "No embedded survey action services supplied to the survey action pipeline {0}",
             "The survey action pipeline is not able to survey action which survey action services to run.",
             "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action pipeline service.  Once the cause is resolved, retry the survey action request."),
 
     /**
-     * SAF-SURVEY-ACTION-SERVICE-400-003 - No embedded survey action services supplied to the survey action pipeline {0}
+     * SURVEY-ACTION-SERVICE-400-003 - No embedded survey action services supplied to the survey action pipeline {0}
      */
-    INVALID_EMBEDDED_SURVEY_ACTION_SERVICE(400, "SAF-SURVEY-ACTION-SERVICE-400-003",
+    INVALID_EMBEDDED_SURVEY_ACTION_SERVICE(400, "SURVEY-ACTION-SERVICE-400-003",
             "No embedded survey action services supplied to the survey action pipeline {0}",
             "The survey action pipeline is not able to discover which survey action services to run.",
             "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action pipeline service or the associated open survey action engine.  Once the cause is resolved, retry the survey action request."),
 
     /**
-     * SAF-CONNECTOR-400-004 - The {0} survey action service has been disconnected - either due to its own actions or a cancel request
+     * SURVEY-ACTION-SERVICE-400-004 - The {0} survey action service has been disconnected - either due to its own actions or a cancel request
      */
-    DISCONNECT_DETECTED(400, "SAF-CONNECTOR-400-004",
+    DISCONNECT_DETECTED(400, "SURVEY-ACTION-SERVICE-400-004",
                         "The {0} survey action service has been disconnected - either due to its own actions or a cancel request",
                         "The survey action framework will attempt to stop the work of the survey action framework",
                         "Monitor the shutdown of the survey action service."),
 
 
     /**
-     * SAF-SURVEY-ACTION-SERVICE-500-001 - Unexpected exception in survey action service {0} of type {1} detected by method {2}.  The error message was {3}
+     * SURVEY-ACTION-SERVICE-400-005 - Asset {0} is of type {1} but survey action service {2} only supports the following asset type(s): {3}
      */
-    UNEXPECTED_EXCEPTION(500, "SAF-SURVEY-ACTION-SERVICE-500-001",
-            "Unexpected exception in survey action service {0} of type {1} detected by method {2}.  The error message was {3}",
-            "The survey action service failed during its operation.",
-            "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action service.  Once the cause is resolved, retry the survey action request."),
+    INVALID_ASSET_TYPE(400, "SURVEY-ACTION-SERVICE-400-005",
+                       "Asset {0} is of type {1} but survey action service {2} only supports the following asset type(s): {3}",
+                       "The survey action service terminates.",
+                       "The caller has requested a governance request type that is incompatible with the type of the " +
+                               "asset that has been supplied.  This problem could be resolved by issuing the survey request with " +
+                               "a governance request type that is compatible with the asset, or changing the survey action service " +
+                               "associated with the governance request type to one that supports this type of asset."),
+
+    /**
+     * SURVEY-ACTION-SERVICE-500-001 - Unexpected exception in survey action service {0} of type {1} detected by method {2}.  The error message was {3}
+     */
+    UNEXPECTED_EXCEPTION(500, "SURVEY-ACTION-SERVICE-500-001",
+                         "Unexpected exception in survey action service {0} of type {1} detected by method {2}.  The error message was {3}",
+                         "The survey action service failed during its operation.",
+                         "This may be a configuration or a code error.  Look for other error messages and review the code of the survey action service.  Once the cause is resolved, retry the survey action request."),
 
     ;
 

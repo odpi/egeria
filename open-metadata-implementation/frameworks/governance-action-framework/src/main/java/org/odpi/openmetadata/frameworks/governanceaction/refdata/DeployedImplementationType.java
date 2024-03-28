@@ -118,6 +118,28 @@ public enum DeployedImplementationType
                              "A database hosted on a relational database server capable of being called through a JDBC Driver.",
                              "https://en.wikipedia.org/wiki/Java_Database_Connectivity"),
 
+
+    /**
+     * A database schema hosted on a relational database server capable of being called through a JDBC Driver.
+     */
+    JDBC_RELATIONAL_DATABASE_SCHEMA("JDBC Relational Database Schema",
+                             DeployedImplementationType.DATA_ASSET,
+                             OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                             null,
+                             "A database schema hosted on a relational database server capable of being called through a JDBC Driver.",
+                             "https://en.wikipedia.org/wiki/Java_Database_Connectivity"),
+
+    /**
+     * A database table hosted on a relational database server capable of being called through a JDBC Driver.
+     */
+    JDBC_RELATIONAL_DATABASE_TABLE("JDBC Relational Database Table",
+                                    DeployedImplementationType.DATA_ASSET,
+                                    OpenMetadataType.TABLE_DATA_SET.typeName,
+                                    null,
+                                    "A database table hosted on a relational database server capable of being called through a JDBC Driver.",
+                                    "https://en.wikipedia.org/wiki/Java_Database_Connectivity"),
+
+
     /**
      * A database hosted on a PostgreSQL server.
      */
@@ -128,6 +150,25 @@ public enum DeployedImplementationType
                         "A database hosted on a PostgreSQL server.",
                         "https://www.postgresql.org/"),
 
+    /**
+     * A database schema hosted on a relational PostgreSQL database server capable of being called through a JDBC Driver.
+     */
+    POSTGRESQL_DATABASE_SCHEMA("PostgreSQL Relational Database Schema",
+                                    DeployedImplementationType.DATA_ASSET,
+                                    OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                    null,
+                                    "A database schema hosted on a PostgreSQL relational database server capable of being called through a JDBC Driver.",
+                                    "https://www.postgresql.org/"),
+
+    /**
+     * A database table hosted on a PostgreSQL relational database server capable of being called through a JDBC Driver.
+     */
+    POSTGRESQL_DATABASE_TABLE("PostgreSQL Relational Database Table",
+                              DeployedImplementationType.DATA_ASSET,
+                              OpenMetadataType.TABLE_DATA_SET.typeName,
+                              null,
+                              "A database table hosted on a PostgreSQL relational database server capable of being called through a JDBC Driver.",
+                              "https://www.postgresql.org/"),
 
     /**
      * A callable software server.
@@ -138,6 +179,17 @@ public enum DeployedImplementationType
                     null,
                     "A callable software server.",
                     "https://egeria-project.org/types/0/0040-Software-Servers/"),
+
+
+    /**
+     * A callable software capability supporting specific types of assets.
+     */
+    SOFTWARE_CAPABILITY("Software Capability",
+                    null,
+                    OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
+                    null,
+                    "A callable software capability supporting specific types of assets.",
+                    "https://egeria-project.org/types/0/0042-Software-Capabilities/"),
 
 
     /**
@@ -154,21 +206,31 @@ public enum DeployedImplementationType
     /**
      * A data catalog for the Hadoop ecosystem.
      */
-    APACHE_ATLAS("Apache Atlas Server",
-                 DeployedImplementationType.SOFTWARE_SERVER,
-                 OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME,
-                 null,
-                 "A data catalog for the Hadoop ecosystem.",
-                 "https://atlas.apache.org/"),
+    APACHE_ATLAS_SERVER("Apache Atlas Server",
+                        DeployedImplementationType.SOFTWARE_SERVER,
+                        OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME,
+                        null,
+                        "A data catalog for the Hadoop ecosystem.",
+                        "https://atlas.apache.org/"),
 
     /**
-     * An event broker supporting high speed, reliable topic-based event exchange.
+     * A software server supporting an event broker that enables high speed, reliable topic-based event exchange.
      */
     APACHE_KAFKA_SERVER("Apache Kafka Server",
                         DeployedImplementationType.SOFTWARE_SERVER,
                         OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME,
                         null,
-                        "An event broker supporting high speed, reliable topic-based event exchange.",
+                        "A software server supporting an event broker that enables high speed, reliable topic-based event exchange.",
+                        "https://kafka.apache.org/"),
+
+    /**
+     * A software capability that enables high speed, reliable topic-based event exchange.
+     */
+    APACHE_KAFKA_EVENT_BROKER("Apache Kafka Event Broker",
+                        DeployedImplementationType.SOFTWARE_CAPABILITY,
+                        OpenMetadataType.EVENT_BROKER.typeName,
+                        null,
+                        "A software capability that enables high speed, reliable topic-based event exchange.",
                         "https://kafka.apache.org/"),
 
     /**
@@ -185,8 +247,8 @@ public enum DeployedImplementationType
      * A system that manages hierarchically organized files on persistent storage.
      */
     FILE_SYSTEM("File System",
-                null,
-                OpenMetadataType.DATA_MANAGER_TYPE_NAME,
+                DeployedImplementationType.SOFTWARE_CAPABILITY,
+                OpenMetadataType.DATA_MANAGER.typeName,
                 OpenMetadataType.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME,
                 "A system that manages hierarchically organized files on persistent storage.",
                 "https://egeria-project.org/types/0/0056-Resource-Managers/"),
@@ -196,8 +258,8 @@ public enum DeployedImplementationType
      * A catalog of metadata that describes assets such as deployed systems, data sources and processes.
      */
     ASSET_CATALOG("Asset Metadata Catalog",
-                  null,
-                  OpenMetadataType.CATALOG_TYPE_NAME,
+                  DeployedImplementationType.SOFTWARE_CAPABILITY,
+                  OpenMetadataType.CATALOG.typeName,
                   OpenMetadataType.ASSET_MANAGER_TYPE_NAME,
                   "A catalog of metadata that describes assets such as deployed systems, data sources and processes.",
                 "https://egeria-project.org/types/0/0050-Applications-and-Processes/"),
@@ -207,8 +269,8 @@ public enum DeployedImplementationType
      * A software capability that provides callable APIs.
      */
     API_MANAGER("API Manager",
-                  null,
-                  OpenMetadataType.API_MANAGER_TYPE_NAME,
+                DeployedImplementationType.SOFTWARE_CAPABILITY,
+                  OpenMetadataType.API_MANAGER.typeName,
                   null,
                   "A software capability that provides callable APIs.",
                   "https://egeria-project.org/types/0/0050-Applications-and-Processes/"),
@@ -218,8 +280,8 @@ public enum DeployedImplementationType
      * A system that manages the asynchronous exchange of messages (events) from once to potentially many recipients.  Typically, this exchange of events is organized into groups called topics.
      */
     EVENT_BROKER("Event Broker",
-                  null,
-                  OpenMetadataType.EVENT_BROKER_TYPE_NAME,
+                 DeployedImplementationType.SOFTWARE_CAPABILITY,
+                  OpenMetadataType.EVENT_BROKER.typeName,
                  null,
                   "A system that manages the asynchronous exchange of messages (events) from once to potentially many recipients.  Typically, this exchange of events is organized into groups called topics.",
                   "https://egeria-project.org/types/0/0050-Applications-and-Processes/"),
@@ -229,10 +291,20 @@ public enum DeployedImplementationType
      * A system that manages collections of data called relational databases which in turn are organized into a tabular format and accessed via the Structured Query Language (SQL).
      */
     RELATIONAL_DATABASE_MANAGER("Relational database manager (RDBMS)",
+                                DeployedImplementationType.SOFTWARE_CAPABILITY,
+                                OpenMetadataType.DATABASE_MANAGER.typeName,
                                 null,
-                                OpenMetadataType.DATABASE_MANAGER_TYPE_NAME,
+                                "A capability that manages collections of data called relational databases which in turn are organized into a tabular format and accessed via the Structured Query Language (SQL).",
+                                "https://egeria-project.org/types/0/0050-Applications-and-Processes/"),
+
+    /**
+     * A system that manages collections of data called relational databases which in turn are organized into a tabular format and accessed via the Structured Query Language (SQL).
+     */
+    POSTGRESQL_DATABASE_MANAGER("PostgreSQL database manager (RDBMS)",
+                                DeployedImplementationType.RELATIONAL_DATABASE_MANAGER,
+                                OpenMetadataType.DATABASE_MANAGER.typeName,
                                 null,
-                                "A system that manages collections of data called relational databases which in turn are organized into a tabular format and accessed via the Structured Query Language (SQL).",
+                                "The PostgreSQL capability that manages collections of data called relational databases which in turn are organized into a tabular format and accessed via the Structured Query Language (SQL).",
                                 "https://egeria-project.org/types/0/0050-Applications-and-Processes/"),
 
 
@@ -251,10 +323,22 @@ public enum DeployedImplementationType
      */
     OMAG_SERVER_RUNTIME("OMAG Server Runtime",
                         DeployedImplementationType.SOFTWARE_SERVER,
-                        OpenMetadataType.SOFTWARE_SERVER_PLATFORM_TYPE_NAME,
+                        OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME,
                         null,
                         "An Open Metadata and Governance (OMAG) runtime for running a single OMAG Server.",
                         "https://egeria-project.org/concepts/omag-server-runtime/"),
+
+
+    /**
+     * An Open Metadata and Governance (OMAG) runtime for running a single OMAG Server.
+     */
+    OMAG_SERVER_API_MANAGER("OMAG Server API Manager",
+                        DeployedImplementationType.SOFTWARE_CAPABILITY,
+                        OpenMetadataType.REST_API_MANAGER.typeName,
+                        null,
+                        "An Open Metadata and Governance (OMAG) runtime for running a single OMAG Server.",
+                        "https://egeria-project.org/concepts/omag-server-runtime/"),
+
 
     /**
      * A deployable software component.
@@ -418,7 +502,7 @@ public enum DeployedImplementationType
      */
     INTEGRATION_CONNECTOR("Integration Connector",
                           DeployedImplementationType.OCF_CONNECTOR,
-                          OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                          OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                           null,
                                     "Connector that manages metadata exchange with a third party technology.",
                                     "https://egeria-project.org/services/omvs/analytics-integrator/overview"),
@@ -428,7 +512,7 @@ public enum DeployedImplementationType
      */
     ANALYTICS_INTEGRATION_CONNECTOR("Analytics Integration Connector",
                                     DeployedImplementationType.INTEGRATION_CONNECTOR,
-                                    OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                    OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                     null,
                                     "Connector that manages metadata exchange with a third party analytics technology.",
                                     "https://egeria-project.org/services/omvs/analytics-integrator/overview"),
@@ -439,7 +523,7 @@ public enum DeployedImplementationType
      */
     API_INTEGRATION_CONNECTOR("API Integration Connector",
                               DeployedImplementationType.INTEGRATION_CONNECTOR,
-                              OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                              OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                               null,
                               "Connector that manages metadata exchange with a third party API management technology.",
                               "https://egeria-project.org/services/omvs/api-integrator/overview"),
@@ -449,7 +533,7 @@ public enum DeployedImplementationType
      */
     CATALOG_INTEGRATION_CONNECTOR("Catalog Integration Connector",
                                   DeployedImplementationType.INTEGRATION_CONNECTOR,
-                                  OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                  OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                   null,
                                   "Connector that manages metadata exchange with a third party metadata catalog technology.",
                                   "https://egeria-project.org/services/omvs/catalog-integrator/overview"),
@@ -459,7 +543,7 @@ public enum DeployedImplementationType
      */
     DATABASE_INTEGRATION_CONNECTOR("Database Integration Connector",
                                    DeployedImplementationType.INTEGRATION_CONNECTOR,
-                                   OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                   OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                    null,
                                    "Connector that manages metadata exchange with a third party database technology.",
                                    "https://egeria-project.org/services/omvs/database-integrator/overview"),
@@ -469,7 +553,7 @@ public enum DeployedImplementationType
      */
     DISPLAY_INTEGRATION_CONNECTOR("Display Integration Connector",
                                   DeployedImplementationType.INTEGRATION_CONNECTOR,
-                                  OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                  OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                   null,
                                   "Connector that manages metadata exchange with a third party display (user interaction) technology.",
                                   "https://egeria-project.org/services/omvs/display-integrator/overview"),
@@ -479,7 +563,7 @@ public enum DeployedImplementationType
      */
     FILES_INTEGRATION_CONNECTOR("Files Integration Connector",
                                 DeployedImplementationType.INTEGRATION_CONNECTOR,
-                                OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                 null,
                                 "Connector that manages metadata exchange with a third party filesystem technology.",
                                 "https://egeria-project.org/services/omvs/files-integrator/overview"),
@@ -489,7 +573,7 @@ public enum DeployedImplementationType
      */
     INFRASTRUCTURE_INTEGRATION_CONNECTOR("Infrastructure Integration Connector",
                                          DeployedImplementationType.INTEGRATION_CONNECTOR,
-                                         OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                         OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                          null,
                                          "Connector that manages metadata exchange with a third party infrastructure catalog (CMDB) technology.",
                                          "https://egeria-project.org/services/omvs/infrastructure-integrator/overview"),
@@ -500,7 +584,7 @@ public enum DeployedImplementationType
      */
     LINEAGE_INTEGRATION_CONNECTOR("Lineage Integration Connector",
                                   DeployedImplementationType.INTEGRATION_CONNECTOR,
-                                  OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                  OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                   null,
                                   "Connector that manages metadata exchange with a third party lineage capture technology.",
                                   "https://egeria-project.org/services/omvs/lineage-integrator/overview"),
@@ -511,7 +595,7 @@ public enum DeployedImplementationType
      */
     ORGANIZATION_INTEGRATION_CONNECTOR("Organization Integration Connector",
                                        DeployedImplementationType.INTEGRATION_CONNECTOR,
-                                       OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                       OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                        null,
                                        "Connector that manages metadata exchange with a third party application containing data about people and organizations.",
                                        "https://egeria-project.org/services/omvs/organization-integrator/overview"),
@@ -521,7 +605,7 @@ public enum DeployedImplementationType
      */
     SEARCH_INTEGRATION_CONNECTOR("Search Integration Connector",
                                  DeployedImplementationType.INTEGRATION_CONNECTOR,
-                                 OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                 OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                  null,
                                  "Connector that manages metadata exchange with a third party search technology.",
                                  "https://egeria-project.org/services/omvs/search-integrator/overview"),
@@ -531,7 +615,7 @@ public enum DeployedImplementationType
      */
     SECURITY_INTEGRATION_CONNECTOR("Security Integration Connector",
                                    DeployedImplementationType.INTEGRATION_CONNECTOR,
-                                   OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                   OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                    null,
                                    "Connector that manages metadata exchange with a third party security management technology.",
                                    "https://egeria-project.org/services/omvs/security-integrator/overview"),
@@ -602,7 +686,7 @@ public enum DeployedImplementationType
      */
     INTEGRATION_GROUP("Dynamic Integration Group",
                       null,
-                      OpenMetadataType.INTEGRATION_GROUP_TYPE_NAME,
+                      OpenMetadataType.INTEGRATION_GROUP.typeName,
                       null,
                       "Provides the list of integration connectors that should run in an Integration Daemon.  The Integration Daemon is configured with the qualified names of the integration group(s) that provide its connector list.",
                       "https://egeria-project.org/concepts/integration-group/"),
