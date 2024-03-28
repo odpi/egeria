@@ -126,7 +126,7 @@ implements <a href="../connector/OpenLineageListenerManager.html" title="interfa
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createClients()" class="member-name-link">createClients</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createClients(int)" class="member-name-link">createClients</a><wbr>(int&nbsp;maxPageSize)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Suggestion for subclass to create client(s) to partner OMAS.</div>
 </div>
@@ -229,14 +229,16 @@ implements <a href="../connector/OpenLineageListenerManager.html" title="interfa
 </section>
 </li>
 <li>
-<section class="detail" id="createClients()">
+<section class="detail" id="createClients(int)">
 <h3>createClients</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">createClients</span>()
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">createClients</span><wbr><span class="parameters">(int&nbsp;maxPageSize)</span>
                    throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Suggestion for subclass to create client(s) to partner OMAS.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html#createClients()">createClients</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.frameworks.integration.contextmanager">IntegrationContextManager</a></code></dd>
+<dd><code><a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html#createClients(int)">createClients</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/integration/contextmanager/IntegrationContextManager.html" title="class in org.odpi.openmetadata.frameworks.integration.contextmanager">IntegrationContextManager</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>maxPageSize</code> - maximum value allowed for page size</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - the subclass is not able to create one of its clients</dd>
 </dl>

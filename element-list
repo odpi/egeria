@@ -428,6 +428,14 @@ org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties
 org.odpi.openmetadata.adapters.connectors.apacheatlas.survey
 org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.controls
 org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.ffdc
+org.odpi.openmetadata.adapters.connectors.apachekafka.control
+org.odpi.openmetadata.adapters.connectors.apachekafka.integration
+org.odpi.openmetadata.adapters.connectors.apachekafka.integration.ffdc
+org.odpi.openmetadata.adapters.connectors.apachekafka.resource
+org.odpi.openmetadata.adapters.connectors.apachekafka.resource.ffdc
+org.odpi.openmetadata.adapters.connectors.apachekafka.survey
+org.odpi.openmetadata.adapters.connectors.apachekafka.survey.controls
+org.odpi.openmetadata.adapters.connectors.apachekafka.survey.ffdc
 org.odpi.openmetadata.adapters.connectors.datastore.basicfile
 org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc
 org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception
@@ -627,6 +635,7 @@ org.odpi.openmetadata.frameworks.governanceaction
 org.odpi.openmetadata.frameworks.governanceaction.client
 org.odpi.openmetadata.frameworks.governanceaction.controls
 org.odpi.openmetadata.frameworks.governanceaction.converters
+org.odpi.openmetadata.frameworks.governanceaction.enums
 org.odpi.openmetadata.frameworks.governanceaction.events
 org.odpi.openmetadata.frameworks.governanceaction.ffdc
 org.odpi.openmetadata.frameworks.governanceaction.fileclassifier
@@ -941,6 +950,8 @@ org.odpi.openmetadata.viewservices.assetcatalog.server
 org.odpi.openmetadata.viewservices.assetcatalog.server.spring
 org.odpi.openmetadata.viewservices.automatedcuration.admin
 org.odpi.openmetadata.viewservices.automatedcuration.ffdc
+org.odpi.openmetadata.viewservices.automatedcuration.properties
+org.odpi.openmetadata.viewservices.automatedcuration.rest
 org.odpi.openmetadata.viewservices.automatedcuration.server
 org.odpi.openmetadata.viewservices.automatedcuration.server.spring
 org.odpi.openmetadata.viewservices.collectionmanager.admin
@@ -954,6 +965,13 @@ org.odpi.openmetadata.viewservices.dino.api.rest
 org.odpi.openmetadata.viewservices.dino.handlers
 org.odpi.openmetadata.viewservices.dino.server
 org.odpi.openmetadata.viewservices.dino.server.spring
+org.odpi.openmetadata.viewservices.feedbackmanager.admin
+org.odpi.openmetadata.viewservices.feedbackmanager.ffdc
+org.odpi.openmetadata.viewservices.feedbackmanager.handler
+org.odpi.openmetadata.viewservices.feedbackmanager.properties
+org.odpi.openmetadata.viewservices.feedbackmanager.rest
+org.odpi.openmetadata.viewservices.feedbackmanager.server
+org.odpi.openmetadata.viewservices.feedbackmanager.server.spring
 org.odpi.openmetadata.viewservices.glossaryauthor.admin
 org.odpi.openmetadata.viewservices.glossaryauthor.admin.serviceinstances
 org.odpi.openmetadata.viewservices.glossaryauthor.auditlog
@@ -984,6 +1002,10 @@ org.odpi.openmetadata.viewservices.glossaryworkflow.ffdc
 org.odpi.openmetadata.viewservices.glossaryworkflow.rest
 org.odpi.openmetadata.viewservices.glossaryworkflow.server
 org.odpi.openmetadata.viewservices.glossaryworkflow.server.spring
+org.odpi.openmetadata.viewservices.governanceauthor.admin
+org.odpi.openmetadata.viewservices.governanceauthor.ffdc
+org.odpi.openmetadata.viewservices.governanceauthor.server
+org.odpi.openmetadata.viewservices.governanceauthor.server.spring
 org.odpi.openmetadata.viewservices.myprofile.admin
 org.odpi.openmetadata.viewservices.myprofile.api
 org.odpi.openmetadata.viewservices.myprofile.ffdc

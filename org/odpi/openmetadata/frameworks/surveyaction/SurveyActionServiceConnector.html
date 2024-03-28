@@ -85,7 +85,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../../adapters/connectors/surveyaction/surveycsv/CSVSurveyService.html" title="class in org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv">CSVSurveyService</a></code>, <code><a href="../../adapters/connectors/surveyaction/surveyfile/FileSurveyService.html" title="class in org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile">FileSurveyService</a></code>, <code><a href="../../adapters/connectors/surveyaction/surveyfolder/FolderSurveyService.html" title="class in org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder">FolderSurveyService</a></code>, <code><a href="../../adapters/connectors/postgres/survey/PostgresDatabaseSurveyActionService.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.survey">PostgresDatabaseSurveyActionService</a></code>, <code><a href="../../adapters/connectors/postgres/survey/PostgresServerSurveyActionService.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.survey">PostgresServerSurveyActionService</a></code>, <code><a href="SurveyActionPipelineConnector.html" title="class in org.odpi.openmetadata.frameworks.surveyaction">SurveyActionPipelineConnector</a></code>, <code><a href="../../adapters/connectors/apacheatlas/survey/SurveyApacheAtlasConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.survey">SurveyApacheAtlasConnector</a></code></dd>
+<dd><code><a href="../../adapters/connectors/surveyaction/surveycsv/CSVSurveyService.html" title="class in org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv">CSVSurveyService</a></code>, <code><a href="../../adapters/connectors/surveyaction/surveyfile/FileSurveyService.html" title="class in org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile">FileSurveyService</a></code>, <code><a href="../../adapters/connectors/surveyaction/surveyfolder/FolderSurveyService.html" title="class in org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder">FolderSurveyService</a></code>, <code><a href="../../adapters/connectors/postgres/survey/PostgresDatabaseSurveyActionService.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.survey">PostgresDatabaseSurveyActionService</a></code>, <code><a href="../../adapters/connectors/postgres/survey/PostgresServerSurveyActionService.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.survey">PostgresServerSurveyActionService</a></code>, <code><a href="SurveyActionPipelineConnector.html" title="class in org.odpi.openmetadata.frameworks.surveyaction">SurveyActionPipelineConnector</a></code>, <code><a href="../../adapters/connectors/apacheatlas/survey/SurveyApacheAtlasConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.survey">SurveyApacheAtlasConnector</a></code>, <code><a href="../../adapters/connectors/apachekafka/survey/SurveyApacheKafkaServerConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.apachekafka.survey">SurveyApacheKafkaServerConnector</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">SurveyActionServiceConnector</span>
@@ -194,32 +194,48 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <div class="block">Set up the list of survey action services connectors that will be invoked as part of this survey action pipeline.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">setAuditLog</a><wbr>(<a href="../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#logWrongTypeOfConnector(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">logWrongTypeOfConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actualConnectorClass,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;expectedConnectorClass,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Log audit message and throw exception to indicate that the asset's connector is wrong.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">setAuditLog</a><wbr>(<a href="../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Receive an audit log object that can be used to record audit log messages.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSurveyActionServiceName(java.lang.String)" class="member-name-link">setSurveyActionServiceName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyActionServiceName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSurveyActionServiceName(java.lang.String)" class="member-name-link">setSurveyActionServiceName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyActionServiceName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the survey action service name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSurveyContext(org.odpi.openmetadata.frameworks.surveyaction.SurveyContext)" class="member-name-link">setSurveyContext</a><wbr>(<a href="SurveyContext.html" title="class in org.odpi.openmetadata.frameworks.surveyaction">SurveyContext</a>&nbsp;surveyContext)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSurveyContext(org.odpi.openmetadata.frameworks.surveyaction.SurveyContext)" class="member-name-link">setSurveyContext</a><wbr>(<a href="SurveyContext.html" title="class in org.odpi.openmetadata.frameworks.surveyaction">SurveyContext</a>&nbsp;surveyContext)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up details of the asset to analyze and the results of any previous analysis.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Indicates that the survey action service is completely configured and can begin processing.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwWrongTypeOfAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">throwWrongTypeOfAsset</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwWrongTypeOfAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">throwWrongTypeOfAsset</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;supportedAssetType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Log that the survey action service can not process the type of asset it has been passed.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwWrongTypeOfConnector(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">throwWrongTypeOfConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actualConnectorClass,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;expectedConnectorClass,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Log audit message and throw exception to indicate that the asset's connector is wrong.</div>
 </div>
 </div>
 </div>
@@ -401,6 +417,43 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - resulting exception</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="throwWrongTypeOfConnector(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<h3>throwWrongTypeOfConnector</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">throwWrongTypeOfConnector</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actualConnectorClass,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;expectedConnectorClass,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
+                               throws <span class="exceptions"><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Log audit message and throw exception to indicate that the asset's connector is wrong.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>actualConnectorClass</code> - class name of the supplied connector</dd>
+<dd><code>expectedConnectorClass</code> - class name expected for the connector</dd>
+<dd><code>assetGUID</code> - unique identifier for the asset</dd>
+<dd><code>methodName</code> - calling method</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - requested exception</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="logWrongTypeOfConnector(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<h3>logWrongTypeOfConnector</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">logWrongTypeOfConnector</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actualConnectorClass,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;expectedConnectorClass,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span></div>
+<div class="block">Log audit message and throw exception to indicate that the asset's connector is wrong.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>actualConnectorClass</code> - class name of the supplied connector</dd>
+<dd><code>expectedConnectorClass</code> - class name expected for the connector</dd>
+<dd><code>assetGUID</code> - unique identifier for the asset</dd>
+<dd><code>methodName</code> - calling method</dd>
 </dl>
 </section>
 </li>
