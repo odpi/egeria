@@ -32,7 +32,7 @@ dependencies {
     compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
     runtimeOnly 'ch.qos.logback:logback-classic'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
-    implementation project(':open-metadata-implementation:user-security:token-manager')
+    compileOnly project(':open-metadata-implementation:user-security:token-manager')
     implementation 'org.slf4j:slf4j-api'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     compileOnly 'com.fasterxml.jackson.core:jackson-databind'
