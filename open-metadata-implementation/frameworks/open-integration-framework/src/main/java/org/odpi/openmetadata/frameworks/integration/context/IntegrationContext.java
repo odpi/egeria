@@ -254,6 +254,31 @@ public class IntegrationContext
         }
     }
 
+
+    /**
+     * Return the flag indicating whether the external source name is to be used as the new element's
+     * metadata collection, or they belong to the local cohort.
+     *
+     * @return flag
+     */
+    public boolean getExternalSourceIsHome()
+    {
+        return externalSourceIsHome;
+    }
+
+
+    /**
+     * Set the flag indicating whether the external source name is to be used as the new element's
+     * metadata collection, or they belong to the local cohort.
+     *
+     * @param newValue flag
+     */
+    public void setExternalSourceIsHome(boolean newValue)
+    {
+        this.externalSourceIsHome = newValue;
+    }
+
+
     /**
      * Return the permitted synchronization direction.  This setting may affect which method in the context are available to the integration
      * connector.

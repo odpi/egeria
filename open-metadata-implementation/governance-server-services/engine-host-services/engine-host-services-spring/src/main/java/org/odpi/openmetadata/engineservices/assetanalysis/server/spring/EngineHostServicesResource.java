@@ -92,14 +92,14 @@ public class EngineHostServicesResource
      */
     @GetMapping(path = "/engine-service/{serviceURLMarker}/governance-engines/summary")
 
-    @Operation(summary="getGovernanceEngineSummaries",
+    @Operation(summary="getGovernanceServiceSummary",
             description="Retrieve the description and status of each governance engine assigned to a specific Open Metadata Engine Service (OMES).",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/governance-engine/"))
 
-    public GovernanceEngineSummariesResponse getGovernanceEngineSummaries(@PathVariable String serverName,
-                                                                          @PathVariable String userId,
-                                                                          @PathVariable String serviceURLMarker)
+    public GovernanceEngineSummariesResponse getGovernanceServiceSummary(@PathVariable String serverName,
+                                                                         @PathVariable String userId,
+                                                                         @PathVariable String serviceURLMarker)
     {
         return restAPI.getGovernanceEngineSummaries(serverName, userId, serviceURLMarker);
     }

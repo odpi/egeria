@@ -305,7 +305,7 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = OpenMetadataType.IT_INFRASTRUCTURE_TYPE_NAME;
+        final String                     end1EntityType               = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
         final String                     end1AttributeName            = "hostedByDeployedITInfrastructure";
         final String                     end1AttributeDescription     = "IT infrastructure hosting this capability.";
         final String                     end1AttributeDescriptionGUID = null;

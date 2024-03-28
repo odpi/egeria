@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.client;
 
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworkservices.oif.client.OpenIntegrationServiceBase;
 
@@ -11,21 +12,23 @@ import org.odpi.openmetadata.frameworkservices.oif.client.OpenIntegrationService
  */
 public class OpenIntegrationServiceClient extends OpenIntegrationServiceBase
 {
-    private final static String serviceURLMarker = "governance-program";
+    private final static String serviceURLMarker = AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS.getAccessServiceURLMarker();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param maxPageSize maximum value allowed for page size
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
     public OpenIntegrationServiceClient(String serverName,
-                                        String serverPlatformURLRoot) throws InvalidParameterException
+                                        String serverPlatformURLRoot,
+                                        int    maxPageSize) throws InvalidParameterException
     {
-        super(serviceURLMarker, serverName, serverPlatformURLRoot);
+        super(serviceURLMarker, serverName, serverPlatformURLRoot, maxPageSize);
     }
 
 
@@ -37,6 +40,7 @@ public class OpenIntegrationServiceClient extends OpenIntegrationServiceBase
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param serverUserId          caller's userId embedded in all HTTP requests
      * @param serverPassword        caller's password embedded in all HTTP requests
+     * @param maxPageSize maximum value allowed for page size
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
@@ -44,8 +48,9 @@ public class OpenIntegrationServiceClient extends OpenIntegrationServiceBase
     public OpenIntegrationServiceClient(String serverName,
                                         String serverPlatformURLRoot,
                                         String serverUserId,
-                                        String serverPassword) throws InvalidParameterException
+                                        String serverPassword,
+                                        int    maxPageSize) throws InvalidParameterException
     {
-        super(serviceURLMarker, serverName, serverPlatformURLRoot, serverUserId, serverPassword);
+        super(serviceURLMarker, serverName, serverPlatformURLRoot, serverUserId, serverPassword, maxPageSize);
     }
 }

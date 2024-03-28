@@ -20,14 +20,16 @@ public class OpenMetadataStoreClient extends OpenMetadataClientBase
      *
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param maxPageSize maximum value allowed for page size
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
     public OpenMetadataStoreClient(String serverName,
-                                   String serverPlatformURLRoot) throws InvalidParameterException
+                                   String serverPlatformURLRoot,
+                                   int    maxPageSize) throws InvalidParameterException
     {
-        super(serviceURLMarker, serverName, serverPlatformURLRoot);
+        super(serviceURLMarker, serverName, serverPlatformURLRoot, maxPageSize);
     }
 
 
@@ -39,6 +41,7 @@ public class OpenMetadataStoreClient extends OpenMetadataClientBase
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param serverUserId          caller's userId embedded in all HTTP requests
      * @param serverPassword        caller's password embedded in all HTTP requests
+     * @param maxPageSize maximum value allowed for page size
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
@@ -46,8 +49,9 @@ public class OpenMetadataStoreClient extends OpenMetadataClientBase
     public OpenMetadataStoreClient(String serverName,
                                    String serverPlatformURLRoot,
                                    String serverUserId,
-                                   String serverPassword) throws InvalidParameterException
+                                   String serverPassword,
+                                   int    maxPageSize) throws InvalidParameterException
     {
-        super(serviceURLMarker, serverName, serverPlatformURLRoot, serverUserId, serverPassword);
+        super(serviceURLMarker, serverName, serverPlatformURLRoot, serverUserId, serverPassword, maxPageSize);
     }
 }

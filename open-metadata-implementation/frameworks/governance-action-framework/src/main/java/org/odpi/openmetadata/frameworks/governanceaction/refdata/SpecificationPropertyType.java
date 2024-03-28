@@ -8,7 +8,7 @@ package org.odpi.openmetadata.frameworks.governanceaction.refdata;
  * ReferenceValueAttributeName provides definitions of the standard attributeName values used in the
  * ReferenceValueAssignment relationship.
  */
-public enum ReferenceValueAttributeName
+public enum SpecificationPropertyType
 {
     /**
      * Name of attribute that should be provided when using the attached template.  Replacement attributes map to the root entity of the template, or, the first occurrence of the attribute in attached relationships, classifications or entities.
@@ -78,8 +78,8 @@ public enum ReferenceValueAttributeName
      * @param attributeName name of the attribute
      * @param description description of the request type
      */
-    ReferenceValueAttributeName(String attributeName,
-                                String description)
+    SpecificationPropertyType(String attributeName,
+                              String description)
     {
         this.attributeName = attributeName;
         this.description   = description;
@@ -91,7 +91,7 @@ public enum ReferenceValueAttributeName
      *
      * @return string name
      */
-    public String getAttributeName()
+    public String getPropertyType()
     {
         return attributeName;
     }

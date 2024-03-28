@@ -216,6 +216,15 @@ public enum OpenMetadataType
                                    "Places where an external identifier is recognized."),
 
     /**
+     * Hardware and base software that supports an IT system.
+     */
+    IT_INFRASTRUCTURE("151e6dd1-54a0-4b7f-a072-85caa09d1dda",
+                      "ITInfrastructure",
+                      OpenMetadataWikiPages.MODEL_0030_OPERATING_PLATFORMS,
+                      "6da11871-b04e-4973-beb5-4b1aac37e164",
+                      "Hardware and base software that supports an IT system."),
+
+    /**
      * Identifies an IT Infrastructure asset that is deployed to a specific destination.
      */
     DEPLOYED_ON("6932ba75-9522-4a06-a4a4-ee60a4df6aab",
@@ -223,6 +232,24 @@ public enum OpenMetadataType
                 OpenMetadataWikiPages.MODEL_0042_SOFTWARE_CAPABILITIES,
                 "d727b3ce-d58b-45d5-8abc-55b1394e030a",
                 "Identifies an IT Infrastructure asset that is deployed to a specific destination."),
+
+    /**
+     * Software services packaged as an operating system process to support a runtime environment for a virtual software server.
+     */
+    SOFTWARE_SERVER_PLATFORM("ba7c7884-32ce-4991-9c41-9778f1fec6aa",
+                             "SoftwareServerPlatform",
+                             OpenMetadataWikiPages.MODEL_0037_SOFTWARE_SERVER_PLATFORMS,
+                             "a69951e5-feab-4964-a23f-02d40a8f8938",
+                             "Software services packaged as an operating system process to support a runtime environment for a virtual software server."),
+
+    /**
+     * Software services to support a runtime environment for applications and data stores.
+     */
+    SOFTWARE_SERVER("aa7c7884-32ce-4991-9c41-9778f1fec6aa",
+                    "SoftwareServer",
+                    OpenMetadataWikiPages.MODEL_0040_SOFTWARE_SERVERS,
+                    "8cf6cb11-4a8d-4c1f-a246-8c8079a0319d",
+                    "Software services to support a runtime environment for applications and data stores."),
 
     /**
      * A software implemented function such as a software service or engine.
@@ -514,6 +541,41 @@ public enum OpenMetadataType
                          "c2833bb5-5508-4328-a81d-f9b5971be095",
                          "A data set that consists of a collection files (do not need to be co-located)."),
 
+    /**
+     * A location for storing and distributing related events.
+     */
+    TOPIC("29100f49-338e-4361-b05d-7e4e8e818325",
+          "Topic",
+          OpenMetadataWikiPages.MODEL_0223_EVENTS_AND_LOGS,
+          "a724d481-625b-4855-bc29-76f90983311f",
+          "A location for storing and distributing related events."),
+
+    /**
+     * An event topic supported by Apache Kafka.
+     */
+    KAFKA_TOPIC("f2f5dae9-8410-420f-81f4-5d08543e07aa",
+                "KafkaTopic",
+                OpenMetadataWikiPages.MODEL_0223_EVENTS_AND_LOGS,
+                "38bdd80b-706a-483c-8c39-4cba69e9a767,",
+                "An event topic supported by Apache Kafka."),
+
+    /**
+     * "Identifies a data file as one containing log records."
+     */
+    LOG_FILE("ff4c8484-9127-464a-97fc-99579d5bc429",
+             "LogFile",
+             OpenMetadataWikiPages.MODEL_0223_EVENTS_AND_LOGS,
+             "4ee71abb-c5b0-4b40-ac0e-63d6c4dad9dd",
+             "Identifies a data file as one containing log records."),
+
+    /**
+     * Defines destination information for the log of activity associated with an element.
+     */
+    ASSOCIATED_LOG_RELATIONSHIP("0999e2b9-45d6-42c4-9767-4b74b0b48b89",
+                                "AssociatedLog",
+                                OpenMetadataWikiPages.MODEL_0223_EVENTS_AND_LOGS,
+                                "b6a17f72-2add-4db8-bf4d-9c6460386318",
+                                "Defines destination information for the log of activity associated with an element."),
 
     /**
      * A tabular data source (typically a database table) that is an asset in its own right.
@@ -523,6 +585,7 @@ public enum OpenMetadataType
                    OpenMetadataWikiPages.MODEL_0224_DATABASES,
                    "ff9fced9-daaf-4512-97c1-88381ffe05aa",
                    "A tabular data source (typically a database table) that is an asset in its own right."),
+
 
 
     /* ============================================================================================================================*/
@@ -718,8 +781,119 @@ public enum OpenMetadataType
                                  "A link between a graph edge and a vertex.   Each edge should have two of these relationships."),
 
 
+    /**
+     * A single valid value for a referenceable.
+     */
+    VALID_VALUE_DEFINITION("09b2133a-f045-42cc-bb00-ee602b74c618",
+                           "ValidValueDefinition",
+                           OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                           "7aebb099-27f7-4aad-9e22-d7b97d450b56",
+                           "A single valid value for a referenceable."),
+
+    /**
+     * A collection of related valid values.
+     */
+    VALID_VALUE_SET("7de10805-7c44-40e3-a410-ffc51306801b",
+                    "ValidValuesSet",
+                    OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                    "8a786df1-738d-44f4-960f-bce7e929f36e",
+                    "A collection of related valid values."),
+
+    /**
+     * An asset that contains trusted values for use as a reference.
+     */
+    REFERENCE_DATA_CLASSIFICATION("55e5ae33-39c6-4834-9d05-ef0ae4e0163b",
+                                  "ReferenceData",
+                                  OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                                  "2d88a635-81ee-4ad8-9e1b-7cccea448776",
+                                  "An asset that contains trusted values for use as a reference."),
+
+    /**
+     * Defines a data field that contains metadata for the row/record/object.
+     */
+    INSTANCE_METADATA_CLASSIFICATION("e6d5c097-a5e9-4bc4-a614-2506276059af",
+                                     "InstanceMetadata",
+                                     OpenMetadataWikiPages.MODEL_0550_INSTANCE_METADATA,
+                                     "2045991b-e043-42b7-9424-a0b81d1b29ff",
+                                     "Defines a data field that contains metadata for the row/record/object."),
+
+
+    /**
+     * Links a referenceable to its valid values.
+     */
+    VALID_VALUES_ASSIGNMENT_RELATIONSHIP("c5d48b73-eadd-47db-ab64-3be99b2fb32d",
+                                         "ValidValuesAssignment",
+                                         OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                                         "5b4a2eb8-e959-4360-b4f0-298c504aeba7",
+                                         "Links a referenceable to its valid values."),
+
+    /**
+     * Enables valid values to be used as tags to help group and locate referenceables.
+     */
+    REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP("111e6d2e-94e9-43ed-b4ed-f0d220668cbf",
+                                            "ReferenceValueAssignment",
+                                            OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                                            "94376fc4-7ca6-4650-8505-24d1127840e1",
+                                            "Enables valid values to be used as tags to help group and locate referenceables."),
+
+
+    /**
+     * A link between a valid value representing a specification property and the element representing the implementation.
+     */
+    SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP("ae9118b0-b898-4f5b-968a-be3c17025580",
+                                            "SpecificationPropertyAssignment",
+                                            OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                                            "a161504d-861a-4eed-a7c6-4954c8ae837d",
+                                            "A link between a valid value representing a specification property and the element representing the implementation."),
+
+    /**
+     * Represents an association between two valid values.
+     */
+    VALID_VALUE_ASSOCIATION_RELATIONSHIP("364cabe6-a983-4a2b-81ba-190b8e7b8390",
+                                         "ValidValueAssociation",
+                                         OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                                         "3543498a-3afe-410e-bf8c-c7dc5ab03c0f",
+                                         "Represents an association between two valid values."),
+
+    /**
+     * Links valid value set to the values.
+     */
+    VALID_VALUE_MEMBER_RELATIONSHIP("6337c9cd-8e5a-461b-97f9-5151bcb97a9e",
+                                    "ValidValueMember",
+                                    OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                                    "4974410c-952d-4c27-bc7a-172e195f1c6b",
+                                    "Links valid value set to the values."),
+
+    /**
+     * Identifies two valid values from different valid value sets (properties) that should be used together when in the same element for consistency.
+     */
+    CONSISTENT_VALID_VALUES_RELATIONSHIP("16f08074-1f66-4394-98f0-f81a2fb65f18",
+                                         "ConsistentValidValues",
+                                         OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                                         "c82c3bbd-3ef4-46ed-9153-ca2ae56e1113",
+                                         "Identifies two valid values from different valid value sets (properties) that should be used together when in the same element for consistency."),
+
+    /**
+     * Link to an asset that implements the list of valid values.
+     */
+    VALID_VALUES_IMPL_RELATIONSHIP("d9a39553-6a47-4477-a217-844300c07cf2",
+                                   "ValidValuesImplementation",
+                                   OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                                   "4dc65e59-c376-464e-80bb-88783399e454",
+                                   "Link to an asset that implements the list of valid values."),
+
+    /**
+     * A link between two valid values from different valid value sets that have equivalent meanings and can be used to translate values from one set to another.
+     */
+    VALID_VALUES_MAPPING_RELATIONSHIP("203ce62c-3cbf-4542-bf82-81820cba718f",
+                                      "ValidValuesMapping",
+                                      OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                                      "b1e75f5d-0c80-49ee-8550-8e1a54b91cb6",
+                                      "A link between two valid values from different valid value sets that have equivalent meanings and can be used to translate values from one set to another."),
+
+
     /* ============================================================================================================================*/
-    /* Area 6 - Metadata Surveys                                                                                                            */
+    /* Area 6 - Metadata Surveys                                                                                                   */
     /* ============================================================================================================================*/
 
     /**
@@ -1297,16 +1471,6 @@ public enum OpenMetadataType
      */
     public static final String ADJACENT_LOCATION_TYPE_NAME = "AdjacentLocation";
 
-    /**
-     * 151e6dd1-54a0-4b7f-a072-85caa09d1dda
-     */
-    public static final String IT_INFRASTRUCTURE_TYPE_GUID = "151e6dd1-54a0-4b7f-a072-85caa09d1dda";
-
-    /**
-     * ITInfrastructure - inherits from Infrastructure
-     */
-    public static final String IT_INFRASTRUCTURE_TYPE_NAME = "ITInfrastructure";
-
 
     /**
      * 1abd16db-5b8a-4fd9-aee5-205db3febe99
@@ -1499,37 +1663,6 @@ public enum OpenMetadataType
     public static final String DEPLOYED_VIRTUAL_CONTAINER_TYPE_NAME = "DeployedVirtualContainer";
 
     /**
-     * ba7c7884-32ce-4991-9c41-9778f1fec6aa
-     */
-    public static final String SOFTWARE_SERVER_PLATFORM_TYPE_GUID = "ba7c7884-32ce-4991-9c41-9778f1fec6aa";
-
-    /**
-     * SoftwareServerPlatform - inherits from ITInfrastructure
-     */
-    public static final String SOFTWARE_SERVER_PLATFORM_TYPE_NAME = "SoftwareServerPlatform";
-
-    /**
-     * platformStatus
-     */
-    public static final String PLATFORM_STATUS_PROPERTY_NAME = "platformStatus";            /* from SoftwareServerPlatform */
-
-
-    /**
-     * 896d14c2-7522-4f6c-8519-757711943fe6
-     */
-    public static final String SOFTWARE_SERVER_TYPE_GUID = "896d14c2-7522-4f6c-8519-757711943fe6";
-
-    /**
-     * SoftwareServer - inherits from ITInfrastructure
-     */
-    public static final String SOFTWARE_SERVER_TYPE_NAME = "SoftwareServer";
-
-    /**
-     * serverVersion
-     */
-    public static final String SERVER_VERSION_PROPERTY_NAME = "serverVersion";   /* from SoftwareServer entity */
-
-    /**
      * 2b8bfab4-8023-4611-9833-82a0dc95f187
      */
     public static final String SERVER_ENDPOINT_TYPE_GUID = "2b8bfab4-8023-4611-9833-82a0dc95f187";
@@ -1538,21 +1671,6 @@ public enum OpenMetadataType
      * ServerEndpoint - End 1 = ITInfrastructure; End 2 = Endpoint
      */
     public static final String SERVER_ENDPOINT_TYPE_NAME = "ServerEndpoint";
-
-    /**
-     * d909eb3b-5205-4180-9f63-122a65b30738
-     */
-    public static final String SERVER_DEPLOYMENT_TYPE_GUID = "d909eb3b-5205-4180-9f63-122a65b30738";
-
-    /**
-     * SoftwareServerDeployment - End 1 = SoftwareServerPlatform; End 2 = SoftwareServer
-     */
-    public static final String SERVER_DEPLOYMENT_TYPE_NAME = "SoftwareServerDeployment";
-
-    /**
-     * serverStatus
-     */
-    public static final String SERVER_STATUS_PROPERTY_NAME = "serverStatus";  /* from SoftwareServerDeployment */
 
     /**
      * dbc20663-d705-4ff0-8424-80c262c6b8e7
@@ -3037,50 +3155,6 @@ public enum OpenMetadataType
      */
     public static final String API_ENDPOINT_TYPE_NAME = "APIEndpoint";
 
-    /**
-     * ff4c8484-9127-464a-97fc-99579d5bc429
-     */
-    public static final String LOG_FILE_TYPE_GUID = "ff4c8484-9127-464a-97fc-99579d5bc429";  /* from Area 2 */
-
-    /**
-     * LogFile - inherits from DataFile
-     */
-    public static final String LOG_FILE_TYPE_NAME = "LogFile";
-
-    /**
-     * 29100f49-338e-4361-b05d-7e4e8e818325
-     */
-    public static final String TOPIC_TYPE_GUID = "29100f49-338e-4361-b05d-7e4e8e818325";  /* from Area 2 */
-
-    /**
-     * Topic - inherits from DataSet
-     */
-    public static final String TOPIC_TYPE_NAME = "Topic";
-
-    /**
-     * f2f5dae9-8410-420f-81f4-5d08543e07aa
-     */
-    public static final String KAFKA_TOPIC_TYPE_GUID = "f2f5dae9-8410-420f-81f4-5d08543e07aa";  /* from Area 2 */
-
-    /**
-     * KafkaTopic - inherits from Topic
-     */
-    public static final String KAFKA_TOPIC_TYPE_NAME = "KafkaTopic";
-
-    /**
-     * topicType
-     */
-    public static final String TOPIC_TYPE_PROPERTY_NAME = "topicType";                             /* from Topic entity */
-
-    /**
-     * 69751093-35f9-42b1-944b-ba6251ff513d
-     */
-    public static final String SUBSCRIBER_LIST_TYPE_GUID = "69751093-35f9-42b1-944b-ba6251ff513d";  /* from Area 2 */
-
-    /**
-     * SubscriberList - inherits from DataSet
-     */
-    public static final String SUBSCRIBER_LIST_TYPE_NAME = "SubscriberList";
 
     /**
      * bc91a28c-afb9-41a7-8eb2-fc8b5271fe9e
@@ -3092,15 +3166,6 @@ public enum OpenMetadataType
      */
     public static final String TOPIC_SUBSCRIBERS_TYPE_NAME = "TopicSubscribers";
 
-    /**
-     * 0999e2b9-45d6-42c4-9767-4b74b0b48b89
-     */
-    public static final String ASSOCIATED_LOG_TYPE_GUID = "0999e2b9-45d6-42c4-9767-4b74b0b48b89";  /* from Area 2 */
-
-    /**
-     * AssociatedLog - End1 = Referenceable; End 2 = Asset
-     */
-    public static final String ASSOCIATED_LOG_TYPE_NAME = "AssociatedLog";
 
     /**
      * 68d7b905-6438-43be-88cf-5de027b4aaaf
@@ -3108,7 +3173,7 @@ public enum OpenMetadataType
     public static final String INFORMATION_VIEW_TYPE_GUID = "68d7b905-6438-43be-88cf-5de027b4aaaf";  /* from Area 2 */
 
     /**
-     * InformationView - inheirts from DataSet
+     * InformationView - inherits from DataSet
      */
     public static final String INFORMATION_VIEW_TYPE_NAME = "InformationView";
 
@@ -4447,10 +4512,6 @@ public enum OpenMetadataType
     public static final String API_RESPONSE_RELATIONSHIP_TYPE_NAME   = "APIResponse";
     /* End1 = APIOperation; End 2 = SchemaType */
 
-    public static final String REFERENCEABLE_TO_REFERENCE_VALUE_TYPE_GUID = "111e6d2e-94e9-43ed-b4ed-f0d220668cbf";
-    public static final String REFERENCEABLE_TO_REFERENCE_VALUE_TYPE_NAME = "ReferenceValueAssignment";
-    /* End1 = Referenceable; End 2 = ValidValueDefinition */
-
     public static final String DISPLAY_DATA_SCHEMA_TYPE_TYPE_GUID = "2f5796f5-3fac-4501-9d0d-207aa8620d16";   /* from Area 5 */
     public static final String DISPLAY_DATA_SCHEMA_TYPE_TYPE_NAME = "DisplayDataSchemaType";
     /* ComplexSchemaType */
@@ -4478,16 +4539,6 @@ public enum OpenMetadataType
     /* SchemaAttribute */
 
     /**
-     * 09b2133a-f045-42cc-bb00-ee602b74c618
-     */
-    public static final String VALID_VALUE_DEFINITION_TYPE_GUID = "09b2133a-f045-42cc-bb00-ee602b74c618";   /* from Area 5 */
-
-    /**
-     * ValidValueDefinition - inherits from Referenceable
-     */
-    public static final String VALID_VALUE_DEFINITION_TYPE_NAME = "ValidValueDefinition";
-
-    /**
      * category
      */
     public static final String CATEGORY_PROPERTY_NAME = "category";             /* from ValidValueDefinition entity */
@@ -4503,51 +4554,6 @@ public enum OpenMetadataType
     public static final String IS_CASE_SENSITIVE_PROPERTY_NAME = "isCaseSensitive";      /* from ValidValueDefinition entity */
 
     /**
-     * 7de10805-7c44-40e3-a410-ffc51306801b
-     */
-    public static final String VALID_VALUE_SET_TYPE_GUID = "7de10805-7c44-40e3-a410-ffc51306801b";   /* from Area 5 */
-
-    /**
-     * ValidValuesSet - inherits from ValidValueDefinition
-     */
-    public static final String VALID_VALUE_SET_TYPE_NAME = "ValidValuesSet";
-
-    /**
-     * e6d5c097-a5e9-4bc4-a614-2506276059af
-     */
-    public static final String REFERENCE_DATA_CLASSIFICATION_TYPE_GUID = "55e5ae33-39c6-4834-9d05-ef0ae4e0163b";  /* from Area 5 */
-
-    /**
-     * ReferenceData - attached to asset
-     */
-    public static final String REFERENCE_DATA_CLASSIFICATION_TYPE_NAME = "ReferenceData";
-
-    /**
-     * e6d5c097-a5e9-4bc4-a614-2506276059af
-     */
-    public static final String INSTANCE_METADATA_CLASSIFICATION_TYPE_GUID = "e6d5c097-a5e9-4bc4-a614-2506276059af";  /* from Area 5 */
-
-    /**
-     * InstanceMetadata - attached to SchemaElement
-     */
-    public static final String INSTANCE_METADATA_CLASSIFICATION_TYPE_NAME = "InstanceMetadata";
-
-    /**
-     * typeName
-     */
-    public static final String INSTANCE_METADATA_TYPE_NAME_PROPERTY_NAME = "typeName";         /* from InstanceMetadata classification */
-
-    /**
-     * c5d48b73-eadd-47db-ab64-3be99b2fb32d
-     */
-    public static final String VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID = "c5d48b73-eadd-47db-ab64-3be99b2fb32d";  /* from Area 5 */
-
-    /**
-     * ValidValuesAssignment - End1 = Referenceable; End 2 = ValidValuesDefinition
-     */
-    public static final String VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME = "ValidValuesAssignment";
-
-    /**
      * strictRequirement
      */
     public static final String IS_STRICT_REQUIREMENT_PROPERTY_NAME = "strictRequirement";          /* from ValidValuesAssignment relationship */
@@ -4556,36 +4562,6 @@ public enum OpenMetadataType
      * isDefaultValue
      */
     public static final String IS_DEFAULT_VALUE_PROPERTY_NAME = "isDefaultValue";             /* from ValidValuesMember relationship */
-
-    /**
-     * 6337c9cd-8e5a-461b-97f9-5151bcb97a9e
-     */
-    public static final String VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_GUID = "6337c9cd-8e5a-461b-97f9-5151bcb97a9e";  /* from Area 5 */
-
-    /**
-     * ValidValueMember - End1 = ValidValuesSet; End 2 = ValidValuesDefinition
-     */
-    public static final String VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME = "ValidValueMember";
-
-    /**
-     * 16f08074-1f66-4394-98f0-f81a2fb65f18
-     */
-    public static final String CONSISTENT_VALID_VALUES_RELATIONSHIP_TYPE_GUID = "16f08074-1f66-4394-98f0-f81a2fb65f18";  /* from Area 5 */
-
-    /**
-     * ConsistentValidValues - End 1 = ValidValuesDefinition; End 2 = ValidValuesDefinition
-     */
-    public static final String CONSISTENT_VALID_VALUES_RELATIONSHIP_TYPE_NAME = "ConsistentValidValues";
-
-    /**
-     * d9a39553-6a47-4477-a217-844300c07cf2
-     */
-    public static final String VALID_VALUES_IMPL_RELATIONSHIP_TYPE_GUID = "d9a39553-6a47-4477-a217-844300c07cf2";  /* from Area 5 */
-
-    /**
-     * ValidValuesImplementation - End1 = ValidValuesDefinition; End 2 = Asset
-     */
-    public static final String VALID_VALUES_IMPL_RELATIONSHIP_TYPE_NAME = "ValidValuesImplementation";
 
     /**
      * symbolicName
@@ -4603,39 +4579,9 @@ public enum OpenMetadataType
     public static final String ADDITIONAL_VALUES_PROPERTY_NAME = "additionalValues";        /* from ValidValuesImplementation relationship */
 
     /**
-     * 203ce62c-3cbf-4542-bf82-81820cba718f
-     */
-    public static final String VALID_VALUES_MAP_RELATIONSHIP_TYPE_GUID = "203ce62c-3cbf-4542-bf82-81820cba718f";  /* from Area 5 */
-
-    /**
-     * ValidValuesMapping - End1 = ValidValuesDefinition; End 2 = ValidValuesDefinition
-     */
-    public static final String VALID_VALUES_MAP_RELATIONSHIP_TYPE_NAME = "ValidValuesMapping";
-
-    /**
      * associationDescription
      */
     public static final String ASSOCIATION_DESCRIPTION_PROPERTY_NAME = "associationDescription";  /* from ValidValuesMapping relationship */
-
-    /**
-     * 111e6d2e-94e9-43ed-b4ed-f0d220668cbf
-     */
-    public static final String REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_GUID = "111e6d2e-94e9-43ed-b4ed-f0d220668cbf";  /* from Area 5 */
-
-    /**
-     * ReferenceValueAssignment - End1 = Referenceable; End 2 = ValidValuesDefinition
-     */
-    public static final String REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME = "ReferenceValueAssignment";
-
-    /**
-     * 364cabe6-a983-4a2b-81ba-190b8e7b8390
-     */
-    public static final String VALID_VALUE_ASSOCIATION_RELATIONSHIP_TYPE_GUID = "364cabe6-a983-4a2b-81ba-190b8e7b8390";
-
-    /**
-     * ValidValueAssociation - End1 = ValidValuesDefinition; End 2 = ValidValuesDefinition
-     */
-    public static final String VALID_VALUE_ASSOCIATION_RELATIONSHIP_TYPE_NAME = "ValidValueAssociation";
 
     /**
      * associationName

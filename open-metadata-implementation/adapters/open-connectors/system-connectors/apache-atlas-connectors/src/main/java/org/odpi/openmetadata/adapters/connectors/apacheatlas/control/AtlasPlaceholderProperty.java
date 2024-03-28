@@ -146,7 +146,6 @@ public enum AtlasPlaceholderProperty
     }
 
 
-
     /**
      * Return a summary of this enum to use in a service provider.
      *
@@ -160,6 +159,7 @@ public enum AtlasPlaceholderProperty
         placeholderPropertyType.setDescription(description);
         placeholderPropertyType.setDataType(dataType);
         placeholderPropertyType.setExample(example);
+        placeholderPropertyType.setRequired(true);
 
         return placeholderPropertyType;
     }

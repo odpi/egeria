@@ -49,14 +49,16 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param auditLog logging destination
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public GlossaryManagementClient(String   serverName,
                                     String   serverPlatformURLRoot,
-                                    AuditLog auditLog) throws InvalidParameterException
+                                    AuditLog auditLog,
+                                    int      maxPageSize) throws InvalidParameterException
     {
-        client = new GlossaryExchangeClient(serverName, serverPlatformURLRoot, auditLog);
+        client = new GlossaryExchangeClient(serverName, serverPlatformURLRoot, auditLog, maxPageSize);
     }
 
 
@@ -65,13 +67,15 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public GlossaryManagementClient(String serverName,
-                                    String serverPlatformURLRoot) throws InvalidParameterException
+                                    String serverPlatformURLRoot,
+                                    int    maxPageSize) throws InvalidParameterException
     {
-        client = new GlossaryExchangeClient(serverName, serverPlatformURLRoot);
+        client = new GlossaryExchangeClient(serverName, serverPlatformURLRoot, maxPageSize);
     }
 
 
@@ -84,6 +88,7 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @param auditLog logging destination
+     * @param maxPageSize maximum value allowed for page size
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
@@ -92,9 +97,10 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
                                     String   serverPlatformURLRoot,
                                     String   userId,
                                     String   password,
-                                    AuditLog auditLog) throws InvalidParameterException
+                                    AuditLog auditLog,
+                                    int      maxPageSize) throws InvalidParameterException
     {
-        client = new GlossaryExchangeClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        client = new GlossaryExchangeClient(serverName, serverPlatformURLRoot, userId, password, auditLog, maxPageSize);
     }
 
 
@@ -127,15 +133,17 @@ public class GlossaryManagementClient implements GlossaryManagementInterface
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public GlossaryManagementClient(String serverName,
                                     String serverPlatformURLRoot,
                                     String userId,
-                                    String password) throws InvalidParameterException
+                                    String password,
+                                    int    maxPageSize) throws InvalidParameterException
     {
-        client = new GlossaryExchangeClient(serverName, serverPlatformURLRoot, userId, password);
+        client = new GlossaryExchangeClient(serverName, serverPlatformURLRoot, userId, password, maxPageSize);
     }
 
 

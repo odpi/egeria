@@ -111,7 +111,7 @@ public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
      */
     public AssetProperties cloneToAsset()
     {
-        return this.cloneToAsset(OpenMetadataType.SOFTWARE_SERVER_PLATFORM_TYPE_NAME);
+        return this.cloneToAsset(OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName);
     }
 
 

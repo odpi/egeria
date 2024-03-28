@@ -97,10 +97,10 @@ public class ClientConstructorTest
                                           String   serverPlatformRootURL,
                                           AuditLog auditLog) throws InvalidParameterException
     {
-        new MetadataSourceClient(serverName, serverPlatformRootURL, auditLog);
-        new MetadataSourceClient(serverName, serverPlatformRootURL);
-        new MetadataSourceClient(serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog);
-        new MetadataSourceClient(serverName, serverPlatformRootURL, serverUserId, serverPassword);
+        new MetadataSourceClient(serverName, serverPlatformRootURL, auditLog, 100);
+        new MetadataSourceClient(serverName, serverPlatformRootURL, 100);
+        new MetadataSourceClient(serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog, 100);
+        new MetadataSourceClient(serverName, serverPlatformRootURL, serverUserId, serverPassword, 100);
 
         CommunityProfileRESTClient restClient = new CommunityProfileRESTClient(serverName, serverPlatformRootURL);
 
@@ -121,10 +121,10 @@ public class ClientConstructorTest
                                             String   serverPlatformRootURL,
                                             AuditLog auditLog) throws InvalidParameterException
     {
-        new UserIdentityManagement(serverName, serverPlatformRootURL, auditLog);
-        new UserIdentityManagement(serverName, serverPlatformRootURL);
-        new UserIdentityManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog);
-        new UserIdentityManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword);
+        new UserIdentityManagement(serverName, serverPlatformRootURL, auditLog, 100);
+        new UserIdentityManagement(serverName, serverPlatformRootURL, 100);
+        new UserIdentityManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog, 100);
+        new UserIdentityManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword, 100);
 
         CommunityProfileRESTClient restClient = new CommunityProfileRESTClient(serverName, serverPlatformRootURL);
 
@@ -147,10 +147,10 @@ public class ClientConstructorTest
                                             String   serverPlatformRootURL,
                                             AuditLog auditLog) throws InvalidParameterException
     {
-        new OrganizationManagement(serverName, serverPlatformRootURL, auditLog);
-        new OrganizationManagement(serverName, serverPlatformRootURL);
-        new OrganizationManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog);
-        new OrganizationManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword);
+        new OrganizationManagement(serverName, serverPlatformRootURL, auditLog, 200);
+        new OrganizationManagement(serverName, serverPlatformRootURL, 100);
+        new OrganizationManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog, 100);
+        new OrganizationManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword, 100);
 
         CommunityProfileRESTClient restClient = new CommunityProfileRESTClient(serverName, serverPlatformRootURL);
 
@@ -171,10 +171,10 @@ public class ClientConstructorTest
                                          String   serverPlatformRootURL,
                                          AuditLog auditLog) throws InvalidParameterException
     {
-        new CommunityManagement(serverName, serverPlatformRootURL, auditLog);
-        new CommunityManagement(serverName, serverPlatformRootURL);
-        new CommunityManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword,  auditLog);
-        new CommunityManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword);
+        new CommunityManagement(serverName, serverPlatformRootURL, auditLog, 100);
+        new CommunityManagement(serverName, serverPlatformRootURL, 100);
+        new CommunityManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword,  auditLog, 100);
+        new CommunityManagement(serverName, serverPlatformRootURL, serverUserId, serverPassword, 100);
 
         CommunityProfileRESTClient restClient = new CommunityProfileRESTClient(serverName, serverPlatformRootURL);
 

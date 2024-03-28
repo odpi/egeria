@@ -134,36 +134,6 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param serverUserId          caller's userId embedded in all HTTP requests
-     * @param serverPassword        caller's password embedded in all HTTP requests
-     *
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     *                                   REST API calls.
-     */
-    public OpenGovernanceClientBase(String serviceURLMarker,
-                                    String serverName,
-                                    String serverPlatformURLRoot,
-                                    String serverUserId,
-                                    String serverPassword) throws InvalidParameterException
-    {
-        final String methodName = "Client Constructor (with security)";
-
-        this.serviceURLMarker = serviceURLMarker;
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-        this.restClient = new GAFRESTClient(serverName, serverPlatformURLRoot, serverUserId, serverPassword);
-    }
-
-
-    /**
-     * Create a new client that passes userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is sent on each request.
-     *
-     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
-     * @param serverName            name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param restClient            pre-initialized REST client
      * @param maxPageSize           pre-initialized parameter limit
      *

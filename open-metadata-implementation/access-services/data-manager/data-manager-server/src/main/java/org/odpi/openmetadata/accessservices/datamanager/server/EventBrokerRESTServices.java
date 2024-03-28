@@ -92,7 +92,7 @@ public class EventBrokerRESTServices
 
             if (requestBody != null)
             {
-                String typeName = OpenMetadataType.TOPIC_TYPE_NAME;
+                String typeName = OpenMetadataType.TOPIC.typeName;
 
                 if (requestBody.getTypeName() != null)
                 {
@@ -108,7 +108,17 @@ public class EventBrokerRESTServices
                         extendedProperties = new HashMap<>();
                     }
 
-                    extendedProperties.put(OpenMetadataType.TOPIC_TYPE_PROPERTY_NAME, requestBody.getTopicType());
+                    extendedProperties.put(OpenMetadataProperty.TOPIC_TYPE.name, requestBody.getTopicType());
+                }
+
+                if (requestBody.getTopicName() != null)
+                {
+                    if (extendedProperties == null)
+                    {
+                        extendedProperties = new HashMap<>();
+                    }
+
+                    extendedProperties.put(OpenMetadataProperty.TOPIC_NAME.name, requestBody.getTopicType());
                 }
 
                 String topicGUID;
@@ -141,7 +151,7 @@ public class EventBrokerRESTServices
                                                      OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                      topicGUID,
                                                      topicGUIDParameterName,
-                                                     OpenMetadataType.TOPIC_TYPE_NAME,
+                                                     OpenMetadataType.TOPIC.typeName,
                                                      false,
                                                      false,
                                                      OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
@@ -181,7 +191,7 @@ public class EventBrokerRESTServices
                                                      OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                      topicGUID,
                                                      topicGUIDParameterName,
-                                                     OpenMetadataType.TOPIC_TYPE_NAME,
+                                                     OpenMetadataType.TOPIC.typeName,
                                                      false,
                                                      false,
                                                      OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
@@ -267,8 +277,8 @@ public class EventBrokerRESTServices
                                                                 handler.getExternalSourceID(eventBrokerIsHome, requestBody.getExternalSourceName()),
                                                                 templateGUID,
                                                                 templateGUIDParameterName,
-                                                                OpenMetadataType.TOPIC_TYPE_GUID,
-                                                                OpenMetadataType.TOPIC_TYPE_NAME,
+                                                                OpenMetadataType.TOPIC.typeGUID,
+                                                                OpenMetadataType.TOPIC.typeName,
                                                                 requestBody.getQualifiedName(),
                                                                 qualifiedNameParameterName,
                                                                 requestBody.getDisplayName(),
@@ -291,7 +301,7 @@ public class EventBrokerRESTServices
                                                  OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                  topicGUID,
                                                  topicGUIDParameterName,
-                                                 OpenMetadataType.TOPIC_TYPE_NAME,
+                                                 OpenMetadataType.TOPIC.typeName,
                                                  false,
                                                  false,
                                                  OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
@@ -358,7 +368,7 @@ public class EventBrokerRESTServices
 
             if (requestBody != null)
             {
-                String typeName = OpenMetadataType.TOPIC_TYPE_NAME;
+                String typeName = OpenMetadataType.TOPIC.typeName;
 
                 if (requestBody.getTypeName() != null)
                 {
@@ -367,6 +377,16 @@ public class EventBrokerRESTServices
 
                 Map<String, Object> extendedProperties = requestBody.getExtendedProperties();
 
+                if (requestBody.getTopicName() != null)
+                {
+                    if (extendedProperties == null)
+                    {
+                        extendedProperties = new HashMap<>();
+                    }
+
+                    extendedProperties.put(OpenMetadataProperty.TOPIC_NAME.name, requestBody.getTopicType());
+                }
+
                 if (requestBody.getTopicType() != null)
                 {
                     if (extendedProperties == null)
@@ -374,7 +394,7 @@ public class EventBrokerRESTServices
                         extendedProperties = new HashMap<>();
                     }
 
-                    extendedProperties.put(OpenMetadataType.TOPIC_TYPE_PROPERTY_NAME, requestBody.getTopicType());
+                    extendedProperties.put(OpenMetadataProperty.TOPIC_TYPE.name, requestBody.getTopicType());
                 }
 
                 handler.updateAsset(userId,
@@ -561,8 +581,8 @@ public class EventBrokerRESTServices
                                                requestBody.getExternalSourceName(),
                                                topicGUID,
                                                topicGUIDParameterName,
-                                               OpenMetadataType.TOPIC_TYPE_GUID,
-                                               OpenMetadataType.TOPIC_TYPE_NAME,
+                                               OpenMetadataType.TOPIC.typeGUID,
+                                               OpenMetadataType.TOPIC.typeName,
                                                OpenMetadataProperty.QUALIFIED_NAME.name,
                                                qualifiedName,
                                                false,
@@ -624,8 +644,8 @@ public class EventBrokerRESTServices
                 AssetHandler<TopicElement> handler = instanceHandler.getTopicHandler(userId, serverName, methodName);
 
                 List<TopicElement> topicAssets = handler.findAssets(userId,
-                                                                    OpenMetadataType.TOPIC_TYPE_GUID,
-                                                                    OpenMetadataType.TOPIC_TYPE_NAME,
+                                                                    OpenMetadataType.TOPIC.typeGUID,
+                                                                    OpenMetadataType.TOPIC.typeName,
                                                                     requestBody.getSearchString(),
                                                                     searchStringParameterName,
                                                                     startFrom,
@@ -691,8 +711,8 @@ public class EventBrokerRESTServices
                 AssetHandler<TopicElement> handler = instanceHandler.getTopicHandler(userId, serverName, methodName);
 
                 List<TopicElement> topicAssets = handler.getAssetsByName(userId,
-                                                                         OpenMetadataType.TOPIC_TYPE_GUID,
-                                                                         OpenMetadataType.TOPIC_TYPE_NAME,
+                                                                         OpenMetadataType.TOPIC.typeGUID,
+                                                                         OpenMetadataType.TOPIC.typeName,
                                                                          requestBody.getName(),
                                                                          nameParameterName,
                                                                          startFrom,
@@ -763,7 +783,7 @@ public class EventBrokerRESTServices
                                                                          OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                                          OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeGUID,
                                                                          OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
-                                                                         OpenMetadataType.TOPIC_TYPE_NAME,
+                                                                         OpenMetadataType.TOPIC.typeName,
                                                                          null,
                                                                          null,
                                                                          0,
@@ -820,7 +840,7 @@ public class EventBrokerRESTServices
             TopicElement topicAsset = handler.getBeanFromRepository(userId,
                                                                     guid,
                                                                     guidParameterName,
-                                                                    OpenMetadataType.TOPIC_TYPE_NAME,
+                                                                    OpenMetadataType.TOPIC.typeName,
                                                                     false,
                                                                     false,
                                                                     new Date(),

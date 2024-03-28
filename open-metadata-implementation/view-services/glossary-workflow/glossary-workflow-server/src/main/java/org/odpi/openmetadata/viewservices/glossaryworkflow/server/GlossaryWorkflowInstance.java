@@ -48,14 +48,14 @@ public class GlossaryWorkflowInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-        collaborationManagementClient = new CollaborationManagementClient(remoteServerName, remoteServerURL, auditLog);
-        glossaryManagementClient = new GlossaryManagementClient(remoteServerName, remoteServerURL, auditLog);
-        stewardshipManagementClient = new StewardshipManagementClient(remoteServerName, remoteServerURL, auditLog);
+        collaborationManagementClient = new CollaborationManagementClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
+        glossaryManagementClient = new GlossaryManagementClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
+        stewardshipManagementClient = new StewardshipManagementClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
     }
 
 
     /**
-     * Return the collaboration management client.  This client is from Asset Manager OMAS and is for maintaining notelogs.
+     * Return the collaboration management client.  This client is from Asset Manager OMAS and is for maintaining note logs.
      *
      * @return client
      */

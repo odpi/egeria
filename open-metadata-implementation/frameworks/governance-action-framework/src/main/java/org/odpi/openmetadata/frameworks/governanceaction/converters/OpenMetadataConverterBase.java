@@ -939,7 +939,29 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.TOPIC_TYPE_PROPERTY_NAME,
+                                                       OpenMetadataProperty.TOPIC_TYPE.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the topicName property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeTopicName(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeTopicName";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.TOPIC_NAME.name,
                                                        elementProperties,
                                                        methodName);
         }

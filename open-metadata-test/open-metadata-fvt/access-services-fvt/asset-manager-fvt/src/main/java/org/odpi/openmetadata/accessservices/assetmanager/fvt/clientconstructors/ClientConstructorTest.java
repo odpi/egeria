@@ -95,10 +95,10 @@ public class ClientConstructorTest extends AssetManagerTestBase
                                           String   serverPlatformRootURL,
                                           AuditLog auditLog) throws InvalidParameterException
     {
-        new ExternalAssetManagerClient(serverName, serverPlatformRootURL, auditLog);
-        new ExternalAssetManagerClient(serverName, serverPlatformRootURL);
-        new ExternalAssetManagerClient(serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog);
-        new ExternalAssetManagerClient(serverName, serverPlatformRootURL, serverUserId, serverPassword);
+        new ExternalAssetManagerClient(serverName, serverPlatformRootURL, auditLog, 100);
+        new ExternalAssetManagerClient(serverName, serverPlatformRootURL, 100);
+        new ExternalAssetManagerClient(serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog, 100);
+        new ExternalAssetManagerClient(serverName, serverPlatformRootURL, serverUserId, serverPassword, 100);
 
         AssetManagerRESTClient restClient = new AssetManagerRESTClient(serverName, serverPlatformRootURL);
 
@@ -119,10 +119,10 @@ public class ClientConstructorTest extends AssetManagerTestBase
                                            String   serverPlatformRootURL,
                                            AuditLog auditLog) throws InvalidParameterException
     {
-        new GlossaryExchangeClient(serverName, serverPlatformRootURL, auditLog);
-        new GlossaryExchangeClient(serverName, serverPlatformRootURL);
-        new GlossaryExchangeClient(serverName, serverPlatformRootURL, serverUserId, serverPassword,  auditLog);
-        new GlossaryExchangeClient(serverName, serverPlatformRootURL, serverUserId, serverPassword);
+        new GlossaryExchangeClient(serverName, serverPlatformRootURL, auditLog, 100);
+        new GlossaryExchangeClient(serverName, serverPlatformRootURL, 100);
+        new GlossaryExchangeClient(serverName, serverPlatformRootURL, serverUserId, serverPassword,  auditLog, 100);
+        new GlossaryExchangeClient(serverName, serverPlatformRootURL, serverUserId, serverPassword, 100);
 
         AssetManagerRESTClient restClient = new AssetManagerRESTClient(serverName, serverPlatformRootURL);
 

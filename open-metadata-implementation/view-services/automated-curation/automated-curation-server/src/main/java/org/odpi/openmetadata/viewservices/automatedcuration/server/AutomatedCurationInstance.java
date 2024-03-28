@@ -18,16 +18,17 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.AUTOMATED_CURATION;
 
-    private final AssetCertificationManager assetCertificationManager;
-    private final AssetLicenseManager       assetLicenseManager;
-    private final ExternalReferenceManager  externalReferenceManager;
-    private final ValidValuesAssetOwner     validValuesAssetOwner;
-    private final FileSystemAssetOwner      fileSystemAssetOwner;
-    private final CSVFileAssetOwner         csvFileAssetOwner;
-    private final AvroFileAssetOwner        avroFileAssetOwner;
-    private final OpenMetadataStoreClient   openMetadataStoreClient;
-    private final OpenGovernanceClient      openGovernanceClient;
-    private final ConnectedAssetClient      connectedAssetClient;
+    private final AssetCertificationManager    assetCertificationManager;
+    private final AssetLicenseManager          assetLicenseManager;
+    private final ExternalReferenceManager     externalReferenceManager;
+    private final ValidValuesAssetOwner        validValuesAssetOwner;
+    private final FileSystemAssetOwner         fileSystemAssetOwner;
+    private final CSVFileAssetOwner            csvFileAssetOwner;
+    private final AvroFileAssetOwner           avroFileAssetOwner;
+    private final OpenMetadataStoreClient      openMetadataStoreClient;
+    private final OpenGovernanceClient         openGovernanceClient;
+    private final OpenIntegrationServiceClient openIntegrationServiceClient;
+    private final ConnectedAssetClient         connectedAssetClient;
 
     /**
      * Set up the Automated Curation OMVS instance
@@ -55,16 +56,17 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-        assetCertificationManager = new AssetCertificationManager(remoteServerName, remoteServerURL);
-        assetLicenseManager       = new AssetLicenseManager(remoteServerName, remoteServerURL);
-        externalReferenceManager  = new ExternalReferenceManager(remoteServerName, remoteServerURL);
-        validValuesAssetOwner     = new ValidValuesAssetOwner(remoteServerName, remoteServerURL);
-        fileSystemAssetOwner      = new FileSystemAssetOwner(remoteServerName, remoteServerURL, auditLog);
-        csvFileAssetOwner         = new CSVFileAssetOwner(remoteServerName, remoteServerURL, auditLog);
-        avroFileAssetOwner        = new AvroFileAssetOwner(remoteServerName, remoteServerURL, auditLog);
-        connectedAssetClient      = new ConnectedAssetClient(remoteServerName, remoteServerURL);
-        openMetadataStoreClient   = new OpenMetadataStoreClient(remoteServerName, remoteServerURL);
-        openGovernanceClient      = new OpenGovernanceClient(remoteServerName, remoteServerURL);
+        assetCertificationManager    = new AssetCertificationManager(remoteServerName, remoteServerURL);
+        assetLicenseManager          = new AssetLicenseManager(remoteServerName, remoteServerURL);
+        externalReferenceManager     = new ExternalReferenceManager(remoteServerName, remoteServerURL);
+        validValuesAssetOwner        = new ValidValuesAssetOwner(remoteServerName, remoteServerURL);
+        fileSystemAssetOwner         = new FileSystemAssetOwner(remoteServerName, remoteServerURL, auditLog);
+        csvFileAssetOwner            = new CSVFileAssetOwner(remoteServerName, remoteServerURL, auditLog);
+        avroFileAssetOwner           = new AvroFileAssetOwner(remoteServerName, remoteServerURL, auditLog);
+        connectedAssetClient         = new ConnectedAssetClient(remoteServerName, remoteServerURL);
+        openMetadataStoreClient      = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
+        openGovernanceClient         = new OpenGovernanceClient(remoteServerName, remoteServerURL, maxPageSize);
+        openIntegrationServiceClient = new OpenIntegrationServiceClient(remoteServerName, remoteServerURL, maxPageSize);
     }
 
 
@@ -178,5 +180,17 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
     public OpenGovernanceClient getOpenGovernanceClient()
     {
         return openGovernanceClient;
+    }
+
+
+    /**
+     * Return the open governance client.  This client is from the Governance Action Framework (GAF) and is for
+     * working with automation services.
+     *
+     * @return client
+     */
+    public OpenIntegrationServiceClient getOpenIntegrationServiceClient()
+    {
+        return openIntegrationServiceClient;
     }
 }

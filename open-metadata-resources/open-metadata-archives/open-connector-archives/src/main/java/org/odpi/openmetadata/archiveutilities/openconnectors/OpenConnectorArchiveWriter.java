@@ -6,6 +6,10 @@ import org.odpi.openmetadata.adapters.connectors.apacheatlas.control.AtlasPlaceh
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTProvider;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasProvider;
+import org.odpi.openmetadata.adapters.connectors.apachekafka.control.KafkaPlaceholderProperty;
+import org.odpi.openmetadata.adapters.connectors.apachekafka.integration.KafkaTopicIntegrationProvider;
+import org.odpi.openmetadata.adapters.connectors.apachekafka.resource.ApacheKafkaAdminProvider;
+import org.odpi.openmetadata.adapters.connectors.apachekafka.survey.SurveyApacheKafkaServerProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
@@ -204,8 +208,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
             this.archiveHelper.addValidValue(null,
                                              resourceUseParentSetGUID,
                                              resourceUseParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
-                                             OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
                                              resourceUse.getQualifiedName(),
                                              resourceUse.getResourceUse(),
                                              resourceUse.getDescription(),
@@ -259,7 +263,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         for (ServerTypeClassification serverTypeClassification : ServerTypeClassification.values())
         {
             String guid = this.addDeployedImplementationType(serverTypeClassification.getServerTypeName(),
-                                                             OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME,
+                                                             OpenMetadataType.SOFTWARE_SERVER.typeName,
                                                              serverTypeClassification.getServerTypeDescription(),
                                                              serverTypeClassification.getServerTypeWiki());
 
@@ -309,11 +313,13 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
             archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID,
                                                             guid,
-                                                            ResourceUse.HOSTED_SERVICE.getResourceUse());
+                                                            ResourceUse.HOSTED_SERVICE.getResourceUse(),
+                                                            ResourceUse.HOSTED_SERVICE.getDescription());
 
             archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID2,
                                                             guid,
-                                                            ResourceUse.HOSTED_SERVICE.getResourceUse());
+                                                            ResourceUse.HOSTED_SERVICE.getResourceUse(),
+                                                            ResourceUse.HOSTED_SERVICE.getDescription());
         }
 
         /*
@@ -330,11 +336,13 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
             archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID,
                                                             guid,
-                                                            ResourceUse.HOSTED_SERVICE.getResourceUse());
+                                                            ResourceUse.HOSTED_SERVICE.getResourceUse(),
+                                                            ResourceUse.HOSTED_SERVICE.getDescription());
 
             archiveHelper.addResourceListRelationshipByGUID(guid,
                                                             serviceGUIDs.get(viewServiceDescription.getViewServicePartnerService()),
-                                                            ResourceUse.CALLED_SERVICE.getResourceUse());
+                                                            ResourceUse.CALLED_SERVICE.getResourceUse(),
+                                                            ResourceUse.CALLED_SERVICE.getDescription());
         }
 
         /*
@@ -352,11 +360,13 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
             archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID,
                                                             guid,
-                                                            ResourceUse.HOSTED_SERVICE.getResourceUse());
+                                                            ResourceUse.HOSTED_SERVICE.getResourceUse(),
+                                                            ResourceUse.HOSTED_SERVICE.getDescription());
 
             archiveHelper.addResourceListRelationshipByGUID(guid,
                                                             serviceGUIDs.get(engineServiceDescription.getEngineServicePartnerService()),
-                                                            ResourceUse.CALLED_SERVICE.getResourceUse());
+                                                            ResourceUse.CALLED_SERVICE.getResourceUse(),
+                                                            ResourceUse.CALLED_SERVICE.getDescription());
 
             String governanceEngineGUID = deployedImplementationTypeGUIDs.get(engineServiceDescription.getHostedGovernanceEngineDeployedImplementationType());
             String governanceServiceGUID = deployedImplementationTypeGUIDs.get(engineServiceDescription.getHostedGovernanceServiceDeployedImplementationType());
@@ -365,13 +375,15 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
             {
                 archiveHelper.addResourceListRelationshipByGUID(guid,
                                                                 governanceEngineGUID,
-                                                                ResourceUse.HOSTED_GOVERNANCE_ENGINE.getResourceUse());
+                                                                ResourceUse.HOSTED_GOVERNANCE_ENGINE.getResourceUse(),
+                                                                ResourceUse.HOSTED_GOVERNANCE_ENGINE.getDescription());
 
                 if (governanceServiceGUID != null)
                 {
                     archiveHelper.addResourceListRelationshipByGUID(governanceEngineGUID,
                                                                     governanceServiceGUID,
-                                                                    ResourceUse.HOSTED_CONNECTOR.getResourceUse());
+                                                                    ResourceUse.HOSTED_CONNECTOR.getResourceUse(),
+                                                                    ResourceUse.HOSTED_CONNECTOR.getDescription());
                 }
             }
         }
@@ -389,11 +401,13 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
             archiveHelper.addResourceListRelationshipByGUID(serverTypeGUID,
                                                             guid,
-                                                            ResourceUse.HOSTED_SERVICE.getResourceUse());
+                                                            ResourceUse.HOSTED_SERVICE.getResourceUse(),
+                                                            ResourceUse.HOSTED_SERVICE.getDescription());
 
             archiveHelper.addResourceListRelationshipByGUID(guid,
                                                             serviceGUIDs.get(integrationServiceDescription.getIntegrationServicePartnerOMAS().getAccessServiceFullName()),
-                                                            ResourceUse.CALLED_SERVICE.getResourceUse());
+                                                            ResourceUse.CALLED_SERVICE.getResourceUse(),
+                                                            ResourceUse.CALLED_SERVICE.getDescription());
 
             String connectorTypeGUID = deployedImplementationTypeGUIDs.get(integrationServiceDescription.getConnectorDeployedImplementationType());
 
@@ -401,7 +415,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
             {
                 archiveHelper.addResourceListRelationshipByGUID(guid,
                                                                 connectorTypeGUID,
-                                                                ResourceUse.HOSTED_CONNECTOR.getResourceUse());
+                                                                ResourceUse.HOSTED_CONNECTOR.getResourceUse(),
+                                                                ResourceUse.HOSTED_CONNECTOR.getDescription());
             }
         }
 
@@ -436,12 +451,12 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         }
 
         /*
-         * Add the list of reference value assignment relationship attribute names
+         * Add the list of property types used in specifications.
          */
-        for (ReferenceValueAttributeName attributeName : ReferenceValueAttributeName.values())
+        for (SpecificationPropertyType specificationPropertyType : SpecificationPropertyType.values())
         {
-            this.addAttributeName(attributeName.getAttributeName(),
-                                  attributeName.getDescription());
+            this.addAttributeName(specificationPropertyType.getPropertyType(),
+                                  specificationPropertyType.getDescription());
         }
 
         /*
@@ -471,6 +486,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         archiveHelper.addConnectorType(null, new OpenLineageEventReceiverIntegrationProvider());
         archiveHelper.addConnectorType(null, new EnvVarSecretsStoreProvider());
         archiveHelper.addConnectorType(null, new PostgresServerIntegrationProvider());
+        archiveHelper.addConnectorType(null, new ApacheKafkaAdminProvider());
+        archiveHelper.addConnectorType(null, new KafkaTopicIntegrationProvider());
 
         /*
          * Create the default integration group.
@@ -496,11 +513,97 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                                                      null);
 
         archiveHelper.addRegisteredIntegrationConnector(integrationGroupGUID,
-                                                        "FilesMonitor",
-                                                        "generalnpa",
-                                                        "cocoDataLake",
+                                                        "FilesCataloguer",
+                                                        "filecatnpa",
+                                                        null,
                                                         60,
                                                         filesIntegrationConnectorGUID);
+
+        String deployedImplementationTypeGUID = archiveHelper.getGUID(DeployedImplementationType.FILE_FOLDER.getQualifiedName());
+        archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
+                                                        filesIntegrationConnectorGUID,
+                                                        ResourceUse.CATALOG_RESOURCE.getResourceUse(),
+                                                        ResourceUse.CATALOG_RESOURCE.getDescription());
+
+
+        String databaseIntegrationConnectorGUID = archiveHelper.addIntegrationConnector(JDBCIntegrationConnectorProvider.class.getName(),
+                                                                                        null,
+                                                                                        OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":JDBCIntegrationConnector",
+                                                                                        "JDBCIntegrationConnector",
+                                                                                        "Catalogs JDBC database schemas, tables and columns.",
+                                                                                        null,
+                                                                                        null);
+
+        deployedImplementationTypeGUID = archiveHelper.getGUID(DeployedImplementationType.JDBC_RELATIONAL_DATABASE.getQualifiedName());
+        archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
+                                                        databaseIntegrationConnectorGUID,
+                                                        ResourceUse.CATALOG_RESOURCE.getResourceUse(),
+                                                        ResourceUse.CATALOG_RESOURCE.getDescription());
+        deployedImplementationTypeGUID = archiveHelper.getGUID(DeployedImplementationType.POSTGRESQL_DATABASE.getQualifiedName());
+        archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
+                                                        databaseIntegrationConnectorGUID,
+                                                        ResourceUse.CATALOG_RESOURCE.getResourceUse(),
+                                                        ResourceUse.CATALOG_RESOURCE.getDescription());
+
+        archiveHelper.addRegisteredIntegrationConnector(integrationGroupGUID,
+                                                        "JDBCDatabaseCataloguer",
+                                                        "dbcatnpa",
+                                                        null,
+                                                        60,
+                                                        databaseIntegrationConnectorGUID);
+
+        String postgresIntegrationConnectorGUID = archiveHelper.addIntegrationConnector(PostgresServerIntegrationProvider.class.getName(),
+                                                                                        null,
+                                                                                        OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":PostgreSQLServerIntegrationConnector",
+                                                                                        "PostgreSQLServerIntegrationConnector",
+                                                                                        "Catalogs PostgreSQL Databases in a PostgreSQL Server.",
+                                                                                        null,
+                                                                                        null);
+        deployedImplementationTypeGUID = archiveHelper.getGUID(DeployedImplementationType.POSTGRESQL_SERVER.getQualifiedName());
+        archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
+                                                        postgresIntegrationConnectorGUID,
+                                                        ResourceUse.CATALOG_RESOURCE.getResourceUse(),
+                                                        ResourceUse.CATALOG_RESOURCE.getDescription());
+        archiveHelper.addRegisteredIntegrationConnector(integrationGroupGUID,
+                                                        "PostgreSQLServerCataloguer",
+                                                        "postgrescatnpa",
+                                                        null,
+                                                        60,
+                                                        postgresIntegrationConnectorGUID);
+
+        String kafkaIntegrationConnectorGUID = archiveHelper.addIntegrationConnector(KafkaTopicIntegrationProvider.class.getName(),
+                                                                                     null,
+                                                                                     OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":KafkaTopicIntegrationConnector",
+                                                                                     "KafkaTopicIntegrationConnector",
+                                                                                     "Catalogs Apache Kafka Topics.",
+                                                                                     null,
+                                                                                     null);
+        deployedImplementationTypeGUID = archiveHelper.getGUID(DeployedImplementationType.APACHE_KAFKA_SERVER.getQualifiedName());
+        archiveHelper.addResourceListRelationshipByGUID(deployedImplementationTypeGUID,
+                                                        kafkaIntegrationConnectorGUID,
+                                                        ResourceUse.CATALOG_RESOURCE.getResourceUse(),
+                                                        ResourceUse.CATALOG_RESOURCE.getDescription());
+        archiveHelper.addRegisteredIntegrationConnector(integrationGroupGUID,
+                                                        "ApacheKafkaCataloguer",
+                                                        "kafkacatnpa",
+                                                        null,
+                                                        60,
+                                                        kafkaIntegrationConnectorGUID);
+
+        String apiIntegrationConnectorGUID = archiveHelper.addIntegrationConnector(OpenAPIMonitorIntegrationProvider.class.getName(),
+                                                                                   null,
+                                                                                   OpenMetadataValidValues.DEFAULT_INTEGRATION_GROUP_QUALIFIED_NAME + ":OpenAPIIntegrationConnector",
+                                                                                     "OpenAPIIntegrationConnector",
+                                                                                     "Catalogs REST APIs through the Open API Specification.",
+                                                                                     null,
+                                                                                     null);
+
+        archiveHelper.addRegisteredIntegrationConnector(integrationGroupGUID,
+                                                        "OpenAPICataloguer",
+                                                        "apicatnpa",
+                                                        null,
+                                                        60,
+                                                        apiIntegrationConnectorGUID);
 
         /*
          * Register the governance services that are going to be in the default governance engines.
@@ -520,6 +623,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         GovernanceActionDescription atlasSurveyDescription            = this.getAtlasSurveyService();
         GovernanceActionDescription postgresServerSurveyDescription   = this.getPostgresServerSurveyService();
         GovernanceActionDescription postgresDatabaseSurveyDescription = this.getPostgresDatabaseSurveyService();
+        GovernanceActionDescription kafkaServerSurveyDescription      = this.getKafkaServerSurveyService();
 
         /*
          * Define the FileProvisioning engine.
@@ -567,6 +671,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         this.addAtlasRequestType(assetSurveyEngineGUID, assetSurveyEngineName, atlasSurveyDescription);
         this.addPostgresServerRequestType(assetSurveyEngineGUID, assetSurveyEngineName, postgresServerSurveyDescription);
         this.addPostgresDatabaseRequestType(assetSurveyEngineGUID, assetSurveyEngineName, postgresDatabaseSurveyDescription);
+        this.addKafkaServerRequestType(assetSurveyEngineGUID, assetSurveyEngineName, kafkaServerSurveyDescription);
 
         /*
          * Add catalog templates
@@ -575,6 +680,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         this.addPostgresDatabaseCatalogTemplate();
         this.addPostgresDatabaseSchemaCatalogTemplate();
         this.addAtlasServerCatalogTemplate();
+        this.addKafkaServerCatalogTemplate();
+        this.addKafkaTopicCatalogTemplate();
 
         /*
          * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.
@@ -601,6 +708,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      * @param password password for the connection
      * @param connectorTypeGUID connector type to link to the connection
      * @param networkAddress network address for the endpoint
+     * @param configurationProperties  additional properties for the connection
      * @param replacementAttributeTypes attributes that should have a replacement value to successfully use the template
      * @param placeholderPropertyTypes placeholder variables used in the supplied parameters
      */
@@ -612,6 +720,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                        String                         password,
                                                        String                         connectorTypeGUID,
                                                        String                         networkAddress,
+                                                       Map<String, Object>            configurationProperties,
                                                        List<ReplacementAttributeType> replacementAttributeTypes,
                                                        List<PlaceholderPropertyType>  placeholderPropertyTypes)
     {
@@ -675,7 +784,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                             password,
                                                             null,
                                                             null,
-                                                            null,
+                                                            configurationProperties,
                                                             null,
                                                             connectorTypeGUID,
                                                             endpointGUID,
@@ -705,13 +814,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     {
         JDBCResourceConnectorProvider provider = new JDBCResourceConnectorProvider();
 
-        List<PlaceholderPropertyType>  placeholderPropertyTypes = new ArrayList<>();
-
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.SERVER_NAME.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholderType());
+        List<PlaceholderPropertyType>  placeholderPropertyTypes = PostgresPlaceholderProperty.getPostgresServerPlaceholderPropertyTypes();
 
         this.createSoftwareServerCatalogTemplate(DeployedImplementationType.POSTGRESQL_SERVER,
                                                  DeployedImplementationType.POSTGRESQL_DATABASE_MANAGER,
@@ -724,6 +827,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                          PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
                                                          PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/postgres",
                                                  null,
+                                                 null,
                                                  placeholderPropertyTypes);
     }
 
@@ -735,13 +839,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     {
         ApacheAtlasRESTProvider provider = new ApacheAtlasRESTProvider();
 
-        List<PlaceholderPropertyType>  placeholderPropertyTypes = new ArrayList<>();
-
-        placeholderPropertyTypes.add(AtlasPlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
-        placeholderPropertyTypes.add(AtlasPlaceholderProperty.PORT_NUMBER.getPlaceholderType());
-        placeholderPropertyTypes.add(AtlasPlaceholderProperty.SERVER_NAME.getPlaceholderType());
-        placeholderPropertyTypes.add(AtlasPlaceholderProperty.CONNECTION_USER_ID.getPlaceholderType());
-        placeholderPropertyTypes.add(AtlasPlaceholderProperty.CONNECTION_PASSWORD.getPlaceholderType());
+        List<PlaceholderPropertyType>  placeholderPropertyTypes = AtlasPlaceholderProperty.getPlaceholderPropertyTypes();
 
         this.createSoftwareServerCatalogTemplate(DeployedImplementationType.APACHE_ATLAS_SERVER,
                                                  DeployedImplementationType.ASSET_CATALOG,
@@ -753,6 +851,32 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                  "http://" +
                                                          AtlasPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
                                                          AtlasPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                                                 null,
+                                                 null,
+                                                 placeholderPropertyTypes);
+    }
+
+
+    /**
+     * Create a catalog template for Apache Kafka Server
+     */
+    private void addKafkaServerCatalogTemplate()
+    {
+        ApacheKafkaAdminProvider provider = new ApacheKafkaAdminProvider();
+
+        List<PlaceholderPropertyType>  placeholderPropertyTypes = KafkaPlaceholderProperty.getKafkaServerPlaceholderPropertyTypes();
+
+        this.createSoftwareServerCatalogTemplate(DeployedImplementationType.APACHE_KAFKA_SERVER,
+                                                 DeployedImplementationType.APACHE_KAFKA_EVENT_BROKER,
+                                                 "EventBroker",
+                                                 KafkaPlaceholderProperty.SERVER_NAME.getPlaceholder(),
+                                                 null,
+                                                 null,
+                                                 provider.getConnectorType().getGUID(),
+                                                 "http://" +
+                                                         KafkaPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                                         KafkaPlaceholderProperty.PORT_NUMBER.getPlaceholder(),
+                                                 null,
                                                  null,
                                                  placeholderPropertyTypes);
     }
@@ -770,6 +894,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
      * @param password password for the connection
      * @param connectorTypeGUID connector type to link to the connection
      * @param networkAddress network address for the endpoint
+     * @param configurationProperties  additional properties for the connection
      * @param replacementAttributeTypes attributes that should have a replacement value to successfully use the template
      * @param placeholderPropertyTypes placeholder variables used in the supplied parameters
      */
@@ -780,6 +905,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                     String                         password,
                                                     String                         connectorTypeGUID,
                                                     String                         networkAddress,
+                                                    Map<String, Object>            configurationProperties,
                                                     List<ReplacementAttributeType> replacementAttributeTypes,
                                                     List<PlaceholderPropertyType>  placeholderPropertyTypes)
     {
@@ -833,7 +959,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                             password,
                                                             null,
                                                             null,
-                                                            null,
+                                                            configurationProperties,
                                                             null,
                                                             connectorTypeGUID,
                                                             endpointGUID,
@@ -863,14 +989,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     {
         JDBCResourceConnectorProvider provider = new JDBCResourceConnectorProvider();
 
-        List<PlaceholderPropertyType>  placeholderPropertyTypes = new ArrayList<>();
-
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.SERVER_NAME.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholderType());
+        List<PlaceholderPropertyType>  placeholderPropertyTypes = PostgresPlaceholderProperty.getPostgresDatabasePlaceholderPropertyTypes();
 
         this.createServerAssetCatalogTemplate(DeployedImplementationType.POSTGRESQL_DATABASE,
                                               PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
@@ -881,6 +1000,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                               "jdbc:postgresql://" +
                                                          PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
                                                          PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholder() + "/" + PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder(),
+                                              null,
                                               null,
                                               placeholderPropertyTypes);
     }
@@ -893,15 +1013,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     {
         JDBCResourceConnectorProvider provider = new JDBCResourceConnectorProvider();
 
-        List<PlaceholderPropertyType>  placeholderPropertyTypes = new ArrayList<>();
-
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.PORT_NUMBER.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.SERVER_NAME.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_USER_ID.getPlaceholderType());
-        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_PASSWORD.getPlaceholderType());
+        List<PlaceholderPropertyType>  placeholderPropertyTypes = PostgresPlaceholderProperty.getPostgresSchemaPlaceholderPropertyTypes();
 
         this.createServerAssetCatalogTemplate(DeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA,
                                               PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
@@ -915,10 +1027,42 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                       PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "?currentSchema=" +
                                                       PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
                                               null,
+                                              null,
                                               placeholderPropertyTypes);
     }
 
 
+    /**
+     * Create a catalog template for a Kafka topic
+     */
+    private void addKafkaTopicCatalogTemplate()
+    {
+        KafkaOpenMetadataTopicProvider provider = new KafkaOpenMetadataTopicProvider();
+
+        List<PlaceholderPropertyType>  placeholderPropertyTypes = KafkaPlaceholderProperty.getKafkaTopicPlaceholderPropertyTypes();
+
+        Map<String, Object> configurationProperties = new HashMap<>();
+        Map<String, String> bootstrapServersProperties = new HashMap<>();
+
+        bootstrapServersProperties.put("bootstrap.servers",
+                                       KafkaPlaceholderProperty.HOST_IDENTIFIER.getPlaceholder() + ":" +
+                                               KafkaPlaceholderProperty.PORT_NUMBER.getPlaceholder());
+
+        configurationProperties.put(KafkaPlaceholderProperty.EVENT_DIRECTION.getName(), "inOut");
+        configurationProperties.put("producer", bootstrapServersProperties);
+        configurationProperties.put("consumer", bootstrapServersProperties);
+
+        this.createServerAssetCatalogTemplate(DeployedImplementationType.APACHE_KAFKA_TOPIC,
+                                              DeployedImplementationType.APACHE_KAFKA_TOPIC.getAssociatedTypeName(),
+                                              PostgresPlaceholderProperty.SERVER_NAME.getPlaceholder() + "." + KafkaPlaceholderProperty.TOPIC_NAME.getPlaceholder() + ":inOut",
+                                              null,
+                                              null,
+                                              provider.getConnectorType().getGUID(),
+                                              KafkaPlaceholderProperty.TOPIC_NAME.getPlaceholder(),
+                                              configurationProperties,
+                                              null,
+                                              placeholderPropertyTypes);
+    }
 
 
     /**
@@ -971,8 +1115,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         String validValueGUID = this.archiveHelper.addValidValue(openMetadataType.descriptionGUID,
                                                                  parentSetGUID,
                                                                  parentSetGUID,
-                                                                 OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
-                                                                 OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                                                 OpenMetadataType.VALID_VALUE_SET.typeName,
+                                                                 OpenMetadataType.VALID_VALUE_SET.typeName,
                                                                  qualifiedName,
                                                                  openMetadataType.typeName,
                                                                  openMetadataType.description,
@@ -988,7 +1132,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         {
             String externalReferenceGUID = this.archiveHelper.addExternalReference(null,
                                                                                    validValueGUID,
-                                                                                   OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                                                                   OpenMetadataType.VALID_VALUE_SET.typeName,
                                                                                    qualifiedName + "_wikiLink",
                                                                                    "More information about open metadata type: " + openMetadataType.typeName,
                                                                                    null,
@@ -1045,12 +1189,20 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                  OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                  null);
 
+        String typeQualifiedName = constructValidValueQualifiedName(null,
+                                                                    OpenMetadataProperty.TYPE_NAME.name,
+                                                                    null,
+                                                                    associatedTypeName);
+
+        Map<String, String> additionalProperties = new HashMap<>();
+
+        additionalProperties.put(OpenMetadataProperty.TYPE_NAME.name, associatedTypeName);
 
         String validValueGUID = this.archiveHelper.addValidValue(null,
                                                                  parentSetGUID,
                                                                  parentSetGUID,
-                                                                 OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
-                                                                 OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                                                 OpenMetadataType.VALID_VALUE_SET.typeName,
+                                                                 OpenMetadataType.VALID_VALUE_SET.typeName,
                                                                  qualifiedName,
                                                                  deployedImplementationType,
                                                                  description,
@@ -1060,13 +1212,13 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                                  deployedImplementationType,
                                                                  false,
                                                                  false,
-                                                                 null);
+                                                                 additionalProperties);
 
         if (wikiLink != null)
         {
             String externalReferenceGUID = this.archiveHelper.addExternalReference(null,
                                                                                    validValueGUID,
-                                                                                   OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                                                                   OpenMetadataType.VALID_VALUE_SET.typeName,
                                                                                    qualifiedName + "_wikiLink",
                                                                                    "More information about deployedImplementationType: " + deployedImplementationType,
                                                                                    null,
@@ -1150,8 +1302,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         this.archiveHelper.addValidValue(null,
                                          parentSetGUID,
                                          parentSetGUID,
-                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
-                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                         OpenMetadataType.VALID_VALUE_SET.typeName,
+                                         OpenMetadataType.VALID_VALUE_SET.typeName,
                                          qualifiedName,
                                          fileTypeName,
                                          description,
@@ -1165,10 +1317,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
         if (deployedImplementationType != null)
         {
-            String deployedImplementationTypeQName = constructValidValueQualifiedName(deployedImplementationType.getAssociatedTypeName(),
-                                                                                      OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                                                      null,
-                                                                                      deployedImplementationType.getDeployedImplementationType());
+            String deployedImplementationTypeQName = deployedImplementationType.getQualifiedName();
             this.archiveHelper.addConsistentValidValueRelationship(qualifiedName, deployedImplementationTypeQName);
         }
     }
@@ -1201,8 +1350,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         this.archiveHelper.addValidValue(null,
                                          parentSetGUID,
                                          parentSetGUID,
-                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
-                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                         OpenMetadataType.VALID_VALUE_SET.typeName,
+                                         OpenMetadataType.VALID_VALUE_SET.typeName,
                                          qualifiedName,
                                          fileName,
                                          null,
@@ -1259,8 +1408,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         this.archiveHelper.addValidValue(null, 
                                          parentSetGUID,
                                          parentSetGUID,
-                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
-                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                         OpenMetadataType.VALID_VALUE_SET.typeName,
+                                         OpenMetadataType.VALID_VALUE_SET.typeName,
                                          qualifiedName,
                                          fileExtension,
                                          null,
@@ -1295,24 +1444,24 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     private void addAttributeName(String attributeName,
                                   String attributeDescription)
     {
-        String qualifiedName = constructValidValueQualifiedName(OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
-                                                                OpenMetadataType.ATTRIBUTE_NAME_PROPERTY_NAME,
+        String qualifiedName = constructValidValueQualifiedName(OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                OpenMetadataProperty.PROPERTY_TYPE.name,
                                                                 null,
                                                                 attributeName);
 
-        String category = constructValidValueCategory(OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
-                                                      OpenMetadataType.ATTRIBUTE_NAME_PROPERTY_NAME,
+        String category = constructValidValueCategory(OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                      OpenMetadataProperty.PROPERTY_TYPE.name,
                                                       null);
 
-        String parentSetGUID = this.getParentSet(OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
-                                                 OpenMetadataType.ATTRIBUTE_NAME_PROPERTY_NAME,
+        String parentSetGUID = this.getParentSet(OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                 OpenMetadataProperty.PROPERTY_TYPE.name,
                                                  null);
 
         this.archiveHelper.addValidValue(null,
                                          parentSetGUID,
                                          parentSetGUID,
-                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
-                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                         OpenMetadataType.VALID_VALUE_SET.typeGUID,
+                                         OpenMetadataType.VALID_VALUE_SET.typeName,
                                          qualifiedName,
                                          attributeName,
                                          attributeDescription,
@@ -1364,8 +1513,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
             parentSetGUID =  archiveHelper.addValidValue(null,
                                                          grandParentSetGUID,
                                                          grandParentSetGUID,
-                                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
-                                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                                         OpenMetadataType.VALID_VALUE_SET.typeName,
+                                                         OpenMetadataType.VALID_VALUE_SET.typeName,
                                                          parentQualifiedName,
                                                          parentDisplayName,
                                                          parentDescription,
@@ -2337,6 +2486,36 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         return governanceActionDescription;
     }
 
+    /**
+     * Create an entity for the Apache Kafka Server Survey governance service.
+     *
+     * @return unique identifier for the governance service
+     */
+    private GovernanceActionDescription getKafkaServerSurveyService()
+    {
+        final String surveyServiceName = "kafka-server-survey-service";
+        final String surveyServiceDisplayName = "Apache Kafka Server Survey Service";
+        final String surveyServiceProviderClassName = SurveyApacheKafkaServerProvider.class.getName();
+
+        SurveyApacheKafkaServerProvider provider = new SurveyApacheKafkaServerProvider();
+
+        final String surveyServiceDescription = provider.getConnectorType().getDescription();
+
+        GovernanceActionDescription governanceActionDescription = getGovernanceActionDescription(ResourceUse.SURVEY_RESOURCE,
+                                                                                                 provider,
+                                                                                                 surveyServiceDescription);
+
+        governanceActionDescription.governanceServiceGUID = archiveHelper.addGovernanceService(DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR,
+                                                                                               surveyServiceProviderClassName,
+                                                                                               null,
+                                                                                               surveyServiceName,
+                                                                                               surveyServiceDisplayName,
+                                                                                               surveyServiceDescription,
+                                                                                               null);
+
+        return governanceActionDescription;
+    }
+
 
     /**
      * Create the relationship between a governance engine and a governance service that defines the request type.
@@ -2474,6 +2653,30 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                             null,
                             governanceActionDescription);
     }
+
+
+    /**
+     * Create the relationship between a governance engine and a governance service that defines the request type.
+     *
+     * @param governanceEngineGUID unique identifier of the engine
+     * @param governanceEngineName unique name of the governance engine
+     * @param governanceActionDescription details for calling the governance service
+     */
+    private void addKafkaServerRequestType(String                      governanceEngineGUID,
+                                           String                      governanceEngineName,
+                                           GovernanceActionDescription governanceActionDescription)
+    {
+        final String governanceRequestType = "survey-kafka-server";
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
+                            governanceRequestType,
+                            null,
+                            null,
+                            governanceActionDescription);
+    }
+
 
 
     private void createDailyGovernanceActionProcess(String governanceEngineGUID)

@@ -346,7 +346,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
     }
 
     /**
-     * Log that the survey action service can not process the type of asset it has been passed.
+     * Log that the connector can not process the type of asset it has been passed.
      *
      * @param assetGUID identifier of the asset
      * @param assetType type of the asset
@@ -371,7 +371,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
 
 
     /**
-     * Log that the survey action service can not process the type of asset it has been passed.
+     * Log that the connector can not process the type of asset it has been passed.
      *
      * @param assetGUID identifier of the asset
      * @param assetTypeName type of the asset
@@ -402,7 +402,7 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
 
 
     /**
-     * Log that the survey action service can not process the type of asset it has been passed.
+     * Log that the connector can not process the type of asset it has been passed.
      *
      * @param assetGUID identifier of the asset
      * @param assetTypeName type of the asset

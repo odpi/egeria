@@ -133,6 +133,8 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
             if (connectorToAsset instanceof ApacheAtlasRESTConnector atlasConnector)
             {
+                atlasConnector.start();
+
                 AnnotationStore   annotationStore   = surveyContext.getAnnotationStore();
                 OpenMetadataStore openMetadataStore = surveyContext.getOpenMetadataStore();
 

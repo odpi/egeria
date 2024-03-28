@@ -89,10 +89,10 @@ public class ClientConstructorTest
                                              String   serverPlatformRootURL,
                                              AuditLog auditLog) throws InvalidParameterException
     {
-        new StewardshipAction(serverName, serverPlatformRootURL, auditLog);
-        new StewardshipAction(serverName, serverPlatformRootURL);
-        new StewardshipAction(serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog);
-        new StewardshipAction(serverName, serverPlatformRootURL, serverUserId, serverPassword);
+        new StewardshipAction(serverName, serverPlatformRootURL, auditLog, 100);
+        new StewardshipAction(serverName, serverPlatformRootURL, 100);
+        new StewardshipAction(serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog, 100);
+        new StewardshipAction(serverName, serverPlatformRootURL, serverUserId, serverPassword, 100);
 
         StewardshipActionRESTClient restClient = new StewardshipActionRESTClient(serverName, serverPlatformRootURL);
 

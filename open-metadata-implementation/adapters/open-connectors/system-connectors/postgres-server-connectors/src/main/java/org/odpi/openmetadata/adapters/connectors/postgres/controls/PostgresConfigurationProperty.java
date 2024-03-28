@@ -227,6 +227,29 @@ public enum PostgresConfigurationProperty
 
 
     /**
+     * Retrieve the defined configuration properties for the
+     *
+     * @return list of configuration property types
+     */
+    public static List<ConfigurationPropertyType> getPostgresServerConfigurationPropertyTypes()
+    {
+        List<ConfigurationPropertyType> configurationPropertyTypes = new ArrayList<>();
+
+        configurationPropertyTypes.add(PostgresConfigurationProperty.DATABASE_CATALOG_TEMPLATE_QUALIFIED_NAME.getConfigurationPropertyType());
+        configurationPropertyTypes.add(PostgresConfigurationProperty.EXCLUDE_DATABASE_LIST.getConfigurationPropertyType());
+        configurationPropertyTypes.add(PostgresConfigurationProperty.INCLUDE_DATABASE_LIST.getConfigurationPropertyType());
+        configurationPropertyTypes.add(PostgresConfigurationProperty.HOST_IDENTIFIER.getConfigurationPropertyType());
+        configurationPropertyTypes.add(PostgresConfigurationProperty.PORT_NUMBER.getConfigurationPropertyType());
+        configurationPropertyTypes.add(PostgresConfigurationProperty.SERVER_NAME.getConfigurationPropertyType());
+        configurationPropertyTypes.add(PostgresConfigurationProperty.DATABASE_USER_ID.getConfigurationPropertyType());
+        configurationPropertyTypes.add(PostgresConfigurationProperty.DATABASE_PASSWORD.getConfigurationPropertyType());
+
+        return configurationPropertyTypes;
+    }
+
+
+
+    /**
      * Retrieve all the defined configuration properties
      *
      * @return list of configuration property types

@@ -21,8 +21,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CatalogTargetProperties
 {
-    private String              catalogTargetName       = null;
-    private Map<String, Object> configurationProperties = null;
+    private String              catalogTargetName    = null;
+    private String              metadataSourceQualifiedName = null;
+    private Map<String, Object> configurationProperties     = null;
 
 
     /**
@@ -43,7 +44,8 @@ public class CatalogTargetProperties
     {
         if (template != null)
         {
-            catalogTargetName       = template.getCatalogTargetName();
+            catalogTargetName = template.getCatalogTargetName();
+            metadataSourceQualifiedName = template.getMetadataSourceQualifiedName();
             configurationProperties = template.getConfigurationProperties();
         }
     }
@@ -72,10 +74,34 @@ public class CatalogTargetProperties
 
 
     /**
-     * Set up the configuration properties for this action target.  These are used to override the configuration
-     * properties in the integration connector's connection whenever it is processing this action target.
+     * Return the qualified name of the metadata source for this integration connector.  This is the qualified name
+     * of an appropriate software server capability stored in open metadata.  This software server capability
+     * is accessed via the partner OMAS.
      *
-     * @param configurationProperties properties typically controlling the behaviour for the integration connector.
+     * @return string name
+     */
+    public String getMetadataSourceQualifiedName()
+    {
+        return metadataSourceQualifiedName;
+    }
+
+
+    /**
+     * Set up the qualified name of the metadata source for this integration connector.  This is the qualified name
+     * of an appropriate software server capability stored in open metadata.  This software server capability
+     * is accessed via the partner OMAS.
+     *
+     * @param metadataSourceQualifiedName string name
+     */
+    public void setMetadataSourceQualifiedName(String metadataSourceQualifiedName)
+    {
+        this.metadataSourceQualifiedName = metadataSourceQualifiedName;
+    }
+
+    /**
+     * Set up the configuration properties for this Connection.
+     *
+     * @param configurationProperties properties that contain additional configuration information for the connector.
      */
     public void setConfigurationProperties(Map<String, Object> configurationProperties)
     {
@@ -84,10 +110,9 @@ public class CatalogTargetProperties
 
 
     /**
-     * Return a copy of the configuration properties.  These are used to override the configuration
-     * properties in the integration connector's connection whenever it is processing this action target.
+     * Return a copy of the configuration properties.  Null means no configuration properties are available.
      *
-     * @return configuration properties typically controlling the behaviour for the integration connector.
+     * @return configuration properties typically controlling the behaviour for the connector
      */
     public Map<String, Object> getConfigurationProperties()
     {
@@ -116,7 +141,8 @@ public class CatalogTargetProperties
     {
         return "CatalogTargetProperties{" +
                 "catalogTargetName='" + catalogTargetName + '\'' +
-                "configurationProperties='" + configurationProperties + '\'' +
+                ", metadataSourceQualifiedName='" + metadataSourceQualifiedName + '\'' +
+                ", configurationProperties=" + configurationProperties +
                 '}';
     }
 
@@ -140,6 +166,7 @@ public class CatalogTargetProperties
         }
         CatalogTargetProperties that = (CatalogTargetProperties) objectToCompare;
         return Objects.equals(catalogTargetName, that.catalogTargetName) &&
+                Objects.equals(metadataSourceQualifiedName, that.metadataSourceQualifiedName) &&
                 Objects.equals(configurationProperties, that.configurationProperties);
     }
 
@@ -152,6 +179,6 @@ public class CatalogTargetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(catalogTargetName, configurationProperties);
+        return Objects.hash(catalogTargetName, metadataSourceQualifiedName, configurationProperties);
     }
 }

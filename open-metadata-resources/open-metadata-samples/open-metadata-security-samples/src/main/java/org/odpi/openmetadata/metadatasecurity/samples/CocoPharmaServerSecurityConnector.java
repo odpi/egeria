@@ -157,6 +157,11 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         final String engineUserId       = "enginenpa";
         final String viewUserId         = "viewnpa";
         final String daemonUserId       = "daemonnpa";
+        final String dbCatUserId        = "dbcatnpa";
+        final String postgresCatUserId  = "postgrescatnpa";
+        final String apiCatUserId       = "apicatnpa";
+        final String fileCatUserId      = "filecatnpa";
+        final String kafkaCatUserId     = "kafkacatnpa";
 
         /*
          * This userId is the userId that is expected in the calls to auto-start servers (it is changed with the startup.user variable).
@@ -218,6 +223,16 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         allUsers.add(cocoEngineUserId);
         allUsers.add(generalNPAUserId);
         allUsers.add(omagServerUserId);
+        allUsers.add(simpleUserId);
+        allUsers.add(activeUserId);
+        allUsers.add(engineUserId);
+        allUsers.add(viewUserId);
+        allUsers.add(daemonUserId);
+        allUsers.add(dbCatUserId);
+        allUsers.add(postgresCatUserId);
+        allUsers.add(apiCatUserId);
+        allUsers.add(fileCatUserId);
+        allUsers.add(kafkaCatUserId);
         allUsers.add(serverStartUpUserId);
 
         allEmployees.add(zachNowUserId);
@@ -281,6 +296,16 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         npaAccounts.add(cocoEngineUserId);
         npaAccounts.add(generalNPAUserId);
         npaAccounts.add(omagServerUserId);
+        npaAccounts.add(simpleUserId);
+        npaAccounts.add(activeUserId);
+        npaAccounts.add(engineUserId);
+        npaAccounts.add(viewUserId);
+        npaAccounts.add(daemonUserId);
+        npaAccounts.add(dbCatUserId);
+        npaAccounts.add(postgresCatUserId);
+        npaAccounts.add(apiCatUserId);
+        npaAccounts.add(fileCatUserId);
+        npaAccounts.add(kafkaCatUserId);
         npaAccounts.add(serverStartUpUserId);
         assetOnboarding.addAll(npaAccounts);
 

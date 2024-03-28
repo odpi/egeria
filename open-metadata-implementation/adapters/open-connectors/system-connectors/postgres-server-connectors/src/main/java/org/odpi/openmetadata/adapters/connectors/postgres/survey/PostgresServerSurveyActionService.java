@@ -66,11 +66,11 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
                 super.throwNoAsset(assetStore.getAssetGUID(), surveyActionServiceName, methodName);
                 return;
             }
-            else if (! propertyHelper.isTypeOf(assetUniverse, OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME))
+            else if (! propertyHelper.isTypeOf(assetUniverse, OpenMetadataType.SOFTWARE_SERVER.typeName))
             {
                 super.throwWrongTypeOfAsset(assetUniverse.getGUID(),
                                             assetUniverse.getType().getTypeName(),
-                                            OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME,
+                                            OpenMetadataType.SOFTWARE_SERVER.typeName,
                                             methodName);
                 return;
             }
@@ -80,6 +80,8 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
              */
             connector = assetStore.getConnectorToAsset();
             JDBCResourceConnector assetConnector = (JDBCResourceConnector)connector;
+
+            annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
 
             Map<String, Long> databases = new HashMap<>();
 
@@ -146,8 +148,6 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
                     resultSet.close();
                     preparedStatement.close();
                 }
-
-                annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
 
                 ResourceProfileAnnotation annotation = new ResourceProfileAnnotation();
 

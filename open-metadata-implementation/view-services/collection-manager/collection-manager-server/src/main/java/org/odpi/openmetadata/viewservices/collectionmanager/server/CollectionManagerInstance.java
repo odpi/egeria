@@ -51,7 +51,7 @@ public class CollectionManagerInstance extends OMVSServiceInstance
 
         collectionsClient = new CollectionsClient(remoteServerName, remoteServerURL, maxPageSize);
         connectedAssetClient = new ConnectedAssetClient(remoteServerName, remoteServerURL, auditLog);
-        openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL);
+        openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
     }
 
 

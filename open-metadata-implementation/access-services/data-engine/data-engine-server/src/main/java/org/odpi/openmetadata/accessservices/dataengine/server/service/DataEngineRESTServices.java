@@ -1877,9 +1877,9 @@ public class DataEngineRESTServices {
 
         DataEngineTopicHandler dataEngineTopicHandler = instanceHandler.getTopicHandler(userId, serverName, methodName);
 
-        String topicGUID = getEntityGUID(userId, serverName, guid, qualifiedName, OpenMetadataType.TOPIC_TYPE_NAME, methodName);
+        String topicGUID = getEntityGUID(userId, serverName, guid, qualifiedName, OpenMetadataType.TOPIC.typeName, methodName);
         dataEngineTopicHandler.removeTopic(userId, topicGUID, externalSourceName, deleteSemantic);
-        log.debug(DEBUG_DELETE_MESSAGE, topicGUID, OpenMetadataType.TOPIC_TYPE_NAME);
+        log.debug(DEBUG_DELETE_MESSAGE, topicGUID, OpenMetadataType.TOPIC.typeName);
     }
 
     /**
@@ -2008,7 +2008,7 @@ public class DataEngineRESTServices {
 
         String eventTypeGUID = getEntityGUID(userId, serverName, guid, qualifiedName, OpenMetadataType.EVENT_TYPE_TYPE_NAME, methodName);
         dataEngineEventTypeHandler.removeEventType(userId, eventTypeGUID, qualifiedName, externalSourceName, deleteSemantic);
-        log.debug(DEBUG_DELETE_MESSAGE, eventTypeGUID, OpenMetadataType.TOPIC_TYPE_NAME);
+        log.debug(DEBUG_DELETE_MESSAGE, eventTypeGUID, OpenMetadataType.TOPIC.typeName);
     }
 
     /**

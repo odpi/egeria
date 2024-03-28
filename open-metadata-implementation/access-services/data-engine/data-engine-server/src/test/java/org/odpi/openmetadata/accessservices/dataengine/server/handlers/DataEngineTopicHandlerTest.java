@@ -62,7 +62,7 @@ class DataEngineTopicHandlerTest {
     @Test
     void upsertTopic_create() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.TOPIC_TYPE_NAME)).thenReturn(Optional.empty());
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.TOPIC.typeName)).thenReturn(Optional.empty());
 
         Topic topic = getTopic();
         dataEngineTopicHandler.upsertTopic(USER, topic, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
@@ -70,7 +70,7 @@ class DataEngineTopicHandlerTest {
         verify(topicHandler, times(1)).createAssetInRepository(USER, EXTERNAL_SOURCE_DE_GUID,
                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, QUALIFIED_NAME, DISPLAY_NAME, null, null, null, null,
                0, null, null, null, null,
-                                                               OpenMetadataType.TOPIC_TYPE_GUID, OpenMetadataType.TOPIC_TYPE_NAME, new HashMap<>(), null, null, InstanceStatus.ACTIVE, null, "upsertTopic");
+                                                               OpenMetadataType.TOPIC.typeGUID, OpenMetadataType.TOPIC.typeName, new HashMap<>(), null, null, InstanceStatus.ACTIVE, null, "upsertTopic");
     }
 
     @Test
@@ -83,7 +83,7 @@ class DataEngineTopicHandlerTest {
 
         verify(topicHandler, times(1)).updateAsset(USER, EXTERNAL_SOURCE_DE_GUID,
                  EXTERNAL_SOURCE_DE_QUALIFIED_NAME, GUID, TOPIC_GUID_PARAMETER_NAME, QUALIFIED_NAME, DISPLAY_NAME, null,
-                 null, null, OpenMetadataType.TOPIC_TYPE_GUID, OpenMetadataType.TOPIC_TYPE_NAME, new HashMap<>(), null, null,
+                 null, null, OpenMetadataType.TOPIC.typeGUID, OpenMetadataType.TOPIC.typeName, new HashMap<>(), null, null,
                  true, false, false, null, "upsertTopic");
     }
 
@@ -104,7 +104,7 @@ class DataEngineTopicHandlerTest {
 
         verify(dataEngineCommonHandler, times(1)).validateDeleteSemantic(DeleteSemantic.SOFT, "removeTopic");
         verify(topicHandler, times(1)).deleteBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                GUID, TOPIC_GUID_PARAMETER_NAME, OpenMetadataType.TOPIC_TYPE_GUID, OpenMetadataType.TOPIC_TYPE_NAME, null, null, false, false, null,"removeTopic");
+                GUID, TOPIC_GUID_PARAMETER_NAME, OpenMetadataType.TOPIC.typeGUID, OpenMetadataType.TOPIC.typeName, null, null, false, false, null,"removeTopic");
     }
 
     private Topic getTopic() {
@@ -119,7 +119,7 @@ class DataEngineTopicHandlerTest {
     private EntityDetail mockFindTopic() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         EntityDetail entityDetail = mock(EntityDetail.class);
         when(entityDetail.getGUID()).thenReturn(GUID);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.TOPIC_TYPE_NAME)).thenReturn(Optional.of(entityDetail));
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.TOPIC.typeName)).thenReturn(Optional.of(entityDetail));
         return entityDetail;
     }
 }

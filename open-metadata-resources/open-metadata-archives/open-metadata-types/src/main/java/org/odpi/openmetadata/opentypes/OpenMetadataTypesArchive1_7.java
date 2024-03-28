@@ -1029,10 +1029,11 @@ public class OpenMetadataTypesArchive1_7
      */
     private RelationshipDef getValidValuesMappingRelationship()
     {
-        final String guid            = "203ce62c-3cbf-4542-bf82-81820cba718f";
-        final String name            = "ValidValuesMapping";
-        final String description     = "A link between two valid values from different valid value sets that have equivalent meanings.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.VALID_VALUES_MAPPING_RELATIONSHIP.typeGUID;
+        final String name            = OpenMetadataType.VALID_VALUES_MAPPING_RELATIONSHIP.typeName;
+        final String description     = OpenMetadataType.VALID_VALUES_MAPPING_RELATIONSHIP.description;
+        final String descriptionGUID = OpenMetadataType.VALID_VALUES_MAPPING_RELATIONSHIP.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.VALID_VALUES_MAPPING_RELATIONSHIP.wikiURL;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
@@ -1041,6 +1042,7 @@ public class OpenMetadataTypesArchive1_7
                                                                                 null,
                                                                                 description,
                                                                                 descriptionGUID,
+                                                                                descriptionWiki,
                                                                                 classificationPropagationRule);
 
         RelationshipEndDef relationshipEndDef;
@@ -1048,7 +1050,7 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "ValidValueDefinition";
+        final String                     end1EntityType               = OpenMetadataType.VALID_VALUE_DEFINITION.typeName;
         final String                     end1AttributeName            = "matchingValue";
         final String                     end1AttributeDescription     = "A valid value from a different valid value set that is equivalent.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -1065,7 +1067,7 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "ValidValueDefinition";
+        final String                     end2EntityType               = OpenMetadataType.VALID_VALUE_DEFINITION.typeName;
         final String                     end2AttributeName            = "matchingValue";
         final String                     end2AttributeDescription     = "A valid value from a different valid value set that is equivalent.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -1127,10 +1129,11 @@ public class OpenMetadataTypesArchive1_7
      */
     private RelationshipDef getReferenceValueAssignmentRelationship()
     {
-        final String guid            = "111e6d2e-94e9-43ed-b4ed-f0d220668cbf";
-        final String name            = "ReferenceValueAssignment";
-        final String description     = "Enables valid values to be used as tags to help group and locate referenceables.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeGUID;
+        final String name            = OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName;
+        final String description     = OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.description;
+        final String descriptionGUID = OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.wikiURL;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
@@ -1139,6 +1142,7 @@ public class OpenMetadataTypesArchive1_7
                                                                                 null,
                                                                                 description,
                                                                                 descriptionGUID,
+                                                                                descriptionWiki,
                                                                                 classificationPropagationRule);
 
         RelationshipEndDef relationshipEndDef;
@@ -1163,7 +1167,7 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "ValidValueDefinition";
+        final String                     end2EntityType               = OpenMetadataType.VALID_VALUE_DEFINITION.typeName;
         final String                     end2AttributeName            = "referenceValue";
         final String                     end2AttributeDescription     = "A valid value that represents the meaning or classification of the " +
                 "assigned item.";
@@ -1220,7 +1224,7 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Create the Patch
          */
-        final String typeName = "ValidValuesImplementation";
+        final String typeName = OpenMetadataType.VALID_VALUES_IMPL_RELATIONSHIP.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 

@@ -80,6 +80,7 @@ public class SurveyApacheAtlasProvider extends SurveyActionServiceProvider
         super.connectorTypeBean = connectorType;
 
         supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
+                AnalysisStep.CHECK_ASSET,
                 AnalysisStep.MEASURE_RESOURCE,
                 AnalysisStep.SCHEMA_EXTRACTION,
                 AnalysisStep.PROFILE_DATA });

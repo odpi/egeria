@@ -50,10 +50,10 @@ public class GlossaryBrowserInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-        collaborationManagementClient = new CollaborationManagementClient(remoteServerName, remoteServerURL, auditLog);
-        glossaryManagementClient = new GlossaryManagementClient(remoteServerName, remoteServerURL, auditLog);
-        stewardshipManagementClient = new StewardshipManagementClient(remoteServerName, remoteServerURL, auditLog);
-        openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL);
+        collaborationManagementClient = new CollaborationManagementClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
+        glossaryManagementClient = new GlossaryManagementClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
+        stewardshipManagementClient = new StewardshipManagementClient(remoteServerName, remoteServerURL, auditLog, maxPageSize);
+        openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
     }
 
 

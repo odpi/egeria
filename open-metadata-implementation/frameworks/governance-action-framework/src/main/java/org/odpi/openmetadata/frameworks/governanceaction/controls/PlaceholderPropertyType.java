@@ -44,7 +44,7 @@ public class PlaceholderPropertyType
     /**
      * Is this placeholder property required for the service to work successfully.
      */
-    private boolean required = false;
+    private boolean required = true;
 
     /**
      * A map of additional property name to property value for this governance service.

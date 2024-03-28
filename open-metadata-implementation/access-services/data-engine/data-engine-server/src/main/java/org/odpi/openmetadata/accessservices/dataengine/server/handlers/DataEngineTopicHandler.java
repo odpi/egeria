@@ -75,7 +75,7 @@ public class DataEngineTopicHandler {
 
         Map<String, Object> extendedProperties = new HashMap<>();
         if (StringUtils.isNotEmpty(topic.getTopicType())) {
-            extendedProperties.put(OpenMetadataType.TOPIC_TYPE_PROPERTY_NAME, topic.getTopicType());
+            extendedProperties.put(OpenMetadataProperty.TOPIC_TYPE.name, topic.getTopicType());
         }
         int ownerTypeOrdinal = dataEngineCommonHandler.getOwnerTypeOrdinal(topic.getOwnerType());
         Date now = dataEngineCommonHandler.getNow();
@@ -86,13 +86,13 @@ public class DataEngineTopicHandler {
             topicGUID = topicHandler.createAssetInRepository(userId, externalSourceGUID, externalSourceName, topic.getQualifiedName(),
                      topic.getDisplayName(), null, topic.getDescription(), topic.getZoneMembership(), topic.getOwner(), ownerTypeOrdinal,
                      topic.getOriginOrganizationGUID(), topic.getOriginBusinessCapabilityGUID(), topic.getOtherOriginValues(),
-                     topic.getAdditionalProperties(), OpenMetadataType.TOPIC_TYPE_GUID, OpenMetadataType.TOPIC_TYPE_NAME, extendedProperties,
+                     topic.getAdditionalProperties(), OpenMetadataType.TOPIC.typeGUID, OpenMetadataType.TOPIC.typeName, extendedProperties,
                      null, null, InstanceStatus.ACTIVE, now, methodName);
         } else {
             topicGUID = originalTopicEntity.get().getGUID();
             topicHandler.updateAsset(userId, externalSourceGUID, externalSourceName, topicGUID, TOPIC_GUID_PARAMETER_NAME,
                     topic.getQualifiedName(), topic.getDisplayName(), null, topic.getDescription(), topic.getAdditionalProperties(),
-                                     OpenMetadataType.TOPIC_TYPE_GUID, OpenMetadataType.TOPIC_TYPE_NAME, extendedProperties, null, null, true,
+                                     OpenMetadataType.TOPIC.typeName, OpenMetadataType.TOPIC.typeName, extendedProperties, null, null, true,
                     false, false, now, methodName);
         }
 
@@ -114,7 +114,7 @@ public class DataEngineTopicHandler {
     public Optional<EntityDetail> findTopicEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
                                                                                               PropertyServerException,
                                                                                               InvalidParameterException {
-        return dataEngineCommonHandler.findEntity(userId, qualifiedName, OpenMetadataType.TOPIC_TYPE_NAME);
+        return dataEngineCommonHandler.findEntity(userId, qualifiedName, OpenMetadataType.TOPIC.typeName);
     }
 
     /**
@@ -156,7 +156,7 @@ public class DataEngineTopicHandler {
 
         String externalSourceGUID = registrationHandler.getExternalDataEngine(userId, externalSourceName);
         topicHandler.deleteBeanInRepository(userId, externalSourceGUID, externalSourceName, topicGUID, TOPIC_GUID_PARAMETER_NAME,
-                                            OpenMetadataType.TOPIC_TYPE_GUID, OpenMetadataType.TOPIC_TYPE_NAME, null, null, false,
+                                            OpenMetadataType.TOPIC.typeGUID, OpenMetadataType.TOPIC.typeName, null, null, false,
                 false, dataEngineCommonHandler.getNow(), methodName);
     }
 }

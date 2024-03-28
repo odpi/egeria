@@ -64,8 +64,8 @@ public class ValidValuesBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
-              OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_GUID,
-              OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+              OpenMetadataType.VALID_VALUE_DEFINITION.typeGUID,
+              OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
               extendedProperties,
               repositoryHelper,
               serviceName,

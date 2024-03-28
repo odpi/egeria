@@ -209,7 +209,7 @@ public class OpenMetadataTypesArchive3_7
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = OpenMetadataType.IT_INFRASTRUCTURE_TYPE_NAME;
+        final String                     end1EntityType               = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
         final String                     end1AttributeName            = "deployedElement";
         final String                     end1AttributeDescription     = "IT infrastructure deployed to this asset.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -579,10 +579,11 @@ public class OpenMetadataTypesArchive3_7
 
     private RelationshipDef addAssociatedLogRelationship()
     {
-        final String guid            = "0999e2b9-45d6-42c4-9767-4b74b0b48b89";
-        final String name            = "AssociatedLog";
-        final String description     = "Defines destination information for the log of activity associated with an element.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.ASSOCIATED_LOG_RELATIONSHIP.typeGUID;
+        final String name            = OpenMetadataType.ASSOCIATED_LOG_RELATIONSHIP.typeName;
+        final String description     = OpenMetadataType.ASSOCIATED_LOG_RELATIONSHIP.description;
+        final String descriptionGUID = OpenMetadataType.ASSOCIATED_LOG_RELATIONSHIP.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.ASSOCIATED_LOG_RELATIONSHIP.wikiURL;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
@@ -591,6 +592,7 @@ public class OpenMetadataTypesArchive3_7
                                                                                 null,
                                                                                 description,
                                                                                 descriptionGUID,
+                                                                                descriptionWiki,
                                                                                 classificationPropagationRule);
 
         RelationshipEndDef relationshipEndDef;

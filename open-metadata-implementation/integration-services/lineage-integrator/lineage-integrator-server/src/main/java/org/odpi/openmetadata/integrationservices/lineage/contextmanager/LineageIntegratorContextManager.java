@@ -89,14 +89,15 @@ public class LineageIntegratorContextManager extends IntegrationContextManager i
     /**
      * Suggestion for subclass to create client(s) to partner OMAS.
      *
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException the subclass is not able to create one of its clients
      */
     @Override
-    public void createClients() throws InvalidParameterException
+    public void createClients(int maxPageSize) throws InvalidParameterException
     {
-        super.openIntegrationClient = new OpenIntegrationServiceClient(partnerOMASServerName, partnerOMASPlatformRootURL);
-        super.openMetadataStoreClient = new OpenMetadataStoreClient(partnerOMASServerName, partnerOMASPlatformRootURL);
-        this.openGovernanceClient = new OpenGovernanceClient(partnerOMASServerName, partnerOMASPlatformRootURL);
+        super.openIntegrationClient = new OpenIntegrationServiceClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
+        super.openMetadataStoreClient = new OpenMetadataStoreClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
+        this.openGovernanceClient = new OpenGovernanceClient(partnerOMASServerName, partnerOMASPlatformRootURL, maxPageSize);
 
         AssetManagerRESTClient restClient;
 

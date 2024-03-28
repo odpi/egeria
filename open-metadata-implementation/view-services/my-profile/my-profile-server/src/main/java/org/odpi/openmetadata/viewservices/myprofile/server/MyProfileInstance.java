@@ -48,8 +48,8 @@ public class MyProfileInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-        organizationManagement = new OrganizationManagement(remoteServerName, remoteServerURL, auditLog);
-        toDoActionManagement   = new ToDoActionManagement(remoteServerName, remoteServerURL, auditLog);
+        organizationManagement = new OrganizationManagement(remoteServerName, remoteServerURL, auditLog, maxPageSize);
+        toDoActionManagement   = new ToDoActionManagement(remoteServerName, remoteServerURL, auditLog, maxPageSize);
     }
 
 

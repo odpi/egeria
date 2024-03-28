@@ -26,10 +26,10 @@ public enum KafkaIntegrationConnectorAuditCode implements AuditLogMessageSet
      */
     CONNECTOR_CONFIGURATION("KAFKA-INTEGRATION-CONNECTOR-0001",
                             AuditLogRecordSeverityLevel.INFO,
-                            "The {0} integration connector is cataloguing event broker at URL {1} with templateQualifiedName={2}",
-                            "The connector monitors changes to the topics managed by the event broker.  " +
+                            "The {0} integration connector has been initialized to monitor event broker at URL {1} with templateQualifiedName={2}",
+                            "The connector is designed to monitor changes to the topics managed by the event broker.  " +
                                     "If the templateQualifiedName is set, it identifies a template entity to use.",
-                            "No specific action is required.  This message is to confirm the configuration for a specific catalog target."),
+                            "No specific action is required.  This message is to confirm the configuration for the integration connector."),
 
     /**
      * KAFKA-INTEGRATION-CONNECTOR-0002 - The {0} integration connector encountered an {1} exception when opening event broker {2} during 
@@ -150,14 +150,6 @@ public enum KafkaIntegrationConnectorAuditCode implements AuditLogMessageSet
                            "Its presence is still needed in the metadata repository for lineage reporting.",
                    "No action is required.  This message is to record the reason why the Topic was archived."),
 
-    /**
-     * KAFKA-INTEGRATION-CONNECTOR-0021 - The {0} integration connector received an unexpected exception {1} when cataloguing topics; the error message was: {2}
-     */
-    UNEXPECTED_EXCEPTION( "KAFKA-INTEGRATION-CONNECTOR-0021",
-                         AuditLogRecordSeverityLevel.ERROR,
-                         "The {0} integration connector received an unexpected exception {1} when cataloguing topics; the error message was: {2}",
-                         "The connector is unable to catalog one or more topics.",
-                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     ;
 

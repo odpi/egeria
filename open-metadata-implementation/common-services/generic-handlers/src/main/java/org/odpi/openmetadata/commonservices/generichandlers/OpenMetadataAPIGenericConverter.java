@@ -1345,13 +1345,35 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.TOPIC_TYPE_PROPERTY_NAME,
+                                                         OpenMetadataProperty.TOPIC_TYPE.name,
                                                          instanceProperties,
                                                          methodName);
         }
 
         return null;
     }
+
+    /**
+     * Extract and delete the topicName property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeTopicName(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeTopicName";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataProperty.TOPIC_NAME.name,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
 
     /**
      * Extract and delete the contactType property from the supplied instance properties.

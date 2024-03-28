@@ -162,6 +162,7 @@ public enum PlaceholderProperty
         placeholderPropertyType.setDescription(description);
         placeholderPropertyType.setDataType(dataType);
         placeholderPropertyType.setExample(example);
+        placeholderPropertyType.setRequired(true);
 
         return placeholderPropertyType;
     }

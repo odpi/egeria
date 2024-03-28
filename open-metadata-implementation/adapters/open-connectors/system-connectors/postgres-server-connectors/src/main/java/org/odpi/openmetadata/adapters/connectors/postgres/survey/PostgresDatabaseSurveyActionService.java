@@ -68,11 +68,11 @@ public class PostgresDatabaseSurveyActionService extends SurveyActionServiceConn
                                    methodName);
                 return;
             }
-            else if (! propertyHelper.isTypeOf(assetUniverse, OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME))
+            else if (! propertyHelper.isTypeOf(assetUniverse, OpenMetadataType.SOFTWARE_SERVER.typeName))
             {
                 super.throwWrongTypeOfAsset(assetUniverse.getGUID(),
                                             assetUniverse.getType().getTypeName(),
-                                            OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME,
+                                            OpenMetadataType.SOFTWARE_SERVER.typeName,
                                             methodName);
                 return;
             }

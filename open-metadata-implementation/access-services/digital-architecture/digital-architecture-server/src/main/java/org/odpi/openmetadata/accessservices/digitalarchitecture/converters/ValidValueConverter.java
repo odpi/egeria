@@ -66,7 +66,7 @@ public class ValidValueConverter<B> extends DigitalArchitectureOMASConverter<B>
 
                 if (relationship != null)
                 {
-                    if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME))
+                    if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName))
                     {
                         bean.setSetGUID(relationship.getEntityOneProxy().getGUID());
                         bean.setIsDefaultValue(this.removeIsDefaultValue(relationship.getProperties()));

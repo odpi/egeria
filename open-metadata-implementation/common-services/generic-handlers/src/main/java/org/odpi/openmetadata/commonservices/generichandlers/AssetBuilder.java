@@ -405,7 +405,7 @@ public class AssetBuilder extends ReferenceableBuilder
                                                                                   null,
                                                                                   InstanceProvenanceType.LOCAL_COHORT,
                                                                                   userId,
-                                                                                  OpenMetadataType.REFERENCE_DATA_CLASSIFICATION_TYPE_NAME,
+                                                                                  OpenMetadataType.REFERENCE_DATA_CLASSIFICATION.typeName,
                                                                                   typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
@@ -414,7 +414,7 @@ public class AssetBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.REFERENCE_DATA_CLASSIFICATION_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.REFERENCE_DATA_CLASSIFICATION.typeName);
         }
     }
 

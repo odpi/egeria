@@ -157,6 +157,55 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
     }
 
 
+    /**
+     * Log audit message and throw exception to indicate that the asset's connector is wrong.
+     *
+     * @param actualConnectorClass class name of the supplied connector
+     * @param expectedConnectorClass class name expected for the connector
+     * @param assetGUID unique identifier for the asset
+     * @param methodName calling method
+     * @throws ConnectorCheckedException requested exception
+     */
+    public void throwWrongTypeOfConnector(String actualConnectorClass,
+                                          String expectedConnectorClass,
+                                          String assetGUID,
+                                          String methodName) throws ConnectorCheckedException
+    {
+        auditLog.logMessage(methodName,
+                            SAFAuditCode.WRONG_TYPE_OF_CONNECTOR.getMessageDefinition(surveyActionServiceName,
+                                                                                      actualConnectorClass,
+                                                                                      expectedConnectorClass,
+                                                                                      assetGUID));
+
+        throw new ConnectorCheckedException(SAFErrorCode.WRONG_TYPE_OF_CONNECTOR.getMessageDefinition(surveyActionServiceName,
+                                                                                                      actualConnectorClass,
+                                                                                                      expectedConnectorClass,
+                                                                                                      assetGUID),
+                                            this.getClass().getName(),
+                                            methodName);
+    }
+
+
+    /**
+     * Log audit message and throw exception to indicate that the asset's connector is wrong.
+     *
+     * @param actualConnectorClass class name of the supplied connector
+     * @param expectedConnectorClass class name expected for the connector
+     * @param assetGUID unique identifier for the asset
+     * @param methodName calling method
+     */
+    public void logWrongTypeOfConnector(String actualConnectorClass,
+                                        String expectedConnectorClass,
+                                        String assetGUID,
+                                        String methodName)
+    {
+        auditLog.logMessage(methodName,
+                            SAFAuditCode.WRONG_TYPE_OF_CONNECTOR.getMessageDefinition(surveyActionServiceName,
+                                                                                      actualConnectorClass,
+                                                                                      expectedConnectorClass,
+                                                                                      assetGUID));
+    }
+
 
     /**
      * Verify that the connector is still active.

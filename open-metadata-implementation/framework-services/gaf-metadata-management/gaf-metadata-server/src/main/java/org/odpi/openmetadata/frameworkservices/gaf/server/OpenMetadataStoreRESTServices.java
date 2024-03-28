@@ -2383,8 +2383,8 @@ public class OpenMetadataStoreRESTServices
         EntityDetail parentSet = handler.getEntityByValue(userId,
                                                           parentQualifiedName,
                                                           OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                          OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_GUID,
-                                                          OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                          OpenMetadataType.VALID_VALUE_DEFINITION.typeGUID,
+                                                          OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                           specificMatchPropertyNames,
                                                           true,
                                                           false,
@@ -2414,7 +2414,7 @@ public class OpenMetadataStoreRESTServices
                                             null,
                                             grandParentSetGUID,
                                             grandParentSetGUID,
-                                            OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                            OpenMetadataType.VALID_VALUE_SET.typeName,
                                             false,
                                             parentQualifiedName,
                                             parentDisplayName,
@@ -2468,8 +2468,8 @@ public class OpenMetadataStoreRESTServices
         return handler.getEntityByValue(userId,
                                         qualifiedName,
                                         OpenMetadataProperty.QUALIFIED_NAME.name,
-                                        OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_GUID,
-                                        OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                        OpenMetadataType.VALID_VALUE_DEFINITION.typeGUID,
+                                        OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                         specificMatchPropertyNames,
                                         true,
                                         false,
@@ -2560,7 +2560,7 @@ public class OpenMetadataStoreRESTServices
                                          null,
                                          setGUID,
                                          setGUID,
-                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                         OpenMetadataType.VALID_VALUE_SET.typeName,
                                          false,
                                          constructValidValueQualifiedName(typeName, propertyName, null, requestBody.getPreferredValue()),
                                          requestBody.getDisplayName(),
@@ -2649,7 +2649,7 @@ public class OpenMetadataStoreRESTServices
                                          null,
                                          setGUID,
                                          setGUID,
-                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                         OpenMetadataType.VALID_VALUE_SET.typeName,
                                          false,
                                          constructValidValueQualifiedName(typeName, propertyName, requestBody.getPreferredValue(), null),
                                          requestBody.getDisplayName(),
@@ -2741,7 +2741,7 @@ public class OpenMetadataStoreRESTServices
                                          null,
                                          setGUID,
                                          setGUID,
-                                         OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+                                         OpenMetadataType.VALID_VALUE_SET.typeName,
                                          false,
                                          constructValidValueQualifiedName(typeName, propertyName, mapName, requestBody.getPreferredValue()),
                                          requestBody.getDisplayName(),
@@ -3280,7 +3280,7 @@ public class OpenMetadataStoreRESTServices
             {
                 invalidParameterHandler.throwUnknownElementQualifiedName(userId,
                                                                          qualifiedName,
-                                                                         OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                          instanceHandler.getServiceName(serviceURLMarker),
                                                                          serverName,
                                                                          methodName);
@@ -3346,7 +3346,7 @@ public class OpenMetadataStoreRESTServices
             {
                 invalidParameterHandler.throwUnknownElementQualifiedName(userId,
                                                                          qualifiedName,
-                                                                         OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                          instanceHandler.getServiceName(serviceURLMarker),
                                                                          serverName,
                                                                          methodName);
@@ -3414,7 +3414,7 @@ public class OpenMetadataStoreRESTServices
             {
                 invalidParameterHandler.throwUnknownElementQualifiedName(userId,
                                                                          qualifiedName,
-                                                                         OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                          instanceHandler.getServiceName(serviceURLMarker),
                                                                          serverName,
                                                                          methodName);
@@ -3608,7 +3608,7 @@ public class OpenMetadataStoreRESTServices
             {
                 invalidParameterHandler.throwUnknownElementQualifiedName(userId,
                                                                          qualifiedName,
-                                                                         OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                          instanceHandler.getServiceName(serviceURLMarker),
                                                                          serverName,
                                                                          methodName);
@@ -3682,7 +3682,7 @@ public class OpenMetadataStoreRESTServices
             {
                 invalidParameterHandler.throwUnknownElementQualifiedName(userId,
                                                                          qualifiedName,
-                                                                         OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                          instanceHandler.getServiceName(serviceURLMarker),
                                                                          serverName,
                                                                          methodName);
@@ -3696,7 +3696,7 @@ public class OpenMetadataStoreRESTServices
             {
                 invalidParameterHandler.throwUnknownElementQualifiedName(userId,
                                                                          qualifiedName,
-                                                                         OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                          instanceHandler.getServiceName(serviceURLMarker),
                                                                          serverName,
                                                                          methodName);

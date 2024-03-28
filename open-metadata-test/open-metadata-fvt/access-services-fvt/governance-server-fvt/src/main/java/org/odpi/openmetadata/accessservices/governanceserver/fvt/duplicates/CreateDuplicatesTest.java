@@ -115,7 +115,7 @@ public class CreateDuplicatesTest
 
         GAFRESTClient           restClient              = new GAFRESTClient(serverName, serverPlatformRootURL, auditLog);
         GovernanceContextClient governanceContextClient = new GovernanceContextClient(serverName, serverPlatformRootURL, restClient, maxPageSize);
-        OpenMetadataStoreClient openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformRootURL);
+        OpenMetadataStoreClient openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformRootURL, 100);
 
         String activityName;
 

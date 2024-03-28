@@ -111,7 +111,7 @@ public class ToDosTest
                                          AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceWiki());
 
         ToDoActionManagement toDoClient = thisTest.getToDoClient(serverName, serverPlatformRootURL, auditLog);
-        OpenMetadataClient   openMetadataClient = thisTest.getOpenMetadataClient(serverName, serverPlatformRootURL);
+        OpenMetadataClient   openMetadataClient = thisTest.getOpenMetadataClient(serverName, serverPlatformRootURL, 200);
 
         String assetGUID = thisTest.getAsset(openMetadataClient, userId);
         String originatorGUID = thisTest.getOriginator(openMetadataClient, userId);
@@ -164,7 +164,7 @@ public class ToDosTest
 
         try
         {
-            return new ToDoActionManagement(serverName, serverPlatformRootURL, auditLog);
+            return new ToDoActionManagement(serverName, serverPlatformRootURL, auditLog, 100);
         }
         catch (Exception unexpectedError)
         {
@@ -178,17 +178,19 @@ public class ToDosTest
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param maxPageSize maximum value allowed for page size
      * @return client
      * @throws FVTUnexpectedCondition the test case failed
      */
     private OpenMetadataClient getOpenMetadataClient(String   serverName,
-                                                     String   serverPlatformRootURL) throws FVTUnexpectedCondition
+                                                     String   serverPlatformRootURL,
+                                                     int      maxPageSize) throws FVTUnexpectedCondition
     {
         final String activityName = "getOpenMetadataClient";
 
         try
         {
-            return new OpenMetadataStoreClient(serverName, serverPlatformRootURL);
+            return new OpenMetadataStoreClient(serverName, serverPlatformRootURL, maxPageSize);
         }
         catch (Exception unexpectedError)
         {

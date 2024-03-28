@@ -95,7 +95,8 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
 
             archiveHelper.addResourceListRelationship(domainDefinition.getQualifiedName(),
                                                       communityQName,
-                                                      ResourceUse.SUPPORTING_PEOPLE.getResourceUse());
+                                                      ResourceUse.SUPPORTING_PEOPLE.getResourceUse(),
+                                                      null);
 
 
             String governanceOfficerQName = OpenMetadataType.GOVERNANCE_OFFICER_TYPE_NAME + ": " + domainDefinition.getQualifiedName();
@@ -304,7 +305,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
     private void writeProjectStatusValidValueSet()
     {
         String validValueSetQName = openMetadataValidValueSetPrefix + ProjectStatusDefinition.validValueSetName;
-        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_SET_TYPE_NAME,
+        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_SET.typeName,
                                                                validValueSetQName,
                                                                ProjectStatusDefinition.validValueSetName,
                                                                ProjectStatusDefinition.validValueSetDescription,
@@ -320,7 +321,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
             {
                 String validValueQName = openMetadataValidValueSetPrefix + ProjectStatusDefinition.validValueSetName + "." + projectStatusDefinition.getPreferredValue();
 
-                String validValueGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                String validValueGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                     validValueQName,
                                                                     projectStatusDefinition.getDisplayName(),
                                                                     null,

@@ -423,8 +423,8 @@ public class GovernanceLeadershipSample
                              PropertyServerException,
                              UserNotAuthorizedException
     {
-        OrganizationManagement orgClient = new OrganizationManagement(serverName, serverURLRoot);
-        UserIdentityManagement uidClient = new UserIdentityManagement(serverName, serverURLRoot);
+        OrganizationManagement orgClient = new OrganizationManagement(serverName, serverURLRoot, 100);
+        UserIdentityManagement uidClient = new UserIdentityManagement(serverName, serverURLRoot, 100);
         GovernanceRoleManager  gplClient = new GovernanceRoleManager(serverName, serverURLRoot);
 
         GovernanceRoleProperties governanceRoleProperties;

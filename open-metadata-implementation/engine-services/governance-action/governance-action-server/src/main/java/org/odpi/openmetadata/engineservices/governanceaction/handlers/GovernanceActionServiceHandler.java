@@ -52,6 +52,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
      * @param partnerServerPlatformURLRoot location of the metadata server used by the governance service
      * @param startDate date/time that the governance service should start executing
      * @param auditLog destination for log messages
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException problem with the governance service definitions
      */
     GovernanceActionServiceHandler(GovernanceEngineProperties governanceActionEngineProperties,
@@ -71,7 +72,8 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                    String                     partnerServerPlatformURLRoot,
                                    GovernanceContextClient    governanceContextClient,
                                    Date                       startDate,
-                                   AuditLog                   auditLog) throws InvalidParameterException
+                                   AuditLog                   auditLog,
+                                   int                        maxPageSize) throws InvalidParameterException
     {
         super(governanceActionEngineProperties,
               governanceActionEngineGUID,
@@ -97,7 +99,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
 
         try
         {
-            OpenMetadataStoreClient openMetadataClient = new OpenMetadataStoreClient(partnerServerName, partnerServerPlatformURLRoot);
+            OpenMetadataStoreClient openMetadataClient = new OpenMetadataStoreClient(partnerServerName, partnerServerPlatformURLRoot, maxPageSize);
 
             if (governanceActionServiceConnector instanceof GovernanceActionServiceConnector service)
             {

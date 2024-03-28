@@ -27,8 +27,8 @@ public class ITInfrastructureBuilder extends OpenMetadataAPIGenericBuilder
                             String               serviceName,
                             String               serverName)
     {
-        super(OpenMetadataType.IT_INFRASTRUCTURE_TYPE_GUID,
-              OpenMetadataType.IT_INFRASTRUCTURE_TYPE_NAME,
+        super(OpenMetadataType.IT_INFRASTRUCTURE.typeGUID,
+              OpenMetadataType.IT_INFRASTRUCTURE.typeName,
               repositoryHelper,
               serviceName,
               serverName);

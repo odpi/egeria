@@ -33,7 +33,7 @@ public abstract class OMAGGAFAPIResponse extends FFDCResponseBase
     /**
      * Default constructor
      */
-    OMAGGAFAPIResponse()
+    public OMAGGAFAPIResponse()
     {
     }
 
@@ -43,7 +43,7 @@ public abstract class OMAGGAFAPIResponse extends FFDCResponseBase
      *
      * @param template object to copy
      */
-    OMAGGAFAPIResponse(OMAGGAFAPIResponse template)
+    public OMAGGAFAPIResponse(OMAGGAFAPIResponse template)
     {
         super(template);
     }

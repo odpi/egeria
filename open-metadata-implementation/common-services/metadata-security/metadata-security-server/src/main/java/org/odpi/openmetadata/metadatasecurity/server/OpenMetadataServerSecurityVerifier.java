@@ -34,10 +34,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
 import org.odpi.openmetadata.repositoryservices.events.OpenMetadataEventsSecurity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -1078,14 +1075,32 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
         {
             return connectionEntities.get(0);
         }
+        else if ((connectionEntities == null) || (connectionEntities.isEmpty()))
+        {
+            return null;
+        }
         else
         {
-            throw new PropertyServerException(OpenMetadataSecurityErrorCode.MULTIPLE_CONNECTIONS_FOUND.getMessageDefinition(Integer.toString(connectionEntities.size()),
-                                                                                                                            assetEntity.getGUID(),
-                                                                                                                            userId,
-                                                                                                                            methodName),
-                                              this.getClass().getName(),
-                                              methodName);
+            Set<String> guids = new HashSet<>();
+
+            for (EntityDetail connectionEntity : connectionEntities)
+            {
+                guids.add(connectionEntity.getGUID());
+            }
+
+            if (guids.size() == 1)
+            {
+                return connectionEntities.get(0);
+            }
+            else
+            {
+                throw new PropertyServerException(OpenMetadataSecurityErrorCode.MULTIPLE_CONNECTIONS_FOUND.getMessageDefinition(Integer.toString(connectionEntities.size()),
+                                                                                                                                assetEntity.getGUID(),
+                                                                                                                                userId,
+                                                                                                                                methodName),
+                                                  this.getClass().getName(),
+                                                  methodName);
+            }
         }
     }
 

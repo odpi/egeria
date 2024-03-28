@@ -71,9 +71,10 @@ public class IntegrationContextManager
     /**
      * Suggestion for subclass to create client(s) to partner OMAS.
      *
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException the subclass is not able to create one of its clients
      */
-    public void createClients() throws InvalidParameterException
+    public void createClients(int maxPageSize) throws InvalidParameterException
     {
     }
 

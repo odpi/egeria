@@ -67,7 +67,8 @@ public class SurveyActionEngineHandlerFactory extends GovernanceEngineHandlerFac
                                                           partnerURLRoot);
 
                 openMetadataClient = new OpenMetadataStoreClient(partnerServerName,
-                                                                 partnerURLRoot);
+                                                                 partnerURLRoot,
+                                                                 maxPageSize);
             }
             else
             {
@@ -89,7 +90,8 @@ public class SurveyActionEngineHandlerFactory extends GovernanceEngineHandlerFac
                 openMetadataClient = new OpenMetadataStoreClient(partnerServerName,
                                                                  partnerURLRoot,
                                                                  localServerUserId,
-                                                                 localServerPassword);
+                                                                 localServerPassword,
+                                                                 maxPageSize);
             }
 
             return new SurveyActionEngineHandler(engineConfig,

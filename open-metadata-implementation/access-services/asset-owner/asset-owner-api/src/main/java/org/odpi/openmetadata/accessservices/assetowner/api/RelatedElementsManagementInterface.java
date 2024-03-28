@@ -255,4 +255,82 @@ public interface RelatedElementsManagementInterface
                                                 int    pageSize) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException;
+
+
+    /**
+     * Create a "CatalogTemplate" relationship between a consuming element and a template element.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param templateGUID unique identifier of the template
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void setupCatalogTemplate(String userId,
+                              String elementGUID,
+                              String templateGUID) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException;
+
+
+    /**
+     * Remove a "CatalogTemplate" relationship between two referenceables.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param templateGUID unique identifier of the template
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    void clearCatalogTemplate(String userId,
+                              String elementGUID,
+                              String templateGUID) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException;
+
+
+    /**
+     * Retrieve the list of templates assigned to an element via the "CatalogTemplate" relationship.
+     *
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<RelatedElement> getCatalogTemplateList(String userId,
+                                                String elementGUID,
+                                                int    startFrom,
+                                                int    pageSize) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException;
+
+
+    /**
+     * Retrieve the list of elements assigned to a template via the "CatalogTemplate" relationship.
+     *
+     * @param userId calling user
+     * @param templateGUID unique identifier of the template
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of related elements
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    List<RelatedElement> getSupportedByTemplate(String userId,
+                                                String templateGUID,
+                                                int    startFrom,
+                                                int    pageSize) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException;
 }

@@ -132,12 +132,12 @@ public class EngineHostOperationalServices
             if (localServerPassword == null)
             {
                 restClient = new GAFRESTClient(accessServiceServerName, accessServiceRootURL, auditLog);
-                openGovernanceClient = new OpenGovernanceClient(accessServiceServerName, accessServiceRootURL);
+                openGovernanceClient = new OpenGovernanceClient(accessServiceServerName, accessServiceRootURL, maxPageSize);
             }
             else
             {
                 restClient = new GAFRESTClient(accessServiceServerName, accessServiceRootURL, localServerUserId, localServerUserId, auditLog);
-                openGovernanceClient = new OpenGovernanceClient(accessServiceServerName, accessServiceRootURL, localServerUserId, localServerUserId);
+                openGovernanceClient = new OpenGovernanceClient(accessServiceServerName, accessServiceRootURL, localServerUserId, localServerUserId, maxPageSize);
             }
 
             /*

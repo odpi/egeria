@@ -29,7 +29,7 @@ public abstract class DigitalServiceBaseClient
                                     String serverPlatformURLRoot,
                                     int    maxPageSize) throws InvalidParameterException
     {
-        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot);
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, maxPageSize);
         this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
     }
 
@@ -52,7 +52,7 @@ public abstract class DigitalServiceBaseClient
                                     String password,
                                     int    maxPageSize) throws InvalidParameterException
     {
-        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, userId, password);
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, userId, password, maxPageSize);
         this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
     }
 }

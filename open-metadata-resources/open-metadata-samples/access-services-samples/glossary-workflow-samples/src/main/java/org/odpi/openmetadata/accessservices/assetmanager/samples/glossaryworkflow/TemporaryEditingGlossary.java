@@ -49,7 +49,7 @@ public class TemporaryEditingGlossary
     {
         try
         {
-            GlossaryManagementClient client = new GlossaryManagementClient(serverName, platformURLRoot);
+            GlossaryManagementClient client = new GlossaryManagementClient(serverName, platformURLRoot, 100);
 
             System.out.println("\nSetting up the 'live' glossary");
             GlossaryProperties glossaryProperties = new GlossaryProperties();

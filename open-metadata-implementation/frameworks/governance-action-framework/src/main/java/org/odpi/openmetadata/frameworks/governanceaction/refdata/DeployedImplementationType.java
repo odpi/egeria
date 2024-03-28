@@ -175,7 +175,7 @@ public enum DeployedImplementationType
      */
     SOFTWARE_SERVER("Software Server",
                     null,
-                    OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME,
+                    OpenMetadataType.SOFTWARE_SERVER.typeName,
                     null,
                     "A callable software server.",
                     "https://egeria-project.org/types/0/0040-Software-Servers/"),
@@ -197,7 +197,7 @@ public enum DeployedImplementationType
      */
     POSTGRESQL_SERVER("PostgreSQL Server",
                       DeployedImplementationType.SOFTWARE_SERVER,
-                      OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME,
+                      OpenMetadataType.SOFTWARE_SERVER.typeName,
                       null,
                       "A database server running the PostgreSQL software.",
                       "https://www.postgresql.org/"),
@@ -208,7 +208,7 @@ public enum DeployedImplementationType
      */
     APACHE_ATLAS_SERVER("Apache Atlas Server",
                         DeployedImplementationType.SOFTWARE_SERVER,
-                        OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME,
+                        OpenMetadataType.SOFTWARE_SERVER.typeName,
                         null,
                         "A data catalog for the Hadoop ecosystem.",
                         "https://atlas.apache.org/"),
@@ -218,7 +218,7 @@ public enum DeployedImplementationType
      */
     APACHE_KAFKA_SERVER("Apache Kafka Server",
                         DeployedImplementationType.SOFTWARE_SERVER,
-                        OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME,
+                        OpenMetadataType.SOFTWARE_SERVER.typeName,
                         null,
                         "A software server supporting an event broker that enables high speed, reliable topic-based event exchange.",
                         "https://kafka.apache.org/"),
@@ -238,7 +238,7 @@ public enum DeployedImplementationType
      */
     APACHE_KAFKA_TOPIC("Apache Kafka Topic",
                        DeployedImplementationType.DATA_ASSET,
-                       OpenMetadataType.KAFKA_TOPIC_TYPE_NAME,
+                       OpenMetadataType.KAFKA_TOPIC.typeName,
                        null,
                        "An event topic supporting high speed, reliable event exchange.",
                        "https://kafka.apache.org/"),
@@ -277,6 +277,16 @@ public enum DeployedImplementationType
 
 
     /**
+     * A software capability that provides callable APIs supporting the REST protocol.
+     */
+    REST_API_MANAGER("REST API Manager",
+                DeployedImplementationType.API_MANAGER,
+                OpenMetadataType.API_MANAGER.typeName,
+                null,
+                "A software capability that provides callable APIs supporting the REST protocol.",
+                "https://egeria-project.org/types/0/0050-Applications-and-Processes/"),
+
+    /**
      * A system that manages the asynchronous exchange of messages (events) from once to potentially many recipients.  Typically, this exchange of events is organized into groups called topics.
      */
     EVENT_BROKER("Event Broker",
@@ -313,7 +323,7 @@ public enum DeployedImplementationType
      */
     OMAG_SERVER_PLATFORM("OMAG Server Platform",
                          DeployedImplementationType.SOFTWARE_SERVER,
-                         OpenMetadataType.SOFTWARE_SERVER_PLATFORM_TYPE_NAME,
+                         OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName,
                          null,
                          "An Open Metadata and Governance (OMAG) platform for running one to many OMAG Servers.",
                          "https://egeria-project.org/concepts/omag-server-platform/"),
@@ -323,18 +333,7 @@ public enum DeployedImplementationType
      */
     OMAG_SERVER_RUNTIME("OMAG Server Runtime",
                         DeployedImplementationType.SOFTWARE_SERVER,
-                        OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME,
-                        null,
-                        "An Open Metadata and Governance (OMAG) runtime for running a single OMAG Server.",
-                        "https://egeria-project.org/concepts/omag-server-runtime/"),
-
-
-    /**
-     * An Open Metadata and Governance (OMAG) runtime for running a single OMAG Server.
-     */
-    OMAG_SERVER_API_MANAGER("OMAG Server API Manager",
-                        DeployedImplementationType.SOFTWARE_CAPABILITY,
-                        OpenMetadataType.REST_API_MANAGER.typeName,
+                        OpenMetadataType.SOFTWARE_SERVER.typeName,
                         null,
                         "An Open Metadata and Governance (OMAG) runtime for running a single OMAG Server.",
                         "https://egeria-project.org/concepts/omag-server-runtime/"),

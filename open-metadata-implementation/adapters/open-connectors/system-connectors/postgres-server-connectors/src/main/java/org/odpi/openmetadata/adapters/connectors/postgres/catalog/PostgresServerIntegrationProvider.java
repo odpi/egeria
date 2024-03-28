@@ -89,6 +89,6 @@ public class PostgresServerIntegrationProvider extends IntegrationConnectorProvi
         super.setConnectorComponentDescription(componentDescription);
 
         super.catalogTargets = PostgresServerCatalogTarget.getCatalogTargetTypes();
-        super.supportedConfigurationProperties = PostgresConfigurationProperty.getConfigurationPropertyTypes();
+        super.supportedConfigurationProperties = PostgresConfigurationProperty.getPostgresServerConfigurationPropertyTypes();
     }
 }

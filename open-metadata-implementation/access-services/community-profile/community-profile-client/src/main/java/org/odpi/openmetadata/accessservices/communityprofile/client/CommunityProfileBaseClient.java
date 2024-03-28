@@ -52,13 +52,15 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param auditLog              logging destination
+     * @param maxPageSize maximum value allowed for page size
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
-    public CommunityProfileBaseClient(String serverName,
-                                      String serverPlatformURLRoot,
-                                      AuditLog auditLog) throws InvalidParameterException
+    public CommunityProfileBaseClient(String   serverName,
+                                      String   serverPlatformURLRoot,
+                                      AuditLog auditLog,
+                                      int      maxPageSize) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
@@ -67,7 +69,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
 
-        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot);
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, maxPageSize);
         this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, auditLog);
     }
 
@@ -77,12 +79,14 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      *
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param maxPageSize maximum value allowed for page size
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
     public CommunityProfileBaseClient(String serverName,
-                                      String serverPlatformURLRoot) throws InvalidParameterException
+                                      String serverPlatformURLRoot,
+                                      int    maxPageSize) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
@@ -91,7 +95,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
 
-        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot);
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, maxPageSize);
         this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot);
     }
 
@@ -104,6 +108,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId                caller's userId embedded in all HTTP requests
      * @param password              caller's userId embedded in all HTTP requests
+     * @param maxPageSize maximum value allowed for page size
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
@@ -111,7 +116,8 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
     public CommunityProfileBaseClient(String serverName,
                                       String serverPlatformURLRoot,
                                       String userId,
-                                      String password) throws InvalidParameterException
+                                      String password,
+                                      int    maxPageSize) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
@@ -120,7 +126,7 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
 
-        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, userId, password);
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, userId, password, maxPageSize);
         this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, userId, password);
     }
 
@@ -134,24 +140,27 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
      * @param userId                caller's userId embedded in all HTTP requests
      * @param password              caller's userId embedded in all HTTP requests
      * @param auditLog              logging destination
+     * @param maxPageSize maximum value allowed for page size
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
-    public CommunityProfileBaseClient(String serverName,
-                                      String serverPlatformURLRoot,
-                                      String userId,
-                                      String password,
-                                      AuditLog auditLog) throws InvalidParameterException
+    public CommunityProfileBaseClient(String   serverName,
+                                      String   serverPlatformURLRoot,
+                                      String   userId,
+                                      String   password,
+                                      AuditLog auditLog,
+                                      int      maxPageSize) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
+        this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
 
-        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, userId, password);
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, userId, password, maxPageSize);
         this.restClient = new CommunityProfileRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
@@ -179,9 +188,9 @@ public class CommunityProfileBaseClient implements RelatedElementsManagementInte
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
 
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
 
-        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot);
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, maxPageSize);
         this.restClient = restClient;
     }
 

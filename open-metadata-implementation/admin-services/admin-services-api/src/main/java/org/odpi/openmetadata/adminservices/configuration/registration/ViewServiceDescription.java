@@ -98,7 +98,7 @@ public enum ViewServiceDescription
      * Manage information about the logged on user as well as their preferences.
      */
     MY_PROFILE(807,
-               ComponentDevelopmentStatus.IN_DEVELOPMENT,
+               ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                "My Profile",
                "My Profile OMVS",
                "my-profile",
@@ -134,13 +134,38 @@ public enum ViewServiceDescription
      * Manage Egeria's automation services.
      */
     AUTOMATED_CURATION  (810,
-                         ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                         ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                          "Automated Curation",
                          "Automated Curation OMVS",
                          "automated-curation",
                          "Manage Egeria's automation services.",
                          "https://egeria-project.org/services/omvs/automated-curation/overview/",
                          AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceFullName()),
+
+    /**
+     * Work with comments, informal tags, ratings/reviews and likes.
+     */
+    FEEDBACK_MANAGER  (811,
+                         ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                         "Feedback Manager",
+                         "Feedback Manager OMVS",
+                         "feedback-manager",
+                         "Work with comments, informal tags, ratings/reviews and likes.",
+                         "https://egeria-project.org/services/omvs/feedback-manager/overview/",
+                         CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName()),
+
+    /**
+     * Maintain definitions of governance actions such as governance action processes and governance action types.
+     */
+    GOVERNANCE_AUTHOR(812,
+                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                      "Governance Author",
+                      "Governance Author OMVS",
+                      "governance-author",
+                      "Maintain definitions of governance actions such as governance action processes and governance action types.",
+                      "https://egeria-project.org/services/omvs/governance-author/overview/",
+                      AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS.getAccessServiceFullName()),
+
     ;
 
 

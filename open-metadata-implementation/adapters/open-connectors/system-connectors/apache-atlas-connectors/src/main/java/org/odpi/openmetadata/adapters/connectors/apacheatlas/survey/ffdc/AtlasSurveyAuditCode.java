@@ -25,7 +25,7 @@ public enum AtlasSurveyAuditCode implements AuditLogMessageSet
      */
     UNEXPECTED_EXCEPTION("APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-0001",
                          AuditLogRecordSeverityLevel.EXCEPTION,
-                         "The {0} Apache Atlas Discovery Connector received an unexpected exception {1} during method {2}; the error message was: {3}",
+                         "The {0} Apache Atlas Survey Action Service received an unexpected exception {1} during method {2}; the error message was: {3}",
                          "The connector is unable to continue to profile Apache Atlas.",
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
@@ -35,7 +35,7 @@ public enum AtlasSurveyAuditCode implements AuditLogMessageSet
      */
     WRONG_REST_CONNECTOR("APACHE-ATLAS-SURVEY-ACTION-CONNECTOR-0002",
                          AuditLogRecordSeverityLevel.ERROR,
-                         "The {0} Apache Atlas Survey Action Connector has been supplied with a resource connector of class {1} rather than class {2} for asset {3}",
+                         "The {0} Apache Atlas Survey Action Service has been supplied with a resource connector of class {1} rather than class {2} for asset {3}",
                          "The connector is unable to continue to profile Apache Atlas because it can not call its REST API.",
                          "Use the details from the error message to determine the class of the connector.  " +
                                  "Update the connector type associated with Apache Atlas's Connection in the metadata store."),

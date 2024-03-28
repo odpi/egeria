@@ -90,8 +90,8 @@ public class AssetSetUp
         {
             csvOnboardingClient = new CSVFileAssetOwner(serverName, platformURLRoot);
             assetConsumerClient = new AssetConsumer(serverName, platformURLRoot);
-            organizationManagement = new OrganizationManagement(serverName, platformURLRoot);
-            externalAssetManagerClient = new ExternalAssetManagerClient(serverName, platformURLRoot);
+            organizationManagement = new OrganizationManagement(serverName, platformURLRoot, 100);
+            externalAssetManagerClient = new ExternalAssetManagerClient(serverName, platformURLRoot, 100);
             databaseManagerClient = new DatabaseManagerClient(serverName, platformURLRoot);
             externalReferenceManagerClient = new ExternalReferenceManagerClient(serverName, platformURLRoot);
             connectionManager = new ConnectionManager(serverName, platformURLRoot);
