@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.surveyaction.ffdc;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
@@ -70,6 +71,14 @@ public enum SAFErrorCode implements ExceptionMessageSet
                                "asset that has been supplied.  This problem could be resolved by issuing the survey request with " +
                                "a governance request type that is compatible with the asset, or changing the survey action service " +
                                "associated with the governance request type to one that supports this type of asset."),
+
+
+    WRONG_TYPE_OF_CONNECTOR(400, "OCF-CONNECTION-400-006",
+                            "The {0} Survey Acton Service has been supplied with a resource connector of class {1} rather than class {2} for asset {3}",
+                            "The survey is unable to continue since it is unable to work with the supplied connector.",
+                            "Use the details from the error message to determine the class of the connector.  " +
+                                    "Update the connector type associated with its Connection in the metadata store."),
+
 
     /**
      * SURVEY-ACTION-SERVICE-500-001 - Unexpected exception in survey action service {0} of type {1} detected by method {2}.  The error message was {3}

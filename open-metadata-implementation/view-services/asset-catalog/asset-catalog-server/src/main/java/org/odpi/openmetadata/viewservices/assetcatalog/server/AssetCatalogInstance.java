@@ -67,8 +67,8 @@ public class AssetCatalogInstance extends OMVSServiceInstance
               remoteServerURL);
 
         this.assetConsumerClient = new AssetConsumer(remoteServerName, remoteServerURL, auditLog);
-        this.openIntegrationServiceClient = new OpenIntegrationServiceClient(remoteServerName, remoteServerURL);
-        this.openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL);
+        this.openIntegrationServiceClient = new OpenIntegrationServiceClient(remoteServerName, remoteServerURL, maxPageSize);
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
 
         this.supportedAssetTypes = this.setupSupportedAssetTypes(supportedAssetTypeNames);
     }

@@ -453,7 +453,7 @@ public class SurveyReport
             /*
              * The clients are from the Asset Owner OMAS.
              */
-            OpenMetadataStoreClient openMetadataStoreClient = new OpenMetadataStoreClient(serverName, platformURLRoot);
+            OpenMetadataStoreClient openMetadataStoreClient = new OpenMetadataStoreClient(serverName, platformURLRoot, 100);
             AssetOwner              assetOwnerClient        = new AssetOwner(serverName, platformURLRoot);
 
             /*

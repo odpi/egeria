@@ -3,19 +3,44 @@
 /* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.automatedcuration.server;
 
-import org.odpi.openmetadata.accessservices.assetowner.client.OpenGovernanceClient;
+import org.odpi.openmetadata.accessservices.assetowner.client.*;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ExternalReferenceElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.RelatedElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ValidValueElement;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionTypeProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.integration.properties.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
+import org.odpi.openmetadata.frameworkservices.oif.rest.CatalogTargetResponse;
+import org.odpi.openmetadata.frameworkservices.oif.rest.CatalogTargetsResponse;
 import org.odpi.openmetadata.tokencontroller.TokenController;
+import org.odpi.openmetadata.viewservices.automatedcuration.properties.CatalogTemplate;
+import org.odpi.openmetadata.viewservices.automatedcuration.properties.ResourceDescription;
+import org.odpi.openmetadata.viewservices.automatedcuration.properties.TechnologyTypeReport;
+import org.odpi.openmetadata.viewservices.automatedcuration.properties.TechnologyTypeSummary;
+import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeReportResponse;
+import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeSummaryListResponse;
 import org.slf4j.LoggerFactory;
+
+import java.util.*;
 
 
 /**
@@ -33,6 +58,8 @@ public class AutomatedCurationRESTServices extends TokenController
 
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
+    private final PropertyHelper propertyHelper = new PropertyHelper();
+
     /**
      * Default constructor
      */
@@ -40,31 +67,35 @@ public class AutomatedCurationRESTServices extends TokenController
     {
     }
 
-
     /* =====================================================================================================================
-     * A governance action type describes a template to call a single engine action.
+     * The technology types provide the reference data to guide the curator.  They are extracted from the valid
+     * values for deployedImplementationType
      */
 
     /**
-     * Create a new metadata element to represent a governance action type.
+     * Retrieve the list of deployed implementation type metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param requestBody properties about the process to store
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody string to find in the properties
      *
-     * @return unique identifier of the new governance action type or
+     * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createGovernanceActionType(String                         serverName,
-                                                   GovernanceActionTypeProperties requestBody)
+    public TechnologyTypeSummaryListResponse findTechnologyTypes(String                  serverName,
+                                                                 int                     startFrom,
+                                                                 int                     pageSize,
+                                                                 StringRequestBody       requestBody)
     {
-        final String methodName = "createGovernanceActionType";
+        final String methodName = "findTechnologyTypes";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
+        TechnologyTypeSummaryListResponse response = new TechnologyTypeSummaryListResponse();
+        AuditLog                          auditLog = null;
 
         try
         {
@@ -75,9 +106,13 @@ public class AutomatedCurationRESTServices extends TokenController
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
+                ValidValuesAssetOwner handler = instanceHandler.getValidValuesAssetOwner(userId, serverName, methodName);
 
-                response.setGUID(handler.createGovernanceActionType(userId, requestBody));
+                List<ValidValueElement> validValues = handler.findValidValues(userId,
+                                                                              "Egeria:ValidMetadataValue.*(.*" + requestBody.getString() + ".*)",
+                                                                              startFrom,
+                                                                              pageSize);
+                response.setElements(this.getTechnologySummaries(validValues));
             }
             else
             {
@@ -95,86 +130,69 @@ public class AutomatedCurationRESTServices extends TokenController
 
 
     /**
-     * Update the metadata element representing a governance action type.
+     * Concert valid values in to technology types.
      *
-     * @param serverName name of the service to route the request to
-     * @param governanceActionTypeGUID unique identifier of the metadata element to update
-     * @param requestBody new properties for the metadata element
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @param validValues valid values retrieved from the open metadata ecosystem.
+     * @return list of technology type summaries
      */
-    public VoidResponse updateGovernanceActionType(String                                serverName,
-                                                   String                                governanceActionTypeGUID,
-                                                   UpdateGovernanceActionTypeRequestBody requestBody)
+    private List<TechnologyTypeSummary> getTechnologySummaries(List<ValidValueElement> validValues)
     {
-        final String methodName = "updateGovernanceActionType";
-        final String propertiesParameterName = "requestBody.getProperties";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
+        if (validValues != null)
         {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+            List<TechnologyTypeSummary> technologySummaries = new ArrayList<>();
 
-            restCallLogger.setUserId(token, userId);
-
-            if (requestBody != null)
+            for (ValidValueElement validValueElement : validValues)
             {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
+                if ((validValueElement != null) && (validValueElement.getValidValueProperties().getQualifiedName().endsWith(")")))
+                {
+                    TechnologyTypeSummary technologyTypeSummary = new TechnologyTypeSummary();
 
-                GovernanceActionTypeProperties properties = requestBody.getProperties();
+                    technologyTypeSummary.setTechnologyTypeGUID(validValueElement.getElementHeader().getGUID());
+                    technologyTypeSummary.setQualifiedName(validValueElement.getValidValueProperties().getQualifiedName());
+                    technologyTypeSummary.setName(validValueElement.getValidValueProperties().getPreferredValue());
+                    technologyTypeSummary.setDescription(validValueElement.getValidValueProperties().getDescription());
+                    technologyTypeSummary.setCategory(validValueElement.getValidValueProperties().getCategory());
 
-                invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
-
-                handler.updateGovernanceActionType(userId,
-                                                   governanceActionTypeGUID,
-                                                   requestBody.getMergeUpdate(),
-                                                   properties);
+                    technologySummaries.add(technologyTypeSummary);
+                }
             }
-            else
+
+            if (! technologySummaries.isEmpty())
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                return technologySummaries;
             }
         }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
 
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
+        return null;
     }
 
 
     /**
-     * Remove the metadata element representing a governance action type.
+     * Retrieve the list of deployed implementation type metadata elements linked to a particular open metadata type.
      *
      * @param serverName name of the service to route the request to
-     * @param governanceActionTypeGUID unique identifier of the metadata element to remove
-     * @param requestBody null request body
+     * @param typeName does the value start with the supplied string?
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
      *
-     * @return void or
+     * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse removeGovernanceActionType(String          serverName,
-                                                   String          governanceActionTypeGUID,
-                                                   NullRequestBody requestBody)
+
+    public TechnologyTypeSummaryListResponse getTechnologyTypesForOpenMetadataType(String serverName,
+                                                                                   String typeName,
+                                                                                   int    startFrom,
+                                                                                   int    pageSize)
     {
-        final String methodName = "removeGovernanceActionType";
+        final String methodName = "getTechnologyTypesForOpenMetadataType";
+        final String parameterName = "typeName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
+        TechnologyTypeSummaryListResponse response = new TechnologyTypeSummaryListResponse();
+        AuditLog                          auditLog = null;
 
         try
         {
@@ -183,9 +201,21 @@ public class AutomatedCurationRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
-            handler.removeGovernanceActionType(userId, governanceActionTypeGUID);
+            if (typeName != null)
+            {
+                ValidValuesAssetOwner handler = instanceHandler.getValidValuesAssetOwner(userId, serverName, methodName);
+
+                List<ValidValueElement> validValues = handler.findValidValues(userId,
+                                                                              "Egeria:ValidMetadataValue:" + typeName + ":deployedImplementationType-(.*)",
+                                                                              startFrom,
+                                                                              pageSize);
+                response.setElements(this.getTechnologySummaries(validValues));
+            }
+            else
+            {
+                restExceptionHandler.handleMissingValue(parameterName, methodName);
+            }
         }
         catch (Exception error)
         {
@@ -196,6 +226,584 @@ public class AutomatedCurationRESTServices extends TokenController
         return response;
     }
 
+
+    /**
+     * Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+     *
+     * @param serverName name of the service to route the request to
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public TechnologyTypeReportResponse getTechnologyTypeDetail(String            serverName,
+                                                                StringRequestBody requestBody)
+    {
+        final String methodName = "getTechnologyTypesForOpenMetadataType";
+        final String parameterName = "requestBody.string";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        TechnologyTypeReportResponse response = new TechnologyTypeReportResponse();
+        AuditLog                     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getString() != null)
+                {
+                    ValidValuesAssetOwner    validValuesHandler = instanceHandler.getValidValuesAssetOwner(userId, serverName, methodName);
+                    ExternalReferenceManager externalRefHandler = instanceHandler.getExternalReferenceManager(userId, serverName, methodName);
+                    OpenMetadataStoreClient  openHandler        = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+
+                    List<ValidValueElement> validValues = validValuesHandler.findValidValues(userId,
+                                                                                             "Egeria:ValidMetadataValue:.*:deployedImplementationType-.*" + requestBody.getString() + ".*",
+                                                                                             0,
+                                                                                             0);
+
+                    if (validValues != null)
+                    {
+                        TechnologyTypeReport report = new TechnologyTypeReport();
+
+                        for (ValidValueElement validValueElement : validValues)
+                        {
+                            if (validValueElement != null)
+                            {
+                                report.setTechnologyTypeGUID(validValueElement.getElementHeader().getGUID());
+                                report.setQualifiedName(validValueElement.getValidValueProperties().getQualifiedName());
+                                report.setName(validValueElement.getValidValueProperties().getPreferredValue());
+                                report.setDescription(validValueElement.getValidValueProperties().getDescription());
+                                report.setCategory(validValueElement.getValidValueProperties().getCategory());
+
+                                if (validValueElement.getSetGUID() != null)
+                                {
+                                    ValidValueElement superElement = validValuesHandler.getValidValueByGUID(userId, validValueElement.getSetGUID());
+
+                                    if (superElement != null)
+                                    {
+                                        report.setTechnologySuperType(superElement.getValidValueProperties().getPreferredValue());
+                                    }
+                                }
+
+                                List<ValidValueElement> subElements = validValuesHandler.getValidValueSetMembers(userId, validValueElement.getElementHeader().getGUID(), 0, 0);
+
+                                if (subElements != null)
+                                {
+                                    List<String> subElementNames = new ArrayList<>();
+
+                                    for (ValidValueElement subElement : subElements)
+                                    {
+                                        if (subElement != null)
+                                        {
+                                            subElementNames.add(subElement.getValidValueProperties().getPreferredValue());
+                                        }
+                                    }
+
+                                    report.setTechnologySubtypes(subElementNames);
+                                }
+
+                                List<RelatedElement> resourceList = externalRefHandler.getResourceList(userId,
+                                                                                                       validValueElement.getElementHeader().getGUID(),
+                                                                                                       0, 0);
+
+                                if (resourceList != null)
+                                {
+                                    List<ResourceDescription> resources = new ArrayList<>();
+
+                                    for (RelatedElement resource : resourceList)
+                                    {
+                                        if (resource != null)
+                                        {
+                                            if ((resource.getRelationshipProperties() != null) && (resource.getRelationshipProperties().getExtendedProperties() != null))
+                                            {
+                                                Map<String, Object> extendedProperties = resource.getRelationshipProperties().getExtendedProperties();
+
+                                                ResourceDescription resourceDescription = new ResourceDescription();
+
+                                                if (extendedProperties.get(OpenMetadataProperty.RESOURCE_USE.name) != null)
+                                                {
+                                                    resourceDescription.setResourceUse(extendedProperties.get(OpenMetadataProperty.RESOURCE_USE.name).toString());
+                                                }
+                                                if (extendedProperties.get(OpenMetadataProperty.RESOURCE_USE_DESCRIPTION.name) != null)
+                                                {
+                                                    resourceDescription.setResourceUseDescription(extendedProperties.get(OpenMetadataProperty.RESOURCE_USE_DESCRIPTION.name).toString());
+                                                }
+
+                                                resourceDescription.setRelatedElement(resource.getRelatedElement());
+                                                resourceDescription.setSpecification(this.getSpecification(userId,
+                                                                                                           resource.getRelatedElement().getGUID(),
+                                                                                                           openHandler));
+
+                                                resources.add(resourceDescription);
+                                            }
+                                        }
+                                    }
+
+                                    if (!resources.isEmpty())
+                                    {
+                                        report.setResourceList(resources);
+                                    }
+                                }
+
+                                List<RelatedElement> catalogTemplateList = externalRefHandler.getCatalogTemplateList(userId,
+                                                                                                                     validValueElement.getElementHeader().getGUID(),
+                                                                                                                     0, 0);
+
+                                if (catalogTemplateList != null)
+                                {
+                                    List<CatalogTemplate> catalogTemplates = new ArrayList<>();
+
+                                    for (RelatedElement templateElement : catalogTemplateList)
+                                    {
+                                        if (templateElement != null)
+                                        {
+                                            CatalogTemplate catalogTemplate = new CatalogTemplate();
+
+                                            catalogTemplate.setRelatedElement(templateElement.getRelatedElement());
+
+                                            List<ElementClassification> classifications = templateElement.getRelatedElement().getClassifications();
+
+                                            if (classifications != null)
+                                            {
+                                                for (ElementClassification classification : classifications)
+                                                {
+                                                    if (classification != null)
+                                                    {
+                                                        if (classification.getClassificationName().equals(OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName))
+                                                        {
+                                                            if (classification.getClassificationProperties() != null)
+                                                            {
+                                                                if (classification.getClassificationProperties().get(OpenMetadataProperty.NAME.name) != null)
+                                                                {
+                                                                    catalogTemplate.setName(classification.getClassificationProperties().get(OpenMetadataProperty.NAME.name).toString());
+                                                                }
+                                                                else if (classification.getClassificationProperties().get(OpenMetadataProperty.DESCRIPTION.name) != null)
+                                                                {
+                                                                    catalogTemplate.setDescription(classification.getClassificationProperties().get(OpenMetadataProperty.DESCRIPTION.name).toString());
+                                                                }
+                                                                else if (classification.getClassificationProperties().get(OpenMetadataProperty.VERSION_IDENTIFIER.name) != null)
+                                                                {
+                                                                    catalogTemplate.setVersionIdentifier(classification.getClassificationProperties().get(OpenMetadataProperty.VERSION_IDENTIFIER.name).toString());
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            catalogTemplate.setSpecification(this.getSpecification(userId,
+                                                                                                   templateElement.getRelatedElement().getGUID(),
+                                                                                                   openHandler));
+
+                                            catalogTemplates.add(catalogTemplate);
+                                        }
+                                    }
+
+                                    if (! catalogTemplates.isEmpty())
+                                    {
+                                        report.setCatalogTemplates(catalogTemplates);
+                                    }
+                                }
+
+                                List<ExternalReferenceElement> externalReferenceElements = externalRefHandler.retrieveAttachedExternalReferences(userId,
+                                                                                                                                                 validValueElement.getElementHeader().getGUID(),
+                                                                                                                                                 0, 0);
+
+                                report.setExternalReferences(externalReferenceElements);
+                            }
+                        }
+
+                        response.setElement(report);
+                    }
+                }
+                else
+                {
+                    restExceptionHandler.handleMissingValue(parameterName, methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the reference data for this element.
+     *
+     * @param userId calling user
+     * @param elementGUID element to query
+     * @param openHandler client
+     * @return map of reference data
+     * @throws InvalidParameterException bad parameter
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException authorization issue
+     */
+    private Map<String, List<Map<String, String>>> getSpecification(String                  userId,
+                                                                    String                  elementGUID,
+                                                                    OpenMetadataStoreClient openHandler) throws InvalidParameterException,
+                                                                                                                PropertyServerException,
+                                                                                                                UserNotAuthorizedException
+    {
+        final String methodName = "getSpecification";
+
+        Map<String, List<Map<String, String>>> specification = new HashMap<>();
+
+        List<RelatedMetadataElement> refDataElements = openHandler.getRelatedMetadataElements(userId,
+                                                                                              elementGUID,
+                                                                                              1,
+                                                                                              OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                                              false,
+                                                                                              false,
+                                                                                              new Date(),
+                                                                                              0,
+                                                                                              0);
+
+        if (refDataElements != null)
+        {
+            for (RelatedMetadataElement refDataElement : refDataElements)
+            {
+                if (refDataElement != null)
+                {
+                    String propertyType = propertyHelper.getStringProperty(instanceHandler.getServiceName(),
+                                                                            OpenMetadataProperty.PROPERTY_TYPE.name,
+                                                                            refDataElement.getRelationshipProperties(),
+                                                                            methodName);
+                    if (propertyType != null)
+                    {
+                        Map<String, String> additionalProperties = propertyHelper.getStringMapFromProperty(instanceHandler.getServiceName(),
+                                                                                                           OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                                                           refDataElement.getElement().getElementProperties(),
+                                                                                                           methodName);
+
+                        if (additionalProperties == null)
+                        {
+                            additionalProperties = new HashMap<>();
+                        }
+
+                        additionalProperties.put("placeholderName",
+                                                 propertyHelper.getStringProperty(instanceHandler.getServiceName(),
+                                                                                  OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME,
+                                                                                  refDataElement.getElement().getElementProperties(),
+                                                                                  methodName));
+
+                        List<Map<String, String>> properties = specification.get(propertyType);
+
+                        if (properties == null)
+                        {
+                            properties = new ArrayList<>();
+                        }
+
+                        properties.add(additionalProperties);
+
+                        specification.put(propertyType, properties);
+                    }
+                }
+            }
+        }
+
+        if (! specification.isEmpty())
+        {
+            return specification;
+        }
+
+        return null;
+    }
+
+
+    /* =====================================================================================================================
+     * Catalog templates make it easy to create new complex object such as assets.
+     */
+
+    /**
+     * Create a new element from a template.
+     *
+     * @param serverName name of the service to route the request to
+     * @param requestBody information about the template
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GUIDResponse createElementFromTemplate(String              serverName,
+                                                  TemplateRequestBody requestBody)
+    {
+        final String methodName = "createElementFromTemplate";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog                     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                OpenMetadataStoreClient openHandler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+
+                response.setGUID(openHandler.createMetadataElementFromTemplate(userId,
+                                                                               requestBody.getTypeName(),
+                                                                               requestBody.getAnchorGUID(),
+                                                                               requestBody.getIsOwnAnchor(),
+                                                                               requestBody.getEffectiveFrom(),
+                                                                               requestBody.getEffectiveTo(),
+                                                                               requestBody.getTemplateGUID(),
+                                                                               requestBody.getTemplateProperties(),
+                                                                               requestBody.getPlaceholderPropertyValues(),
+                                                                               requestBody.getParentGUID(),
+                                                                               requestBody.getParentRelationshipTypeName(),
+                                                                               requestBody.getParentRelationshipProperties(),
+                                                                               requestBody.getParentAtEnd1()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /* =====================================================================================================================
+     * A catalog target links an element (typically an asset, to an integration connector for processing.
+     */
+
+    /**
+     * Add a catalog target to an integration connector.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param integrationConnectorGUID unique identifier of the integration service.
+     * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.
+     * @param requestBody properties for the relationship.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the catalog target definition.
+     */
+    public VoidResponse addCatalogTarget(String                  serverName,
+                                         String                  integrationConnectorGUID,
+                                         String                  metadataElementGUID,
+                                         CatalogTargetProperties requestBody)
+    {
+        final String methodName = "addCatalogTarget";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog                    auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                OpenIntegrationServiceClient handler = instanceHandler.getOpenIntegrationServiceClient(userId, serverName, methodName);
+
+                handler.addCatalogTarget(userId,
+                                         integrationConnectorGUID,
+                                         metadataElementGUID,
+                                         requestBody);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve a specific catalog target associated with an integration connector.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param integrationConnectorGUID unique identifier of the integration service.
+     * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.
+     *
+     * @return details of the governance service and the asset types it is registered for or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration connector definition.
+     */
+    public CatalogTargetResponse getCatalogTarget(String serverName,
+                                                  String integrationConnectorGUID,
+                                                  String metadataElementGUID)
+    {
+        final String methodName = "getCatalogTarget";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        CatalogTargetResponse response = new CatalogTargetResponse();
+        AuditLog              auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            OpenIntegrationServiceClient handler = instanceHandler.getOpenIntegrationServiceClient(userId, serverName, methodName);
+
+            response.setElement(handler.getCatalogTarget(userId, integrationConnectorGUID, metadataElementGUID));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the details of the metadata elements identified as catalog targets with an integration connector.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param integrationConnectorGUID unique identifier of the integration connector.
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of unique identifiers or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration connector definition.
+     */
+    public CatalogTargetsResponse getCatalogTargets(String serverName,
+                                                    String integrationConnectorGUID,
+                                                    int    startFrom,
+                                                    int    pageSize)
+    {
+        final String methodName = "getCatalogTargets";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        CatalogTargetsResponse response = new CatalogTargetsResponse();
+        AuditLog               auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            OpenIntegrationServiceClient handler = instanceHandler.getOpenIntegrationServiceClient(userId, serverName, methodName);
+
+            response.setElements(handler.getCatalogTargets(userId, integrationConnectorGUID, startFrom, pageSize));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Unregister a catalog target from the integration connector.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param integrationConnectorGUID unique identifier of the integration connector.
+     * @param metadataElementGUID unique identifier of the governance service.
+     * @param requestBody null request body.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem storing the integration connector definition.
+     */
+    public VoidResponse removeCatalogTarget(String          serverName,
+                                            String          integrationConnectorGUID,
+                                            String          metadataElementGUID,
+                                            NullRequestBody requestBody)
+    {
+        final String methodName = "removeCatalogTarget";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog                    auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                OpenIntegrationServiceClient handler = instanceHandler.getOpenIntegrationServiceClient(userId, serverName, methodName);
+
+                handler.removeCatalogTarget(userId, integrationConnectorGUID, metadataElementGUID);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /* =====================================================================================================================
+     * A governance action type describes a template to call a single engine action.
+     */
 
     /**
      * Retrieve the list of governance action type metadata elements that contain the search string.
@@ -363,256 +971,6 @@ public class AutomatedCurationRESTServices extends TokenController
      * A governance action process describes a well-defined series of steps that gets something done.
      * The steps are defined using GovernanceActionProcessSteps.
      */
-
-    /**
-     * Create a new metadata element to represent a governance action process.
-     *
-     * @param serverName name of the service to route the request to
-     * @param requestBody properties about the process to store and status value for the new process (default = ACTIVE)
-     *
-     * @return unique identifier of the new process or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @SuppressWarnings(value = "unused")
-    public GUIDResponse createGovernanceActionProcess(String                                serverName,
-                                                      NewGovernanceActionProcessRequestBody requestBody)
-    {
-        final String  methodName = "createGovernanceActionProcess";
-
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            if ((requestBody != null) && (requestBody.getProperties() != null))
-            {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-                GovernanceActionProcessProperties processProperties = requestBody.getProperties();
-
-                response.setGUID(handler.createGovernanceActionProcess(userId, processProperties, requestBody.getProcessStatus()));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Update the metadata element representing a governance action process.
-     *
-     * @param serverName name of the service to route the request to
-     * @param processGUID unique identifier of the metadata element to update
-     * @param requestBody new properties for the metadata element
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public VoidResponse updateGovernanceActionProcess(String                                   serverName,
-                                                      String                                   processGUID,
-                                                      UpdateGovernanceActionProcessRequestBody requestBody)
-    {
-        final String methodName = "updateGovernanceActionProcess";
-
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            if ((requestBody != null) && (requestBody.getProperties() != null))
-            {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-                handler.updateGovernanceActionProcess(userId,
-                                                      processGUID,
-                                                      requestBody.getMergeUpdate(),
-                                                      requestBody.getProcessStatus(),
-                                                      requestBody.getProperties());
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Update the zones for the asset so that it becomes visible to consumers.
-     * (The zones are set to the list of zones in the publishedZones option configured for each
-     * instance of the Asset Manager OMAS).
-     *
-     * @param serverName name of the service to route the request to
-     * @param processGUID unique identifier of the metadata element to publish
-     * @param requestBody null request body
-     *
-     * @return
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse publishGovernanceActionProcess(String          serverName,
-                                                       String          processGUID,
-                                                       NullRequestBody requestBody)
-    {
-        final String methodName = "publishGovernanceActionProcess";
-        final String processGUIDParameterName = "processGUID";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-            handler.publishGovernanceActionProcess(userId, processGUID);
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Update the zones for the asset so that it is no longer visible to consumers.
-     * (The zones are set to the list of zones in the defaultZones option configured for each
-     * instance of the Asset Manager OMAS.  This is the setting when the process is first created).
-     *
-     * @param serverName name of the service to route the request to
-     * @param processGUID unique identifier of the metadata element to withdraw
-     * @param requestBody null request body
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse withdrawGovernanceActionProcess(String          serverName,
-                                                        String          processGUID,
-                                                        NullRequestBody requestBody)
-    {
-        final String methodName = "withdrawGovernanceActionProcess";
-        final String processGUIDParameterName = "processGUID";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-            handler.withdrawGovernanceActionProcess(userId, processGUID);
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Remove the metadata element representing a governance action process.
-     *
-     * @param serverName name of the service to route the request to
-     * @param processGUID unique identifier of the metadata element to remove
-     * @param requestBody null request body
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse removeGovernanceActionProcess(String          serverName,
-                                                      String          processGUID,
-                                                      NullRequestBody requestBody)
-    {
-        final String methodName = "removeGovernanceActionProcess";
-        final String processGUIDParameterName = "processGUID";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-            handler.removeGovernanceActionProcess(userId, processGUID);
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
 
     /**
      * Retrieve the list of governance action process metadata elements that contain the search string.
@@ -817,673 +1175,6 @@ public class AutomatedCurationRESTServices extends TokenController
         return response;
     }
 
-
-
-    /* =====================================================================================================================
-     * A governance action process step describes a step in a governance action process
-     */
-
-    /**
-     * Create a new metadata element to represent a governance action process step.
-     *
-     * @param serverName name of the service to route the request to
-     * @param requestBody properties about the process to store
-     *
-     * @return unique identifier of the new governance action process step or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GUIDResponse createGovernanceActionProcessStep(String                                serverName,
-                                                          GovernanceActionProcessStepProperties requestBody)
-    {
-        final String methodName = "createGovernanceActionProcessStep";
-
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            if (requestBody != null)
-            {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-                response.setGUID(handler.createGovernanceActionProcessStep(userId, requestBody));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Update the metadata element representing a governance action process step.
-     *
-     * @param serverName name of the service to route the request to
-     * @param processStepGUID unique identifier of the metadata element to update
-     * @param requestBody new properties for the metadata element
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public VoidResponse updateGovernanceActionProcessStep(String                                       serverName,
-                                                          String                                       processStepGUID,
-                                                          UpdateGovernanceActionProcessStepRequestBody requestBody)
-    {
-        final String methodName = "updateGovernanceActionProcessStep";
-        final String propertiesParameterName = "requestBody.getProperties";
-
-        RESTCallToken token      = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            if (requestBody != null)
-            {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-                invalidParameterHandler.validateObject(requestBody.getProperties(), propertiesParameterName, methodName);
-
-                handler.updateGovernanceActionProcessStep(userId,
-                                                          processStepGUID,
-                                                          requestBody.getMergeUpdate(),
-                                                          requestBody.getProperties());
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Remove the metadata element representing a governance action process step.
-     *
-     * @param serverName name of the service to route the request to
-     * @param processStepGUID unique identifier of the metadata element to remove
-     * @param requestBody null request body
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse removeGovernanceActionProcessStep(String          serverName,
-                                                          String          processStepGUID,
-                                                          NullRequestBody requestBody)
-    {
-        final String methodName = "removeGovernanceActionProcessStep";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-            handler.removeGovernanceActionProcessStep(userId, processStepGUID);
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Retrieve the list of governance action process step metadata elements that contain the search string.
-     *
-     * @param serverName name of the service to route the request to
-     * @param startsWith does the value start with the supplied string?
-     * @param endsWith does the value end with the supplied string?
-     * @param ignoreCase should the search ignore case?
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param requestBody string to find in the properties
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GovernanceActionProcessStepsResponse findGovernanceActionProcessSteps(String                  serverName,
-                                                                                 boolean                 startsWith,
-                                                                                 boolean                 endsWith,
-                                                                                 boolean                 ignoreCase,
-                                                                                 int                     startFrom,
-                                                                                 int                     pageSize,
-                                                                                 StringRequestBody       requestBody)
-    {
-        final String methodName = "findGovernanceActionProcessSteps";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GovernanceActionProcessStepsResponse response = new GovernanceActionProcessStepsResponse();
-        AuditLog                             auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            if (requestBody != null)
-            {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-                response.setElements(handler.findGovernanceActionProcessSteps(userId,
-                                                                              instanceHandler.getSearchString(requestBody.getString(), startsWith, endsWith, ignoreCase),
-                                                                              startFrom,
-                                                                              pageSize));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Retrieve the list of governance action process step metadata elements with a matching qualified or display name.
-     * There are no wildcards supported on this request.
-     *
-     * @param serverName name of the service to route the request to
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param requestBody name to search for
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GovernanceActionProcessStepsResponse getGovernanceActionProcessStepsByName(String          serverName,
-                                                                                      int             startFrom,
-                                                                                      int             pageSize,
-                                                                                      StringRequestBody requestBody)
-    {
-        final String methodName = "getGovernanceActionProcessStepsByName";
-        
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GovernanceActionProcessStepsResponse response = new GovernanceActionProcessStepsResponse();
-        AuditLog                             auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            if (requestBody != null)
-            {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-                response.setElements(handler.getGovernanceActionProcessStepsByName(userId,
-                                                                                   requestBody.getString(),
-                                                                                   startFrom,
-                                                                                   pageSize));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Retrieve the governance action process step metadata element with the supplied unique identifier.
-     *
-     * @param serverName name of the service to route the request to
-     * @param processStepGUID unique identifier of the governance action process step
-     *
-     * @return requested metadata element or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GovernanceActionProcessStepResponse getGovernanceActionProcessStepByGUID(String serverName,
-                                                                                    String processStepGUID)
-    {
-        final String methodName = "getGovernanceActionProcessStepByGUID";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GovernanceActionProcessStepResponse response = new GovernanceActionProcessStepResponse();
-        AuditLog                            auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-            response.setElement(handler.getGovernanceActionProcessStepByGUID(userId, processStepGUID));
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Set up a link between a governance action process and a governance action process step.  This defines the first
-     * step in the process.
-     *
-     * @param serverName name of the service to route the request to
-     * @param processGUID unique identifier of the governance action process
-     * @param processStepGUID unique identifier of the governance action process step
-     * @param requestBody optional guard
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public VoidResponse setupFirstActionProcessStep(String            serverName,
-                                                    String            processGUID,
-                                                    String            processStepGUID,
-                                                    StringRequestBody requestBody)
-    {
-        final String methodName = "setupFirstActionProcessStep";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                handler.setupFirstActionProcessStep(userId, processGUID, processStepGUID, requestBody.getString());
-            }
-            else
-            {
-                handler.setupFirstActionProcessStep(userId, processGUID, processStepGUID, null);
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Return the governance action process step that is the first step in a governance action process.
-     *
-     * @param serverName name of the service to route the request to
-     * @param processGUID unique identifier of the governance action process
-     *
-     * @return properties of the governance action process step or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public FirstGovernanceActionProcessStepResponse getFirstActionProcessStep(String serverName,
-                                                                              String processGUID)
-    {
-        final String methodName = "getFirstActionProcessStep";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        FirstGovernanceActionProcessStepResponse response = new FirstGovernanceActionProcessStepResponse();
-        AuditLog                            auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-            response.setElement(handler.getFirstActionProcessStep(userId, processGUID));
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Remove the link between a governance process and that governance action process step that defines its first step.
-     *
-     * @param serverName name of the service to route the request to
-     * @param processGUID unique identifier of the governance action process
-     * @param requestBody null request body
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse removeFirstProcessStep(String          serverName,
-                                               String          processGUID,
-                                               NullRequestBody requestBody)
-    {
-        final String methodName = "removeFirstActionProcessStep";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-            handler.removeFirstActionProcessStep(userId, processGUID);
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Add a link between two governance action process steps to show that one follows on from the other when a governance action process
-     * is executing.
-     *
-     * @param serverName name of the service to route the request to
-     * @param currentProcessStepGUID unique identifier of the governance action process step that defines the previous step in the governance action process
-     * @param nextProcessStepGUID unique identifier of the governance action process step that defines the next step in the governance action process
-     * @param requestBody guard required for this next step to proceed - or null for always run the next step plus flags.
-     *
-     * @return unique identifier of the new link or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GUIDResponse setupNextActionProcessStep(String                                     serverName,
-                                                   String                                     currentProcessStepGUID,
-                                                   String                                     nextProcessStepGUID,
-                                                   NextGovernanceActionProcessStepRequestBody requestBody)
-    {
-        final String methodName = "setupNextActionProcessStep";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            if (requestBody != null)
-            {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-                response.setGUID(handler.setupNextActionProcessStep(userId,
-                                                                    currentProcessStepGUID,
-                                                                    nextProcessStepGUID,
-                                                                    requestBody.getGuard(),
-                                                                    requestBody.getMandatoryGuard(),
-                                                                    false)); //todo
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Update the properties of the link between two governance action process steps that shows that one follows on from the other when a governance
-     * action process is executing.
-     *
-     * @param serverName name of the service to route the request to
-     * @param nextProcessStepLinkGUID unique identifier of the relationship between the governance action process steps
-     * @param requestBody guard required for this next step to proceed - or null for always run the next step - and flags
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse updateNextActionProcessStep(String                                     serverName,
-                                                    String                                     nextProcessStepLinkGUID,
-                                                    NextGovernanceActionProcessStepRequestBody requestBody)
-    {
-        final String methodName = "updateNextActionProcessStep";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            if (requestBody != null)
-            {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-                handler.updateNextActionProcessStep(userId,
-                                                    nextProcessStepLinkGUID,
-                                                    requestBody.getGuard(),
-                                                    requestBody.getMandatoryGuard(),
-                                                    false); // todo
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Return the list of next action process step defined for the governance action process.
-     *
-     * @param serverName name of the service to route the request to
-     * @param processStepGUID unique identifier of the current governance action process step
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return return the list of relationships and attached governance action process steps or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public NextGovernanceActionProcessStepsResponse getNextProcessSteps(String serverName,
-                                                                        String processStepGUID,
-                                                                        int    startFrom,
-                                                                        int    pageSize)
-    {
-        final String methodName = "getNextGovernanceActionProcessSteps";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        NextGovernanceActionProcessStepsResponse response = new NextGovernanceActionProcessStepsResponse();
-        AuditLog                                 auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-            response.setElements(handler.getNextGovernanceActionProcessSteps(userId,
-                                                                             processStepGUID,
-                                                                             startFrom,
-                                                                             pageSize));
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Remove a follow-on step from a governance action process.
-     *
-     * @param serverName name of the service to route the request to
-     * @param actionLinkGUID unique identifier of the relationship between the governance action process steps
-     * @param requestBody null request body
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is invalid or
-     *  UserNotAuthorizedException the user is not authorized to issue this request or
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse removeNextActionProcessStep(String          serverName,
-                                                    String          actionLinkGUID,
-                                                    NullRequestBody requestBody)
-    {
-        final String methodName = "removeNextActionProcessStep";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-            handler.removeNextActionProcessStep(userId, actionLinkGUID);
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
 
     /*
      * Engine Actions
@@ -1785,6 +1476,10 @@ public class AutomatedCurationRESTServices extends TokenController
         return response;
     }
 
+
+    /* =====================================================================================================================
+     * Execute governance actions
+     */
 
     /**
      * Create a governance action in the metadata store which will trigger the governance action service

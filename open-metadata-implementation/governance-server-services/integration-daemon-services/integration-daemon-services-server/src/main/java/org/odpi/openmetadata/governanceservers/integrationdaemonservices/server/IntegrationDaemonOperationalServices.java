@@ -165,7 +165,7 @@ public class IntegrationDaemonOperationalServices
                                                                 maxPageSize,
                                                                 integrationServicesAuditLog);
 
-                        contextManager.createClients();
+                        contextManager.createClients(maxPageSize);
 
                         IntegrationServiceHandler integrationServiceHandler = new IntegrationServiceHandler(localServerName,
                                                                                                             localServerUserId,
@@ -232,6 +232,7 @@ public class IntegrationDaemonOperationalServices
                                                                                                                                        localServerName,
                                                                                                                                        methodName);
                             IntegrationContextManager serviceContextManager = this.getContextManager(integrationServiceConfig);
+
                             /*
                              * Each integration service has its own audit log instance.
                              */
@@ -249,7 +250,8 @@ public class IntegrationDaemonOperationalServices
                                                                            maxPageSize,
                                                                            integrationServicesAuditLog);
 
-                            serviceContextManager.createClients();
+                            serviceContextManager.createClients(maxPageSize);
+
 
                             contextManagerMap.put(registeredServiceURLMarker, serviceContextManager);
                             integrationServiceNameMap.put(registeredServiceURLMarker, integrationServiceConfig.getIntegrationServiceFullName());

@@ -256,6 +256,7 @@ public class ConnectedAssetClientBase implements ConnectorFactoryInterface
 
     /**
      * Use the Open Connector Framework (OCF) to create a connector using the supplied connection.
+     * The connector is initialized by not started.
      *
      * @param restClient client that calls REST APIs
      * @param serviceName calling service

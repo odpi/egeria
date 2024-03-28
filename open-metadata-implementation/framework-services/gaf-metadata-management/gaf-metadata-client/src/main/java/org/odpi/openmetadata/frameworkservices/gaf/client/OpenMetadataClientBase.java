@@ -42,18 +42,21 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param maxPageSize maximum value allowed for page size
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
     public OpenMetadataClientBase(String serviceURLMarker,
                                   String serverName,
-                                  String serverPlatformURLRoot) throws InvalidParameterException
+                                  String serverPlatformURLRoot,
+                                  int    maxPageSize) throws InvalidParameterException
     {
         super(serviceURLMarker, serverName, serverPlatformURLRoot);
 
         final String methodName = "Constructor (no security)";
 
+        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
         this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.restClient = new GAFRESTClient(serverName, serverPlatformURLRoot);
@@ -69,6 +72,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param serverUserId          caller's userId embedded in all HTTP requests
      * @param serverPassword        caller's password embedded in all HTTP requests
+     * @param maxPageSize maximum value allowed for page size
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
@@ -77,12 +81,14 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                   String serverName,
                                   String serverPlatformURLRoot,
                                   String serverUserId,
-                                  String serverPassword) throws InvalidParameterException
+                                  String serverPassword,
+                                  int    maxPageSize) throws InvalidParameterException
     {
         super(serviceURLMarker, serverName, serverPlatformURLRoot);
 
         final String methodName = "Constructor (with security)";
 
+        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
         this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.restClient = new GAFRESTClient(serverName, serverPlatformURLRoot, serverUserId, serverPassword);
@@ -115,6 +121,17 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
         this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.restClient = restClient;
+    }
+
+
+    /**
+     * Set the max page size.
+     *
+     * @param maxPageSize pre-initialized parameter limit
+     */
+    public void setMaxPageSize(int maxPageSize)
+    {
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
     }
 
 
@@ -1451,13 +1468,11 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                                         PropertyServerException
     {
         final String methodName               = "createMetadataElementFromTemplate";
-        final String elementTypeParameterName = "metadataElementTypeName";
         final String templateGUIDParameterName = "templateGUID";
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/metadata-elements/from-template";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(metadataElementTypeName, elementTypeParameterName, methodName);
 
         if (parentGUID != null)
         {

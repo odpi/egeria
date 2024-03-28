@@ -86,7 +86,7 @@ public class ValidMetadataValuesTest
 
         try
         {
-            OpenMetadataStoreClient client     = new OpenMetadataStoreClient(serverName, serverPlatformRootURL);
+            OpenMetadataStoreClient client     = new OpenMetadataStoreClient(serverName, serverPlatformRootURL, 100);
 
             activityName = "Add Valid Metadata Values";
             ValidMetadataValue validMetadataValue = new ValidMetadataValue();

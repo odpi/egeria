@@ -97,7 +97,7 @@ public class CocoBusinessSystemsArchiveWriter extends CocoBaseArchiveWriter
             extendedProperties.put(OpenMetadataType.USER_ID_PROPERTY_NAME, systemDefinition.getUserId());
 
 
-            String serverGUID = archiveHelper.addAsset(OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME,
+            String serverGUID = archiveHelper.addAsset(OpenMetadataType.SOFTWARE_SERVER.typeName,
                                                        systemDefinition.getQualifiedName(),
                                                        systemDefinition.getSystemId(),
                                                        systemDefinition.getVersionIdentifier(),
@@ -132,7 +132,7 @@ public class CocoBusinessSystemsArchiveWriter extends CocoBaseArchiveWriter
                                                         null,
                                                         null,
                                                         serverGUID,
-                                                        OpenMetadataType.SOFTWARE_SERVER_TYPE_NAME);
+                                                        OpenMetadataType.SOFTWARE_SERVER.typeName);
                     archiveHelper.addSupportedSoftwareCapabilityRelationship(softwareCapabilityQName,
                                                                              systemDefinition.getQualifiedName(),
                                                                              null,

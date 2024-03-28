@@ -355,4 +355,108 @@ public class AssetRelationshipsResource
     {
         return restAPI.getSupportedByResource(serverName, userId, resourceGUID, startFrom, pageSize);
     }
+
+
+    /**
+     * Create a "CatalogTemplate" relationship between a consuming element and a template element.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param templateGUID unique identifier of the template
+     * @param requestBody relationship properties
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/related-elements/{elementGUID}/catalog-templates/{templateGUID}")
+
+    public VoidResponse setupCatalogTemplate(@PathVariable String                  serverName,
+                                             @PathVariable String                  userId,
+                                             @PathVariable String                  elementGUID,
+                                             @PathVariable String                  templateGUID,
+                                             @RequestBody  RelationshipRequestBody requestBody)
+    {
+        return restAPI.setupCatalogTemplate(serverName, userId, elementGUID, templateGUID, requestBody);
+    }
+
+
+    /**
+     * Remove a "CatalogTemplate" relationship between two referenceables.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param templateGUID unique identifier of the template
+     * @param requestBody external source identifiers
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/related-elements/{elementGUID}/catalog-templates/{templateGUID}/delete")
+
+    public VoidResponse clearCatalogTemplate(@PathVariable String                    serverName,
+                                             @PathVariable String                    userId,
+                                             @PathVariable String                    elementGUID,
+                                             @PathVariable String                    templateGUID,
+                                             @RequestBody  ExternalSourceRequestBody requestBody)
+    {
+        return restAPI.clearCatalogTemplate(serverName, userId, elementGUID, templateGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of templates assigned to an element via the "CatalogTemplate" relationship.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @GetMapping(path = "/related-elements/catalog-templates/by-assignee/{elementGUID}")
+
+    public  RelatedElementListResponse getCatalogTemplateList(@PathVariable String serverName,
+                                                              @PathVariable String userId,
+                                                              @PathVariable String elementGUID,
+                                                              @RequestParam int    startFrom,
+                                                              @RequestParam int    pageSize)
+    {
+        return restAPI.getCatalogTemplateList(serverName, userId, elementGUID, startFrom, pageSize);
+    }
+
+
+    /**
+     * Retrieve the list of elements assigned to a template via the "CatalogTemplate" relationship.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param templateGUID unique identifier of the template
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @GetMapping(path = "/related-elements/catalog-templates/by-template/{templateGUID}")
+
+    public RelatedElementListResponse getSupportedByTemplate(@PathVariable String serverName,
+                                                             @PathVariable String userId,
+                                                             @PathVariable String templateGUID,
+                                                             @RequestParam int   startFrom,
+                                                             @RequestParam int   pageSize)
+    {
+        return restAPI.getSupportedByTemplate(serverName, userId, templateGUID, startFrom, pageSize);
+    }
 }

@@ -294,35 +294,9 @@ public class OpenMetadataTypesArchive
      */
     private void update0050ApplicationsAndProcesses()
     {
-        this.archiveBuilder.addEntityDef(addRESTAPIManagerEntity());
         this.archiveBuilder.addEntityDef(addEventManagerEntity());
         this.archiveBuilder.addEntityDef(addAuthorizationManagerEntity());
         this.archiveBuilder.addEntityDef(addUserAuthenticationManagerEntity());
-    }
-
-
-    /**
-     * This new subtype of software server capability for API managers.
-     *
-     * @return entity definition
-     */
-    private EntityDef addRESTAPIManagerEntity()
-    {
-        final String guid            = OpenMetadataType.REST_API_MANAGER.typeGUID;
-        final String name            = OpenMetadataType.REST_API_MANAGER.typeName;
-        final String description     = OpenMetadataType.REST_API_MANAGER.description;
-        final String descriptionGUID = OpenMetadataType.REST_API_MANAGER.descriptionGUID;
-        final String descriptionWiki = OpenMetadataType.REST_API_MANAGER.wikiURL;
-
-        final String superTypeName = OpenMetadataType.API_MANAGER.typeName;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID,
-                                                 descriptionWiki);
-
     }
 
 
@@ -2399,6 +2373,7 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addTypeDefPatch(updateValidValuesImplementation());
         this.archiveBuilder.addRelationshipDef(getConsistentValidValuesRelationship());
         this.archiveBuilder.addRelationshipDef(getValidValueAssociationRelationship());
+        this.archiveBuilder.addRelationshipDef(getSpecificationPropertyAssignmentRelationship());
     }
 
     private TypeDefPatch updateValidValueDefinition()
@@ -2406,7 +2381,7 @@ public class OpenMetadataTypesArchive
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME;
+        final String typeName = OpenMetadataType.VALID_VALUE_DEFINITION.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -2450,7 +2425,7 @@ public class OpenMetadataTypesArchive
 
     private TypeDefPatch updateValidValuesImplementation()
     {
-        final String typeName = OpenMetadataType.VALID_VALUES_IMPL_RELATIONSHIP_TYPE_NAME;
+        final String typeName = OpenMetadataType.VALID_VALUES_IMPL_RELATIONSHIP.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -2480,10 +2455,11 @@ public class OpenMetadataTypesArchive
 
     private RelationshipDef getConsistentValidValuesRelationship()
     {
-        final String guid            = OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP_TYPE_GUID;
-        final String name            = OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP_TYPE_NAME;
-        final String description     = "Identifies two valid values from different valid value sets (properties) that should be used together when in the same element for consistency.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP.typeGUID;
+        final String name            = OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP.typeName;
+        final String description     = OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP.description;
+        final String descriptionGUID = OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP.wikiURL;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
@@ -2492,6 +2468,7 @@ public class OpenMetadataTypesArchive
                                                                                 null,
                                                                                 description,
                                                                                 descriptionGUID,
+                                                                                descriptionWiki,
                                                                                 classificationPropagationRule);
 
         RelationshipEndDef relationshipEndDef;
@@ -2499,7 +2476,7 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME;
+        final String                     end1EntityType               = OpenMetadataType.VALID_VALUE_DEFINITION.typeName;
         final String                     end1AttributeName            = "consistentValue";
         final String                     end1AttributeDescription     = "Valid value for another valid value set (property) that is consistent with this value.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -2516,7 +2493,7 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME;
+        final String                     end2EntityType               = OpenMetadataType.VALID_VALUE_DEFINITION.typeName;
         final String                     end2AttributeName            = "consistentValue";
         final String                     end2AttributeDescription     = "Valid value for another valid value set (property) that is consistent with this value.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -2536,10 +2513,11 @@ public class OpenMetadataTypesArchive
 
     private RelationshipDef getValidValueAssociationRelationship()
     {
-        final String guid            = OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP_TYPE_GUID;
-        final String name            = OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP_TYPE_NAME;
-        final String description     = "Represents an association between two valid values.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP.typeGUID;
+        final String name            = OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP.typeName;
+        final String description     = OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP.description;
+        final String descriptionGUID = OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP.wikiURL;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
@@ -2548,6 +2526,7 @@ public class OpenMetadataTypesArchive
                                                                                 null,
                                                                                 description,
                                                                                 descriptionGUID,
+                                                                                descriptionWiki,
                                                                                 classificationPropagationRule);
 
         RelationshipEndDef relationshipEndDef;
@@ -2555,7 +2534,7 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME;
+        final String                     end1EntityType               = OpenMetadataType.VALID_VALUE_DEFINITION.typeName;
         final String                     end1AttributeName            = "associatedValues1";
         final String                     end1AttributeDescription     = "Valid value at end one of this association.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -2572,7 +2551,7 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME;
+        final String                     end2EntityType               = OpenMetadataType.VALID_VALUE_DEFINITION.typeName;
         final String                     end2AttributeName            = "associatedValues2";
         final String                     end2AttributeDescription     = "Valid value at end two of this association.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -2612,6 +2591,80 @@ public class OpenMetadataTypesArchive
         property = archiveHelper.getMapStringStringTypeDefAttribute(attribute3Name,
                                                                     attribute3Description,
                                                                     attribute3DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
+
+
+    private RelationshipDef getSpecificationPropertyAssignmentRelationship()
+    {
+        final String guid            = OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeGUID;
+        final String name            = OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName;
+        final String description     = OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.description;
+        final String descriptionGUID = OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.wikiURL;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                descriptionWiki,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = OpenMetadataType.REFERENCEABLE.typeName;
+        final String                     end1AttributeName            = "implementingItem";
+        final String                     end1AttributeDescription     = "Connector or template, or similar implementation.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = OpenMetadataType.VALID_VALUE_DEFINITION.typeName;
+        final String                     end2AttributeName            = "specificationProperty";
+        final String                     end2AttributeDescription     = "Valid value representing a property type that controls its behaviour.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = OpenMetadataProperty.PROPERTY_TYPE.name;
+        final String attribute1Description     = OpenMetadataProperty.PROPERTY_TYPE.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.PROPERTY_TYPE.descriptionGUID;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
         properties.add(property);
 
         relationshipDef.setPropertiesDefinition(properties);

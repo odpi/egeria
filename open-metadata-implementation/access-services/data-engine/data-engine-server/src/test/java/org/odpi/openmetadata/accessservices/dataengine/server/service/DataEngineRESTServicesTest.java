@@ -1181,7 +1181,7 @@ class DataEngineRESTServicesTest {
 
         EntityDetail mockedEntity = mock(EntityDetail.class);
         when(mockedEntity.getGUID()).thenReturn(GUID);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.TOPIC_TYPE_NAME)).thenReturn(Optional.of(mockedEntity));
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.TOPIC.typeName)).thenReturn(Optional.of(mockedEntity));
 
         dataEngineRESTServices.deleteTopic(USER, SERVER_NAME, getDeleteRequestBody());
 

@@ -186,7 +186,7 @@ public enum FileType
      */
     OM_AUDIT_LOG_RECORD_FILE("Open Metadata Audit Log Record File",
                              "JSON",
-                             OpenMetadataType.LOG_FILE_TYPE_NAME,
+                             OpenMetadataType.LOG_FILE.typeName,
                              DeployedImplementationType.DATA_FILE,
                              "A JSON (JavaScript Object Notation) file containing an audit log record."),
 
@@ -204,7 +204,7 @@ public enum FileType
      */
     OL_EVENT_FILE("Open Lineage Event File",
                   "JSON",
-                  OpenMetadataType.LOG_FILE_TYPE_NAME,
+                  OpenMetadataType.LOG_FILE.typeName,
                   DeployedImplementationType.DATA_FILE,
                   "A file containing an open lineage event."),
 
@@ -628,7 +628,7 @@ public enum FileType
      */
     LOG_FILE("Log File",
              null,
-             OpenMetadataType.LOG_FILE_TYPE_NAME,
+             OpenMetadataType.LOG_FILE.typeName,
              DeployedImplementationType.LOG_FILE,
              "A file where each row represents a log record."),
 
@@ -637,7 +637,7 @@ public enum FileType
      */
     LOG_MESSAGE_FILE("Log Message File",
                      null,
-                     OpenMetadataType.LOG_FILE_TYPE_NAME,
+                     OpenMetadataType.LOG_FILE.typeName,
                      DeployedImplementationType.LOG_FILE,
                      "A file where each row represents a log message."),
 
@@ -646,7 +646,7 @@ public enum FileType
      */
     STDERR_FILE("Stderr Log File",
                 null,
-                OpenMetadataType.LOG_FILE_TYPE_NAME,
+                OpenMetadataType.LOG_FILE.typeName,
                 DeployedImplementationType.LOG_FILE,
                 "A file where each row represents a string output on the standard error (stderr) destination of a running process."),
 
@@ -655,7 +655,7 @@ public enum FileType
      */
     STDOUT_FILE("Stdout Log File",
                 null,
-                OpenMetadataType.LOG_FILE_TYPE_NAME,
+                OpenMetadataType.LOG_FILE.typeName,
                 DeployedImplementationType.LOG_FILE,
                 "A file where each row represents a string output on the standard out (stdout) destination of a running process."),
 

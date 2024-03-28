@@ -89,6 +89,12 @@ public enum ResourceUse
      */
     CALLED_SERVICE("Called Service", "A type of service that may be called by this service."),
 
+
+    /**
+     * A connector type that can be used in a connection used to create a connector instance.
+     */
+    CONFIGURE_CONNECTOR("Configure Connector", "A connector type that can be used in a connection used to create a connector instance."),
+
     ;
 
     /**

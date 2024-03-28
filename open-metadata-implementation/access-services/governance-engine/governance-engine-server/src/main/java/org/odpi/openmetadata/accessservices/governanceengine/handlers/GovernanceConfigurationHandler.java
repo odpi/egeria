@@ -2174,13 +2174,23 @@ public class GovernanceConfigurationHandler
         invalidParameterHandler.validateGUID(metadataElementGUID, metadataElementGUIDParameter, methodName);
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
 
-        InstanceProperties instanceProperties = new InstanceProperties();
+        InstanceProperties instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                             null,
+                                                                                             OpenMetadataType.CATALOG_TARGET_NAME_PROPERTY_NAME,
+                                                                                             properties.getCatalogTargetName(),
+                                                                                             methodName);
 
-        repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                     instanceProperties,
-                                                     OpenMetadataType.CATALOG_TARGET_NAME_PROPERTY_NAME,
-                                                     properties.getCatalogTargetName(),
-                                                     methodName);
+        instanceProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                          instanceProperties,
+                                                                          OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME,
+                                                                          properties.getMetadataSourceQualifiedName(),
+                                                                          methodName);
+
+        instanceProperties = repositoryHelper.addMapPropertyToInstance(serviceName,
+                                                                       instanceProperties,
+                                                                       OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME,
+                                                                       properties.getConfigurationProperties(),
+                                                                       methodName);
 
         integrationGroupHandler.linkElementToElement(userId,
                                                      null,

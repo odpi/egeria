@@ -60,14 +60,16 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param auditLog logging destination
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ValidValuesExchangeClient(String   serverName,
                                      String   serverPlatformURLRoot,
-                                     AuditLog auditLog) throws InvalidParameterException
+                                     AuditLog auditLog,
+                                     int      maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog, maxPageSize);
 
         validValueConverter = new ValidValueConverter<>(propertyHelper,
                                                         AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
@@ -92,13 +94,15 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ValidValuesExchangeClient(String serverName,
-                                     String serverPlatformURLRoot) throws InvalidParameterException
+                                     String serverPlatformURLRoot,
+                                     int    maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot, maxPageSize);
 
         validValueConverter = new ValidValueConverter<>(propertyHelper,
                                                         AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
@@ -127,6 +131,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @param auditLog logging destination
+     * @param maxPageSize maximum value allowed for page size
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
@@ -135,9 +140,10 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                      String   serverPlatformURLRoot,
                                      String   userId,
                                      String   password,
-                                     AuditLog auditLog) throws InvalidParameterException
+                                     AuditLog auditLog,
+                                     int      maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, auditLog, maxPageSize);
 
         validValueConverter = new ValidValueConverter<>(propertyHelper,
                                                         AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
@@ -202,15 +208,17 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ValidValuesExchangeClient(String serverName,
                                      String serverPlatformURLRoot,
                                      String userId,
-                                     String password) throws InvalidParameterException
+                                     String password,
+                                     int    maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password, maxPageSize);
 
         validValueConverter = new ValidValueConverter<>(propertyHelper,
                                                         AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceName(),
@@ -273,7 +281,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         invalidParameterHandler.validateObject(validValueProperties, validValuePropertiesName, methodName);
         invalidParameterHandler.validateName(validValueProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        String validValueTypeName = OpenMetadataType.VALID_VALUE_SET_TYPE_NAME;
+        String validValueTypeName = OpenMetadataType.VALID_VALUE_SET.typeName;
 
         if (validValueProperties.getTypeName() != null)
         {
@@ -338,7 +346,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         invalidParameterHandler.validateObject(validValueProperties, validValuePropertiesName, methodName);
         invalidParameterHandler.validateName(validValueProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        String validValueTypeName = OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME;
+        String validValueTypeName = OpenMetadataType.VALID_VALUE_DEFINITION.typeName;
 
         if (validValueProperties.getTypeName() != null)
         {
@@ -355,7 +363,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                      validValueProperties.getEffectiveTo(),
                                                                                      this.getElementProperties(validValueProperties),
                                                                                      setGUID,
-                                                                                     OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                                                                     OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName,
                                                                                      null,
                                                                                      true);
 
@@ -420,7 +428,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                         assetManagerGUID,
                                         assetManagerName,
                                         validValueGUID,
-                                        OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                        OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                         validValueExternalIdentifier);
 
         openMetadataStoreClient.updateMetadataElementInStore(userId,
@@ -473,7 +481,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                         assetManagerGUID,
                                         assetManagerName,
                                         validValueGUID,
-                                        OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                        OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                         validValueExternalIdentifier);
         
         openMetadataStoreClient.deleteMetadataElementInStore(userId,
@@ -573,7 +581,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                     properties.getDefaultValue());
 
             openMetadataStoreClient.createRelatedElementsInStore(userId,
-                                                                 OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                                                 OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName,
                                                                  setGUID,
                                                                  validValueGUID,
                                                                  forLineage,
@@ -586,7 +594,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         else
         {
             openMetadataStoreClient.createRelatedElementsInStore(userId,
-                                                                 OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                                                 OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName,
                                                                  setGUID,
                                                                  validValueGUID,
                                                                  forLineage,
@@ -638,7 +646,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         invalidParameterHandler.validateGUID(setGUID, parentGUIDParameterName, methodName);
 
         openMetadataStoreClient.deleteRelatedElementsInStore(userId,
-                                                             OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                                             OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName,
                                                              setGUID,
                                                              validValueGUID,
                                                              forLineage,
@@ -713,7 +721,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                  properties.getNotes());
 
             openMetadataStoreClient.createRelatedElementsInStore(userId,
-                                                                 OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                 OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName,
                                                                  referenceableGUID,
                                                                  validValueGUID,
                                                                  forLineage,
@@ -726,7 +734,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         else
         {
             openMetadataStoreClient.createRelatedElementsInStore(userId,
-                                                                 OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                 OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName,
                                                                  referenceableGUID,
                                                                  validValueGUID,
                                                                  forLineage,
@@ -778,7 +786,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         invalidParameterHandler.validateGUID(referenceableGUID, itemGUIDParameterName, methodName);
 
         openMetadataStoreClient.deleteRelatedElementsInStore(userId,
-                                                             OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                             OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName,
                                                              referenceableGUID,
                                                              validValueGUID,
                                                              forLineage,
@@ -934,7 +942,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
 
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElementsWithString(userId,
                                                                                                                 searchString,
-                                                                                                                OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                                                                                OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                                                                 forLineage,
                                                                                                                 forDuplicateProcessing,
                                                                                                                 effectiveTime,
@@ -987,7 +995,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         List<RelatedMetadataElement> linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                           validValueSetGUID,
                                                                                                           1,
-                                                                                                          OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                                                                                          OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName,
                                                                                                           forLineage,
                                                                                                           forDuplicateProcessing,
                                                                                                           effectiveTime,
@@ -1000,7 +1008,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
 
             for (RelatedMetadataElement relatedMetadataElement : linkedResources)
             {
-                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME))
+                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.VALID_VALUE_DEFINITION.typeName))
                 {
                     ValidValueMember validValueMember = validValueMemberConverter.getNewBean(validValueMemberClass, relatedMetadataElement, methodName);
 
@@ -1010,7 +1018,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                                                          assetManagerGUID,
                                                                                                                          assetManagerName,
                                                                                                                          validValueMember.getValidValueElement().getElementHeader().getGUID(),
-                                                                                                                         OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME));
+                                                                                                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName));
                     }
 
                     validValueMembers.add(validValueMember);
@@ -1070,7 +1078,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         List<RelatedMetadataElement> linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                           validValueGUID,
                                                                                                           2,
-                                                                                                          OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME,
+                                                                                                          OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName,
                                                                                                           forLineage,
                                                                                                           forDuplicateProcessing,
                                                                                                           effectiveTime,
@@ -1083,7 +1091,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
 
             for (RelatedMetadataElement relatedMetadataElement : linkedResources)
             {
-                if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.VALID_VALUE_SET_TYPE_NAME))
+                if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.VALID_VALUE_SET.typeName))
                 {
                     validValueSets.add(this.convertValidValue(userId,
                                                               assetManagerGUID,
@@ -1145,7 +1153,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         List<RelatedMetadataElement> linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                           validValueGUID,
                                                                                                           2,
-                                                                                                          OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                                                          OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName,
                                                                                                           forLineage,
                                                                                                           forDuplicateProcessing,
                                                                                                           effectiveTime,
@@ -1226,7 +1234,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
         List<RelatedMetadataElement> linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                           referenceableGUID,
                                                                                                           1,
-                                                                                                          OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                                                          OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName,
                                                                                                           forLineage,
                                                                                                           forDuplicateProcessing,
                                                                                                           effectiveTime,
@@ -1239,7 +1247,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
 
             for (RelatedMetadataElement relatedMetadataElement : linkedResources)
             {
-                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME))
+                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.VALID_VALUE_DEFINITION.typeName))
                 {
                     ReferenceValueAssignmentDefinitionElement bean = referenceValueAssignmentDefinitionConverter.getNewBean(referenceValueAssignmentDefinitionBeanClass, relatedMetadataElement, methodName);
 
@@ -1249,7 +1257,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                                              assetManagerGUID,
                                                                                                              assetManagerName,
                                                                                                              bean.getValidValueElement().getElementHeader().getGUID(),
-                                                                                                             OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME));
+                                                                                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName));
 
                         results.add(bean);
                     }
@@ -1350,7 +1358,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME)))
+        if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.VALID_VALUE_DEFINITION.typeName)))
         {
             ValidValueElement bean = validValueConverter.getNewBean(validValueBeanClass, openMetadataElement, methodName);
 
@@ -1360,7 +1368,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                               assetManagerGUID,
                                                                               assetManagerName,
                                                                               openMetadataElement.getElementGUID(),
-                                                                              OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME));
+                                                                              OpenMetadataType.VALID_VALUE_DEFINITION.typeName));
                 return bean;
             }
         }
@@ -1405,7 +1413,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                                                                    assetManagerGUID,
                                                                                                    assetManagerName,
                                                                                                    openMetadataElement.getElementGUID(),
-                                                                                                   OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME));
+                                                                                                   OpenMetadataType.VALID_VALUE_DEFINITION.typeName));
                         validValueElements.add(validValueElement);
                     }
                 }

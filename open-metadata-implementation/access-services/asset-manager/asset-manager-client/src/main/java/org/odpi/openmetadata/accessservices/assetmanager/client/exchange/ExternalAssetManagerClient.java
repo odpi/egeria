@@ -6,18 +6,12 @@ package org.odpi.openmetadata.accessservices.assetmanager.client.exchange;
 import org.odpi.openmetadata.accessservices.assetmanager.api.exchange.ExternalAssetManagerInterface;
 import org.odpi.openmetadata.accessservices.assetmanager.client.rest.AssetManagerRESTClient;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.AssetManagerProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.ElementHeadersResponse;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
-import java.util.List;
 
 
 /**
@@ -34,14 +28,16 @@ public class ExternalAssetManagerClient extends ExchangeClientBase implements Ex
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param auditLog logging destination
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ExternalAssetManagerClient(String   serverName,
                                       String   serverPlatformURLRoot,
-                                      AuditLog auditLog) throws InvalidParameterException
+                                      AuditLog auditLog,
+                                      int      maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog, maxPageSize);
     }
 
 
@@ -50,13 +46,15 @@ public class ExternalAssetManagerClient extends ExchangeClientBase implements Ex
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ExternalAssetManagerClient(String serverName,
-                                      String serverPlatformURLRoot) throws InvalidParameterException
+                                      String serverPlatformURLRoot,
+                                      int    maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot, maxPageSize);
     }
 
 
@@ -68,15 +66,17 @@ public class ExternalAssetManagerClient extends ExchangeClientBase implements Ex
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ExternalAssetManagerClient(String serverName,
                                       String serverPlatformURLRoot,
                                       String userId,
-                                      String password) throws InvalidParameterException
+                                      String password,
+                                      int    maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password, maxPageSize);
     }
     
 
@@ -89,6 +89,7 @@ public class ExternalAssetManagerClient extends ExchangeClientBase implements Ex
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @param auditLog logging destination
+     * @param maxPageSize maximum value allowed for page size
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
@@ -97,9 +98,10 @@ public class ExternalAssetManagerClient extends ExchangeClientBase implements Ex
                                       String   serverPlatformURLRoot,
                                       String   userId,
                                       String   password,
-                                      AuditLog auditLog) throws InvalidParameterException
+                                      AuditLog auditLog,
+                                      int      maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, auditLog, maxPageSize);
     }
 
     

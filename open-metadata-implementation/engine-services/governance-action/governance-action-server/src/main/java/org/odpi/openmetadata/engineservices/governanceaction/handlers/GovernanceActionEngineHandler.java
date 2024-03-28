@@ -148,7 +148,8 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
                                                                                                                partnerURLRoot,
                                                                                                                governanceContextClient,
                                                                                                                requestedStartDate,
-                                                                                                               auditLog);
+                                                                                                               auditLog,
+                                                                                                               maxPageSize);
 
             super.startServiceExecutionThread(engineActionGUID,
                                               governanceActionServiceHandler,

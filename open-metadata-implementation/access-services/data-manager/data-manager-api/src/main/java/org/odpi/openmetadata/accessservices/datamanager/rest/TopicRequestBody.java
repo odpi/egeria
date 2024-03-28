@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TopicRequestBody extends TopicProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String externalSourceGUID = null;
     private String externalSourceName = null;
 
@@ -122,6 +120,7 @@ public class TopicRequestBody extends TopicProperties
                        "externalSourceGUID='" + externalSourceGUID + '\'' +
                        ", externalSourceName='" + externalSourceName + '\'' +
                        ", topicType='" + getTopicType() + '\'' +
+                       ", topicName='" + getTopicName() + '\'' +
                        ", name='" + getName() + '\'' +
                        ", description='" + getDescription() + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +

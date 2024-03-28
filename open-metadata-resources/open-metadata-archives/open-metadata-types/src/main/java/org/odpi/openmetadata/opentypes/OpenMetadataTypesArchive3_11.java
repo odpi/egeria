@@ -1309,7 +1309,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Create the Patch
          */
-        final String typeName = "ReferenceValueAssignment";
+        final String typeName = OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -1349,7 +1349,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Create the Patch
          */
-        final String typeName = "ValidValuesMapping";
+        final String typeName = OpenMetadataType.VALID_VALUES_MAPPING_RELATIONSHIP.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -1389,7 +1389,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Create the Patch
          */
-        final String typeName = "ValidValuesImplementation";
+        final String typeName = OpenMetadataType.VALID_VALUES_IMPL_RELATIONSHIP.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -1407,7 +1407,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Create the Patch
          */
-        final String typeName = "ValidValueMember";
+        final String typeName = OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 

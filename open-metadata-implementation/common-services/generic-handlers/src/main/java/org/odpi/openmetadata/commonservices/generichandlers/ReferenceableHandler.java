@@ -2645,9 +2645,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         validValueGUID,
                                         validValueGUIDParameter,
                                         OpenMetadataType.REFERENCEABLE.typeName,
-                                        OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                        OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP.typeName,
+                                        OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                         null,
                                         null,
                                         1,
@@ -2695,9 +2695,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         validValueGUID,
                                         validValueGUIDParameter,
                                         OpenMetadataType.REFERENCEABLE.typeName,
-                                        OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                        OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName,
+                                        OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                         null,
                                         null,
                                         1,
@@ -3627,7 +3627,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         startingGUID,
                                         startingGUIDParameterName,
                                         startingTypeName,
-                                        OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
+                                        OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeGUID,
                                         OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
                                         resultingTypeName,
                                         null,
@@ -3704,6 +3704,249 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         effectiveTime,
                                         methodName);
     }
+
+
+    /**
+     * Create a relationship between a referenceable and a resource it uses.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source - null for local
+     * @param beanGUID unique identifier of the starting element
+     * @param beanGUIDParameter parameter supplying the beanGUID
+     * @param memberGUID unique identifier of the element to link
+     * @param memberGUIDParameter parameter supplying the memberGUID
+     * @param effectiveFrom starting time for this relationship (null for all time)
+     * @param effectiveTo ending time for this relationship (null for all time)
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the guid properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public void  saveCatalogTemplate(String              userId,
+                                     String              externalSourceGUID,
+                                     String              externalSourceName,
+                                     String              beanGUID,
+                                     String              beanGUIDParameter,
+                                     String              memberGUID,
+                                     String              memberGUIDParameter,
+                                     Date                effectiveFrom,
+                                     Date                effectiveTo,
+                                     boolean             forLineage,
+                                     boolean             forDuplicateProcessing,
+                                     Date                effectiveTime,
+                                     String              methodName)  throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+        this.linkElementToElement(userId,
+                                  externalSourceGUID,
+                                  externalSourceName,
+                                  beanGUID,
+                                  beanGUIDParameter,
+                                  OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                  memberGUID,
+                                  memberGUIDParameter,
+                                  OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                  forLineage,
+                                  forDuplicateProcessing,
+                                  supportedZones,
+                                  OpenMetadataType.CATALOG_TEMPLATE_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.CATALOG_TEMPLATE_RELATIONSHIP.typeName,
+                                  this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
+                                  effectiveFrom,
+                                  effectiveTo,
+                                  effectiveTime,
+                                  methodName);
+    }
+
+
+    /**
+     * Remove the relationship between a referenceable and a template it uses.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software capability entity that represented the external source
+     * @param beanGUID unique identifier of the referenceable
+     * @param beanGUIDParameter parameter supplying beanGUID
+     * @param memberGUID unique identifier of the glossary term
+     * @param memberGUIDParameter parameter supplying memberGUID
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void  removeCatalogTemplate(String  userId,
+                                       String  externalSourceGUID,
+                                       String  externalSourceName,
+                                       String  beanGUID,
+                                       String  beanGUIDParameter,
+                                       String  memberGUID,
+                                       String  memberGUIDParameter,
+                                       boolean forLineage,
+                                       boolean forDuplicateProcessing,
+                                       Date    effectiveTime,
+                                       String  methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        if (beanGUID != null)
+        {
+            this.unlinkElementFromElement(userId,
+                                          false,
+                                          externalSourceGUID,
+                                          externalSourceName,
+                                          beanGUID,
+                                          beanGUIDParameter,
+                                          OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                          memberGUID,
+                                          memberGUIDParameter,
+                                          OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
+                                          OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                          forLineage,
+                                          forDuplicateProcessing,
+                                          supportedZones,
+                                          OpenMetadataType.CATALOG_TEMPLATE_RELATIONSHIP.typeGUID,
+                                          OpenMetadataType.CATALOG_TEMPLATE_RELATIONSHIP.typeName,
+                                          effectiveTime,
+                                          methodName);
+        }
+    }
+
+
+
+    /**
+     * Returns the list of elements that are linked to provide templates to the starting element.
+     *
+     * @param userId       String   userId of user making request.
+     * @param startingGUID    String   unique id for element.
+     * @param startingGUIDParameterName name of parameter supplying the GUID
+     * @param suppliedStartingTypeName name of the type of object that the search begins with - null means referenceable
+     * @param startFrom int      starting position for fist returned element.
+     * @param pageSize  int      maximum number of elements to return on the call.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName String calling method
+     *
+     * @return a list of assets or
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<B> getCatalogTemplateList(String       userId,
+                                          String       startingGUID,
+                                          String       startingGUIDParameterName,
+                                          String       suppliedStartingTypeName,
+                                          int          startFrom,
+                                          int          pageSize,
+                                          boolean      forLineage,
+                                          boolean      forDuplicateProcessing,
+                                          Date         effectiveTime,
+                                          String       methodName) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        String startingTypeName  = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
+        String resultingTypeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
+
+        if (suppliedStartingTypeName != null)
+        {
+            startingTypeName = suppliedStartingTypeName;
+        }
+
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        startingGUID,
+                                        startingGUIDParameterName,
+                                        startingTypeName,
+                                        OpenMetadataType.CATALOG_TEMPLATE_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.CATALOG_TEMPLATE_RELATIONSHIP.typeName,
+                                        resultingTypeName,
+                                        null,
+                                        null,
+                                        2,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
+
+
+    /**
+     * Retrieve the list of templates assigned to a resource via the "CatalogTemplate" relationship between two referenceables.
+     *
+     * @param userId       String   userId of user making request.
+     * @param startingGUID    String   unique id for element.
+     * @param startingGUIDParameterName name of parameter supplying the GUID
+     * @param suppliedStartingTypeName name of the type of object that the search begins with - null means referenceable
+     * @param startFrom int      starting position for fist returned element.
+     * @param pageSize  int      maximum number of elements to return on the call.
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param effectiveTime the time that the retrieved elements must be effective for
+     * @param methodName String calling method
+     *
+     * @return a list of assets or
+     * @throws InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * @throws PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public List<B> getSupportedByTemplate(String       userId,
+                                          String       startingGUID,
+                                          String       startingGUIDParameterName,
+                                          String       suppliedStartingTypeName,
+                                          int          startFrom,
+                                          int          pageSize,
+                                          boolean      forLineage,
+                                          boolean      forDuplicateProcessing,
+                                          Date         effectiveTime,
+                                          String       methodName) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        String startingTypeName  = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
+        String resultingTypeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
+
+        if (suppliedStartingTypeName != null)
+        {
+            startingTypeName = suppliedStartingTypeName;
+        }
+
+        return this.getAttachedElements(userId,
+                                        null,
+                                        null,
+                                        startingGUID,
+                                        startingGUIDParameterName,
+                                        startingTypeName,
+                                        OpenMetadataType.CATALOG_TEMPLATE_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.CATALOG_TEMPLATE_RELATIONSHIP.typeName,
+                                        resultingTypeName,
+                                        null,
+                                        null,
+                                        1,
+                                        forLineage,
+                                        forDuplicateProcessing,
+                                        supportedZones,
+                                        startFrom,
+                                        pageSize,
+                                        effectiveTime,
+                                        methodName);
+    }
+
 
 
     /**

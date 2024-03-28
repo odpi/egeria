@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.client;
 
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
@@ -18,7 +19,7 @@ import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.Con
  */
 public class ConnectedAssetClient extends ConnectedAssetClientBase
 {
-    private static final String  serviceURLName = "governance-program";
+    private final static String serviceURLMarker = AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS.getAccessServiceURLMarker();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -33,7 +34,7 @@ public class ConnectedAssetClient extends ConnectedAssetClientBase
                                 String   serverPlatformURLRoot,
                                 AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, serviceURLName, auditLog);
+        super(serverName, serverPlatformURLRoot, serviceURLMarker, auditLog);
     }
 
 
@@ -47,7 +48,7 @@ public class ConnectedAssetClient extends ConnectedAssetClientBase
     public ConnectedAssetClient(String serverName,
                                 String serverPlatformURLRoot) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, serviceURLName);
+        super(serverName, serverPlatformURLRoot, serviceURLMarker);
     }
 
 
@@ -68,7 +69,7 @@ public class ConnectedAssetClient extends ConnectedAssetClientBase
                                 String     password,
                                 AuditLog   auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, serviceURLName, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, serviceURLMarker, userId, password, auditLog);
     }
 
 
@@ -87,6 +88,6 @@ public class ConnectedAssetClient extends ConnectedAssetClientBase
                                 String     userId,
                                 String     password) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, serviceURLName, userId, password);
+        super(serverName, serverPlatformURLRoot, serviceURLMarker, userId, password);
     }
 }

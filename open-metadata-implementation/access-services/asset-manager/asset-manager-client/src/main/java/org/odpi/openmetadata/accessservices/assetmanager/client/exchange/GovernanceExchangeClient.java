@@ -25,14 +25,16 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param auditLog logging destination
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public GovernanceExchangeClient(String   serverName,
                                     String   serverPlatformURLRoot,
-                                    AuditLog auditLog) throws InvalidParameterException
+                                    AuditLog auditLog,
+                                    int      maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog, maxPageSize);
     }
 
 
@@ -41,13 +43,15 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public GovernanceExchangeClient(String serverName,
-                                    String serverPlatformURLRoot) throws InvalidParameterException
+                                    String serverPlatformURLRoot,
+                                    int    maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot, maxPageSize);
     }
 
 
@@ -60,6 +64,7 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @param auditLog logging destination
+     * @param maxPageSize maximum value allowed for page size
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
@@ -68,9 +73,10 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
                                     String   serverPlatformURLRoot,
                                     String   userId,
                                     String   password,
-                                    AuditLog auditLog) throws InvalidParameterException
+                                    AuditLog auditLog,
+                                    int      maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, auditLog, maxPageSize);
     }
 
 
@@ -103,15 +109,17 @@ public class GovernanceExchangeClient extends ExchangeClientBase implements Gove
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public GovernanceExchangeClient(String serverName,
                                     String serverPlatformURLRoot,
                                     String userId,
-                                    String password) throws InvalidParameterException
+                                    String password,
+                                    int    maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password, maxPageSize);
     }
 
 

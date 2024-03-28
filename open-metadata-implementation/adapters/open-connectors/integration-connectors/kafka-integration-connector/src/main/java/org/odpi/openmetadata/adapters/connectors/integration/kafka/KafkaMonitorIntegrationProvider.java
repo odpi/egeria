@@ -78,7 +78,6 @@ public class KafkaMonitorIntegrationProvider extends IntegrationConnectorProvide
         recognizedConfigurationProperties.add(TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY);
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
-        connectorType.setDeployedImplementationType(DeployedImplementationType.TOPIC_INTEGRATION_CONNECTOR.getDeployedImplementationType());
 
         super.connectorTypeBean = connectorType;
 
@@ -95,13 +94,14 @@ public class KafkaMonitorIntegrationProvider extends IntegrationConnectorProvide
 
         super.setConnectorComponentDescription(componentDescription);
 
+        super.catalogTargets = new ArrayList<>();
+
         CatalogTargetType catalogTargetType = new CatalogTargetType();
 
         catalogTargetType.setName(CATALOG_TARGET_NAME);
         catalogTargetType.setTypeName(DeployedImplementationType.APACHE_KAFKA_SERVER.getAssociatedTypeName());
         catalogTargetType.setDeployedImplementationType(DeployedImplementationType.APACHE_KAFKA_SERVER.getDeployedImplementationType());
 
-        super.catalogTargets = new ArrayList<>();
         super.catalogTargets.add(catalogTargetType);
     }
 }

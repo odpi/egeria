@@ -21,6 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class TopicProperties extends DataSetProperties
 {
     private String topicType = null;
+    private String topicName = null;
 
     /**
      * Default constructor
@@ -43,6 +44,7 @@ public class TopicProperties extends DataSetProperties
         if (template != null)
         {
             topicType = template.getTopicType();
+            topicName = template.getTopicName();
         }
     }
 
@@ -70,6 +72,28 @@ public class TopicProperties extends DataSetProperties
 
 
     /**
+     * Return the name of topic.
+     *
+     * @return  name
+     */
+    public String getTopicName()
+    {
+        return topicName;
+    }
+
+
+    /**
+     * Set up the name of topic.
+     *
+     * @param topicName  name
+     */
+    public void setTopicName(String topicName)
+    {
+        this.topicName = topicName;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -89,6 +113,7 @@ public class TopicProperties extends DataSetProperties
                        ", typeName='" + getTypeName() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", topicType='" + topicType + '\'' +
+                       ", topicName='" + topicName + '\'' +
                        '}';
     }
 
@@ -102,24 +127,12 @@ public class TopicProperties extends DataSetProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (! (objectToCompare instanceof TopicProperties))
-        {
-            return false;
-        }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         TopicProperties that = (TopicProperties) objectToCompare;
-
-        return topicType != null ? topicType.equals(that.topicType) : that.topicType == null;
+        return Objects.equals(topicType, that.topicType) && Objects.equals(topicName, that.topicName);
     }
-
 
     /**
      * Return hash code based on properties.
@@ -129,6 +142,6 @@ public class TopicProperties extends DataSetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), topicType);
+        return Objects.hash(super.hashCode(), topicType, topicName);
     }
 }

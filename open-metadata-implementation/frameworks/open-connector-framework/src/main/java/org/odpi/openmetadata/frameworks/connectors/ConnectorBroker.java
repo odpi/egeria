@@ -447,6 +447,8 @@ public class ConnectorBroker
                      */
                     if (embeddedConnector instanceof SecretsStoreConnector secretsStoreConnector)
                     {
+                        secretsStoreConnector.start();
+
                         if (connectionBean.getUserId() == null)
                         {
                             connectionBean.setUserId(secretsStoreConnector.getSecret(userIdPropertyName));

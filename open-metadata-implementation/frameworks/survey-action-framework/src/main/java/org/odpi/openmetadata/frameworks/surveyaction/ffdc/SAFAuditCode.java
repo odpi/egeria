@@ -31,6 +31,12 @@ public enum SAFAuditCode implements AuditLogMessageSet
                         "Monitor the shutdown of the survey action service."),
 
 
+    WRONG_TYPE_OF_CONNECTOR("OCF-CONNECTION-400-011",
+                            AuditLogRecordSeverityLevel.ERROR,
+                            "The {0} Survey Acton Service has been supplied with a resource connector of class {1} rather than class {2} for asset {3}",
+                            "The survey is unable to continue since it is unable to work with the supplied connector.",
+                            "Use the details from the error message to determine the class of the connector.  " +
+                                    "Update the connector type associated with its Connection in the metadata store."),
     ;
 
     private final String                      logMessageId;

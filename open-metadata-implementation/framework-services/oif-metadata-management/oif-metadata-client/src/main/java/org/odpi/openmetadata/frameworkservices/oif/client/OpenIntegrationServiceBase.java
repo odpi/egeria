@@ -6,20 +6,19 @@ package org.odpi.openmetadata.frameworkservices.oif.client;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.integration.properties.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.integration.properties.IntegrationReport;
 import org.odpi.openmetadata.frameworks.integration.properties.IntegrationReportProperties;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.frameworkservices.oif.client.rest.OpenIntegrationRESTClient;
-import org.odpi.openmetadata.frameworkservices.oif.rest.CatalogTargetsResponse;
-import org.odpi.openmetadata.frameworkservices.oif.rest.IntegrationReportResponse;
-import org.odpi.openmetadata.frameworkservices.oif.rest.IntegrationReportsResponse;
-import org.odpi.openmetadata.frameworkservices.oif.rest.MetadataSourceRequestBody;
+import org.odpi.openmetadata.frameworkservices.oif.rest.*;
 
 import java.util.Date;
 import java.util.List;
@@ -35,6 +34,8 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
 
     private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
+    private final NullRequestBody nullRequestBody = new NullRequestBody();
+
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -42,18 +43,21 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param maxPageSize maximum value allowed for page size
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
     public OpenIntegrationServiceBase(String serviceURLMarker,
                                       String serverName,
-                                      String serverPlatformURLRoot) throws InvalidParameterException
+                                      String serverPlatformURLRoot,
+                                      int    maxPageSize) throws InvalidParameterException
     {
         super(serviceURLMarker, serverName, serverPlatformURLRoot);
 
         final String methodName = "Constructor (no security)";
 
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.restClient = new OpenIntegrationRESTClient(serverName, serverPlatformURLRoot);
@@ -70,6 +74,7 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param serverUserId          caller's userId embedded in all HTTP requests
      * @param serverPassword        caller's password embedded in all HTTP requests
+     * @param maxPageSize maximum value allowed for page size
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
@@ -78,12 +83,14 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
                                       String serverName,
                                       String serverPlatformURLRoot,
                                       String serverUserId,
-                                      String serverPassword) throws InvalidParameterException
+                                      String serverPassword,
+                                      int    maxPageSize) throws InvalidParameterException
     {
         super(serviceURLMarker, serverName, serverPlatformURLRoot);
 
         final String methodName = "Constructor (with security)";
 
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.restClient = new OpenIntegrationRESTClient(serverName, serverPlatformURLRoot, serverUserId, serverPassword);
@@ -212,6 +219,86 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
         return restResult.getGUID();
     }
 
+    /**
+     * Add a catalog target to an integration connector.
+     *
+     * @param userId identifier of calling user.
+     * @param integrationConnectorGUID unique identifier of the integration service.
+     * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.
+     * @param properties properties for the relationship.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem storing the catalog target definition.
+     */
+    @Override
+    public void addCatalogTarget(String                  userId,
+                                 String                  integrationConnectorGUID,
+                                 String                  metadataElementGUID,
+                                 CatalogTargetProperties properties) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        final String methodName = "addCatalogTarget";
+        final String propertiesParameterName = "properties";
+        final String integrationConnectorGUIDParameter = "integrationConnectorGUID";
+        final String metadataElementGUIDParameter = "metadataElementGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/governance-configuration-service/users/{2}/integration-connectors/{3}/catalog-targets/{4}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(integrationConnectorGUID, integrationConnectorGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(metadataElementGUID, metadataElementGUIDParameter, methodName);
+        invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        properties,
+                                        serverName,
+                                        serviceURLMarker,
+                                        userId,
+                                        integrationConnectorGUID,
+                                        metadataElementGUID);
+    }
+
+
+
+    /**
+     * Retrieve a specific catalog target associated with an integration connector.
+     *
+     * @param userId identifier of calling user.
+     * @param integrationConnectorGUID unique identifier of the integration service.
+     * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.
+     *
+     * @return details of the integration connector and the elements it is to catalog
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the integration connector definition.
+     */
+    @Override
+    public CatalogTarget getCatalogTarget(String userId,
+                                          String integrationConnectorGUID,
+                                          String metadataElementGUID) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        final String methodName = "getCatalogTarget";
+        final String integrationConnectorGUIDParameter = "integrationConnectorGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/governance-configuration-service/users/{2}/integration-connectors/{3}/catalog-targets/{4}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(integrationConnectorGUID, integrationConnectorGUIDParameter, methodName);
+
+        CatalogTargetResponse restResult = restClient.callCatalogTargetGetRESTCall(methodName,
+                                                                                   urlTemplate,
+                                                                                   serverName,
+                                                                                   serviceURLMarker,
+                                                                                   userId,
+                                                                                   integrationConnectorGUID,
+                                                                                   metadataElementGUID);
+
+        return restResult.getElement();
+    }
+
 
     /**
      * Retrieve the identifiers of the metadata elements identified as catalog targets with an integration connector.
@@ -252,6 +339,44 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
                                                                                      maximumResults);
 
         return restResult.getElements();
+    }
+
+
+    /**
+     * Unregister a catalog target from the integration connector.
+     *
+     * @param userId identifier of calling user.
+     * @param integrationConnectorGUID unique identifier of the integration connector.
+     * @param metadataElementGUID unique identifier of the metadata element.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem accessing/updating the integration connector definition.
+     */
+    @Override
+    public void removeCatalogTarget(String userId,
+                                    String integrationConnectorGUID,
+                                    String metadataElementGUID) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        final String methodName = "removeCatalogTarget";
+        final String integrationConnectorGUIDParameter = "integrationConnectorGUID";
+        final String metadataElementGUIDParameter = "metadataElementGUID";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/governance-configuration-service/users/{2}/integration-connectors/{3}/catalog-targets/{4}/delete";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(integrationConnectorGUID, integrationConnectorGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(metadataElementGUID, metadataElementGUIDParameter, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        serviceURLMarker,
+                                        userId,
+                                        integrationConnectorGUID,
+                                        metadataElementGUID);
     }
 
 

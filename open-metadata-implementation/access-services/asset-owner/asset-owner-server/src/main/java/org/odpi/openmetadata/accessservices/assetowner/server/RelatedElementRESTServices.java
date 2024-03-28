@@ -874,4 +874,283 @@ public class RelatedElementRESTServices
 
         return response;
     }
+
+
+    /**
+     * Create a "CatalogTemplate" relationship between a consuming element and a template element.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param templateGUID unique identifier of the template
+     * @param requestBody relationship properties
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setupCatalogTemplate(String                  serverName,
+                                             String                  userId,
+                                             String                  elementGUID,
+                                             String                  templateGUID,
+                                             RelationshipRequestBody requestBody)
+    {
+        final String methodName                = "setupResource";
+        final String elementGUIDParameterName  = "elementGUID";
+        final String templateGUIDParameterName = "templateGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof ResourceListProperties properties)
+                {
+
+                    handler.saveCatalogTemplate(userId,
+                                                null,
+                                                null,
+                                                elementGUID,
+                                                elementGUIDParameterName,
+                                                templateGUID,
+                                                templateGUIDParameterName,
+                                                properties.getEffectiveFrom(),
+                                                properties.getEffectiveTo(),
+                                                false,
+                                                false,
+                                                new Date(),
+                                                methodName);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.saveCatalogTemplate(userId,
+                                                null,
+                                                null,
+                                                elementGUID,
+                                                elementGUIDParameterName,
+                                                templateGUID,
+                                                templateGUIDParameterName,
+                                                null,
+                                                null,
+                                                false,
+                                                false,
+                                                new Date(),
+                                                methodName);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ResourceListProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove a "CatalogTemplate" relationship between two referenceables.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param templateGUID unique identifier of the template
+     * @param requestBody external source identifiers
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearCatalogTemplate(String                    serverName,
+                                             String                    userId,
+                                             String                    elementGUID,
+                                             String                    templateGUID,
+                                             ExternalSourceRequestBody requestBody)
+    {
+        final String methodName                = "clearCatalogTemplate";
+        final String elementGUIDParameterName  = "elementGUID";
+        final String templateGUIDParameterName = "templateGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                handler.removeCatalogTemplate(userId,
+                                              requestBody.getExternalSourceGUID(),
+                                              requestBody.getExternalSourceName(),
+                                              elementGUID,
+                                              elementGUIDParameterName,
+                                              templateGUID,
+                                              templateGUIDParameterName,
+                                              false,
+                                              false,
+                                              new Date(),
+                                              methodName);
+            }
+            else
+            {
+                handler.removeCatalogTemplate(userId,
+                                              null,
+                                              null,
+                                              elementGUID,
+                                              elementGUIDParameterName,
+                                              templateGUID,
+                                              templateGUIDParameterName,
+                                              false,
+                                              false,
+                                              new Date(),
+                                              methodName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of templates assigned to an element via the "CatalogTemplate" relationship.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param elementGUID unique identifier of the element
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public  RelatedElementListResponse getCatalogTemplateList(String serverName,
+                                                              String userId,
+                                                              String elementGUID,
+                                                              int    startFrom,
+                                                              int    pageSize)
+    {
+        final String methodName        = "getCatalogTemplateList";
+        final String guidPropertyName  = "elementGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        RelatedElementListResponse response = new RelatedElementListResponse();
+        AuditLog                   auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+
+            response.setElementList(handler.getCatalogTemplateList(userId,
+                                                                   elementGUID,
+                                                                   guidPropertyName,
+                                                                   OpenMetadataType.REFERENCEABLE.typeName,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   false,
+                                                                   false,
+                                                                   new Date(),
+                                                                   methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of elements assigned to a template via the "CatalogTemplate" relationship.
+     *
+     * @param serverName name of the service to route the request to.
+     * @param userId calling user
+     * @param templateGUID unique identifier of the template
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public RelatedElementListResponse getSupportedByTemplate(String serverName,
+                                                             String userId,
+                                                             String templateGUID,
+                                                             int   startFrom,
+                                                             int   pageSize)
+    {
+        final String methodName        = "getSupportedByTemplate";
+        final String guidPropertyName  = "templateGUID";
+
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        RelatedElementListResponse response = new RelatedElementListResponse();
+        AuditLog                   auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ReferenceableHandler<RelatedElement> handler = instanceHandler.getRelatedElementHandler(userId, serverName, methodName);
+
+            response.setElementList(handler.getSupportedByTemplate(userId,
+                                                                   templateGUID,
+                                                                   guidPropertyName,
+                                                                   OpenMetadataType.REFERENCEABLE.typeName,
+                                                                   startFrom,
+                                                                   pageSize,
+                                                                   false,
+                                                                   false,
+                                                                   new Date(),
+                                                                   methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
 }

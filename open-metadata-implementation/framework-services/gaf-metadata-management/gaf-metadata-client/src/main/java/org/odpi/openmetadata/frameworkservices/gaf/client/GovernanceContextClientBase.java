@@ -46,7 +46,6 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
     protected       GovernanceListenerManager governanceListenerManager = null;
     protected  String                    listenerId = null;
 
-    protected final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -54,19 +53,18 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param maxPageSize           pre-initialized parameter limit
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
-    public GovernanceContextClientBase(String                    serviceURLMarker,
-                                       String                    serverName,
-                                       String                    serverPlatformURLRoot) throws InvalidParameterException
+    public GovernanceContextClientBase(String serviceURLMarker,
+                                       String serverName,
+                                       String serverPlatformURLRoot,
+                                       int    maxPageSize) throws InvalidParameterException
     {
-        super(serviceURLMarker, serverName, serverPlatformURLRoot);
+        super(serviceURLMarker, serverName, serverPlatformURLRoot, maxPageSize);
 
-        final String methodName = "Constructor (no security)";
-
-        this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         this.restClient = new GAFRESTClient(serverName, serverPlatformURLRoot);
     }
 
@@ -80,6 +78,7 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param serverUserId          caller's userId embedded in all HTTP requests
      * @param serverPassword        caller's password embedded in all HTTP requests
+     * @param maxPageSize           pre-initialized parameter limit
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
@@ -88,12 +87,14 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
                                        String serverName,
                                        String serverPlatformURLRoot,
                                        String serverUserId,
-                                       String serverPassword) throws InvalidParameterException
+                                       String serverPassword,
+                                       int    maxPageSize) throws InvalidParameterException
     {
-        super(serviceURLMarker, serverName, serverPlatformURLRoot);
+        super(serviceURLMarker, serverName, serverPlatformURLRoot, maxPageSize);
 
         final String methodName = "Client Constructor (with security)";
 
+        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
         this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
         this.restClient = new GAFRESTClient(serverName, serverPlatformURLRoot, serverUserId, serverPassword);
     }
@@ -117,12 +118,7 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
                                        GAFRESTClient restClient,
                                        int           maxPageSize) throws InvalidParameterException
     {
-        super(serviceURLMarker, serverName, serverPlatformURLRoot);
-
-        final String methodName = "Client Constructor (with REST client)";
-        
-        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
-        this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+        super(serviceURLMarker, serverName, serverPlatformURLRoot, maxPageSize);
 
         this.restClient = restClient;
     }

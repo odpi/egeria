@@ -2670,18 +2670,20 @@ public class OpenMetadataTypesArchive2_6
 
     private ClassificationDef addInstanceMetadataClassification()
     {
-        final String guid            = "e6d5c097-a5e9-4bc4-a614-2506276059af";
-        final String name            = "InstanceMetadata";
-        final String description     = "Defines a data field that contains metadata for the row/record/object.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.INSTANCE_METADATA_CLASSIFICATION.typeGUID;
+        final String name            = OpenMetadataType.INSTANCE_METADATA_CLASSIFICATION.typeName;
+        final String description     = OpenMetadataType.INSTANCE_METADATA_CLASSIFICATION.description;
+        final String descriptionGUID = OpenMetadataType.INSTANCE_METADATA_CLASSIFICATION.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.INSTANCE_METADATA_CLASSIFICATION.wikiURL;
 
-        final String linkedToEntity = "SchemaElement";
+        final String linkedToEntity = OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME;
 
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
                                                                                  null,
                                                                                  description,
                                                                                  descriptionGUID,
+                                                                                 descriptionWiki,
                                                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
                                                                                  true);
 
@@ -2691,15 +2693,15 @@ public class OpenMetadataTypesArchive2_6
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "typeName";
-        final String attribute1Description     = "Open metadata type for the instance metadata (if applicable).";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the metadata.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.TYPE_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.TYPE_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.TYPE_NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = OpenMetadataProperty.ADDITIONAL_PROPERTIES.name;
-        final String attribute3Description     = "Additional properties describing properties, valid values or associated processing for this metadata.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute3Description     = OpenMetadataProperty.ADDITIONAL_PROPERTIES.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.ADDITIONAL_PROPERTIES.descriptionGUID;
 
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,

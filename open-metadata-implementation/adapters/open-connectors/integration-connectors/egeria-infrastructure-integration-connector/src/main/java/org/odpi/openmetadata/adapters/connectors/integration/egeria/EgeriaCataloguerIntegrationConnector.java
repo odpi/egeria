@@ -942,8 +942,8 @@ public class EgeriaCataloguerIntegrationConnector extends InfrastructureIntegrat
                                             String       elementTypeName,
                                             List<String> elementSuperTypes)
     {
-        if ((OpenMetadataType.SOFTWARE_SERVER_PLATFORM_TYPE_NAME.equals(elementTypeName)) ||
-                ((elementSuperTypes != null) && (elementSuperTypes.contains(OpenMetadataType.SOFTWARE_SERVER_PLATFORM_TYPE_NAME))))
+        if ((OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName.equals(elementTypeName)) ||
+                ((elementSuperTypes != null) && (elementSuperTypes.contains(OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName))))
         {
             /*
              * Element is a software server platform. Is this a new platform?

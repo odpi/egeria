@@ -76,7 +76,7 @@ public class ValidValuesReport
              * These clients are from the Digital Architecture OMAS.
              */
             ReferenceDataManager    referenceDataManager = new ReferenceDataManager(serverName, platformURLRoot);
-            OpenMetadataStoreClient openMetadataStoreClient = new OpenMetadataStoreClient(serverName, platformURLRoot);
+            OpenMetadataStoreClient openMetadataStoreClient = new OpenMetadataStoreClient(serverName, platformURLRoot, 100);
 
             /*
              * This outputs the report title
@@ -134,7 +134,7 @@ public class ValidValuesReport
                     {
                         for (RelatedMetadataElement relatedElement : relatedElements)
                         {
-                            if (! propertyHelper.isTypeOf(relatedElement, OpenMetadataType.VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME))
+                            if (! propertyHelper.isTypeOf(relatedElement, OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName))
                             {
                                 report.printReportLine(validValueInformation.indentLevel + 2, "Relationship type", relatedElement.getType().getTypeName());
                                 if (relatedElement.getRelationshipProperties() != null)
@@ -167,7 +167,7 @@ public class ValidValuesReport
                                     List<RelatedMetadataElement> relatedRefElements = openMetadataStoreClient.getRelatedMetadataElements(clientUserId,
                                                                                                                                          relatedElement.getElement().getElementGUID(),
                                                                                                                                          0,
-                                                                                                                                         OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                                                                                         OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
                                                                                                                                          false,
                                                                                                                                          false,
                                                                                                                                          new Date(),
@@ -180,12 +180,12 @@ public class ValidValuesReport
                                         {
                                             if (relatedRefElement != null)
                                             {
-                                                String attributeName = propertyHelper.getStringProperty(reportTitle,
-                                                                                                        OpenMetadataType.ATTRIBUTE_NAME_PROPERTY_NAME,
+                                                String propertyType = propertyHelper.getStringProperty(reportTitle,
+                                                                                                        OpenMetadataProperty.PROPERTY_TYPE.name,
                                                                                                         relatedRefElement.getRelationshipProperties(),
                                                                                                         methodName);
 
-                                                report.printReportSubheading(validValueInformation.indentLevel + 5, "Assigned reference value: " + attributeName);
+                                                report.printReportSubheading(validValueInformation.indentLevel + 5, "Assigned specification property: " + propertyType);
 
                                                 if (relatedRefElement.getElement().getElementProperties() != null)
                                                 {
@@ -201,7 +201,7 @@ public class ValidValuesReport
                                         relatedRefElements = openMetadataStoreClient.getRelatedMetadataElements(clientUserId,
                                                                                                                 validValueInformation.element.getElementHeader().getGUID(),
                                                                                                                 0,
-                                                                                                                OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP_TYPE_NAME,
+                                                                                                                OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
                                                                                                                 false,
                                                                                                                 false,
                                                                                                                 new Date(),
@@ -259,7 +259,7 @@ public class ValidValuesReport
 
         validValueInformationList.add(validValueInformation);
 
-        if (propertyHelper.isTypeOf(element.getElementHeader(), OpenMetadataType.VALID_VALUE_SET_TYPE_NAME))
+        if (propertyHelper.isTypeOf(element.getElementHeader(), OpenMetadataType.VALID_VALUE_SET.typeName))
         {
             int                     startFrom = 0;
             List<ValidValueElement> nestedElements = referenceDataManager.getValidValueSetMembers(clientUserId,

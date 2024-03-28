@@ -984,19 +984,21 @@ public class OpenMetadataTypesArchive3_1
 
     private EntityDef addKafkaTopicEntity()
     {
-        final String guid = "f2f5dae9-8410-420f-81f4-5d08543e07aa";
+        final String guid = OpenMetadataType.KAFKA_TOPIC.typeGUID;
 
-        final String name            = "KafkaTopic";
-        final String description     = "An event topic supported by Apache Kafka.";
-        final String descriptionGUID = null;
+        final String name            = OpenMetadataType.KAFKA_TOPIC.typeName;
+        final String description     = OpenMetadataType.KAFKA_TOPIC.description;
+        final String descriptionGUID = OpenMetadataType.KAFKA_TOPIC.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.KAFKA_TOPIC.wikiURL;
 
-        final String superTypeName = "Topic";
+        final String superTypeName = OpenMetadataType.TOPIC.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
-                                                 descriptionGUID);
+                                                 descriptionGUID,
+                                                 descriptionWiki);
     }
 
 

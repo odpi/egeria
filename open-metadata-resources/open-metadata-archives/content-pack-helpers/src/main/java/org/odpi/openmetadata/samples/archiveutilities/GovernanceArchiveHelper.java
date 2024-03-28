@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.controls.*;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
-import org.odpi.openmetadata.frameworks.governanceaction.refdata.ReferenceValueAttributeName;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.SpecificationPropertyType;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStepType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
@@ -72,7 +72,6 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
     {
         super(archiveBuilder, archiveGUID, archiveName, archiveRootName, originatorName, creationDate, versionNumber, versionName);
     }
-
 
 
     /**
@@ -460,11 +459,11 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":PlaceholderProperty:" + replacementAttributeType.getName(),
                                                            replacementAttributeType.getName(),
-                                                           ReferenceValueAttributeName.REPLACEMENT_ATTRIBUTE.getDescription(),
-                                                           ReferenceValueAttributeName.REPLACEMENT_ATTRIBUTE.getAttributeName(),
+                                                           SpecificationPropertyType.REPLACEMENT_ATTRIBUTE.getDescription(),
+                                                           SpecificationPropertyType.REPLACEMENT_ATTRIBUTE.getPropertyType(),
                                                            null,
                                                            null,
                                                            replacementAttributeType.getName(),
@@ -474,14 +473,9 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
                 if (validValueGUID != null)
                 {
-                    addReferenceValueAssignmentRelationship(parentGUID,
-                                                            validValueGUID,
-                                                            ReferenceValueAttributeName.REPLACEMENT_ATTRIBUTE.getAttributeName(),
-                                                            100,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null);
+                    addSpecificationPropertyAssignmentRelationship(parentGUID,
+                                                                   validValueGUID,
+                                                                   SpecificationPropertyType.REPLACEMENT_ATTRIBUTE.getPropertyType());
                 }
             }
         }
@@ -526,11 +520,11 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":PlaceholderProperty:" + placeholderPropertyType.getName(),
                                                            placeholderPropertyType.getName(),
-                                                           ReferenceValueAttributeName.PLACEHOLDER_PROPERTY.getDescription(),
-                                                           ReferenceValueAttributeName.PLACEHOLDER_PROPERTY.getAttributeName(),
+                                                           SpecificationPropertyType.PLACEHOLDER_PROPERTY.getDescription(),
+                                                           SpecificationPropertyType.PLACEHOLDER_PROPERTY.getPropertyType(),
                                                            null,
                                                            null,
                                                            placeholderPropertyType.getName(),
@@ -540,14 +534,9 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
                 if (validValueGUID != null)
                 {
-                    addReferenceValueAssignmentRelationship(parentGUID,
-                                                            validValueGUID,
-                                                            ReferenceValueAttributeName.PLACEHOLDER_PROPERTY.getAttributeName(),
-                                                            100,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null);
+                    addSpecificationPropertyAssignmentRelationship(parentGUID,
+                                                                   validValueGUID,
+                                                                   SpecificationPropertyType.PLACEHOLDER_PROPERTY.getPropertyType());
                 }
             }
         }
@@ -594,11 +583,11 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":SupportedConfigurationProperty:" + configurationPropertyType.getName(),
                                                            configurationPropertyType.getName(),
-                                                           ReferenceValueAttributeName.SUPPORTED_CONFIGURATION_PROPERTY.getDescription(),
-                                                           ReferenceValueAttributeName.SUPPORTED_CONFIGURATION_PROPERTY.getAttributeName(),
+                                                           SpecificationPropertyType.SUPPORTED_CONFIGURATION_PROPERTY.getDescription(),
+                                                           SpecificationPropertyType.SUPPORTED_CONFIGURATION_PROPERTY.getPropertyType(),
                                                            null,
                                                            null,
                                                            configurationPropertyType.getName(),
@@ -608,14 +597,9 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
                 if (validValueGUID != null)
                 {
-                    addReferenceValueAssignmentRelationship(parentGUID,
-                                                            validValueGUID,
-                                                            ReferenceValueAttributeName.SUPPORTED_CONFIGURATION_PROPERTY.getAttributeName(),
-                                                            100,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null);
+                    addSpecificationPropertyAssignmentRelationship(parentGUID,
+                                                                   validValueGUID,
+                                                                   SpecificationPropertyType.SUPPORTED_CONFIGURATION_PROPERTY.getPropertyType());
                 }
             }
         }
@@ -650,11 +634,11 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":SupportedRequestType:" + supportedRequestType.getRequestType(),
                                                            supportedRequestType.getRequestType(),
-                                                           ReferenceValueAttributeName.SUPPORTED_REQUEST_TYPE.getDescription(),
-                                                           ReferenceValueAttributeName.SUPPORTED_REQUEST_TYPE.getAttributeName(),
+                                                           SpecificationPropertyType.SUPPORTED_REQUEST_TYPE.getDescription(),
+                                                           SpecificationPropertyType.SUPPORTED_REQUEST_TYPE.getPropertyType(),
                                                            null,
                                                            null,
                                                            supportedRequestType.getRequestType(),
@@ -664,14 +648,9 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
                 if (validValueGUID != null)
                 {
-                    addReferenceValueAssignmentRelationship(parentGUID,
-                                                            validValueGUID,
-                                                            ReferenceValueAttributeName.SUPPORTED_REQUEST_TYPE.getAttributeName(),
-                                                            100,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null);
+                    addSpecificationPropertyAssignmentRelationship(parentGUID,
+                                                                   validValueGUID,
+                                                                   SpecificationPropertyType.SUPPORTED_REQUEST_TYPE.getPropertyType());
                 }
             }
         }
@@ -716,11 +695,11 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":SupportedRequestParameter:" + supportedRequestParameter.getName(),
                                                            supportedRequestParameter.getName(),
-                                                           ReferenceValueAttributeName.SUPPORTED_REQUEST_PARAMETER.getDescription(),
-                                                           ReferenceValueAttributeName.SUPPORTED_REQUEST_PARAMETER.getAttributeName(),
+                                                           SpecificationPropertyType.SUPPORTED_REQUEST_PARAMETER.getDescription(),
+                                                           SpecificationPropertyType.SUPPORTED_REQUEST_PARAMETER.getPropertyType(),
                                                            null,
                                                            null,
                                                            supportedRequestParameter.getName(),
@@ -730,14 +709,9 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
                 if (validValueGUID != null)
                 {
-                    addReferenceValueAssignmentRelationship(parentGUID,
-                                                            validValueGUID,
-                                                            ReferenceValueAttributeName.SUPPORTED_REQUEST_PARAMETER.getAttributeName(),
-                                                            100,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null);
+                    addSpecificationPropertyAssignmentRelationship(parentGUID,
+                                                                   validValueGUID,
+                                                                   SpecificationPropertyType.SUPPORTED_REQUEST_PARAMETER.getPropertyType());
                 }
             }
         }
@@ -782,11 +756,11 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":SupportedActionTarget:" + supportedActionTarget.getName(),
                                                            supportedActionTarget.getName(),
-                                                           ReferenceValueAttributeName.SUPPORTED_ACTION_TARGET.getDescription(),
-                                                           ReferenceValueAttributeName.SUPPORTED_ACTION_TARGET.getAttributeName(),
+                                                           SpecificationPropertyType.SUPPORTED_ACTION_TARGET.getDescription(),
+                                                           SpecificationPropertyType.SUPPORTED_ACTION_TARGET.getPropertyType(),
                                                            null,
                                                            null,
                                                            supportedActionTarget.getName(),
@@ -796,14 +770,9 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
                 if (validValueGUID != null)
                 {
-                    addReferenceValueAssignmentRelationship(parentGUID,
-                                                            validValueGUID,
-                                                            ReferenceValueAttributeName.SUPPORTED_ACTION_TARGET.getAttributeName(),
-                                                            100,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null);
+                    addSpecificationPropertyAssignmentRelationship(parentGUID,
+                                                                   validValueGUID,
+                                                                   SpecificationPropertyType.SUPPORTED_ACTION_TARGET.getPropertyType());
                 }
             }
         }
@@ -838,11 +807,11 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":SupportedAnalysisStep:" + analysisStepType.getName(),
                                                            analysisStepType.getName(),
-                                                           ReferenceValueAttributeName.SUPPORTED_ANALYSIS_STEP.getDescription(),
-                                                           ReferenceValueAttributeName.SUPPORTED_ANALYSIS_STEP.getAttributeName(),
+                                                           SpecificationPropertyType.SUPPORTED_ANALYSIS_STEP.getDescription(),
+                                                           SpecificationPropertyType.SUPPORTED_ANALYSIS_STEP.getPropertyType(),
                                                            null,
                                                            null,
                                                            analysisStepType.getName(),
@@ -852,14 +821,9 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
                 if (validValueGUID != null)
                 {
-                    addReferenceValueAssignmentRelationship(parentGUID,
-                                                            validValueGUID,
-                                                            ReferenceValueAttributeName.SUPPORTED_ANALYSIS_STEP.getAttributeName(),
-                                                            100,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null);
+                    addSpecificationPropertyAssignmentRelationship(parentGUID,
+                                                                   validValueGUID,
+                                                                   SpecificationPropertyType.SUPPORTED_ANALYSIS_STEP.getPropertyType());
                 }
             }
         }
@@ -898,11 +862,11 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":ProducedAnnotationType:" + annotationTypeType.getName(),
                                                            annotationTypeType.getOpenMetadataTypeName() + ":" + annotationTypeType.getName(),
-                                                           ReferenceValueAttributeName.PRODUCED_ANNOTATION_TYPE.getDescription(),
-                                                           ReferenceValueAttributeName.PRODUCED_ANNOTATION_TYPE.getAttributeName(),
+                                                           SpecificationPropertyType.PRODUCED_ANNOTATION_TYPE.getDescription(),
+                                                           SpecificationPropertyType.PRODUCED_ANNOTATION_TYPE.getPropertyType(),
                                                            null,
                                                            null,
                                                            annotationTypeType.getName(),
@@ -912,14 +876,9 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
                 if (validValueGUID != null)
                 {
-                    addReferenceValueAssignmentRelationship(parentGUID,
-                                                            validValueGUID,
-                                                            ReferenceValueAttributeName.PRODUCED_ANNOTATION_TYPE.getAttributeName(),
-                                                            100,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null);
+                    addSpecificationPropertyAssignmentRelationship(parentGUID,
+                                                                   validValueGUID,
+                                                                   SpecificationPropertyType.PRODUCED_ANNOTATION_TYPE.getPropertyType());
                 }
             }
         }
@@ -964,11 +923,11 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":ProducedRequestParameter:" + producedRequestParameter.getName(),
                                                            producedRequestParameter.getName(),
-                                                           ReferenceValueAttributeName.PRODUCED_REQUEST_PARAMETER.getDescription(),
-                                                           ReferenceValueAttributeName.PRODUCED_REQUEST_PARAMETER.getAttributeName(),
+                                                           SpecificationPropertyType.PRODUCED_REQUEST_PARAMETER.getDescription(),
+                                                           SpecificationPropertyType.PRODUCED_REQUEST_PARAMETER.getPropertyType(),
                                                            null,
                                                            null,
                                                            producedRequestParameter.getName(),
@@ -978,14 +937,9 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
                 if (validValueGUID != null)
                 {
-                    addReferenceValueAssignmentRelationship(parentGUID,
-                                                            validValueGUID,
-                                                            ReferenceValueAttributeName.PRODUCED_REQUEST_PARAMETER.getAttributeName(),
-                                                            100,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null);
+                    addSpecificationPropertyAssignmentRelationship(parentGUID,
+                                                                   validValueGUID,
+                                                                   SpecificationPropertyType.PRODUCED_REQUEST_PARAMETER.getPropertyType());
                 }
             }
         }
@@ -1030,11 +984,11 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":ProducedActionTarget:" + actionTargetType.getName(),
                                                            actionTargetType.getName(),
-                                                           ReferenceValueAttributeName.PRODUCED_ACTION_TARGET.getDescription(),
-                                                           ReferenceValueAttributeName.PRODUCED_ACTION_TARGET.getAttributeName(),
+                                                           SpecificationPropertyType.PRODUCED_ACTION_TARGET.getDescription(),
+                                                           SpecificationPropertyType.PRODUCED_ACTION_TARGET.getPropertyType(),
                                                            null,
                                                            null,
                                                            actionTargetType.getName(),
@@ -1044,14 +998,9 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
                 if (validValueGUID != null)
                 {
-                    addReferenceValueAssignmentRelationship(parentGUID,
-                                                            validValueGUID,
-                                                            ReferenceValueAttributeName.PRODUCED_ACTION_TARGET.getAttributeName(),
-                                                            100,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null);
+                    addSpecificationPropertyAssignmentRelationship(parentGUID,
+                                                                   validValueGUID,
+                                                                   SpecificationPropertyType.PRODUCED_ACTION_TARGET.getPropertyType());
                 }
             }
         }
@@ -1088,11 +1037,11 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            parentGUID,
                                                            parentTypeName,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION_TYPE_NAME,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                            parentTypeName + ":" + parentGUID + ":ProducedGuard:" + guardType.getGuard(),
                                                            guardType.getGuard(),
-                                                           ReferenceValueAttributeName.PRODUCED_GUARD.getDescription(),
-                                                           ReferenceValueAttributeName.PRODUCED_GUARD.getAttributeName(),
+                                                           SpecificationPropertyType.PRODUCED_GUARD.getDescription(),
+                                                           SpecificationPropertyType.PRODUCED_GUARD.getPropertyType(),
                                                            guardType.getCompletionStatus().getName(),
                                                            null,
                                                            guardType.getGuard(),
@@ -1102,14 +1051,9 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
                 if (validValueGUID != null)
                 {
-                    addReferenceValueAssignmentRelationship(parentGUID,
-                                                            validValueGUID,
-                                                            ReferenceValueAttributeName.PRODUCED_GUARD.getAttributeName(),
-                                                            100,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null);
+                    addSpecificationPropertyAssignmentRelationship(parentGUID,
+                                                                   validValueGUID,
+                                                                   SpecificationPropertyType.PRODUCED_GUARD.getPropertyType());
                 }
             }
         }

@@ -122,13 +122,26 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
             List<CatalogTarget> catalogTargetList = integrationContext.getCatalogTargets(startFrom,
                                                                                          integrationContext.getMaxPageSize());
 
+
             while (catalogTargetList != null)
             {
                 for (CatalogTarget catalogTarget : catalogTargetList)
                 {
-                    if (catalogTarget != null)
+                    boolean externalSourceIsHome = integrationContext.getExternalSourceIsHome();
+
+                    if ((catalogTarget != null) && (super.isActive()))
                     {
                         catalogTargetCount = catalogTargetCount + 1;
+
+                        if (catalogTarget.getMetadataSourceQualifiedName() == null)
+                        {
+                            integrationContext.setExternalSourceIsHome(false);
+                        }
+                        else
+                        {
+                            integrationContext.setMetadataSourceQualifiedName(catalogTarget.getMetadataSourceQualifiedName());
+                            integrationContext.setExternalSourceIsHome(true);
+                        }
 
                         RequestedCatalogTarget requestedCatalogTarget = new RequestedCatalogTarget(catalogTarget);
 
@@ -156,6 +169,8 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
                                                                                                         requestedCatalogTarget.getCatalogTargetName()));
                         catalogTargetIntegrator.integrateCatalogTarget(requestedCatalogTarget);
                     }
+
+                    integrationContext.setExternalSourceIsHome(externalSourceIsHome);
                 }
 
                 startFrom = startFrom + integrationContext.getMaxPageSize();

@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
+import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 
 /**
  * PostgresServerSurveyActionProvider is the OCF connector provider for the PostgreSQL survey action service.
@@ -80,6 +81,8 @@ public class PostgresDatabaseSurveyActionProvider extends SurveyActionServicePro
         super.setConnectorComponentDescription(componentDescription);
 
         super.supportedActionTargetTypes = PostgresActionTarget.getPostgresDatabaseActionTargetTypes();
+        super.supportedAnalysisSteps = AnalysisStep.getAnalysisStepTypes(new AnalysisStep[] {
+                AnalysisStep.CHECK_ASSET, AnalysisStep.PROFILING_ASSOCIATED_RESOURCES});
         super.producedAnnotationTypes    = PostgresAnnotationType.getPostgresDatabaseAnnotationTypeTypes();
     }
 }

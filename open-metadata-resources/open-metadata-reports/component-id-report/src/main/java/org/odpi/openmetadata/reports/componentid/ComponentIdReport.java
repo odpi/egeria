@@ -65,8 +65,10 @@ public class ComponentIdReport
     private static final String folderSurveyActionProviderClassName = "org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyServiceProvider";
     private static final String fileSurveyActionProviderClassName = "org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileSurveyServiceProvider";
     private static final String csvFileSurveyActionProviderClassName = "org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv.CSVSurveyServiceProvider";
-    private static final String postgresServerSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresServerSurveyServiceProvider";
+    private static final String postgresServerSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresServerSurveyActionProvider";
+    private static final String postgresDatabaseSurveyProviderClassName = "org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresDatabaseSurveyActionProvider";
     private static final String postgresServerCatalogProviderClassName = "org.odpi.openmetadata.adapters.connectors.postgres.catalog.PostgresServerIntegrationProvider";
+    private static final String apacheKafkaAdminProviderClassName = "org.odpi.openmetadata.adapters.connectors.apachekafka.resource.ApacheKafkaAdminProvider";
 
 
     /**
@@ -247,6 +249,8 @@ public class ComponentIdReport
         this.addConnectorDescription(sequentialSurveyPipelineProviderClassName, report);
         this.addConnectorDescription(postgresServerCatalogProviderClassName, report);
         this.addConnectorDescription(postgresServerSurveyProviderClassName, report);
+        this.addConnectorDescription(postgresDatabaseSurveyProviderClassName, report);
+        this.addConnectorDescription(apacheKafkaAdminProviderClassName, report);
 
         File reportFile = new File(reportFileName);
 

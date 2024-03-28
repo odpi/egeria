@@ -2900,7 +2900,7 @@ public class OpenMetadataTypesArchive2_4
         /*
          * Create the Patch
          */
-        final String typeName = "LogFile";
+        final String typeName = OpenMetadataType.LOG_FILE.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -2916,7 +2916,7 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1Name            = "type";
         final String attribute1Description     = "Deprecated attribute. Use the deployedImplementationType attribute to describe the type of log file.";
         final String attribute1DescriptionGUID = null;
-        final String attribute1ReplacedBy      = "deployedImplementationType";
+        final String attribute1ReplacedBy      = OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -2925,9 +2925,9 @@ public class OpenMetadataTypesArchive2_4
         property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
-        final String attribute2Name            = "purpose";
-        final String attribute2Description     = "Use of the log file.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute2Name            = OpenMetadataProperty.PURPOSE.name;
+        final String attribute2Description     = OpenMetadataProperty.PURPOSE.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.PURPOSE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
                                                            attribute2Description,

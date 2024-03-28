@@ -317,7 +317,7 @@ public enum OpenMetadataProperty
     /**
      * Provides additional reasons, or expectations from the results.
      */
-    PURPOSE("purpose", "string", "Provides additional reasons, or expectations from the results.", null, "be802acc-3324-4c32-9b4a-69746a9b3018"),
+    PURPOSE("purpose", "string", "Provides additional reasons, or expectations from the results.  This is typically expressed in business terms", null, "be802acc-3324-4c32-9b4a-69746a9b3018"),
 
     /**
      * Name of the type of annotation.
@@ -793,8 +793,22 @@ public enum OpenMetadataProperty
     /**
      * The integration connector needs to use blocking calls to a third party technology and so needs to run in its own thread.
      */
-    USES_BLOCKING_CALLS("usesBlockingCalls", "boolean", "The integration connector needs to use blocking calls to a third party technology and so needs to run in its own thread.", null, "cd23ea21-75b0-45d2-9292-e63510c3a1e2"),
+    USES_BLOCKING_CALLS("usesBlockingCalls", "boolean", "The integration connector needs to use blocking calls to a third party technology and so needs to run in its own thread.", "false", "cd23ea21-75b0-45d2-9292-e63510c3a1e2"),
 
+    /**
+     * Full name of the topic as used by programs to access its contents
+     */
+    TOPIC_NAME("topicName", "string", "Full name of the topic as used by programs to access its contents.", "egeria.omag.server.active-metadata-store.omas.assetconsumer.outTopic", "eda530d2-62d3-4325-9840-514f001ffc12"),
+
+    /**
+     * Type of topic.
+     */
+    TOPIC_TYPE("topicType", "string", "Type of topic.", "PLAINTEXT", "17eb67ae-6805-4f47-98a7-ed124804c9a6"),
+
+    /**
+     * The type of property that the valid value represents.
+     */
+    PROPERTY_TYPE("propertyType", "string", "The type of property that the valid value represents.", "producedGuard", "f9f2eba1-943a-4611-8bdd-647c1645b036"),
 
     ;
 
