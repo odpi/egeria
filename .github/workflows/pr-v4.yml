@@ -16,7 +16,7 @@ jobs:
     name: "Verify PR v4"
     if: startsWith(github.repository,'odpi/')
     steps:
-      - uses: actions/checkout@v4.1.0
+      - uses: actions/checkout@v4.1.2
       - uses: gradle/wrapper-validation-action@v2
       - name: Set up JDK
         uses: actions/setup-java@v4
