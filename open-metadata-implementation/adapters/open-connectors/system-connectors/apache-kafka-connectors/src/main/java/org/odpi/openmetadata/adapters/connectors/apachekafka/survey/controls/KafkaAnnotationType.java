@@ -18,19 +18,9 @@ import java.util.Map;
  */
 public enum KafkaAnnotationType
 {
-    MEASUREMENTS("Apache Kafka Server Metrics",
-                 AnalysisStep.MEASURE_RESOURCE,
-                 OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName,
-                 "Metrics maintained by Apache Kafka.",
-                 "These metrics are extracted through the Apache Kafka's Admin client.",
-                 KafkaMetric.getKafkaMetrics()),
-
-    MEASUREMENTS_LIST("Apache Kafka Metrics List",
-                      AnalysisStep.MEASURE_RESOURCE,
-                      OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
-                      "List of metric names and their descriptions.",
-                      "Metrics are supplied with an optional description. This annotation captures the supplied descriptions.",
-                      null),
+    /**
+     * List of topics known to the Apache Kafka server.
+     */
     TOPIC_LIST("Apache Kafka Topic List",
                       AnalysisStep.PROFILING_ASSOCIATED_RESOURCES,
                       OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,

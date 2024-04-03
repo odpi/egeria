@@ -23,16 +23,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DigitalProductProperties extends ClassificationProperties
 {
-    private String              productName          = null;
-    private String              productType          = null;
-    private String              description          = null;
-    private Date                introductionDate     = null;
-    private String              maturity             = null;
-    private String              serviceLife          = null;
-    private String              currentVersion       = null;
-    private Date                nextVersion          = null;
-    private Date                withdrawDate         = null;
-    private Map<String, String> additionalProperties = null;
+    private DigitalProductStatus productStatus        = null;
+    private String               productName          = null;
+    private String               productType          = null;
+    private String               description          = null;
+    private Date                 introductionDate     = null;
+    private String               maturity             = null;
+    private String               serviceLife          = null;
+    private String               currentVersion       = null;
+    private Date                 nextVersion          = null;
+    private Date                 withdrawDate         = null;
+    private Map<String, String>  additionalProperties = null;
 
 
     /**
@@ -55,6 +56,7 @@ public class DigitalProductProperties extends ClassificationProperties
 
         if (template != null)
         {
+            productStatus = template.getProductStatus();
             productName = template.getProductName();
             productType = template.getProductType();
             description = template.getDescription();
@@ -66,6 +68,28 @@ public class DigitalProductProperties extends ClassificationProperties
             withdrawDate = template.getWithdrawDate();
             additionalProperties = template.getAdditionalProperties();
         }
+    }
+
+
+    /**
+     * Return the status of the product.
+     *
+     * @return InstanceStatus enum
+     */
+    public DigitalProductStatus getProductStatus()
+    {
+        return productStatus;
+    }
+
+
+    /**
+     * Set up the status of the product
+     *
+     * @param productStatus InstanceStatus enum
+     */
+    public void setProductStatus(DigitalProductStatus productStatus)
+    {
+        this.productStatus = productStatus;
     }
 
 
@@ -301,6 +325,7 @@ public class DigitalProductProperties extends ClassificationProperties
                        "effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
                        ", extendedProperties=" + getExtendedProperties() +
+                       ", productStatus='" + productStatus + '\'' +
                        ", productName='" + productName + '\'' +
                        ", productType='" + productType + '\'' +
                        ", description='" + description + '\'' +
@@ -328,7 +353,7 @@ public class DigitalProductProperties extends ClassificationProperties
         {
             return true;
         }
-        if (! (objectToCompare instanceof DigitalProductProperties))
+        if (! (objectToCompare instanceof DigitalProductProperties that))
         {
             return false;
         }
@@ -336,8 +361,8 @@ public class DigitalProductProperties extends ClassificationProperties
         {
             return false;
         }
-        DigitalProductProperties that = (DigitalProductProperties) objectToCompare;
-        return Objects.equals(productName, that.productName) &&
+        return Objects.equals(productStatus, that.productStatus) &&
+                       Objects.equals(productName, that.productName) &&
                        Objects.equals(productType, that.productType) && Objects.equals(description, that.description) &&
                        Objects.equals(introductionDate, that.introductionDate) && Objects.equals(maturity, that.maturity) &&
                        Objects.equals(serviceLife, that.serviceLife) && Objects.equals(currentVersion, that.currentVersion) &&
@@ -354,7 +379,7 @@ public class DigitalProductProperties extends ClassificationProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), productName, productType, description, introductionDate, maturity, serviceLife, currentVersion,
-                            nextVersion, withdrawDate, additionalProperties);
+        return Objects.hash(super.hashCode(), productStatus, productName, productType, description, introductionDate,
+                            maturity, serviceLife, currentVersion, nextVersion, withdrawDate, additionalProperties);
     }
 }

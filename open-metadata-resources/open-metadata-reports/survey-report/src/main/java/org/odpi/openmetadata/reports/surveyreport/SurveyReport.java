@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProp
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.search.ArrayTypePropertyValue;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.MapTypePropertyValue;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyValue;
@@ -308,6 +309,51 @@ public class SurveyReport
 
 
     /**
+     * Print out the contents of a map property in an annotation report.
+     *
+     * @param indentLevel how much to indent the contents
+     * @param elementProperties description of the annotation
+     * @param outputReport destination to write to
+     * @throws IOException problem writing report
+     */
+    private void printArrayProperty(int               indentLevel,
+                                    String            propertyName,
+                                    ElementProperties elementProperties,
+                                    EgeriaReport      outputReport) throws IOException
+    {
+        int annotationPropertyIndentLevel = indentLevel + 1;
+
+        if (elementProperties != null)
+        {
+            if (elementProperties.getPropertyValue(propertyName) != null)
+            {
+                List<String> tableHeadings = new ArrayList<>(List.of("Values"));
+
+                outputReport.printReportLine(indentLevel, "* **" + propertyName + "**:");
+
+                PropertyValue propertyValue = elementProperties.getPropertyValue(propertyName);
+
+                if (propertyValue instanceof ArrayTypePropertyValue arrayTypePropertyValue)
+                {
+                    if (arrayTypePropertyValue.getArrayValues() != null)
+                    {
+                        Map<String, String> propertiesAsStrings = arrayTypePropertyValue.getArrayValues().getPropertiesAsStrings();
+
+                        for (String mapPropertyName : propertiesAsStrings.keySet())
+                        {
+                            outputReport.printElementInTable(annotationPropertyIndentLevel,
+                                                             tableHeadings,
+                                                             new ArrayList<>(Collections.singletonList(propertiesAsStrings.get(mapPropertyName))));
+                            tableHeadings = null;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
      * Print out the contents of a single annotation.
      *
      * @param annotationIndentLevel how much to indent the contents
@@ -365,6 +411,12 @@ public class SurveyReport
                                   OpenMetadataProperty.VALUE_COUNT.name,
                                   annotationElement.getElementProperties(),
                                   outputReport);
+            processedProperties.add(OpenMetadataProperty.VALUE_COUNT.name);
+
+            this.printArrayProperty(annotationIndentLevel,
+                                   OpenMetadataProperty.VALUE_LIST.name,
+                                   annotationElement.getElementProperties(),
+                                   outputReport);
             processedProperties.add(OpenMetadataProperty.VALUE_COUNT.name);
 
             this.printMapProperty(annotationIndentLevel,
@@ -474,6 +526,11 @@ public class SurveyReport
 
                 outputReport.printReportLine(detailIndentLevel, "Unique identifier", assetGUID);
                 outputReport.printReportLine(detailIndentLevel, "Type", asset.getElementHeader().getType().getTypeName());
+                if ((asset.getAssetProperties().getExtendedProperties() != null) && (asset.getAssetProperties().getExtendedProperties().get(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name) != null))
+                {
+                    outputReport.printReportLine(detailIndentLevel, "Deployed Implementation Type",
+                                                 asset.getAssetProperties().getExtendedProperties().get(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name).toString());
+                }
                 outputReport.printReportLine(detailIndentLevel, "Qualified Name", asset.getAssetProperties().getQualifiedName());
                 outputReport.printReportLine(detailIndentLevel, "Display Name", asset.getAssetProperties().getName());
                 outputReport.printReportLine(detailIndentLevel, "Description", asset.getAssetProperties().getDescription());

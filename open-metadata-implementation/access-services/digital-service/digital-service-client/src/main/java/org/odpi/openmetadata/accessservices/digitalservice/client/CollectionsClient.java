@@ -447,8 +447,16 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      * Create a new generic collection.
      *
      * @param userId                 userId of user making request.
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
      * @param optionalClassification classification of the collections - typically RootCollection, Set or Folder
      * @param properties             properties for the collection.
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
      *
      * @return unique identifier of the newly created Collection
      *
@@ -458,10 +466,16 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      */
     @Override
     public String createCollection(String               userId,
+                                   String               anchorGUID,
+                                   boolean              isOwnAnchor,
                                    String               optionalClassification,
-                                   CollectionProperties properties) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException
+                                   CollectionProperties properties,
+                                   String               parentGUID,
+                                   String               parentRelationshipTypeName,
+                                   ElementProperties    parentRelationshipProperties,
+                                   boolean              parentAtEnd1) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
     {
         final String methodName = "createCollection";
         final String collectionPropertiesName = "properties";
@@ -505,15 +519,15 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                     collectionTypeName,
                                                                     ElementStatus.ACTIVE,
                                                                     initialClassifications,
-                                                                    null,
-                                                                    false,
+                                                                    anchorGUID,
+                                                                    isOwnAnchor,
                                                                     properties.getEffectiveFrom(),
                                                                     properties.getEffectiveTo(),
                                                                     this.getElementProperties(properties),
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    true);
+                                                                    parentGUID,
+                                                                    parentRelationshipTypeName,
+                                                                    parentRelationshipProperties,
+                                                                    parentAtEnd1);
     }
 
 
@@ -522,8 +536,21 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      * The template defines additional classifications and relationships that should be added to the new collection.
      *
      * @param userId             calling user
-     * @param templateGUID       unique identifier of the metadata element to copy
-     * @param templateProperties properties that override the template
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
+     * @param effectiveFrom the date when this element is active - null for active on creation
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                     connection etc)
+     * @param replacementProperties properties of the new metadata element.  These override the template values
+     * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
+     *                              template element - and their anchored elements, which are also copied as part of this operation.
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
      *
      * @return unique identifier of the new metadata element
      *
@@ -532,25 +559,34 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String createCollectionFromTemplate(String             userId,
-                                               String             templateGUID,
-                                               TemplateProperties templateProperties) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
+    public String createCollectionFromTemplate(String                         userId,
+                                               String                         anchorGUID,
+                                               boolean                        isOwnAnchor,
+                                               Date                           effectiveFrom,
+                                               Date                           effectiveTo,
+                                               String                         templateGUID,
+                                               ElementProperties              replacementProperties,
+                                               Map<String, String>            placeholderProperties,
+                                               String                         parentGUID,
+                                               String                         parentRelationshipTypeName,
+                                               ElementProperties              parentRelationshipProperties,
+                                               boolean                        parentAtEnd1) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
         return openMetadataStoreClient.createMetadataElementFromTemplate(userId,
                                                                          OpenMetadataType.COLLECTION_TYPE_NAME,
-                                                                         null,
-                                                                         false,
-                                                                         null,
-                                                                         null,
+                                                                         anchorGUID,
+                                                                         isOwnAnchor,
+                                                                         effectiveFrom,
+                                                                         effectiveTo,
                                                                          templateGUID,
-                                                                         this.getElementProperties(templateProperties),
-                                                                         null,
-                                                                         null,
-                                                                         null,
-                                                                         null,
-                                                                         false);
+                                                                         replacementProperties,
+                                                                         placeholderProperties,
+                                                                         parentGUID,
+                                                                         parentRelationshipTypeName,
+                                                                         parentRelationshipProperties,
+                                                                         parentAtEnd1);
     }
 
 
@@ -558,9 +594,16 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      * Create a new collection that represents a digital product.
      *
      * @param userId                   userId of user making request.
-     * @param digitalServiceGUID       unique identifier of owning digital service (optional)
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
      * @param collectionProperties     properties for the collection.
      * @param digitalProductProperties properties for the attached DigitalProduct classification
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
      *
      * @return unique identifier of the newly created Collection
      *
@@ -570,17 +613,30 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      */
     @Override
     public String createDigitalProduct(String                   userId,
-                                       String                   digitalServiceGUID,
+                                       String                   anchorGUID,
+                                       boolean                  isOwnAnchor,
                                        CollectionProperties     collectionProperties,
-                                       DigitalProductProperties digitalProductProperties) throws InvalidParameterException,
-                                                                                                 PropertyServerException,
-                                                                                                 UserNotAuthorizedException
+                                       DigitalProductProperties digitalProductProperties,
+                                       String                   parentGUID,
+                                       String                   parentRelationshipTypeName,
+                                       ElementProperties        parentRelationshipProperties,
+                                       boolean                  parentAtEnd1) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
     {
         final String methodName = "createDigitalProduct";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        String collectionGUID = this.createCollection(userId, null, collectionProperties);
+        String collectionGUID = this.createCollection(userId,
+                                                      anchorGUID,
+                                                      isOwnAnchor,
+                                                      null,
+                                                      collectionProperties,
+                                                      parentGUID,
+                                                      parentRelationshipTypeName,
+                                                      parentRelationshipProperties,
+                                                      parentAtEnd1);
 
         if (collectionGUID != null)
         {

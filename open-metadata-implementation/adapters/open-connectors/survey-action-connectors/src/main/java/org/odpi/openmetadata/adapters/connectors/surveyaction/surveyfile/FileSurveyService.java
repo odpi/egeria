@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile;
 
+import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStore;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -17,6 +18,9 @@ import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourcePhysicalStatusAnnotation;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -79,6 +83,12 @@ public class FileSurveyService extends SurveyActionServiceConnector
 
             File file = assetConnector.getFile();
 
+            BasicFileAttributes attr = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
+
+            System.out.println("creationTime: " + attr.creationTime());
+            System.out.println("lastAccessTime: " + attr.lastAccessTime());
+            System.out.println("lastModifiedTime: " + attr.lastModifiedTime());
+
             annotationStore.setAnalysisStep(AnalysisStep.MEASURE_RESOURCE.getName());
 
             FileClassifier fileClassifier = surveyContext.getFileClassifier();
@@ -91,6 +101,8 @@ public class FileSurveyService extends SurveyActionServiceConnector
             measurementAnnotation.setExplanation(SurveyFileAnnotationType.MEASUREMENTS.getExplanation());
             measurementAnnotation.setModifiedTime(new Date(file.lastModified()));
             measurementAnnotation.setSize(file.length());
+
+
 
             Map<String, String> dataSourceProperties = new HashMap<>();
 

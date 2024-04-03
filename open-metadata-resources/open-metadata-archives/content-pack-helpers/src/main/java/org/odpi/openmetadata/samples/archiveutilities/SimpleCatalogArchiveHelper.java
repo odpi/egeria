@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.ResourceUse;
-import org.odpi.openmetadata.frameworks.integration.catalogtarget.CatalogTargetType;
+import org.odpi.openmetadata.frameworks.integration.controls.CatalogTargetType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveGUIDMap;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;

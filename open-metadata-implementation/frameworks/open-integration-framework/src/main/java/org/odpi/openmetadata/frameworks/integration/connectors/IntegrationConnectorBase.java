@@ -127,7 +127,8 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
             {
                 for (CatalogTarget catalogTarget : catalogTargetList)
                 {
-                    boolean externalSourceIsHome = integrationContext.getExternalSourceIsHome();
+                    boolean savedExternalSourceIsHome = integrationContext.getExternalSourceIsHome();
+                    String  savedMetadataSourceQualifiedName = integrationContext.getMetadataSourceQualifiedName();
 
                     if ((catalogTarget != null) && (super.isActive()))
                     {
@@ -170,7 +171,8 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
                         catalogTargetIntegrator.integrateCatalogTarget(requestedCatalogTarget);
                     }
 
-                    integrationContext.setExternalSourceIsHome(externalSourceIsHome);
+                    integrationContext.setExternalSourceIsHome(savedExternalSourceIsHome);
+                    integrationContext.setMetadataSourceQualifiedName(savedMetadataSourceQualifiedName);
                 }
 
                 startFrom = startFrom + integrationContext.getMaxPageSize();

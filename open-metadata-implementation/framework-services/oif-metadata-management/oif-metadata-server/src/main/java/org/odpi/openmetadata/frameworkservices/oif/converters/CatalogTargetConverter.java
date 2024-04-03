@@ -70,6 +70,14 @@ public class CatalogTargetConverter<B> extends OCFConverter<B>
                                                                                            OpenMetadataType.METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME,
                                                                                            relationship.getProperties(),
                                                                                            methodName));
+                    bean.setConnectionName(repositoryHelper.getStringProperty(serviceName,
+                                                                              OpenMetadataType.CONNECTION_NAME_PROPERTY_NAME,
+                                                                              relationship.getProperties(),
+                                                                              methodName));
+                    bean.setTemplateProperties(repositoryHelper.getStringMapFromProperty(serviceName,
+                                                                                         OpenMetadataType.TEMPLATES_PROPERTY_NAME,
+                                                                                         relationship.getProperties(),
+                                                                                         methodName));
                     bean.setConfigurationProperties(repositoryHelper.getMapFromProperty(serviceName,
                                                                                         OpenMetadataType.CONFIGURATION_PROPERTIES_PROPERTY_NAME,
                                                                                         relationship.getProperties(),

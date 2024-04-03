@@ -536,14 +536,14 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
 
-        EngineActionElementsResponse restResult = restClient.callEngineActionsGetRESTCall(methodName,
-                                                                                          urlTemplate,
-                                                                                          requestBody,
-                                                                                          serverName,
-                                                                                          serviceURLMarker,
-                                                                                          userId,
-                                                                                          Integer.toString(startFrom),
-                                                                                          Integer.toString(pageSize));
+        EngineActionElementsResponse restResult = restClient.callEngineActionsPostRESTCall(methodName,
+                                                                                           urlTemplate,
+                                                                                           requestBody,
+                                                                                           serverName,
+                                                                                           serviceURLMarker,
+                                                                                           userId,
+                                                                                           Integer.toString(startFrom),
+                                                                                           Integer.toString(pageSize));
 
         return restResult.getElements();
     }
@@ -584,14 +584,14 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
         requestBody.setName(name);
         requestBody.setNameParameterName(nameParameterName);
 
-        EngineActionElementsResponse restResult = restClient.callEngineActionsGetRESTCall(methodName,
-                                                                                          urlTemplate,
-                                                                                          requestBody,
-                                                                                          serverName,
-                                                                                          serviceURLMarker,
-                                                                                          userId,
-                                                                                          Integer.toString(startFrom),
-                                                                                          Integer.toString(pageSize));
+        EngineActionElementsResponse restResult = restClient.callEngineActionsPostRESTCall(methodName,
+                                                                                           urlTemplate,
+                                                                                           requestBody,
+                                                                                           serverName,
+                                                                                           serviceURLMarker,
+                                                                                           userId,
+                                                                                           Integer.toString(startFrom),
+                                                                                           Integer.toString(pageSize));
 
         return restResult.getElements();
     }

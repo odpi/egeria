@@ -4074,6 +4074,8 @@ public enum OpenMetadataType
     public static final String CONNECTOR_NAME_PROPERTY_NAME                 = "connectorName";  /* from RegisteredIntegrationConnector relationship */
     public static final String CONNECTOR_USER_ID_PROPERTY_NAME              = "connectorUserId";/* from RegisteredIntegrationConnector  relationship */
     public static final String METADATA_SOURCE_QUALIFIED_NAME_PROPERTY_NAME = "metadataSourceQualifiedName";  /* from RegisteredIntegrationConnector relationship */
+    public static final String TEMPLATES_PROPERTY_NAME                      = "templates";  /* from RegisteredIntegrationConnector relationship */
+    public static final String CONNECTION_NAME_PROPERTY_NAME                = "connectionName";  /* from RegisteredIntegrationConnector relationship */
     public static final String STOP_DATE_PROPERTY_NAME                      = "stopDate";       /* from RegisteredIntegrationConnector relationship */
     public static final String REFRESH_TIME_INTERVAL_PROPERTY_NAME          = "refreshTimeInterval"; /* from RegisteredIntegrationConnector relationship */
     public static final String GENERATE_INTEGRATION_REPORT_PROPERTY_NAME    = "generateIntegrationReport"; /* from RegisteredIntegrationConnector relationship */

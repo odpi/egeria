@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.samples.archiveutilities;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConfigurationPropertyType;
+import org.odpi.openmetadata.frameworks.connectors.controls.ConfigurationPropertyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.*;
@@ -11,6 +11,8 @@ import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProp
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.SpecificationPropertyType;
+import org.odpi.openmetadata.frameworks.connectors.controls.TemplateType;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStepType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
@@ -125,8 +127,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
             Class<?>   connectorProviderClass = Class.forName(connectorProviderName);
             Object     potentialConnectorProvider = connectorProviderClass.getDeclaredConstructor().newInstance();
 
-            ConnectorProviderBase serviceProvider = (ConnectorProviderBase)potentialConnectorProvider;
-            ConnectorType         connectorType   = serviceProvider.getConnectorType();
+            IntegrationConnectorProvider connectorProvider = (IntegrationConnectorProvider)potentialConnectorProvider;
+            ConnectorType                connectorType     = connectorProvider.getConnectorType();
 
             String connectorTypeGUID = super.addConnectorType(null,
                                                               connectorType.getGUID(),
@@ -161,9 +163,13 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                   additionalProperties,
                                                   extendedProperties);
 
+            this.addSupportedTemplateTypes(connectorGUID,
+                                                     DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                                     connectorProvider.getSupportedTemplateTypes());
+
             this.addSupportedConfigurationProperties(connectorGUID,
                                                      DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
-                                                     serviceProvider.getSupportedConfigurationProperties());
+                                                     connectorProvider.getSupportedConfigurationProperties());
 
             String endpointGUID = null;
             if (endpointAddress != null)
@@ -351,6 +357,10 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                 this.addSupportedConfigurationProperties(serviceGUID,
                                                          deployedImplementationType.getAssociatedTypeName(),
                                                          serviceProvider.getSupportedConfigurationProperties());
+
+                this.addSupportedTemplateTypes(serviceGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               serviceProvider.getSupportedTemplateTypes());
 
                 String connectionGUID = super.addConnection(qualifiedName + "_implementation",
                                                             displayName + " Governance Service Provider Implementation",
@@ -542,6 +552,65 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         }
     }
 
+
+    /**
+     * Add reference data for catalog templates.
+     *
+     * @param parentGUID unique identifier of template
+     * @param parentTypeName type of template
+     * @param templateTypes list of reference values
+     */
+    public void addSupportedTemplateTypes(String             parentGUID,
+                                          String             parentTypeName,
+                                          List<TemplateType> templateTypes)
+    {
+        if (templateTypes != null)
+        {
+            for (TemplateType templateType : templateTypes)
+            {
+                Map<String, String> additionalProperties = templateType.getOtherPropertyValues();
+
+                if (additionalProperties == null)
+                {
+                    additionalProperties = new HashMap<>();
+                }
+
+                String required = "false";
+
+                if (templateType.getRequired())
+                {
+                    required = "true";
+                }
+
+                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, templateType.getTemplateDescription());
+                additionalProperties.put(OpenMetadataProperty.TYPE_NAME.name, templateType.getTypeName());
+                additionalProperties.put(OpenMetadataProperty.REQUIRED.name, required);
+
+                String validValueGUID = this.addValidValue(null,
+                                                           null,
+                                                           parentGUID,
+                                                           parentTypeName,
+                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                           parentTypeName + ":" + parentGUID + ":SupportedTemplate:" + templateType.getTemplateName(),
+                                                           templateType.getTemplateName(),
+                                                           SpecificationPropertyType.SUPPORTED_TEMPLATE.getDescription(),
+                                                           SpecificationPropertyType.PLACEHOLDER_PROPERTY.getPropertyType(),
+                                                           null,
+                                                           null,
+                                                           templateType.getTemplateName(),
+                                                           false,
+                                                           true,
+                                                           additionalProperties);
+
+                if (validValueGUID != null)
+                {
+                    addSpecificationPropertyAssignmentRelationship(parentGUID,
+                                                                   validValueGUID,
+                                                                   SpecificationPropertyType.SUPPORTED_TEMPLATE.getPropertyType());
+                }
+            }
+        }
+    }
 
     /**
      * Add reference data for connectors.

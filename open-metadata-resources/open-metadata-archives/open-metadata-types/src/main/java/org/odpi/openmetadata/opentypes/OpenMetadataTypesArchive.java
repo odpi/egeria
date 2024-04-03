@@ -1700,7 +1700,7 @@ public class OpenMetadataTypesArchive
      */
     private TypeDefPatch updateCatalogTarget()
     {
-        final String typeName = "CatalogTarget";
+        final String typeName = OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -1713,14 +1713,27 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
+        final String attribute1Name            = "templates";
+        final String attribute1Description     = "Map of template name to qualified name of parent element in associated catalog template.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "connectionName";
+        final String attribute2Description     = "Name of connector to use to access the associated resource.  If this is null, the connection for the asset associated with the catalog target is used.  The asset may be the catalog target itself or the catalog target's anchor.";
+        final String attribute2DescriptionGUID = null;
         final String attribute3Name            = "metadataSourceQualifiedName";
-        final String attribute3Description     = "Qualified name of a software server capability that is the owner/home of the metadata catalogued " +
-                "by the integration connector.";
+        final String attribute3Description     = "Qualified name of a software server capability that is the owner/home of the metadata catalogued by the integration connector.";
         final String attribute3DescriptionGUID = null;
         final String attribute4Name            = "configurationProperties";
         final String attribute4Description     = "Specific configuration properties used to configure the behaviour of the connector.";
         final String attribute4DescriptionGUID = null;
 
+        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute1Name,
+                                                                    attribute1Description,
+                                                                    attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
         property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                                                            attribute3Description,
                                                            attribute3DescriptionGUID);
