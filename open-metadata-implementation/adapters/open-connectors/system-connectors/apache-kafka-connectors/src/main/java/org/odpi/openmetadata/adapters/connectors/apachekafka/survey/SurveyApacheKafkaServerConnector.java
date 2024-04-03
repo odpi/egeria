@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.adapters.connectors.apachekafka.survey;
 
 
+import org.apache.kafka.clients.admin.DescribeTopicsResult;
+import org.apache.kafka.clients.admin.TopicDescription;
 import org.apache.kafka.common.Metric;
 import org.apache.kafka.common.MetricName;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.resource.ApacheKafkaAdminConnector;
@@ -71,27 +73,6 @@ public class SurveyApacheKafkaServerConnector extends SurveyActionServiceConnect
                 kafkaConnector.start();
 
                 AnnotationStore   annotationStore   = surveyContext.getAnnotationStore();
-
-                annotationStore.setAnalysisStep(AnalysisStep.MEASURE_RESOURCE.getName());
-
-
-                Map<MetricName, ? extends Metric> metrics = kafkaConnector.metrics();
-
-                ResourceMeasureAnnotation resourceMeasureAnnotation = new ResourceMeasureAnnotation();
-
-                resourceMeasureAnnotation.setAnnotationType(KafkaAnnotationType.MEASUREMENTS.getName());
-                resourceMeasureAnnotation.setSummary(KafkaAnnotationType.MEASUREMENTS.getSummary());
-                resourceMeasureAnnotation.setExplanation(KafkaAnnotationType.MEASUREMENTS.getExplanation());
-
-                Map<String, String> resourceProperties = new HashMap<>();
-
-                for (Metric metric : metrics.values())
-                {
-                    resourceProperties.put(metric.metricName().name(), metric.toString());
-                }
-                resourceMeasureAnnotation.setResourceProperties(resourceProperties);
-
-                annotationStore.addAnnotation(resourceMeasureAnnotation, surveyContext.getAssetGUID());
 
                 annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
 

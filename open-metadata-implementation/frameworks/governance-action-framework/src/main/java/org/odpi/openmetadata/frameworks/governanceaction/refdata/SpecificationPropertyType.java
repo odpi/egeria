@@ -21,6 +21,11 @@ public enum SpecificationPropertyType
     PLACEHOLDER_PROPERTY("placeholderProperty", "Placeholder names are located through the attribute values found in a template.  They are identified with double braces, for example {{variableName}}.  The value supplied is substituted for the placeholder variable."),
 
     /**
+     * Description of a template that should be used by the connector when creating new elements of a certain type.
+     */
+    SUPPORTED_TEMPLATE("supportedTemplate", "Description of a template that should be used by the connector when creating new elements of a certain type."),
+
+    /**
      * Description of a configuration property that is used to affect the behaviour of a connector.
      */
     SUPPORTED_CONFIGURATION_PROPERTY("supportedConfigurationProperty", "Description of a configuration property that is used to affect the behaviour of a connector."),

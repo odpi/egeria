@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.postgres.controls;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConfigurationPropertyType;
+import org.odpi.openmetadata.frameworks.connectors.controls.ConfigurationPropertyType;
 
 import java.util.ArrayList;
 import java.util.List;

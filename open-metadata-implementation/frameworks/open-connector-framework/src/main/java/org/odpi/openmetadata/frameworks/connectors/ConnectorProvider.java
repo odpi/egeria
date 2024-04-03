@@ -2,11 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors;
 
+import org.odpi.openmetadata.frameworks.connectors.controls.TemplateType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConfigurationPropertyType;
+import org.odpi.openmetadata.frameworks.connectors.controls.ConfigurationPropertyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
@@ -30,6 +31,13 @@ public abstract class ConnectorProvider
      * behaviour can be modified.
      */
     protected List<ConfigurationPropertyType> supportedConfigurationProperties = null;
+
+
+    /**
+     * The list of supported templates that are used by this connector when it creates new
+     * open metadata elements.
+     */
+    protected List<TemplateType> supportedTemplateTypes = null;
 
 
     /**
@@ -59,6 +67,18 @@ public abstract class ConnectorProvider
     public List<ConfigurationPropertyType> getSupportedConfigurationProperties()
     {
         return supportedConfigurationProperties;
+    }
+
+
+    /**
+     * Return the list of supported template types that describe the templates used by the connector
+     * when it is creating new elements.
+     *
+     * @return list of template types
+     */
+    public List<TemplateType> getSupportedTemplateTypes()
+    {
+        return supportedTemplateTypes;
     }
 
 

@@ -21,9 +21,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CatalogTargetProperties
 {
-    private String              catalogTargetName    = null;
+    private String              catalogTargetName           = null;
     private String              metadataSourceQualifiedName = null;
+    private String              connectionName              = null;
     private Map<String, Object> configurationProperties     = null;
+    private Map<String, String> templateProperties          = null;
 
 
     /**
@@ -46,7 +48,9 @@ public class CatalogTargetProperties
         {
             catalogTargetName = template.getCatalogTargetName();
             metadataSourceQualifiedName = template.getMetadataSourceQualifiedName();
+            connectionName = template.getConnectionName();
             configurationProperties = template.getConfigurationProperties();
+            templateProperties = template.getTemplateProperties();
         }
     }
 
@@ -98,6 +102,7 @@ public class CatalogTargetProperties
         this.metadataSourceQualifiedName = metadataSourceQualifiedName;
     }
 
+
     /**
      * Set up the configuration properties for this Connection.
      *
@@ -132,6 +137,63 @@ public class CatalogTargetProperties
 
 
     /**
+     * Set up the template properties for this connector to use when creating elements for this catalog target.
+     *
+     * @param templateProperties map of template name to qualified name of template implementation
+     */
+    public void setTemplateProperties(Map<String, String> templateProperties)
+    {
+        this.templateProperties = templateProperties;
+    }
+
+
+    /**
+     * Return a copy of the template properties.  Null means no template properties are available.
+     *
+     * @return map of template name to qualified name of template implementation
+     */
+    public Map<String, String> getTemplateProperties()
+    {
+        if (templateProperties == null)
+        {
+            return null;
+        }
+        else if (templateProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(templateProperties);
+        }
+    }
+
+    /**
+     * Return the name of the connection to access the resource.  If it is null, the connection for
+     * the asset that is either the catalog target, or is the anchor of the catalog target is used.
+     *
+     * @return qualified name of connection
+     */
+    public String getConnectionName()
+    {
+        return connectionName;
+    }
+
+
+    /**
+     * Set up the name of the connection that the connector should use to access the resource.
+     * If it is null, the connection for the asset that is either the catalog target, or is the anchor
+     * of the catalog target is used.
+     *
+     * @param connectionName qualified name of a connection
+     */
+    public void setConnectionName(String connectionName)
+    {
+        this.connectionName = connectionName;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -142,7 +204,9 @@ public class CatalogTargetProperties
         return "CatalogTargetProperties{" +
                 "catalogTargetName='" + catalogTargetName + '\'' +
                 ", metadataSourceQualifiedName='" + metadataSourceQualifiedName + '\'' +
+                ", connectionName='" + connectionName + '\'' +
                 ", configurationProperties=" + configurationProperties +
+                ", templateProperties=" + templateProperties +
                 '}';
     }
 
@@ -165,6 +229,8 @@ public class CatalogTargetProperties
         }
         CatalogTargetProperties that = (CatalogTargetProperties) objectToCompare;
         return Objects.equals(catalogTargetName, that.catalogTargetName) &&
+                Objects.equals(connectionName, that.connectionName) &&
+                Objects.equals(templateProperties, that.templateProperties) &&
                 Objects.equals(metadataSourceQualifiedName, that.metadataSourceQualifiedName) &&
                 Objects.equals(configurationProperties, that.configurationProperties);
     }
@@ -178,6 +244,6 @@ public class CatalogTargetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(catalogTargetName, metadataSourceQualifiedName, configurationProperties);
+        return Objects.hash(catalogTargetName, metadataSourceQualifiedName, connectionName, configurationProperties, templateProperties);
     }
 }

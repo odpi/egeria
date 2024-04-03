@@ -3,14 +3,14 @@
 package org.odpi.openmetadata.adapters.connectors.postgres.controls;
 
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
-import org.odpi.openmetadata.frameworks.integration.catalogtarget.CatalogTargetType;
+import org.odpi.openmetadata.frameworks.integration.controls.CatalogTargetType;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /**
- * CatalogTarget characterises the type of third party technology supported by a specific integration connector.
+ * CatalogTargetEnum characterises the type of third party technology supported by a specific integration connector.
  * This enables the capability of an integration connector to be correctly matched to the resources and elements
  * that it works with.
  */
@@ -151,6 +151,6 @@ public enum PostgresServerCatalogTarget
     @Override
     public String toString()
     {
-        return "CatalogTarget{catalogTargetName='" + name + "'}";
+        return "CatalogTargetEnum{catalogTargetName='" + name + "'}";
     }
 }

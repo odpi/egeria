@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -84,17 +85,22 @@ public class PostgresDatabaseSurveyActionService extends SurveyActionServiceConn
             connector = assetStore.getConnectorToAsset();
             JDBCResourceConnector assetConnector = (JDBCResourceConnector)connector;
 
+            assetConnector.start();
+
             DataSource jdbcDataSource = assetConnector.getDataSource();
             Connection jdbcConnection = jdbcDataSource.getConnection();
 
-            final String sqlCommand1 = "SELECT * from pg_stats;";
+            final String pg_statsSQLCommand = "SELECT schemaname, tablename, attname, avg_width, most_common_vals, most_common_elements from pg_stats;";
 
-            PreparedStatement preparedStatement = jdbcConnection.prepareStatement(sqlCommand1);
+            PreparedStatement preparedStatement = jdbcConnection.prepareStatement(pg_statsSQLCommand);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
+            final String pg_tablesSQLCommand = "SELECT schemaname, tablename, tableowner, tablespace, hasindexes, hasrules, has_triggers from pg_tables;";
 
-            jdbcConnection.getMetaData();
+            preparedStatement = jdbcConnection.prepareStatement(pg_statsSQLCommand);
+
+            resultSet = preparedStatement.executeQuery();
 
             annotationStore.setAnalysisStep(AnalysisStep.MEASURE_RESOURCE.getName());
 
@@ -138,5 +144,26 @@ public class PostgresDatabaseSurveyActionService extends SurveyActionServiceConn
         }
 
         super.disconnect();
+    }
+
+
+    static class schemaDetails
+    {
+        private String schemaName = null;
+
+        private List<TableDetails> tables = null;
+    }
+
+    static class TableDetails
+    {
+        private String tableName = null;
+
+
+    }
+
+
+    static class ColumnDetails
+    {
+
     }
 }
