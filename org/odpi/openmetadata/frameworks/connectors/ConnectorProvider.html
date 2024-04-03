@@ -103,11 +103,17 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/beans/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfigurationPropertyType</a>&gt;</code></div>
+<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">ConfigurationPropertyType</a>&gt;</code></div>
 <div class="col-second even-row-color"><code><a href="#supportedConfigurationProperties" class="member-name-link">supportedConfigurationProperties</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">The list of supported configuration property types that describe how the connector's
  behaviour can be modified.</div>
+</div>
+<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/TemplateType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">TemplateType</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#supportedTemplateTypes" class="member-name-link">supportedTemplateTypes</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The list of supported templates that are used by this connector when it creates new
+ open metadata elements.</div>
 </div>
 </div>
 </section>
@@ -158,11 +164,17 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Returns the properties about the type of connector that this ConnectorTypeManager supports.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/beans/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfigurationPropertyType</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">ConfigurationPropertyType</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSupportedConfigurationProperties()" class="member-name-link">getSupportedConfigurationProperties</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of supported configuration property types that describe how the connector's
  behaviour can be modified.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/TemplateType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">TemplateType</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSupportedTemplateTypes()" class="member-name-link">getSupportedTemplateTypes</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of supported template types that describe the templates used by the connector
+ when it is creating new elements.</div>
 </div>
 </div>
 </div>
@@ -184,9 +196,17 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="supportedConfigurationProperties">
 <h3>supportedConfigurationProperties</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/beans/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfigurationPropertyType</a>&gt;</span>&nbsp;<span class="element-name">supportedConfigurationProperties</span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">ConfigurationPropertyType</a>&gt;</span>&nbsp;<span class="element-name">supportedConfigurationProperties</span></div>
 <div class="block">The list of supported configuration property types that describe how the connector's
  behaviour can be modified.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="supportedTemplateTypes">
+<h3>supportedTemplateTypes</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/TemplateType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">TemplateType</a>&gt;</span>&nbsp;<span class="element-name">supportedTemplateTypes</span></div>
+<div class="block">The list of supported templates that are used by this connector when it creates new
+ open metadata elements.</div>
 </section>
 </li>
 </ul>
@@ -238,12 +258,24 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getSupportedConfigurationProperties()">
 <h3>getSupportedConfigurationProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/beans/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfigurationPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getSupportedConfigurationProperties</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">ConfigurationPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getSupportedConfigurationProperties</span>()</div>
 <div class="block">Return the list of supported configuration property types that describe how the connector's
  behaviour can be modified.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of configuration property types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSupportedTemplateTypes()">
+<h3>getSupportedTemplateTypes</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="controls/TemplateType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">TemplateType</a>&gt;</span>&nbsp;<span class="element-name">getSupportedTemplateTypes</span>()</div>
+<div class="block">Return the list of supported template types that describe the templates used by the connector
+ when it is creating new elements.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of template types</dd>
 </dl>
 </section>
 </li>

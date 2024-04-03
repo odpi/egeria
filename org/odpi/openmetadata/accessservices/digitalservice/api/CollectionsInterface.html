@@ -112,24 +112,44 @@ loadScripts(document, 'script');</script>
 <div class="block">Connect an existing collection to an element using the ResourceList relationship (0019).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createCollection(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionProperties)" class="member-name-link">createCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createCollection(java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">createCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
+ boolean&nbsp;isOwnAnchor,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;optionalClassification,
- <a href="../properties/CollectionProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">CollectionProperties</a>&nbsp;properties)</code></div>
+ <a href="../properties/CollectionProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">CollectionProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
+ <a href="../../../frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
+ boolean&nbsp;parentAtEnd1)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Create a new generic collection.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createCollectionFromTemplate(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.digitalservice.properties.TemplateProperties)" class="member-name-link">createCollectionFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createCollectionFromTemplate(java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">createCollectionFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
+ boolean&nbsp;isOwnAnchor,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
- <a href="../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">TemplateProperties</a>&nbsp;templateProperties)</code></div>
+ <a href="../../../frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;replacementProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;placeholderProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
+ <a href="../../../frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
+ boolean&nbsp;parentAtEnd1)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Create a new metadata element to represent a collection using an existing metadata element as a template.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createDigitalProduct(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionProperties,org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalProductProperties)" class="member-name-link">createDigitalProduct</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;digitalServiceGUID,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#createDigitalProduct(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionProperties,org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalProductProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">createDigitalProduct</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
+ boolean&nbsp;isOwnAnchor,
  <a href="../properties/CollectionProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">CollectionProperties</a>&nbsp;collectionProperties,
- <a href="../properties/DigitalProductProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">DigitalProductProperties</a>&nbsp;digitalProductProperties)</code></div>
+ <a href="../properties/DigitalProductProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">DigitalProductProperties</a>&nbsp;digitalProductProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
+ <a href="../../../frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
+ boolean&nbsp;parentAtEnd1)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Create a new collection that represents a digital product.</div>
 </div>
@@ -403,11 +423,17 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createCollection(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionProperties)">
+<section class="detail" id="createCollection(java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)">
 <h3>createCollection</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createCollection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
+ boolean&nbsp;isOwnAnchor,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;optionalClassification,
- <a href="../properties/CollectionProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">CollectionProperties</a>&nbsp;properties)</span>
+ <a href="../properties/CollectionProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">CollectionProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
+ <a href="../../../frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
+ boolean&nbsp;parentAtEnd1)</span>
                  throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
@@ -415,8 +441,16 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>anchorGUID</code> - unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+                   or the Anchors classification is included in the initial classifications.</dd>
+<dd><code>isOwnAnchor</code> - boolean flag to day that the element should be classified as its own anchor once its element
+                    is created in the repository.</dd>
 <dd><code>optionalClassification</code> - classification of the collections - typically RootCollection, Set or Folder</dd>
 <dd><code>properties</code> - properties for the collection.</dd>
+<dd><code>parentGUID</code> - unique identifier of optional parent entity</dd>
+<dd><code>parentRelationshipTypeName</code> - type of relationship to connect the new element to the parent</dd>
+<dd><code>parentRelationshipProperties</code> - properties to include in parent relationship</dd>
+<dd><code>parentAtEnd1</code> - which end should the parent GUID go in the relationship</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the newly created Collection</dd>
 <dt>Throws:</dt>
@@ -427,11 +461,20 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createCollectionFromTemplate(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.digitalservice.properties.TemplateProperties)">
+<section class="detail" id="createCollectionFromTemplate(java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)">
 <h3>createCollectionFromTemplate</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createCollectionFromTemplate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
+ boolean&nbsp;isOwnAnchor,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
- <a href="../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">TemplateProperties</a>&nbsp;templateProperties)</span>
+ <a href="../../../frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;replacementProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;placeholderProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
+ <a href="../../../frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
+ boolean&nbsp;parentAtEnd1)</span>
                              throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -440,8 +483,21 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>templateGUID</code> - unique identifier of the metadata element to copy</dd>
-<dd><code>templateProperties</code> - properties that override the template</dd>
+<dd><code>anchorGUID</code> - unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+                   or the Anchors classification is included in the initial classifications.</dd>
+<dd><code>isOwnAnchor</code> - boolean flag to day that the element should be classified as its own anchor once its element
+                    is created in the repository.</dd>
+<dd><code>effectiveFrom</code> - the date when this element is active - null for active on creation</dd>
+<dd><code>effectiveTo</code> - the date when this element becomes inactive - null for active until deleted</dd>
+<dd><code>templateGUID</code> - the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+                     connection etc)</dd>
+<dd><code>replacementProperties</code> - properties of the new metadata element.  These override the template values</dd>
+<dd><code>placeholderProperties</code> - property name-to-property value map to replace any placeholder values in the
+                              template element - and their anchored elements, which are also copied as part of this operation.</dd>
+<dd><code>parentGUID</code> - unique identifier of optional parent entity</dd>
+<dd><code>parentRelationshipTypeName</code> - type of relationship to connect the new element to the parent</dd>
+<dd><code>parentRelationshipProperties</code> - properties to include in parent relationship</dd>
+<dd><code>parentAtEnd1</code> - which end should the parent GUID go in the relationship</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the new metadata element</dd>
 <dt>Throws:</dt>
@@ -452,12 +508,17 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createDigitalProduct(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionProperties,org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalProductProperties)">
+<section class="detail" id="createDigitalProduct(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionProperties,org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalProductProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)">
 <h3>createDigitalProduct</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createDigitalProduct</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;digitalServiceGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
+ boolean&nbsp;isOwnAnchor,
  <a href="../properties/CollectionProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">CollectionProperties</a>&nbsp;collectionProperties,
- <a href="../properties/DigitalProductProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">DigitalProductProperties</a>&nbsp;digitalProductProperties)</span>
+ <a href="../properties/DigitalProductProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">DigitalProductProperties</a>&nbsp;digitalProductProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
+ <a href="../../../frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
+ boolean&nbsp;parentAtEnd1)</span>
                      throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
@@ -465,15 +526,22 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - userId of user making request.</dd>
-<dd><code>digitalServiceGUID</code> - unique identifier of owning digital service (optional)</dd>
+<dd><code>anchorGUID</code> - unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+                   or the Anchors classification is included in the initial classifications.</dd>
+<dd><code>isOwnAnchor</code> - boolean flag to day that the element should be classified as its own anchor once its element
+                    is created in the repository.</dd>
 <dd><code>collectionProperties</code> - properties for the collection.</dd>
 <dd><code>digitalProductProperties</code> - properties for the attached DigitalProduct classification</dd>
+<dd><code>parentGUID</code> - unique identifier of optional parent entity</dd>
+<dd><code>parentRelationshipTypeName</code> - type of relationship to connect the new element to the parent</dd>
+<dd><code>parentRelationshipProperties</code> - properties to include in parent relationship</dd>
+<dd><code>parentAtEnd1</code> - which end should the parent GUID go in the relationship</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the newly created Collection</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
-<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.*</dd>
 </dl>
 </section>
 </li>

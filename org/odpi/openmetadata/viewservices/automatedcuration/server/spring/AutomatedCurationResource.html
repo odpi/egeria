@@ -354,7 +354,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getTechnologyTypesForOpenMetadataType(java.lang.String,java.lang.String,int,int)">
 <h3>getTechnologyTypesForOpenMetadataType</h3>
-<div class="member-signature"><span class="annotations">@GetMapping(path="/open-metadata-types/{typeName}/technology-types")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/open-metadata-types/{typeName}/technology-types")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/TechnologyTypeSummaryListResponse.html" title="class in org.odpi.openmetadata.viewservices.automatedcuration.rest">TechnologyTypeSummaryListResponse</a></span>&nbsp;<span class="element-name">getTechnologyTypesForOpenMetadataType</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
@@ -531,9 +531,9 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/governance-action-types/by-search-string")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/gaf/rest/GovernanceActionTypesResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">GovernanceActionTypesResponse</a></span>&nbsp;<span class="element-name">findGovernanceActionTypes</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;startFrom,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;pageSize,
  @RequestParam(required=false,defaultValue="false")
  boolean&nbsp;startsWith,
@@ -809,7 +809,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="cancelEngineAction(java.lang.String,java.lang.String)">
 <h3>cancelEngineAction</h3>
-<div class="member-signature"><span class="annotations">@GetMapping(path="/engine-actions/{engineActionGUID}/cancel")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/engine-actions/{engineActionGUID}/cancel")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">cancelEngineAction</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable

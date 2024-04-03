@@ -625,6 +625,7 @@ org.odpi.openmetadata.engineservices.surveyaction.server.spring
 org.odpi.openmetadata.frameworks.auditlog
 org.odpi.openmetadata.frameworks.auditlog.messagesets
 org.odpi.openmetadata.frameworks.connectors
+org.odpi.openmetadata.frameworks.connectors.controls
 org.odpi.openmetadata.frameworks.connectors.ffdc
 org.odpi.openmetadata.frameworks.connectors.properties
 org.odpi.openmetadata.frameworks.connectors.properties.beans
@@ -643,11 +644,11 @@ org.odpi.openmetadata.frameworks.governanceaction.mapper
 org.odpi.openmetadata.frameworks.governanceaction.properties
 org.odpi.openmetadata.frameworks.governanceaction.refdata
 org.odpi.openmetadata.frameworks.governanceaction.search
-org.odpi.openmetadata.frameworks.integration.catalogtarget
 org.odpi.openmetadata.frameworks.integration.client
 org.odpi.openmetadata.frameworks.integration.connectors
 org.odpi.openmetadata.frameworks.integration.context
 org.odpi.openmetadata.frameworks.integration.contextmanager
+org.odpi.openmetadata.frameworks.integration.controls
 org.odpi.openmetadata.frameworks.integration.ffdc
 org.odpi.openmetadata.frameworks.integration.filelistener
 org.odpi.openmetadata.frameworks.integration.properties
@@ -956,6 +957,7 @@ org.odpi.openmetadata.viewservices.automatedcuration.server
 org.odpi.openmetadata.viewservices.automatedcuration.server.spring
 org.odpi.openmetadata.viewservices.collectionmanager.admin
 org.odpi.openmetadata.viewservices.collectionmanager.ffdc
+org.odpi.openmetadata.viewservices.collectionmanager.rest
 org.odpi.openmetadata.viewservices.collectionmanager.server
 org.odpi.openmetadata.viewservices.collectionmanager.server.spring
 org.odpi.openmetadata.viewservices.dino.admin

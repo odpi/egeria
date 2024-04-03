@@ -356,7 +356,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addSupportedConfigurationProperties(java.lang.String,java.lang.String,java.util.List)" class="member-name-link">addSupportedConfigurationProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentTypeName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../frameworks/connectors/properties/beans/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfigurationPropertyType</a>&gt;&nbsp;configurationPropertyTypes)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../frameworks/connectors/controls/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">ConfigurationPropertyType</a>&gt;&nbsp;configurationPropertyTypes)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add reference data for connectors.</div>
 </div>
@@ -382,6 +382,13 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../frameworks/governanceaction/controls/RequestTypeType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">RequestTypeType</a>&gt;&nbsp;supportedRequestTypes)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add reference data for governance services and actions.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addSupportedTemplateTypes(java.lang.String,java.lang.String,java.util.List)" class="member-name-link">addSupportedTemplateTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../frameworks/connectors/controls/TemplateType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">TemplateType</a>&gt;&nbsp;templateTypes)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add reference data for catalog templates.</div>
 </div>
 </div>
 </div>
@@ -613,11 +620,26 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="addSupportedTemplateTypes(java.lang.String,java.lang.String,java.util.List)">
+<h3>addSupportedTemplateTypes</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addSupportedTemplateTypes</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../frameworks/connectors/controls/TemplateType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">TemplateType</a>&gt;&nbsp;templateTypes)</span></div>
+<div class="block">Add reference data for catalog templates.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>parentGUID</code> - unique identifier of template</dd>
+<dd><code>parentTypeName</code> - type of template</dd>
+<dd><code>templateTypes</code> - list of reference values</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="addSupportedConfigurationProperties(java.lang.String,java.lang.String,java.util.List)">
 <h3>addSupportedConfigurationProperties</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addSupportedConfigurationProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentTypeName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../frameworks/connectors/properties/beans/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ConfigurationPropertyType</a>&gt;&nbsp;configurationPropertyTypes)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../frameworks/connectors/controls/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">ConfigurationPropertyType</a>&gt;&nbsp;configurationPropertyTypes)</span></div>
 <div class="block">Add reference data for connectors.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
