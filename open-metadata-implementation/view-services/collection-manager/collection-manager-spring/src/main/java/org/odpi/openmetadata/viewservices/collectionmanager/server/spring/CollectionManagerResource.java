@@ -237,6 +237,7 @@ public class CollectionManagerResource
      * Create a new generic collection.
      *
      * @param serverName                 name of called server.
+     * @param optionalClassificationName name of collection classification
      * @param requestBody             properties for the collection.
      *
      * @return unique identifier of the newly created Collection
@@ -251,9 +252,11 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public GUIDResponse createCollection(@PathVariable String                   serverName,
+                                         @RequestParam(required = false)
+                                                       String                   classificationName,
                                          @RequestBody  NewCollectionRequestBody requestBody)
     {
-        return restAPI.createCollection(serverName, requestBody);
+        return restAPI.createCollection(serverName, classificationName, requestBody);
     }
 
 
@@ -279,6 +282,30 @@ public class CollectionManagerResource
                                              @RequestBody  NewCollectionRequestBody requestBody)
     {
         return restAPI.createRootCollection(serverName, requestBody);
+    }
+
+
+    /**
+     * Create a new collection with the DataSpec classification.  Used to identify a collection of data fields and schema types.
+     *
+     * @param serverName              name of called server.
+     * @param requestBody             properties for the collection.
+     *
+     * @return unique identifier of the newly created Collection
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/collections/data-spec-collection")
+    @Operation(summary="createDataSpecCollection",
+            description="Create a new collection with the DataSpec classification.  Used to identify a collection of data fields and schema types.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/collection"))
+
+    public GUIDResponse createDataSpecCollection(@PathVariable String                   serverName,
+                                                 @RequestBody  NewCollectionRequestBody requestBody)
+    {
+        return restAPI.createDataSpecCollection(serverName, requestBody);
     }
 
 

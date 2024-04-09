@@ -232,6 +232,10 @@ public class OpenMetadataTypesArchive
     {
         this.archiveBuilder.addTypeDefPatch(updateCollection());
         this.archiveBuilder.addClassificationDef(getRootCollectionClassification());
+        this.archiveBuilder.addClassificationDef(getDataSpecClassification());
+        this.archiveBuilder.addClassificationDef(getHomeCollectionClassification());
+        this.archiveBuilder.addClassificationDef(getRecentAccessClassification());
+        this.archiveBuilder.addClassificationDef(getWorkItemListClassification());
     }
 
     private TypeDefPatch updateCollection()
@@ -239,7 +243,7 @@ public class OpenMetadataTypesArchive
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.COLLECTION_TYPE_NAME;
+        final String typeName = OpenMetadataType.COLLECTION.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -268,18 +272,103 @@ public class OpenMetadataTypesArchive
 
     private ClassificationDef getRootCollectionClassification()
     {
-        final String guid            = OpenMetadataType.ROOT_COLLECTION_TYPE_GUID;
-        final String name            = OpenMetadataType.ROOT_COLLECTION_TYPE_NAME;
-        final String description     = "This collection is the root collection in a collection hierarchy.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.ROOT_COLLECTION.typeGUID;
+        final String name            = OpenMetadataType.ROOT_COLLECTION.typeName;
+        final String description     = OpenMetadataType.ROOT_COLLECTION.description;
+        final String descriptionGUID = OpenMetadataType.ROOT_COLLECTION.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.ROOT_COLLECTION.wikiURL;
 
-        final String linkedToEntity = OpenMetadataType.COLLECTION_TYPE_NAME;
+        final String linkedToEntity = OpenMetadataType.COLLECTION.typeName;
 
         return archiveHelper.getClassificationDef(guid,
                                                   name,
                                                   null,
                                                   description,
                                                   descriptionGUID,
+                                                  descriptionWiki,
+                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  false);
+    }
+
+
+    private ClassificationDef getDataSpecClassification()
+    {
+        final String guid            = OpenMetadataType.DATA_SPEC_COLLECTION.typeGUID;
+        final String name            = OpenMetadataType.DATA_SPEC_COLLECTION.typeName;
+        final String description     = OpenMetadataType.DATA_SPEC_COLLECTION.description;
+        final String descriptionGUID = OpenMetadataType.DATA_SPEC_COLLECTION.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.DATA_SPEC_COLLECTION.wikiURL;
+
+        final String linkedToEntity = OpenMetadataType.COLLECTION.typeName;
+
+        return archiveHelper.getClassificationDef(guid,
+                                                  name,
+                                                  null,
+                                                  description,
+                                                  descriptionGUID,
+                                                  descriptionWiki,
+                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  false);
+    }
+
+    private ClassificationDef getHomeCollectionClassification()
+    {
+        final String guid            = OpenMetadataType.HOME_COLLECTION.typeGUID;
+        final String name            = OpenMetadataType.HOME_COLLECTION.typeName;
+        final String description     = OpenMetadataType.HOME_COLLECTION.description;
+        final String descriptionGUID = OpenMetadataType.HOME_COLLECTION.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.HOME_COLLECTION.wikiURL;
+
+        final String linkedToEntity = OpenMetadataType.COLLECTION.typeName;
+
+        return archiveHelper.getClassificationDef(guid,
+                                                  name,
+                                                  null,
+                                                  description,
+                                                  descriptionGUID,
+                                                  descriptionWiki,
+                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  false);
+    }
+
+
+    private ClassificationDef getRecentAccessClassification()
+    {
+        final String guid            = OpenMetadataType.RECENT_ACCESS.typeGUID;
+        final String name            = OpenMetadataType.RECENT_ACCESS.typeName;
+        final String description     = OpenMetadataType.RECENT_ACCESS.description;
+        final String descriptionGUID = OpenMetadataType.RECENT_ACCESS.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.RECENT_ACCESS.wikiURL;
+
+        final String linkedToEntity = OpenMetadataType.COLLECTION.typeName;
+
+        return archiveHelper.getClassificationDef(guid,
+                                                  name,
+                                                  null,
+                                                  description,
+                                                  descriptionGUID,
+                                                  descriptionWiki,
+                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  false);
+    }
+
+
+    private ClassificationDef getWorkItemListClassification()
+    {
+        final String guid            = OpenMetadataType.WORK_ITEM_LIST.typeGUID;
+        final String name            = OpenMetadataType.WORK_ITEM_LIST.typeName;
+        final String description     = OpenMetadataType.WORK_ITEM_LIST.description;
+        final String descriptionGUID = OpenMetadataType.WORK_ITEM_LIST.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.WORK_ITEM_LIST.wikiURL;
+
+        final String linkedToEntity = OpenMetadataType.COLLECTION.typeName;
+
+        return archiveHelper.getClassificationDef(guid,
+                                                  name,
+                                                  null,
+                                                  description,
+                                                  descriptionGUID,
+                                                  descriptionWiki,
                                                   this.archiveBuilder.getEntityDef(linkedToEntity),
                                                   false);
     }
@@ -3074,7 +3163,7 @@ public class OpenMetadataTypesArchive
     private void update0615SchemaExtraction()
     {
         this.archiveBuilder.addTypeDefPatch(updateDataFieldEntity());
-        this.archiveBuilder.addRelationshipDef(getDiscoveredLinkedDataFieldRelationship());
+        this.archiveBuilder.addRelationshipDef(getLinkedDataFieldRelationship());
     }
 
     private TypeDefPatch updateDataFieldEntity()
@@ -3174,10 +3263,10 @@ public class OpenMetadataTypesArchive
         return typeDefPatch;
     }
 
-    private RelationshipDef getDiscoveredLinkedDataFieldRelationship()
+    private RelationshipDef getLinkedDataFieldRelationship()
     {
         final String guid            = "cca4b116-4490-44c4-84e1-535231ae46a1";
-        final String name            = "DiscoveredLinkedDataField";
+        final String name            = "LinkedDataField";
         final String description     = "Represents an association between two data fields in a schema.  This may describe a full relationship in the schema (for example, in a relational schema) or a relationship end (for example, in a graph schema).";
         final String descriptionGUID = null;
 

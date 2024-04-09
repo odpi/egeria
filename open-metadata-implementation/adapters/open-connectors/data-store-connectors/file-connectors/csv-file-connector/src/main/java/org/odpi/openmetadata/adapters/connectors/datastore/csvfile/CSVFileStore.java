@@ -5,9 +5,8 @@ package org.odpi.openmetadata.adapters.connectors.datastore.csvfile;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStore;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileException;
-import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.exception.FileReadException;
+import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileReadException;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,28 +18,6 @@ import java.util.List;
  */
 public interface CSVFileStore extends BasicFileStore
 {
-    /**
-     * Return the name of the file to read.
-     *
-     * @return file name
-     * @throws FileException there is a problem accessing the file
-     * @throws FileReadException - the file name is null, the file does not exist, or is a directory or
-     *                             is not readable.
-     */
-    String   getFileName() throws FileException, FileReadException;
-
-
-    /**
-     * Return the last update data for the file.
-     *
-     * @return Date object
-     * @throws FileException there is a problem accessing the file
-     * @throws FileReadException - the file name is null, the file does not exist, or is a directory or
-     *                             is not readable.
-     */
-    Date     getLastUpdateDate() throws FileException, FileReadException;
-
-
     /**
      * Return the number of records in the file.  This is achieved by scanning the file and counting the records -
      * not recommended for very large files.

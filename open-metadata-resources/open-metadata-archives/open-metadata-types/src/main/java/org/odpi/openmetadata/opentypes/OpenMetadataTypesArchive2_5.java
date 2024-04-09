@@ -189,7 +189,6 @@ public class OpenMetadataTypesArchive2_5
         this.archiveBuilder.addTypeDefPatch(updateInformalTag());
         this.archiveBuilder.addTypeDefPatch(updateAnnotation());
         this.archiveBuilder.addTypeDefPatch(updateAnnotationReview());
-        this.archiveBuilder.addTypeDefPatch(updateDataField());
 
         this.archiveBuilder.addTypeDefPatch(updateAnchorsClassification());
 
@@ -333,25 +332,6 @@ public class OpenMetadataTypesArchive2_5
          * Create the Patch
          */
         final String typeName = "AnnotationReview";
-
-        final String superTypeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(superTypeName));
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateDataField()
-    {
-        /*
-         * Create the Patch
-         */
-        final String typeName = "DataField";
 
         final String superTypeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
 

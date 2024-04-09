@@ -110,10 +110,12 @@ Authorization: Bearer {{token}}
 # parentAtEnd1 -identifies which end any parent entity sits on the relationship.
 #
 
+@classificationName="WorkItemList"
+
 ###
 # @name createCollection
 # Create a new generic collection.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections?classificationName={{classificationName}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -138,6 +140,31 @@ Content-Type: application/json
 # @name createRootCollection
 # Create a new collection with the RootCollection classification.  Used to identify the top of a collection hierarchy.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/root-collection
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
+  "isOwnAnchor" : false,
+  "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
+  "parentRelationshipTypeName" : "open metadata type name",
+  "parentAtEnd1": true,
+  "collectionProperties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Must provide a unique name here",
+    "name" : "Add display name here",
+    "description" : "Add description of the collection here",
+    "collectionType": "Add appropriate valid value for type",
+    "collectionOrdering" : "OTHER",
+    "orderPropertyName" : "Add property name if 'collectionOrdering' is OTHER"
+  }
+}
+
+
+###
+# @name createDataSpecCollection
+# Create a new collection with the DataSpec classification.  Used to identify a collection of data fields and schema types.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/data-spec-collection
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

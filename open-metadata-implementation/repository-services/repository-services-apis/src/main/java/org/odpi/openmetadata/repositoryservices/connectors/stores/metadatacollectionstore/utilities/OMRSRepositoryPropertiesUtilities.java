@@ -590,7 +590,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
                 if (actualPropertyValue != null)
                 {
-                    longMap.put(mapPropertyName, (Long)actualPropertyValue);
+                    longMap.put(mapPropertyName, Long.parseLong(actualPropertyValue.toString()));
                 }
             }
 

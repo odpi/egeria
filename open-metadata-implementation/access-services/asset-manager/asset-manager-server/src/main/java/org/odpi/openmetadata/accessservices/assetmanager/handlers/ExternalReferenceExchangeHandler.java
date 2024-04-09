@@ -152,7 +152,7 @@ public class ExternalReferenceExchangeHandler extends ExchangeHandlerBase
                     externalReference.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                                           externalReference.getElementHeader().getGUID(),
                                                                                           externalReferenceGUIDParameterName,
-                                                                                          OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
+                                                                                          OpenMetadataType.EXTERNAL_REFERENCE.typeName,
                                                                                           assetManagerGUID,
                                                                                           assetManagerName,
                                                                                           forLineage,
@@ -202,7 +202,7 @@ public class ExternalReferenceExchangeHandler extends ExchangeHandlerBase
                     externalReference.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                                           externalReference.getElementHeader().getGUID(),
                                                                                           externalReferenceGUIDParameterName,
-                                                                                          OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
+                                                                                          OpenMetadataType.EXTERNAL_REFERENCE.typeName,
                                                                                           assetManagerGUID,
                                                                                           assetManagerName,
                                                                                           forLineage,
@@ -279,7 +279,7 @@ public class ExternalReferenceExchangeHandler extends ExchangeHandlerBase
             this.createExternalIdentifier(userId,
                                           externalReferenceGUID,
                                           externalReferenceGUIDParameterName,
-                                          OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
+                                          OpenMetadataType.EXTERNAL_REFERENCE.typeName,
                                           correlationProperties,
                                           false,
                                           false,
@@ -335,7 +335,7 @@ public class ExternalReferenceExchangeHandler extends ExchangeHandlerBase
         this.validateExternalIdentifier(userId,
                                         externalReferenceGUID,
                                         externalReferenceGUIDParameterName,
-                                        OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
+                                        OpenMetadataType.EXTERNAL_REFERENCE.typeName,
                                         correlationProperties,
                                         forLineage,
                                         forDuplicateProcessing,
@@ -398,7 +398,7 @@ public class ExternalReferenceExchangeHandler extends ExchangeHandlerBase
         this.validateExternalIdentifier(userId,
                                         externalReferenceGUID,
                                         externalReferenceGUIDParameterName,
-                                        OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
+                                        OpenMetadataType.EXTERNAL_REFERENCE.typeName,
                                         correlationProperties,
                                         forLineage,
                                         forDuplicateProcessing,
@@ -515,11 +515,11 @@ public class ExternalReferenceExchangeHandler extends ExchangeHandlerBase
 
         externalIdentifierHandler.logRelationshipCreation(assetManagerGUID,
                                                           assetManagerName,
-                                                          OpenMetadataType.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
+                                                          OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName,
                                                           attachedToGUID,
                                                           OpenMetadataType.REFERENCEABLE.typeName,
                                                           externalReferenceGUID,
-                                                          OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
+                                                          OpenMetadataType.EXTERNAL_REFERENCE.typeName,
                                                           methodName);
 
         return relationshipGUID;
@@ -595,7 +595,7 @@ public class ExternalReferenceExchangeHandler extends ExchangeHandlerBase
 
         externalIdentifierHandler.logRelationshipUpdate(assetManagerGUID,
                                                         assetManagerName,
-                                                        OpenMetadataType.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
+                                                        OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName,
                                                         externalReferenceLinkGUID,
                                                         methodName);
     }
@@ -647,11 +647,11 @@ public class ExternalReferenceExchangeHandler extends ExchangeHandlerBase
         {
             externalIdentifierHandler.logRelationshipRemoval(assetManagerGUID,
                                                              assetManagerName,
-                                                             OpenMetadataType.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
+                                                             OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName,
                                                              relationship.getEntityOneProxy().getGUID(),
                                                              OpenMetadataType.REFERENCEABLE.typeName,
                                                              relationship.getEntityTwoProxy().getGUID(),
-                                                             OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
+                                                             OpenMetadataType.EXTERNAL_REFERENCE.typeName,
                                                              methodName);
         }
     }
@@ -995,7 +995,7 @@ public class ExternalReferenceExchangeHandler extends ExchangeHandlerBase
                                                                                                             assetManagerGUID,
                                                                                                             assetManagerGUIDParameterName,
                                                                                                             OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
-                                                                                                            OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
+                                                                                                            OpenMetadataType.EXTERNAL_REFERENCE.typeName,
                                                                                                             startFrom,
                                                                                                             pageSize,
                                                                                                             effectiveTime,
@@ -1019,7 +1019,7 @@ public class ExternalReferenceExchangeHandler extends ExchangeHandlerBase
                         externalReferenceElement.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                                                      externalReferenceEntity.getGUID(),
                                                                                                      externalReferenceGUIDParameterName,
-                                                                                                     OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
+                                                                                                     OpenMetadataType.EXTERNAL_REFERENCE.typeName,
                                                                                                      assetManagerGUID,
                                                                                                      assetManagerName,
                                                                                                      forLineage,
@@ -1139,7 +1139,7 @@ public class ExternalReferenceExchangeHandler extends ExchangeHandlerBase
         ExternalReferenceElement externalReference = externalReferenceHandler.getBeanFromRepository(userId,
                                                                                                     guid,
                                                                                                     guidParameterName,
-                                                                                                    OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
+                                                                                                    OpenMetadataType.EXTERNAL_REFERENCE.typeName,
                                                                                                     false,
                                                                                                     false,
                                                                                                     effectiveTime,
@@ -1150,7 +1150,7 @@ public class ExternalReferenceExchangeHandler extends ExchangeHandlerBase
             externalReference.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                                   guid,
                                                                                   guidParameterName,
-                                                                                  OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
+                                                                                  OpenMetadataType.EXTERNAL_REFERENCE.typeName,
                                                                                   assetManagerGUID,
                                                                                   assetManagerName,
                                                                                   forLineage,

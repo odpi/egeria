@@ -289,7 +289,7 @@ public class SimpleCatalogArchiveHelper
     {
         final String methodName = "addExternalReference";
 
-        String elementTypeName = OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME;
+        String elementTypeName = OpenMetadataType.EXTERNAL_REFERENCE.typeName;
 
         if (typeName != null)
         {
@@ -412,7 +412,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.PAGES_PROPERTY_NAME, pages, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.REFERENCEABLE_TO_EXT_REF_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(referenceableGUID + "_to_" + externalReferenceGUID + "_external_reference_link_relationship" + referenceId),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
@@ -465,7 +465,7 @@ public class SimpleCatalogArchiveHelper
     {
         final String methodName = "addMediaReference";
 
-        String elementTypeName = OpenMetadataType.RELATED_MEDIA_TYPE_NAME;
+        String elementTypeName = OpenMetadataType.RELATED_MEDIA.typeName;
 
         if (typeName != null)
         {
@@ -578,7 +578,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataType.MEDIA_USAGE_PROPERTY_NAME, enumElement.getOrdinal(), enumElement.getValue(), enumElement.getDescription(), methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.MEDIA_USAGE_OTHER_ID_PROPERTY_NAME, mediaUsageOtherId, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.REFERENCEABLE_TO_RELATED_MEDIA_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.MEDIA_REFERENCE_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(referenceableGUID + "_to_" + mediaReferenceGUID + "_media_reference_relationship" + mediaId),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
@@ -2022,7 +2022,7 @@ public class SimpleCatalogArchiveHelper
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.MEMBERSHIP_RATIONALE_PROPERTY_NAME, membershipRationale, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(collectionGUID + "_to_" + memberGUID + "_collection_membership_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
@@ -4252,7 +4252,7 @@ public class SimpleCatalogArchiveHelper
             EntityProxy end1 = archiveHelper.getEntityProxy(connectorTypeDirectoryEntity);
             EntityProxy end2 = archiveHelper.getEntityProxy(connectorCategoryEntity);
 
-            archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_NAME,
+            archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                          idToGUIDMap.getGUID(qualifiedName + "_connector_type_directory_relationship"),
                                                                          null,
                                                                          InstanceStatus.ACTIVE,

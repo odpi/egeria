@@ -1122,7 +1122,119 @@ public enum OpenMetadataType
                                        "Link to the external data resource containing the surveyed resource's profile data."),
 
 
+    EXTERNAL_REFERENCE_LINK_RELATIONSHIP("7d818a67-ab45-481c-bc28-f6b1caf12f06",
+                                         "ExternalReferenceLink",
+                                         OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES,
+                                         "906ea4d6-1825-40c8-b5cb-07ecca6b848e",
+                                         null),
+
+    EXTERNAL_REFERENCE("af536f20-062b-48ef-9c31-1ddd05b04c56",
+                       "ExternalReference",
+                       OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES,
+                       "cd59edf8-ef6d-4436-bfc5-e93403238df4",
+                       null),
+
+    RELATED_MEDIA("747f8b86-fe7c-4c9b-ba75-979e093cc307",
+                  "RelatedMedia",
+                  OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES,
+                  "4b4f379f-0d69-46ae-b5cd-0b6c08dffb21",
+                  null),
+
+    MEDIA_REFERENCE_RELATIONSHIP("1353400f-b0ab-4ab9-ab09-3045dd8a7140",
+                               "MediaReference",
+                               OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES,
+                               "3e7b1513-f7df-4de2-ba32-0b1cc82e2946",
+                               null),
+
+
+    /**
+     * A group of related items.
+     */
+    COLLECTION("347005ba-2b35-4670-b5a7-12c9ebed0cf7",
+               "Collection",
+               OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+               "b5ff9f14-e7eb-465b-8803-b1ba6ea3a8afe",
+               "A group of related items."),
+
+
+    /**
+     * Identifies a member of a collection.
+     */
+    COLLECTION_MEMBERSHIP_RELATIONSHIP("5cabb76a-e25b-4bb5-8b93-768bbac005af",
+                                       "CollectionMembership",
+                                       OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                                       "5fdfa2b1-7511-4700-aa27-e87458b93446",
+                                       "Identifies a member of a collection."),
+
+
+    /**
+     * This collection is the root collection in a collection hierarchy.
+     */
+    ROOT_COLLECTION("9fdb6d71-fd69-4c40-81f3-5eab1c44d1f4",
+                    "RootCollection",
+                    OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                    "f531c0b8-712c-4327-a8e5-7500727bab1d",
+                    "This collection is the root collection in a collection hierarchy."),
+
+
+    /**
+     * This is a collection of data fields that describe some desired data.
+     */
+    DATA_SPEC_COLLECTION("781c5319-af83-4195-ada7-a44914f3e63a",
+                         "DataSpec",
+                         OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                         "3d80f3ea-86d9-4a76-9531-d0ffd0650116",
+                         "This is a collection of data fields that describe some desired data."),
+
+
+    /**
+     * This collection is the home collection for a referenceable.
+     */
+    HOME_COLLECTION("16274db0-ebd8-4a2b-b8ba-134a3f4d6130",
+                    "HomeCollection",
+                    OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                    "e1138106-f222-4847-ba1e-c6f014de7b4a",
+                    "This collection is the home collection for a referenceable."),
+
+    /**
+     * Defines that a collection is a set of results from an activity, query, ...
+     */
+    RESULTS_SET("3947f08d-7412-4022-81fc-344a20dfbb26",
+                    "ResultsSet",
+                    OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                    "883529d0-f230-4fd1-93d3-13820090f320",
+                    "Defines that a collection is a set of results from an activity, query, ..."),
+
+    /**
+     * A collection that lists elements that have been part of recent activity.
+     */
+    RECENT_ACCESS("e68d7cdf-08bc-4eee-844b-502f5940082",
+                "RecentAccess",
+                OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                "e3c0d70e-8d9c-4575-a21d-dcc7a2bb5dcc",
+                "A collection that lists elements that have been part of recent activity."),
+
+    /**
+     * Defines that a collection should be treated like a folder.
+     */
+    FOLDER("3c0fa687-8a63-4c8e-8bda-ede9c78be6c7",
+                  "Folder",
+                  OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                  "b2fe2ac5-f4d5-4eac-b4cf-c5fd112395eb",
+                  "Defines that a collection should be treated like a folder."),
+
+    /**
+     * Defines a list of activities such as ToDos, Tasks etc...
+     */
+    WORK_ITEM_LIST("9d958a7c-5fca-4acc-83b3-f59b70e73f54",
+           "WorkItemList",
+           OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+           "2ee49f29-da72-490f-a6c4-e7525516e6f0",
+           "Defines a list of activities such as ToDos, Tasks etc..."),
+
+
     ;
+
 
 
     public final String typeGUID;
@@ -1144,15 +1256,6 @@ public enum OpenMetadataType
         this.description     = description;
     }
 
-
-
-    public static final String REFERENCEABLE_TO_EXT_REF_TYPE_GUID = "7d818a67-ab45-481c-bc28-f6b1caf12f06";
-    public static final String REFERENCEABLE_TO_EXT_REF_TYPE_NAME = "ExternalReferenceLink";
-    /* End1 = Referenceable; End 2 = ExternalReference */
-
-    public static final String EXTERNAL_REFERENCE_TYPE_GUID = "af536f20-062b-48ef-9c31-1ddd05b04c56";
-    public static final String EXTERNAL_REFERENCE_TYPE_NAME = "ExternalReference";    /* from Area 0 */
-    /* Referenceable */
 
     public static final String REFERENCE_TITLE_PROPERTY_NAME           = "referenceTitle";      /* from ExternalReference entity */
     public static final String REFERENCE_ABSTRACT_PROPERTY_NAME        = "referenceAbstract";   /* from ExternalReference entity */
@@ -1177,10 +1280,6 @@ public enum OpenMetadataType
     public static final String REFERENCE_ID_PROPERTY_NAME = "referenceId";         /* from ExternalReferenceLink relationship */
     public static final String PAGES_PROPERTY_NAME        = "pages";               /* from ExternalReferenceLink relationship */
     /* plus description property */
-
-    public static final String RELATED_MEDIA_TYPE_GUID = "747f8b86-fe7c-4c9b-ba75-979e093cc307";
-    public static final String RELATED_MEDIA_TYPE_NAME = "RelatedMedia";         /* from Area 0 */
-    /* ExternalReference */
 
     public static final String MEDIA_USAGE_PROPERTY_NAME          = "mediaUsage";           /* from RelatedMedia entity */
     public static final String MEDIA_USAGE_OTHER_ID_PROPERTY_NAME = "mediaUsageOtherId";    /* from RelatedMedia entity */
@@ -1209,10 +1308,6 @@ public enum OpenMetadataType
     /* MediaType enum */
     public static final String DEFAULT_MEDIA_USAGE_OTHER_ID_PROPERTY_NAME = "defaultMediaUsageOtherId";     /* from RelatedMedia entity */
 
-    public static final String REFERENCEABLE_TO_RELATED_MEDIA_TYPE_GUID = "1353400f-b0ab-4ab9-ab09-3045dd8a7140";
-    public static final String REFERENCEABLE_TO_RELATED_MEDIA_TYPE_NAME = "MediaReference";
-    /* End1 = Referenceable; End 2 = RelatedMedia */
-
     public static final String MEDIA_ID_PROPERTY_NAME          = "mediaId";              /* from MediaReference relationship */
     public static final String MEDIA_DESCRIPTION_PROPERTY_NAME = "description";          /* from MediaReference relationship */
 
@@ -1231,45 +1326,12 @@ public enum OpenMetadataType
      */
     public static final String COLLECTION_TYPE_PROPERTY_NAME = "collectionType";        /* from Collection entity */
 
-    /**
-     * 9fdb6d71-fd69-4c40-81f3-5eab1c44d1f4
-     */
-    public static final String ROOT_COLLECTION_TYPE_GUID = "9fdb6d71-fd69-4c40-81f3-5eab1c44d1f4";
-
-    /**
-     * RootCollection - inherits from Collection
-     */
-    public static final String ROOT_COLLECTION_TYPE_NAME = "RootCollection";
-
-
-    /**
-     * 5cabb76a-e25b-4bb5-8b93-768bbac005af
-     */
-    public static final String COLLECTION_MEMBERSHIP_TYPE_GUID = "5cabb76a-e25b-4bb5-8b93-768bbac005af";
-
-    /**
-     * CollectionMembership - End1 = Collection; End 2 = Referenceable
-     */
-    public static final String COLLECTION_MEMBERSHIP_TYPE_NAME = "CollectionMembership";
-
-    public static final String REFERENCEABLE_TO_COLLECTION_TYPE_GUID = COLLECTION_MEMBERSHIP_TYPE_GUID;
-    public static final String REFERENCEABLE_TO_COLLECTION_TYPE_NAME = COLLECTION_MEMBERSHIP_TYPE_NAME;
-    /* End1 = Collection; End 2 = Referenceable */
 
     /**
      * membershipRationale
      */
     public static final String MEMBERSHIP_RATIONALE_PROPERTY_NAME = "membershipRationale";
 
-    /**
-     * 3947f08d-7412-4022-81fc-344a20dfbb26
-     */
-    public static final String SET_TYPE_GUID = "3947f08d-7412-4022-81fc-344a20dfbb26";
-
-    /**
-     * Set
-     */
-    public static final String SET_TYPE_NAME = "Set";                 /* from Area 1 */
 
     /**
      * 3c0fa687-8a63-4c8e-8bda-ede9c78be6c7
@@ -1717,7 +1779,7 @@ public enum OpenMetadataType
      * 0
      */
     public static final int SERVER_ASSET_USE_TYPE_OWNS_ORDINAL = 0;
-    public static final String SERVER_ASSET_USE_TYPE_OWNS_SYMBOLIC_NAME = "OWNS";
+    public static final String SERVER_ASSET_USE_TYPE_OWNS_SYMBOLIC_NAME = "Owns";
 
     /**
      * 1
@@ -4748,12 +4810,12 @@ public enum OpenMetadataType
     /* End1 = SchemaAnalysisAnnotation; End 2 = DataField */
 
     /* For DiscoveredDataField relationship */
-    public static final String DISCOVERED_NESTED_DATA_FIELD_TYPE_GUID = "60f2d263-e24d-4f20-8c0d-b5e12356cd54";
-    public static final String DISCOVERED_NESTED_DATA_FIELD_TYPE_NAME = "DiscoveredNestedDataField";
+    public static final String NESTED_DATA_FIELD_TYPE_GUID = "60f2d263-e24d-4f20-8c0d-b5e12356cd54";
+    public static final String NESTED_DATA_FIELD_TYPE_NAME = "NestedDataField";
     /* End1 = (parent)DataField; End 2 = DataField */
 
-    public static final String DISCOVERED_LINKED_DATA_FIELD_TYPE_GUID = "cca4b116-4490-44c4-84e1-535231ae46a1";
-    public static final String DISCOVERED_LINKED_DATA_FIELD_TYPE_NAME = "DiscoveredLinkedDataField";
+    public static final String LINKED_DATA_FIELD_TYPE_GUID = "cca4b116-4490-44c4-84e1-535231ae46a1";
+    public static final String LINKED_DATA_FIELD_TYPE_NAME = "LinkedDataField";
     /* End1 = (parent)DataField; End 2 = DataField */
 
     public static final String DATA_FIELD_POSITION_PROPERTY_NAME = "dataFieldPosition";

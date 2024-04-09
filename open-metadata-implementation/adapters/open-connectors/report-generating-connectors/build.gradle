@@ -1,0 +1,30 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:governance-action-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:survey-action-framework')
+    compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
+    implementation project(':open-metadata-resources:open-metadata-reports:report-utilities')
+    implementation 'commons-io:commons-io'
+    compileOnly 'org.slf4j:slf4j-api'
+    testImplementation 'org.testng:testng'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-databind'
+    testImplementation project(':open-metadata-test:open-metadata-ut')
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    testImplementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testCompileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+}
+
+description = 'Report Generating Connectors'
+
+java {
+    withJavadocJar()
+}

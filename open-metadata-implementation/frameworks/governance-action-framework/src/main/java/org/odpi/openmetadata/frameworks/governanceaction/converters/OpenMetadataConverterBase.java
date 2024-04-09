@@ -2905,6 +2905,28 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
+     * Extract and delete the resourceLastAccessedTime property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return date or null
+     */
+    protected Date removeResourceLastAccessedTime(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeResourceLastAccessedTime";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(serviceName,
+                                                     OpenMetadataProperty.RESOURCE_LAST_ACCESSED_TIME.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the pathName property from the supplied element properties.
      *
      * @param elementProperties properties from element

@@ -100,7 +100,7 @@ public enum PostgresConfigurationProperty
      * Provides a list of database names that should not be catalogued.
      */
     EXCLUDE_DATABASE_LIST ("excludeDatabaseList",
-                        "Provides a list of database names that should not be catalogued..",
+                        "Provides a list of database names that should not be catalogued.",
                         "array<string>",
                         "dbBoring,dbNotUsed",
                         false),

@@ -485,7 +485,6 @@ public class OpenMetadataTypesArchive2_4
         linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
         linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.ANNOTATION.typeName));
         linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.ANNOTATION_REVIEW.typeName));
-        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FIELD_TYPE_NAME));
         linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.LIKE_TYPE_NAME));
         linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.RATING_TYPE_NAME));
 

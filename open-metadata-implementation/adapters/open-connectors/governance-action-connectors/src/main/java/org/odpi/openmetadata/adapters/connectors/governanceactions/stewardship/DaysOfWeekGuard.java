@@ -16,7 +16,7 @@ import java.util.List;
  */
 public enum DaysOfWeekGuard
 {
-    SUNDAY_("sunday", CompletionStatus.ACTIONED, "Today is Sunday."),
+    SUNDAY("sunday", CompletionStatus.ACTIONED, "Today is Sunday."),
     MONDAY("monday", CompletionStatus.ACTIONED, "Today is Monday."),
     TUESDAY("tuesday", CompletionStatus.ACTIONED, "Today is Tuesday."),
     WEDNESDAY("wednesday", CompletionStatus.ACTIONED, "Today is Wednesday."),

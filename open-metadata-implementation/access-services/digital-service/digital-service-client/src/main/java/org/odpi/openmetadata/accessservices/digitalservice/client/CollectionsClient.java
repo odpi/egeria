@@ -925,7 +925,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         List<RelatedMetadataElement> linkedResources = openMetadataStoreClient.getRelatedMetadataElements(userId,
                                                                                                           collectionGUID,
                                                                                                           1,
-                                                                                                          OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_NAME,
+                                                                                                          OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                                                           false,
                                                                                                           false,
                                                                                                           new Date(),
@@ -938,7 +938,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
 
             for (RelatedMetadataElement relatedMetadataElement : linkedResources)
             {
-                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.COLLECTION_TYPE_NAME))
+                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.COLLECTION.typeName))
                 {
                     collectionMembers.add(collectionMemberConverter.getNewBean(collectionMemberBeanClass, relatedMetadataElement, methodName));
                 }
@@ -975,7 +975,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         List<RelatedMetadataElements> linkedResources = openMetadataStoreClient.getMetadataElementRelationships(userId,
                                                                                                                 collectionGUID,
                                                                                                                 elementGUID,
-                                                                                                                OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_NAME,
+                                                                                                                OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                                                                 false,
                                                                                                                 false,
                                                                                                                 new Date(),
@@ -1030,7 +1030,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         if (relationshipGUID == null)
         {
             openMetadataStoreClient.createRelatedElementsInStore(userId,
-                                                                 OpenMetadataType.COLLECTION_MEMBERSHIP_TYPE_NAME,
+                                                                 OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                  collectionGUID,
                                                                  elementGUID,
                                                                  false,

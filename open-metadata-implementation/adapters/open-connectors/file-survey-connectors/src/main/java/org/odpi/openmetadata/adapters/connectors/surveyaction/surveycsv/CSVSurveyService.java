@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreConnector;
+import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileMetric;
+import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.SurveyFileAnnotationType;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -15,6 +17,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatu
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
+import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassification;
+import org.odpi.openmetadata.frameworks.governanceaction.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ArchiveProperties;
@@ -26,10 +30,11 @@ import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyOpenMetadataStore;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.AnnotationStatus;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceProfileAnnotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourcePhysicalStatusAnnotation;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceProfileAnnotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.SchemaAnalysisAnnotation;
 
+import java.io.File;
 import java.util.*;
 
 
@@ -197,9 +202,57 @@ public class CSVSurveyService extends SurveyActionServiceConnector
             }
 
             /*
+             * The asset should have a special connector for CSV files.  If the connector is wrong,
+             * the cast will fail.
+             */
+            connector = assetStore.getConnectorToAsset();
+
+            CSVFileStoreConnector    assetConnector  = (CSVFileStoreConnector)connector;
+            long                     recordCount     = assetConnector.getRecordCount();
+
+            File file = assetConnector.getFile();
+
+            annotationStore.setAnalysisStep(AnalysisStep.MEASURE_RESOURCE.getName());
+
+            FileClassifier     fileClassifier     = surveyContext.getFileClassifier();
+            FileClassification fileClassification = fileClassifier.classifyFile(file);
+
+            ResourcePhysicalStatusAnnotation measurementAnnotation = new ResourcePhysicalStatusAnnotation();
+
+            measurementAnnotation.setAnnotationType(SurveyFileAnnotationType.MEASUREMENTS.getName());
+            measurementAnnotation.setSummary(SurveyFileAnnotationType.MEASUREMENTS.getSummary());
+            measurementAnnotation.setExplanation(SurveyFileAnnotationType.MEASUREMENTS.getExplanation());
+            measurementAnnotation.setCreateTime(assetConnector.getCreationDate());
+            measurementAnnotation.setModifiedTime(assetConnector.getLastUpdateDate());
+            measurementAnnotation.setLastAccessedTime(assetConnector.getLastAccessDate());
+            measurementAnnotation.setSize(assetConnector.getFileLength());
+
+            Map<String, String> dataSourceProperties = new HashMap<>();
+
+            dataSourceProperties.put(FileMetric.FILE_NAME.name, fileClassification.getFileName());
+            dataSourceProperties.put(FileMetric.PATH_NAME.name, fileClassification.getPathName());
+            dataSourceProperties.put(FileMetric.FILE_EXTENSION.name, fileClassification.getFileExtension());
+            dataSourceProperties.put(FileMetric.FILE_TYPE.name, fileClassification.getFileType());
+            dataSourceProperties.put(FileMetric.DEPLOYED_IMPLEMENTATION_TYPE.name, fileClassification.getDeployedImplementationType());
+            dataSourceProperties.put(FileMetric.ENCODING.name, fileClassification.getEncoding());
+            dataSourceProperties.put(FileMetric.ASSET_TYPE_NAME.name, fileClassification.getAssetTypeName());
+            dataSourceProperties.put(FileMetric.CAN_READ.name, Boolean.toString(fileClassification.isCanRead()));
+            dataSourceProperties.put(FileMetric.CAN_WRITE.name, Boolean.toString(fileClassification.isCanWrite()));
+            dataSourceProperties.put(FileMetric.CAN_EXECUTE.name, Boolean.toString(fileClassification.isCanExecute()));
+            dataSourceProperties.put(FileMetric.IS_SYM_LINK.name, Boolean.toString(fileClassification.isSymLink()));
+            dataSourceProperties.put(FileMetric.IS_HIDDEN.name, Boolean.toString(fileClassification.isHidden()));
+            dataSourceProperties.put(FileMetric.RECORD_COUNT.name, Long.toString(recordCount));
+
+            measurementAnnotation.setResourceProperties(dataSourceProperties);
+
+            annotationStore.addAnnotation(measurementAnnotation, surveyContext.getAssetGUID());
+
+            /*
              * If a schema type is attached, it must be of the correct type so that information from the asset can
              * be matched to it.
              */
+            annotationStore.setAnalysisStep(AnalysisStep.SCHEMA_EXTRACTION.getName());
+
             SchemaType rootSchemaType = assetUniverse.getRootSchemaType();
 
             String           schemaTypeGUID;
@@ -251,17 +304,7 @@ public class CSVSurveyService extends SurveyActionServiceConnector
                 return;
             }
 
-            /*
-             * The asset should have a special connector for CSV files.  If the connector is wrong,
-             * the cast will fail.
-             */
-            connector = assetStore.getConnectorToAsset();
 
-            CSVFileStoreConnector    assetConnector    = (CSVFileStoreConnector)connector;
-
-            annotationStore.setAnalysisStep(AnalysisStep.SCHEMA_EXTRACTION.getName());
-
-            long                     recordCount     = assetConnector.getRecordCount();
             List<String>             columnNames     = assetConnector.getColumnNames();
 
             /*
@@ -291,23 +334,6 @@ public class CSVSurveyService extends SurveyActionServiceConnector
             schemaAnnotation.setAdditionalProperties(additionalProperties);
 
             annotationStore.addAnnotation(schemaAnnotation, schemaTypeGUID);
-
-            annotationStore.setAnalysisStep(AnalysisStep.MEASURE_RESOURCE.getName());
-
-            ResourcePhysicalStatusAnnotation measurementAnnotation = new ResourcePhysicalStatusAnnotation();
-            Map<String, String>              measurementProperties = new HashMap<>();
-
-            measurementAnnotation.setAnnotationType("ExtractDataStoreProperties");
-            measurementAnnotation.setSummary("Extract properties from the file.");
-
-            measurementProperties.put("File Name", assetConnector.getFileName());
-            measurementProperties.put("Record Count", Long.toString(recordCount));
-
-            measurementAnnotation.setModifiedTime(assetConnector.getLastUpdateDate());
-            measurementAnnotation.setResourceProperties(measurementProperties);
-            measurementAnnotation.setSize(assetConnector.getFile().length());
-
-            annotationStore.addAnnotation(measurementAnnotation, surveyContext.getAssetGUID());
 
             annotationStore.setAnalysisStep(AnalysisStep.PROFILE_DATA.getName());
 
