@@ -18,6 +18,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
@@ -31,6 +32,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -74,6 +76,11 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                 {
                     try
                     {
+                        if (! jdbcResourceConnector.isActive())
+                        {
+                            jdbcResourceConnector.start();
+                        }
+
                         catalogDatabases(null,
                                          null,
                                          connectionProperties.getConfigurationProperties(),
@@ -121,10 +128,14 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
 
                 JDBCResourceConnector assetConnector = (JDBCResourceConnector)connector;
 
+                assetConnector.start();
+
                 catalogDatabases(databaseServerGUID,
                                  databaseManagerGUID,
                                  requestedCatalogTarget.getConfigurationProperties(),
                                  assetConnector);
+
+                assetConnector.disconnect();
             }
             catch (Exception exception)
             {
@@ -328,10 +339,6 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                                                                                        UserNotAuthorizedException,
                                                                                        ConnectorCheckedException
     {
-        Map<String, String> placeholderProperties = super.getSuppliedPlaceholderProperties(configurationProperties);
-
-        placeholderProperties.put(PostgresConfigurationProperty.DATABASE_NAME.getName(), databaseName);
-
         OpenMetadataAccess openMetadataAccess = getContext().getIntegrationGovernanceContext().getOpenMetadataAccess();
         ElementProperties   serverAssetUseProperties = propertyHelper.addEnumProperty(null,
                                                                                       OpenMetadataProperty.USE_TYPE.name,
@@ -340,18 +347,37 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
         {
             if (catalogTemplateGUID != null)
             {
-                openMetadataAccess.createMetadataElementFromTemplate(OpenMetadataType.RELATIONAL_DATABASE_TYPE_NAME,
-                                                                     databaseServerGUID,
-                                                                     false,
-                                                                     null,
-                                                                     null,
-                                                                     catalogTemplateGUID,
-                                                                     null,
-                                                                     placeholderProperties,
-                                                                     databaseManagerGUID,
-                                                                     OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
-                                                                     serverAssetUseProperties,
-                                                                     true);
+                Map<String, String> placeholderProperties = super.getSuppliedPlaceholderProperties(configurationProperties);
+
+                if (placeholderProperties == null)
+                {
+                    placeholderProperties = new HashMap<>();
+                }
+
+                placeholderProperties.put(PostgresConfigurationProperty.DATABASE_NAME.getName(), databaseName);
+
+                OpenMetadataElement templateElement = openMetadataAccess.getMetadataElementByGUID(catalogTemplateGUID);
+
+                String qualifiedName = propertyHelper.getResolvedStringPropertyFromTemplate(connectorName,
+                                                                                            templateElement,
+                                                                                            OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                            placeholderProperties);
+
+                if (openMetadataAccess.getMetadataElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name) == null)
+                {
+                    openMetadataAccess.createMetadataElementFromTemplate(OpenMetadataType.RELATIONAL_DATABASE_TYPE_NAME,
+                                                                         databaseServerGUID,
+                                                                         false,
+                                                                         null,
+                                                                         null,
+                                                                         catalogTemplateGUID,
+                                                                         null,
+                                                                         placeholderProperties,
+                                                                         databaseManagerGUID,
+                                                                         OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
+                                                                         serverAssetUseProperties,
+                                                                         true);
+                }
             }
             else
             {
@@ -361,95 +387,96 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                 String databaseUserId = super.getStringConfigurationProperty(PostgresConfigurationProperty.DATABASE_USER_ID.getName(), configurationProperties);
                 String databasePassword = super.getStringConfigurationProperty(PostgresConfigurationProperty.DATABASE_PASSWORD.getName(), configurationProperties);
 
-                ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                       "PostgreSQLDatabase:" + serverName + ":" + databaseName);
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.NAME.name,
-                                                                     databaseName);
+                String qualifiedName = "PostgreSQLDatabase:" + serverName + ":" + databaseName;
 
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                                     DeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType());
+                if (openMetadataAccess.getMetadataElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name) == null)
+                {
+                    ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                                           OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                           qualifiedName);
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.NAME.name,
+                                                                         databaseName);
 
-                String databaseGUID = openMetadataAccess.createMetadataElementInStore(DeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName(),
-                                                                                      ElementStatus.ACTIVE,
-                                                                                      null,
-                                                                                      databaseServerGUID,
-                                                                                      false,
-                                                                                      null,
-                                                                                      null,
-                                                                                      elementProperties,
-                                                                                      databaseManagerGUID,
-                                                                                      OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
-                                                                                      serverAssetUseProperties,
-                                                                                      true);
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                                         DeployedImplementationType.POSTGRESQL_DATABASE.getDeployedImplementationType());
 
-                elementProperties = propertyHelper.addStringProperty(null,
-                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                     "PostgreSQLDatabase:" + serverName + ":" + databaseName + ":Connection");
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.DISPLAY_NAME.name,
-                                                                     databaseName + " connection");
+                    String databaseGUID = openMetadataAccess.createMetadataElementInStore(DeployedImplementationType.POSTGRESQL_DATABASE.getAssociatedTypeName(),
+                                                                                          ElementStatus.ACTIVE,
+                                                                                          null,
+                                                                                          databaseServerGUID,
+                                                                                          false,
+                                                                                          null,
+                                                                                          null,
+                                                                                          elementProperties,
+                                                                                          databaseManagerGUID,
+                                                                                          OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
+                                                                                          serverAssetUseProperties,
+                                                                                          true);
 
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.USER_ID.name,
-                                                                     databaseUserId);
+                    elementProperties = propertyHelper.addStringProperty(null,
+                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                         "PostgreSQLDatabase:" + serverName + ":" + databaseName + ":Connection");
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                         databaseName + " connection");
 
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataType.CLEAR_PASSWORD_PROPERTY_NAME,
-                                                                     databasePassword);
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.USER_ID.name,
+                                                                         databaseUserId);
 
-                String connectionGUID = openMetadataAccess.createMetadataElementInStore(OpenMetadataType.CONNECTION_TYPE_NAME,
-                                                                                        ElementStatus.ACTIVE,
-                                                                                        null,
-                                                                                        databaseGUID,
-                                                                                        false,
-                                                                                        null,
-                                                                                        null,
-                                                                                        elementProperties,
-                                                                                        databaseGUID,
-                                                                                        OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME,
-                                                                                        null,
-                                                                                        false);
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataType.CLEAR_PASSWORD_PROPERTY_NAME,
+                                                                         databasePassword);
+
+                    String connectionGUID = openMetadataAccess.createMetadataElementInStore(OpenMetadataType.CONNECTION_TYPE_NAME,
+                                                                                            ElementStatus.ACTIVE,
+                                                                                            null,
+                                                                                            databaseGUID,
+                                                                                            false,
+                                                                                            null,
+                                                                                            null,
+                                                                                            elementProperties,
+                                                                                            databaseGUID,
+                                                                                            OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                            null,
+                                                                                            false);
 
 
-                JDBCResourceConnectorProvider jdbcResourceConnectorProvider = new JDBCResourceConnectorProvider();
+                    JDBCResourceConnectorProvider jdbcResourceConnectorProvider = new JDBCResourceConnectorProvider();
 
-                ConnectorType connectorType = jdbcResourceConnectorProvider.getConnectorType();
+                    ConnectorType connectorType = jdbcResourceConnectorProvider.getConnectorType();
 
-                getContext().setupConnectorType(connectionGUID, connectorType.getGUID());
+                    getContext().setupConnectorType(connectionGUID, connectorType.getGUID());
 
-                elementProperties = propertyHelper.addStringProperty(null,
-                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                     "PostgreSQLDatabase:" + serverName + ":" + databaseName + ":Endpoint");
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.NAME.name,
-                                                                     databaseName + " endpoint");
+                    elementProperties = propertyHelper.addStringProperty(null,
+                                                                         OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                         "PostgreSQLDatabase:" + serverName + ":" + databaseName + ":Endpoint");
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.NAME.name,
+                                                                         databaseName + " endpoint");
 
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataType.NETWORK_ADDRESS_PROPERTY_NAME,
-                                                                     "jdbc:postgresql://" + hostIdentifier + ":" + portNumber + "/" + databaseName);
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataType.NETWORK_ADDRESS_PROPERTY_NAME,
+                                                                         "jdbc:postgresql://" + hostIdentifier + ":" + portNumber + "/" + databaseName);
 
-                openMetadataAccess.createMetadataElementInStore(OpenMetadataType.ENDPOINT_TYPE_NAME,
-                                                                ElementStatus.ACTIVE,
-                                                                null,
-                                                                databaseGUID,
-                                                                false,
-                                                                null,
-                                                                null,
-                                                                elementProperties,
-                                                                connectionGUID,
-                                                                OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME,
-                                                                null,
-                                                                false);
-
+                    openMetadataAccess.createMetadataElementInStore(OpenMetadataType.ENDPOINT_TYPE_NAME,
+                                                                    ElementStatus.ACTIVE,
+                                                                    null,
+                                                                    databaseGUID,
+                                                                    false,
+                                                                    null,
+                                                                    null,
+                                                                    elementProperties,
+                                                                    connectionGUID,
+                                                                    OpenMetadataType.CONNECTION_ENDPOINT_TYPE_NAME,
+                                                                    null,
+                                                                    false);
+                }
             }
         }
     }
-
-
-
 
 
     /**
@@ -460,7 +487,6 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
     @Override
     public  synchronized void disconnect() throws ConnectorCheckedException
     {
-        // todo close any JDBC connections
         /*
          * This disconnects any embedded connections such as secrets connectors.
          */

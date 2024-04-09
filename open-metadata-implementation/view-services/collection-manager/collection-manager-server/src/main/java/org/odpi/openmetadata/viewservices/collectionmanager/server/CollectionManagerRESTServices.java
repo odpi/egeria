@@ -344,6 +344,7 @@ public class CollectionManagerRESTServices extends TokenController
      * Create a new generic collection.
      *
      * @param serverName                 name of called server.
+     * @param optionalClassificationName name of collection classification
      * @param requestBody             properties for the collection.
      *
      * @return unique identifier of the newly created Collection
@@ -352,6 +353,7 @@ public class CollectionManagerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createCollection(String                   serverName,
+                                         String                   optionalClassificationName,
                                          NewCollectionRequestBody requestBody)
     {
         final String methodName = "createCollection";
@@ -376,7 +378,7 @@ public class CollectionManagerRESTServices extends TokenController
                 response.setGUID(handler.createCollection(userId,
                                                           requestBody.getAnchorGUID(),
                                                           requestBody.getIsOwnAnchor(),
-                                                          null,
+                                                          optionalClassificationName,
                                                           requestBody.getCollectionProperties(),
                                                           requestBody.getParentGUID(),
                                                           requestBody.getParentRelationshipTypeName(),
@@ -435,7 +437,66 @@ public class CollectionManagerRESTServices extends TokenController
                 response.setGUID(handler.createCollection(userId,
                                                           requestBody.getAnchorGUID(),
                                                           requestBody.getIsOwnAnchor(),
-                                                          OpenMetadataType.ROOT_COLLECTION_TYPE_NAME,
+                                                          OpenMetadataType.ROOT_COLLECTION.typeName,
+                                                          requestBody.getCollectionProperties(),
+                                                          requestBody.getParentGUID(),
+                                                          requestBody.getParentRelationshipTypeName(),
+                                                          requestBody.getParentRelationshipProperties(),
+                                                          requestBody.getParentAtEnd1()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Create a new collection with the DataSpecCollection classification.  Used to identify the top of a
+     * collection hierarchy.
+     *
+     * @param serverName                 name of called server.
+     * @param requestBody             properties for the collection.
+     *
+     * @return unique identifier of the newly created Collection
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse createDataSpecCollection(String                   serverName,
+                                                 NewCollectionRequestBody requestBody)
+    {
+        final String methodName = "createDataSpecCollection";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
+
+                response.setGUID(handler.createCollection(userId,
+                                                          requestBody.getAnchorGUID(),
+                                                          requestBody.getIsOwnAnchor(),
+                                                          OpenMetadataType.DATA_SPEC_COLLECTION.typeName,
                                                           requestBody.getCollectionProperties(),
                                                           requestBody.getParentGUID(),
                                                           requestBody.getParentRelationshipTypeName(),

@@ -857,9 +857,9 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
     getEnumPropertyValue(AttributeTypeDef typeDef,
                          String           symbolicName) throws InvalidParameterException
     {
-        final String methodName = "getEnumPropertyValue";
+        final String methodName                = "getEnumPropertyValue";
         final String symbolicNameParameterName = "symbolicName";
-        final String propertyParameterName = "omrsPropertyValue";
+        final String propertyParameterName     = "omrsPropertyValue";
 
         invalidParameterHandler.validateName(symbolicName, symbolicNameParameterName, methodName);
         EnumPropertyValue omrsPropertyValue = null;
@@ -872,16 +872,17 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
             {
                 for (EnumElementDef enumElementDef : enumElementDefs)
                 {
-                    if ((enumElementDef != null) && (symbolicName.equals(enumElementDef.getValue())))
+                    if ((enumElementDef != null) &&
+                            (enumElementDef.getValue() != null) &&
+                            (symbolicName.equalsIgnoreCase(enumElementDef.getValue())))
                     {
-                        omrsPropertyValue =
-                                new EnumPropertyValue();
+                        omrsPropertyValue = new EnumPropertyValue();
 
                         omrsPropertyValue.setHeaderVersion(InstancePropertyValue.CURRENT_INSTANCE_PROPERTY_VALUE_HEADER_VERSION);
                         omrsPropertyValue.setInstancePropertyCategory(InstancePropertyCategory.ENUM);
                         omrsPropertyValue.setTypeGUID(typeDef.getGUID());
                         omrsPropertyValue.setTypeName(typeDef.getName());
-                        omrsPropertyValue.setSymbolicName(symbolicName);
+                        omrsPropertyValue.setSymbolicName(enumElementDef.getValue());
                         omrsPropertyValue.setOrdinal(enumElementDef.getOrdinal());
                         omrsPropertyValue.setDescription(enumElementDef.getDescription());
                     }

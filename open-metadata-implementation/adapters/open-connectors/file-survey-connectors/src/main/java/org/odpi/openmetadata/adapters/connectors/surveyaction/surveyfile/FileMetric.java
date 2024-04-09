@@ -25,6 +25,7 @@ public enum FileMetric
     CAN_EXECUTE ("canExecute", "Can this file be executed as a program?"),
     IS_SYM_LINK ("isSymLink", "Is this file a symbolic link to a file in another location?"),
     IS_HIDDEN ("isHidden", "Is this file hidden from standard users?"),
+    RECORD_COUNT ("recordCount", "How many record does this data file contain?"),
 
     ;
 

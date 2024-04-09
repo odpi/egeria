@@ -43,7 +43,7 @@ dependencies {
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:system-connectors:apache-kafka-connectors')
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:system-connectors:postgres-server-connectors')
     runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
-    runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:survey-action-connectors')
+    runtimeOnly project(':open-metadata-implementation:adapters:open-connectors:file-survey-connectors')
     runtimeOnly 'ch.qos.logback:logback-classic'
 }
 

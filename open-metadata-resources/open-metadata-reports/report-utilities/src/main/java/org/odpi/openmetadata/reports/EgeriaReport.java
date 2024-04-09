@@ -19,6 +19,7 @@ import java.util.List;
 public class EgeriaReport
 {
     private final FileOutputStream fileOutStream;
+    private final boolean          printToConsole;
 
 
     /**
@@ -86,7 +87,10 @@ public class EgeriaReport
     public void printReportTitle(int    indentLevel,
                                  String reportTitle) throws IOException
     {
-        System.out.println(getSpaceIndent(indentLevel) + reportTitle);
+        if (printToConsole)
+        {
+            System.out.println(getSpaceIndent(indentLevel) + reportTitle);
+        }
 
         String reportString = getHeadingLevel(indentLevel) + reportTitle + "\n\n";
 
@@ -104,7 +108,10 @@ public class EgeriaReport
     public void printReportSubheading(int    indentLevel,
                                       String titleText) throws IOException
     {
-        System.out.println(getSpaceIndent(indentLevel) + titleText);
+        if (printToConsole)
+        {
+            System.out.println(getSpaceIndent(indentLevel) + titleText);
+        }
 
         String reportString = getHeadingLevel(indentLevel) + titleText + "\n";
 
@@ -126,7 +133,10 @@ public class EgeriaReport
     {
         if (elementText == null)
         {
-            System.out.println(getSpaceIndent(indentLevel) + elementLabel + ": " + "<null>");
+            if (printToConsole)
+            {
+                System.out.println(getSpaceIndent(indentLevel) + elementLabel + ": " + "<null>");
+            }
 
             String reportString = "* **" + elementLabel + "**: " + "*null*" + "\n";
 
@@ -134,7 +144,10 @@ public class EgeriaReport
         }
         else
         {
-            System.out.println(getSpaceIndent(indentLevel) + elementLabel + ": " + elementText);
+            if (printToConsole)
+            {
+                System.out.println(getSpaceIndent(indentLevel) + elementLabel + ": " + elementText);
+            }
 
             String reportString = "* **" + elementLabel + "**: " + elementText + "\n";
 
@@ -153,7 +166,10 @@ public class EgeriaReport
     public void printReportLine(int    indentLevel,
                                 String reportText) throws IOException
     {
-        System.out.println(getSpaceIndent(indentLevel) + reportText);
+        if (printToConsole)
+        {
+            System.out.println(getSpaceIndent(indentLevel) + reportText);
+        }
 
         fileOutStream.write(reportText.getBytes());
         fileOutStream.write("\n".getBytes());
@@ -313,8 +329,23 @@ public class EgeriaReport
      */
     public EgeriaReport(String reportFileName) throws IOException
     {
+        this(reportFileName, true);
+    }
+
+    /**
+     * Set up the parameters for the sample.
+     *
+     * @param reportFileName name of file to write markdown content to
+     * @param printToConsole flag to indicate whether the report should also print to the console as well as the report file.
+     * @throws IOException problem writing file
+     */
+    public EgeriaReport(String  reportFileName,
+                        boolean printToConsole) throws IOException
+    {
         final String licenseString   = "<!-- SPDX-License-Identifier: CC-BY-4.0 -->\n";
         final String copyrightString = "<!-- Copyright Contributors to the Egeria project. -->\n\n";
+
+        this.printToConsole = printToConsole;
 
         File reportFile = new File(reportFileName);
 

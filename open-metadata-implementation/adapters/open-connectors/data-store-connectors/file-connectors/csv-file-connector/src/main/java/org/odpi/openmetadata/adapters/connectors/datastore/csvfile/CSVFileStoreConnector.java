@@ -5,8 +5,8 @@ package org.odpi.openmetadata.adapters.connectors.datastore.csvfile;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreConnector;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileException;
+import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileReadException;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.CSVFileConnectorErrorCode;
-import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.exception.FileReadException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.slf4j.Logger;
@@ -14,7 +14,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 
 /**
@@ -57,10 +60,10 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
 
             if (columnNamesProperty != null)
             {
-                if (columnNamesProperty instanceof List)
+                if (columnNamesProperty instanceof List<?> columnNamesPropertyList)
                 {
                     columnNames = new ArrayList<>();
-                    for (Object   columnNameProperty : (List)columnNamesProperty)
+                    for (Object   columnNameProperty : columnNamesPropertyList)
                     {
                         if (columnNameProperty != null)
                         {
@@ -90,40 +93,8 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
         {
             log.error("Null endpoint");
         }
-
     }
 
-
-    /**
-     * Return the name of the file to read.
-     *
-     * @return file name
-     * @throws FileException problem accessing the file
-     */
-    public String   getFileName() throws FileException
-    {
-        final String  methodName = "getFileName";
-
-        getFile(methodName);
-
-        return fileStoreName;
-    }
-
-
-    /**
-     * Return the last update data for the file.
-     *
-     * @return Date object
-     * @throws FileException problem accessing the file
-     */
-    public Date getLastUpdateDate() throws FileException
-    {
-        final String  methodName = "getLastUpdateDate";
-
-        File fileStore = getFile(methodName);
-
-        return new Date(fileStore.lastModified());
-    }
 
 
     /**
@@ -276,7 +247,7 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
      * and other tricks found in CSV files are handled.
      *
      * @param fileRecord a single record from the CSV file store
-     * @return an array of column values extracted from the record
+     * @return a list of column values extracted from the record
      */
     private  List<String> parseRecord(String fileRecord)
     {
@@ -285,8 +256,8 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
             return null;
         }
 
-        List<String> result = new ArrayList<>();
-        StringBuffer currentValue = new StringBuffer();
+        List<String>  result       = new ArrayList<>();
+        StringBuilder currentValue = new StringBuilder();
 
         boolean inQuotes = false;
         boolean startCollectingCharacters = false;
@@ -342,7 +313,7 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
                 {
                     result.add(currentValue.toString());
 
-                    currentValue = new StringBuffer();
+                    currentValue = new StringBuilder();
                     startCollectingCharacters = false;
 
                 }

@@ -2977,6 +2977,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract and delete the resourceLastAccessedTime property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return date or null
+     */
+    protected Date removeResourceLastAccessedTime(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeResourceLastAccessedTime";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                       OpenMetadataProperty.RESOURCE_LAST_ACCESSED_TIME.name,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the pathName property from the supplied instance properties.
      *
      * @param instanceProperties properties from entity

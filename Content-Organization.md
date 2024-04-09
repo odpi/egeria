@@ -66,7 +66,7 @@ The Egeria core repository contains the core Egeria functionality, and is organi
           * **[omrs-rest-repository-connector](open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/omrs-rest-repository-connector)** - enables IBM Information Governance Catalog to support open metadata.
       * **[rest-client-connectors](open-metadata-implementation/adapters/open-connectors/rest-client-connectors)** contains connector implementations for issuing REST calls.
       * **[secrets-store-connectors](open-metadata-implementation/adapters/open-connectors/rest-client-connectors)** contains connector implementations for retrieving secrets from external sources.
-      * **[survey-action-connectors](open-metadata-implementation/adapters/open-connectors/survey-action-connectors)** contains connector implementations for survey action services.
+      * **[file-survey-connectors](open-metadata-implementation/adapters/open-connectors/file-survey-connectors)** contains connector implementations for survey action services.
       * **[system-connectors](open-metadata-implementation/adapters/open-connectors/sustem-connectors)** contains connector implementations for issuing REST calls to different types of systems.
   
   * **[admin-services](open-metadata-implementation/admin-services)** - supports the configuration of the OMAG Server Platform.  This configuration determines which of the open metadata and governance services are active.

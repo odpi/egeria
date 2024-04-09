@@ -395,11 +395,11 @@ Content-Type: application/json
 
 {
   "class" : "InitiateGovernanceActionTypeRequestBody",
-  "governanceActionTypeQualifiedName": "Egeria:GovernanceActionType:2adeb8f1-0f59-4970-b6f2-6cc25d4d2402survey-folder",
+  "governanceActionTypeQualifiedName": "Egeria:GovernanceActionType:2adeb8f1-0f59-4970-b6f2-6cc25d4d2402survey-postgres-server",
   "actionTargets": [
     {
       "class" : "NewActionTarget",
-      "actionTargetName": "folderToSurvey",
+      "actionTargetName": "serverToSurvey",
       "actionTargetGUID": "c0c71ae5-c115-438f-ac25-8ac297881768"
     } ]
 }

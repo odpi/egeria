@@ -2268,6 +2268,7 @@ public class AnnotationStore
                 annotation.setResourceProperties(this.removeResourceProperties(remainingProperties));
                 annotation.setCreateTime(this.removeResourceCreateTime(remainingProperties));
                 annotation.setModifiedTime(this.removeResourceUpdateTime(remainingProperties));
+                annotation.setLastAccessedTime(this.removeResourceLastAccessedTime(remainingProperties));
                 annotation.setSize(this.removeSize(remainingProperties));
                 annotation.setEncoding(this.removeEncoding(remainingProperties));
 

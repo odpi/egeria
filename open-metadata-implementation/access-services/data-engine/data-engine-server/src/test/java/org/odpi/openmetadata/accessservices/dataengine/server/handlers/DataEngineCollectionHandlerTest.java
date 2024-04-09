@@ -143,8 +143,8 @@ class DataEngineCollectionHandlerTest {
         dataEngineCollectionHandler.addCollectionMembershipRelationship(USER, PROCESS_GUID, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(dataEngineCommonHandler, times(1)).upsertExternalRelationship(USER, PROCESS_GUID, GUID,
-                                                                             OpenMetadataType.REFERENCEABLE_TO_COLLECTION_TYPE_NAME,
-                                                                             OpenMetadataType.COLLECTION_TYPE_NAME,
+                                                                             OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                             OpenMetadataType.COLLECTION.typeName,
                                                                              OpenMetadataType.PROCESS.typeName, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
                 null);
     }

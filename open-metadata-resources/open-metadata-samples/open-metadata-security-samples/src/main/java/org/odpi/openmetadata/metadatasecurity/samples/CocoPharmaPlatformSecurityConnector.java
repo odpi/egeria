@@ -13,6 +13,7 @@ import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataPlatformSec
 public class CocoPharmaPlatformSecurityConnector extends OpenMetadataPlatformSecurityConnector
 {
     final static String  platformAdministrator = "garygeeke";
+    final static String  platformOperations    = "system";
 
     /**
      * Check that the calling user is authorized to create new servers.
@@ -39,7 +40,7 @@ public class CocoPharmaPlatformSecurityConnector extends OpenMetadataPlatformSec
      */
     public void  validateUserAsOperatorForPlatform(String   userId) throws UserNotAuthorizedException
     {
-        if (! platformAdministrator.equals(userId))
+        if ((! platformAdministrator.equals(userId)) && (! platformOperations.equals(userId)))
         {
             super.validateUserAsOperatorForPlatform(userId);
         }
