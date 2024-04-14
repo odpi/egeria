@@ -25,7 +25,7 @@ ext {
     ST4Version = '4.3.4'
     avroVersion = '1.11.3'
     xtdbVersion = '1.24.0'
-    clojureVersion = '1.11.1'
+    clojureVersion = '1.11.2'
     classgraphVersion = '4.8.165'
     classmateVersion = '1.5.1'
     collections4Version = '4.4'
