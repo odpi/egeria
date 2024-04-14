@@ -25,7 +25,7 @@ Content-Type: application/json
 
 ###
 # @name getAllTechnologyTypes
-# Retrieve the list of deployed implementation type metadata elements that contain the search string.
+# Retrieve the list of all deployed implementation type metadata elements.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -40,7 +40,7 @@ Content-Type: application/json
 ###
 # @name getTechnologyTypesForOpenMetadataType
 # Retrieve the list of deployed implementation type metadata elements linked to a particular open metadata type.
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/open-metadata-types/{{typeName}}/technology-types?startFrom=0&pageSize=0
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/open-metadata-types/{{typeName}}/technology-types?startFrom=0&pageSize=0
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -395,11 +395,11 @@ Content-Type: application/json
 
 {
   "class" : "InitiateGovernanceActionTypeRequestBody",
-  "governanceActionTypeQualifiedName": "Egeria:GovernanceActionType:2adeb8f1-0f59-4970-b6f2-6cc25d4d2402survey-folder",
+  "governanceActionTypeQualifiedName": "Egeria:GovernanceActionType:2adeb8f1-0f59-4970-b6f2-6cc25d4d2402survey-postgres-server",
   "actionTargets": [
     {
       "class" : "NewActionTarget",
-      "actionTargetName": "folderToSurvey",
+      "actionTargetName": "serverToSurvey",
       "actionTargetGUID": "c0c71ae5-c115-438f-ac25-8ac297881768"
     } ]
 }
@@ -472,7 +472,7 @@ Authorization: Bearer {{token}}
 ###
 # @name cancelEngineAction
 # Request that an engine action request is cancelled and any running governance service is stopped.
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/engine-actions/{{engineActionGUID}}/cancel
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/engine-actions/{{engineActionGUID}}/cancel
 Authorization: Bearer {{token}}
 
 

@@ -122,7 +122,7 @@ public class DataEngineCollectionHandler {
             UserNotAuthorizedException,
             PropertyServerException {
 
-        dataEngineCommonHandler.upsertExternalRelationship(userId, processGUID, collectionGUID, OpenMetadataType.REFERENCEABLE_TO_COLLECTION_TYPE_NAME,
+        dataEngineCommonHandler.upsertExternalRelationship(userId, processGUID, collectionGUID, OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                            OpenMetadataType.COLLECTION_TYPE_NAME, OpenMetadataType.PROCESS.typeName, externalSourceName, null);
     }
 }

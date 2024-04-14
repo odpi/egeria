@@ -8,7 +8,6 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.adminservices.configuration.registration.ServerTypeClassification;
 import org.odpi.openmetadata.adminservices.registration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
-import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
@@ -879,11 +878,19 @@ public class OMAGServerAdminForAccessServices
                              */
                             Map<String, String>  topicNames = new HashMap<>();
 
-                            topicNames.put(accessServiceConfig.getAccessServiceFullName() + " " + defaultInTopicName,
-                                           accessServiceConfig.getAccessServiceInTopic().getEndpoint().getAddress());
+                            if ((accessServiceConfig.getAccessServiceInTopic() != null) &&
+                                    (accessServiceConfig.getAccessServiceInTopic().getEndpoint() != null))
+                            {
+                                topicNames.put(accessServiceConfig.getAccessServiceFullName() + " " + defaultInTopicName,
+                                               accessServiceConfig.getAccessServiceInTopic().getEndpoint().getAddress());
+                            }
 
-                            topicNames.put(accessServiceConfig.getAccessServiceFullName() + " " + defaultOutTopicName,
-                                           accessServiceConfig.getAccessServiceOutTopic().getEndpoint().getAddress());
+                            if ((accessServiceConfig.getAccessServiceOutTopic() != null) &&
+                                    (accessServiceConfig.getAccessServiceOutTopic().getEndpoint() != null))
+                            {
+                                topicNames.put(accessServiceConfig.getAccessServiceFullName() + " " + defaultOutTopicName,
+                                               accessServiceConfig.getAccessServiceOutTopic().getEndpoint().getAddress());
+                            }
 
                             response.setStringMap(topicNames);
                         }
@@ -948,11 +955,19 @@ public class OMAGServerAdminForAccessServices
                 {
                     if (accessServiceConfig != null)
                     {
-                        topicNames.put(accessServiceConfig.getAccessServiceFullName() + " " + defaultInTopicName,
-                                       accessServiceConfig.getAccessServiceInTopic().getEndpoint().getAddress());
+                        if ((accessServiceConfig.getAccessServiceInTopic() != null) &&
+                                (accessServiceConfig.getAccessServiceInTopic().getEndpoint() != null))
+                        {
+                            topicNames.put(accessServiceConfig.getAccessServiceFullName() + " " + defaultInTopicName,
+                                           accessServiceConfig.getAccessServiceInTopic().getEndpoint().getAddress());
+                        }
 
-                        topicNames.put(accessServiceConfig.getAccessServiceFullName() + " " + defaultOutTopicName,
-                                       accessServiceConfig.getAccessServiceOutTopic().getEndpoint().getAddress());
+                        if ((accessServiceConfig.getAccessServiceOutTopic() != null) &&
+                                (accessServiceConfig.getAccessServiceOutTopic().getEndpoint() != null))
+                        {
+                            topicNames.put(accessServiceConfig.getAccessServiceFullName() + " " + defaultOutTopicName,
+                                           accessServiceConfig.getAccessServiceOutTopic().getEndpoint().getAddress());
+                        }
                     }
                 }
 

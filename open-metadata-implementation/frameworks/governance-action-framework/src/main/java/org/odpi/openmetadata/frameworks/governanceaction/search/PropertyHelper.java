@@ -6,10 +6,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFRuntimeException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * PropertyHelper is used by the governance actions services to manage the contents of the ElementProperties structure.
@@ -1557,7 +1559,7 @@ public class PropertyHelper
 
                 if (actualPropertyValue != null)
                 {
-                    longMap.put(mapPropertyName, (Long)actualPropertyValue);
+                    longMap.put(mapPropertyName, Long.parseLong(actualPropertyValue.toString()));
                 }
             }
 
@@ -1710,6 +1712,112 @@ public class PropertyHelper
             }
 
             return resultingMap;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Replace any placeholders found in the string property with the supplied values.
+     *
+     * @param propertyValue string property from the template
+     * @param placeholderProperties map of placeholder names to placeholder values to substitute into the template
+     *                              properties
+     * @return updated property
+     */
+    public String replacePrimitiveStringWithPlaceholders(String              propertyValue,
+                                                         Map<String, String> placeholderProperties)
+    {
+        if ((propertyValue == null) || (! propertyValue.contains("{{")))
+        {
+            /*
+             * No placeholders in property.
+             */
+            return propertyValue;
+        }
+
+        if ((placeholderProperties != null) && (! placeholderProperties.isEmpty()))
+        {
+            for (String placeholderName : placeholderProperties.keySet())
+            {
+                String placeholderMatchString = "{{"+ placeholderName + "}}";
+
+                if (propertyValue.equals(placeholderMatchString))
+                {
+                    propertyValue = placeholderProperties.get(placeholderName);
+                }
+                else
+                {
+                    String regExMatchString = Pattern.quote(placeholderMatchString);
+                    String[] configBits = propertyValue.split(regExMatchString);
+
+                    if (configBits.length == 1)
+                    {
+                        if (! propertyValue.equals(configBits[0]))
+                        {
+                            propertyValue = configBits[0] + placeholderProperties.get(placeholderName);
+                        }
+                    }
+                    else if (configBits.length > 1)
+                    {
+                        StringBuilder newConfigString = new StringBuilder();
+                        boolean       firstPart       = true;
+
+                        for (String configBit : configBits)
+                        {
+                            if (! firstPart)
+                            {
+                                newConfigString.append(placeholderProperties.get(placeholderName));
+                            }
+
+                            firstPart = false;
+
+                            if (configBit != null)
+                            {
+                                newConfigString.append(configBit);
+                            }
+                        }
+
+                        if (propertyValue.endsWith(placeholderMatchString))
+                        {
+                            newConfigString.append(placeholderProperties.get(placeholderName));
+                        }
+
+                        propertyValue = newConfigString.toString();
+                    }
+                }
+            }
+        }
+
+        return propertyValue;
+    }
+
+
+    /**
+     * Return the property name from the template entity that has its placeholder variables resolved.
+     *
+     * @param sourceName name of calling source
+     * @param templateElement template element which has properties that include placeholder values.
+     * @param propertyName name of the property to extract
+     * @param placeholderProperties placeholder properties to use to resolve the property
+     * @return resolved property value
+     */
+    public String getResolvedStringPropertyFromTemplate(String              sourceName,
+                                                        OpenMetadataElement templateElement,
+                                                        String              propertyName,
+                                                        Map<String, String> placeholderProperties)
+    {
+        final String methodName = "";
+
+        if (templateElement != null)
+        {
+            String propertyValue = this.getStringProperty(sourceName,
+                                                          propertyName,
+                                                          templateElement.getElementProperties(),
+                                                          methodName);
+
+            return this.replacePrimitiveStringWithPlaceholders(propertyValue, placeholderProperties);
         }
 
         return null;

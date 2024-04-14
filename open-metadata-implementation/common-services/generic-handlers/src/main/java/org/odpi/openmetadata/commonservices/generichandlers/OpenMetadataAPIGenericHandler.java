@@ -2631,7 +2631,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                    UserNotAuthorizedException
     {
         /*
-         * Is the data field connected to an annotation?
+         * Is the data field connected to a collection?
          */
         Relationship relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                   dataFieldGUID,

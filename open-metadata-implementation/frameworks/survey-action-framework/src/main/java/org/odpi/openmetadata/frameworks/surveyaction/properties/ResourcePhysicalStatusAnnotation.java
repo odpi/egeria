@@ -24,10 +24,11 @@ public class ResourcePhysicalStatusAnnotation extends ResourceMeasureAnnotation
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private Date   createTime = null;
-    private Date   modifiedTime = null;
-    private long   size = 0;
-    private String encoding = null;
+    private Date   createTime       = null;
+    private Date   modifiedTime     = null;
+    private Date   lastAccessedTime = null;
+    private long   size             = 0;
+    private String encoding         = null;
 
 
     /**
@@ -49,10 +50,11 @@ public class ResourcePhysicalStatusAnnotation extends ResourceMeasureAnnotation
 
         if (template != null)
         {
-            createTime = template.getCreateTime();
-            modifiedTime = template.getModifiedTime();
-            size = template.getSize();
-            encoding = template.getEncoding();
+            createTime       = template.getCreateTime();
+            modifiedTime     = template.getModifiedTime();
+            lastAccessedTime = template.getLastAccessedTime();
+            size             = template.getSize();
+            encoding         = template.getEncoding();
         }
     }
 
@@ -98,6 +100,28 @@ public class ResourcePhysicalStatusAnnotation extends ResourceMeasureAnnotation
     public void setModifiedTime(Date modifiedTime)
     {
         this.modifiedTime = modifiedTime;
+    }
+
+
+    /**
+     * Return the last time that the resource was accessed.
+     *
+     * @return date time
+     */
+    public Date getLastAccessedTime()
+    {
+        return lastAccessedTime;
+    }
+
+
+    /**
+     * Set up the last time that the resource was accessed.
+     *
+     * @param lastAccessedTime date time
+     */
+    public void setLastAccessedTime(Date lastAccessedTime)
+    {
+        this.lastAccessedTime = lastAccessedTime;
     }
 
 
@@ -156,10 +180,12 @@ public class ResourcePhysicalStatusAnnotation extends ResourceMeasureAnnotation
         return "ResourcePhysicalStatusAnnotation{" +
                 "createTime=" + createTime +
                 ", modifiedTime=" + modifiedTime +
+                ", lastUpdateTime=" + lastAccessedTime +
                 ", size=" + size +
                 ", encoding='" + encoding + '\'' +
                 "} " + super.toString();
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -186,9 +212,9 @@ public class ResourcePhysicalStatusAnnotation extends ResourceMeasureAnnotation
         return getSize() == that.getSize() &&
                        Objects.equals(getCreateTime(), that.getCreateTime()) &&
                        Objects.equals(getModifiedTime(), that.getModifiedTime()) &&
+                       Objects.equals(getLastAccessedTime(), that.getLastAccessedTime()) &&
                        Objects.equals(getEncoding(), that.getEncoding());
     }
-
 
 
     /**

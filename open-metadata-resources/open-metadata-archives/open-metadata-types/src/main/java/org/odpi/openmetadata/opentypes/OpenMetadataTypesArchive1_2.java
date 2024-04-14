@@ -4949,10 +4949,11 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getCollectionEntity()
     {
-        final String guid            = "347005ba-2b35-4670-b5a7-12c9ebed0cf7";
-        final String name            = "Collection";
-        final String description     = "A group of related items.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.COLLECTION.typeGUID;
+        final String name            = OpenMetadataType.COLLECTION.typeName;
+        final String description     = OpenMetadataType.COLLECTION.description;
+        final String descriptionGUID = OpenMetadataType.COLLECTION.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.COLLECTION.wikiURL;
 
         final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
@@ -4960,7 +4961,8 @@ public class OpenMetadataTypesArchive1_2
                                                                 name,
                                                                 this.archiveBuilder.getEntityDef(superTypeName),
                                                                 description,
-                                                                descriptionGUID);
+                                                                descriptionGUID,
+                                                                descriptionWiki);
 
         /*
          * Build the attributes
@@ -4968,12 +4970,12 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "name";
-        final String attribute1Description     = "Name of the collection.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the collection.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -4992,10 +4994,11 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getCollectionMembershipRelationship()
     {
-        final String guid            = "5cabb76a-e25b-4bb5-8b93-768bbac005af";
-        final String name            = "CollectionMembership";
-        final String description     = "Identifies a member of a collection.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeGUID;
+        final String name            = OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName;
+        final String description     = OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.description;
+        final String descriptionGUID = OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.wikiURL;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
@@ -5004,6 +5007,7 @@ public class OpenMetadataTypesArchive1_2
                                                                                 null,
                                                                                 description,
                                                                                 descriptionGUID,
+                                                                                descriptionWiki,
                                                                                 classificationPropagationRule);
 
         RelationshipEndDef relationshipEndDef;
@@ -5011,7 +5015,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Collection";
+        final String                     end1EntityType               = OpenMetadataType.COLLECTION.typeName;
         final String                     end1AttributeName            = "foundInCollections";
         final String                     end1AttributeDescription     = "Collections that link to this element.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -5159,12 +5163,12 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getFolderClassification()
     {
-        final String guid            = "3c0fa687-8a63-4c8e-8bda-ede9c78be6c7";
-        final String name            = "Folder";
-        final String description     = "Defines that a collection should be treated like a file folder.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.FOLDER.typeGUID;
+        final String name            = OpenMetadataType.FOLDER.typeName;
+        final String description     = OpenMetadataType.FOLDER.description;
+        final String descriptionGUID = OpenMetadataType.FOLDER.descriptionGUID;
 
-        final String linkedToEntity = "Collection";
+        final String linkedToEntity = OpenMetadataType.COLLECTION.typeName;
 
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
@@ -5206,18 +5210,20 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getSetClassification()
     {
-        final String guid            = "3947f08d-7412-4022-81fc-344a20dfbb26";
-        final String name            = "Set";
-        final String description     = "Defines that a collection is an unordered set of items.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.RESULTS_SET.typeGUID;
+        final String name            = OpenMetadataType.RESULTS_SET.typeName;
+        final String description     = OpenMetadataType.RESULTS_SET.description;
+        final String descriptionGUID = OpenMetadataType.RESULTS_SET.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.RESULTS_SET.wikiURL;
 
-        final String linkedToEntity = "Collection";
+        final String linkedToEntity = OpenMetadataType.COLLECTION.typeName;
 
         return archiveHelper.getClassificationDef(guid,
                                                   name,
                                                   null,
                                                   description,
                                                   descriptionGUID,
+                                                  descriptionWiki,
                                                   this.archiveBuilder.getEntityDef(linkedToEntity),
                                                   false);
     }
@@ -23292,9 +23298,11 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "A description of a data field discovered within an Asset.";
         final String descriptionGUID = null;
 
+        final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
+
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
-                                                                null,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
                                                                 description,
                                                                 descriptionGUID);
 
@@ -23552,8 +23560,8 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getDiscoveredNestedDataFieldRelationship()
     {
-        final String guid            = OpenMetadataType.DISCOVERED_NESTED_DATA_FIELD_TYPE_GUID;
-        final String name            = OpenMetadataType.DISCOVERED_NESTED_DATA_FIELD_TYPE_NAME;
+        final String guid            = OpenMetadataType.NESTED_DATA_FIELD_TYPE_GUID;
+        final String name            = OpenMetadataType.NESTED_DATA_FIELD_TYPE_NAME;
         final String description     = "Nested data fields under a single parent node.";
         final String descriptionGUID = null;
 

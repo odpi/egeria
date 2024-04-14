@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
-import org.odpi.openmetadata.frameworks.integration.catalogtarget.CatalogTargetType;
+import org.odpi.openmetadata.frameworks.integration.controls.CatalogTargetType;
 
 import java.util.ArrayList;
 

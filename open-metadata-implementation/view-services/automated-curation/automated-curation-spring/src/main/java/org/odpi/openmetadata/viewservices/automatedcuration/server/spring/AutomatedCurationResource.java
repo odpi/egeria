@@ -89,7 +89,7 @@ public class AutomatedCurationResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/open-metadata-types/{typeName}/technology-types")
+    @PostMapping(path = "/open-metadata-types/{typeName}/technology-types")
     @Operation(summary="getTechnologyTypesForOpenMetadataType",
             description="Retrieve the list of technology types that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -302,8 +302,10 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/governance-action-type"))
 
     public GovernanceActionTypesResponse findGovernanceActionTypes(@PathVariable String                  serverName,
-                                                                   @RequestParam int                     startFrom,
-                                                                   @RequestParam int                     pageSize,
+                                                                   @RequestParam (required = false, defaultValue = "0")
+                                                                                 int                     startFrom,
+                                                                   @RequestParam (required = false, defaultValue = "0")
+                                                                                 int                     pageSize,
                                                                    @RequestParam (required = false, defaultValue = "false")
                                                                                  boolean                 startsWith,
                                                                    @RequestParam (required = false, defaultValue = "false")
@@ -607,7 +609,7 @@ public class AutomatedCurationResource
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem detected by the metadata store.
      */
-    @GetMapping(path = "/engine-actions/{engineActionGUID}/cancel")
+    @PostMapping(path = "/engine-actions/{engineActionGUID}/cancel")
     @Operation(summary="cancelEngineAction",
             description="Request that an engine action request is cancelled and any running governance service is stopped.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -729,9 +731,9 @@ public class AutomatedCurationResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/engine-action"))
 
-    public EngineActionElementsResponse getEngineActionsByName(@PathVariable String          serverName,
-                                                               @RequestParam int             startFrom,
-                                                               @RequestParam int             pageSize,
+    public EngineActionElementsResponse getEngineActionsByName(@PathVariable String            serverName,
+                                                               @RequestParam int               startFrom,
+                                                               @RequestParam int               pageSize,
                                                                @RequestBody  StringRequestBody requestBody)
     {
         return restAPI.getEngineActionsByName(serverName, startFrom, pageSize, requestBody);

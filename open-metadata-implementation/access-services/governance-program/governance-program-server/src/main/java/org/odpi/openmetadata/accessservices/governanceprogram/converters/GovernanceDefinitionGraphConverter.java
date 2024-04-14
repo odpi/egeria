@@ -142,7 +142,7 @@ public class GovernanceDefinitionGraphConverter<B> extends GovernanceProgramOMAS
                                 EntityProxy otherEnd = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
                                 RelatedElement element = super.getRelatedElement(beanClass, relationship, otherEnd, methodName);
 
-                                if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.REFERENCEABLE_TO_EXT_REF_TYPE_NAME))
+                                if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName))
                                 {
                                     externalReferences.add(element);
                                 }

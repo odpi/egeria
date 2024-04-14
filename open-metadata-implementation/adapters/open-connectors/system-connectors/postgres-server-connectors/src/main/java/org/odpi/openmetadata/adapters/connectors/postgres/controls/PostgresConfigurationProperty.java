@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.postgres.controls;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConfigurationPropertyType;
+import org.odpi.openmetadata.frameworks.connectors.controls.ConfigurationPropertyType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +100,7 @@ public enum PostgresConfigurationProperty
      * Provides a list of database names that should not be catalogued.
      */
     EXCLUDE_DATABASE_LIST ("excludeDatabaseList",
-                        "Provides a list of database names that should not be catalogued..",
+                        "Provides a list of database names that should not be catalogued.",
                         "array<string>",
                         "dbBoring,dbNotUsed",
                         false),

@@ -620,6 +620,11 @@ public enum OpenMetadataProperty
     RESOURCE_UPDATE_TIME("resourceUpdateTime", "date", "Last known modification time.", null, "6012bdee-31d7-46d4-9f3b-f4d19c47e662"),
 
     /**
+     * Last known modification time.
+     */
+    RESOURCE_LAST_ACCESSED_TIME("resourceLastAccessedTime", "date", "Last known access time.", null, "f884c0bf-f2d1-4cdb-81ff-0fc7cc7c945c"),
+
+    /**
      * Creation time of the data store.
      */
     STORE_CREATE_TIME("storeCreateTime", "date", "Creation time of the data store.", null, "1a3abee2-f174-433d-8355-44c5810c471b"),

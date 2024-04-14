@@ -25,10 +25,7 @@ import org.odpi.openmetadata.frameworks.integration.reports.IntegrationReportWri
 
 import java.io.File;
 import java.io.FileFilter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * IntegrationContext is the base class for the integration context provided to the integration connector to provide access to open metadata
@@ -54,6 +51,8 @@ public class IntegrationContext
     private   final ConnectedAssetContext        connectedAssetContext;
     private   final IntegrationGovernanceContext integrationGovernanceContext;
     protected final IntegrationReportWriter      integrationReportWriter;
+
+    private   final Map<String, String> externalSourceCache = new HashMap<>();
 
     protected final int maxPageSize;
 
@@ -206,7 +205,8 @@ public class IntegrationContext
 
 
     /**
-     * Return the qualified name of the software capability that represents an external source of metadata.  Used to control external provenance.
+     * Return the qualified name of the software capability that represents an external source of metadata.
+     * Used to control external provenance and as a parent for some asset cataloguing.
      * If null the provenance is LOCAL_COHORT.
      *
      * @return  string name
@@ -239,17 +239,27 @@ public class IntegrationContext
         }
         else
         {
-            String metadataSourceGUID = openMetadataStoreClient.getMetadataElementGUIDByUniqueName(userId,
-                                                                                                   metadataSourceQualifiedName,
-                                                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                   false,
-                                                                                                   false,
-                                                                                                   new Date());
-
-            if (metadataSourceGUID != null)
+            if (externalSourceCache.get(metadataSourceQualifiedName) != null)
             {
                 this.externalSourceName = metadataSourceQualifiedName;
-                this.externalSourceGUID = metadataSourceGUID;
+                this.externalSourceGUID = externalSourceCache.get(metadataSourceQualifiedName);
+            }
+            else
+            {
+                String metadataSourceGUID = openMetadataStoreClient.getMetadataElementGUIDByUniqueName(userId,
+                                                                                                       metadataSourceQualifiedName,
+                                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                       false,
+                                                                                                       false,
+                                                                                                       new Date());
+
+                if (metadataSourceGUID != null)
+                {
+                    this.externalSourceName = metadataSourceQualifiedName;
+                    this.externalSourceGUID = metadataSourceGUID;
+
+                    externalSourceCache.put(metadataSourceQualifiedName, metadataSourceGUID);
+                }
             }
         }
     }

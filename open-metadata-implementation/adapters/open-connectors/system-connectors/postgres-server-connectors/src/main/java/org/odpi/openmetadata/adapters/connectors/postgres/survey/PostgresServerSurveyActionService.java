@@ -80,6 +80,7 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
              */
             connector = assetStore.getConnectorToAsset();
             JDBCResourceConnector assetConnector = (JDBCResourceConnector)connector;
+            assetConnector.start();
 
             annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
 

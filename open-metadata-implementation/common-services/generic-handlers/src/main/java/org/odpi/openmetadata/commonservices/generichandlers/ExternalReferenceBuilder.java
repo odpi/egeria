@@ -97,8 +97,8 @@ public class ExternalReferenceBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
-              OpenMetadataType.EXTERNAL_REFERENCE_TYPE_GUID,
-              OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
+              OpenMetadataType.EXTERNAL_REFERENCE.typeGUID,
+              OpenMetadataType.EXTERNAL_REFERENCE.typeName,
               null,
               repositoryHelper,
               serviceName,
@@ -131,8 +131,8 @@ public class ExternalReferenceBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataType.EXTERNAL_REFERENCE_TYPE_GUID,
-              OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
+              OpenMetadataType.EXTERNAL_REFERENCE.typeGUID,
+              OpenMetadataType.EXTERNAL_REFERENCE.typeName,
               null,
               repositoryHelper,
               serviceName,
@@ -154,8 +154,8 @@ public class ExternalReferenceBuilder extends ReferenceableBuilder
                              String               serviceName,
                              String               serverName)
     {
-        super(OpenMetadataType.EXTERNAL_REFERENCE_TYPE_GUID,
-              OpenMetadataType.EXTERNAL_REFERENCE_TYPE_NAME,
+        super(OpenMetadataType.EXTERNAL_REFERENCE.typeGUID,
+              OpenMetadataType.EXTERNAL_REFERENCE.typeName,
               repositoryHelper,
               serviceName,
               serverName);

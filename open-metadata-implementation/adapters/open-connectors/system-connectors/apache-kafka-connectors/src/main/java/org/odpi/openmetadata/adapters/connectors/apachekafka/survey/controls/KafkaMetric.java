@@ -11,18 +11,6 @@ import java.util.List;
  */
 public enum KafkaMetric
 {
-    ENTITY_INSTANCE_COUNT ("entityInstanceCount", "Number of entities stored in the Apache Kafka server."),
-    CLASSIFICATION_COUNT ("classificationCount", "Number of tags (classifications) attached to entities stored in the Apache Kafka server."),
-    TYPE_UNUSED_COUNT ("typeUnusedCount", "Number of types that are not used in the Apache Kafka server."),
-    TYPE_COUNT ("typeCount", "Number of types defined in the Apache Kafka server."),
-    CLASSIFIED_ENTITY_COUNT ("classifiedEntityCount:", "Number of entities with tags (classifications) attached in the Apache Kafka server."),
-    ENTITY_TYPE_INSTANCE_COUNT ("entityInstanceCount:typeName", "Number of active entity instances stored in the Apache Kafka server for each entity type."),
-    ENTITY_WITH_SUB_TYPE_INSTANCE_COUNT ("entityWithSubtypesInstanceCount:typeName", "Number of active entity instances stored in the Apache Kafka server for each entity type (with its subtypes included in the count)."),
-    ENTITY_DEF_COUNT ("entityDefs", "Number of entity type definitions (EntityDefs) defined in the Apache Kafka server."),
-    RELATIONSHIP_DEF_COUNT ("relationshipDefs", "Number of relationship type definitions (RelationshipDefs) defined in the Apache Kafka server."),
-    CLASSIFICATION_DEF_COUNT ("classificationDefs", "Number of classification type definitions (ClassificationDefs) defined in the Apache Kafka server."),
-    BUSINESS_METADATA_DEF_COUNT ("businessMetadataDefs", "Number of business metadata type definitions (BusinessMetadataDefs) defined in the Apache Kafka server."),
-
 
     ;
 

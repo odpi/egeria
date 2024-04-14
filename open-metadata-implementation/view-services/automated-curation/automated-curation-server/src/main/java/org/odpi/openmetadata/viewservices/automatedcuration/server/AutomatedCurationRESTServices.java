@@ -22,9 +22,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionTypeProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.properties.CatalogTargetProperties;
@@ -1444,7 +1441,7 @@ public class AutomatedCurationRESTServices extends TokenController
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         EngineActionElementsResponse response = new EngineActionElementsResponse();
-        AuditLog                             auditLog = null;
+        AuditLog                     auditLog = null;
 
         try
         {

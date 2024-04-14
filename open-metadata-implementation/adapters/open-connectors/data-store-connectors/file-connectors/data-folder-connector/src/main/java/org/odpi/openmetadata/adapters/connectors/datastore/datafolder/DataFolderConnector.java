@@ -4,7 +4,9 @@
 package org.odpi.openmetadata.adapters.connectors.datastore.datafolder;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStore;
+import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.BasicFileConnectorErrorCode;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileException;
+import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileReadException;
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.ffdc.DataFolderConnectorErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
@@ -14,10 +16,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Date;
 
 
 /**
- * BasicFileStoreConnector works with files to retrieve simple objects.
+ * DataFolderConnector works with folders to retrieve simple objects.
  */
 public class DataFolderConnector extends ConnectorBase implements BasicFileStore
 {
@@ -107,6 +113,128 @@ public class DataFolderConnector extends ConnectorBase implements BasicFileStore
         final String  methodName = "getFile";
 
         return this.getFile(methodName);
+    }
+
+    /**
+     * Return the name of the file to read.
+     *
+     * @return file name
+     * @throws FileException problem accessing the file
+     */
+    public String   getFileName() throws FileException
+    {
+        final String  methodName = "getFileName";
+
+        getFile(methodName);
+
+        return dataFolderName;
+    }
+
+
+    /**
+     * Return the number of bytes in the file
+     *
+     * @return number
+     * @throws FileException unable to locate the file
+     */
+    public long  getFileLength() throws FileException
+    {
+        final String  methodName = "getFileLength";
+
+        this.getFile(methodName);
+
+        return 0;
+    }
+
+
+    /**
+     * Return the creation date for the file.
+     *
+     * @return Date object
+     * @throws FileException problem accessing the file
+     */
+    public Date getCreationDate() throws FileException, FileReadException
+    {
+        final String  methodName = "getCreationDate";
+
+        File fileStore = getFile(methodName);
+
+        try
+        {
+            BasicFileAttributes attr = Files.readAttributes(fileStore.toPath(), BasicFileAttributes.class);
+
+            return new Date(attr.creationTime().toMillis());
+        }
+        catch (IOException ioException)
+        {
+            throw new FileReadException(BasicFileConnectorErrorCode.UNEXPECTED_IO_EXCEPTION.getMessageDefinition(dataFolderName,
+                                                                                                                 ioException.getMessage()),
+                                        this.getClass().getName(),
+                                        methodName,
+                                        ioException,
+                                        dataFolderName);
+        }
+    }
+
+
+    /**
+     * Return the last update date for the file.
+     *
+     * @return Date object
+     * @throws FileException problem accessing the file
+     */
+    public Date getLastUpdateDate() throws FileException, FileReadException
+    {
+        final String  methodName = "getLastUpdateDate";
+
+        File fileStore = getFile(methodName);
+
+        try
+        {
+            BasicFileAttributes attr = Files.readAttributes(fileStore.toPath(), BasicFileAttributes.class);
+
+            return new Date(attr.lastModifiedTime().toMillis());
+        }
+        catch (IOException ioException)
+        {
+            throw new FileReadException(BasicFileConnectorErrorCode.UNEXPECTED_IO_EXCEPTION.getMessageDefinition(dataFolderName,
+                                                                                                                 ioException.getMessage()),
+                                        this.getClass().getName(),
+                                        methodName,
+                                        ioException,
+                                        dataFolderName);
+        }
+    }
+
+
+
+    /**
+     * Return the last accessed date for the file.
+     *
+     * @return Date object
+     * @throws FileException problem accessing the file
+     */
+    public Date getLastAccessDate() throws FileException, FileReadException
+    {
+        final String  methodName = "getLastAccessedDate";
+
+        File fileStore = getFile(methodName);
+
+        try
+        {
+            BasicFileAttributes attr = Files.readAttributes(fileStore.toPath(), BasicFileAttributes.class);
+
+            return new Date(attr.lastAccessTime().toMillis());
+        }
+        catch (IOException ioException)
+        {
+            throw new FileReadException(BasicFileConnectorErrorCode.UNEXPECTED_IO_EXCEPTION.getMessageDefinition(dataFolderName,
+                                                                                                                 ioException.getMessage()),
+                                        this.getClass().getName(),
+                                        methodName,
+                                        ioException,
+                                        dataFolderName);
+        }
     }
 
 

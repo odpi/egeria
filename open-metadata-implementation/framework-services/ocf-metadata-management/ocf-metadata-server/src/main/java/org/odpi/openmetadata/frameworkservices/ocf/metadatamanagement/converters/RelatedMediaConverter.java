@@ -62,7 +62,7 @@ public class RelatedMediaConverter<B> extends OCFConverter<B>
                 /*
                  * Check that the entity is of the correct type.
                  */
-                this.setUpElementHeader(bean, entity, OpenMetadataType.RELATED_MEDIA_TYPE_NAME, methodName);
+                this.setUpElementHeader(bean, entity, OpenMetadataType.RELATED_MEDIA.typeName, methodName);
 
                 /*
                  * The initial set of values come from the entity properties.  The super class properties are removed from a copy of the entities

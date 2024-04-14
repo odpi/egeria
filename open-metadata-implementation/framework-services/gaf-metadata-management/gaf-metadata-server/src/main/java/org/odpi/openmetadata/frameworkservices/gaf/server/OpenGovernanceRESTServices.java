@@ -414,9 +414,9 @@ public class OpenGovernanceRESTServices
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GovernanceActionTypeResponse getGovernanceActionTypeByGUID(String serverName,
-                                                                                    String serviceURLMarker,
-                                                                                    String userId,
-                                                                                    String governanceActionTypeGUID)
+                                                                      String serviceURLMarker,
+                                                                      String userId,
+                                                                      String governanceActionTypeGUID)
     {
         final String methodName = "getGovernanceActionTypeByGUID";
 

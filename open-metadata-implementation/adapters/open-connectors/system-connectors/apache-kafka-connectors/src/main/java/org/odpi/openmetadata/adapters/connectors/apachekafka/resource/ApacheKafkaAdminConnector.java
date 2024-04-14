@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.connectors.apachekafka.resource;
 
 import org.apache.kafka.clients.admin.Admin;
+import org.apache.kafka.clients.admin.DescribeTopicsResult;
 import org.apache.kafka.common.Metric;
 import org.apache.kafka.common.MetricName;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.resource.ffdc.ApacheKafkaAuditCode;
@@ -164,6 +165,18 @@ public class ApacheKafkaAdminConnector extends ConnectorBase implements AuditLog
     public Map<MetricName, ? extends Metric> metrics()
     {
         return kafkaAdminClient.metrics();
+    }
+
+
+    /**
+     * Return details about each topic
+     *
+     * @return topic details
+     * @throws ConnectorCheckedException problem accessing event broker
+     */
+    public DescribeTopicsResult describeTopics() throws ConnectorCheckedException
+    {
+        return kafkaAdminClient.describeTopics(this.getTopicList());
     }
 
 

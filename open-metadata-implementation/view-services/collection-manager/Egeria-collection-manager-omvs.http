@@ -1,0 +1,435 @@
+# Egeria-collection-manager-view-service
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Managed the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
+# =====================================================================================================================
+# Retrieving Collections: https://egeria-project.org/concepts/collection
+#
+
+@parentGUID=xxx
+
+###
+# @name getLinkedCollections
+# Returns the list of collections that are linked off of the supplied element.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/metadata-elements/{{parentGUID}}/collections?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "string" : ""
+}
+
+###
+# @name getClassifiedCollections
+# Returns the list of collections with a particular classification.  These classifications
+# are typically "RootCollection", "Folder" or "DigitalProduct".
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-classifications?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "string" : ""
+}
+
+###
+# @name findCollections
+# Returns the list of collections matching the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "string" : ""
+}
+
+###
+# @name getCollectionsByName
+# Returns the list of collections with a particular name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/collections/by-name?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "string" : ""
+}
+
+###
+# @name getCollectionsByType
+# Returns the list of collections with a particular collectionType.  This is an optional text field in the collection element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-collection-type?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "string" : ""
+}
+
+###
+
+@collectionGUID=xxx
+
+###
+# @name getCollection
+# Return the properties of a specific collection.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}
+Authorization: Bearer {{token}}
+
+# =====================================================================================================================
+# Create Collections: https://egeria-project.org/concepts/collection
+# These requests use the following parameters:
+#
+# anchorGUID - the unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+# or if this collection is to be its own anchor.
+#
+# isOwnAnchor -this element should be classified as its own anchor or not.  The default is false.
+#
+# parentGUID - the optional unique identifier for an element that should be connected to the newly created element.
+# If this property is specified, parentRelationshipTypeName must also be specified
+#
+# parentRelationshipTypeName - the name of the relationship, if any, that should be established between the new element and the parent element.
+# Examples could be "ResourceList" or "DigitalServiceProduct".
+#
+# parentAtEnd1 -identifies which end any parent entity sits on the relationship.
+#
+
+@classificationName="WorkItemList"
+
+###
+# @name createCollection
+# Create a new generic collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections?classificationName={{classificationName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
+  "isOwnAnchor" : false,
+  "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
+  "parentRelationshipTypeName" : "open metadata type name",
+  "parentAtEnd1": true,
+  "collectionProperties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Must provide a unique name here",
+    "name" : "Add display name here",
+    "description" : "Add description of the collection here",
+    "collectionType": "Add appropriate valid value for type",
+    "collectionOrdering" : "OTHER",
+    "orderPropertyName" : "Add property name if 'collectionOrdering' is OTHER"
+  }
+}
+
+###
+# @name createRootCollection
+# Create a new collection with the RootCollection classification.  Used to identify the top of a collection hierarchy.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/root-collection
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
+  "isOwnAnchor" : false,
+  "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
+  "parentRelationshipTypeName" : "open metadata type name",
+  "parentAtEnd1": true,
+  "collectionProperties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Must provide a unique name here",
+    "name" : "Add display name here",
+    "description" : "Add description of the collection here",
+    "collectionType": "Add appropriate valid value for type",
+    "collectionOrdering" : "OTHER",
+    "orderPropertyName" : "Add property name if 'collectionOrdering' is OTHER"
+  }
+}
+
+
+###
+# @name createDataSpecCollection
+# Create a new collection with the DataSpec classification.  Used to identify a collection of data fields and schema types.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/data-spec-collection
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
+  "isOwnAnchor" : false,
+  "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
+  "parentRelationshipTypeName" : "open metadata type name",
+  "parentAtEnd1": true,
+  "collectionProperties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Must provide a unique name here",
+    "name" : "Add display name here",
+    "description" : "Add description of the collection here",
+    "collectionType": "Add appropriate valid value for type",
+    "collectionOrdering" : "OTHER",
+    "orderPropertyName" : "Add property name if 'collectionOrdering' is OTHER"
+  }
+}
+
+###
+# @name createFolderCollection
+# Create a new collection with the Folder classification.  This is used to identify the organizing collections in a collection hierarchy.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/folder
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewCollectionRequestBody",
+  "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
+  "isOwnAnchor" : false,
+  "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
+  "parentRelationshipTypeName" : "open metadata type name",
+  "parentAtEnd1": true,
+  "collectionProperties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Must provide a unique name here",
+    "name" : "Add display name here",
+    "description" : "Add description of the collection here",
+    "collectionType": "Add appropriate valid value for type",
+    "collectionOrdering" : "OTHER",
+    "orderPropertyName" : "Add property name if 'collectionOrdering' is OTHER"
+  }
+}
+
+###
+# @name createCollectionFromTemplate
+# Create a new metadata element to represent a collection using an existing metadata element as a template.
+# The template defines additional classifications and relationships that should be added to the new collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/from-template
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class": "TemplateRequestBody",
+  "anchorGUID": "anchor GUID, if set then isOwnAnchor=false",
+  "isOwnAnchor": false,
+  "parentGUID": "parent GUID, if set, set all parameters beginning 'parent'",
+  "parentRelationshipTypeName": "open metadata type name",
+  "parentAtEnd1": true,
+  "templateGUID": "template GUID",
+  "replacementProperties": {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "propertyName" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveTypeCategory" : "OM_PRIMITIVE_TYPE_STRING",
+        "primitiveValue" : "value of property"
+      }
+    }
+  },
+  "placeholderPropertyValues" : {
+    "placeholderProperty1Name" : "property1Value",
+    "placeholderProperty2Name" : "property2Value"
+  }
+}
+
+###
+# @name createDigitalProduct
+# Create a new collection that represents a digital product.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/digital-products
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewDigitalProductRequestBody",
+  "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
+  "isOwnAnchor" : false,
+  "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
+  "parentRelationshipTypeName" : "open metadata type name",
+  "parentAtEnd1": true,
+  "collectionProperties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Must provide a unique name here",
+    "name" : "Add display name here",
+    "description" : "Add description of the collection here",
+    "collectionType": "Add appropriate valid value for type",
+    "collectionOrdering" : "OTHER",
+    "orderPropertyName" : "Add property name if 'collectionOrdering' is OTHER"
+  },
+  "digitalProductProperties" : {
+    "class" : "DigitalProductProperties",
+    "productStatus" : "ACTIVE",
+    "productName" : "Add name here",
+    "productType" : "Add valid value here",
+    "description" : "Add description here",
+    "introductionDate" : "date",
+    "maturity" : "Add valid value here",
+    "serviceLife" : "Add the estimated lifetime of the product",
+    "currentVersion": "V1.0",
+    "nextVersion": "V1.1",
+    "withdrawDate": "date",
+    "additionalProperties": {
+      "property1Name" : "property1Value",
+      "property2Name" : "property2Value"
+    }
+  }
+}
+
+###
+# @name updateCollection
+# Update the properties of a collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/update?replaceAllProperties=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "CollectionProperties",
+  "qualifiedName": "Must provide a unique name here",
+  "name" : "Add display name here",
+  "description" : "Add description of the collection here",
+  "collectionType": "Add appropriate valid value for type",
+  "collectionOrdering" : "OTHER",
+  "orderPropertyName" : "Add property name if 'collectionOrdering' is OTHER"
+}
+
+###
+# @name updateDigitalProduct
+# Update the properties of the DigitalProduct classification attached to a collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/digital-products/{{collectionGUID}}/update?replaceAllProperties=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DigitalProductProperties",
+  "productStatus" : "ACTIVE",
+  "productName" : "Add name here",
+  "productType" : "Add valid value here",
+  "description" : "Add description here",
+  "introductionDate" : "date",
+  "maturity" : "Add valid value here",
+  "serviceLife" : "Add the estimated lifetime of the product",
+  "currentVersion": "V1.0",
+  "nextVersion": "V1.1",
+  "withdrawDate": "date",
+  "additionalProperties": {
+    "property1Name" : "property1Value",
+    "property2Name" : "property2Value"
+  }
+}
+
+###
+# @name attachCollection
+# Connect an existing collection to an element using the ResourceList relationship (0019).
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/metadata-elements/{{parentGUID}}/collections/{{collectionGUID}}/attach?makeAnchor=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ResourceListProperties",
+  "resourceUse" : "Add valid value here",
+  "resourceUseDescription" : "Add description here",
+  "watchResource" : false,
+  "resourceUseProperties": {
+    "property1Name" : "property1Value",
+    "property2Name" : "property2Value"
+  }
+}
+
+###
+# @name detachCollection
+# Detach an existing collection from an element.  If the collection is anchored to the element, it is deleted.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/metadata-elements/{{parentGUID}}/collections/{{collectionGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NullRequestBody"
+}
+
+###
+# @name deleteCollection
+# Delete a collection.  It is detected from all parent elements.  If members are anchored to the collection
+# then they are also deleted.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NullRequestBody"
+}
+
+###
+# @name getCollectionMembers
+# Return a list of elements that are a member of a collection.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/members?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+
+
+###
+
+@elementGUID="guid that is to be a member of the collection"
+
+###
+# @name addToCollection
+# Add an element to a collection.  The request body is optional
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/members/{{elementGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "CollectionMembershipProperties",
+  "membershipRationale": "xxx",
+  "createdBy": "user id here",
+  "expression": "expression that described why the element is a part of this collection",
+  "confidence": 100,
+  "status": "PROPOSED",
+  "userDefinedStatus": "Add valid value here",
+  "steward": "identifier of steward that validated this member",
+  "stewardTypeName": "type name of element identifying the steward",
+  "stewardPropertyName": "property name if the steward's identifier",
+  "source": "source of the member",
+  "notes": "Add notes here"
+}
+
+###
+# @name updateCollectionMembership
+# Update an element's membership to a collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/members/{{elementGUID}}/update?replaceAllProperties=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "CollectionMembershipProperties",
+  "membershipRationale": "xxx",
+  "createdBy": "user id here",
+  "expression": "expression that described why the element is a part of this collection",
+  "confidence": 100,
+  "status": "PROPOSED",
+  "userDefinedStatus": "Add valid value here",
+  "steward": "identifier of steward that validated this member",
+  "stewardTypeName": "type name of element identifying the steward",
+  "stewardPropertyName": "property name if the steward's identifier",
+  "source": "source of the member",
+  "notes": "Add notes here"
+}
+
+###
+# @name removeFromCollection
+# Remove an element from a collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/members/{{elementGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NullRequestBody"
+}
