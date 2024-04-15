@@ -151,7 +151,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
 
             for (RelatedMetadataElement relatedMetadataElement : linkedResources)
             {
-                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.COLLECTION_TYPE_NAME))
+                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.COLLECTION.typeName))
                 {
                     CollectionElement collectionElement = collectionConverter.getNewBean(collectionBeanClass, relatedMetadataElement, methodName);
 
@@ -217,7 +217,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         }
 
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
-                                                                                                      OpenMetadataType.COLLECTION_TYPE_NAME,
+                                                                                                      OpenMetadataType.COLLECTION.typeName,
                                                                                                       null,
                                                                                                       null,
                                                                                                       null,
@@ -271,6 +271,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      * @param searchString string to search for
      * @param startFrom    index of the list to start from (0 for start)
      * @param pageSize     maximum number of elements to return
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return a list of collections
      *
@@ -282,9 +283,10 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
     public List<CollectionElement> findCollections(String userId,
                                                    String searchString,
                                                    int    startFrom,
-                                                   int    pageSize) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException
+                                                   int    pageSize,
+                                                   Date   effectiveTime) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
     {
         final String methodName = "findCollections";
         final String searchStringParameterName = "searchString";
@@ -295,10 +297,10 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
 
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElementsWithString(userId,
                                                                                                                 searchString,
-                                                                                                                OpenMetadataType.COLLECTION_TYPE_NAME,
+                                                                                                                OpenMetadataType.COLLECTION.typeName,
                                                                                                                 false,
                                                                                                                 false,
-                                                                                                                new Date(),
+                                                                                                                effectiveTime,
                                                                                                                 startFrom,
                                                                                                                 pageSize);
 
@@ -313,6 +315,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      * @param name      name of the collections to return - match is full text match in qualifiedName or name
      * @param startFrom index of the list to start from (0 for start)
      * @param pageSize  maximum number of elements to return
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return a list of collections
      *
@@ -324,9 +327,10 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
     public List<CollectionElement> getCollectionsByName(String userId,
                                                         String name,
                                                         int    startFrom,
-                                                        int    pageSize) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException
+                                                        int    pageSize,
+                                                        Date   effectiveTime) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
     {
         final String methodName = "getCollectionsByName";
         final String nameParameterName = "name";
@@ -339,7 +343,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                    OpenMetadataProperty.NAME.name);
 
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
-                                                                                                      OpenMetadataType.COLLECTION_TYPE_NAME,
+                                                                                                      OpenMetadataType.COLLECTION.typeName,
                                                                                                       null,
                                                                                                       propertyHelper.getSearchPropertiesByName(propertyNames, name),
                                                                                                       null,
@@ -348,7 +352,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                                                       SequencingOrder.PROPERTY_ASCENDING,
                                                                                                       false,
                                                                                                       false,
-                                                                                                      new Date(),
+                                                                                                      effectiveTime,
                                                                                                       startFrom,
                                                                                                       pageSize);
 
@@ -383,10 +387,10 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        List<String> propertyNames = List.of(OpenMetadataType.COLLECTION_TYPE_PROPERTY_NAME);
+        List<String> propertyNames = List.of(OpenMetadataProperty.COLLECTION_TYPE.name);
 
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
-                                                                                                      OpenMetadataType.COLLECTION_TYPE_NAME,
+                                                                                                      OpenMetadataType.COLLECTION.typeName,
                                                                                                       null,
                                                                                                       propertyHelper.getSearchPropertiesByName(propertyNames,
                                                                                                                                                collectionType),
@@ -434,7 +438,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                                                    false,
                                                                                                    new Date());
 
-        if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.COLLECTION_TYPE_NAME)))
+        if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.COLLECTION.typeName)))
         {
             return collectionConverter.getNewBean(collectionBeanClass, openMetadataElement, methodName);
         }
@@ -485,7 +489,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         invalidParameterHandler.validateObject(properties, collectionPropertiesName, methodName);
         invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        String collectionTypeName = OpenMetadataType.COLLECTION_TYPE_NAME;
+        String collectionTypeName = OpenMetadataType.COLLECTION.typeName;
 
         if (properties.getTypeName() != null)
         {
@@ -494,8 +498,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
 
         Map<String, ElementProperties> initialClassifications = null;
 
-        if ((OpenMetadataType.FOLDER_TYPE_NAME.equals(optionalClassification)) ||
-                    (properties.getOrderPropertyName() != null) || (properties.getCollectionOrdering() != null))
+        if (OpenMetadataType.FOLDER.typeName.equals(optionalClassification))
         {
             initialClassifications = new HashMap<>();
 
@@ -510,7 +513,13 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                           properties.getCollectionOrdering().getName());
             }
 
-            initialClassifications.put(OpenMetadataType.FOLDER_TYPE_NAME, classificationProperties);
+            initialClassifications.put(OpenMetadataType.FOLDER.typeName, classificationProperties);
+        }
+        else if (optionalClassification != null)
+        {
+            initialClassifications = new HashMap<>();
+
+            initialClassifications.put(optionalClassification, null);
         }
 
         return openMetadataStoreClient.createMetadataElementInStore(userId,
@@ -575,7 +584,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                                                    PropertyServerException
     {
         return openMetadataStoreClient.createMetadataElementFromTemplate(userId,
-                                                                         OpenMetadataType.COLLECTION_TYPE_NAME,
+                                                                         OpenMetadataType.COLLECTION.typeName,
                                                                          anchorGUID,
                                                                          isOwnAnchor,
                                                                          effectiveFrom,
@@ -938,10 +947,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
 
             for (RelatedMetadataElement relatedMetadataElement : linkedResources)
             {
-                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.COLLECTION.typeName))
-                {
-                    collectionMembers.add(collectionMemberConverter.getNewBean(collectionMemberBeanClass, relatedMetadataElement, methodName));
-                }
+                collectionMembers.add(collectionMemberConverter.getNewBean(collectionMemberBeanClass, relatedMetadataElement, methodName));
             }
 
             if (! collectionMembers.isEmpty())
@@ -1186,7 +1192,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                  collectionProperties.getDescription());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.COLLECTION_TYPE_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.COLLECTION_TYPE.name,
                                                                  collectionProperties.getCollectionType());
 
             elementProperties = propertyHelper.addStringMapProperty(elementProperties,
@@ -1195,36 +1201,6 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
 
             elementProperties = propertyHelper.addPropertyMap(elementProperties,
                                                               collectionProperties.getExtendedProperties());
-
-            return elementProperties;
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Convert the collection properties into a set of element properties for the open metadata client.
-     *
-     * @param collectionProperties supplied collection properties
-     * @return element properties
-     */
-    private ElementProperties getElementProperties(TemplateProperties collectionProperties)
-    {
-        if (collectionProperties != null)
-        {
-            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                   collectionProperties.getQualifiedName());
-
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataProperty.NAME.name,
-                                                                 collectionProperties.getDisplayName());
-
-            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataProperty.DESCRIPTION.name,
-                                                                 collectionProperties.getDescription());
-
 
             return elementProperties;
         }

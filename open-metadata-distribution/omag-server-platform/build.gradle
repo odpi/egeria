@@ -396,11 +396,19 @@ distributions {
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/my-profile" }
                         { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/data-discovery" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/reference-data" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/template-manager" }
+                        { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/asset-catalog" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/automated-curation" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/collection-manager" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/project-manager" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/feedback-manager" }
                         { include 'Egeria*.http' }

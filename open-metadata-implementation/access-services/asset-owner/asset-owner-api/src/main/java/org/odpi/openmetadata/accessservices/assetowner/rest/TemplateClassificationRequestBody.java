@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * TemplateClassificationRequestBody carries the parameters for classifying an asset as suitable to use for a template.
+ * TemplateClassificationRequestBody carries the parameters for classifying an element as suitable to use for a template.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -23,6 +23,7 @@ public class TemplateClassificationRequestBody extends AssetOwnerOMASAPIRequestB
 {
     private String              name                 = null;
     private String              description          = null;
+    private String              versionIdentifier    = null;
     private Map<String, String> additionalProperties = null;
 
 
@@ -48,6 +49,7 @@ public class TemplateClassificationRequestBody extends AssetOwnerOMASAPIRequestB
         {
             name = template.getName();
             description = template.getDescription();
+            versionIdentifier = template.getVersionIdentifier();
             additionalProperties = template.getAdditionalProperties();
         }
     }
@@ -100,6 +102,28 @@ public class TemplateClassificationRequestBody extends AssetOwnerOMASAPIRequestB
 
 
     /**
+     * Return the version identifier.
+     *
+     * @return string
+     */
+    public String getVersionIdentifier()
+    {
+        return versionIdentifier;
+    }
+
+
+    /**
+     * Set up the version identifier.
+     *
+     * @param versionIdentifier string
+     */
+    public void setVersionIdentifier(String versionIdentifier)
+    {
+        this.versionIdentifier = versionIdentifier;
+    }
+
+
+    /**
      * Return a copy of the additional properties.  Null means no additional properties are available.
      *
      * @return AdditionalProperties
@@ -132,6 +156,7 @@ public class TemplateClassificationRequestBody extends AssetOwnerOMASAPIRequestB
         return "TemplateClassificationRequestBody{" +
                        "name='" + name + '\'' +
                        ", description='" + description + '\'' +
+                       ", versionIdentifier='" + versionIdentifier + '\'' +
                        ", additionalProperties=" + additionalProperties +
                        '}';
     }
@@ -156,7 +181,8 @@ public class TemplateClassificationRequestBody extends AssetOwnerOMASAPIRequestB
         }
         TemplateClassificationRequestBody that = (TemplateClassificationRequestBody) objectToCompare;
         return Objects.equals(name, that.name) &&
-                       Objects.equals(description, that.description) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(versionIdentifier, that.versionIdentifier) &&
                 Objects.equals(additionalProperties, that.additionalProperties);
     }
 
@@ -169,6 +195,6 @@ public class TemplateClassificationRequestBody extends AssetOwnerOMASAPIRequestB
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), name, description, additionalProperties);
+        return Objects.hash(super.hashCode(), name, description, versionIdentifier, additionalProperties);
     }
 }

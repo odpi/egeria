@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -477,6 +478,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
      * @param validValueName qualified name of the valid value.
      * @param startFrom         starting element (used in paging through large result sets)
      * @param pageSize          maximum number of results to return
+     * @param effectiveTime the effective date/time to use for the query
      *
      * @return Valid value beans
      *
@@ -488,9 +490,10 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
     public List<ValidValueElement>   getValidValueByName(String   userId,
                                                          String   validValueName,
                                                          int      startFrom,
-                                                         int      pageSize) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+                                                         int      pageSize,
+                                                         Date     effectiveTime) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         final String   methodName = "getValidValueByName";
         final String   validValueNameParameter = "validValueName";
@@ -499,9 +502,14 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(validValueName, validValueNameParameter, methodName);
 
+        FilterRequestBody requestBody = new FilterRequestBody();
+
+        requestBody.setFilter(validValueName);
+        requestBody.setEffectiveTime(effectiveTime);
+
         ValidValuesResponse restResult = restClient.callValidValuesPostRESTCall(methodName,
-                                                                               urlTemplate,
-                                                                                validValueName,
+                                                                                urlTemplate,
+                                                                                requestBody,
                                                                                 serverName,
                                                                                 userId,
                                                                                 startFrom,
@@ -519,6 +527,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
      * @param searchString string value to look for - may contain RegEx characters.
      * @param startFrom paging starting point
      * @param pageSize maximum number of return values.
+     * @param effectiveTime the effective date/time to use for the query
      *
      * @return list of valid value beans
      *
@@ -530,9 +539,10 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
     public List<ValidValueElement> findValidValues(String   userId,
                                                    String   searchString,
                                                    int      startFrom,
-                                                   int      pageSize) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                                   int      pageSize,
+                                                   Date     effectiveTime) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
         final String   methodName = "getValidValueByName";
         final String   parameterName = "searchString";
@@ -542,9 +552,14 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         invalidParameterHandler.validateSearchString(searchString, parameterName, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
+        FilterRequestBody requestBody = new FilterRequestBody();
+
+        requestBody.setFilter(searchString);
+        requestBody.setEffectiveTime(effectiveTime);
+
         ValidValuesResponse restResult = restClient.callValidValuesPostRESTCall(methodName,
                                                                                 urlTemplate,
-                                                                                searchString,
+                                                                                requestBody,
                                                                                 serverName,
                                                                                 userId,
                                                                                 startFrom,

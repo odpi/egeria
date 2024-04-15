@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValueResponse;
 import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValuesRequestBody;
 import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValuesResponse;
 import org.odpi.openmetadata.accessservices.assetowner.server.ValidValuesRESTServices;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -264,7 +265,7 @@ public class ValidValuesOnboardingResource
      * @param userId calling user
      * @param startFrom paging starting point
      * @param pageSize maximum number of return values.
-     * @param searchString string value to look for - may contain RegEx characters.
+     * @param requestBody string value to look for - may contain RegEx characters.
      *
      * @return list of valid value beans or
      * InvalidParameterException one of the parameters is invalid or
@@ -273,13 +274,13 @@ public class ValidValuesOnboardingResource
      */
     @PostMapping(path = "/valid-values/by-search-string")
 
-    public ValidValuesResponse findValidValues(@PathVariable String  serverName,
-                                               @PathVariable String  userId,
-                                               @RequestParam int     startFrom,
-                                               @RequestParam int     pageSize,
-                                               @RequestBody  String  searchString)
+    public ValidValuesResponse findValidValues(@PathVariable String           serverName,
+                                               @PathVariable String           userId,
+                                               @RequestParam int              startFrom,
+                                               @RequestParam int              pageSize,
+                                               @RequestBody FilterRequestBody requestBody)
     {
-        return restAPI.findValidValues(serverName, userId, searchString, startFrom, pageSize);
+        return restAPI.findValidValues(serverName, userId, startFrom, pageSize, requestBody);
     }
 
 

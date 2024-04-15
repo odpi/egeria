@@ -78,12 +78,12 @@ public class DataEngineCollectionHandler {
         CollectionBuilder builder = getCollectionBuilder(collection);
 
         return collectionOpenMetadataAPIGenericHandler.createBeanInRepository(userId, externalSourceGUID, externalSourceName,
-                OpenMetadataType.COLLECTION_TYPE_GUID, OpenMetadataType.COLLECTION_TYPE_NAME, builder, dataEngineCommonHandler.getNow(), methodName);
+                OpenMetadataType.COLLECTION.typeGUID, OpenMetadataType.COLLECTION.typeName, builder, dataEngineCommonHandler.getNow(), methodName);
     }
 
     CollectionBuilder getCollectionBuilder(Collection collection) {
         return new CollectionBuilder(collection.getQualifiedName(),
-                collection.getName(), OpenMetadataType.COLLECTION_TYPE_GUID, OpenMetadataType.COLLECTION_TYPE_NAME, repositoryHelper, serviceName, serverName);
+                collection.getName(), OpenMetadataType.COLLECTION.typeGUID, OpenMetadataType.COLLECTION.typeName, repositoryHelper, serviceName, serverName);
     }
 
     /**
@@ -101,7 +101,7 @@ public class DataEngineCollectionHandler {
     public Optional<EntityDetail> findCollectionEntity(String userId, String qualifiedName) throws UserNotAuthorizedException,
             PropertyServerException,
             InvalidParameterException {
-        return dataEngineCommonHandler.findEntity(userId, qualifiedName, OpenMetadataType.COLLECTION_TYPE_NAME);
+        return dataEngineCommonHandler.findEntity(userId, qualifiedName, OpenMetadataType.COLLECTION.typeName);
     }
 
     /**
@@ -123,6 +123,6 @@ public class DataEngineCollectionHandler {
             PropertyServerException {
 
         dataEngineCommonHandler.upsertExternalRelationship(userId, processGUID, collectionGUID, OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
-                                                           OpenMetadataType.COLLECTION_TYPE_NAME, OpenMetadataType.PROCESS.typeName, externalSourceName, null);
+                                                           OpenMetadataType.COLLECTION.typeName, OpenMetadataType.PROCESS.typeName, externalSourceName, null);
     }
 }

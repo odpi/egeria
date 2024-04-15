@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.projectmanagement.client;
 
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 
@@ -11,21 +12,23 @@ import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.Con
  */
 public class ConnectedAssetClient extends ConnectedAssetClientBase
 {
-    private final static String serviceURLMarker = "community-profile";
+    private final static String serviceURLMarker = AccessServiceDescription.PROJECT_MANAGEMENT_OMAS.getAccessServiceURLMarker();
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param maxPageSize maximum value allowed for page size
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
     public ConnectedAssetClient(String serverName,
-                                String serverPlatformURLRoot) throws InvalidParameterException
+                                String serverPlatformURLRoot,
+                                int    maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, serviceURLMarker);
+        super(serverName, serverPlatformURLRoot, serviceURLMarker, maxPageSize, null);
     }
 
 

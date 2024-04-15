@@ -24,6 +24,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 
 import java.util.List;
 
@@ -38,6 +39,9 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
     final InvalidParameterHandler     invalidParameterHandler = new InvalidParameterHandler();
     final ProjectManagementRESTClient restClient;               /* Initialized in constructor */
 
+    final PropertyHelper propertyHelper = new PropertyHelper();
+
+    final OpenMetadataStoreClient     openMetadataStoreClient;
     private static final String elementsURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/related-elements";
 
 
@@ -46,23 +50,27 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
      *
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param maxPageSize maximum value allowed for page size
      * @param auditLog              logging destination
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
-    public ProjectManagementBaseClient(String serverName,
-                                       String serverPlatformURLRoot,
+    public ProjectManagementBaseClient(String   serverName,
+                                       String   serverPlatformURLRoot,
+                                       int      maxPageSize,
                                        AuditLog auditLog) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+        this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
 
         this.restClient = new ProjectManagementRESTClient(serverName, serverPlatformURLRoot, auditLog);
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, maxPageSize);
     }
 
 
@@ -71,49 +79,25 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
      *
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     *
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     *                                   REST API calls.
-     */
-    public ProjectManagementBaseClient(String serverName,
-                                       String serverPlatformURLRoot) throws InvalidParameterException
-    {
-        final String methodName = "Client Constructor";
-
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        this.restClient = new ProjectManagementRESTClient(serverName, serverPlatformURLRoot);
-    }
-
-
-    /**
-     * Create a new client that passes userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is sent on each request.
-     *
-     * @param serverName            name of the server to connect to
-     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
-     * @param userId                caller's userId embedded in all HTTP requests
-     * @param password              caller's userId embedded in all HTTP requests
+     * @param maxPageSize maximum value allowed for page size
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
     public ProjectManagementBaseClient(String serverName,
                                        String serverPlatformURLRoot,
-                                       String userId,
-                                       String password) throws InvalidParameterException
+                                       int    maxPageSize) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+        this.invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
 
-        this.restClient = new ProjectManagementRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        this.restClient = new ProjectManagementRESTClient(serverName, serverPlatformURLRoot);
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, maxPageSize);
     }
 
 
@@ -125,7 +109,7 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId                caller's userId embedded in all HTTP requests
      * @param password              caller's userId embedded in all HTTP requests
-     * @param auditLog              logging destination
+     * @param maxPageSize maximum value allowed for page size
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
@@ -134,6 +118,40 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
                                        String serverPlatformURLRoot,
                                        String userId,
                                        String password,
+                                       int    maxPageSize) throws InvalidParameterException
+    {
+        final String methodName = "Client Constructor";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
+
+        this.restClient = new ProjectManagementRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, userId, password, maxPageSize);
+    }
+
+
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param serverName            name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param userId                caller's userId embedded in all HTTP requests
+     * @param password              caller's userId embedded in all HTTP requests
+     * @param maxPageSize maximum value allowed for page size
+     * @param auditLog              logging destination
+     *
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     *                                   REST API calls.
+     */
+    public ProjectManagementBaseClient(String   serverName,
+                                       String   serverPlatformURLRoot,
+                                       String   userId,
+                                       String   password,
+                                       int      maxPageSize,
                                        AuditLog auditLog) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
@@ -142,8 +160,10 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
 
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
 
         this.restClient = new ProjectManagementRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, userId, password, maxPageSize);
     }
 
 
@@ -158,10 +178,10 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
-    public ProjectManagementBaseClient(String serverName,
-                                       String serverPlatformURLRoot,
+    public ProjectManagementBaseClient(String                      serverName,
+                                       String                      serverPlatformURLRoot,
                                        ProjectManagementRESTClient restClient,
-                                       int maxPageSize) throws InvalidParameterException
+                                       int                         maxPageSize) throws InvalidParameterException
     {
         final String methodName = "Client Constructor";
 
@@ -170,9 +190,10 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
 
-        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+        this.invalidParameterHandler.setMaxPagingSize(maxPageSize);
 
         this.restClient = restClient;
+        this.openMetadataStoreClient = new OpenMetadataStoreClient(serverName, serverPlatformURLRoot, maxPageSize);
     }
 
 

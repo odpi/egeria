@@ -2257,6 +2257,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
      * @param beanGUIDParameterName name of parameter supplying the beanGUID
      * @param beanGUIDTypeName type of bean
      * @param name name of the template
+     * @param versionIdentifier version identifier for the template eg 1.0
      * @param description description of when, where and how to use the template
      * @param additionalProperties any additional properties
      * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
@@ -2273,6 +2274,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                           String              beanGUIDParameterName,
                                           String              beanGUIDTypeName,
                                           String              name,
+                                          String              versionIdentifier,
                                           String              description,
                                           Map<String, String> additionalProperties,
                                           boolean             forLineage,
@@ -2296,7 +2298,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                            beanGUIDTypeName,
                                            OpenMetadataType.TEMPLATE_CLASSIFICATION.typeGUID,
                                            OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName,
-                                           builder.getTemplateProperties(name, description, additionalProperties, methodName),
+                                           builder.getTemplateProperties(name, versionIdentifier, description, additionalProperties, methodName),
                                            true,
                                            forLineage,
                                            forDuplicateProcessing,

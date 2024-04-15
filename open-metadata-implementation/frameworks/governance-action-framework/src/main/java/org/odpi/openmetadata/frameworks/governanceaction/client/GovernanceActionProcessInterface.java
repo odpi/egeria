@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -121,6 +122,7 @@ public interface GovernanceActionProcessInterface
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime effective date/time for query
      *
      * @return list of matching metadata elements
      *
@@ -131,9 +133,10 @@ public interface GovernanceActionProcessInterface
     List<GovernanceActionProcessElement> findGovernanceActionProcesses(String userId,
                                                                        String searchString,
                                                                        int    startFrom,
-                                                                       int    pageSize) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException;
+                                                                       int    pageSize,
+                                                                       Date   effectiveTime) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException;
 
 
     /**
@@ -144,6 +147,7 @@ public interface GovernanceActionProcessInterface
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime effective date/time for query
      *
      * @return list of matching metadata elements
      *
@@ -154,9 +158,10 @@ public interface GovernanceActionProcessInterface
     List<GovernanceActionProcessElement> getGovernanceActionProcessesByName(String userId,
                                                                             String name,
                                                                             int    startFrom,
-                                                                            int    pageSize) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException;
+                                                                            int    pageSize,
+                                                                            Date   effectiveTime) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException;
 
 
     /**
@@ -184,6 +189,7 @@ public interface GovernanceActionProcessInterface
      *
      * @param userId calling user
      * @param processGUID unique identifier of the requested metadata element
+     * @param effectiveTime effective date/time for query
      *
      * @return requested metadata element
      *
@@ -192,9 +198,10 @@ public interface GovernanceActionProcessInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     GovernanceActionProcessGraph getGovernanceActionProcessGraph(String userId,
-                                                                 String processGUID) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException;
+                                                                 String processGUID,
+                                                                 Date   effectiveTime) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException;
 
 
     /* =====================================================================================================================
@@ -262,6 +269,7 @@ public interface GovernanceActionProcessInterface
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime effective date/time for query
      *
      * @return list of matching metadata elements
      *
@@ -272,9 +280,10 @@ public interface GovernanceActionProcessInterface
     List<GovernanceActionProcessStepElement> findGovernanceActionProcessSteps(String userId,
                                                                               String searchString,
                                                                               int    startFrom,
-                                                                              int    pageSize) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException;
+                                                                              int    pageSize,
+                                                                              Date   effectiveTime) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException;
 
 
     /**
@@ -285,6 +294,7 @@ public interface GovernanceActionProcessInterface
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime effective date/time for query
      *
      * @return list of matching metadata elements
      *
@@ -295,9 +305,10 @@ public interface GovernanceActionProcessInterface
     List<GovernanceActionProcessStepElement> getGovernanceActionProcessStepsByName(String userId,
                                                                                    String name,
                                                                                    int    startFrom,
-                                                                                   int    pageSize) throws InvalidParameterException,
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           PropertyServerException;
+                                                                                   int    pageSize,
+                                                                                   Date   effectiveTime) throws InvalidParameterException,
+                                                                                                                UserNotAuthorizedException,
+                                                                                                                PropertyServerException;
 
 
     /**
@@ -382,7 +393,6 @@ public interface GovernanceActionProcessInterface
      * @param nextActionProcessStepGUID unique identifier of the governance action process step that defines the next step in the governance action process
      * @param guard guard required for this next step to proceed - or null for always run the next step.
      * @param mandatoryGuard means that no next steps can run if this guard is not returned
-     * @param ignoreMultipleTriggers prevent multiple instances of the next step to run (or not)
      *
      * @return unique identifier of the new link
      *
@@ -394,10 +404,9 @@ public interface GovernanceActionProcessInterface
                                       String  currentActionProcessStepGUID,
                                       String  nextActionProcessStepGUID,
                                       String  guard,
-                                      boolean mandatoryGuard,
-                                      boolean ignoreMultipleTriggers) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException;
+                                      boolean mandatoryGuard) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException;
 
     /**
      * Update the properties of the link between two governance action process steps that shows that one follows on from the other when a governance
@@ -407,7 +416,6 @@ public interface GovernanceActionProcessInterface
      * @param nextProcessStepLinkGUID unique identifier of the relationship between the governance action process steps
      * @param guard guard required for this next step to proceed - or null for always run the next step.
      * @param mandatoryGuard means that no next steps can run if this guard is not returned
-     * @param ignoreMultipleTriggers prevent multiple instances of the next step to run (or not)
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -416,10 +424,9 @@ public interface GovernanceActionProcessInterface
     void updateNextActionProcessStep(String  userId,
                                      String  nextProcessStepLinkGUID,
                                      String  guard,
-                                     boolean mandatoryGuard,
-                                     boolean ignoreMultipleTriggers) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException;
+                                     boolean mandatoryGuard) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException;
 
     /**
      * Return the list of next process step defined for the governance action process.

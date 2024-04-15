@@ -70,7 +70,7 @@ public class AutomatedCurationResource
     public TechnologyTypeSummaryListResponse findTechnologyTypes(@PathVariable String                  serverName,
                                                                  @RequestParam int                     startFrom,
                                                                  @RequestParam int                     pageSize,
-                                                                 @RequestBody  StringRequestBody       requestBody)
+                                                                 @RequestBody  FilterRequestBody       requestBody)
     {
         return restAPI.findTechnologyTypes(serverName, startFrom, pageSize, requestBody);
     }
@@ -98,9 +98,11 @@ public class AutomatedCurationResource
     public TechnologyTypeSummaryListResponse getTechnologyTypesForOpenMetadataType(@PathVariable String serverName,
                                                                                    @PathVariable String typeName,
                                                                                    @RequestParam int    startFrom,
-                                                                                   @RequestParam int    pageSize)
+                                                                                   @RequestParam int    pageSize,
+                                                                                   @RequestBody(required = false)
+                                                                                       EffectiveTimeRequestBody requestBody)
     {
-        return restAPI.getTechnologyTypesForOpenMetadataType(serverName, typeName, startFrom, pageSize);
+        return restAPI.getTechnologyTypesForOpenMetadataType(serverName, typeName, startFrom, pageSize, requestBody);
     }
 
 
@@ -122,7 +124,7 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/deployed-implementation-type"))
 
     public TechnologyTypeReportResponse getTechnologyTypeDetail(@PathVariable String            serverName,
-                                                                @RequestBody  StringRequestBody requestBody)
+                                                                @RequestBody  FilterRequestBody requestBody)
     {
         return restAPI.getTechnologyTypeDetail(serverName, requestBody);
     }
@@ -312,7 +314,8 @@ public class AutomatedCurationResource
                                                                                  boolean                 endsWith,
                                                                    @RequestParam (required = false, defaultValue = "false")
                                                                                  boolean                 ignoreCase,
-                                                                   @RequestBody  StringRequestBody requestBody)
+                                                                   @RequestBody  (required = false)
+                                                                                 FilterRequestBody       requestBody)
     {
         return restAPI.findGovernanceActionTypes(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
     }
@@ -338,10 +341,10 @@ public class AutomatedCurationResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/governance-action-type"))
 
-    public GovernanceActionTypesResponse getGovernanceActionTypesByName(@PathVariable String          serverName,
-                                                                        @RequestParam int             startFrom,
-                                                                        @RequestParam int             pageSize,
-                                                                        @RequestBody StringRequestBody requestBody)
+    public GovernanceActionTypesResponse getGovernanceActionTypesByName(@PathVariable String            serverName,
+                                                                        @RequestParam int               startFrom,
+                                                                        @RequestParam int               pageSize,
+                                                                        @RequestBody  FilterRequestBody requestBody)
     {
         return restAPI.getGovernanceActionTypesByName(serverName, startFrom, pageSize, requestBody);
     }
@@ -408,7 +411,7 @@ public class AutomatedCurationResource
                                                                                                boolean                 endsWith,
                                                                                  @RequestParam (required = false, defaultValue = "false")
                                                                                                boolean                 ignoreCase,
-                                                                                 @RequestBody  StringRequestBody       requestBody)
+                                                                                 @RequestBody  FilterRequestBody       requestBody)
     {
         return restAPI.findGovernanceActionProcesses(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
     }
@@ -438,7 +441,7 @@ public class AutomatedCurationResource
     public GovernanceActionProcessElementsResponse getGovernanceActionProcessesByName(@PathVariable String          serverName,
                                                                                       @RequestParam int             startFrom,
                                                                                       @RequestParam int             pageSize,
-                                                                                      @RequestBody  StringRequestBody requestBody)
+                                                                                      @RequestBody  FilterRequestBody requestBody)
     {
         return restAPI.getGovernanceActionProcessesByName(serverName, startFrom, pageSize, requestBody);
     }
@@ -474,23 +477,26 @@ public class AutomatedCurationResource
      *
      * @param serverName name of the service to route the request to
      * @param processGUID unique identifier of the requested metadata element
+     * @param requestBody effective time
      *
      * @return requested metadata element or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/governance-action-processes/{processGUID}/graph")
+    @PostMapping(path = "/governance-action-processes/{processGUID}/graph")
     @Operation(summary="getGovernanceActionProcessGraph",
             description="Retrieve the governance action process metadata element with the supplied " +
                     "unique identifier along with the flow definition describing its implementation.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/governance-action-process"))
 
-    public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(@PathVariable String serverName,
-                                                                                @PathVariable String processGUID)
+    public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(@PathVariable String                   serverName,
+                                                                                @PathVariable String                   processGUID,
+                                                                                @RequestBody(required = false)
+                                                                                              EffectiveTimeRequestBody requestBody)
     {
-        return restAPI.getGovernanceActionProcessGraph(serverName, processGUID);
+        return restAPI.getGovernanceActionProcessGraph(serverName, processGUID, requestBody);
     }
 
     /* =====================================================================================================================
@@ -705,7 +711,7 @@ public class AutomatedCurationResource
                                                                         boolean                 endsWith,
                                                           @RequestParam (required = false, defaultValue = "false")
                                                                         boolean                 ignoreCase,
-                                                          @RequestBody  StringRequestBody       requestBody)
+                                                          @RequestBody  FilterRequestBody       requestBody)
     {
         return restAPI.findEngineActions(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
     }
@@ -734,7 +740,7 @@ public class AutomatedCurationResource
     public EngineActionElementsResponse getEngineActionsByName(@PathVariable String            serverName,
                                                                @RequestParam int               startFrom,
                                                                @RequestParam int               pageSize,
-                                                               @RequestBody  StringRequestBody requestBody)
+                                                               @RequestBody  FilterRequestBody requestBody)
     {
         return restAPI.getEngineActionsByName(serverName, startFrom, pageSize, requestBody);
     }

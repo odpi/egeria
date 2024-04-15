@@ -8,10 +8,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties;
@@ -19,6 +16,8 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceAc
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
+
+import java.util.Date;
 
 
 /**
@@ -214,13 +213,13 @@ public class GovernanceAuthorRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GovernanceActionTypesResponse findGovernanceActionTypes(String                  serverName,
-                                                                   boolean                 startsWith,
-                                                                   boolean                 endsWith,
-                                                                   boolean                 ignoreCase,
-                                                                   int                     startFrom,
-                                                                   int                     pageSize,
-                                                                   StringRequestBody       requestBody)
+    public GovernanceActionTypesResponse findGovernanceActionTypes(String            serverName,
+                                                                   boolean           startsWith,
+                                                                   boolean           endsWith,
+                                                                   boolean           ignoreCase,
+                                                                   int               startFrom,
+                                                                   int               pageSize,
+                                                                   FilterRequestBody requestBody)
     {
         final String methodName = "findGovernanceActionTypes";
 
@@ -241,9 +240,10 @@ public class GovernanceAuthorRESTServices extends TokenController
                 OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
                 response.setElements(handler.findGovernanceActionTypes(userId,
-                                                                       instanceHandler.getSearchString(requestBody.getString(), startsWith, endsWith, ignoreCase),
+                                                                       instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
                                                                        startFrom,
-                                                                       pageSize));
+                                                                       pageSize,
+                                                                       requestBody.getEffectiveTime()));
             }
             else
             {
@@ -277,7 +277,7 @@ public class GovernanceAuthorRESTServices extends TokenController
     public GovernanceActionTypesResponse getGovernanceActionTypesByName(String            serverName,
                                                                         int               startFrom,
                                                                         int               pageSize,
-                                                                        StringRequestBody requestBody)
+                                                                        FilterRequestBody requestBody)
     {
         final String methodName = "getGovernanceActionTypesByName";
 
@@ -298,9 +298,10 @@ public class GovernanceAuthorRESTServices extends TokenController
                 OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
                 response.setElements(handler.getGovernanceActionTypesByName(userId,
-                                                                            requestBody.getString(),
+                                                                            requestBody.getFilter(),
                                                                             startFrom,
-                                                                            pageSize));
+                                                                            pageSize,
+                                                                            requestBody.getEffectiveTime()));
             }
             else
             {
@@ -637,7 +638,7 @@ public class GovernanceAuthorRESTServices extends TokenController
                                                                                  boolean                 ignoreCase,
                                                                                  int                     startFrom,
                                                                                  int                     pageSize,
-                                                                                 StringRequestBody       requestBody)
+                                                                                 FilterRequestBody       requestBody)
     {
         final String methodName = "findGovernanceActionProcesses";
 
@@ -658,9 +659,10 @@ public class GovernanceAuthorRESTServices extends TokenController
                 OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
                 response.setElements(handler.getGovernanceActionProcessesByName(userId,
-                                                                                instanceHandler.getSearchString(requestBody.getString(), startsWith, endsWith, ignoreCase),
+                                                                                instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
                                                                                 startFrom,
-                                                                                pageSize));
+                                                                                pageSize,
+                                                                                requestBody.getEffectiveTime()));
             }
             else
             {
@@ -694,7 +696,7 @@ public class GovernanceAuthorRESTServices extends TokenController
     public GovernanceActionProcessElementsResponse getGovernanceActionProcessesByName(String          serverName,
                                                                                       int             startFrom,
                                                                                       int             pageSize,
-                                                                                      StringRequestBody requestBody)
+                                                                                      FilterRequestBody requestBody)
     {
         final String methodName = "getGovernanceActionProcessesByName";
 
@@ -715,9 +717,10 @@ public class GovernanceAuthorRESTServices extends TokenController
                 OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
                 response.setElements(handler.getGovernanceActionProcessesByName(userId,
-                                                                                requestBody.getString(),
+                                                                                requestBody.getFilter(),
                                                                                 startFrom,
-                                                                                pageSize));
+                                                                                pageSize,
+                                                                                requestBody.getEffectiveTime()));
             }
             else
             {
@@ -782,14 +785,16 @@ public class GovernanceAuthorRESTServices extends TokenController
      *
      * @param serverName name of the service to route the request to
      * @param processGUID unique identifier of the requested metadata element
+     * @param requestBody effectiveTime
      *
      * @return requested metadata element or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(String serverName,
-                                                                                String processGUID)
+    public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(String                   serverName,
+                                                                                String                   processGUID,
+                                                                                EffectiveTimeRequestBody requestBody)
     {
         final String methodName = "getGovernanceActionProcessGraph";
 
@@ -807,7 +812,14 @@ public class GovernanceAuthorRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
-            response.setElement(handler.getGovernanceActionProcessGraph(userId, processGUID));
+            if (requestBody != null)
+            {
+                response.setElement(handler.getGovernanceActionProcessGraph(userId, processGUID, requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                response.setElement(handler.getGovernanceActionProcessGraph(userId, processGUID, new Date()));
+            }
         }
         catch (Exception error)
         {
@@ -997,7 +1009,7 @@ public class GovernanceAuthorRESTServices extends TokenController
                                                                                  boolean                 ignoreCase,
                                                                                  int                     startFrom,
                                                                                  int                     pageSize,
-                                                                                 StringRequestBody       requestBody)
+                                                                                 FilterRequestBody       requestBody)
     {
         final String methodName = "findGovernanceActionProcessSteps";
 
@@ -1018,9 +1030,10 @@ public class GovernanceAuthorRESTServices extends TokenController
                 OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
                 response.setElements(handler.findGovernanceActionProcessSteps(userId,
-                                                                              instanceHandler.getSearchString(requestBody.getString(), startsWith, endsWith, ignoreCase),
+                                                                              instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
                                                                               startFrom,
-                                                                              pageSize));
+                                                                              pageSize,
+                                                                              requestBody.getEffectiveTime()));
             }
             else
             {
@@ -1051,10 +1064,10 @@ public class GovernanceAuthorRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GovernanceActionProcessStepsResponse getGovernanceActionProcessStepsByName(String          serverName,
-                                                                                      int             startFrom,
-                                                                                      int             pageSize,
-                                                                                      StringRequestBody requestBody)
+    public GovernanceActionProcessStepsResponse getGovernanceActionProcessStepsByName(String            serverName,
+                                                                                      int               startFrom,
+                                                                                      int               pageSize,
+                                                                                      FilterRequestBody requestBody)
     {
         final String methodName = "getGovernanceActionProcessStepsByName";
         
@@ -1075,9 +1088,10 @@ public class GovernanceAuthorRESTServices extends TokenController
                 OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
                 response.setElements(handler.getGovernanceActionProcessStepsByName(userId,
-                                                                                   requestBody.getString(),
+                                                                                   requestBody.getFilter(),
                                                                                    startFrom,
-                                                                                   pageSize));
+                                                                                   pageSize,
+                                                                                   requestBody.getEffectiveTime()));
             }
             else
             {
@@ -1153,7 +1167,7 @@ public class GovernanceAuthorRESTServices extends TokenController
     public VoidResponse setupFirstActionProcessStep(String            serverName,
                                                     String            processGUID,
                                                     String            processStepGUID,
-                                                    StringRequestBody requestBody)
+                                                    FilterRequestBody requestBody)
     {
         final String methodName = "setupFirstActionProcessStep";
 
@@ -1173,7 +1187,7 @@ public class GovernanceAuthorRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                handler.setupFirstActionProcessStep(userId, processGUID, processStepGUID, requestBody.getString());
+                handler.setupFirstActionProcessStep(userId, processGUID, processStepGUID, requestBody.getFilter());
             }
             else
             {
@@ -1318,8 +1332,7 @@ public class GovernanceAuthorRESTServices extends TokenController
                                                                     currentProcessStepGUID,
                                                                     nextProcessStepGUID,
                                                                     requestBody.getGuard(),
-                                                                    requestBody.getMandatoryGuard(),
-                                                                    false)); //todo
+                                                                    requestBody.getMandatoryGuard()));
             }
             else
             {
@@ -1375,8 +1388,7 @@ public class GovernanceAuthorRESTServices extends TokenController
                 handler.updateNextActionProcessStep(userId,
                                                     nextProcessStepLinkGUID,
                                                     requestBody.getGuard(),
-                                                    requestBody.getMandatoryGuard(),
-                                                    false); // todo
+                                                    requestBody.getMandatoryGuard());
             }
             else
             {

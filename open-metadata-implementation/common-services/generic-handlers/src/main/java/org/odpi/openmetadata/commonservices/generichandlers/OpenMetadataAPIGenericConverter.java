@@ -1301,7 +1301,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.COLLECTION_TYPE_PROPERTY_NAME,
+                                                         OpenMetadataProperty.COLLECTION_TYPE.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -5888,6 +5888,77 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         {
             return repositoryHelper.removeStringProperty(serviceName,
                                                          OpenMetadataType.STATUS_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract and delete the project status property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return String text or null
+     */
+    protected String removeProjectStatus(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeProjectStatus";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataProperty.PROJECT_STATUS.name,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the project phase property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return String text or null
+     */
+    protected String removeProjectPhase(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeProjectPhase";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataProperty.PROJECT_PHASE.name,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract and delete the project health property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return String text or null
+     */
+    protected String removeProjectHealth(InstanceProperties instanceProperties)
+
+    {
+        final String methodName = "removeProjectHealth";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataProperty.PROJECT_HEALTH.name,
                                                          instanceProperties,
                                                          methodName);
         }

@@ -31,7 +31,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "string" : ""
+  "filter" : ""
 }
 
 ###
@@ -53,7 +53,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "string" : "PostgreSQL"
+   "filter" : "PostgreSQL"
 }
 
 
@@ -65,7 +65,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "string" : "PostgreSQL Server"
+  "filter" : "PostgreSQL Server"
 }
 
 ###
@@ -216,7 +216,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "string" : "add string here"
+   "filter" : "AssetSurvey"
 }
 
 
@@ -228,9 +228,12 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "string" : "add string here"
+   "filter" : "Egeria:GovernanceActionType:2adeb8f1-0f59-4970-b6f2-6cc25d4d2402survey-kafka-server"
 }
 
+###
+
+@governanceActionTypeGUID=e2575dc7-3309-4b15-95ee-4766d6808f4e
 
 ###
 # @name getGovernanceActionTypeByGUID
@@ -256,7 +259,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "string" : "add string here"
+  "filter" : "add string here"
 }
 
 
@@ -269,7 +272,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "string" : "add string here"
+  "filter" : "add string here"
 }
 
 
@@ -499,7 +502,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "string" : "add string here"
+  "filter" : "add string here"
 }
 
 
@@ -512,5 +515,5 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "string" : "add string here"
+  "filter" : "add string here"
 }

@@ -895,7 +895,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.COLLECTION_TYPE_PROPERTY_NAME,
+                                                       OpenMetadataProperty.COLLECTION_TYPE.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -1634,6 +1634,27 @@ public abstract class OpenMetadataConverterBase<B>
         return null;
     }
 
+
+    /**
+     * Extract and delete the teamRole property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeTeamRole(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeTeamRole";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataType.TEAM_ROLE_PROPERTY_NAME,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
 
     /**
      * Extract and delete the createdBy property from the supplied element properties.

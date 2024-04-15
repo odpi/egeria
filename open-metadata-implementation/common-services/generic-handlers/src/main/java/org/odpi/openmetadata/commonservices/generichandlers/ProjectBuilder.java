@@ -25,6 +25,8 @@ public class ProjectBuilder extends ReferenceableBuilder
     private String description    = null;
     private Date   startDate      = null;
     private Date   plannedEndDate = null;
+    private String projectPhase  = null;
+    private String projectHealth  = null;
     private String projectStatus  = null;
 
 
@@ -37,6 +39,8 @@ public class ProjectBuilder extends ReferenceableBuilder
      * @param description description of the glossary
      * @param startDate start date of the project
      * @param plannedEndDate planned end Date for the project
+     * @param projectPhase lifecycle phase of project
+     * @param projectHealth how well is the project tracking to plan
      * @param projectStatus status of the project
      * @param additionalProperties additional properties for a Project
      * @param typeGUID unique identifier of this element's type
@@ -52,6 +56,8 @@ public class ProjectBuilder extends ReferenceableBuilder
                           String               description,
                           Date                 startDate,
                           Date                 plannedEndDate,
+                          String               projectPhase,
+                          String               projectHealth,
                           String               projectStatus,
                           Map<String, String>  additionalProperties,
                           String               typeGUID,
@@ -75,6 +81,8 @@ public class ProjectBuilder extends ReferenceableBuilder
         this.description = description;
         this.startDate = startDate;
         this.plannedEndDate = plannedEndDate;
+        this.projectPhase = projectPhase;
+        this.projectHealth = projectHealth;
         this.projectStatus = projectStatus;
     }
 
@@ -86,7 +94,7 @@ public class ProjectBuilder extends ReferenceableBuilder
      * @param identifier unique identifier for the Project - typically allocated by an external system
      * @param name name for the project
      * @param description description of the glossary
-    * @param repositoryHelper helper methods
+     * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
@@ -120,8 +128,8 @@ public class ProjectBuilder extends ReferenceableBuilder
                    String               serviceName,
                    String               serverName)
     {
-        super(OpenMetadataType.PROJECT_TYPE_GUID,
-              OpenMetadataType.PROJECT_TYPE_NAME,
+        super(OpenMetadataType.PROJECT.typeGUID,
+              OpenMetadataType.PROJECT.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -139,7 +147,7 @@ public class ProjectBuilder extends ReferenceableBuilder
     public void setCampaignClassification(String userId,
                                           String methodName) throws InvalidParameterException
     {
-        this.setProjectTypeClassification(userId, OpenMetadataType.CAMPAIGN_CLASSIFICATION_TYPE_NAME, methodName);
+        this.setProjectTypeClassification(userId, OpenMetadataType.CAMPAIGN_CLASSIFICATION.typeName, methodName);
     }
 
 
@@ -154,7 +162,7 @@ public class ProjectBuilder extends ReferenceableBuilder
     public void setTaskClassification(String userId,
                                       String methodName) throws InvalidParameterException
     {
-        this.setProjectTypeClassification(userId, OpenMetadataType.TASK_CLASSIFICATION_TYPE_NAME, methodName);
+        this.setProjectTypeClassification(userId, OpenMetadataType.TASK_CLASSIFICATION.typeName, methodName);
     }
 
 
@@ -162,7 +170,7 @@ public class ProjectBuilder extends ReferenceableBuilder
      * Set up the Task classification for this project.
      *
      * @param userId calling user
-     * @param classificationName name of the classificaton to add
+     * @param classificationName name of the classification to add
      * @param methodName calling method
      * @throws InvalidParameterException classification is not supported in the local repository, or any repository
      *                                   connected by an open metadata repository cohort
@@ -187,7 +195,7 @@ public class ProjectBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.SECURITY_TAGS_CLASSIFICATION_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, classificationName);
         }
     }
 
@@ -230,13 +238,25 @@ public class ProjectBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                 properties,
-                                                                OpenMetadataType.PLANNED_END_DATE_PROPERTY_NAME,
+                                                                OpenMetadataProperty.PLANNED_END_DATE.name,
                                                                 plannedEndDate,
                                                                 methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.PROJECT_STATUS_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.PROJECT_PHASE.name,
+                                                                  projectPhase,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.PROJECT_HEALTH.name,
+                                                                  projectHealth,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.PROJECT_STATUS.name,
                                                                   projectStatus,
                                                                   methodName);
 

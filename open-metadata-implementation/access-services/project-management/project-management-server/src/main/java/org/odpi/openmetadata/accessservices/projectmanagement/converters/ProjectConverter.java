@@ -59,9 +59,8 @@ public class ProjectConverter<B> extends ProjectManagementOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ProjectElement)
+            if (returnBean instanceof ProjectElement bean)
             {
-                ProjectElement    bean              = (ProjectElement) returnBean;
                 ProjectProperties projectProperties = new ProjectProperties();
 
                 InstanceProperties instanceProperties;
@@ -86,7 +85,9 @@ public class ProjectConverter<B> extends ProjectManagementOMASConverter<B>
                     projectProperties.setDescription(this.removeDescription(instanceProperties));
                     projectProperties.setStartDate(this.removeStartDate(instanceProperties));
                     projectProperties.setPlannedEndDate(this.removePlannedEndDate(instanceProperties));
-                    projectProperties.setStatus(this.removeStatus(instanceProperties));
+                    projectProperties.setStatus(this.removeProjectStatus(instanceProperties));
+                    projectProperties.setHealth(this.removeProjectHealth(instanceProperties));
+                    projectProperties.setPhase(this.removeProjectPhase(instanceProperties));
                     projectProperties.setEffectiveFrom(instanceProperties.getEffectiveFromTime());
                     projectProperties.setEffectiveTo(instanceProperties.getEffectiveToTime());
 

@@ -34,7 +34,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "string" : ""
+  "filter" : ""
 }
 
 ###
@@ -46,7 +46,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "string" : ""
+  "filter" : ""
 }
 
 ###
@@ -57,18 +57,18 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "string" : ""
+  "filter" : ""
 }
 
 ###
 # @name getCollectionsByName
 # Returns the list of collections with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/collections/by-name?startFrom=0&pageSize=0
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-name?startFrom=0&pageSize=0
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "string" : ""
+  "filter" : ""
 }
 
 ###
@@ -79,7 +79,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "string" : ""
+  "filter" : ""
 }
 
 ###
@@ -92,6 +92,7 @@ Content-Type: application/json
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}
 Authorization: Bearer {{token}}
 
+###
 # =====================================================================================================================
 # Create Collections: https://egeria-project.org/concepts/collection
 # These requests use the following parameters:
@@ -110,12 +111,32 @@ Authorization: Bearer {{token}}
 # parentAtEnd1 -identifies which end any parent entity sits on the relationship.
 #
 
-@classificationName="WorkItemList"
+@classificationName=WorkItemList
+
+###
+# @name createCollection (Simple Work Item List)
+# Create a new generic collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections?classificationName={{classificationName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "isOwnAnchor" : true,
+  "collectionProperties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Must provide a unique name here",
+    "name" : "Add display name here",
+    "description" : "Add description of the collection here",
+    "collectionType": "Add appropriate valid value for type",
+    "collectionOrdering" : "OTHER",
+    "orderPropertyName" : "Add property name if 'collectionOrdering' is OTHER"
+  }
+}
 
 ###
 # @name createCollection
 # Create a new generic collection.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections?classificationName={{classificationName}}
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -130,9 +151,7 @@ Content-Type: application/json
     "qualifiedName": "Must provide a unique name here",
     "name" : "Add display name here",
     "description" : "Add description of the collection here",
-    "collectionType": "Add appropriate valid value for type",
-    "collectionOrdering" : "OTHER",
-    "orderPropertyName" : "Add property name if 'collectionOrdering' is OTHER"
+    "collectionType": "Add appropriate valid value for type"
   }
 }
 
@@ -154,9 +173,7 @@ Content-Type: application/json
     "qualifiedName": "Must provide a unique name here",
     "name" : "Add display name here",
     "description" : "Add description of the collection here",
-    "collectionType": "Add appropriate valid value for type",
-    "collectionOrdering" : "OTHER",
-    "orderPropertyName" : "Add property name if 'collectionOrdering' is OTHER"
+    "collectionType": "Add appropriate valid value for type"
   }
 }
 
@@ -179,9 +196,7 @@ Content-Type: application/json
     "qualifiedName": "Must provide a unique name here",
     "name" : "Add display name here",
     "description" : "Add description of the collection here",
-    "collectionType": "Add appropriate valid value for type",
-    "collectionOrdering" : "OTHER",
-    "orderPropertyName" : "Add property name if 'collectionOrdering' is OTHER"
+    "collectionType": "Add appropriate valid value for type"
   }
 }
 
@@ -262,9 +277,7 @@ Content-Type: application/json
     "qualifiedName": "Must provide a unique name here",
     "name" : "Add display name here",
     "description" : "Add description of the collection here",
-    "collectionType": "Add appropriate valid value for type",
-    "collectionOrdering" : "OTHER",
-    "orderPropertyName" : "Add property name if 'collectionOrdering' is OTHER"
+    "collectionType": "Add appropriate valid value for type"
   },
   "digitalProductProperties" : {
     "class" : "DigitalProductProperties",
@@ -297,9 +310,7 @@ Content-Type: application/json
   "qualifiedName": "Must provide a unique name here",
   "name" : "Add display name here",
   "description" : "Add description of the collection here",
-  "collectionType": "Add appropriate valid value for type",
-  "collectionOrdering" : "OTHER",
-  "orderPropertyName" : "Add property name if 'collectionOrdering' is OTHER"
+  "collectionType": "Add appropriate valid value for type"
 }
 
 ###

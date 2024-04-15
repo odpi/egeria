@@ -4,25 +4,37 @@
 
 # Open Metadata View Services (OMVS)
 
-The Open Metadata View Services (OMVS) provide task oriented, domain-specific services
-for user interfaces to integrate with open metadata.
-
-The view services are as follows:
 The Open Metadata View Services (OMVS) provide task oriented, domain-specific services for user interfaces to integrate with open metadata.  They provide REST APIs.
 
 The view services are as follows:
 
-* **[asset-catalog](asset-catalog)** - search for assets.
+* **[Asset Catalog](asset-catalog)** - search for assets.
 
   The Asset Catalog OMVS provides search and query capabilities for tools and applications to support an asset catalog function. It supports search requests for assets with specific characteristics and returns summaries of the matching assets, plus methods to allow drill-down into the details of a specific asset to related metadata.
 
-* **[collection-manager](collection-manager)** - manage collections of assets and other elements.
+* **[Automated Curation](automated-curation)** - run governance actions.
+
+  The Automated Curation OMVS provides search and query capabilities for technology types and then the ability to run associated governance actions.
+
+* **[Collection Manager](collection-manager)** - manage collections of assets and other elements.
 
   The Collection Manager OMVS provides the REST APIs to create collections of asset and other elements such as glossary terms or policies.  The collections can be nested (like folders in a file system) and they can be classified to describe the type of collection.  For example, one type of classification for a collection is a *DigitalProduct* that allows the collections of assets and other related material to describe data and or services for a specific consumer or purpose.
 
+* **[Data Discovery](data-discovery)** - define data specification.
+
+  The Data Discovery OMVS is a REST API designed to support user interfaces (UIs) for documenting specifications that describe the data needed for a project.  These are known as DataSpecs and they can be used to specify schemas for data pipelines as well as saved searches.
+
+* **[Feedback Manager](feedback-manager)** - add comments and other feedback to elements.
+
+  The Feedback Manager OMVS is for user interfaces supporting feedback from users.  A registered user is able to add comments, informal tags, notes, reviews and likes to elements such as assets or glossary terms.
+  
 * **[My Profile](my-profile)** - locate, retrieve and update information relating to the calling user's profile.
 
   The My Profile OMVS is for user interfaces supporting a personalized experience.  A registered user is able to maintain information about themselves and their network as well as set up and use personalized collections of metadata elements.
+
+* **[Project Manager](project-manager)** - manage projects and related elements.
+
+  The Project Manager OMVS provides the REST APIs to create projects and related elements such as project manager roles.  The projects can be nested and they can be classified to describe the type of project.  For example, one type of classification for a project is *Campaign*, another is *Task*.
 
 * **[Glossary Author](glossary-author)** - develop new glossary terms and categories.
 
@@ -35,6 +47,14 @@ The view services are as follows:
 * **[Glossary Workflow](glossary-workflow)** - develop new glossary terms and categories in a controlled workflow process.
 
   The Glossary Workflow OMVS is for user interfaces supporting the creation and editing of glossary content, such as glossary terms and categories, in a controlled workflow process.  This means that as terms and categories are created, updated and deleted, these changes are invisible to the general user until they are approved.
+
+* **[Reference Data](reference-data)** - manage reference data.
+
+  The Reference Data OMVS is a REST API designed to support user interfaces (UIs) that maintain reference data values and their mappings.
+  
+* **[Template Manager](template-manager)** - locate and maintain templates.
+
+  The Template Manager OMVS is a REST API designed to support user interfaces (UIs) that support the management of templates that are used when creating new metadata.
 
 * **[Repository Explorer](rex-view)** - explorer interface to inspect instances across a cohort of repositories.
 
@@ -52,91 +72,6 @@ The view services are as follows:
 
   The Server Author OMVS is for user interfaces that support Egeria Server authors. This user interface allows the author to create, delete or update a server configuration using an intuitive UI, rather than needing to use the low level admin rest calls and associated json payloads.
 
-
-
-## Inside an OMVS
-
-User Interfaces can connect to an OMVS through its REST API. The REST API interacts with a remote OMAG Server.
-The OMVS APIs are deployed together in a single web application. 
-
-The [administration services](../admin-services/README.md) provide the ability to configure, start and stop the view services.
-An example configuration document for a view server called 'viewserver', configured to communicate with a
-remote server called 'Server1' is:
-```javascript
-{ 
-   "class":"OMAGServerConfig",
-   "versionId":"V2.0",
-   "localServerId":"a8e40a02-a95a-4dce-a5ba-8d4f68298ec9",
-   "localServerName":"viewserver",
-   "localServerType":"View Server",
-   "localServerURL":"https://localhost:9448",
-   "localServerUserId":"OMAGServer",
-   "maxPageSize":1000,
-   "viewServicesConfig":[ 
-      { 
-         "class":"ViewServiceConfig",
-         "viewServiceId":0,
-         "viewServiceFullName":"Glossary Author",
-         "viewServiceAdminClass":"org.odpi.openmetadata.viewservices.glossaryauthor.admin.GlossaryAuthorViewAdmin",
-         "viewServiceOperationalStatus":"ENABLED",
-         "omagserverPlatformRootURL":"https://localhost:9443",
-         "omagserverName":"Server1"
-      }
-   ],
-   "repositoryServicesConfig":{ 
-      "class":"RepositoryServicesConfig",
-      "auditLogConnections":[ 
-         { 
-            "class":"Connection",
-            "type":{ 
-               "class":"ElementType",
-               "elementTypeId":"114e9f8f-5ff3-4c32-bd37-a7eb42712253",
-               "elementTypeName":"Connection",
-               "elementTypeVersion":1,
-               "elementTypeDescription":"A set of properties to identify and configure a connector instance.",
-               "elementOrigin":"CONFIGURATION"
-            },
-            "guid":"5390bf3e-6b38-4eda-b34a-de55ac4252a7",
-            "qualifiedName":"DefaultAuditLog.Connection.viewserver",
-            "displayName":"DefaultAuditLog.Connection.viewserver",
-            "description":"OMRS default audit log connection.",
-            "connectorType":{ 
-               "class":"ConnectorType",
-               "type":{ 
-                  "class":"ElementType",
-                  "elementTypeId":"954421eb-33a6-462d-a8ca-b5709a1bd0d4",
-                  "elementTypeName":"ConnectorType",
-                  "elementTypeVersion":1,
-                  "elementTypeDescription":"A set of properties describing a type of connector.",
-                  "elementOrigin":"LOCAL_COHORT"
-               },
-               "guid":"4afac741-3dcc-4c60-a4ca-a6dede994e3f",
-               "qualifiedName":"Console Audit Log Store Connector",
-               "displayName":"Console Audit Log Store Connector",
-               "description":"Connector supports logging of audit log messages to stdout.",
-               "connectorProviderClassName":"org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider"
-            },
-            "endpoint":{ 
-               "class":"Endpoint",
-               "type":{ 
-                  "class":"ElementType",
-                  "elementTypeId":"dbc20663-d705-4ff0-8424-80c262c6b8e7",
-                  "elementTypeName":"Endpoint",
-                  "elementTypeVersion":1,
-                  "elementTypeDescription":"Description of the network address and related information needed to call a software service.",
-                  "elementOrigin":"CONFIGURATION"
-               },
-               "guid":"836efeae-ab34-4425-89f0-6adf2faa1f2e",
-               "qualifiedName":"DefaultAuditLog.Endpoint.viewserver.auditlog",
-               "displayName":"DefaultAuditLog.Endpoint.viewserver.auditlog",
-               "description":"OMRS default audit log endpoint.",
-               "address":"viewserver.auditlog"
-            }
-         }
-      ]
-   }
-}
-```
 
 ----
 Return to [open-metadata-implementation](..).

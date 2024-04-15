@@ -76,8 +76,8 @@ class DataEngineCollectionHandlerTest {
         when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
                 .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
-        when(assetHandler.createBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, OpenMetadataType.COLLECTION_TYPE_GUID,
-                                                 OpenMetadataType.COLLECTION_TYPE_NAME, mockedBuilder, null, methodName)).thenReturn(GUID);
+        when(assetHandler.createBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, OpenMetadataType.COLLECTION.typeGUID,
+                                                 OpenMetadataType.COLLECTION.typeName, mockedBuilder, null, methodName)).thenReturn(GUID);
 
         doReturn(mockedBuilder).when(dataEngineCollectionHandler).getCollectionBuilder(collection);
 
@@ -103,7 +103,7 @@ class DataEngineCollectionHandlerTest {
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         doThrow(mockedException).when(assetHandler).createBeanInRepository(USER, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                                                                           OpenMetadataType.COLLECTION_TYPE_GUID, OpenMetadataType.COLLECTION_TYPE_NAME, mockedBuilder, null, methodName);
+                                                                           OpenMetadataType.COLLECTION.typeGUID, OpenMetadataType.COLLECTION.typeName, mockedBuilder, null, methodName);
 
         doReturn(mockedBuilder).when(dataEngineCollectionHandler).getCollectionBuilder(collection);
 
@@ -118,7 +118,7 @@ class DataEngineCollectionHandlerTest {
         EntityDetail entityDetail = mock(EntityDetail.class);
         when(entityDetail.getGUID()).thenReturn(GUID);
         Optional<EntityDetail> optionalOfMockedEntity = Optional.of(entityDetail);
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.COLLECTION_TYPE_NAME)).thenReturn(optionalOfMockedEntity);
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.COLLECTION.typeName)).thenReturn(optionalOfMockedEntity);
 
         Optional<EntityDetail> result = dataEngineCollectionHandler.findCollectionEntity(USER, QUALIFIED_NAME);
 
@@ -130,7 +130,7 @@ class DataEngineCollectionHandlerTest {
     void findProcessNotExistingTest() throws UserNotAuthorizedException, PropertyServerException,
                                              InvalidParameterException {
 
-        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.COLLECTION_TYPE_NAME)).thenReturn(Optional.empty());
+        when(dataEngineCommonHandler.findEntity(USER, QUALIFIED_NAME, OpenMetadataType.COLLECTION.typeName)).thenReturn(Optional.empty());
 
         Optional<EntityDetail> result = dataEngineCollectionHandler.findCollectionEntity(USER, QUALIFIED_NAME);
 

@@ -390,6 +390,11 @@ public enum OpenMetadataProperty
     START_DATE("startDate", "date", "Date/time that work started on this element.", null, "e3e374cc-0f9d-45f6-ae74-7d7a438b17bf"),
 
     /**
+     * Date/time that work is expected to be complete for this element.
+     */
+    PLANNED_END_DATE("startDate", "date", "Date/time that work is expected to be complete for this element.", null, "330ae312-1e88-4c7b-810e-4b4a50e540e8"),
+
+    /**
      * Date/time that work stopped on this element.
      */
     COMPLETION_DATE("completionDate", "date", "Date/time that work stopped on this element.", null, "28585eb7-ca9f-4149-b51f-ad29bbfe3f7c"),
@@ -814,6 +819,26 @@ public enum OpenMetadataProperty
      * The type of property that the valid value represents.
      */
     PROPERTY_TYPE("propertyType", "string", "The type of property that the valid value represents.", "producedGuard", "f9f2eba1-943a-4611-8bdd-647c1645b036"),
+
+    /**
+     * The phase in the lifecycle of the project.
+     */
+    PROJECT_PHASE("projectPhase", "string", "The phase in the lifecycle of the project.", "Plan", "9178fece-e112-4250-9c08-5c336bd93f78"),
+
+    /**
+     * Indicator on how well the project is tracking to plan.
+     */
+    PROJECT_HEALTH("projectHealth", "string", "Indicator on how well the project is tracking to plan.", "On Track", "eabe799d-72d7-46a2-aa56-5ceaf723a65f"),
+
+    /**
+     * Short description on current status of the project.
+     */
+    PROJECT_STATUS("projectStatus", "string", "Short description on current status of the project.", "Active", "39643f86-185b-465e-9e84-3f74905bad82"),
+
+    /**
+     * Descriptive name of the concept that this collection represents.
+     */
+    COLLECTION_TYPE("collectionType", "string", "Descriptive name of the concept that this collection represents.", "Product Contents", "05b7dcee-1c4c-4d2b-a484-bd84ec4d67e2"),
 
     ;
 

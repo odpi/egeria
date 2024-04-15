@@ -1408,7 +1408,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         serviceSupportedZones,
                                         OpenMetadataType.CONNECTION_TO_ASSET_TYPE_GUID,
                                         OpenMetadataType.CONNECTION_TO_ASSET_TYPE_NAME,
-                                        OpenMetadataType.COLLECTION_TYPE_NAME,
+                                        OpenMetadataType.CONNECTION_TYPE_NAME,
                                         effectiveTime,
                                         methodName);
         }

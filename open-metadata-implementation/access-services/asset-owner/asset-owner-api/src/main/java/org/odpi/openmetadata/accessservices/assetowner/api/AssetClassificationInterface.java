@@ -285,6 +285,7 @@ public interface AssetClassificationInterface
      * @param userId calling user
      * @param assetGUID unique identifier of the asset to classify
      * @param name name of the template
+     * @param versionIdentifier version identifier for the template eg 1.0
      * @param description description of when, where and how to use the template
      * @param additionalProperties any additional properties
      *
@@ -295,6 +296,7 @@ public interface AssetClassificationInterface
     void addTemplateClassification(String              userId,
                                    String              assetGUID,
                                    String              name,
+                                   String              versionIdentifier,
                                    String              description,
                                    Map<String, String> additionalProperties) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,

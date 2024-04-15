@@ -335,18 +335,16 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
      *
      * @param userId calling user
      * @param name template name
+     * @param versionIdentifier version identifier for the template eg 1.0
      * @param description template description
-     * @param replacementProperties map of attribute names to description that should be replaced in the parent entity
-     * @param placeholderProperties map of placeholder property names to description used throughout the template
      * @param additionalProperties additional properties about the template
      * @param methodName calling method
      * @throws InvalidParameterException Template classification not available in the repositories
      */
     public void setTemplate(String              userId,
                             String              name,
+                            String              versionIdentifier,
                             String              description,
-                            Map<String, String> replacementProperties,
-                            Map<String, String> placeholderProperties,
                             Map<String, String> additionalProperties,
                             String              methodName) throws InvalidParameterException
     {
@@ -362,6 +360,7 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
                                                                                   getTemplateProperties(name,
+                                                                                                        versionIdentifier,
                                                                                                         description,
                                                                                                         additionalProperties,
                                                                                                         methodName));
@@ -378,12 +377,14 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
      * Return the template properties in an InstanceProperties object.
      *
      * @param name template name
+     * @param versionIdentifier version identifier for the template eg 1.0
      * @param description template description
      * @param additionalProperties additional properties about the template
      * @param methodName name of the calling method
      * @return InstanceProperties object
      */
     InstanceProperties getTemplateProperties(String              name,
+                                             String              versionIdentifier,
                                              String              description,
                                              Map<String, String> additionalProperties,
                                              String              methodName)
@@ -394,6 +395,12 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                                                   null,
                                                                   OpenMetadataProperty.NAME.name,
                                                                   name,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.VERSION_IDENTIFIER.name,
+                                                                  versionIdentifier,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,

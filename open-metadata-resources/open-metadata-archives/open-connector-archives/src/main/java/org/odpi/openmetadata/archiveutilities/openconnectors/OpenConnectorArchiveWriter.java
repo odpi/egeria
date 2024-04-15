@@ -223,6 +223,113 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         }
 
         /*
+         * Add the valid metadata values used in the resourceUse property of the ResourceList relationship.
+         */
+        String projectPhaseParentSetGUID = this.getParentSet(OpenMetadataType.PROJECT.typeName,
+                                                              OpenMetadataProperty.PROJECT_PHASE.name,
+                                                              null);
+
+        for (ProjectStatus projectStatus : ProjectStatus.values())
+        {
+            this.archiveHelper.addValidValue(null,
+                                             projectPhaseParentSetGUID,
+                                             projectPhaseParentSetGUID,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             projectStatus.getQualifiedName(),
+                                             projectStatus.getName(),
+                                             projectStatus.getDescription(),
+                                             projectStatus.getCategory(),
+                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                             projectStatus.getName(),
+                                             false,
+                                             false,
+                                             null);
+        }
+
+
+        /*
+         * Add the valid metadata values used in the resourceUse property of the ResourceList relationship.
+         */
+        String projectHealthParentSetGUID = this.getParentSet(OpenMetadataType.PROJECT.typeName,
+                                                              OpenMetadataProperty.PROJECT_HEALTH.name,
+                                                              null);
+
+        for (ProjectHealth projectHealth : ProjectHealth.values())
+        {
+            this.archiveHelper.addValidValue(null,
+                                             projectHealthParentSetGUID,
+                                             projectHealthParentSetGUID,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             projectHealth.getQualifiedName(),
+                                             projectHealth.getName(),
+                                             projectHealth.getDescription(),
+                                             projectHealth.getCategory(),
+                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                             projectHealth.getName(),
+                                             false,
+                                             false,
+                                             null);
+        }
+
+
+        /*
+         * Add the valid metadata values used in the resourceUse property of the ResourceList relationship.
+         */
+        String projectStatusParentSetGUID = this.getParentSet(OpenMetadataType.PROJECT.typeName,
+                                                              OpenMetadataType.PROJECT_STATUS_PROPERTY_NAME,
+                                                              null);
+
+        for (ProjectStatus projectStatus : ProjectStatus.values())
+        {
+            this.archiveHelper.addValidValue(null,
+                                             projectStatusParentSetGUID,
+                                             projectStatusParentSetGUID,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             projectStatus.getQualifiedName(),
+                                             projectStatus.getName(),
+                                             projectStatus.getDescription(),
+                                             projectStatus.getCategory(),
+                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                             projectStatus.getName(),
+                                             false,
+                                             false,
+                                             null);
+        }
+
+
+        /*
+         * Add the valid metadata values used in the resourceUse property of the ResourceList relationship.
+         */
+        String collectionTypeParentSetGUID = this.getParentSet(OpenMetadataType.COLLECTION.typeName,
+                                                               OpenMetadataProperty.COLLECTION_TYPE.name,
+                                                               null);
+
+        for (CollectionType collectionType : CollectionType.values())
+        {
+            this.archiveHelper.addValidValue(null,
+                                             collectionTypeParentSetGUID,
+                                             collectionTypeParentSetGUID,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             collectionType.getQualifiedName(),
+                                             collectionType.getName(),
+                                             collectionType.getDescription(),
+                                             collectionType.getCategory(),
+                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                             collectionType.getName(),
+                                             false,
+                                             false,
+                                             null);
+        }
+
+        /*
          * Add valid metadata values for open metadata types that have been reformatted.
          * The GUIDs are saved in a look-up map
          * to make it easy to link other elements to these valid values later.
@@ -736,7 +843,9 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                deployedImplementationType.getDeployedImplementationType());
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
-                                                                    null, "V1.0", null, methodName));
+                                                                    "Create a SoftwareServer with an associated SoftwareCapability and Connection.",
+                                                                    "V1.0",
+                                                                    null, methodName));
 
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,

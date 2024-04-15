@@ -5,11 +5,7 @@ package org.odpi.openmetadata.frameworkservices.gaf.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionTypeProperties;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
@@ -491,7 +487,7 @@ public class OpenGovernanceResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/governance-action-processes/{processGUID}/graph")
+    @PostMapping(path = "/governance-action-processes/{processGUID}/graph")
     @Operation(summary="getGovernanceActionProcessGraph",
             description="Retrieve the governance action process metadata element with the supplied " +
                     "unique identifier along with the flow definition describing its implementation.",
@@ -501,9 +497,11 @@ public class OpenGovernanceResource
     public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(@PathVariable String serverName,
                                                                                 @PathVariable String serviceURLMarker,
                                                                                 @PathVariable String userId,
-                                                                                @PathVariable String processGUID)
+                                                                                @PathVariable String processGUID,
+                                                                                @RequestBody(required = false)
+                                                                                              EffectiveTimeRequestBody requestBody)
     {
-        return restAPI.getGovernanceActionProcessGraph(serverName, serviceURLMarker, userId, processGUID);
+        return restAPI.getGovernanceActionProcessGraph(serverName, serviceURLMarker, userId, processGUID, requestBody);
     }
 
 

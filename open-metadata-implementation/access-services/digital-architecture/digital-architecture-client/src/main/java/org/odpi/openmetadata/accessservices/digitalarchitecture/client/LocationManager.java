@@ -28,15 +28,17 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
      *
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param maxPageSize           maximum number of results supported by this server
      * @param auditLog              logging destination
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
-    public LocationManager(String serverName,
-                           String serverPlatformURLRoot,
+    public LocationManager(String   serverName,
+                           String   serverPlatformURLRoot,
+                           int      maxPageSize,
                            AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, maxPageSize,auditLog);
     }
 
 
@@ -45,13 +47,15 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
      *
      * @param serverName            name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param maxPageSize           maximum number of results supported by this server
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
     public LocationManager(String serverName,
-                           String serverPlatformURLRoot) throws InvalidParameterException
+                           String serverPlatformURLRoot,
+                           int    maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot, maxPageSize);
     }
 
 
@@ -64,17 +68,19 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId                caller's userId embedded in all HTTP requests
      * @param password              caller's userId embedded in all HTTP requests
+     * @param maxPageSize           maximum number of results supported by this server
      * @param auditLog              logging destination
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
-    public LocationManager(String serverName,
-                           String serverPlatformURLRoot,
-                           String userId,
-                           String password,
+    public LocationManager(String   serverName,
+                           String   serverPlatformURLRoot,
+                           String   userId,
+                           String   password,
+                           int      maxPageSize,
                            AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, maxPageSize, auditLog);
     }
 
 
@@ -86,15 +92,17 @@ public class LocationManager extends DigitalArchitectureClientBase implements Ma
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId                caller's userId embedded in all HTTP requests
      * @param password              caller's userId embedded in all HTTP requests
+     * @param maxPageSize           maximum number of results supported by this server
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
     public LocationManager(String serverName,
                            String serverPlatformURLRoot,
                            String userId,
-                           String password) throws InvalidParameterException
+                           String password,
+                           int    maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password, maxPageSize);
     }
 
 

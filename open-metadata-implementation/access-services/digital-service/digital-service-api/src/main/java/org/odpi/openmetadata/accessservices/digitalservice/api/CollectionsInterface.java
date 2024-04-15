@@ -75,6 +75,7 @@ public interface CollectionsInterface
      * @param searchString string to search for
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return a list of collections
      *
@@ -85,9 +86,10 @@ public interface CollectionsInterface
     List<CollectionElement> findCollections(String userId,
                                             String searchString,
                                             int    startFrom,
-                                            int    pageSize) throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException;
+                                            int    pageSize,
+                                            Date   effectiveTime) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException;
 
 
     /**
@@ -97,6 +99,7 @@ public interface CollectionsInterface
      * @param name       name of the collections to return - match is full text match in qualifiedName or name
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return
+     * @param effectiveTime          only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return a list of collections
      *
@@ -107,9 +110,10 @@ public interface CollectionsInterface
     List<CollectionElement> getCollectionsByName(String userId,
                                                  String name,
                                                  int    startFrom,
-                                                 int    pageSize) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException;
+                                                 int    pageSize,
+                                                 Date   effectiveTime) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException;
 
 
     /**

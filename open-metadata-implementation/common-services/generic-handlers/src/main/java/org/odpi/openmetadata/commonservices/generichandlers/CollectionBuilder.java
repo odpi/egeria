@@ -81,8 +81,8 @@ public class CollectionBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               null,
-              OpenMetadataType.COLLECTION_TYPE_GUID,
-              OpenMetadataType.COLLECTION_TYPE_NAME,
+              OpenMetadataType.COLLECTION.typeGUID,
+              OpenMetadataType.COLLECTION.typeName,
               null,
               repositoryHelper,
               serviceName,
@@ -104,8 +104,8 @@ public class CollectionBuilder extends ReferenceableBuilder
                       String               serviceName,
                       String               serverName)
     {
-        super(OpenMetadataType.COLLECTION_TYPE_GUID,
-              OpenMetadataType.COLLECTION_TYPE_NAME,
+        super(OpenMetadataType.COLLECTION.typeGUID,
+              OpenMetadataType.COLLECTION.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -167,7 +167,7 @@ public class CollectionBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.FOLDER_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.FOLDER.typeName);
         }
     }
 
@@ -192,7 +192,7 @@ public class CollectionBuilder extends ReferenceableBuilder
                                                                                   null,
                                                                                   InstanceProvenanceType.LOCAL_COHORT,
                                                                                   userId,
-                                                                                  OpenMetadataType.FOLDER_TYPE_NAME,
+                                                                                  OpenMetadataType.FOLDER.typeName,
                                                                                   typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
@@ -201,7 +201,7 @@ public class CollectionBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.FOLDER_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.FOLDER.typeName);
         }
     }
 

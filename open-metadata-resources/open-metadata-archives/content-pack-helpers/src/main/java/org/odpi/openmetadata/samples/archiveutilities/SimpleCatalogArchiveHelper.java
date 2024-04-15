@@ -1649,27 +1649,33 @@ public class SimpleCatalogArchiveHelper
      * @param description description
      * @param startDate date the project started
      * @param plannedEndDate date the project is expected to end
+     * @param projectPhase lifecycle phase of the project
+     * @param projectHealth health of the project's execution
      * @param projectStatus status of the project
      * @param setCampaignClassification should the Campaign classification be set?
      * @param setTaskClassification should the Task classification be set?
      * @param projectTypeClassification add special classification that defines the type of project - eg GlossaryProject or GovernanceProject
+     * @param otherClassifications any other classifications, such as Template
      * @param additionalProperties are there any additional properties to add
      * @param extendedProperties any additional properties associated with a subtype
      * @return unique identifier of the new profile
      */
-    public  String addProject(String              suppliedTypeName,
-                              String              qualifiedName,
-                              String              identifier,
-                              String              name,
-                              String              description,
-                              Date                startDate,
-                              Date                plannedEndDate,
-                              String              projectStatus,
-                              boolean             setCampaignClassification,
-                              boolean             setTaskClassification,
-                              String              projectTypeClassification,
-                              Map<String, String> additionalProperties,
-                              Map<String, Object> extendedProperties)
+    public  String addProject(String               suppliedTypeName,
+                              String               qualifiedName,
+                              String               identifier,
+                              String               name,
+                              String               description,
+                              Date                 startDate,
+                              Date                 plannedEndDate,
+                              String               projectPhase,
+                              String               projectHealth,
+                              String               projectStatus,
+                              boolean              setCampaignClassification,
+                              boolean              setTaskClassification,
+                              String               projectTypeClassification,
+                              List<Classification> otherClassifications,
+                              Map<String, String>  additionalProperties,
+                              Map<String, Object>  extendedProperties)
     {
         final String methodName = "addProject";
 
@@ -1677,7 +1683,7 @@ public class SimpleCatalogArchiveHelper
 
         if (typeName == null)
         {
-            typeName = OpenMetadataType.PROJECT_TYPE_NAME;
+            typeName = OpenMetadataType.PROJECT.typeName;
         }
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
@@ -1685,22 +1691,33 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAME.name, name, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, OpenMetadataProperty.START_DATE.name, startDate, methodName);
-        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, OpenMetadataType.PLANNED_END_DATE_PROPERTY_NAME, plannedEndDate, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.PROJECT_STATUS_PROPERTY_NAME, projectStatus, methodName);
+        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PLANNED_END_DATE.name, plannedEndDate, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PROJECT_PHASE.name, projectPhase, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PROJECT_HEALTH.name, projectHealth, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PROJECT_STATUS.name, projectStatus, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 
-        List<Classification> classifications = new ArrayList<>();
+        List<Classification> classifications;
+
+        if (otherClassifications != null)
+        {
+            classifications = otherClassifications;
+        }
+        else
+        {
+            classifications = new ArrayList<>();
+        }
 
         if (setCampaignClassification)
         {
-            Classification classification = archiveHelper.getClassification(OpenMetadataType.CAMPAIGN_CLASSIFICATION_TYPE_NAME, null, InstanceStatus.ACTIVE);
+            Classification classification = archiveHelper.getClassification(OpenMetadataType.CAMPAIGN_CLASSIFICATION.typeName, null, InstanceStatus.ACTIVE);
 
             classifications.add(classification);
         }
         if (setTaskClassification)
         {
-            Classification classification = archiveHelper.getClassification(OpenMetadataType.TASK_CLASSIFICATION_TYPE_NAME, null, InstanceStatus.ACTIVE);
+            Classification classification = archiveHelper.getClassification(OpenMetadataType.TASK_CLASSIFICATION.typeName, null, InstanceStatus.ACTIVE);
 
             classifications.add(classification);
         }
@@ -1743,7 +1760,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_project_hierarchy_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
@@ -1797,7 +1814,7 @@ public class SimpleCatalogArchiveHelper
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.DEPENDENCY_SUMMARY_PROPERTY_NAME, dependencySummary, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_project_dependency_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
@@ -1828,7 +1845,7 @@ public class SimpleCatalogArchiveHelper
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataType.TEAM_ROLE_PROPERTY_NAME, teamRole, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.PROJECT_TEAM_RELATIONSHIP_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_project_team_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
@@ -1852,7 +1869,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP_TYPE_NAME,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_project_management_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
@@ -1943,7 +1960,7 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Create a governance definition entity.
+     * Create a collection entity.
      *
      * @param suppliedTypeName type of collection
      * @param classificationName name of classification to attach
@@ -1963,24 +1980,70 @@ public class SimpleCatalogArchiveHelper
                                 Map<String, String>  additionalProperties,
                                 Map<String, Object>  extendedProperties)
     {
+
+        return addCollection(suppliedTypeName,
+                             null,
+                             OpenMetadataType.COLLECTION.typeName,
+                             classificationName,
+                             qualifiedName,
+                             displayName,
+                             description,
+                             additionalProperties,
+                             extendedProperties);
+    }
+
+
+    /**
+     * Create a collection entity.
+     *
+     * @param suppliedTypeName type of collection
+     * @param anchorGUID unique identifier of the anchor for the collection - if null then own anchor
+     * @param anchorTypeName unique type name of the anchor for the collection - no anchor is added if null
+     * @param classificationName name of classification to attach
+     * @param qualifiedName unique name for the collection entity
+     * @param displayName display name for the collection
+     * @param description description about the collection
+     * @param additionalProperties any other properties
+     * @param extendedProperties additional properties defined in the subtype
+     *
+     * @return unique identifier for subject area (collectionGUID)
+     */
+    public String addCollection(String               suppliedTypeName,
+                                String               anchorGUID,
+                                String               anchorTypeName,
+                                String               classificationName,
+                                String               qualifiedName,
+                                String               displayName,
+                                String               description,
+                                Map<String, String>  additionalProperties,
+                                Map<String, Object>  extendedProperties)
+    {
         final String methodName = "addCollection";
 
-        String typeName = OpenMetadataType.COLLECTION_TYPE_NAME;
+        String typeName = OpenMetadataType.COLLECTION.typeName;
 
         if (suppliedTypeName != null)
         {
             typeName = suppliedTypeName;
         }
 
-        List<Classification> classifications = null;
+        List<Classification> classifications = new ArrayList<>();
 
         if (classificationName != null)
         {
-            classifications = new ArrayList<>();
-
             Classification classification = archiveHelper.getClassification(classificationName, null, InstanceStatus.ACTIVE);
 
             classifications.add(classification);
+        }
+
+        if (anchorTypeName != null)
+        {
+            classifications.add(this.getAnchorClassification(anchorGUID, anchorTypeName, methodName));
+        }
+
+        if (classifications.isEmpty())
+        {
+            classifications = null;
         }
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
@@ -4235,7 +4298,7 @@ public class SimpleCatalogArchiveHelper
 
         List<Classification> classifications = new ArrayList<>();
 
-        classifications.add(this.getAnchorClassification(connectorTypeDirectoryGUID, OpenMetadataType.COLLECTION_TYPE_NAME, methodName));
+        classifications.add(this.getAnchorClassification(connectorTypeDirectoryGUID, OpenMetadataType.COLLECTION.typeName, methodName));
 
         EntityDetail connectorCategoryEntity = archiveHelper.getEntityDetail(OpenMetadataType.CONNECTOR_CATEGORY_TYPE_NAME,
                                                                              idToGUIDMap.getGUID(qualifiedName),
@@ -4294,10 +4357,10 @@ public class SimpleCatalogArchiveHelper
 
         classifications.add(classification);
         classifications.add(getAnchorClassification(guid,
-                                                    OpenMetadataType.COLLECTION_TYPE_NAME,
+                                                    OpenMetadataType.COLLECTION.typeName,
                                                     methodName));
 
-        EntityDetail connectorTypeDirectoryEntity = archiveHelper.getEntityDetail(OpenMetadataType.COLLECTION_TYPE_NAME,
+        EntityDetail connectorTypeDirectoryEntity = archiveHelper.getEntityDetail(OpenMetadataType.COLLECTION.typeName,
                                                                                   guid,
                                                                                   properties,
                                                                                   InstanceStatus.ACTIVE,

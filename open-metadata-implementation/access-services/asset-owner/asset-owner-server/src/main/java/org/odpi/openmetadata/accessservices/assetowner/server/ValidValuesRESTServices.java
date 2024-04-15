@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValuesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -549,7 +550,7 @@ public class ValidValuesRESTServices
      *
      * @param serverName name of calling server
      * @param userId calling user
-     * @param searchString string value to look for - may contain RegEx characters.
+     * @param requestBody string value to look for - may contain RegEx characters.
      * @param startFrom paging starting point
      * @param pageSize maximum number of return values.
      *
@@ -558,11 +559,11 @@ public class ValidValuesRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
-    public ValidValuesResponse findValidValues(String   serverName,
-                                               String   userId,
-                                               String   searchString,
-                                               int      startFrom,
-                                               int      pageSize)
+    public ValidValuesResponse findValidValues(String            serverName,
+                                               String            userId,
+                                               int               startFrom,
+                                               int               pageSize,
+                                               FilterRequestBody requestBody)
     {
         final String searchStringParameterName = "searchString";
         final String methodName                = "findValidValues";
@@ -576,19 +577,19 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (searchString != null)
+            if (requestBody != null)
             {
                 ValidValuesHandler<ValidValueElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
                 response.setElementList(handler.findValidValues(userId,
-                                                                searchString,
+                                                                requestBody.getFilter(),
                                                                 searchStringParameterName,
                                                                 startFrom,
                                                                 pageSize,
                                                                 false,
                                                                 false,
                                                                 instanceHandler.getSupportedZones(userId, serverName, methodName),
-                                                                new Date(),
+                                                                requestBody.getEffectiveTime(),
                                                                 methodName));
             }
         }

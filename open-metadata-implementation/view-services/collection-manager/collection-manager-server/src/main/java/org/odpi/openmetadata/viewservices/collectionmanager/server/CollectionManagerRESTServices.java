@@ -8,10 +8,7 @@ import org.odpi.openmetadata.accessservices.digitalservice.properties.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.tokencontroller.TokenController;
@@ -63,7 +60,7 @@ public class CollectionManagerRESTServices extends TokenController
                                                        String            parentGUID,
                                                        int               startFrom,
                                                        int               pageSize,
-                                                       StringRequestBody requestBody)
+                                                       FilterRequestBody requestBody)
     {
         final String methodName = "getLinkedCollections";
 
@@ -82,7 +79,14 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
 
-            response.setElements(handler.getLinkedCollections(userId, parentGUID, requestBody.getString(), startFrom, pageSize));
+            if (requestBody != null)
+            {
+                response.setElements(handler.getLinkedCollections(userId, parentGUID, requestBody.getFilter(), startFrom, pageSize));
+            }
+            else
+            {
+                response.setElements(handler.getLinkedCollections(userId, parentGUID, null, startFrom, pageSize));
+            }
         }
         catch (Exception error)
         {
@@ -110,7 +114,7 @@ public class CollectionManagerRESTServices extends TokenController
     public CollectionListResponse getClassifiedCollections(String            serverName,
                                                            int               startFrom,
                                                            int               pageSize,
-                                                           StringRequestBody requestBody)
+                                                           FilterRequestBody requestBody)
     {
         final String methodName = "getClassifiedCollections";
 
@@ -129,7 +133,14 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
 
-            response.setElements(handler.getClassifiedCollections(userId, requestBody.getString(), startFrom, pageSize));
+            if (requestBody != null)
+            {
+                response.setElements(handler.getClassifiedCollections(userId, requestBody.getFilter(), startFrom, pageSize));
+            }
+            else
+            {
+                response.setElements(handler.getClassifiedCollections(userId, null, startFrom, pageSize));
+            }
         }
         catch (Exception error)
         {
@@ -163,7 +174,7 @@ public class CollectionManagerRESTServices extends TokenController
                                                   boolean           ignoreCase,
                                                   int               startFrom,
                                                   int               pageSize,
-                                                  StringRequestBody requestBody)
+                                                  FilterRequestBody requestBody)
     {
         final String methodName = "findCollections";
 
@@ -182,10 +193,23 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
 
-            response.setElements(handler.findCollections(userId,
-                                                         instanceHandler.getSearchString(requestBody.getString(), startsWith, endsWith, ignoreCase),
-                                                         startFrom,
-                                                         pageSize));
+            if (requestBody != null)
+            {
+                response.setElements(handler.findCollections(userId,
+                                                             instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                             startFrom,
+                                                             pageSize,
+                                                             requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                response.setElements(handler.findCollections(userId,
+                                                             instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                             startFrom,
+                                                             pageSize,
+                                                             null));
+            }
+
         }
         catch (Exception error)
         {
@@ -213,7 +237,7 @@ public class CollectionManagerRESTServices extends TokenController
     public CollectionListResponse getCollectionsByName(String            serverName,
                                                        int               startFrom,
                                                        int               pageSize,
-                                                       StringRequestBody requestBody)
+                                                       FilterRequestBody requestBody)
     {
         final String methodName = "getCollectionsByName";
 
@@ -233,9 +257,10 @@ public class CollectionManagerRESTServices extends TokenController
             CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
 
             response.setElements(handler.getCollectionsByName(userId,
-                                                              requestBody.getString(),
+                                                              requestBody.getFilter(),
                                                               startFrom,
-                                                              pageSize));
+                                                              pageSize,
+                                                              requestBody.getEffectiveTime()));
         }
         catch (Exception error)
         {
@@ -263,7 +288,7 @@ public class CollectionManagerRESTServices extends TokenController
     public CollectionListResponse getCollectionsByType(String            serverName,
                                                        int               startFrom,
                                                        int               pageSize,
-                                                       StringRequestBody requestBody)
+                                                       FilterRequestBody requestBody)
     {
         final String methodName = "getCollectionsByType";
 
@@ -282,10 +307,20 @@ public class CollectionManagerRESTServices extends TokenController
 
             CollectionsClient handler = instanceHandler.getCollectionsClient(userId, serverName, methodName);
 
-            response.setElements(handler.getCollectionsByType(userId,
-                                                              requestBody.getString(),
-                                                              startFrom,
-                                                              pageSize));
+            if (requestBody != null)
+            {
+                response.setElements(handler.getCollectionsByType(userId,
+                                                                  requestBody.getFilter(),
+                                                                  startFrom,
+                                                                  pageSize));
+            }
+            else
+            {
+                response.setElements(handler.getCollectionsByType(userId,
+                                                                  null,
+                                                                  startFrom,
+                                                                  pageSize));
+            }
         }
         catch (Exception error)
         {
@@ -555,7 +590,7 @@ public class CollectionManagerRESTServices extends TokenController
                 response.setGUID(handler.createCollection(userId,
                                                           requestBody.getAnchorGUID(),
                                                           requestBody.getIsOwnAnchor(),
-                                                          OpenMetadataType.FOLDER_TYPE_NAME,
+                                                          OpenMetadataType.FOLDER.typeName,
                                                           requestBody.getCollectionProperties(),
                                                           requestBody.getParentGUID(),
                                                           requestBody.getParentRelationshipTypeName(),
