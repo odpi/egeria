@@ -5,10 +5,7 @@ package org.odpi.openmetadata.viewservices.governanceauthor.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessStepProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionTypeProperties;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
@@ -154,7 +151,7 @@ public class GovernanceAuthorResource
                                                                                  boolean                 endsWith,
                                                                    @RequestParam (required = false, defaultValue = "false")
                                                                                  boolean                 ignoreCase,
-                                                                   @RequestBody  StringRequestBody requestBody)
+                                                                   @RequestBody  FilterRequestBody requestBody)
     {
         return restAPI.findGovernanceActionTypes(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
     }
@@ -180,10 +177,10 @@ public class GovernanceAuthorResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/governance-action-type"))
 
-    public GovernanceActionTypesResponse getGovernanceActionTypesByName(@PathVariable String          serverName,
-                                                                        @RequestParam int             startFrom,
-                                                                        @RequestParam int             pageSize,
-                                                                        @RequestBody StringRequestBody requestBody)
+    public GovernanceActionTypesResponse getGovernanceActionTypesByName(@PathVariable String            serverName,
+                                                                        @RequestParam int               startFrom,
+                                                                        @RequestParam int               pageSize,
+                                                                        @RequestBody  FilterRequestBody requestBody)
     {
         return restAPI.getGovernanceActionTypesByName(serverName, startFrom, pageSize, requestBody);
     }
@@ -381,7 +378,7 @@ public class GovernanceAuthorResource
                                                                                                boolean                 endsWith,
                                                                                  @RequestParam (required = false, defaultValue = "false")
                                                                                                boolean                 ignoreCase,
-                                                                                 @RequestBody  StringRequestBody       requestBody)
+                                                                                 @RequestBody  FilterRequestBody       requestBody)
     {
         return restAPI.findGovernanceActionProcesses(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
     }
@@ -408,10 +405,10 @@ public class GovernanceAuthorResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/governance-action-process"))
 
-    public GovernanceActionProcessElementsResponse getGovernanceActionProcessesByName(@PathVariable String          serverName,
-                                                                                      @RequestParam int             startFrom,
-                                                                                      @RequestParam int             pageSize,
-                                                                                      @RequestBody  StringRequestBody requestBody)
+    public GovernanceActionProcessElementsResponse getGovernanceActionProcessesByName(@PathVariable String            serverName,
+                                                                                      @RequestParam int               startFrom,
+                                                                                      @RequestParam int               pageSize,
+                                                                                      @RequestBody  FilterRequestBody requestBody)
     {
         return restAPI.getGovernanceActionProcessesByName(serverName, startFrom, pageSize, requestBody);
     }
@@ -453,17 +450,19 @@ public class GovernanceAuthorResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @GetMapping(path = "/governance-action-processes/{processGUID}/graph")
+    @PostMapping(path = "/governance-action-processes/{processGUID}/graph")
     @Operation(summary="getGovernanceActionProcessGraph",
             description="Retrieve the governance action process metadata element with the supplied " +
                     "unique identifier along with the flow definition describing its implementation.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/governance-action-process"))
 
-    public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(@PathVariable String serverName,
-                                                                                @PathVariable String processGUID)
+    public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(@PathVariable String                   serverName,
+                                                                                @PathVariable String                   processGUID,
+                                                                                @RequestBody(required = false)
+                                                                                              EffectiveTimeRequestBody requestBody)
     {
-        return restAPI.getGovernanceActionProcessGraph(serverName, processGUID);
+        return restAPI.getGovernanceActionProcessGraph(serverName, processGUID, requestBody);
     }
 
 
@@ -578,7 +577,7 @@ public class GovernanceAuthorResource
                                                                                                boolean                 endsWith,
                                                                                  @RequestParam (required = false, defaultValue = "false")
                                                                                                boolean                 ignoreCase,
-                                                                                 @RequestBody  StringRequestBody       requestBody)
+                                                                                 @RequestBody  FilterRequestBody       requestBody)
     {
         return restAPI.findGovernanceActionProcessSteps(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
     }
@@ -604,10 +603,10 @@ public class GovernanceAuthorResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/governance-action-process"))
 
-    public GovernanceActionProcessStepsResponse getGovernanceActionProcessStepsByName(@PathVariable String          serverName,
-                                                                                      @RequestParam int             startFrom,
-                                                                                      @RequestParam int             pageSize,
-                                                                                      @RequestBody  StringRequestBody requestBody)
+    public GovernanceActionProcessStepsResponse getGovernanceActionProcessStepsByName(@PathVariable String            serverName,
+                                                                                      @RequestParam int               startFrom,
+                                                                                      @RequestParam int               pageSize,
+                                                                                      @RequestBody  FilterRequestBody requestBody)
     {
         return restAPI.getGovernanceActionProcessStepsByName(serverName, startFrom, pageSize, requestBody);
     }
@@ -660,7 +659,7 @@ public class GovernanceAuthorResource
     public VoidResponse setupFirstActionProcessStep(@PathVariable                   String            serverName,
                                                     @PathVariable                   String            processGUID,
                                                     @PathVariable                   String            processStepGUID,
-                                                    @RequestBody (required = false) StringRequestBody requestBody)
+                                                    @RequestBody (required = false) FilterRequestBody requestBody)
     {
         return restAPI.setupFirstActionProcessStep(serverName, processGUID, processStepGUID, requestBody);
     }

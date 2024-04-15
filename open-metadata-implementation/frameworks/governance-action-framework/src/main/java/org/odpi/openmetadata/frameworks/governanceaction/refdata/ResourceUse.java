@@ -43,7 +43,6 @@ public enum ResourceUse
     INFORM_STEWARD("Inform Steward",
                      "Send notification to a steward."),
 
-
     /**
      * Choose the appropriate path to take.
      */
@@ -94,6 +93,16 @@ public enum ResourceUse
      * A connector type that can be used in a connection used to create a connector instance.
      */
     CONFIGURE_CONNECTOR("Configure Connector", "A connector type that can be used in a connection used to create a connector instance."),
+
+    /**
+     * A collection of guided activities either suggested, or taken, to complete a project.
+     */
+    ACTIVITY_FOLDER("Activity Folder", "A collection of guided activities either suggested, or taken, to complete a project."),
+
+    /**
+     * A template to create a member of the collection.
+     */
+    MEMBER_TEMPLATE("Member Template", "A template to create a member of the collection."),
 
     ;
 

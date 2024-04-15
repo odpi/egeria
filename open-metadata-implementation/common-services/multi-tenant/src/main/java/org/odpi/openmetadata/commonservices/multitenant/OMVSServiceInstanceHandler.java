@@ -61,6 +61,21 @@ public class OMVSServiceInstanceHandler extends AuditableServerServiceInstanceHa
      * @param insensitive set to true to have a case-insensitive "starts with" regular expression
      * @return string that is interpreted literally, wrapped for a "starts with" semantic
      */
+    public String getMiddleRegex(String searchString, boolean insensitive)
+    {
+        return searchString == null ? null : setInsensitive(".*" + getExactMatchRegex(searchString, false) + ".*", insensitive);
+    }
+
+    /**
+     * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
+     * to search for the string with a "starts with" semantic. The passed string will NOT be treated as a regular expression;
+     * if you intend to use both a "starts with" semantic and a regular expression within the string, simply construct your
+     * own regular expression directly (not with this helper method).
+     *
+     * @param searchString the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "starts with" semantic
+     * @param insensitive set to true to have a case-insensitive "starts with" regular expression
+     * @return string that is interpreted literally, wrapped for a "starts with" semantic
+     */
     public String getStartsWithRegex(String searchString, boolean insensitive)
     {
         return searchString == null ? null : setInsensitive(getExactMatchRegex(searchString, false) + ".*", insensitive);
@@ -101,7 +116,8 @@ public class OMVSServiceInstanceHandler extends AuditableServerServiceInstanceHa
 
 
     /**
-     * Construct a regular expression from the string supplied by the caller.  If their string includes regular expression characters then
+     * Construct a regular expression from the string supplied by the caller.
+     * If their string includes regular expression characters then
      * they will be ignored.
      *
      * @param requestedSearch the supplied string
@@ -112,16 +128,13 @@ public class OMVSServiceInstanceHandler extends AuditableServerServiceInstanceHa
      */
     public String getSearchString(String requestedSearch, boolean startsWith, boolean endsWith, boolean ignoreCase)
     {
-        if ((requestedSearch == null) || (requestedSearch.trim().isEmpty()))
+        if (requestedSearch == null)
         {
             // ignore the flags for an empty search criteria string - assume we want everything
             requestedSearch = ".*";
         }
         else
         {
-            // lose any leading and trailing blanks
-            requestedSearch = requestedSearch.trim();
-
             if (startsWith && endsWith)
             {
                 requestedSearch = this.getExactMatchRegex(requestedSearch, ignoreCase);
@@ -136,11 +149,10 @@ public class OMVSServiceInstanceHandler extends AuditableServerServiceInstanceHa
             }
             else
             {
-                requestedSearch = this.getStartsWithRegex(this.getEndsWithRegex(requestedSearch, false), ignoreCase);
+                requestedSearch = this.getMiddleRegex(requestedSearch, ignoreCase);
             }
         }
 
         return requestedSearch;
     }
-
 }

@@ -22,8 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MetadataSourceProperties extends ReferenceableProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String displayName     = null;
     private String description     = null;
     private String typeDescription = null;

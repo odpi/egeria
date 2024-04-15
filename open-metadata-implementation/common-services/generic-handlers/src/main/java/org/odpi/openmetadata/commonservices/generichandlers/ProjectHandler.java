@@ -87,6 +87,8 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
      * @param description description
      * @param startDate date the project started
      * @param plannedEndDate date the project is expected to end
+     * @param projectPhase lifecycle phase of project
+     * @param projectHealth how well is the project tracking to plan
      * @param projectStatus status of the project
      * @param additionalProperties additional properties for a project
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
@@ -113,6 +115,8 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                 String              description,
                                 Date                startDate,
                                 Date                plannedEndDate,
+                                String              projectPhase,
+                                String              projectHealth,
                                 String              projectStatus,
                                 Map<String, String> additionalProperties,
                                 String              suppliedTypeName,
@@ -130,7 +134,7 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataType.PROJECT_TYPE_NAME;
+        String typeName = OpenMetadataType.PROJECT.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -138,7 +142,7 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.PROJECT_TYPE_NAME,
+                                                                   OpenMetadataType.PROJECT.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -149,6 +153,8 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                                     description,
                                                     startDate,
                                                     plannedEndDate,
+                                                    projectPhase,
+                                                    projectHealth,
                                                     projectStatus,
                                                     additionalProperties,
                                                     typeGUID,
@@ -186,74 +192,6 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Create a new metadata element to represent a project using an existing metadata element as a template.
-     * The template defines additional classifications and relationships that should be added to the new project.
-     *
-     * All categories and terms are linked to a single project.  They are owned by this project and if the
-     * project is deleted, any linked terms and categories are deleted as well.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of the software capability that owns this project
-     * @param externalSourceName unique name of the software capability that owns this project
-     * @param templateGUID unique identifier of the metadata element to copy
-     * @param qualifiedName unique name for the project - used in other configuration
-     * @param identifier unique identifier of project - typically allocated externally
-     * @param displayName short display name for the project
-     * @param description description of the governance project
-     * @param methodName calling method
-     *
-     * @return unique identifier of the new metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public String createProjectFromTemplate(String userId,
-                                            String externalSourceGUID,
-                                            String externalSourceName,
-                                            String templateGUID,
-                                            String qualifiedName,
-                                            String identifier,
-                                            String displayName,
-                                            String description,
-                                            String methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
-    {
-        final String templateGUIDParameterName   = "templateGUID";
-        final String qualifiedNameParameterName  = "qualifiedName";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
-
-        ProjectBuilder builder = new ProjectBuilder(qualifiedName,
-                                                    identifier,
-                                                    displayName,
-                                                    description,
-                                                    repositoryHelper,
-                                                    serviceName,
-                                                    serverName);
-
-        return this.createBeanFromTemplate(userId,
-                                           externalSourceGUID,
-                                           externalSourceName,
-                                           templateGUID,
-                                           templateGUIDParameterName,
-                                           OpenMetadataType.PROJECT_TYPE_GUID,
-                                           OpenMetadataType.PROJECT_TYPE_NAME,
-                                           qualifiedName,
-                                           OpenMetadataProperty.QUALIFIED_NAME.name,
-                                           builder,
-                                           supportedZones,
-                                           true,
-                                           false,
-                                           null,
-                                           methodName);
-    }
-
-
-    /**
      * Update the anchor object that all elements in a project (terms and categories) are linked to.
      *
      * @param userId calling user
@@ -267,6 +205,8 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
      * @param description description
      * @param startDate date the project started
      * @param plannedEndDate date the project is expected to end
+     * @param projectPhase lifecycle phase of project
+     * @param projectHealth how well is the project tracking to plan
      * @param projectStatus status of the project
      * @param additionalProperties additional properties for a governance project
      * @param suppliedTypeName type of project
@@ -294,6 +234,8 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                 String              description,
                                 Date                startDate,
                                 Date                plannedEndDate,
+                                String              projectPhase,
+                                String              projectHealth,
                                 String              projectStatus,
                                 Map<String, String> additionalProperties,
                                 String              suppliedTypeName,
@@ -312,7 +254,7 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateGUID(projectGUID, projectGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataType.PROJECT_TYPE_NAME;
+        String typeName = OpenMetadataType.PROJECT.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -320,7 +262,7 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.PROJECT_TYPE_NAME,
+                                                                   OpenMetadataType.PROJECT.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -331,6 +273,8 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                                     description,
                                                     startDate,
                                                     plannedEndDate,
+                                                    projectPhase,
+                                                    projectHealth,
                                                     projectStatus,
                                                     additionalProperties,
                                                     typeGUID,
@@ -409,15 +353,15 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   projectGUID,
                                   projectGUIDParameterName,
-                                  OpenMetadataType.PROJECT_TYPE_NAME,
+                                  OpenMetadataType.PROJECT.typeName,
                                   actorProfileGUID,
                                   actorProfileGUIDParameterName,
-                                  OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
+                                  OpenMetadataType.ACTOR_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.PROJECT_TEAM_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataType.PROJECT_TEAM_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
                                   properties,
                                   effectiveFrom,
                                   effectiveTo,
@@ -465,15 +409,15 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       projectGUID,
                                       projectGUIDParameterName,
-                                      OpenMetadataType.PROJECT_TYPE_NAME,
+                                      OpenMetadataType.PROJECT.typeName,
                                       actorProfileGUID,
                                       actorProfileGUIDParameterName,
-                                      OpenMetadataType.ACTOR_PROFILE_TYPE_GUID,
-                                      OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
+                                      OpenMetadataType.ACTOR_TYPE_GUID,
+                                      OpenMetadataType.ACTOR_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataType.PROJECT_TEAM_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataType.PROJECT_TEAM_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }
@@ -522,15 +466,15 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   projectGUID,
                                   projectGUIDParameterName,
-                                  OpenMetadataType.PROJECT_TYPE_NAME,
+                                  OpenMetadataType.PROJECT.typeName,
                                   subprojectGUID,
                                   subprojectGUIDParameterName,
-                                  OpenMetadataType.PROJECT_TYPE_NAME,
+                                  OpenMetadataType.PROJECT.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
                                   null,
                                   effectiveFrom,
                                   effectiveTo,
@@ -578,15 +522,15 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       projectGUID,
                                       projectGUIDParameterName,
-                                      OpenMetadataType.PROJECT_TYPE_NAME,
+                                      OpenMetadataType.PROJECT.typeName,
                                       subprojectProfileGUID,
                                       subprojectGUIDParameterName,
-                                      OpenMetadataType.PROJECT_TYPE_GUID,
-                                      OpenMetadataType.PROJECT_TYPE_NAME,
+                                      OpenMetadataType.PROJECT.typeGUID,
+                                      OpenMetadataType.PROJECT.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }
@@ -642,15 +586,15 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   projectGUID,
                                   projectGUIDParameterName,
-                                  OpenMetadataType.PROJECT_TYPE_NAME,
+                                  OpenMetadataType.PROJECT.typeName,
                                   dependsOnProjectGUID,
                                   dependsOnProjectGUIDParameterName,
-                                  OpenMetadataType.PROJECT_TYPE_NAME,
+                                  OpenMetadataType.PROJECT.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
                                   properties,
                                   effectiveFrom,
                                   effectiveTo,
@@ -698,15 +642,15 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       projectGUID,
                                       projectGUIDParameterName,
-                                      OpenMetadataType.PROJECT_TYPE_NAME,
+                                      OpenMetadataType.PROJECT.typeName,
                                       dependsOnProjectGUID,
                                       dependsOnProjectGUIDParameterName,
-                                      OpenMetadataType.PROJECT_TYPE_GUID,
-                                      OpenMetadataType.PROJECT_TYPE_NAME,
+                                      OpenMetadataType.PROJECT.typeGUID,
+                                      OpenMetadataType.PROJECT.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }
@@ -754,15 +698,15 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   projectGUID,
                                   projectGUIDParameterName,
-                                  OpenMetadataType.PROJECT_TYPE_NAME,
+                                  OpenMetadataType.PROJECT.typeName,
                                   personRoleGUID,
                                   personRoleGUIDParameterName,
                                   OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP_TYPE_GUID,
-                                  OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP_TYPE_NAME,
+                                  OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeGUID,
+                                  OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName,
                                   null,
                                   effectiveFrom,
                                   effectiveTo,
@@ -810,15 +754,15 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       projectGUID,
                                       projectGUIDParameterName,
-                                      OpenMetadataType.PROJECT_TYPE_NAME,
+                                      OpenMetadataType.PROJECT.typeName,
                                       personRoleGUID,
                                       personRoleGUIDParameterName,
                                       OpenMetadataType.PERSON_ROLE_TYPE_GUID,
                                       OpenMetadataType.PERSON_ROLE_TYPE_NAME,
                                       forLineage,
                                       forDuplicateProcessing,
-                                      OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP_TYPE_GUID,
-                                      OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP_TYPE_NAME,
+                                      OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeGUID,
+                                      OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName,
                                       effectiveTime,
                                       methodName);
     }
@@ -859,8 +803,8 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     projectGUID,
                                     projectGUIDParameterName,
-                                    OpenMetadataType.PROJECT_TYPE_GUID,
-                                    OpenMetadataType.PROJECT_TYPE_NAME,
+                                    OpenMetadataType.PROJECT.typeGUID,
+                                    OpenMetadataType.PROJECT.typeName,
                                     null,
                                     null,
                                     forLineage,
@@ -905,8 +849,8 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
-                              OpenMetadataType.PROJECT_TYPE_GUID,
-                              OpenMetadataType.PROJECT_TYPE_NAME,
+                              OpenMetadataType.PROJECT.typeGUID,
+                              OpenMetadataType.PROJECT.typeName,
                               null,
                               startFrom,
                               pageSize,
@@ -958,8 +902,8 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
         return this.getBeansByValue(userId,
                                     name,
                                     nameParameterName,
-                                    OpenMetadataType.PROJECT_TYPE_GUID,
-                                    OpenMetadataType.PROJECT_TYPE_NAME,
+                                    OpenMetadataType.PROJECT.typeGUID,
+                                    OpenMetadataType.PROJECT.typeName,
                                     specificMatchPropertyNames,
                                     true,
                                     null,
@@ -1005,8 +949,8 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                                             PropertyServerException
     {
         return this.getBeansByType(userId,
-                                   OpenMetadataType.PROJECT_TYPE_GUID,
-                                   OpenMetadataType.PROJECT_TYPE_NAME,
+                                   OpenMetadataType.PROJECT.typeGUID,
+                                   OpenMetadataType.PROJECT.typeName,
                                    null,
                                    forLineage,
                                    forDuplicateProcessing,
@@ -1052,10 +996,10 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         profileGUID,
                                         profileGUIDParameterName,
-                                        OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
-                                        OpenMetadataType.PROJECT_TEAM_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataType.PROJECT_TEAM_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataType.PROJECT_TYPE_NAME,
+                                        OpenMetadataType.ACTOR_TYPE_NAME,
+                                        OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
+                                        OpenMetadataType.PROJECT.typeName,
                                         null,
                                         null,
                                         1,
@@ -1087,16 +1031,16 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException    problem accessing the property server
      */
     public List<B>  getRoleProjects(String              userId,
-                                     String              personRoleGUID,
-                                     String              personRoleGUIDParameterName,
-                                     int                 startingFrom,
-                                     int                 pageSize,
-                                     boolean             forLineage,
-                                     boolean             forDuplicateProcessing,
-                                     Date                effectiveTime,
-                                     String              methodName) throws InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException
+                                    String              personRoleGUID,
+                                    String              personRoleGUIDParameterName,
+                                    int                 startingFrom,
+                                    int                 pageSize,
+                                    boolean             forLineage,
+                                    boolean             forDuplicateProcessing,
+                                    Date                effectiveTime,
+                                    String              methodName) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
     {
         return this.getAttachedElements(userId,
                                         null,
@@ -1104,9 +1048,9 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                         personRoleGUID,
                                         personRoleGUIDParameterName,
                                         OpenMetadataType.PERSON_ROLE_TYPE_NAME,
-                                        OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataType.PROJECT_TYPE_NAME,
+                                        OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName,
+                                        OpenMetadataType.PROJECT.typeName,
                                         null,
                                         null,
                                         1,
@@ -1154,10 +1098,10 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         projectGUID,
                                         projectGUIDParameterName,
-                                        OpenMetadataType.PERSON_ROLE_TYPE_NAME,
-                                        OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataType.PROJECT_TYPE_NAME,
+                                        OpenMetadataType.PROJECT.typeName,
+                                        OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
+                                        OpenMetadataType.PROJECT.typeName,
                                         null,
                                         null,
                                         1,
@@ -1205,10 +1149,10 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         projectGUID,
                                         projectGUIDParameterName,
-                                        OpenMetadataType.PERSON_ROLE_TYPE_NAME,
-                                        OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataType.PROJECT_TYPE_NAME,
+                                        OpenMetadataType.PROJECT.typeName,
+                                        OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
+                                        OpenMetadataType.PROJECT.typeName,
                                         null,
                                         null,
                                         2,
@@ -1256,10 +1200,10 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         projectGUID,
                                         projectGUIDParameterName,
-                                        OpenMetadataType.PROJECT_TYPE_NAME,
-                                        OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataType.PROJECT_TYPE_NAME,
+                                        OpenMetadataType.PROJECT.typeName,
+                                        OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
+                                        OpenMetadataType.PROJECT.typeName,
                                         null,
                                         null,
                                         1,
@@ -1291,14 +1235,14 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException    problem accessing the property server
      */
     public List<B>  getSubProjects(String              userId,
-                                     String              projectGUID,
-                                     String              projectGUIDParameterName,
-                                     int                 startingFrom,
-                                     int                 pageSize,
-                                     boolean             forLineage,
-                                     boolean             forDuplicateProcessing,
-                                     Date                effectiveTime,
-                                     String              methodName) throws InvalidParameterException,
+                                   String              projectGUID,
+                                   String              projectGUIDParameterName,
+                                   int                 startingFrom,
+                                   int                 pageSize,
+                                   boolean             forLineage,
+                                   boolean             forDuplicateProcessing,
+                                   Date                effectiveTime,
+                                   String              methodName) throws InvalidParameterException,
                                                                             PropertyServerException,
                                                                             UserNotAuthorizedException
     {
@@ -1307,10 +1251,10 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                         null,
                                         projectGUID,
                                         projectGUIDParameterName,
-                                        OpenMetadataType.PROJECT_TYPE_NAME,
-                                        OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataType.PROJECT_TYPE_NAME,
+                                        OpenMetadataType.PROJECT.typeName,
+                                        OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
+                                        OpenMetadataType.PROJECT.typeName,
                                         null,
                                         null,
                                         2,
@@ -1354,7 +1298,7 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
         return this.getBeanFromRepository(userId,
                                           guid,
                                           guidParameterName,
-                                          OpenMetadataType.PROJECT_TYPE_NAME,
+                                          OpenMetadataType.PROJECT.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
                                           supportedZones,

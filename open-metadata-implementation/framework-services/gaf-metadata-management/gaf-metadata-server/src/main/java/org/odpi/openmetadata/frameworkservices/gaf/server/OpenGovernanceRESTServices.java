@@ -1026,10 +1026,11 @@ public class OpenGovernanceRESTServices
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(String serverName,
-                                                                                String serviceURLMarker,
-                                                                                String userId,
-                                                                                String processGUID)
+    public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(String                   serverName,
+                                                                                String                   serviceURLMarker,
+                                                                                String                   userId,
+                                                                                String                   processGUID,
+                                                                                EffectiveTimeRequestBody requestBody)
     {
         final String methodName = "getGovernanceActionProcessGraph";
         final String processGUIDParameterName = "processGUID";
@@ -1050,15 +1051,30 @@ public class OpenGovernanceRESTServices
 
             GovernanceActionProcessGraph governanceActionProcessGraph = new GovernanceActionProcessGraph();
 
-            governanceActionProcessGraph.setGovernanceActionProcess(processHandler.getBeanFromRepository(userId,
-                                                                                                         processGUID,
-                                                                                                         processGUIDParameterName,
-                                                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
-                                                                                                         false,
-                                                                                                         false,
-                                                                                                         instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
-                                                                                                         new Date(),
-                                                                                                         methodName));
+            if (requestBody != null)
+            {
+                governanceActionProcessGraph.setGovernanceActionProcess(processHandler.getBeanFromRepository(userId,
+                                                                                                             processGUID,
+                                                                                                             processGUIDParameterName,
+                                                                                                             OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                                                             false,
+                                                                                                             false,
+                                                                                                             instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                                             requestBody.getEffectiveTime(),
+                                                                                                             methodName));
+            }
+            else
+            {
+                governanceActionProcessGraph.setGovernanceActionProcess(processHandler.getBeanFromRepository(userId,
+                                                                                                             processGUID,
+                                                                                                             processGUIDParameterName,
+                                                                                                             OpenMetadataType.GOVERNANCE_ACTION_PROCESS_TYPE_NAME,
+                                                                                                             false,
+                                                                                                             false,
+                                                                                                             instanceHandler.getSupportedZones(userId, serverName, serviceURLMarker, methodName),
+                                                                                                             new Date(),
+                                                                                                             methodName));
+            }
 
 
             governanceActionProcessGraph.setFirstProcessStep(this.getFirstProcessStepElement(serverName,

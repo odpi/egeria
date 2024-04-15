@@ -5188,7 +5188,7 @@ public class OpenMetadataTypesArchive1_2
         final String attribute1Name            = "orderBy";
         final String attribute1Description     = "Definition for how elements in the collection should be ordered.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "otherPropertyName";
+        final String attribute2Name            = "orderPropertyName";
         final String attribute2Description     = "Name of property to use for ordering.";
         final String attribute2DescriptionGUID = null;
 
@@ -5254,10 +5254,11 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getProjectEntity()
     {
-        final String guid            = "0799569f-0c16-4a1f-86d9-e2e89568f7fd";
-        final String name            = "Project";
-        final String description     = "An organized activity, typically to achieve a well defined goal.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.PROJECT.typeGUID;
+        final String name            = OpenMetadataType.PROJECT.typeName;
+        final String description     = OpenMetadataType.PROJECT.description;
+        final String descriptionGUID = OpenMetadataType.PROJECT.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.PROJECT.wikiURL;
 
         final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
 
@@ -5265,7 +5266,8 @@ public class OpenMetadataTypesArchive1_2
                                                                 name,
                                                                 this.archiveBuilder.getEntityDef(superTypeName),
                                                                 description,
-                                                                descriptionGUID);
+                                                                descriptionGUID,
+                                                                descriptionWiki);
 
         /*
          * Build the attributes
@@ -5318,10 +5320,11 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getProjectManagerEntity()
     {
-        final String guid            = "0798569f-0c16-4a1f-86d9-e2e89568f7fd";
-        final String name            = "ProjectManager";
-        final String description     = "An person with overall responsibility for one or more project.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.PROJECT_MANAGER.typeGUID;
+        final String name            = OpenMetadataType.PROJECT_MANAGER.typeName;
+        final String description     = OpenMetadataType.PROJECT_MANAGER.description;
+        final String descriptionGUID = OpenMetadataType.PROJECT_MANAGER.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.PROJECT_MANAGER.wikiURL;
 
         final String superTypeName = "PersonRole";
 
@@ -5329,16 +5332,18 @@ public class OpenMetadataTypesArchive1_2
                                                  name,
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
-                                                 descriptionGUID);
+                                                 descriptionGUID,
+                                                 descriptionWiki);
     }
 
 
     private RelationshipDef getProjectHierarchyRelationship()
     {
-        final String guid            = "8f1134f6-b9fe-4971-bc57-6e1b8b302b55";
-        final String name            = "ProjectHierarchy";
-        final String description     = "A nesting relationship between projects.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeGUID;
+        final String name            = OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName;
+        final String description     = OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.description;
+        final String descriptionGUID = OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.wikiURL;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
@@ -5347,6 +5352,7 @@ public class OpenMetadataTypesArchive1_2
                                                                                 null,
                                                                                 description,
                                                                                 descriptionGUID,
+                                                                                descriptionWiki,
                                                                                 classificationPropagationRule);
 
         RelationshipEndDef relationshipEndDef;
@@ -5354,7 +5360,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Project";
+        final String                     end1EntityType               = OpenMetadataType.PROJECT.typeName;
         final String                     end1AttributeName            = "managingProject";
         final String                     end1AttributeDescription     = "Project that oversees this project.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -5371,7 +5377,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Project";
+        final String                     end2EntityType               = OpenMetadataType.PROJECT.typeName;
         final String                     end2AttributeName            = "managedProject";
         final String                     end2AttributeDescription     = "Project that this project is responsible for managing.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -5390,10 +5396,11 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getProjectDependencyRelationship()
     {
-        final String guid            = "5b6a56f1-68e2-4e10-85f0-fda47a4263fd";
-        final String name            = "ProjectDependency";
-        final String description     = "A dependency relationship between projects.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeGUID;
+        final String name            = OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName;
+        final String description     = OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.description;
+        final String descriptionGUID = OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.wikiURL;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
@@ -5402,6 +5409,7 @@ public class OpenMetadataTypesArchive1_2
                                                                                 null,
                                                                                 description,
                                                                                 descriptionGUID,
+                                                                                descriptionWiki,
                                                                                 classificationPropagationRule);
 
         RelationshipEndDef relationshipEndDef;
@@ -5409,7 +5417,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Project";
+        final String                     end1EntityType               = OpenMetadataType.PROJECT.typeName;
         final String                     end1AttributeName            = "dependentProject";
         final String                     end1AttributeDescription     = "Projects that are dependent on this project.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -5426,7 +5434,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Project";
+        final String                     end2EntityType               = OpenMetadataType.PROJECT.typeName;
         final String                     end2AttributeName            = "dependsOnProjects";
         final String                     end2AttributeDescription     = "Projects that are delivering resources or outcomes needed by this project.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -5462,10 +5470,11 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getProjectTeamRelationship()
     {
-        final String guid            = "746875af-2e41-4d1f-864b-35265df1d5dc";
-        final String name            = "ProjectTeam";
-        final String description     = "The team assigned to a project.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeGUID;
+        final String name            = OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName;
+        final String description     = OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.description;
+        final String descriptionGUID = OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.wikiURL;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
@@ -5474,6 +5483,7 @@ public class OpenMetadataTypesArchive1_2
                                                                                 null,
                                                                                 description,
                                                                                 descriptionGUID,
+                                                                                descriptionWiki,
                                                                                 classificationPropagationRule);
 
         RelationshipEndDef relationshipEndDef;
@@ -5481,7 +5491,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Project";
+        final String                     end1EntityType               = OpenMetadataType.PROJECT.typeName;
         final String                     end1AttributeName            = "projectFocus";
         final String                     end1AttributeDescription     = "Projects that a team is working on.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -5553,7 +5563,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Project";
+        final String                     end1EntityType               = OpenMetadataType.PROJECT.typeName;
         final String                     end1AttributeName            = "impactingProjects";
         final String                     end1AttributeDescription     = "The projects that are making changes to these elements.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -5611,18 +5621,20 @@ public class OpenMetadataTypesArchive1_2
      */
     private ClassificationDef getTaskClassification()
     {
-        final String guid            = "2312b668-3670-4845-a140-ef88d5a6db0c";
-        final String name            = "Task";
-        final String description     = "A self-contained, short activity, typically for one or two people.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.TASK_CLASSIFICATION.typeGUID;
+        final String name            = OpenMetadataType.TASK_CLASSIFICATION.typeName;
+        final String description     = OpenMetadataType.TASK_CLASSIFICATION.description;
+        final String descriptionGUID = OpenMetadataType.TASK_CLASSIFICATION.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.TASK_CLASSIFICATION.wikiURL;
 
-        final String linkedToEntity = "Project";
+        final String linkedToEntity = OpenMetadataType.PROJECT.typeName;
 
         return archiveHelper.getClassificationDef(guid,
                                                   name,
                                                   null,
                                                   description,
                                                   descriptionGUID,
+                                                  descriptionWiki,
                                                   this.archiveBuilder.getEntityDef(linkedToEntity),
                                                   false);
     }
@@ -5630,10 +5642,11 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getProjectManagementRelationship()
     {
-        final String guid            = "ac63ac45-a4d0-4fba-b583-92859de77dd8";
-        final String name            = "ProjectManagement";
-        final String description     = "The link between a project and its project manager role.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeGUID;
+        final String name            = OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName;
+        final String description     = OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.description;
+        final String descriptionGUID = OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.wikiURL;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
@@ -5642,6 +5655,7 @@ public class OpenMetadataTypesArchive1_2
                                                                                 null,
                                                                                 description,
                                                                                 descriptionGUID,
+                                                                                descriptionWiki,
                                                                                 classificationPropagationRule);
 
         RelationshipEndDef relationshipEndDef;
@@ -5649,7 +5663,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Project";
+        final String                     end1EntityType               = OpenMetadataType.PROJECT.typeName;
         final String                     end1AttributeName            = "projectsManaged";
         final String                     end1AttributeDescription     = "The projects that are being managed by this project manager.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -5666,7 +5680,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "ProjectManager";
+        final String                     end2EntityType               = OpenMetadataType.PROJECT_MANAGER.typeName;
         final String                     end2AttributeName            = "projectManagers";
         final String                     end2AttributeDescription     = "The roles for managing this project.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -5684,18 +5698,20 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getCampaignClassification()
     {
-        final String guid            = "41437629-8609-49ef-8930-8c435c912572";
-        final String name            = "Campaign";
-        final String description     = "A long-term strategic initiative that is implemented through multiple related projects.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.CAMPAIGN_CLASSIFICATION.typeGUID;
+        final String name            = OpenMetadataType.CAMPAIGN_CLASSIFICATION.typeName;
+        final String description     = OpenMetadataType.CAMPAIGN_CLASSIFICATION.description;
+        final String descriptionGUID = OpenMetadataType.CAMPAIGN_CLASSIFICATION.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.CAMPAIGN_CLASSIFICATION.wikiURL;
 
-        final String linkedToEntity = "Collection";
+        final String linkedToEntity = OpenMetadataType.COLLECTION.typeName;
 
         return archiveHelper.getClassificationDef(guid,
                                                   name,
                                                   null,
                                                   description,
                                                   descriptionGUID,
+                                                  descriptionWiki,
                                                   this.archiveBuilder.getEntityDef(linkedToEntity),
                                                   false);
     }

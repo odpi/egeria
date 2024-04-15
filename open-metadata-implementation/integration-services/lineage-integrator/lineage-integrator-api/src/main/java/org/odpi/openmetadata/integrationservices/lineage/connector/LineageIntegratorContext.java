@@ -3322,7 +3322,7 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
                                                                                                       UserNotAuthorizedException,
                                                                                                       PropertyServerException
     {
-        return openGovernanceClient.findGovernanceActionProcesses(userId, searchString, startFrom, pageSize);
+        return openGovernanceClient.findGovernanceActionProcesses(userId, searchString, startFrom, pageSize, new Date());
     }
 
 
@@ -3346,7 +3346,7 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
                                                                                                            UserNotAuthorizedException,
                                                                                                            PropertyServerException
     {
-        return openGovernanceClient.getGovernanceActionProcessesByName(userId, name, startFrom, pageSize);
+        return openGovernanceClient.getGovernanceActionProcessesByName(userId, name, startFrom, pageSize, new Date());
     }
 
 
@@ -3394,7 +3394,7 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
                                                                                                              UserNotAuthorizedException,
                                                                                                              PropertyServerException
     {
-        return openGovernanceClient.findGovernanceActionProcessSteps(userId, searchString, startFrom, pageSize);
+        return openGovernanceClient.findGovernanceActionProcessSteps(userId, searchString, startFrom, pageSize, new Date());
     }
 
 
@@ -3418,7 +3418,7 @@ public class LineageIntegratorContext extends IntegrationContext implements Open
                                                                                                                   UserNotAuthorizedException,
                                                                                                                   PropertyServerException
     {
-        return openGovernanceClient.getGovernanceActionProcessStepsByName(userId, name, startFrom, pageSize);
+        return openGovernanceClient.getGovernanceActionProcessStepsByName(userId, name, startFrom, pageSize, new Date());
     }
 
 

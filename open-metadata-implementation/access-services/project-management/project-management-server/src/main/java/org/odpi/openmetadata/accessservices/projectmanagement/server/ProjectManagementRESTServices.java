@@ -20,7 +20,6 @@ import org.odpi.openmetadata.accessservices.projectmanagement.rest.ProjectRespon
 import org.odpi.openmetadata.accessservices.projectmanagement.rest.ReferenceableRequestBody;
 import org.odpi.openmetadata.accessservices.projectmanagement.rest.RelatedElementListResponse;
 import org.odpi.openmetadata.accessservices.projectmanagement.rest.RelationshipRequestBody;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.TemplateRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -95,10 +94,8 @@ public class ProjectManagementRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ProjectProperties)
+                if (requestBody.getProperties() instanceof ProjectProperties properties)
                 {
-                    ProjectProperties properties = (ProjectProperties)requestBody.getProperties();
-
                     String projectGUID = handler.createProject(userId,
                                                                requestBody.getExternalSourceGUID(),
                                                                requestBody.getExternalSourceName(),
@@ -108,6 +105,8 @@ public class ProjectManagementRESTServices
                                                                properties.getDescription(),
                                                                properties.getStartDate(),
                                                                properties.getPlannedEndDate(),
+                                                               properties.getPhase(),
+                                                               properties.getHealth(),
                                                                properties.getStatus(),
                                                                properties.getAdditionalProperties(),
                                                                properties.getTypeName(),
@@ -137,69 +136,6 @@ public class ProjectManagementRESTServices
                 {
                     restExceptionHandler.handleInvalidPropertiesObject(ProjectProperties.class.getName(), methodName);
                 }
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Create a new metadata element to represent a project using an existing metadata element as a template.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param userId calling user
-     * @param templateGUID unique identifier of the metadata element to copy
-     * @param requestBody properties that override the template
-     *
-     * @return unique identifier of the new metadata element or
-     * InvalidParameterException  one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GUIDResponse createProjectFromTemplate(String              serverName,
-                                                  String              userId,
-                                                  String              templateGUID,
-                                                  TemplateRequestBody requestBody)
-    {
-        final String methodName = "createProjectFromTemplate";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ProjectHandler<ProjectElement> handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                String projectGUID;
-
-                projectGUID = handler.createProjectFromTemplate(userId,
-                                                                requestBody.getExternalSourceGUID(),
-                                                                requestBody.getExternalSourceName(),
-                                                                templateGUID,
-                                                                requestBody.getQualifiedName(),
-                                                                requestBody.getIdentifier(),
-                                                                requestBody.getDisplayName(),
-                                                                requestBody.getDescription(),
-                                                                methodName);
-
-                response.setGUID(projectGUID);
             }
             else
             {
@@ -253,10 +189,8 @@ public class ProjectManagementRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ProjectProperties)
+                if (requestBody.getProperties() instanceof ProjectProperties properties)
                 {
-                    ProjectProperties properties = (ProjectProperties) requestBody.getProperties();
-
                     handler.updateProject(userId,
                                           requestBody.getExternalSourceGUID(),
                                           requestBody.getExternalSourceName(),
@@ -268,6 +202,8 @@ public class ProjectManagementRESTServices
                                           properties.getDescription(),
                                           properties.getStartDate(),
                                           properties.getPlannedEndDate(),
+                                          properties.getPhase(),
+                                          properties.getHealth(),
                                           properties.getStatus(),
                                           properties.getAdditionalProperties(),
                                           properties.getTypeName(),
@@ -349,10 +285,8 @@ public class ProjectManagementRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ProjectTeamProperties)
+                if (requestBody.getProperties() instanceof ProjectTeamProperties properties)
                 {
-                    ProjectTeamProperties properties = (ProjectTeamProperties) requestBody.getProperties();
-
                     handler.addActorToProject(userId,
                                              requestBody.getExternalSourceGUID(),
                                              requestBody.getExternalSourceName(),
@@ -824,7 +758,6 @@ public class ProjectManagementRESTServices
      * @param pageSize   maximum number of elements to return.
      *
      * @return list of matching person roles
-     *
      *   InvalidParameterException name or userId is null
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
@@ -881,7 +814,6 @@ public class ProjectManagementRESTServices
      * @param pageSize   maximum number of elements to return.
      *
      * @return list of matching person roles
-     *
      *   InvalidParameterException name or userId is null
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
@@ -1419,10 +1351,8 @@ public class ProjectManagementRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof StakeholderProperties)
+                if (requestBody.getProperties() instanceof StakeholderProperties properties)
                 {
-                    StakeholderProperties properties = (StakeholderProperties) requestBody.getProperties();
-
                     handler.addStakeholder(userId,
                                            requestBody.getExternalSourceGUID(),
                                            requestBody.getExternalSourceName(),
@@ -1702,10 +1632,8 @@ public class ProjectManagementRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof AssignmentScopeProperties)
+                if (requestBody.getProperties() instanceof AssignmentScopeProperties properties)
                 {
-                    AssignmentScopeProperties properties = (AssignmentScopeProperties) requestBody.getProperties();
-
                     handler.addAssignmentScope(userId,
                                                requestBody.getExternalSourceGUID(),
                                                requestBody.getExternalSourceName(),

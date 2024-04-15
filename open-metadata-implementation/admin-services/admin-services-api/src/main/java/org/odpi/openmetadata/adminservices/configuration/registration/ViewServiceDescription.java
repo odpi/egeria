@@ -166,6 +166,54 @@ public enum ViewServiceDescription
                       "https://egeria-project.org/services/omvs/governance-author/overview/",
                       AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS.getAccessServiceFullName()),
 
+    /**
+     * Set up and manage projects.
+     */
+    PROJECT_MANAGER  (813,
+                         ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                         "Project Manager",
+                         "Project Manager OMVS",
+                         "project-manager",
+                         "Set up and manage projects.",
+                         "https://egeria-project.org/services/omvs/project-manager/overview/",
+                         AccessServiceDescription.PROJECT_MANAGEMENT_OMAS.getAccessServiceFullName()),
+
+
+    /**
+     * Define and search for new data resources.
+     */
+    DATA_DISCOVERY  (814,
+                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                      "Data Discovery",
+                      "Data Discovery OMVS",
+                      "data-discovery",
+                      "Define and search for new data resources.",
+                      "https://egeria-project.org/services/omvs/data-discovery/overview/",
+                      AccessServiceDescription.ASSET_CONSUMER_OMAS.getAccessServiceFullName()),
+
+    /**
+     * Retrieve and refine the templates for use during cataloguing.
+     */
+    TEMPLATE_MANAGER  (815,
+                     ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                     "Template Manager",
+                     "Template Manager OMVS",
+                     "template-manager",
+                     "Retrieve and refine the templates for use during cataloguing.",
+                     "https://egeria-project.org/services/omvs/template-manager/overview/",
+                     AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceFullName()),
+
+    /**
+     * Work with code tables and associated reference data.
+     */
+    REFERENCE_DATA  (816,
+                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                       "Reference Data",
+                       "Reference Data OMVS",
+                       "reference-data",
+                       "Work with code tables and associated reference data.",
+                       "https://egeria-project.org/services/omvs/reference-data/overview/",
+                       AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceFullName()),
     ;
 
 

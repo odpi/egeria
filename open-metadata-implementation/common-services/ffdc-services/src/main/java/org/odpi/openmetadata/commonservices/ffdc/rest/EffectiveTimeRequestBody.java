@@ -58,7 +58,7 @@ public class EffectiveTimeRequestBody
 
 
     /**
-     * Set up  the date/time to use for the query.
+     * Set up the date/time to use for the query.
      *
      * @param effectiveTime date object
      */

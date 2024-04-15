@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -210,6 +211,7 @@ public interface AssetOnboardingValidValues
      * @param validValueName qualified name of the valid value.
      * @param startFrom         starting element (used in paging through large result sets)
      * @param pageSize          maximum number of results to return
+     * @param effectiveTime the effective date/time to use for the query
      *
      * @return Valid value beans
      *
@@ -220,9 +222,10 @@ public interface AssetOnboardingValidValues
     List<ValidValueElement>   getValidValueByName(String   userId,
                                                   String   validValueName,
                                                   int      startFrom,
-                                                  int      pageSize) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException;
+                                                  int      pageSize,
+                                                  Date     effectiveTime) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException;
 
 
     /**
@@ -233,6 +236,7 @@ public interface AssetOnboardingValidValues
      * @param searchString string value to look for - may contain RegEx characters.
      * @param startFrom paging starting point
      * @param pageSize maximum number of return values.
+     * @param effectiveTime the effective date/time to use for the query
      *
      * @return list of valid value beans
      *
@@ -243,9 +247,10 @@ public interface AssetOnboardingValidValues
     List<ValidValueElement> findValidValues(String   userId,
                                             String   searchString,
                                             int      startFrom,
-                                            int      pageSize) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException;
+                                            int      pageSize,
+                                            Date     effectiveTime) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException;
 
     /**
      * Page through the members of a valid value set.

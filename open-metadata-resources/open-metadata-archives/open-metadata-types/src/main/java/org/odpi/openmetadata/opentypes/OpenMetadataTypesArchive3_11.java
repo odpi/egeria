@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
@@ -708,7 +709,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Create the Patch
          */
-        final String typeName = "Project";
+        final String typeName = OpenMetadataType.PROJECT.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -721,15 +722,15 @@ public class OpenMetadataTypesArchive3_11
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "projectStatus";
-        final String attribute1Description     = "Short description on current status of the project.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.PROJECT_STATUS.name;
+        final String attribute1Description     = OpenMetadataProperty.PROJECT_STATUS.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.PROJECT_STATUS.descriptionGUID;
         final String attribute2Name            = "status";
         final String attribute2Description     = "(Deprecated) Short description on current status of the project.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "identifier";
-        final String attribute3Description     = "Code value or symbol used to identify the project - typically unique.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute3Name            = OpenMetadataProperty.IDENTIFIER.name;
+        final String attribute3Description     = OpenMetadataProperty.IDENTIFIER.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.IDENTIFIER.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,

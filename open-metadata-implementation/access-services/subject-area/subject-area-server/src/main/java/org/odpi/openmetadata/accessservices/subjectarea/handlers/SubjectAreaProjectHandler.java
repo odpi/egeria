@@ -105,10 +105,12 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                                                             suppliedProject.getDescription(),
                                                             suppliedProject.getStartDate(),
                                                             suppliedProject.getPlannedEndDate(),
+                                                            null,
+                                                            null,
                                                             suppliedProject.getStatus(),
                                                             null,
-                                                            OpenMetadataType.PROJECT_TYPE_GUID,
-                                                            OpenMetadataType.PROJECT_TYPE_NAME,
+                                                            OpenMetadataType.PROJECT.typeGUID,
+                                                            OpenMetadataType.PROJECT.typeName,
                                                             null,
                                                             genericHandler.getRepositoryHelper(),
                                                             genericHandler.getServiceName(),
@@ -119,8 +121,8 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                 String entityDetailGuid = genericHandler.createBeanInRepository(userId,
                                                                                 null,
                                                                                 null,
-                                                                                OpenMetadataType.PROJECT_TYPE_GUID,
-                                                                                OpenMetadataType.PROJECT_TYPE_NAME,
+                                                                                OpenMetadataType.PROJECT.typeGUID,
+                                                                                OpenMetadataType.PROJECT.typeName,
                                                                                 builder,
                                                                                 null,
                                                                                 methodName);
@@ -156,7 +158,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
             EntityDetail entityDetail = genericHandler.getEntityFromRepository(userId,
                                                                                guid,
                                                                                "guid",
-                                                                               OpenMetadataType.PROJECT_TYPE_NAME,
+                                                                               OpenMetadataType.PROJECT.typeName,
                                                                                null,
                                                                                null,
                                                                                false,
@@ -196,7 +198,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
-            List<Project> foundProjects = findNodes(userId, OpenMetadataType.PROJECT_TYPE_NAME, OpenMetadataType.PROJECT_TYPE_GUID, findRequest, exactValue, ignoreCase, ProjectMapper.class, methodName);
+            List<Project> foundProjects = findNodes(userId, OpenMetadataType.PROJECT.typeName, OpenMetadataType.PROJECT.typeGUID, findRequest, exactValue, ignoreCase, ProjectMapper.class, methodName);
             if (foundProjects != null) {
                 response.addAllResults(foundProjects);
             } else {
@@ -226,7 +228,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
 
     public SubjectAreaOMASAPIResponse<Relationship> getProjectRelationships(String userId, String guid, FindRequest findRequest) {
         String methodName = "getProjectRelationships";
-        return getAllRelationshipsForEntity(methodName, userId, guid, findRequest, OpenMetadataType.PROJECT_TYPE_NAME );
+        return getAllRelationshipsForEntity(methodName, userId, guid, findRequest, OpenMetadataType.PROJECT.typeName );
     }
 
     /**
@@ -273,8 +275,8 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                                                           null,
                                                           guid,
                                                           "guid",
-                                                          OpenMetadataType.PROJECT_TYPE_GUID,
-                                                          OpenMetadataType.PROJECT_TYPE_NAME,
+                                                          OpenMetadataType.PROJECT.typeGUID,
+                                                          OpenMetadataType.PROJECT.typeName,
                                                           false,
                                                           false,
                                                           suppliedEntity.getProperties(),
@@ -285,8 +287,8 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                                        suppliedProject,
                                        methodName,
                                        guid,
-                                       OpenMetadataType.PROJECT_TYPE_GUID,
-                                       OpenMetadataType.PROJECT_TYPE_NAME);
+                                       OpenMetadataType.PROJECT.typeGUID,
+                                       OpenMetadataType.PROJECT.typeName);
                 response = getProjectByGuid(userId, guid);
             }
         } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
@@ -327,7 +329,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
         boolean issueDelete = false;        try {
             if (genericHandler.isBeanIsolated(userId,
                                               guid,
-                                              OpenMetadataType.PROJECT_TYPE_NAME,
+                                              OpenMetadataType.PROJECT.typeName,
                                               false,
                                               false,
                                               null,
@@ -346,8 +348,8 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                                                       null,
                                                       guid,
                                                       "guid",
-                                                      OpenMetadataType.PROJECT_TYPE_GUID,    // true for sub types
-                                                      OpenMetadataType.PROJECT_TYPE_NAME,    // true for sub types
+                                                      OpenMetadataType.PROJECT.typeGUID,    // true for sub types
+                                                      OpenMetadataType.PROJECT.typeName,    // true for sub types
                                                       null,
                                                       null,
                                                       false,

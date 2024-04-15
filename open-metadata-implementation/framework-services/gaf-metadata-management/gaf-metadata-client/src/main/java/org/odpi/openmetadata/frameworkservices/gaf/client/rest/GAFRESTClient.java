@@ -1098,13 +1098,18 @@ public class GAFRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public GovernanceActionProcessGraphResponse callGovernanceActionProcessGraphGetRESTCall(String    methodName,
-                                                                                            String    urlTemplate,
-                                                                                            Object... params) throws InvalidParameterException,
-                                                                                                                     UserNotAuthorizedException,
-                                                                                                                     PropertyServerException
+    public GovernanceActionProcessGraphResponse callGovernanceActionProcessGraphPostRESTCall(String    methodName,
+                                                                                             String    urlTemplate,
+                                                                                             Object    requestBody,
+                                                                                             Object... params) throws InvalidParameterException,
+                                                                                                                      UserNotAuthorizedException,
+                                                                                                                      PropertyServerException
     {
-        GovernanceActionProcessGraphResponse restResult = this.callGetRESTCall(methodName, GovernanceActionProcessGraphResponse.class, urlTemplate, params);
+        GovernanceActionProcessGraphResponse restResult = this.callPostRESTCall(methodName,
+                                                                                GovernanceActionProcessGraphResponse.class,
+                                                                                urlTemplate,
+                                                                                requestBody,
+                                                                                params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 

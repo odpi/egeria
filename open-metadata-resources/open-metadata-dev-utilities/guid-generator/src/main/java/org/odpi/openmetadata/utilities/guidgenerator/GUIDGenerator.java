@@ -20,7 +20,7 @@ public class GUIDGenerator
     public static void main(String[] args)
     {
         System.out.println("==============================================");
-        System.out.println(" GUID Generator: " + new Date());
+        System.out.println(" GUID Generator: " + new Date() + " [" + new Date().getTime() + "L]");
         System.out.println("==============================================");
 
         for (int i=0; i<10 ; i++)

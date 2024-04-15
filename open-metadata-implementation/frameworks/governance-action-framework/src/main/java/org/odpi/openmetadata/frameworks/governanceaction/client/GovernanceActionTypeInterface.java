@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -76,6 +77,7 @@ public interface GovernanceActionTypeInterface
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime effective date/time for query
      *
      * @return list of matching metadata elements
      *
@@ -86,9 +88,10 @@ public interface GovernanceActionTypeInterface
     List<GovernanceActionTypeElement> findGovernanceActionTypes(String userId,
                                                                 String searchString,
                                                                 int    startFrom,
-                                                                int    pageSize) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException;
+                                                                int    pageSize,
+                                                                Date   effectiveTime) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException;
 
 
     /**
@@ -99,6 +102,7 @@ public interface GovernanceActionTypeInterface
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime effective date/time for query
      *
      * @return list of matching metadata elements
      *
@@ -106,12 +110,13 @@ public interface GovernanceActionTypeInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    List<GovernanceActionTypeElement> getGovernanceActionTypesByName(String userId,
-                                                                     String name,
-                                                                     int    startFrom,
-                                                                     int    pageSize) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException;
+    List<GovernanceActionTypeElement> getGovernanceActionTypesByName(String  userId,
+                                                                     String  name,
+                                                                     int     startFrom,
+                                                                     int     pageSize,
+                                                                     Date    effectiveTime) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException;
 
 
     /**

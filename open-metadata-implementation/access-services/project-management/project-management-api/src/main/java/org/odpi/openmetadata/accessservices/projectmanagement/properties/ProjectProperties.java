@@ -20,11 +20,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ProjectProperties extends ReferenceableProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String identifier     = null;
     private String name           = null;
     private String description    = null;
+    private String phase          = null;
+    private String health         = null;
     private String status         = null;
     private Date   startDate      = null;
     private Date   plannedEndDate = null;
@@ -53,6 +53,8 @@ public class ProjectProperties extends ReferenceableProperties
             this.identifier = template.getIdentifier();
             this.name = template.getName();
             this.description = template.getDescription();
+            this.status = template.getPhase();
+            this.status = template.getHealth();
             this.status = template.getStatus();
             this.startDate = template.getStartDate();
             this.plannedEndDate = template.getPlannedEndDate();
@@ -127,11 +129,54 @@ public class ProjectProperties extends ReferenceableProperties
     }
 
 
+    /**
+     * Return the current phase in the project lifecycle.
+     *
+     * @return string
+     */
+    public String getPhase()
+    {
+        return phase;
+    }
+
+
+    /**
+     * Set up the current phase in the project lifecycle.
+     *
+     * @param phase string
+     */
+    public void setPhase(String phase)
+    {
+        this.phase = phase;
+    }
+
+
+    /**
+     * Return the current health of the project.
+     *
+     * @return string
+     */
+    public String getHealth()
+    {
+        return health;
+    }
+
+
+    /**
+     * Set up the current health of the project.
+     *
+     * @param health string
+     */
+    public void setHealth(String health)
+    {
+        this.health = health;
+    }
+
 
     /**
      * Return the status for this project.
      *
-     * @return string id
+     * @return string
      */
     public String getStatus()
     {
@@ -142,7 +187,7 @@ public class ProjectProperties extends ReferenceableProperties
     /**
      * Set up the status for this project.
      *
-     * @param status string id
+     * @param status string
      */
     public void setStatus(String status)
     {
@@ -220,6 +265,8 @@ public class ProjectProperties extends ReferenceableProperties
                        "identifier='" + identifier + '\'' +
                        ", name='" + name + '\'' +
                        ", description='" + description + '\'' +
+                       ", phase='" + phase + '\'' +
+                       ", health='" + health + '\'' +
                        ", status='" + status + '\'' +
                        ", startDate=" + startDate +
                        ", plannedEndDate=" + plannedEndDate +
@@ -259,6 +306,8 @@ public class ProjectProperties extends ReferenceableProperties
         return Objects.equals(identifier, that.identifier) &&
                        Objects.equals(name, that.name) &&
                        Objects.equals(description, that.description) &&
+                       Objects.equals(phase, that.phase) &&
+                       Objects.equals(health, that.health) &&
                        Objects.equals(status, that.status) &&
                        Objects.equals(startDate, that.startDate) &&
                        Objects.equals(plannedEndDate, that.plannedEndDate);
@@ -273,6 +322,6 @@ public class ProjectProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), identifier, name, description, status, startDate, plannedEndDate);
+        return Objects.hash(super.hashCode(), identifier, name, description, phase, health, status, startDate, plannedEndDate);
     }
 }

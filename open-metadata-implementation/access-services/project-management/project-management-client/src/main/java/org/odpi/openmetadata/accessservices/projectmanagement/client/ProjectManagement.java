@@ -3,25 +3,34 @@
 package org.odpi.openmetadata.accessservices.projectmanagement.client;
 
 import org.odpi.openmetadata.accessservices.projectmanagement.api.ProjectsInterface;
+import org.odpi.openmetadata.accessservices.projectmanagement.client.converters.ProjectConverter;
+import org.odpi.openmetadata.accessservices.projectmanagement.client.converters.TeamMemberConverter;
 import org.odpi.openmetadata.accessservices.projectmanagement.client.rest.ProjectManagementRESTClient;
 import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ActorProfileElement;
 import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ProjectElement;
 import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.PersonRoleElement;
+import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ProjectTeamMember;
 import org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectProperties;
 import org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectTeamProperties;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.TemplateProperties;
 import org.odpi.openmetadata.accessservices.projectmanagement.rest.ActorProfileListResponse;
 import org.odpi.openmetadata.accessservices.projectmanagement.rest.ProjectResponse;
 import org.odpi.openmetadata.accessservices.projectmanagement.rest.ProjectListResponse;
 import org.odpi.openmetadata.accessservices.projectmanagement.rest.PersonRoleListResponse;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.governanceaction.search.*;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * ProjectManagerClient supports the APIs to maintain projects and their related objects.
@@ -31,20 +40,36 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
     private static final String projectURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/project-profile/users/{1}/projects";
 
 
+    final private ProjectConverter<ProjectElement>       projectConverter;
+    final private Class<ProjectElement>                  projectBeanClass       = ProjectElement.class;
+    final private TeamMemberConverter<ProjectTeamMember> teamMemberConverter;
+
+    final private Class<ProjectTeamMember> projectMemberBeanClass = ProjectTeamMember.class;
+
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param maxPageSize maximum value allowed for page size
      * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ProjectManagement(String   serverName,
                              String   serverPlatformURLRoot,
+                             int      maxPageSize,
                              AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, maxPageSize, auditLog);
+
+        projectConverter = new ProjectConverter<>(propertyHelper,
+                                                  AccessServiceDescription.PROJECT_MANAGEMENT_OMAS.getAccessServiceName(),
+                                                  serverName);
+
+        teamMemberConverter = new TeamMemberConverter<>(propertyHelper,
+                                                        AccessServiceDescription.PROJECT_MANAGEMENT_OMAS.getAccessServiceName(),
+                                                        serverName);
     }
 
 
@@ -53,13 +78,23 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ProjectManagement(String serverName,
-                             String serverPlatformURLRoot) throws InvalidParameterException
+                             String serverPlatformURLRoot,
+                             int    maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot);
+        super(serverName, serverPlatformURLRoot, maxPageSize);
+
+        projectConverter = new ProjectConverter<>(propertyHelper,
+                                                  AccessServiceDescription.PROJECT_MANAGEMENT_OMAS.getAccessServiceName(),
+                                                  serverName);
+
+        teamMemberConverter = new TeamMemberConverter<>(propertyHelper,
+                                                        AccessServiceDescription.PROJECT_MANAGEMENT_OMAS.getAccessServiceName(),
+                                                        serverName);
     }
 
 
@@ -71,15 +106,25 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
+     * @param maxPageSize maximum value allowed for page size
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public ProjectManagement(String serverName,
                              String serverPlatformURLRoot,
                              String userId,
-                             String password) throws InvalidParameterException
+                             String password,
+                             int    maxPageSize) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password, maxPageSize);
+
+        projectConverter = new ProjectConverter<>(propertyHelper,
+                                                  AccessServiceDescription.PROJECT_MANAGEMENT_OMAS.getAccessServiceName(),
+                                                  serverName);
+
+        teamMemberConverter = new TeamMemberConverter<>(propertyHelper,
+                                                        AccessServiceDescription.PROJECT_MANAGEMENT_OMAS.getAccessServiceName(),
+                                                        serverName);
     }
 
 
@@ -91,6 +136,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST services
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
+     * @param maxPageSize maximum value allowed for page size
      * @param auditLog logging destination
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
@@ -100,9 +146,18 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
                              String   serverPlatformURLRoot,
                              String   userId,
                              String   password,
+                             int      maxPageSize,
                              AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, maxPageSize, auditLog);
+
+        projectConverter = new ProjectConverter<>(propertyHelper,
+                                                  AccessServiceDescription.PROJECT_MANAGEMENT_OMAS.getAccessServiceName(),
+                                                  serverName);
+
+        teamMemberConverter = new TeamMemberConverter<>(propertyHelper,
+                                                        AccessServiceDescription.PROJECT_MANAGEMENT_OMAS.getAccessServiceName(),
+                                                        serverName);
     }
 
 
@@ -122,11 +177,19 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
                              int                         maxPageSize) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, restClient, maxPageSize);
+
+        projectConverter = new ProjectConverter<>(propertyHelper,
+                                                  AccessServiceDescription.PROJECT_MANAGEMENT_OMAS.getAccessServiceName(),
+                                                  serverName);
+
+        teamMemberConverter = new TeamMemberConverter<>(propertyHelper,
+                                                        AccessServiceDescription.PROJECT_MANAGEMENT_OMAS.getAccessServiceName(),
+                                                        serverName);
     }
 
 
     /* =====================================================================================================================
-     * A Project is the top level object for working with connectors
+     * A Project describes a targeted set of activities
      */
 
     /**
@@ -144,9 +207,9 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String createProject(String              userId,
-                                String              externalSourceGUID,
-                                String              externalSourceName,
+    public String createProject(String            userId,
+                                String            externalSourceGUID,
+                                String            externalSourceName,
                                 ProjectProperties projectProperties) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException
@@ -160,33 +223,197 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
 
 
     /**
+     * Create a new generic project.
+     *
+     * @param userId                 userId of user making request.
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
+     * @param optionalClassification classification of the projects - eg Campaign, Task or PersonalProject
+     * @param properties             properties for the project.
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     *
+     * @return unique identifier of the newly created Project
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public String createProject(String               userId,
+                                String               anchorGUID,
+                                boolean              isOwnAnchor,
+                                String               optionalClassification,
+                                ProjectProperties    properties,
+                                String               parentGUID,
+                                String               parentRelationshipTypeName,
+                                ElementProperties    parentRelationshipProperties,
+                                boolean              parentAtEnd1) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        final String methodName = "createProject";
+        final String projectPropertiesName = "properties";
+        final String qualifiedNameParameterName = "properties.qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(properties, projectPropertiesName, methodName);
+        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        String projectTypeName = OpenMetadataType.PROJECT.typeName;
+
+        if (properties.getTypeName() != null)
+        {
+            projectTypeName = properties.getTypeName();
+        }
+
+        Map<String, ElementProperties> initialClassifications = null;
+
+        if (optionalClassification != null)
+        {
+            initialClassifications = new HashMap<>();
+
+            initialClassifications.put(optionalClassification, null);
+        }
+
+        return openMetadataStoreClient.createMetadataElementInStore(userId,
+                                                                    null,
+                                                                    null,
+                                                                    projectTypeName,
+                                                                    ElementStatus.ACTIVE,
+                                                                    initialClassifications,
+                                                                    anchorGUID,
+                                                                    isOwnAnchor,
+                                                                    properties.getEffectiveFrom(),
+                                                                    properties.getEffectiveTo(),
+                                                                    this.getElementProperties(properties),
+                                                                    parentGUID,
+                                                                    parentRelationshipTypeName,
+                                                                    parentRelationshipProperties,
+                                                                    parentAtEnd1);
+    }
+
+
+    /**
+     * Convert the project properties into a set of element properties for the open metadata client.
+     *
+     * @param projectProperties supplied project properties
+     * @return element properties
+     */
+    private ElementProperties getElementProperties(ProjectProperties projectProperties)
+    {
+        if (projectProperties != null)
+        {
+            ElementProperties elementProperties = propertyHelper.addStringProperty(null,
+                                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                   projectProperties.getQualifiedName());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.NAME.name,
+                                                                 projectProperties.getName());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.DESCRIPTION.name,
+                                                                 projectProperties.getDescription());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.IDENTIFIER.name,
+                                                                 projectProperties.getIdentifier());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.PROJECT_PHASE.name,
+                                                                 projectProperties.getStatus());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.PROJECT_HEALTH.name,
+                                                                 projectProperties.getStatus());
+
+            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                 OpenMetadataProperty.PROJECT_STATUS.name,
+                                                                 projectProperties.getStatus());
+
+            elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                               OpenMetadataProperty.START_DATE.name,
+                                                               projectProperties.getStartDate());
+
+            elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                               OpenMetadataProperty.PLANNED_END_DATE.name,
+                                                               projectProperties.getPlannedEndDate());
+
+            elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                    OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                    projectProperties.getAdditionalProperties());
+
+            elementProperties = propertyHelper.addPropertyMap(elementProperties,
+                                                              projectProperties.getExtendedProperties());
+
+            return elementProperties;
+        }
+
+        return null;
+    }
+
+
+    /**
      * Create a new metadata element to represent a project using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new project.
      *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software capability representing the caller
-     * @param externalSourceName unique name of software capability representing the caller
-     * @param templateGUID unique identifier of the metadata element to copy
-     * @param templateProperties properties that override the template
+     * @param userId             calling user
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
+     * @param effectiveFrom the date when this element is active - null for active on creation
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                     connection etc)
+     * @param replacementProperties properties of the new metadata element.  These override the template values
+     * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
+     *                              template element - and their anchored elements, which are also copied as part of this operation.
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
      *
-     * @return unique identifier of the new project
+     * @return unique identifier of the new metadata element
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public String createProjectFromTemplate(String             userId,
-                                            String             externalSourceGUID,
-                                            String             externalSourceName,
-                                            String             templateGUID,
-                                            TemplateProperties templateProperties) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
+    public String createProjectFromTemplate(String                         userId,
+                                            String                         anchorGUID,
+                                            boolean                        isOwnAnchor,
+                                            Date                           effectiveFrom,
+                                            Date                           effectiveTo,
+                                            String                         templateGUID,
+                                            ElementProperties              replacementProperties,
+                                            Map<String, String>            placeholderProperties,
+                                            String                         parentGUID,
+                                            String                         parentRelationshipTypeName,
+                                            ElementProperties              parentRelationshipProperties,
+                                            boolean                        parentAtEnd1) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
     {
-        final String methodName  = "createProjectFromTemplate";
-        final String urlTemplate = serverPlatformURLRoot + projectURLTemplatePrefix + "/from-template/{2}";
-
-        return super.createReferenceableFromTemplate(userId, externalSourceGUID, externalSourceName, templateGUID, templateProperties, urlTemplate, methodName);
+        return openMetadataStoreClient.createMetadataElementFromTemplate(userId,
+                                                                         OpenMetadataType.PROJECT.typeName,
+                                                                         anchorGUID,
+                                                                         isOwnAnchor,
+                                                                         effectiveFrom,
+                                                                         effectiveTo,
+                                                                         templateGUID,
+                                                                         replacementProperties,
+                                                                         placeholderProperties,
+                                                                         parentGUID,
+                                                                         parentRelationshipTypeName,
+                                                                         parentRelationshipProperties,
+                                                                         parentAtEnd1);
     }
 
 
@@ -206,11 +433,11 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void updateProject(String              userId,
-                              String              externalSourceGUID,
-                              String              externalSourceName,
-                              String              projectGUID,
-                              boolean             isMergeUpdate,
+    public void updateProject(String            userId,
+                              String            externalSourceGUID,
+                              String            externalSourceName,
+                              String            projectGUID,
+                              boolean           isMergeUpdate,
                               ProjectProperties projectProperties) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException
@@ -225,7 +452,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
 
 
     /**
-     * Create a membership relationship between a project and a person role to show that anyone appointed to the role is a member of the project.
+     * Create a project management relationship between a project and a person role to show that someone has been appointed to the project management role.
      *
      * @param userId calling user
      * @param externalSourceGUID unique identifier of software capability representing the caller
@@ -238,16 +465,16 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void setupProjectManagementRole(String                        userId,
-                                           String                        externalSourceGUID,
-                                           String                        externalSourceName,
-                                           String                        projectGUID,
-                                           String                        personRoleGUID) throws InvalidParameterException,
-                                                                                                UserNotAuthorizedException,
-                                                                                                PropertyServerException
+    public void setupProjectManagementRole(String userId,
+                                           String externalSourceGUID,
+                                           String externalSourceName,
+                                           String projectGUID,
+                                           String personRoleGUID) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         final String methodName                  = "setupProjectRole";
-        final String projectGUIDParameterName  = "projectGUID";
+        final String projectGUIDParameterName    = "projectGUID";
         final String personRoleGUIDParameterName = "personRoleGUID";
 
         final String urlTemplate = serverPlatformURLRoot + projectURLTemplatePrefix + "/{2}/project-management-roles/{3}";
@@ -257,7 +484,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
 
 
     /**
-     * Remove a membership relationship between a project and a person role.
+     * Remove a project management relationship between a project and a person role.
      *
      * @param userId calling user
      * @param externalSourceGUID unique identifier of software capability representing the caller
@@ -279,7 +506,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
                                                                          PropertyServerException
     {
         final String methodName                  = "clearProjectRole";
-        final String projectGUIDParameterName  = "projectGUID";
+        final String projectGUIDParameterName    = "projectGUID";
         final String personRoleGUIDParameterName = "personRoleGUID";
         final String urlTemplate                 = serverPlatformURLRoot + projectURLTemplatePrefix + "/{2}/project-management-roles/{3}/delete";
 
@@ -295,9 +522,8 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
     }
 
 
-
     /**
-     * Create a project team relationship between a project and a person role to show that anyone appointed to the role is a member of the project.
+     * Create a ProjectTeam relationship between a project and an actor to show that they are member of the project.
      *
      * @param userId calling user
      * @param externalSourceGUID unique identifier of software capability representing the caller
@@ -311,18 +537,18 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @Override
-    public void setupProjectTeam(String                        userId,
-                                 String                        externalSourceGUID,
-                                 String                        externalSourceName,
-                                 String                        projectGUID,
+    public void setupProjectTeam(String                userId,
+                                 String                externalSourceGUID,
+                                 String                externalSourceName,
+                                 String                projectGUID,
                                  ProjectTeamProperties properties,
-                                 String actorProfileGUID) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+                                 String                actorProfileGUID) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
-        final String methodName                  = "setupProjectRole";
-        final String projectGUIDParameterName  = "projectGUID";
-        final String personRoleGUIDParameterName = "personRoleGUID";
+        final String methodName                  = "setupProjectTeam";
+        final String projectGUIDParameterName    = "projectGUID";
+        final String personRoleGUIDParameterName = "actorProfileGUID";
 
         final String urlTemplate = serverPlatformURLRoot + projectURLTemplatePrefix + "/{2}/project-teams/{3}";
 
@@ -331,13 +557,13 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
 
 
     /**
-     * Remove a membership relationship between a project and a person role.
+     * Remove a ProjectTeam relationship between a project and an actor.
      *
      * @param userId calling user
      * @param externalSourceGUID unique identifier of software capability representing the caller
      * @param externalSourceName unique name of software capability representing the caller
      * @param projectGUID unique identifier of the project in the external data manager
-     * @param actorProfileGUID unique identifier of the person role in the external data manager
+     * @param actorGUID unique identifier of the person role in the external data manager
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -348,13 +574,13 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
                                  String externalSourceGUID,
                                  String externalSourceName,
                                  String projectGUID,
-                                 String actorProfileGUID) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+                                 String actorGUID) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
     {
-        final String methodName                  = "clearProjectRole";
-        final String projectGUIDParameterName  = "projectGUID";
-        final String personRoleGUIDParameterName = "personRoleGUID";
+        final String methodName                  = "clearProjectTeam";
+        final String projectGUIDParameterName    = "projectGUID";
+        final String personRoleGUIDParameterName = "actorGUID";
         final String urlTemplate                 = serverPlatformURLRoot + projectURLTemplatePrefix + "/{2}/project-teams/{3}/delete";
 
         super.clearRelationship(userId,
@@ -362,7 +588,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
                                 externalSourceName,
                                 projectGUID,
                                 projectGUIDParameterName,
-                                actorProfileGUID,
+                                actorGUID,
                                 personRoleGUIDParameterName,
                                 urlTemplate,
                                 methodName);
@@ -394,6 +620,248 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
         final String urlTemplate              = serverPlatformURLRoot + projectURLTemplatePrefix + "/{2}/delete";
 
         super.removeReferenceable(userId, externalSourceGUID, externalSourceName, projectGUID, elementGUIDParameterName, urlTemplate, methodName);
+    }
+
+
+    /**
+     * Returns the list of projects that are linked off of the supplied element.
+     *
+     * @param userId         userId of user making request
+     * @param parentGUID     unique identifier of referenceable object (typically a personal profile, project or
+     *                       community) that the projects hang off of
+     * @param projectStatus filter response by project type - if null, any value will do
+     * @param startFrom      index of the list to start from (0 for start)
+     * @param pageSize       maximum number of elements to return
+     *
+     * @return a list of projects
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public List<ProjectElement> getLinkedProjects(String userId,
+                                                  String parentGUID,
+                                                  String projectStatus,
+                                                  int    startFrom,
+                                                  int    pageSize) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        final String methodName = "getLinkedProjects";
+        final String parentGUIDParameterName = "parentGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(parentGUID, parentGUIDParameterName, methodName);
+        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        List<RelatedMetadataElement> linkedProjects = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                         parentGUID,
+                                                                                                         1,
+                                                                                                         null,
+                                                                                                         false,
+                                                                                                         false,
+                                                                                                         new Date(),
+                                                                                                         startFrom,
+                                                                                                         pageSize);
+
+        if (linkedProjects != null)
+        {
+            List<ProjectElement> filteredProjects = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedMetadataElement : linkedProjects)
+            {
+                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.PROJECT.typeName))
+                {
+                    ProjectElement projectElement = projectConverter.getNewBean(projectBeanClass, relatedMetadataElement, methodName);
+
+                    if ((projectStatus == null) || (projectStatus.equals(projectElement.getProperties().getStatus())))
+                    {
+                        filteredProjects.add(projectElement);
+                    }
+                }
+            }
+
+            if (! filteredProjects.isEmpty())
+            {
+                return filteredProjects;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Returns the list of projects with a particular classification.
+     *
+     * @param userId             userId of user making request
+     * @param classificationName name of the classification - if null, all projects are returned
+     * @param startFrom          index of the list to start from (0 for start)
+     * @param pageSize           maximum number of elements to return
+     *
+     * @return a list of projects
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public List<ProjectElement> getClassifiedProjects(String userId,
+                                                      String classificationName,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
+    {
+        final String methodName = "getClassifiedProjects";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        SearchClassifications searchClassifications = null;
+
+        if (classificationName != null)
+        {
+            searchClassifications = new SearchClassifications();
+
+            List<ClassificationCondition> classificationConditions = new ArrayList<>();
+            ClassificationCondition       classificationCondition  = new ClassificationCondition();
+
+            classificationCondition.setName(classificationName);
+
+            classificationConditions.add(classificationCondition);
+
+            searchClassifications.setConditions(classificationConditions);
+            searchClassifications.setMatchCriteria(MatchCriteria.ALL);
+        }
+
+        List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
+                                                                                                      OpenMetadataType.PROJECT.typeName,
+                                                                                                      null,
+                                                                                                      null,
+                                                                                                      null,
+                                                                                                      searchClassifications,
+                                                                                                      OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                      SequencingOrder.PROPERTY_ASCENDING,
+                                                                                                      false,
+                                                                                                      false,
+                                                                                                      new Date(),
+                                                                                                      startFrom,
+                                                                                                      pageSize);
+
+        return convertProjects(openMetadataElements);
+    }
+
+
+    /**
+     * Return a list of actors that are members of a project.
+     *
+     * @param userId             userId of user making request
+     * @param projectGUID unique identifier of the project
+     * @param teamRole optional team role
+     * @param startFrom      index of the list to start from (0 for start)
+     * @param pageSize       maximum number of elements to return.
+     *
+     * @return list of team members
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @Override
+    public List<ProjectTeamMember> getProjectMembers(String userId,
+                                                     String projectGUID,
+                                                     String teamRole,
+                                                     int    startFrom,
+                                                     int    pageSize) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
+    {
+        final String methodName = "getProjectMembers";
+        final String parentGUIDParameterName = "projectGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(projectGUID, parentGUIDParameterName, methodName);
+        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        List<RelatedMetadataElement> linkedActors = openMetadataStoreClient.getRelatedMetadataElements(userId,
+                                                                                                       projectGUID,
+                                                                                                       1,
+                                                                                                       null,
+                                                                                                       false,
+                                                                                                       false,
+                                                                                                       new Date(),
+                                                                                                       startFrom,
+                                                                                                       pageSize);
+
+        if (linkedActors != null)
+        {
+            List<ProjectTeamMember> teamMembers = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedMetadataElement : linkedActors)
+            {
+                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName))
+                {
+                    if ((teamRole == null) || (OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName.equals(teamRole)))
+                    {
+                        ProjectTeamMember projectTeamMember = teamMemberConverter.getNewBean(projectMemberBeanClass, relatedMetadataElement, methodName);
+
+                        ProjectTeamProperties projectTeamProperties = new ProjectTeamProperties();
+
+                        projectTeamProperties.setTeamRole(OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName);
+
+                        projectTeamMember.setProjectTeamProperties(projectTeamProperties);
+
+                        teamMembers.add(projectTeamMember);
+                    }
+                }
+                else if  (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName))
+                {
+                    ProjectTeamMember projectTeamMember = teamMemberConverter.getNewBean(projectMemberBeanClass, relatedMetadataElement, methodName);
+
+                    if ((teamRole == null) || ((projectTeamMember.getProjectTeamProperties() != null) && (teamRole.equals(projectTeamMember.getProjectTeamProperties().getTeamRole()))))
+                    {
+                        teamMembers.add(projectTeamMember);
+                    }
+                }
+            }
+
+            if (! teamMembers.isEmpty())
+            {
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert project objects from the OpenMetadataClient to local beans.
+     *
+     * @param openMetadataElements retrieved elements
+     * @return list of project elements
+     * @throws PropertyServerException error in retrieved values
+     */
+    private List<ProjectElement> convertProjects(List<OpenMetadataElement>  openMetadataElements) throws PropertyServerException
+    {
+        final String methodName = "convertProjects";
+
+        if (openMetadataElements != null)
+        {
+            List<ProjectElement> projectElements = new ArrayList<>();
+
+            for (OpenMetadataElement openMetadataElement : openMetadataElements)
+            {
+                if (openMetadataElement != null)
+                {
+                    projectElements.add(projectConverter.getNewBean(projectBeanClass, openMetadataElement, methodName));
+                }
+            }
+
+            return projectElements;
+        }
+
+        return null;
     }
 
 
@@ -531,7 +999,6 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
 
         return restResult.getElements();
     }
-
 
 
     /**

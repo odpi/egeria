@@ -89,10 +89,10 @@ public class ClientConstructorTest
                                               String   serverPlatformRootURL,
                                               AuditLog auditLog) throws InvalidParameterException
     {
-        new ReferenceDataManager(serverName, serverPlatformRootURL, auditLog);
-        new ReferenceDataManager(serverName, serverPlatformRootURL);
-        new ReferenceDataManager(serverName, serverPlatformRootURL, serverUserId, serverPassword, auditLog);
-        new ReferenceDataManager(serverName, serverPlatformRootURL, serverUserId, serverPassword);
+        new ReferenceDataManager(serverName, serverPlatformRootURL, 100, auditLog);
+        new ReferenceDataManager(serverName, serverPlatformRootURL, 100);
+        new ReferenceDataManager(serverName, serverPlatformRootURL, serverUserId, serverPassword, 100, auditLog);
+        new ReferenceDataManager(serverName, serverPlatformRootURL, serverUserId, serverPassword, 100);
 
         DigitalArchitectureRESTClient restClient = new DigitalArchitectureRESTClient(serverName, serverPlatformRootURL);
 

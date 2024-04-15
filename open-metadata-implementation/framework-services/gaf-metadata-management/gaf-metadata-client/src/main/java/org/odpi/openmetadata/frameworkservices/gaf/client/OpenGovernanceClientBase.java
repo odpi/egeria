@@ -4,10 +4,7 @@ package org.odpi.openmetadata.frameworkservices.gaf.client;
 
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -850,6 +847,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
      * @param searchString string to find in the properties
      * @param startFrom    paging start point
      * @param pageSize     maximum results that can be returned
+     * @param effectiveTime effective date/time for query
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -859,9 +857,10 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     public List<GovernanceActionTypeElement> findGovernanceActionTypes(String userId,
                                                                        String searchString,
                                                                        int    startFrom,
-                                                                       int    pageSize) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+                                                                       int    pageSize,
+                                                                       Date   effectiveTime) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
     {
         final String methodName = "findGovernanceActionTypes";
         final String searchStringParameterName = "searchString";
@@ -874,6 +873,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
 
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
+        requestBody.setEffectiveTime(effectiveTime);
 
         GovernanceActionTypesResponse restResult = restClient.callGovernanceTypesPostRESTCall(methodName,
                                                                                               urlTemplate,
@@ -896,6 +896,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
      * @param name      name to search for
      * @param startFrom paging start point
      * @param pageSize  maximum results that can be returned
+     * @param effectiveTime effective date/time for query
      * @return list of matching metadata elements
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -905,9 +906,10 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     public List<GovernanceActionTypeElement> getGovernanceActionTypesByName(String userId,
                                                                             String name,
                                                                             int    startFrom,
-                                                                            int    pageSize) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
+                                                                            int    pageSize,
+                                                                            Date   effectiveTime) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
     {
         final String methodName = "getGovernanceActionTypesByName";
         final String nameParameterName = "name";
@@ -920,6 +922,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
 
         requestBody.setName(name);
         requestBody.setNameParameterName(nameParameterName);
+        requestBody.setEffectiveTime(effectiveTime);
 
         GovernanceActionTypesResponse restResult = restClient.callGovernanceTypesPostRESTCall(methodName,
                                                                                               urlTemplate,
@@ -1186,6 +1189,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime effective date/time for query
      *
      * @return list of matching metadata elements
      *
@@ -1197,9 +1201,10 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     public List<GovernanceActionProcessElement> findGovernanceActionProcesses(String userId,
                                                                               String searchString,
                                                                               int    startFrom,
-                                                                              int    pageSize) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+                                                                              int    pageSize,
+                                                                              Date   effectiveTime) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException
     {
         final String methodName = "findGovernanceActionProcesses";
         final String searchStringParameterName = "searchString";
@@ -1235,6 +1240,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime effective date/time for query
      *
      * @return list of matching metadata elements
      *
@@ -1246,9 +1252,10 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     public List<GovernanceActionProcessElement> getGovernanceActionProcessesByName(String userId,
                                                                                    String name,
                                                                                    int    startFrom,
-                                                                                   int    pageSize) throws InvalidParameterException,
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           PropertyServerException
+                                                                                   int    pageSize,
+                                                                                   Date   effectiveTime) throws InvalidParameterException,
+                                                                                                                UserNotAuthorizedException,
+                                                                                                                PropertyServerException
     {
         final String methodName = "getGovernanceActionProcessesByName";
         final String nameParameterName = "name";
@@ -1261,6 +1268,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
 
         requestBody.setName(name);
         requestBody.setNameParameterName(nameParameterName);
+        requestBody.setEffectiveTime(effectiveTime);
 
         GovernanceActionProcessElementsResponse restResult = restClient.callGovernanceActionProcessElementsPostRESTCall(methodName,
                                                                                                                         urlTemplate,
@@ -1319,6 +1327,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
      *
      * @param userId calling user
      * @param processGUID unique identifier of the requested metadata element
+     * @param effectiveTime effective date/time for query
      *
      * @return requested metadata element
      *
@@ -1328,9 +1337,10 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
      */
     @Override
     public GovernanceActionProcessGraph getGovernanceActionProcessGraph(String userId,
-                                                                        String processGUID) throws InvalidParameterException,
-                                                                                                   UserNotAuthorizedException,
-                                                                                                   PropertyServerException
+                                                                        String processGUID,
+                                                                        Date   effectiveTime) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
     {
         final String methodName = "getGovernanceActionProcessGraph";
         final String guidParameterName = "processGUID";
@@ -1339,12 +1349,16 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, guidParameterName, methodName);
 
-        GovernanceActionProcessGraphResponse restResult = restClient.callGovernanceActionProcessGraphGetRESTCall(methodName,
-                                                                                                                 urlTemplate,
-                                                                                                                 serverName,
-                                                                                                                 serviceURLMarker,
-                                                                                                                 userId,
-                                                                                                                 processGUID);
+        EffectiveTimeRequestBody requestBody = new EffectiveTimeRequestBody();
+        requestBody.setEffectiveTime(effectiveTime);
+
+        GovernanceActionProcessGraphResponse restResult = restClient.callGovernanceActionProcessGraphPostRESTCall(methodName,
+                                                                                                                  urlTemplate,
+                                                                                                                  requestBody,
+                                                                                                                  serverName,
+                                                                                                                  serviceURLMarker,
+                                                                                                                  userId,
+                                                                                                                  processGUID);
 
         return restResult.getElement();
     }
@@ -1484,6 +1498,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
      * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime effective date/time for query
      *
      * @return list of matching metadata elements
      *
@@ -1495,9 +1510,10 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     public List<GovernanceActionProcessStepElement> findGovernanceActionProcessSteps(String userId,
                                                                                      String searchString,
                                                                                      int    startFrom,
-                                                                                     int    pageSize) throws InvalidParameterException,
-                                                                                                             UserNotAuthorizedException,
-                                                                                                             PropertyServerException
+                                                                                     int    pageSize,
+                                                                                     Date   effectiveTime) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
+                                                                                                                  PropertyServerException
     {
         final String methodName = "findGovernanceActionProcessSteps";
         final String searchStringParameterName = "searchString";
@@ -1510,6 +1526,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
 
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
+        requestBody.setEffectiveTime(effectiveTime);
 
         GovernanceActionProcessStepsResponse restResult = restClient.callGovernanceProcessStepsPostRESTCall(methodName,
                                                                                                             urlTemplate,
@@ -1532,6 +1549,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
      * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param effectiveTime effective date/time for query
      *
      * @return list of matching metadata elements
      *
@@ -1543,9 +1561,10 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     public List<GovernanceActionProcessStepElement> getGovernanceActionProcessStepsByName(String userId,
                                                                                           String name,
                                                                                           int    startFrom,
-                                                                                          int    pageSize) throws InvalidParameterException,
-                                                                                                                  UserNotAuthorizedException,
-                                                                                                                  PropertyServerException
+                                                                                          int    pageSize,
+                                                                                          Date   effectiveTime) throws InvalidParameterException,
+                                                                                                                       UserNotAuthorizedException,
+                                                                                                                       PropertyServerException
     {
         final String methodName = "getGovernanceActionProcessStepsByName";
         final String nameParameterName = "name";
@@ -1558,6 +1577,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
 
         requestBody.setName(name);
         requestBody.setNameParameterName(nameParameterName);
+        requestBody.setEffectiveTime(effectiveTime);
 
         GovernanceActionProcessStepsResponse restResult = restClient.callGovernanceProcessStepsPostRESTCall(methodName,
                                                                                                             urlTemplate,
@@ -1729,7 +1749,6 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
      * @param nextActionProcessStepGUID unique identifier of the governance action process step that defines the next step in the governance action process
      * @param guard guard required for this next step to proceed - or null for always run the next step.
      * @param mandatoryGuard means that no next steps can run if this guard is not returned
-     * @param ignoreMultipleTriggers prevent multiple instances of the next step to run (or not)
      *
      * @return unique identifier of the new link
      *
@@ -1742,8 +1761,7 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
                                              String  currentActionProcessStepGUID,
                                              String  nextActionProcessStepGUID,
                                              String  guard,
-                                             boolean mandatoryGuard,
-                                             boolean ignoreMultipleTriggers) throws InvalidParameterException,
+                                             boolean mandatoryGuard) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
@@ -1782,7 +1800,6 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
      * @param nextProcessStepLinkGUID unique identifier of the relationship between the governance action process steps
      * @param guard guard required for this next step to proceed - or null for always run the next step.
      * @param mandatoryGuard means that no next steps can run if this guard is not returned
-     * @param ignoreMultipleTriggers prevent multiple instances of the next step to run (or not)
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1792,10 +1809,9 @@ public class OpenGovernanceClientBase implements ActionControlInterface,
     public void updateNextActionProcessStep(String  userId,
                                             String  nextProcessStepLinkGUID,
                                             String  guard,
-                                            boolean mandatoryGuard,
-                                            boolean ignoreMultipleTriggers) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+                                            boolean mandatoryGuard) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         final String methodName = "updateNextActionProcessStep";
         final String guidParameterName = "nextActionLinkGUID";

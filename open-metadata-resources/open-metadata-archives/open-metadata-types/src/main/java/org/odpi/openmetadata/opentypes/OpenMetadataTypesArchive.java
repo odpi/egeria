@@ -256,9 +256,9 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataType.COLLECTION_TYPE_PROPERTY_NAME;
-        final String attribute1Description     = "Descriptive name of the concept that this collection represents.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.COLLECTION_TYPE.name;
+        final String attribute1Description     = OpenMetadataProperty.COLLECTION_TYPE.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.COLLECTION_TYPE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -652,8 +652,49 @@ public class OpenMetadataTypesArchive
      */
     private void update0130Projects()
     {
+        this.archiveBuilder.addTypeDefPatch(updateProject());
         this.archiveBuilder.addClassificationDef(getPersonalProjectClassification());
         this.archiveBuilder.addClassificationDef(getStudyProjectClassification());
+    }
+
+
+    private TypeDefPatch updateProject()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = OpenMetadataType.PROJECT.typeName;
+
+        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = OpenMetadataProperty.PROJECT_HEALTH.name;
+        final String attribute1Description     = OpenMetadataProperty.PROJECT_HEALTH.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.PROJECT_HEALTH.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.PROJECT_PHASE.name;
+        final String attribute3Description     = OpenMetadataProperty.PROJECT_PHASE.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.PROJECT_PHASE.descriptionGUID;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
     }
 
 
@@ -664,12 +705,12 @@ public class OpenMetadataTypesArchive
      */
     private ClassificationDef getPersonalProjectClassification()
     {
-        final String guid            = OpenMetadataType.PERSONAL_PROJECT_TYPE_GUID;
-        final String name            = OpenMetadataType.PERSONAL_PROJECT_TYPE_NAME;
-        final String description     = "This is an informal project that has been created by an individual to help them organize their work.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.PERSONAL_PROJECT_CLASSIFICATION.typeGUID;
+        final String name            = OpenMetadataType.PERSONAL_PROJECT_CLASSIFICATION.typeName;
+        final String description     = OpenMetadataType.PERSONAL_PROJECT_CLASSIFICATION.description;
+        final String descriptionGUID = OpenMetadataType.PERSONAL_PROJECT_CLASSIFICATION.descriptionGUID;
 
-        final String linkedToEntity = OpenMetadataType.PROJECT_TYPE_NAME;
+        final String linkedToEntity = OpenMetadataType.PROJECT.typeName;
 
         return archiveHelper.getClassificationDef(guid,
                                                   name,
@@ -689,18 +730,20 @@ public class OpenMetadataTypesArchive
      */
     private ClassificationDef getStudyProjectClassification()
     {
-        final String guid            = OpenMetadataType.STUDY_PROJECT_TYPE_GUID;
-        final String name            = OpenMetadataType.STUDY_PROJECT_TYPE_NAME;
-        final String description     = "A focused analysis of a topic, person, object or situation.";
-        final String descriptionGUID = null;
+        final String guid            = OpenMetadataType.STUDY_PROJECT_CLASSIFICATION.typeGUID;
+        final String name            = OpenMetadataType.STUDY_PROJECT_CLASSIFICATION.typeName;
+        final String description     = OpenMetadataType.STUDY_PROJECT_CLASSIFICATION.description;
+        final String descriptionGUID = OpenMetadataType.STUDY_PROJECT_CLASSIFICATION.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.STUDY_PROJECT_CLASSIFICATION.wikiURL;
 
-        final String linkedToEntity = OpenMetadataType.PROJECT_TYPE_NAME;
+        final String linkedToEntity = OpenMetadataType.PROJECT.typeName;
 
         return archiveHelper.getClassificationDef(guid,
                                                   name,
                                                   null,
                                                   description,
                                                   descriptionGUID,
+                                                  descriptionWiki,
                                                   this.archiveBuilder.getEntityDef(linkedToEntity),
                                                   false);
     }
@@ -1303,7 +1346,7 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.COLLECTION_TYPE_NAME;
+        final String                     end2EntityType               = OpenMetadataType.COLLECTION.typeName;
         final String                     end2AttributeName            = "archiveFileContents";
         final String                     end2AttributeDescription     = "Collection describing the archive's contents.";
         final String                     end2AttributeDescriptionGUID = null;

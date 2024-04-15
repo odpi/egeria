@@ -13,15 +13,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AssignmentScopeProperties provides a details of the scope of work/influence expected by the assigned actor(s).
+ * AssignmentScopeProperties provides details of the scope of work/influence expected by the assigned actor(s).
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AssignmentScopeProperties extends RelationshipProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     String assignmentType = null;
     String description    = null;
 

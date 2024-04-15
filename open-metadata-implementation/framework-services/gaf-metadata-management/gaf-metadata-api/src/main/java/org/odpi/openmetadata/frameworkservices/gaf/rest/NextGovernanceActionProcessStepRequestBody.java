@@ -19,13 +19,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NextGovernanceActionProcessStepRequestBody implements Serializable
+public class NextGovernanceActionProcessStepRequestBody
 {
-    private static final long     serialVersionUID = 1L;
-
     private String  guard                  = null;
     private boolean mandatoryGuard         = false;
-
 
     /**
      * Default constructor
@@ -45,8 +42,8 @@ public class NextGovernanceActionProcessStepRequestBody implements Serializable
     {
         if (template != null)
         {
-            guard                    = template.getGuard();
-            mandatoryGuard           = template.getMandatoryGuard();
+            guard                  = template.getGuard();
+            mandatoryGuard         = template.getMandatoryGuard();
         }
     }
 
@@ -94,6 +91,7 @@ public class NextGovernanceActionProcessStepRequestBody implements Serializable
         this.mandatoryGuard = mandatoryGuard;
     }
 
+
     /**
      * JSON-style toString
      *
@@ -103,9 +101,9 @@ public class NextGovernanceActionProcessStepRequestBody implements Serializable
     public String toString()
     {
         return "NextGovernanceActionProcessStepRequestBody{" +
-                       "guard='" + guard + '\'' +
-                       ", mandatoryGuard=" + mandatoryGuard +
-                       '}';
+                "guard='" + guard + '\'' +
+                ", mandatoryGuard=" + mandatoryGuard +
+                '}';
     }
 
 
@@ -127,8 +125,7 @@ public class NextGovernanceActionProcessStepRequestBody implements Serializable
             return false;
         }
         NextGovernanceActionProcessStepRequestBody that = (NextGovernanceActionProcessStepRequestBody) objectToCompare;
-        return mandatoryGuard == that.mandatoryGuard &&
-                       Objects.equals(guard, that.guard);
+        return mandatoryGuard == that.mandatoryGuard && Objects.equals(guard, that.guard);
     }
 
 

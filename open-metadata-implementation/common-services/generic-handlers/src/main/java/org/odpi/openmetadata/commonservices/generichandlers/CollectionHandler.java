@@ -121,7 +121,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataType.COLLECTION_TYPE_NAME;
+        String typeName = OpenMetadataType.COLLECTION.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -129,7 +129,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.COLLECTION_TYPE_NAME,
+                                                                   OpenMetadataType.COLLECTION.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -208,7 +208,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataType.COLLECTION_TYPE_NAME;
+        String typeName = OpenMetadataType.COLLECTION.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -216,7 +216,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.COLLECTION_TYPE_NAME,
+                                                                   OpenMetadataType.COLLECTION.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -299,8 +299,8 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            templateGUID,
                                            templateGUIDParameterName,
-                                           OpenMetadataType.COLLECTION_TYPE_GUID,
-                                           OpenMetadataType.COLLECTION_TYPE_NAME,
+                                           OpenMetadataType.COLLECTION.typeGUID,
+                                           OpenMetadataType.COLLECTION.typeName,
                                            qualifiedName,
                                            OpenMetadataProperty.QUALIFIED_NAME.name,
                                            builder,
@@ -363,7 +363,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateGUID(collectionGUID, collectionGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        String typeName = OpenMetadataType.COLLECTION_TYPE_NAME;
+        String typeName = OpenMetadataType.COLLECTION.typeName;
 
         if (suppliedTypeName != null)
         {
@@ -371,7 +371,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.COLLECTION_TYPE_NAME,
+                                                                   OpenMetadataType.COLLECTION.typeName,
                                                                    serviceName,
                                                                    methodName,
                                                                    repositoryHelper);
@@ -447,9 +447,9 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                            null,
                                            collectionGUID,
                                            collectionGUIDParameterName,
-                                           OpenMetadataType.COLLECTION_TYPE_NAME,
-                                           OpenMetadataType.FOLDER_TYPE_GUID,
-                                           OpenMetadataType.FOLDER_TYPE_NAME,
+                                           OpenMetadataType.COLLECTION.typeName,
+                                           OpenMetadataType.FOLDER.typeGUID,
+                                           OpenMetadataType.FOLDER.typeName,
                                            builder.getFolderProperties(orderBy, orderPropertyName, methodName),
                                            isMergeUpdate,
                                            forLineage,
@@ -491,9 +491,9 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                                 null,
                                                 collectionGUID,
                                                 collectionGUIDParameterName,
-                                                OpenMetadataType.COLLECTION_TYPE_NAME,
-                                                OpenMetadataType.FOLDER_TYPE_GUID,
-                                                OpenMetadataType.FOLDER_TYPE_NAME,
+                                                OpenMetadataType.COLLECTION.typeName,
+                                                OpenMetadataType.FOLDER.typeGUID,
+                                                OpenMetadataType.FOLDER.typeName,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,

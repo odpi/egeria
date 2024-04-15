@@ -22,8 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ContributionRecord extends ReferenceableProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private long    karmaPoints       = 0;
     private long    karmaPointPlateau = 0;
     private boolean isPublic          = false;

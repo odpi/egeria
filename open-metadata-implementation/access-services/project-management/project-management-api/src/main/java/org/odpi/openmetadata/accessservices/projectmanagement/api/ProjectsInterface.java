@@ -5,14 +5,18 @@ package org.odpi.openmetadata.accessservices.projectmanagement.api;
 import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ActorProfileElement;
 import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ProjectElement;
 import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.PersonRoleElement;
+import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ProjectTeamMember;
 import org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectTeamProperties;
 import org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectProperties;
 import org.odpi.openmetadata.accessservices.projectmanagement.properties.TemplateProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The ProjectManagementInterface provides methods for managing projects, their membership and content.
@@ -43,14 +47,59 @@ public interface ProjectsInterface
 
 
     /**
+     * Create a new generic project.
+     *
+     * @param userId                 userId of user making request.
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
+     * @param optionalClassification classification of the projects - eg Campaign, Task or PersonalProject
+     * @param properties             properties for the project.
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
+     *
+     * @return unique identifier of the newly created Project
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    String createProject(String               userId,
+                         String               anchorGUID,
+                         boolean              isOwnAnchor,
+                         String               optionalClassification,
+                         ProjectProperties    properties,
+                         String               parentGUID,
+                         String               parentRelationshipTypeName,
+                         ElementProperties    parentRelationshipProperties,
+                         boolean              parentAtEnd1) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException;
+
+
+    /**
      * Create a new metadata element to represent a project using an existing metadata element as a template.
      * The template defines additional classifications and relationships that should be added to the new project.
      *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software capability representing the caller
-     * @param externalSourceName unique name of software capability representing the caller
-     * @param templateGUID unique identifier of the metadata element to copy
-     * @param templateProperties properties that override the template
+     * @param userId             calling user
+     * @param anchorGUID unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+     *                   or the Anchors classification is included in the initial classifications.
+     * @param isOwnAnchor boolean flag to day that the element should be classified as its own anchor once its element
+     *                    is created in the repository.
+     * @param effectiveFrom the date when this element is active - null for active on creation
+     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                     connection etc)
+     * @param replacementProperties properties of the new metadata element.  These override the template values
+     * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
+     *                              template element - and their anchored elements, which are also copied as part of this operation.
+     * @param parentGUID unique identifier of optional parent entity
+     * @param parentRelationshipTypeName type of relationship to connect the new element to the parent
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @param parentAtEnd1 which end should the parent GUID go in the relationship
      *
      * @return unique identifier of the new metadata element
      *
@@ -58,13 +107,20 @@ public interface ProjectsInterface
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    String createProjectFromTemplate(String             userId,
-                                     String             externalSourceGUID,
-                                     String             externalSourceName,
-                                     String             templateGUID,
-                                     TemplateProperties templateProperties) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException;
+    String createProjectFromTemplate(String                         userId,
+                                     String                         anchorGUID,
+                                     boolean                        isOwnAnchor,
+                                     Date effectiveFrom,
+                                     Date                           effectiveTo,
+                                     String                         templateGUID,
+                                     ElementProperties              replacementProperties,
+                                     Map<String, String> placeholderProperties,
+                                     String                         parentGUID,
+                                     String                         parentRelationshipTypeName,
+                                     ElementProperties              parentRelationshipProperties,
+                                     boolean                        parentAtEnd1) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException;
 
 
     /**
@@ -201,6 +257,75 @@ public interface ProjectsInterface
                        String projectGUID) throws InvalidParameterException,
                                                   UserNotAuthorizedException,
                                                   PropertyServerException;
+
+
+    /**
+     * Returns the list of projects that are linked off of the supplied element.
+     *
+     * @param userId         userId of user making request
+     * @param parentGUID     unique identifier of referenceable object (typically a personal profile, project or
+     *                       community) that the projects hang off of
+     * @param projectStatus filter response by project type - if null, any value will do
+     * @param startFrom      index of the list to start from (0 for start)
+     * @param pageSize       maximum number of elements to return
+     *
+     * @return a list of projects
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    List<ProjectElement> getLinkedProjects(String userId,
+                                           String parentGUID,
+                                           String projectStatus,
+                                           int    startFrom,
+                                           int    pageSize) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException;
+
+
+    /**
+     * Returns the list of projects with a particular classification.
+     *
+     * @param userId             userId of user making request
+     * @param classificationName name of the classification - if null, all projects are returned
+     * @param startFrom          index of the list to start from (0 for start)
+     * @param pageSize           maximum number of elements to return
+     *
+     * @return a list of projects
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    List<ProjectElement> getClassifiedProjects(String userId,
+                                               String classificationName,
+                                               int    startFrom,
+                                               int    pageSize) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException;
+
+
+    /**
+     * Return a list of actors that are members of a project.
+     *
+     * @param userId             userId of user making request
+     * @param projectGUID unique identifier of the project
+     * @param teamRole optional team role
+     * @param startFrom      index of the list to start from (0 for start)
+     * @param pageSize       maximum number of elements to return.
+     *
+     * @return list of team members
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    List<ProjectTeamMember> getProjectMembers(String userId,
+                                              String projectGUID,
+                                              String teamRole,
+                                              int    startFrom,
+                                              int    pageSize) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException;
 
 
     /**

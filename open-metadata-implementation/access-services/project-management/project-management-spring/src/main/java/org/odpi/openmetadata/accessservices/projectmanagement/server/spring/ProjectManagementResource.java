@@ -12,7 +12,6 @@ import org.odpi.openmetadata.accessservices.projectmanagement.rest.ProjectRespon
 import org.odpi.openmetadata.accessservices.projectmanagement.rest.ReferenceableRequestBody;
 import org.odpi.openmetadata.accessservices.projectmanagement.rest.RelatedElementListResponse;
 import org.odpi.openmetadata.accessservices.projectmanagement.rest.RelationshipRequestBody;
-import org.odpi.openmetadata.accessservices.projectmanagement.rest.TemplateRequestBody;
 import org.odpi.openmetadata.accessservices.projectmanagement.server.ProjectManagementRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
@@ -40,7 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class ProjectManagementResource
 {
-    private ProjectManagementRESTServices restAPI = new ProjectManagementRESTServices();
+    private final ProjectManagementRESTServices restAPI = new ProjectManagementRESTServices();
 
     /**
      * Default constructor
@@ -69,30 +68,6 @@ public class ProjectManagementResource
                                       @RequestBody  ReferenceableRequestBody requestBody)
     {
         return restAPI.createProject(serverName, userId, requestBody);
-    }
-
-
-    /**
-     * Create a new metadata element to represent a project using an existing metadata element as a template.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param userId calling user
-     * @param templateGUID unique identifier of the metadata element to copy
-     * @param requestBody properties that override the template
-     *
-     * @return unique identifier of the new metadata element or
-     * InvalidParameterException  one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/projects/from-template/{templateGUID}")
-
-    public GUIDResponse createProjectFromTemplate(@PathVariable String              serverName,
-                                                  @PathVariable String              userId,
-                                                  @PathVariable String              templateGUID,
-                                                  @RequestBody  TemplateRequestBody requestBody)
-    {
-        return restAPI.createProjectFromTemplate(serverName, userId, templateGUID, requestBody);
     }
 
 
@@ -314,7 +289,6 @@ public class ProjectManagementResource
      * @param pageSize   maximum number of elements to return.
      *
      * @return list of matching person roles
-     *
      *   InvalidParameterException name or userId is null
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem
@@ -341,7 +315,6 @@ public class ProjectManagementResource
      * @param pageSize   maximum number of elements to return.
      *
      * @return list of matching person roles
-     *
      *   InvalidParameterException name or userId is null
      *   PropertyServerException problem accessing property server
      *   UserNotAuthorizedException security access problem

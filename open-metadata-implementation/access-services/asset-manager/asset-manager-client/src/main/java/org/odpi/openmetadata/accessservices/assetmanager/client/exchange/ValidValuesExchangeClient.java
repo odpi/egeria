@@ -883,7 +883,7 @@ public class ValidValuesExchangeClient extends ExchangeClientBase implements Val
                                                    OpenMetadataProperty.NAME.name);
 
         List<OpenMetadataElement> openMetadataElements = openMetadataStoreClient.findMetadataElements(userId,
-                                                                                                      OpenMetadataType.COLLECTION_TYPE_NAME,
+                                                                                                      OpenMetadataType.COLLECTION.typeName,
                                                                                                       null,
                                                                                                       propertyHelper.getSearchPropertiesByName(propertyNames, validValueName),
                                                                                                       null,

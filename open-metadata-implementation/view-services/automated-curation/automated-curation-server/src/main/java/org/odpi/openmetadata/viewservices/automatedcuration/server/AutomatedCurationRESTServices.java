@@ -7,14 +7,10 @@ import org.odpi.openmetadata.accessservices.assetowner.client.*;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ExternalReferenceElement;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ValidValueElement;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -53,8 +49,6 @@ public class AutomatedCurationRESTServices extends TokenController
     private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(AutomatedCurationRESTServices.class),
                                                                             instanceHandler.getServiceName());
 
-    private final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-
     private final PropertyHelper propertyHelper = new PropertyHelper();
 
     /**
@@ -82,10 +76,10 @@ public class AutomatedCurationRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public TechnologyTypeSummaryListResponse findTechnologyTypes(String                  serverName,
-                                                                 int                     startFrom,
-                                                                 int                     pageSize,
-                                                                 StringRequestBody       requestBody)
+    public TechnologyTypeSummaryListResponse findTechnologyTypes(String            serverName,
+                                                                 int               startFrom,
+                                                                 int               pageSize,
+                                                                 FilterRequestBody requestBody)
     {
         final String methodName = "findTechnologyTypes";
 
@@ -106,9 +100,10 @@ public class AutomatedCurationRESTServices extends TokenController
                 ValidValuesAssetOwner handler = instanceHandler.getValidValuesAssetOwner(userId, serverName, methodName);
 
                 List<ValidValueElement> validValues = handler.findValidValues(userId,
-                                                                              "Egeria:ValidMetadataValue.*(.*" + requestBody.getString() + ".*)",
+                                                                              "Egeria:ValidMetadataValue.*(.*" + requestBody.getFilter() + ".*)",
                                                                               startFrom,
-                                                                              pageSize);
+                                                                              pageSize,
+                                                                              requestBody.getEffectiveTime());
                 response.setElements(this.getTechnologySummaries(validValues));
             }
             else
@@ -171,6 +166,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * @param typeName does the value start with the supplied string?
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param requestBody does the value start with the supplied string?
      *
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
@@ -178,10 +174,11 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
 
-    public TechnologyTypeSummaryListResponse getTechnologyTypesForOpenMetadataType(String serverName,
-                                                                                   String typeName,
-                                                                                   int    startFrom,
-                                                                                   int    pageSize)
+    public TechnologyTypeSummaryListResponse getTechnologyTypesForOpenMetadataType(String                   serverName,
+                                                                                   String                   typeName,
+                                                                                   int                      startFrom,
+                                                                                   int                      pageSize,
+                                                                                   EffectiveTimeRequestBody requestBody)
     {
         final String methodName = "getTechnologyTypesForOpenMetadataType";
         final String parameterName = "typeName";
@@ -203,11 +200,24 @@ public class AutomatedCurationRESTServices extends TokenController
             {
                 ValidValuesAssetOwner handler = instanceHandler.getValidValuesAssetOwner(userId, serverName, methodName);
 
-                List<ValidValueElement> validValues = handler.findValidValues(userId,
-                                                                              "Egeria:ValidMetadataValue:" + typeName + ":deployedImplementationType-(.*)",
-                                                                              startFrom,
-                                                                              pageSize);
-                response.setElements(this.getTechnologySummaries(validValues));
+                if (requestBody != null)
+                {
+                    List<ValidValueElement> validValues = handler.findValidValues(userId,
+                                                                                  "Egeria:ValidMetadataValue:" + typeName + ":deployedImplementationType-(.*)",
+                                                                                  startFrom,
+                                                                                  pageSize,
+                                                                                  requestBody.getEffectiveTime());
+                    response.setElements(this.getTechnologySummaries(validValues));
+                }
+                else
+                {
+                    List<ValidValueElement> validValues = handler.findValidValues(userId,
+                                                                                  "Egeria:ValidMetadataValue:" + typeName + ":deployedImplementationType-(.*)",
+                                                                                  startFrom,
+                                                                                  pageSize,
+                                                                                  new Date());
+                    response.setElements(this.getTechnologySummaries(validValues));
+                }
             }
             else
             {
@@ -236,7 +246,7 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public TechnologyTypeReportResponse getTechnologyTypeDetail(String            serverName,
-                                                                StringRequestBody requestBody)
+                                                                FilterRequestBody requestBody)
     {
         final String methodName = "getTechnologyTypesForOpenMetadataType";
         final String parameterName = "requestBody.string";
@@ -256,16 +266,17 @@ public class AutomatedCurationRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getString() != null)
+                if (requestBody.getFilter() != null)
                 {
                     ValidValuesAssetOwner    validValuesHandler = instanceHandler.getValidValuesAssetOwner(userId, serverName, methodName);
                     ExternalReferenceManager externalRefHandler = instanceHandler.getExternalReferenceManager(userId, serverName, methodName);
                     OpenMetadataStoreClient  openHandler        = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
                     List<ValidValueElement> validValues = validValuesHandler.findValidValues(userId,
-                                                                                             "Egeria:ValidMetadataValue:.*:deployedImplementationType-.*" + requestBody.getString() + ".*",
+                                                                                             "Egeria:ValidMetadataValue:.*:deployedImplementationType-.*" + requestBody.getFilter() + ".*",
                                                                                              0,
-                                                                                             0);
+                                                                                             0,
+                                                                                             requestBody.getEffectiveTime());
 
                     if (validValues != null)
                     {
@@ -824,14 +835,14 @@ public class AutomatedCurationRESTServices extends TokenController
                                                                    boolean                 ignoreCase,
                                                                    int                     startFrom,
                                                                    int                     pageSize,
-                                                                   StringRequestBody       requestBody)
+                                                                   FilterRequestBody       requestBody)
     {
         final String methodName = "findGovernanceActionTypes";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
         GovernanceActionTypesResponse response = new GovernanceActionTypesResponse();
-        AuditLog                             auditLog = null;
+        AuditLog                      auditLog = null;
 
         try
         {
@@ -839,19 +850,24 @@ public class AutomatedCurationRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
                 response.setElements(handler.findGovernanceActionTypes(userId,
-                                                                       instanceHandler.getSearchString(requestBody.getString(), startsWith, endsWith, ignoreCase),
+                                                                       instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
                                                                        startFrom,
-                                                                       pageSize));
+                                                                       pageSize,
+                                                                       requestBody.getEffectiveTime()));
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setElements(handler.findGovernanceActionTypes(userId,
+                                                                       instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                                       startFrom,
+                                                                       pageSize,
+                                                                       new Date()));
             }
         }
         catch (Exception error)
@@ -881,7 +897,7 @@ public class AutomatedCurationRESTServices extends TokenController
     public GovernanceActionTypesResponse getGovernanceActionTypesByName(String            serverName,
                                                                         int               startFrom,
                                                                         int               pageSize,
-                                                                        StringRequestBody requestBody)
+                                                                        FilterRequestBody requestBody)
     {
         final String methodName = "getGovernanceActionTypesByName";
 
@@ -902,9 +918,10 @@ public class AutomatedCurationRESTServices extends TokenController
                 OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
                 response.setElements(handler.getGovernanceActionTypesByName(userId,
-                                                                            requestBody.getString(),
+                                                                            requestBody.getFilter(),
                                                                             startFrom,
-                                                                            pageSize));
+                                                                            pageSize,
+                                                                            requestBody.getEffectiveTime()));
             }
             else
             {
@@ -991,7 +1008,7 @@ public class AutomatedCurationRESTServices extends TokenController
                                                                                  boolean                 ignoreCase,
                                                                                  int                     startFrom,
                                                                                  int                     pageSize,
-                                                                                 StringRequestBody       requestBody)
+                                                                                 FilterRequestBody       requestBody)
     {
         final String methodName = "findGovernanceActionProcesses";
 
@@ -1012,9 +1029,10 @@ public class AutomatedCurationRESTServices extends TokenController
                 OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
                 response.setElements(handler.getGovernanceActionProcessesByName(userId,
-                                                                                instanceHandler.getSearchString(requestBody.getString(), startsWith, endsWith, ignoreCase),
+                                                                                instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
                                                                                 startFrom,
-                                                                                pageSize));
+                                                                                pageSize,
+                                                                                requestBody.getEffectiveTime()));
             }
             else
             {
@@ -1045,10 +1063,10 @@ public class AutomatedCurationRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GovernanceActionProcessElementsResponse getGovernanceActionProcessesByName(String          serverName,
-                                                                                      int             startFrom,
-                                                                                      int             pageSize,
-                                                                                      StringRequestBody requestBody)
+    public GovernanceActionProcessElementsResponse getGovernanceActionProcessesByName(String            serverName,
+                                                                                      int               startFrom,
+                                                                                      int               pageSize,
+                                                                                      FilterRequestBody requestBody)
     {
         final String methodName = "getGovernanceActionProcessesByName";
 
@@ -1069,9 +1087,10 @@ public class AutomatedCurationRESTServices extends TokenController
                 OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
                 response.setElements(handler.getGovernanceActionProcessesByName(userId,
-                                                                                requestBody.getString(),
+                                                                                requestBody.getFilter(),
                                                                                 startFrom,
-                                                                                pageSize));
+                                                                                pageSize,
+                                                                                requestBody.getEffectiveTime()));
             }
             else
             {
@@ -1136,14 +1155,16 @@ public class AutomatedCurationRESTServices extends TokenController
      *
      * @param serverName name of the service to route the request to
      * @param processGUID unique identifier of the requested metadata element
+     * @param requestBody effectiveTime
      *
      * @return requested metadata element or
      *  InvalidParameterException  one of the parameters is invalid
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(String serverName,
-                                                                                String processGUID)
+    public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(String                   serverName,
+                                                                                String                   processGUID,
+                                                                                EffectiveTimeRequestBody requestBody)
     {
         final String methodName = "getGovernanceActionProcessGraph";
 
@@ -1161,7 +1182,14 @@ public class AutomatedCurationRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
-            response.setElement(handler.getGovernanceActionProcessGraph(userId, processGUID));
+            if (requestBody != null)
+            {
+                response.setElement(handler.getGovernanceActionProcessGraph(userId, processGUID, requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                response.setElement(handler.getGovernanceActionProcessGraph(userId, processGUID, new Date()));
+            }
         }
         catch (Exception error)
         {
@@ -1377,7 +1405,7 @@ public class AutomatedCurationRESTServices extends TokenController
                                                           boolean           ignoreCase,
                                                           int               startFrom,
                                                           int               pageSize,
-                                                          StringRequestBody requestBody)
+                                                          FilterRequestBody requestBody)
     {
         final String methodName = "findEngineActions";
 
@@ -1398,7 +1426,7 @@ public class AutomatedCurationRESTServices extends TokenController
                 OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
                 response.setElements(handler.findEngineActions(userId,
-                                                               instanceHandler.getSearchString(requestBody.getString(), startsWith, endsWith, ignoreCase),
+                                                               instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
                                                                startFrom,
                                                                pageSize));
             }
@@ -1431,10 +1459,10 @@ public class AutomatedCurationRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public EngineActionElementsResponse getEngineActionsByName(String          serverName,
-                                                               int             startFrom,
-                                                               int             pageSize,
-                                                               StringRequestBody requestBody)
+    public EngineActionElementsResponse getEngineActionsByName(String            serverName,
+                                                               int               startFrom,
+                                                               int               pageSize,
+                                                               FilterRequestBody requestBody)
     {
         final String methodName = "getEngineActionsByName";
 
@@ -1455,7 +1483,7 @@ public class AutomatedCurationRESTServices extends TokenController
                 OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
 
                 response.setElements(handler.getEngineActionsByName(userId,
-                                                                    requestBody.getString(),
+                                                                    requestBody.getFilter(),
                                                                     startFrom,
                                                                     pageSize));
             }
@@ -1492,8 +1520,8 @@ public class AutomatedCurationRESTServices extends TokenController
      *  UserNotAuthorizedException this governance action service is not authorized to create a governance action
      *  PropertyServerException there is a problem with the metadata store
      */
-    public GUIDResponse initiateEngineAction(String                  serverName,
-                                             String                  governanceEngineName,
+    public GUIDResponse initiateEngineAction(String                          serverName,
+                                             String                          governanceEngineName,
                                              InitiateEngineActionRequestBody requestBody)
     {
         final String methodName = "initiateEngineAction";

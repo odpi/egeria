@@ -65,7 +65,9 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
      */
     private void writeDomains()
     {
-        String governanceDomainSetGUID = archiveHelper.addCollection(null,
+        String governanceDomainSetGUID = archiveHelper.addCollection(OpenMetadataType.COLLECTION.typeName,
+                                                                     null,
+                                                                     OpenMetadataType.COLLECTION.typeName,
                                                                      OpenMetadataType.GOVERNANCE_DOMAIN_SET_CLASSIFICATION_NAME,
                                                                      "GovernanceDomainSet:Coco Pharmaceuticals",
                                                                      "Coco Pharmaceuticals Governance Domains",
@@ -354,16 +356,19 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
                                      projectDefinition.getDescription(),
                                      new Date(),
                                      null,
+                                     null,
+                                     null,
                                      projectDefinition.getProjectStatus().getPreferredValue(),
                                      projectDefinition.isCampaign(),
                                      projectDefinition.isTask(),
                                      projectDefinition.getProjectTypeClassification(),
                                      null,
+                                     null,
                                      null);
 
             String projectManagerQName = projectDefinition.getQualifiedName() + ":ProjectManager";
 
-            archiveHelper.addPersonRole(OpenMetadataType.PROJECT_MANAGER_TYPE_NAME,
+            archiveHelper.addPersonRole(OpenMetadataType.PROJECT_MANAGER.typeName,
                                         projectManagerQName,
                                         projectDefinition.getIdentifier() + ":ProjectManager",
                                         projectDefinition.getDisplayName() + " project manager",

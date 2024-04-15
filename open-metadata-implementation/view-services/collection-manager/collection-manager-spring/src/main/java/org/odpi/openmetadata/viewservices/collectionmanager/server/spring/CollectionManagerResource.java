@@ -9,10 +9,7 @@ import org.odpi.openmetadata.accessservices.digitalservice.properties.Collection
 import org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionProperties;
 import org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalProductProperties;
 import org.odpi.openmetadata.accessservices.digitalservice.properties.ResourceListProperties;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.viewservices.collectionmanager.rest.*;
 import org.odpi.openmetadata.viewservices.collectionmanager.server.CollectionManagerRESTServices;
 import org.springframework.web.bind.annotation.*;
@@ -74,7 +71,8 @@ public class CollectionManagerResource
                                                                      int    startFrom,
                                                        @RequestParam(required = false, defaultValue = "0")
                                                                      int    pageSize,
-                                                       @RequestBody  StringRequestBody requestBody)
+                                                       @RequestBody(required = false)
+                                                                     FilterRequestBody requestBody)
     {
         return restAPI.getLinkedCollections(serverName, parentGUID, startFrom, pageSize, requestBody);
     }
@@ -104,7 +102,8 @@ public class CollectionManagerResource
                                                                          int    startFrom,
                                                            @RequestParam(required = false, defaultValue = "0")
                                                                          int    pageSize,
-                                                           @RequestBody  StringRequestBody requestBody)
+                                                           @RequestBody(required = false)
+                                                                         FilterRequestBody requestBody)
     {
         return restAPI.getClassifiedCollections(serverName, startFrom, pageSize, requestBody);
     }
@@ -143,7 +142,8 @@ public class CollectionManagerResource
                                                                 int               startFrom,
                                                   @RequestParam (required = false, defaultValue = "0")
                                                                 int               pageSize,
-                                                  @RequestBody  StringRequestBody requestBody)
+                                                  @RequestBody  (required = false)
+                                                                FilterRequestBody requestBody)
     {
         return restAPI.findCollections(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
     }
@@ -173,7 +173,7 @@ public class CollectionManagerResource
                                                                      int    startFrom,
                                                        @RequestParam(required = false, defaultValue = "0")
                                                                      int    pageSize,
-                                                       @RequestBody  StringRequestBody requestBody)
+                                                       @RequestBody  FilterRequestBody requestBody)
     {
         return restAPI.getCollectionsByName(serverName, startFrom, pageSize, requestBody);
     }
@@ -203,7 +203,7 @@ public class CollectionManagerResource
                                                                      int               startFrom,
                                                        @RequestParam(required = false, defaultValue = "0")
                                                                      int               pageSize,
-                                                       @RequestBody  StringRequestBody requestBody)
+                                                       @RequestBody(required = false)  FilterRequestBody requestBody)
     {
         return restAPI.getCollectionsByType(serverName, startFrom, pageSize, requestBody);
     }
@@ -237,7 +237,7 @@ public class CollectionManagerResource
      * Create a new generic collection.
      *
      * @param serverName                 name of called server.
-     * @param optionalClassificationName name of collection classification
+     * @param classificationName name of collection classification
      * @param requestBody             properties for the collection.
      *
      * @return unique identifier of the newly created Collection

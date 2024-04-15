@@ -94,8 +94,8 @@ public class AssetSetUp
             externalAssetManagerClient = new ExternalAssetManagerClient(serverName, platformURLRoot, 100);
             databaseManagerClient = new DatabaseManagerClient(serverName, platformURLRoot);
             externalReferenceManagerClient = new ExternalReferenceManagerClient(serverName, platformURLRoot);
-            connectionManager = new ConnectionManager(serverName, platformURLRoot);
-            locationManager = new LocationManager(serverName, platformURLRoot);
+            connectionManager = new ConnectionManager(serverName, platformURLRoot, 100);
+            locationManager = new LocationManager(serverName, platformURLRoot, 100);
             capabilityManagerClient = new CapabilityManagerClient(serverName, platformURLRoot);
             governanceZoneManager = new GovernanceZoneManager(serverName, platformURLRoot);
         }

@@ -75,7 +75,7 @@ public class ValidValuesReport
             /*
              * These clients are from the Digital Architecture OMAS.
              */
-            ReferenceDataManager    referenceDataManager = new ReferenceDataManager(serverName, platformURLRoot);
+            ReferenceDataManager    referenceDataManager = new ReferenceDataManager(serverName, platformURLRoot, 100);
             OpenMetadataStoreClient openMetadataStoreClient = new OpenMetadataStoreClient(serverName, platformURLRoot, 100);
 
             /*

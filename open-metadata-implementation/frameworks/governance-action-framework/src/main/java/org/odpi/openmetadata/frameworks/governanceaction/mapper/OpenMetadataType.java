@@ -446,6 +446,95 @@ public enum OpenMetadataType
            "d1df6cb0-80af-473f-aacf-f29972fd4c34",
            "An action that has been identified to support the development, improvement, or remedy of an object or situation."),
 
+    /**
+     * An organized activity, typically to achieve a well defined goal.
+     */
+    PROJECT("0799569f-0c16-4a1f-86d9-e2e89568f7fd",
+            "Project",
+            OpenMetadataWikiPages.MODEL_0130_PROJECTS,
+            "An organized activity, typically to achieve a well defined goal.",
+            "1d8eed39-17e2-400c-adac-4d0c8f3063ad"),
+
+    /**
+     * An person with overall responsibility for one or more project.
+     */
+    PROJECT_MANAGER("0798569f-0c16-4a1f-86d9-e2e89568f7fd",
+                    "ProjectManager",
+                    OpenMetadataWikiPages.MODEL_0130_PROJECTS,
+                    "fbc22a33-8a07-45a3-afdf-839717be9f05",
+                    "An person with overall responsibility for one or more projects."),
+
+    /**
+     * The link between a project and its project manager role.
+     */
+    PROJECT_MANAGEMENT_RELATIONSHIP("ac63ac45-a4d0-4fba-b583-92859de77dd8",
+                                    "ProjectManagement",
+                                    OpenMetadataWikiPages.MODEL_0130_PROJECTS,
+                                    "8f09b512-1f13-417d-99ed-beb628e47e39",
+                                    "The link between a project and its project manager role."),
+
+    /**
+     * The actors assigned to a project.
+     */
+    PROJECT_TEAM_RELATIONSHIP("746875af-2e41-4d1f-864b-35265df1d5dc",
+                              "ProjectTeam",
+                              OpenMetadataWikiPages.MODEL_0130_PROJECTS,
+                              "fdae8a21-8713-466c-9446-bf6b482ec103",
+                              "The actors assigned to a project."),
+
+    /**
+     * A nesting relationship between projects.
+     */
+    PROJECT_HIERARCHY_RELATIONSHIP("8f1134f6-b9fe-4971-bc57-6e1b8b302b55",
+                                   "ProjectHierarchy",
+                                   OpenMetadataWikiPages.MODEL_0130_PROJECTS,
+                                   "d061fb2c-0315-4dcc-9f49-5dcf22f562f3",
+                                   "A nesting relationship between projects."),
+
+    /**
+     * A dependency relationship between projects.
+     */
+    PROJECT_DEPENDENCY_RELATIONSHIP("5b6a56f1-68e2-4e10-85f0-fda47a4263fd",
+                                    "ProjectDependency",
+                                    OpenMetadataWikiPages.MODEL_0130_PROJECTS,
+                                    "ee7973dc-022b-4d49-bb5d-5231ad64630b",
+                                    "A dependency relationship between projects."),
+
+    /**
+     * A long-term strategic initiative that is implemented through multiple related projects.
+     */
+    CAMPAIGN_CLASSIFICATION("41437629-8609-49ef-8930-8c435c912572",
+                            "Campaign",
+                            OpenMetadataWikiPages.MODEL_0130_PROJECTS,
+                            "5414bc9b-ff73-4eeb-a8a7-3cbb5beae166",
+                            "A long-term strategic initiative that is implemented through multiple related projects."),
+
+    /**
+     * A self-contained, short activity, typically for one or two people.
+     */
+    TASK_CLASSIFICATION("2312b668-3670-4845-a140-ef88d5a6db0c",
+                        "Task",
+                        OpenMetadataWikiPages.MODEL_0130_PROJECTS,
+                        "0b00b39b-4079-475e-b598-f31003078831",
+                        "A self-contained, short activity, typically for one or two people."),
+
+    /**
+     * This is an informal project that has been created by an individual to help them organize their work.
+     */
+    PERSONAL_PROJECT_CLASSIFICATION("3d7b8500-cebd-4f18-b85c-a459bec3e3ef",
+                                    "PersonalProject",
+                                    OpenMetadataWikiPages.MODEL_0130_PROJECTS,
+                                    "da65ba96-b9d8-45e7-b16f-24342b6695c0",
+                                    "This is an informal project that has been created by an individual to help them organize their work."),
+
+    /**
+     * A focused analysis of a topic, person, object or situation.
+     */
+    STUDY_PROJECT_CLASSIFICATION("e68ae56a-7567-4c6a-9bff-04076bcc0b3b",
+                                 "StudyProject",
+                                 OpenMetadataWikiPages.MODEL_0130_PROJECTS,
+                                 "04b9427e-b6cc-45d4-b880-6eaa9a47f063",
+                                 "A focused analysis of a topic, person, object or situation."),
 
     /* ============================================================================================================================*/
     /* Area 2 - Assets                                                                                                             */
@@ -1309,22 +1398,6 @@ public enum OpenMetadataType
     public static final String DEFAULT_MEDIA_USAGE_OTHER_ID_PROPERTY_NAME = "defaultMediaUsageOtherId";     /* from RelatedMedia entity */
 
     public static final String MEDIA_ID_PROPERTY_NAME          = "mediaId";              /* from MediaReference relationship */
-    public static final String MEDIA_DESCRIPTION_PROPERTY_NAME = "description";          /* from MediaReference relationship */
-
-    /**
-     * 347005ba-2b35-4670-b5a7-12c9ebed0cf7
-     */
-    public static final String COLLECTION_TYPE_GUID = "347005ba-2b35-4670-b5a7-12c9ebed0cf7";
-
-    /**
-     * Collection - inherits from Referenceable
-     */
-    public static final String COLLECTION_TYPE_NAME = "Collection";              /* from Area 1 */
-
-    /**
-     * collectionType
-     */
-    public static final String COLLECTION_TYPE_PROPERTY_NAME = "collectionType";        /* from Collection entity */
 
 
     /**
@@ -1332,16 +1405,6 @@ public enum OpenMetadataType
      */
     public static final String MEMBERSHIP_RATIONALE_PROPERTY_NAME = "membershipRationale";
 
-
-    /**
-     * 3c0fa687-8a63-4c8e-8bda-ede9c78be6c7
-     */
-    public static final String FOLDER_TYPE_GUID = "3c0fa687-8a63-4c8e-8bda-ede9c78be6c7";
-
-    /**
-     * Folder
-     */
-    public static final String FOLDER_TYPE_NAME = "Folder";              /* from Area 1 */
 
     /**
      * orderBy
@@ -2138,79 +2201,9 @@ public enum OpenMetadataType
 
     public static final String ASSIGNMENT_TYPE_PROPERTY_NAME = "assignmentType";                          /* from Area 1 */
 
-    /**
-     * 0799569f-0c16-4a1f-86d9-e2e89568f7fd
-     */
-    public static final String PROJECT_TYPE_GUID = "0799569f-0c16-4a1f-86d9-e2e89568f7fd";
-
-    /**
-     * Project - inherits from Referenceable
-     */
-    public static final String PROJECT_TYPE_NAME = "Project";   /* from Area 1 */
-
-    /**
-     * 41437629-8609-49ef-8930-8c435c912572
-     */
-    public static final String CAMPAIGN_CLASSIFICATION_TYPE_GUID = "41437629-8609-49ef-8930-8c435c912572";
-
-    /**
-     * Campaign - links to Referenceable
-     */
-    public static final String CAMPAIGN_CLASSIFICATION_TYPE_NAME = "Campaign";          /* from Area 1 */
-
-    /**
-     * 2312b668-3670-4845-a140-ef88d5a6db0c
-     */
-    public static final String TASK_CLASSIFICATION_TYPE_GUID = "2312b668-3670-4845-a140-ef88d5a6db0c";
-
-    /**
-     * Task - attaches to Project
-     */
-    public static final String TASK_CLASSIFICATION_TYPE_NAME = "Task";              /* from Area 1 */
-
-    /**
-     * 3d7b8500-cebd-4f18-b85c-a459bec3e3ef
-     */
-    public static final String PERSONAL_PROJECT_TYPE_GUID = "3d7b8500-cebd-4f18-b85c-a459bec3e3ef";
-
-    /**
-     * PersonalProject
-     */
-    public static final String PERSONAL_PROJECT_TYPE_NAME = "PersonalProject";   /* from Area 1 */
-
-
-    /**
-     * e68ae56a-7567-4c6a-9bff-04076bcc0b3b
-     */
-    public static final String STUDY_PROJECT_TYPE_GUID = "e68ae56a-7567-4c6a-9bff-04076bcc0b3b";
-
-    /**
-     * Study
-     */
-    public static final String STUDY_PROJECT_TYPE_NAME = "StudyProject";   /* from Area 1 */
-
     public static final String PROJECT_STATUS_PROPERTY_NAME     = "projectStatus";                     /* from Area 1 */
     public static final String TEAM_ROLE_PROPERTY_NAME          = "teamRole";                          /* from Area 1 */
     public static final String DEPENDENCY_SUMMARY_PROPERTY_NAME = "dependencySummary";                 /* from Area 1 */
-
-    public static final String PROJECT_TEAM_RELATIONSHIP_TYPE_GUID = "746875af-2e41-4d1f-864b-35265df1d5dc";
-    public static final String PROJECT_TEAM_RELATIONSHIP_TYPE_NAME = "ProjectTeam";   /* from Area 1 */
-    /* End1 = Project; End 2 = ActorProfile */
-
-    public static final String PROJECT_MANAGEMENT_RELATIONSHIP_TYPE_GUID = "ac63ac45-a4d0-4fba-b583-92859de77dd8";
-    public static final String PROJECT_MANAGEMENT_RELATIONSHIP_TYPE_NAME = "ProjectManagement";   /* from Area 1 */
-    /* End1 = Project; End 2 = PersonRole */
-
-    public static final String PROJECT_MANAGER_TYPE_GUID = "0798569f-0c16-4a1f-86d9-e2e89568f7fd";
-    public static final String PROJECT_MANAGER_TYPE_NAME = "ProjectManager";
-
-    public static final String PROJECT_HIERARCHY_RELATIONSHIP_TYPE_GUID = "8f1134f6-b9fe-4971-bc57-6e1b8b302b55";
-    public static final String PROJECT_HIERARCHY_RELATIONSHIP_TYPE_NAME = "ProjectHierarchy";   /* from Area 1 */
-    /* End1 = managingProject; End 2 = managedProject */
-
-    public static final String PROJECT_DEPENDENCY_RELATIONSHIP_TYPE_GUID = "5b6a56f1-68e2-4e10-85f0-fda47a4263fd";
-    public static final String PROJECT_DEPENDENCY_RELATIONSHIP_TYPE_NAME = "ProjectDependency";   /* from Area 1 */
-    /* End1 = dependentProject; End 2 = dependsOnProject */
 
     public static final String STAKEHOLDER_RELATIONSHIP_TYPE_GUID = "efd8a136-0aea-4668-b91a-30f947e38b82";
     public static final String STAKEHOLDER_RELATIONSHIP_TYPE_NAME = "Stakeholder";   /* from Area 1 */
