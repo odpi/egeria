@@ -310,6 +310,7 @@ org.odpi.openmetadata.accessservices.itinfrastructure.server.spring
 org.odpi.openmetadata.accessservices.projectmanagement.admin
 org.odpi.openmetadata.accessservices.projectmanagement.api
 org.odpi.openmetadata.accessservices.projectmanagement.client
+org.odpi.openmetadata.accessservices.projectmanagement.client.converters
 org.odpi.openmetadata.accessservices.projectmanagement.client.rest
 org.odpi.openmetadata.accessservices.projectmanagement.converters
 org.odpi.openmetadata.accessservices.projectmanagement.ffdc
@@ -441,7 +442,6 @@ org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc
 org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception
 org.odpi.openmetadata.adapters.connectors.datastore.csvfile
 org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc
-org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.exception
 org.odpi.openmetadata.adapters.connectors.datastore.datafolder
 org.odpi.openmetadata.adapters.connectors.datastore.datafolder.ffdc
 org.odpi.openmetadata.adapters.connectors.dynamicarchivers
@@ -483,6 +483,8 @@ org.odpi.openmetadata.adapters.connectors.postgres.controls
 org.odpi.openmetadata.adapters.connectors.postgres.ffdc
 org.odpi.openmetadata.adapters.connectors.postgres.survey
 org.odpi.openmetadata.adapters.connectors.postgres.utilities
+org.odpi.openmetadata.adapters.connectors.reports
+org.odpi.openmetadata.adapters.connectors.reports.surveyreport
 org.odpi.openmetadata.adapters.connectors.resource.jdbc
 org.odpi.openmetadata.adapters.connectors.resource.jdbc.ffdc
 org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties
@@ -960,6 +962,10 @@ org.odpi.openmetadata.viewservices.collectionmanager.ffdc
 org.odpi.openmetadata.viewservices.collectionmanager.rest
 org.odpi.openmetadata.viewservices.collectionmanager.server
 org.odpi.openmetadata.viewservices.collectionmanager.server.spring
+org.odpi.openmetadata.viewservices.datadiscovery.admin
+org.odpi.openmetadata.viewservices.datadiscovery.ffdc
+org.odpi.openmetadata.viewservices.datadiscovery.server
+org.odpi.openmetadata.viewservices.datadiscovery.server.spring
 org.odpi.openmetadata.viewservices.dino.admin
 org.odpi.openmetadata.viewservices.dino.api.ffdc
 org.odpi.openmetadata.viewservices.dino.api.properties
@@ -1016,6 +1022,15 @@ org.odpi.openmetadata.viewservices.myprofile.properties
 org.odpi.openmetadata.viewservices.myprofile.rest
 org.odpi.openmetadata.viewservices.myprofile.server
 org.odpi.openmetadata.viewservices.myprofile.server.spring
+org.odpi.openmetadata.viewservices.projectmanager.admin
+org.odpi.openmetadata.viewservices.projectmanager.ffdc
+org.odpi.openmetadata.viewservices.projectmanager.rest
+org.odpi.openmetadata.viewservices.projectmanager.server
+org.odpi.openmetadata.viewservices.projectmanager.server.spring
+org.odpi.openmetadata.viewservices.referencedata.admin
+org.odpi.openmetadata.viewservices.referencedata.ffdc
+org.odpi.openmetadata.viewservices.referencedata.server
+org.odpi.openmetadata.viewservices.referencedata.server.spring
 org.odpi.openmetadata.viewservices.rex.admin
 org.odpi.openmetadata.viewservices.rex.api.ffdc
 org.odpi.openmetadata.viewservices.rex.api.properties
@@ -1031,6 +1046,11 @@ org.odpi.openmetadata.viewservices.serverauthor.handlers
 org.odpi.openmetadata.viewservices.serverauthor.initialization
 org.odpi.openmetadata.viewservices.serverauthor.server.spring
 org.odpi.openmetadata.viewservices.serverauthor.services
+org.odpi.openmetadata.viewservices.templatemanager.admin
+org.odpi.openmetadata.viewservices.templatemanager.ffdc
+org.odpi.openmetadata.viewservices.templatemanager.rest
+org.odpi.openmetadata.viewservices.templatemanager.server
+org.odpi.openmetadata.viewservices.templatemanager.server.spring
 org.odpi.openmetadata.viewservices.tex.admin
 org.odpi.openmetadata.viewservices.tex.api.ffdc
 org.odpi.openmetadata.viewservices.tex.api.properties

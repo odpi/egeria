@@ -167,10 +167,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Detach an existing collection from an element.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/CollectionElement.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">CollectionElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findCollections(java.lang.String,java.lang.String,int,int)" class="member-name-link">findCollections</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findCollections(java.lang.String,java.lang.String,int,int,java.util.Date)" class="member-name-link">findCollections</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
  int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Returns the list of collections matching the search string - this is coded as a regular expression.</div>
 </div>
@@ -197,10 +198,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Return a list of elements that are a member of a collection.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/CollectionElement.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">CollectionElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getCollectionsByName(java.lang.String,java.lang.String,int,int)" class="member-name-link">getCollectionsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getCollectionsByName(java.lang.String,java.lang.String,int,int,java.util.Date)" class="member-name-link">getCollectionsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Returns the list of collections with a particular name.</div>
 </div>
@@ -323,12 +325,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findCollections(java.lang.String,java.lang.String,int,int)">
+<section class="detail" id="findCollections(java.lang.String,java.lang.String,int,int,java.util.Date)">
 <h3>findCollections</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/CollectionElement.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">CollectionElement</a>&gt;</span>&nbsp;<span class="element-name">findCollections</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
  int&nbsp;startFrom,
- int&nbsp;pageSize)</span>
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                                  throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
@@ -339,6 +342,7 @@ loadScripts(document, 'script');</script>
 <dd><code>searchString</code> - string to search for</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
 <dd><code>pageSize</code> - maximum number of elements to return</dd>
+<dd><code>effectiveTime</code> - only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
 <dt>Returns:</dt>
 <dd>a list of collections</dd>
 <dt>Throws:</dt>
@@ -349,12 +353,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getCollectionsByName(java.lang.String,java.lang.String,int,int)">
+<section class="detail" id="getCollectionsByName(java.lang.String,java.lang.String,int,int,java.util.Date)">
 <h3>getCollectionsByName</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/CollectionElement.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.metadataelements">CollectionElement</a>&gt;</span>&nbsp;<span class="element-name">getCollectionsByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  int&nbsp;startFrom,
- int&nbsp;pageSize)</span>
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                                       throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
@@ -365,6 +370,7 @@ loadScripts(document, 'script');</script>
 <dd><code>name</code> - name of the collections to return - match is full text match in qualifiedName or name</dd>
 <dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
 <dd><code>pageSize</code> - maximum number of elements to return</dd>
+<dd><code>effectiveTime</code> - only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.</dd>
 <dt>Returns:</dt>
 <dd>a list of collections</dd>
 <dt>Throws:</dt>

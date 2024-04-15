@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../../../accessservices/assetmanager/client/converters/AssetManagerConverterBase.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.converters">AssetManagerConverterBase</a></code>, <code><a href="../../../accessservices/assetowner/client/converters/AssetOwnerConverterBase.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client.converters">AssetOwnerConverterBase</a></code>, <code><a href="../../../accessservices/communityprofile/client/converters/CommunityProfileConverterBase.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client.converters">CommunityProfileConverterBase</a></code>, <code><a href="../../../accessservices/digitalservice/client/converters/DigitalServiceConverterBase.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.client.converters">DigitalServiceConverterBase</a></code>, <code><a href="../../../accessservices/stewardshipaction/client/converters/StewardshipActionConverterBase.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.client.converters">StewardshipActionConverterBase</a></code></dd>
+<dd><code><a href="../../../accessservices/assetmanager/client/converters/AssetManagerConverterBase.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.client.converters">AssetManagerConverterBase</a></code>, <code><a href="../../../accessservices/assetowner/client/converters/AssetOwnerConverterBase.html" title="class in org.odpi.openmetadata.accessservices.assetowner.client.converters">AssetOwnerConverterBase</a></code>, <code><a href="../../../accessservices/communityprofile/client/converters/CommunityProfileConverterBase.html" title="class in org.odpi.openmetadata.accessservices.communityprofile.client.converters">CommunityProfileConverterBase</a></code>, <code><a href="../../../accessservices/digitalservice/client/converters/DigitalServiceConverterBase.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.client.converters">DigitalServiceConverterBase</a></code>, <code><a href="../../../accessservices/projectmanagement/client/converters/ProjectManagementConverterBase.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.client.converters">ProjectManagementConverterBase</a></code>, <code><a href="../../../accessservices/stewardshipaction/client/converters/StewardshipActionConverterBase.html" title="class in org.odpi.openmetadata.accessservices.stewardshipaction.client.converters">StewardshipActionConverterBase</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">OpenMetadataConverterBase&lt;B&gt;</span>
@@ -1582,160 +1582,170 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Extract and delete the resourceCreateTime property from the supplied element properties.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeResourceProperties(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeResourceProperties</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract and delete the resourceProperties property from the supplied element properties.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeResourceUpdateTime(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeResourceUpdateTime</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract and delete the resourceUpdateTime property from the supplied element properties.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeResults(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeResults</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract and delete the "results" property from the supplied element properties.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeReview(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeReview</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract the review property from the supplied element properties.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeReviewDate(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeReviewDate</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeResourceLastAccessedTime(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeResourceLastAccessedTime</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract the reviewDate property from the supplied element properties.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeRoleTypeName(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeRoleTypeName</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract and delete the roleTypeName property from the supplied element properties.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSchemaName(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeSchemaName</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract the schemaName property from the supplied element properties.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSchemaType(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeSchemaType</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract the schemaType property from the supplied element properties.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeScope(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeScope</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract and delete the scope property from the supplied element properties.</div>
+<div class="block">Extract and delete the resourceLastAccessedTime property from the supplied element properties.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSecuredProperties(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeSecuredProperties</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeResourceProperties(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeResourceProperties</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract and delete the securedProperties property from the supplied element properties.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeServiceRequestType(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeServiceRequestType</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract and delete the serviceRequestType property from the supplied element properties.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected long</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSize(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeSize</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract and delete the size property from the supplied element properties.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSource(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeSource</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract and delete the type property from the supplied element properties.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeStartDate(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeStartDate</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract and delete the startDate property from the supplied element properties.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeStatus(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeStatus</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract and delete the status property from the supplied element properties.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSteward(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeSteward</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract the steward property from the supplied element properties.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeStewardPropertyName(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeStewardPropertyName</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract the stewardPropertyName property from the supplied element properties.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeStewardTypeName(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeStewardTypeName</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract the stewardTypeName property from the supplied element properties.</div>
+<div class="block">Extract and delete the resourceProperties property from the supplied element properties.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeStoreCreateTime(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeStoreCreateTime</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeResourceUpdateTime(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeResourceUpdateTime</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract and delete the sourceCreateTime property from the supplied element properties.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeStoreUpdateTime(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeStoreUpdateTime</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract and delete the storeUpdateTime property from the supplied element properties.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSubjectAreaName(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeSubjectAreaName</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve the subjectAreaName from the properties.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSummary(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeSummary</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract and remove the summary property from the supplied element properties.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSupportedAssetTypeName(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeSupportedAssetTypeName</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract and delete the supported asset type name property from the supplied element properties.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSurname(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeSurname</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract and delete the surname property from the supplied element properties.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeTagDescription(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeTagDescription</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract the tagDescription property from the supplied element properties.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeTagName(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeTagName</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract the tagName property from the supplied element properties.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeTarget(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeTarget</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract and delete the target property from the supplied element properties.</div>
+<div class="block">Extract and delete the resourceUpdateTime property from the supplied element properties.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeTargetTechnologyInterfaces(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeTargetTechnologyInterfaces</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeResults(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeResults</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract and delete the target technology interfaces property from the supplied element properties.</div>
+<div class="block">Extract and delete the "results" property from the supplied element properties.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeTargetTechnologyName(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeTargetTechnologyName</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeReview(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeReview</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract and delete the target technology name property from the supplied element properties.</div>
+<div class="block">Extract the review property from the supplied element properties.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeReviewDate(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeReviewDate</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract the reviewDate property from the supplied element properties.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeRoleTypeName(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeRoleTypeName</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract and delete the roleTypeName property from the supplied element properties.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeTargetTechnologySource(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeTargetTechnologySource</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSchemaName(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeSchemaName</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Extract and delete the target technology source property from the supplied element properties.</div>
+<div class="block">Extract the schemaName property from the supplied element properties.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSchemaType(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeSchemaType</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract the schemaType property from the supplied element properties.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeScope(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeScope</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract and delete the scope property from the supplied element properties.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSecuredProperties(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeSecuredProperties</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract and delete the securedProperties property from the supplied element properties.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeServiceRequestType(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeServiceRequestType</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract and delete the serviceRequestType property from the supplied element properties.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected long</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSize(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeSize</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract and delete the size property from the supplied element properties.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSource(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeSource</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract and delete the type property from the supplied element properties.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeStartDate(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeStartDate</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract and delete the startDate property from the supplied element properties.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeStatus(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeStatus</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract and delete the status property from the supplied element properties.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSteward(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeSteward</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract the steward property from the supplied element properties.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeStewardPropertyName(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeStewardPropertyName</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract the stewardPropertyName property from the supplied element properties.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeStewardTypeName(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeStewardTypeName</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract the stewardTypeName property from the supplied element properties.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeStoreCreateTime(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeStoreCreateTime</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract and delete the sourceCreateTime property from the supplied element properties.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeStoreUpdateTime(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeStoreUpdateTime</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract and delete the storeUpdateTime property from the supplied element properties.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSubjectAreaName(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeSubjectAreaName</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the subjectAreaName from the properties.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSummary(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeSummary</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract and remove the summary property from the supplied element properties.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSupportedAssetTypeName(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeSupportedAssetTypeName</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract and delete the supported asset type name property from the supplied element properties.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeSurname(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeSurname</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract and delete the surname property from the supplied element properties.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeTagDescription(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeTagDescription</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract the tagDescription property from the supplied element properties.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeTagName(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeTagName</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract the tagName property from the supplied element properties.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeTarget(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeTarget</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract and delete the target property from the supplied element properties.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeTargetTechnologyVersions(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeTargetTechnologyVersions</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeTargetTechnologyInterfaces(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeTargetTechnologyInterfaces</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract and delete the target technology interfaces property from the supplied element properties.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeTargetTechnologyName(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeTargetTechnologyName</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract and delete the target technology name property from the supplied element properties.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeTargetTechnologySource(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeTargetTechnologySource</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract and delete the target technology source property from the supplied element properties.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeTargetTechnologyVersions(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeTargetTechnologyVersions</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Extract and delete the target technology versions property from the supplied element properties.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeTeamRole(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeTeamRole</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract and delete the teamRole property from the supplied element properties.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeText(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)" class="member-name-link">removeText</a><wbr>(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</code></div>
@@ -2901,6 +2911,19 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="removeTeamRole(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">
+<h3>removeTeamRole</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">removeTeamRole</span><wbr><span class="parameters">(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</span></div>
+<div class="block">Extract and delete the teamRole property from the supplied element properties.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>elementProperties</code> - properties from element</dd>
+<dt>Returns:</dt>
+<dd>string text or null</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="removeCreatedBy(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">
 <h3>removeCreatedBy</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">removeCreatedBy</span><wbr><span class="parameters">(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</span></div>
@@ -3620,6 +3643,19 @@ loadScripts(document, 'script');</script>
 <h3>removeResourceUpdateTime</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">removeResourceUpdateTime</span><wbr><span class="parameters">(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</span></div>
 <div class="block">Extract and delete the resourceUpdateTime property from the supplied element properties.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>elementProperties</code> - properties from element</dd>
+<dt>Returns:</dt>
+<dd>date or null</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="removeResourceLastAccessedTime(org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties)">
+<h3>removeResourceLastAccessedTime</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">removeResourceLastAccessedTime</span><wbr><span class="parameters">(<a href="../search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;elementProperties)</span></div>
+<div class="block">Extract and delete the resourceLastAccessedTime property from the supplied element properties.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>elementProperties</code> - properties from element</dd>

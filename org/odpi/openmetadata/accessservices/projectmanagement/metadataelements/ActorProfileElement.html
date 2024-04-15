@@ -77,21 +77,13 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">MetadataElement</a></code></dd>
+<dd><code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">MetadataElement</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ActorProfileElement</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>, <a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">MetadataElement</a></span></div>
+implements <a href="MetadataElement.html" title="interface in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">MetadataElement</a></span></div>
 <div class="block">The ActorProfileElement describes an individual, system, team or organization.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../serialized-form.html#org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ActorProfileElement">Serialized Form</a></li>
-</ul>
-</dd>
-</dl>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -130,65 +122,15 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return comparison result based on the content of the properties.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ContactMethodElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ContactMethodElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getContactMethods()" class="member-name-link">getContactMethods</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the contact methods for this profile.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ContributionRecordElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ContributionRecordElement</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getContributionRecord()" class="member-name-link">getContributionRecord</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the contribution record (only if this profile is for a person).</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementHeader()" class="member-name-link">getElementHeader</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the element header associated with the properties.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLinkedInfrastructure()" class="member-name-link">getLinkedInfrastructure</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/ActorProfileProperties.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.properties">ActorProfileProperties</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProfileProperties()" class="member-name-link">getProfileProperties</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the stubs of the pieces of IT infrastructure linked to the profile.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProfileLocationElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ProfileLocationElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocations()" class="member-name-link">getLocations</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the headers of the location that this actor is linked to.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPersonRoles()" class="member-name-link">getPersonRoles</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the headers of the person roles that this actor is appointed to.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/ActorProfileProperties.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.properties">ActorProfileProperties</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProfileProperties()" class="member-name-link">getProfileProperties</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the properties of the profile.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubTeams()" class="member-name-link">getSubTeams</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of team that report to this team.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSuperTeam()" class="member-name-link">getSuperTeam</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a summary of the team that is above this team in the organizational hierarchy.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTeamLeaderRoles()" class="member-name-link">getTeamLeaderRoles</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of leader roles assigned to this team.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTeamMemberRoles()" class="member-name-link">getTeamMemberRoles</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of member roles assigned to this team.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProfileIdentityElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ProfileIdentityElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUserIdentities()" class="member-name-link">getUserIdentities</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of user identities for this profile.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -196,64 +138,14 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="block">Return hash code for this object</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setContactMethods(java.util.List)" class="member-name-link">setContactMethods</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ContactMethodElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ContactMethodElement</a>&gt;&nbsp;contactMethods)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the contact methods for this profile.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setContributionRecord(org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ContributionRecordElement)" class="member-name-link">setContributionRecord</a><wbr>(<a href="ContributionRecordElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ContributionRecordElement</a>&nbsp;contributionRecord)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the contribution record (only if this profile is for a person).</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setElementHeader(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader)" class="member-name-link">setElementHeader</a><wbr>(<a href="../../../frameworks/connectors/properties/beans/ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a>&nbsp;elementHeader)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the element header associated with the properties.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLinkedInfrastructure(java.util.List)" class="member-name-link">setLinkedInfrastructure</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;&nbsp;linkedInfrastructure)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProfileProperties(org.odpi.openmetadata.accessservices.projectmanagement.properties.ActorProfileProperties)" class="member-name-link">setProfileProperties</a><wbr>(<a href="../properties/ActorProfileProperties.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.properties">ActorProfileProperties</a>&nbsp;profileProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the stubs of the pieces of IT infrastructure linked to the profile.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLocations(java.util.List)" class="member-name-link">setLocations</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProfileLocationElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ProfileLocationElement</a>&gt;&nbsp;locations)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the headers of the person roles that this actor is linked to.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPersonRoles(java.util.List)" class="member-name-link">setPersonRoles</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;&nbsp;personRoles)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the headers of the person roles that this actor is appointed to.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProfileProperties(org.odpi.openmetadata.accessservices.projectmanagement.properties.ActorProfileProperties)" class="member-name-link">setProfileProperties</a><wbr>(<a href="../properties/ActorProfileProperties.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.properties">ActorProfileProperties</a>&nbsp;profileProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the profile properties.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSubTeams(java.util.List)" class="member-name-link">setSubTeams</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;&nbsp;subTeams)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the list of team that report to this team.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSuperTeam(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub)" class="member-name-link">setSuperTeam</a><wbr>(<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&nbsp;superTeam)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up a summary of the team that is above this team in the organizational hierarchy.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTeamLeaderRoles(java.util.List)" class="member-name-link">setTeamLeaderRoles</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;&nbsp;teamLeaderRoles)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the list of leader roles assigned to this team.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTeamMemberRoles(java.util.List)" class="member-name-link">setTeamMemberRoles</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;&nbsp;teamMemberRoles)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the list of member roles assigned to this team.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUserIdentities(java.util.List)" class="member-name-link">setUserIdentities</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProfileIdentityElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ProfileIdentityElement</a>&gt;&nbsp;userIdentities)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the list of user identities for this profile.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -348,226 +240,6 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>profileProperties</code> - properties</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getContactMethods()">
-<h3>getContactMethods</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ContactMethodElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ContactMethodElement</a>&gt;</span>&nbsp;<span class="element-name">getContactMethods</span>()</div>
-<div class="block">Return the contact methods for this profile.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>list of contact methods</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setContactMethods(java.util.List)">
-<h3>setContactMethods</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setContactMethods</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ContactMethodElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ContactMethodElement</a>&gt;&nbsp;contactMethods)</span></div>
-<div class="block">Set up the contact methods for this profile.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>contactMethods</code> - list of contact methods</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getContributionRecord()">
-<h3>getContributionRecord</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ContributionRecordElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ContributionRecordElement</a></span>&nbsp;<span class="element-name">getContributionRecord</span>()</div>
-<div class="block">Return the contribution record (only if this profile is for a person).</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>contribution record</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setContributionRecord(org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ContributionRecordElement)">
-<h3>setContributionRecord</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setContributionRecord</span><wbr><span class="parameters">(<a href="ContributionRecordElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ContributionRecordElement</a>&nbsp;contributionRecord)</span></div>
-<div class="block">Set up the contribution record (only if this profile is for a person).</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>contributionRecord</code> - contribution record</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getPersonRoles()">
-<h3>getPersonRoles</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</span>&nbsp;<span class="element-name">getPersonRoles</span>()</div>
-<div class="block">Return the headers of the person roles that this actor is appointed to.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>role stubs</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setPersonRoles(java.util.List)">
-<h3>setPersonRoles</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setPersonRoles</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;&nbsp;personRoles)</span></div>
-<div class="block">Set up the headers of the person roles that this actor is appointed to.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>personRoles</code> - role stubs</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getLocations()">
-<h3>getLocations</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProfileLocationElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ProfileLocationElement</a>&gt;</span>&nbsp;<span class="element-name">getLocations</span>()</div>
-<div class="block">Return the headers of the location that this actor is linked to.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>location stubs</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setLocations(java.util.List)">
-<h3>setLocations</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLocations</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProfileLocationElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ProfileLocationElement</a>&gt;&nbsp;locations)</span></div>
-<div class="block">Set up the headers of the person roles that this actor is linked to.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>locations</code> - location stubs</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getUserIdentities()">
-<h3>getUserIdentities</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProfileIdentityElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ProfileIdentityElement</a>&gt;</span>&nbsp;<span class="element-name">getUserIdentities</span>()</div>
-<div class="block">Return the list of user identities for this profile.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>list of userIds</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setUserIdentities(java.util.List)">
-<h3>setUserIdentities</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setUserIdentities</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProfileIdentityElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ProfileIdentityElement</a>&gt;&nbsp;userIdentities)</span></div>
-<div class="block">Set up the list of user identities for this profile.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>userIdentities</code> - list of userIds</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getSuperTeam()">
-<h3>getSuperTeam</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a></span>&nbsp;<span class="element-name">getSuperTeam</span>()</div>
-<div class="block">Return a summary of the team that is above this team in the organizational hierarchy.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>team stub</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setSuperTeam(org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub)">
-<h3>setSuperTeam</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSuperTeam</span><wbr><span class="parameters">(<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&nbsp;superTeam)</span></div>
-<div class="block">Set up a summary of the team that is above this team in the organizational hierarchy.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>superTeam</code> - team stub</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getSubTeams()">
-<h3>getSubTeams</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</span>&nbsp;<span class="element-name">getSubTeams</span>()</div>
-<div class="block">Return the list of team that report to this team.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>list of team stubs</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setSubTeams(java.util.List)">
-<h3>setSubTeams</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSubTeams</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;&nbsp;subTeams)</span></div>
-<div class="block">Set up the list of team that report to this team.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>subTeams</code> - list of team stubs</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getTeamLeaderRoles()">
-<h3>getTeamLeaderRoles</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</span>&nbsp;<span class="element-name">getTeamLeaderRoles</span>()</div>
-<div class="block">Return the list of leader roles assigned to this team.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>list of role stubs</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setTeamLeaderRoles(java.util.List)">
-<h3>setTeamLeaderRoles</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setTeamLeaderRoles</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;&nbsp;teamLeaderRoles)</span></div>
-<div class="block">Set up the list of leader roles assigned to this team.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>teamLeaderRoles</code> - list of role stubs</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getTeamMemberRoles()">
-<h3>getTeamMemberRoles</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</span>&nbsp;<span class="element-name">getTeamMemberRoles</span>()</div>
-<div class="block">Return the list of member roles assigned to this team.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>list of role stubs</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setTeamMemberRoles(java.util.List)">
-<h3>setTeamMemberRoles</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setTeamMemberRoles</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;&nbsp;teamMemberRoles)</span></div>
-<div class="block">Set up the list of member roles assigned to this team.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>teamMemberRoles</code> - list of role stubs</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getLinkedInfrastructure()">
-<h3>getLinkedInfrastructure</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;</span>&nbsp;<span class="element-name">getLinkedInfrastructure</span>()</div>
-<div class="block">Return the stubs of the pieces of IT infrastructure linked to the profile.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>list of element stubs</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setLinkedInfrastructure(java.util.List)">
-<h3>setLinkedInfrastructure</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setLinkedInfrastructure</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementStub.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementStub</a>&gt;&nbsp;linkedInfrastructure)</span></div>
-<div class="block">Set up the stubs of the pieces of IT infrastructure linked to the profile.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>linkedInfrastructure</code> - list of element stubs</dd>
 </dl>
 </section>
 </li>

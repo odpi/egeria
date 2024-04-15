@@ -97,38 +97,42 @@ implements <a href="../api/ProjectsInterface.html" title="interface in org.odpi.
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String)" class="member-name-link">ProjectManagement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,int)" class="member-name-link">ProjectManagement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
+ int&nbsp;maxPageSize)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">ProjectManagement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">ProjectManagement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password)</code></div>
+ int&nbsp;maxPageSize,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last odd-row-color">
-<div class="block">Create a new client that passes userId and password in each HTTP request.</div>
+<div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 </div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">ProjectManagement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int)" class="member-name-link">ProjectManagement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password,
- <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
+ int&nbsp;maxPageSize)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Create a new client that passes userId and password in each HTTP request.</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.projectmanagement.client.rest.ProjectManagementRESTClient,int)" class="member-name-link">ProjectManagement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">ProjectManagement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password,
+ int&nbsp;maxPageSize,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Create a new client that passes userId and password in each HTTP request.</div>
+</div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.projectmanagement.client.rest.ProjectManagementRESTClient,int)" class="member-name-link">ProjectManagement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
  <a href="rest/ProjectManagementRESTClient.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.client.rest">ProjectManagementRESTClient</a>&nbsp;restClient,
  int&nbsp;maxPageSize)</code></div>
-<div class="col-last odd-row-color">
-<div class="block">Create a new client that is going to be used in an OMAG Server.</div>
-</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">ProjectManagement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
- <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
+<div class="block">Create a new client that is going to be used in an OMAG Server.</div>
 </div>
 </div>
 </section>
@@ -151,63 +155,109 @@ implements <a href="../api/ProjectsInterface.html" title="interface in org.odpi.
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;projectGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;personRoleGUID)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Remove a membership relationship between a project and a person role.</div>
+<div class="block">Remove a project management relationship between a project and a person role.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearProjectTeam(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">clearProjectTeam</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;projectGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actorProfileGUID)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actorGUID)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Remove a membership relationship between a project and a person role.</div>
+<div class="block">Remove a ProjectTeam relationship between a project and an actor.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createProject(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectProperties)" class="member-name-link">createProject</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createProject(java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">createProject</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
+ boolean&nbsp;isOwnAnchor,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;optionalClassification,
+ <a href="../properties/ProjectProperties.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.properties">ProjectProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
+ <a href="../../../frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
+ boolean&nbsp;parentAtEnd1)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create a new generic project.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createProject(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectProperties)" class="member-name-link">createProject</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="../properties/ProjectProperties.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.properties">ProjectProperties</a>&nbsp;projectProperties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new metadata element to represent a project.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createProjectFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.projectmanagement.properties.TemplateProperties)" class="member-name-link">createProjectFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createProjectFromTemplate(java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)" class="member-name-link">createProjectFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
+ boolean&nbsp;isOwnAnchor,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
- <a href="../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.properties">TemplateProperties</a>&nbsp;templateProperties)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+ <a href="../../../frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;replacementProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;placeholderProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
+ <a href="../../../frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
+ boolean&nbsp;parentAtEnd1)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new metadata element to represent a project using an existing metadata element as a template.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ProjectElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ProjectElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findProjects(java.lang.String,java.lang.String,int,int)" class="member-name-link">findProjects</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ProjectElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ProjectElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findProjects(java.lang.String,java.lang.String,int,int)" class="member-name-link">findProjects</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of metadata elements that contain the search string.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ActorProfileElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ActorProfileElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProjectActors(java.lang.String,java.lang.String,int,int)" class="member-name-link">getProjectActors</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;projectGUID,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ProjectElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ProjectElement</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getClassifiedProjects(java.lang.String,java.lang.String,int,int)" class="member-name-link">getClassifiedProjects</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the list of projects with a particular classification.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ProjectElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ProjectElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLinkedProjects(java.lang.String,java.lang.String,java.lang.String,int,int)" class="member-name-link">getLinkedProjects</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;projectStatus,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the list of projects that are linked off of the supplied element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ActorProfileElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ActorProfileElement</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProjectActors(java.lang.String,java.lang.String,int,int)" class="member-name-link">getProjectActors</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;projectGUID,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return information about the actors linked to a project.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../metadataelements/ProjectElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ProjectElement</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProjectByGUID(java.lang.String,java.lang.String)" class="member-name-link">getProjectByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../metadataelements/ProjectElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ProjectElement</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProjectByGUID(java.lang.String,java.lang.String)" class="member-name-link">getProjectByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;projectGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the metadata element with the supplied unique identifier.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">PersonRoleElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProjectManagementRoles(java.lang.String,java.lang.String,int,int)" class="member-name-link">getProjectManagementRoles</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/PersonRoleElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">PersonRoleElement</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProjectManagementRoles(java.lang.String,java.lang.String,int,int)" class="member-name-link">getProjectManagementRoles</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;projectGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return information about the person roles linked to a project.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ProjectTeamMember.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ProjectTeamMember</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProjectMembers(java.lang.String,java.lang.String,java.lang.String,int,int)" class="member-name-link">getProjectMembers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;projectGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;teamRole,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return a list of actors that are members of a project.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ProjectElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ProjectElement</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProjects(java.lang.String,int,int)" class="member-name-link">getProjects</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -239,7 +289,7 @@ implements <a href="../api/ProjectsInterface.html" title="interface in org.odpi.
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;projectGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;personRoleGUID)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a membership relationship between a project and a person role to show that anyone appointed to the role is a member of the project.</div>
+<div class="block">Create a project management relationship between a project and a person role to show that someone has been appointed to the project management role.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setupProjectTeam(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectTeamProperties,java.lang.String)" class="member-name-link">setupProjectTeam</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -249,7 +299,7 @@ implements <a href="../api/ProjectsInterface.html" title="interface in org.odpi.
  <a href="../properties/ProjectTeamProperties.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.properties">ProjectTeamProperties</a>&nbsp;properties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actorProfileGUID)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a project team relationship between a project and a person role to show that anyone appointed to the role is a member of the project.</div>
+<div class="block">Create a ProjectTeam relationship between a project and an actor to show that they are member of the project.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateProject(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectProperties)" class="member-name-link">updateProject</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
@@ -282,10 +332,11 @@ implements <a href="../api/ProjectsInterface.html" title="interface in org.odpi.
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>ProjectManagement</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ProjectManagement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
+ int&nbsp;maxPageSize,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span>
                   throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
@@ -293,6 +344,7 @@ implements <a href="../api/ProjectsInterface.html" title="interface in org.odpi.
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST services</dd>
+<dd><code>maxPageSize</code> - maximum value allowed for page size</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
@@ -301,16 +353,18 @@ implements <a href="../api/ProjectsInterface.html" title="interface in org.odpi.
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,int)">
 <h3>ProjectManagement</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ProjectManagement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot)</span>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
+ int&nbsp;maxPageSize)</span>
                   throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Create a new client with no authentication embedded in the HTTP request.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server to connect to</dd>
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST services</dd>
+<dd><code>maxPageSize</code> - maximum value allowed for page size</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
@@ -318,12 +372,13 @@ implements <a href="../api/ProjectsInterface.html" title="interface in org.odpi.
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int)">
 <h3>ProjectManagement</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ProjectManagement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password)</span>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password,
+ int&nbsp;maxPageSize)</span>
                   throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
  userId/password of the calling server.  The end user's userId is sent on each request.</div>
@@ -333,6 +388,7 @@ implements <a href="../api/ProjectsInterface.html" title="interface in org.odpi.
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST services</dd>
 <dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
+<dd><code>maxPageSize</code> - maximum value allowed for page size</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
  REST API calls.</dd>
@@ -340,12 +396,13 @@ implements <a href="../api/ProjectsInterface.html" title="interface in org.odpi.
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,org.odpi.openmetadata.frameworks.auditlog.AuditLog)">
 <h3>ProjectManagement</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ProjectManagement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverPlatformURLRoot,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;password,
+ int&nbsp;maxPageSize,
  <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span>
                   throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></span></div>
 <div class="block">Create a new client that passes userId and password in each HTTP request.  This is the
@@ -356,6 +413,7 @@ implements <a href="../api/ProjectsInterface.html" title="interface in org.odpi.
 <dd><code>serverPlatformURLRoot</code> - the network address of the server running the OMAS REST services</dd>
 <dd><code>userId</code> - caller's userId embedded in all HTTP requests</dd>
 <dd><code>password</code> - caller's userId embedded in all HTTP requests</dd>
+<dd><code>maxPageSize</code> - maximum value allowed for page size</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - there is a problem creating the client-side components to issue any
@@ -421,28 +479,87 @@ implements <a href="../api/ProjectsInterface.html" title="interface in org.odpi.
 </section>
 </li>
 <li>
-<section class="detail" id="createProjectFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.projectmanagement.properties.TemplateProperties)">
+<section class="detail" id="createProject(java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)">
+<h3>createProject</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createProject</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
+ boolean&nbsp;isOwnAnchor,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;optionalClassification,
+ <a href="../properties/ProjectProperties.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.properties">ProjectProperties</a>&nbsp;properties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
+ <a href="../../../frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
+ boolean&nbsp;parentAtEnd1)</span>
+                     throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+<a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Create a new generic project.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../api/ProjectsInterface.html#createProject(java.lang.String,java.lang.String,boolean,java.lang.String,org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectProperties,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)">createProject</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProjectsInterface.html" title="interface in org.odpi.openmetadata.accessservices.projectmanagement.api">ProjectsInterface</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>userId</code> - userId of user making request.</dd>
+<dd><code>anchorGUID</code> - unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+                   or the Anchors classification is included in the initial classifications.</dd>
+<dd><code>isOwnAnchor</code> - boolean flag to day that the element should be classified as its own anchor once its element
+                    is created in the repository.</dd>
+<dd><code>optionalClassification</code> - classification of the projects - eg Campaign, Task or PersonalProject</dd>
+<dd><code>properties</code> - properties for the project.</dd>
+<dd><code>parentGUID</code> - unique identifier of optional parent entity</dd>
+<dd><code>parentRelationshipTypeName</code> - type of relationship to connect the new element to the parent</dd>
+<dd><code>parentRelationshipProperties</code> - properties to include in parent relationship</dd>
+<dd><code>parentAtEnd1</code> - which end should the parent GUID go in the relationship</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of the newly created Project</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="createProjectFromTemplate(java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)">
 <h3>createProjectFromTemplate</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createProjectFromTemplate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
+ boolean&nbsp;isOwnAnchor,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveFrom,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTo,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
- <a href="../properties/TemplateProperties.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.properties">TemplateProperties</a>&nbsp;templateProperties)</span>
+ <a href="../../../frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;replacementProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;placeholderProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentRelationshipTypeName,
+ <a href="../../../frameworks/governanceaction/search/ElementProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.search">ElementProperties</a>&nbsp;parentRelationshipProperties,
+ boolean&nbsp;parentAtEnd1)</span>
                                  throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
-<div class="block">Create a new metadata element to represent a project using an existing metadata element as a template.</div>
+<div class="block">Create a new metadata element to represent a project using an existing metadata element as a template.
+ The template defines additional classifications and relationships that should be added to the new project.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../api/ProjectsInterface.html#createProjectFromTemplate(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.projectmanagement.properties.TemplateProperties)">createProjectFromTemplate</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProjectsInterface.html" title="interface in org.odpi.openmetadata.accessservices.projectmanagement.api">ProjectsInterface</a></code></dd>
+<dd><code><a href="../api/ProjectsInterface.html#createProjectFromTemplate(java.lang.String,java.lang.String,boolean,java.util.Date,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,java.util.Map,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties,boolean)">createProjectFromTemplate</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProjectsInterface.html" title="interface in org.odpi.openmetadata.accessservices.projectmanagement.api">ProjectsInterface</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>externalSourceGUID</code> - unique identifier of software capability representing the caller</dd>
-<dd><code>externalSourceName</code> - unique name of software capability representing the caller</dd>
-<dd><code>templateGUID</code> - unique identifier of the metadata element to copy</dd>
-<dd><code>templateProperties</code> - properties that override the template</dd>
+<dd><code>anchorGUID</code> - unique identifier of the element that should be the anchor for the new element. Set to null if no anchor,
+                   or the Anchors classification is included in the initial classifications.</dd>
+<dd><code>isOwnAnchor</code> - boolean flag to day that the element should be classified as its own anchor once its element
+                    is created in the repository.</dd>
+<dd><code>effectiveFrom</code> - the date when this element is active - null for active on creation</dd>
+<dd><code>effectiveTo</code> - the date when this element becomes inactive - null for active until deleted</dd>
+<dd><code>templateGUID</code> - the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+                     connection etc)</dd>
+<dd><code>replacementProperties</code> - properties of the new metadata element.  These override the template values</dd>
+<dd><code>placeholderProperties</code> - property name-to-property value map to replace any placeholder values in the
+                              template element - and their anchored elements, which are also copied as part of this operation.</dd>
+<dd><code>parentGUID</code> - unique identifier of optional parent entity</dd>
+<dd><code>parentRelationshipTypeName</code> - type of relationship to connect the new element to the parent</dd>
+<dd><code>parentRelationshipProperties</code> - properties to include in parent relationship</dd>
+<dd><code>parentAtEnd1</code> - which end should the parent GUID go in the relationship</dd>
 <dt>Returns:</dt>
-<dd>unique identifier of the new project</dd>
+<dd>unique identifier of the new metadata element</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -492,7 +609,7 @@ implements <a href="../api/ProjectsInterface.html" title="interface in org.odpi.
                                 throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
-<div class="block">Create a membership relationship between a project and a person role to show that anyone appointed to the role is a member of the project.</div>
+<div class="block">Create a project management relationship between a project and a person role to show that someone has been appointed to the project management role.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../api/ProjectsInterface.html#setupProjectManagementRole(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">setupProjectManagementRole</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProjectsInterface.html" title="interface in org.odpi.openmetadata.accessservices.projectmanagement.api">ProjectsInterface</a></code></dd>
@@ -520,7 +637,7 @@ implements <a href="../api/ProjectsInterface.html" title="interface in org.odpi.
                                 throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
-<div class="block">Remove a membership relationship between a project and a person role.</div>
+<div class="block">Remove a project management relationship between a project and a person role.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../api/ProjectsInterface.html#clearProjectManagementRole(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearProjectManagementRole</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProjectsInterface.html" title="interface in org.odpi.openmetadata.accessservices.projectmanagement.api">ProjectsInterface</a></code></dd>
@@ -549,7 +666,7 @@ implements <a href="../api/ProjectsInterface.html" title="interface in org.odpi.
                       throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
-<div class="block">Create a project team relationship between a project and a person role to show that anyone appointed to the role is a member of the project.</div>
+<div class="block">Create a ProjectTeam relationship between a project and an actor to show that they are member of the project.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../api/ProjectsInterface.html#setupProjectTeam(java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.projectmanagement.properties.ProjectTeamProperties,java.lang.String)">setupProjectTeam</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProjectsInterface.html" title="interface in org.odpi.openmetadata.accessservices.projectmanagement.api">ProjectsInterface</a></code></dd>
@@ -574,11 +691,11 @@ implements <a href="../api/ProjectsInterface.html" title="interface in org.odpi.
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;projectGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actorProfileGUID)</span>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actorGUID)</span>
                       throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
-<div class="block">Remove a membership relationship between a project and a person role.</div>
+<div class="block">Remove a ProjectTeam relationship between a project and an actor.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../api/ProjectsInterface.html#clearProjectTeam(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">clearProjectTeam</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProjectsInterface.html" title="interface in org.odpi.openmetadata.accessservices.projectmanagement.api">ProjectsInterface</a></code></dd>
@@ -587,7 +704,7 @@ implements <a href="../api/ProjectsInterface.html" title="interface in org.odpi.
 <dd><code>externalSourceGUID</code> - unique identifier of software capability representing the caller</dd>
 <dd><code>externalSourceName</code> - unique name of software capability representing the caller</dd>
 <dd><code>projectGUID</code> - unique identifier of the project in the external data manager</dd>
-<dd><code>actorProfileGUID</code> - unique identifier of the person role in the external data manager</dd>
+<dd><code>actorGUID</code> - unique identifier of the person role in the external data manager</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
@@ -618,6 +735,95 @@ implements <a href="../api/ProjectsInterface.html" title="interface in org.odpi.
 <dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the user is not authorized to issue this request</dd>
 <dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem reported in the open metadata server(s)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getLinkedProjects(java.lang.String,java.lang.String,java.lang.String,int,int)">
+<h3>getLinkedProjects</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ProjectElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ProjectElement</a>&gt;</span>&nbsp;<span class="element-name">getLinkedProjects</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;projectStatus,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize)</span>
+                                       throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+<a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Returns the list of projects that are linked off of the supplied element.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../api/ProjectsInterface.html#getLinkedProjects(java.lang.String,java.lang.String,java.lang.String,int,int)">getLinkedProjects</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProjectsInterface.html" title="interface in org.odpi.openmetadata.accessservices.projectmanagement.api">ProjectsInterface</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>parentGUID</code> - unique identifier of referenceable object (typically a personal profile, project or
+                       community) that the projects hang off of</dd>
+<dd><code>projectStatus</code> - filter response by project type - if null, any value will do</dd>
+<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
+<dd><code>pageSize</code> - maximum number of elements to return</dd>
+<dt>Returns:</dt>
+<dd>a list of projects</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getClassifiedProjects(java.lang.String,java.lang.String,int,int)">
+<h3>getClassifiedProjects</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ProjectElement.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ProjectElement</a>&gt;</span>&nbsp;<span class="element-name">getClassifiedProjects</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize)</span>
+                                           throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+<a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Returns the list of projects with a particular classification.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../api/ProjectsInterface.html#getClassifiedProjects(java.lang.String,java.lang.String,int,int)">getClassifiedProjects</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProjectsInterface.html" title="interface in org.odpi.openmetadata.accessservices.projectmanagement.api">ProjectsInterface</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>classificationName</code> - name of the classification - if null, all projects are returned</dd>
+<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
+<dd><code>pageSize</code> - maximum number of elements to return</dd>
+<dt>Returns:</dt>
+<dd>a list of projects</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getProjectMembers(java.lang.String,java.lang.String,java.lang.String,int,int)">
+<h3>getProjectMembers</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ProjectTeamMember.html" title="class in org.odpi.openmetadata.accessservices.projectmanagement.metadataelements">ProjectTeamMember</a>&gt;</span>&nbsp;<span class="element-name">getProjectMembers</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;projectGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;teamRole,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize)</span>
+                                          throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
+<a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a>,
+<a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Return a list of actors that are members of a project.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../api/ProjectsInterface.html#getProjectMembers(java.lang.String,java.lang.String,java.lang.String,int,int)">getProjectMembers</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ProjectsInterface.html" title="interface in org.odpi.openmetadata.accessservices.projectmanagement.api">ProjectsInterface</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>userId</code> - userId of user making request</dd>
+<dd><code>projectGUID</code> - unique identifier of the project</dd>
+<dd><code>teamRole</code> - optional team role</dd>
+<dd><code>startFrom</code> - index of the list to start from (0 for start)</dd>
+<dd><code>pageSize</code> - maximum number of elements to return.</dd>
+<dt>Returns:</dt>
+<dd>list of team members</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </section>
 </li>

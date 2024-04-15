@@ -128,7 +128,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Connect an existing collection to an element using the ResourceList relationship (0019).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createCollection(java.lang.String,org.odpi.openmetadata.viewservices.collectionmanager.rest.NewCollectionRequestBody)" class="member-name-link">createCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createCollection(java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.collectionmanager.rest.NewCollectionRequestBody)" class="member-name-link">createCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;optionalClassificationName,
  <a href="../rest/NewCollectionRequestBody.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">NewCollectionRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new generic collection.</div>
@@ -140,127 +141,133 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new metadata element to represent a collection using an existing metadata element as a template.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createDigitalProduct(java.lang.String,org.odpi.openmetadata.viewservices.collectionmanager.rest.NewDigitalProductRequestBody)" class="member-name-link">createDigitalProduct</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../rest/NewDigitalProductRequestBody.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">NewDigitalProductRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createDataSpecCollection(java.lang.String,org.odpi.openmetadata.viewservices.collectionmanager.rest.NewCollectionRequestBody)" class="member-name-link">createDataSpecCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../rest/NewCollectionRequestBody.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">NewCollectionRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a new collection that represents a digital product.</div>
+<div class="block">Create a new collection with the DataSpecCollection classification.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createFolderCollection(java.lang.String,org.odpi.openmetadata.viewservices.collectionmanager.rest.NewCollectionRequestBody)" class="member-name-link">createFolderCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../rest/NewCollectionRequestBody.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">NewCollectionRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createDigitalProduct(java.lang.String,org.odpi.openmetadata.viewservices.collectionmanager.rest.NewDigitalProductRequestBody)" class="member-name-link">createDigitalProduct</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../rest/NewDigitalProductRequestBody.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">NewDigitalProductRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create a new collection with the Folder classification.</div>
+<div class="block">Create a new collection that represents a digital product.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createRootCollection(java.lang.String,org.odpi.openmetadata.viewservices.collectionmanager.rest.NewCollectionRequestBody)" class="member-name-link">createRootCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createFolderCollection(java.lang.String,org.odpi.openmetadata.viewservices.collectionmanager.rest.NewCollectionRequestBody)" class="member-name-link">createFolderCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../rest/NewCollectionRequestBody.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">NewCollectionRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create a new collection with the Folder classification.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createRootCollection(java.lang.String,org.odpi.openmetadata.viewservices.collectionmanager.rest.NewCollectionRequestBody)" class="member-name-link">createRootCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../rest/NewCollectionRequestBody.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">NewCollectionRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new collection with the RootCollection classification.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteCollection(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)" class="member-name-link">deleteCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteCollection(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)" class="member-name-link">deleteCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  <a href="../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Delete a collection.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachCollection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)" class="member-name-link">detachCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachCollection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)" class="member-name-link">detachCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  <a href="../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Detach an existing collection from an element.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/CollectionListResponse.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">CollectionListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findCollections(java.lang.String,boolean,boolean,boolean,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody)" class="member-name-link">findCollections</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/CollectionListResponse.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">CollectionListResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findCollections(java.lang.String,boolean,boolean,boolean,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">findCollections</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  boolean&nbsp;startsWith,
  boolean&nbsp;endsWith,
  boolean&nbsp;ignoreCase,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../commonservices/ffdc/rest/StringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">StringRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+ <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the list of collections matching the search string - this is coded as a regular expression.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/CollectionListResponse.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">CollectionListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getClassifiedCollections(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody)" class="member-name-link">getClassifiedCollections</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/CollectionListResponse.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">CollectionListResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getClassifiedCollections(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getClassifiedCollections</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../commonservices/ffdc/rest/StringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">StringRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+ <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the list of collections with a particular classification.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/CollectionResponse.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">CollectionResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCollection(java.lang.String,java.lang.String)" class="member-name-link">getCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/CollectionResponse.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">CollectionResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCollection(java.lang.String,java.lang.String)" class="member-name-link">getCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the properties of a specific collection.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/CollectionMemberListResponse.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">CollectionMemberListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCollectionMembers(java.lang.String,java.lang.String,int,int)" class="member-name-link">getCollectionMembers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/CollectionMemberListResponse.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">CollectionMemberListResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCollectionMembers(java.lang.String,java.lang.String,int,int)" class="member-name-link">getCollectionMembers</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a list of elements that are a member of a collection.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/CollectionListResponse.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">CollectionListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCollectionsByName(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody)" class="member-name-link">getCollectionsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/CollectionListResponse.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">CollectionListResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCollectionsByName(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getCollectionsByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../commonservices/ffdc/rest/StringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">StringRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+ <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the list of collections with a particular name.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/CollectionListResponse.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">CollectionListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCollectionsByType(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody)" class="member-name-link">getCollectionsByType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/CollectionListResponse.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">CollectionListResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCollectionsByType(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getCollectionsByType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../commonservices/ffdc/rest/StringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">StringRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+ <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the list of collections with a particular collectionType.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/CollectionListResponse.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">CollectionListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLinkedCollections(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody)" class="member-name-link">getLinkedCollections</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/CollectionListResponse.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">CollectionListResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLinkedCollections(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getLinkedCollections</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../commonservices/ffdc/rest/StringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">StringRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+ <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the list of collections that are linked off of the supplied element.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeFromCollection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)" class="member-name-link">removeFromCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeFromCollection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody)" class="member-name-link">removeFromCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove an element from a collection.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateCollection(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionProperties)" class="member-name-link">updateCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateCollection(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionProperties)" class="member-name-link">updateCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  boolean&nbsp;replaceAllProperties,
  <a href="../../../accessservices/digitalservice/properties/CollectionProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">CollectionProperties</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the properties of a collection.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateCollectionMembership(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionMembershipProperties)" class="member-name-link">updateCollectionMembership</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateCollectionMembership(java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.digitalservice.properties.CollectionMembershipProperties)" class="member-name-link">updateCollectionMembership</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  boolean&nbsp;replaceAllProperties,
  <a href="../../../accessservices/digitalservice/properties/CollectionMembershipProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">CollectionMembershipProperties</a>&nbsp;requestBody)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update an element's membership to a collection.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateDigitalProduct(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalProductProperties)" class="member-name-link">updateDigitalProduct</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateDigitalProduct(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.accessservices.digitalservice.properties.DigitalProductProperties)" class="member-name-link">updateDigitalProduct</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  boolean&nbsp;replaceAllProperties,
  <a href="../../../accessservices/digitalservice/properties/DigitalProductProperties.html" title="class in org.odpi.openmetadata.accessservices.digitalservice.properties">DigitalProductProperties</a>&nbsp;requestBody)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the properties of the DigitalProduct classification attached to a collection.</div>
 </div>
 </div>
@@ -299,13 +306,13 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getLinkedCollections(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody)">
+<section class="detail" id="getLinkedCollections(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
 <h3>getLinkedCollections</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/CollectionListResponse.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">CollectionListResponse</a></span>&nbsp;<span class="element-name">getLinkedCollections</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../commonservices/ffdc/rest/StringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">StringRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Returns the list of collections that are linked off of the supplied element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -324,12 +331,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getClassifiedCollections(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody)">
+<section class="detail" id="getClassifiedCollections(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
 <h3>getClassifiedCollections</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/CollectionListResponse.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">CollectionListResponse</a></span>&nbsp;<span class="element-name">getClassifiedCollections</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../commonservices/ffdc/rest/StringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">StringRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Returns the list of collections with a particular classification.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -346,7 +353,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findCollections(java.lang.String,boolean,boolean,boolean,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody)">
+<section class="detail" id="findCollections(java.lang.String,boolean,boolean,boolean,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
 <h3>findCollections</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/CollectionListResponse.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">CollectionListResponse</a></span>&nbsp;<span class="element-name">findCollections</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  boolean&nbsp;startsWith,
@@ -354,7 +361,7 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;ignoreCase,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../commonservices/ffdc/rest/StringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">StringRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Returns the list of collections matching the search string - this is coded as a regular expression.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -374,12 +381,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getCollectionsByName(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody)">
+<section class="detail" id="getCollectionsByName(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
 <h3>getCollectionsByName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/CollectionListResponse.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">CollectionListResponse</a></span>&nbsp;<span class="element-name">getCollectionsByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../commonservices/ffdc/rest/StringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">StringRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Returns the list of collections with a particular name.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -396,12 +403,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getCollectionsByType(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.StringRequestBody)">
+<section class="detail" id="getCollectionsByType(java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
 <h3>getCollectionsByType</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/CollectionListResponse.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">CollectionListResponse</a></span>&nbsp;<span class="element-name">getCollectionsByType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="../../../commonservices/ffdc/rest/StringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">StringRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Returns the list of collections with a particular collectionType.  This is an optional text field in the collection element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -436,14 +443,16 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createCollection(java.lang.String,org.odpi.openmetadata.viewservices.collectionmanager.rest.NewCollectionRequestBody)">
+<section class="detail" id="createCollection(java.lang.String,java.lang.String,org.odpi.openmetadata.viewservices.collectionmanager.rest.NewCollectionRequestBody)">
 <h3>createCollection</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createCollection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;optionalClassificationName,
  <a href="../rest/NewCollectionRequestBody.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">NewCollectionRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Create a new generic collection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of called server.</dd>
+<dd><code>optionalClassificationName</code> - name of collection classification</dd>
 <dd><code>requestBody</code> - properties for the collection.</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the newly created Collection
@@ -459,6 +468,25 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createRootCollection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../rest/NewCollectionRequestBody.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">NewCollectionRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Create a new collection with the RootCollection classification.  Used to identify the top of a
+ collection hierarchy.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of called server.</dd>
+<dd><code>requestBody</code> - properties for the collection.</dd>
+<dt>Returns:</dt>
+<dd>unique identifier of the newly created Collection
+  InvalidParameterException  one of the parameters is invalid.
+  PropertyServerException    there is a problem retrieving information from the property server(s).
+  UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="createDataSpecCollection(java.lang.String,org.odpi.openmetadata.viewservices.collectionmanager.rest.NewCollectionRequestBody)">
+<h3>createDataSpecCollection</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createDataSpecCollection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../rest/NewCollectionRequestBody.html" title="class in org.odpi.openmetadata.viewservices.collectionmanager.rest">NewCollectionRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Create a new collection with the DataSpecCollection classification.  Used to identify the top of a
  collection hierarchy.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

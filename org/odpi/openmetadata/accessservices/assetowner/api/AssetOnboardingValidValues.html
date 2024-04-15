@@ -149,10 +149,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove the link between a valid value and a set it is a member of.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">ValidValueElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findValidValues(java.lang.String,java.lang.String,int,int)" class="member-name-link">findValidValues</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findValidValues(java.lang.String,java.lang.String,int,int,java.util.Date)" class="member-name-link">findValidValues</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
  int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Locate valid values that match the search string.</div>
 </div>
@@ -171,10 +172,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve a specific valid value from the repository.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">ValidValueElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getValidValueByName(java.lang.String,java.lang.String,int,int)" class="member-name-link">getValidValueByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getValidValueByName(java.lang.String,java.lang.String,int,int,java.util.Date)" class="member-name-link">getValidValueByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;validValueName,
  int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Retrieve a specific valid value from the repository.</div>
 </div>
@@ -428,12 +430,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getValidValueByName(java.lang.String,java.lang.String,int,int)">
+<section class="detail" id="getValidValueByName(java.lang.String,java.lang.String,int,int,java.util.Date)">
 <h3>getValidValueByName</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">ValidValueElement</a>&gt;</span>&nbsp;<span class="element-name">getValidValueByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;validValueName,
  int&nbsp;startFrom,
- int&nbsp;pageSize)</span>
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                                      throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -445,6 +448,7 @@ loadScripts(document, 'script');</script>
 <dd><code>validValueName</code> - qualified name of the valid value.</dd>
 <dd><code>startFrom</code> - starting element (used in paging through large result sets)</dd>
 <dd><code>pageSize</code> - maximum number of results to return</dd>
+<dd><code>effectiveTime</code> - the effective date/time to use for the query</dd>
 <dt>Returns:</dt>
 <dd>Valid value beans</dd>
 <dt>Throws:</dt>
@@ -455,12 +459,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findValidValues(java.lang.String,java.lang.String,int,int)">
+<section class="detail" id="findValidValues(java.lang.String,java.lang.String,int,int,java.util.Date)">
 <h3>findValidValues</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../metadataelements/ValidValueElement.html" title="class in org.odpi.openmetadata.accessservices.assetowner.metadataelements">ValidValueElement</a>&gt;</span>&nbsp;<span class="element-name">findValidValues</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
  int&nbsp;startFrom,
- int&nbsp;pageSize)</span>
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                                  throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -472,6 +477,7 @@ loadScripts(document, 'script');</script>
 <dd><code>searchString</code> - string value to look for - may contain RegEx characters.</dd>
 <dd><code>startFrom</code> - paging starting point</dd>
 <dd><code>pageSize</code> - maximum number of return values.</dd>
+<dd><code>effectiveTime</code> - the effective date/time to use for the query</dd>
 <dt>Returns:</dt>
 <dd>list of valid value beans</dd>
 <dt>Throws:</dt>

@@ -101,10 +101,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new metadata element to represent a governance action type.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/GovernanceActionTypeElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionTypeElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findGovernanceActionTypes(java.lang.String,java.lang.String,int,int)" class="member-name-link">findGovernanceActionTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#findGovernanceActionTypes(java.lang.String,java.lang.String,int,int,java.util.Date)" class="member-name-link">findGovernanceActionTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
  int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Retrieve the list of governance action type metadata elements that contain the search string.</div>
 </div>
@@ -115,10 +116,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the governance action type metadata element with the supplied unique identifier.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/GovernanceActionTypeElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionTypeElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getGovernanceActionTypesByName(java.lang.String,java.lang.String,int,int)" class="member-name-link">getGovernanceActionTypesByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getGovernanceActionTypesByName(java.lang.String,java.lang.String,int,int,java.util.Date)" class="member-name-link">getGovernanceActionTypesByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Retrieve the list of governance action type metadata elements with a matching qualified or display name.</div>
 </div>
@@ -217,12 +219,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findGovernanceActionTypes(java.lang.String,java.lang.String,int,int)">
+<section class="detail" id="findGovernanceActionTypes(java.lang.String,java.lang.String,int,int,java.util.Date)">
 <h3>findGovernanceActionTypes</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/GovernanceActionTypeElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionTypeElement</a>&gt;</span>&nbsp;<span class="element-name">findGovernanceActionTypes</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
  int&nbsp;startFrom,
- int&nbsp;pageSize)</span>
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                                                      throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -234,6 +237,7 @@ loadScripts(document, 'script');</script>
 <dd><code>searchString</code> - string to find in the properties</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - effective date/time for query</dd>
 <dt>Returns:</dt>
 <dd>list of matching metadata elements</dd>
 <dt>Throws:</dt>
@@ -244,12 +248,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getGovernanceActionTypesByName(java.lang.String,java.lang.String,int,int)">
+<section class="detail" id="getGovernanceActionTypesByName(java.lang.String,java.lang.String,int,int,java.util.Date)">
 <h3>getGovernanceActionTypesByName</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/GovernanceActionTypeElement.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">GovernanceActionTypeElement</a>&gt;</span>&nbsp;<span class="element-name">getGovernanceActionTypesByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  int&nbsp;startFrom,
- int&nbsp;pageSize)</span>
+ int&nbsp;pageSize,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime)</span>
                                                           throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -261,6 +266,7 @@ loadScripts(document, 'script');</script>
 <dd><code>name</code> - name to search for</dd>
 <dd><code>startFrom</code> - paging start point</dd>
 <dd><code>pageSize</code> - maximum results that can be returned</dd>
+<dd><code>effectiveTime</code> - effective date/time for query</dd>
 <dt>Returns:</dt>
 <dd>list of matching metadata elements</dd>
 <dt>Throws:</dt>

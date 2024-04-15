@@ -107,16 +107,6 @@ extends <a href="../basicfile/BasicFileStore.html" title="interface in org.odpi.
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return the list of column names associated with this structured file.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getFileName()" class="member-name-link">getFileName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Return the name of the file to read.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getLastUpdateDate()" class="member-name-link">getLastUpdateDate</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Return the last update data for the file.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>long</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getRecordCount()" class="member-name-link">getRecordCount</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
@@ -132,7 +122,7 @@ extends <a href="../basicfile/BasicFileStore.html" title="interface in org.odpi.
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStore">Methods inherited from interface&nbsp;org.odpi.openmetadata.adapters.connectors.datastore.basicfile.<a href="../basicfile/BasicFileStore.html" title="interface in org.odpi.openmetadata.adapters.connectors.datastore.basicfile">BasicFileStore</a></h3>
-<code><a href="../basicfile/BasicFileStore.html#getFile()">getFile</a></code></div>
+<code><a href="../basicfile/BasicFileStore.html#getCreationDate()">getCreationDate</a>, <a href="../basicfile/BasicFileStore.html#getFile()">getFile</a>, <a href="../basicfile/BasicFileStore.html#getFileLength()">getFileLength</a>, <a href="../basicfile/BasicFileStore.html#getFileName()">getFileName</a>, <a href="../basicfile/BasicFileStore.html#getLastAccessDate()">getLastAccessDate</a>, <a href="../basicfile/BasicFileStore.html#getLastUpdateDate()">getLastUpdateDate</a></code></div>
 </section>
 </li>
 </ul>
@@ -145,45 +135,11 @@ extends <a href="../basicfile/BasicFileStore.html" title="interface in org.odpi.
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getFileName()">
-<h3>getFileName</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getFileName</span>()
-            throws <span class="exceptions"><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a>,
-<a href="ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.exception">FileReadException</a></span></div>
-<div class="block">Return the name of the file to read.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>file name</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a></code> - there is a problem accessing the file</dd>
-<dd><code><a href="ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.exception">FileReadException</a></code> - - the file name is null, the file does not exist, or is a directory or
-                             is not readable.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getLastUpdateDate()">
-<h3>getLastUpdateDate</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></span>&nbsp;<span class="element-name">getLastUpdateDate</span>()
-                throws <span class="exceptions"><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a>,
-<a href="ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.exception">FileReadException</a></span></div>
-<div class="block">Return the last update data for the file.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>Date object</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a></code> - there is a problem accessing the file</dd>
-<dd><code><a href="ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.exception">FileReadException</a></code> - - the file name is null, the file does not exist, or is a directory or
-                             is not readable.</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="getRecordCount()">
 <h3>getRecordCount</h3>
 <div class="member-signature"><span class="return-type">long</span>&nbsp;<span class="element-name">getRecordCount</span>()
              throws <span class="exceptions"><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a>,
-<a href="ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.exception">FileReadException</a></span></div>
+<a href="../basicfile/ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileReadException</a></span></div>
 <div class="block">Return the number of records in the file.  This is achieved by scanning the file and counting the records -
  not recommended for very large files.</div>
 <dl class="notes">
@@ -191,7 +147,7 @@ extends <a href="../basicfile/BasicFileStore.html" title="interface in org.odpi.
 <dd>count</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a></code> - there is a problem accessing the file</dd>
-<dd><code><a href="ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.exception">FileReadException</a></code> - unable to find, open or scan the file.</dd>
+<dd><code><a href="../basicfile/ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileReadException</a></code> - unable to find, open or scan the file.</dd>
 </dl>
 </section>
 </li>
@@ -200,7 +156,7 @@ extends <a href="../basicfile/BasicFileStore.html" title="interface in org.odpi.
 <h3>getColumnNames</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getColumnNames</span>()
                      throws <span class="exceptions"><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a>,
-<a href="ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.exception">FileReadException</a></span></div>
+<a href="../basicfile/ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileReadException</a></span></div>
 <div class="block">Return the list of column names associated with this structured file.
  This may be embedded in the first line of the file or encoded in the
  connection object used to create a connector instance.</div>
@@ -209,7 +165,7 @@ extends <a href="../basicfile/BasicFileStore.html" title="interface in org.odpi.
 <dd>a list of column names</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a></code> - there is a problem accessing the file</dd>
-<dd><code><a href="ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.exception">FileReadException</a></code> - unable to retrieve the column names</dd>
+<dd><code><a href="../basicfile/ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileReadException</a></code> - unable to retrieve the column names</dd>
 </dl>
 </section>
 </li>
@@ -218,7 +174,7 @@ extends <a href="../basicfile/BasicFileStore.html" title="interface in org.odpi.
 <h3>readRecord</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">readRecord</span><wbr><span class="parameters">(int&nbsp;rowNumber)</span>
                  throws <span class="exceptions"><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a>,
-<a href="ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.exception">FileReadException</a></span></div>
+<a href="../basicfile/ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileReadException</a></span></div>
 <div class="block">Return the requested data record.  The first record is record 0.  If the first line of the file is the column
  names then record 0 is the line following the column names.</div>
 <dl class="notes">
@@ -228,7 +184,7 @@ extends <a href="../basicfile/BasicFileStore.html" title="interface in org.odpi.
 <dd>List of strings, each string is the value from the column.</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a></code> - there is a problem accessing the file</dd>
-<dd><code><a href="ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.exception">FileReadException</a></code> - unable to find, open or read the file, or the file does not include the requested record.</dd>
+<dd><code><a href="../basicfile/ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileReadException</a></code> - unable to find, open or read the file, or the file does not include the requested record.</dd>
 </dl>
 </section>
 </li>

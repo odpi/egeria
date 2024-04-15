@@ -159,11 +159,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove the link between a valid value and a set it is a member of.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/ValidValuesResponse.html" title="class in org.odpi.openmetadata.accessservices.assetowner.rest">ValidValuesResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findValidValues(java.lang.String,java.lang.String,int,int,java.lang.String)" class="member-name-link">findValidValues</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findValidValues(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">findValidValues</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  int&nbsp;startFrom,
  int&nbsp;pageSize,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Locate valid values that match the search string.</div>
 </div>
@@ -473,7 +473,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findValidValues(java.lang.String,java.lang.String,int,int,java.lang.String)">
+<section class="detail" id="findValidValues(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
 <h3>findValidValues</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/valid-values/by-search-string")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/ValidValuesResponse.html" title="class in org.odpi.openmetadata.accessservices.assetowner.rest">ValidValuesResponse</a></span>&nbsp;<span class="element-name">findValidValues</span><wbr><span class="parameters">(@PathVariable
@@ -485,7 +485,7 @@ loadScripts(document, 'script');</script>
  @RequestParam
  int&nbsp;pageSize,
  @RequestBody
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Locate valid values that match the search string.  It considers the names, description, scope,
  usage and preferred value.</div>
 <dl class="notes">
@@ -494,7 +494,7 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>startFrom</code> - paging starting point</dd>
 <dd><code>pageSize</code> - maximum number of return values.</dd>
-<dd><code>searchString</code> - string value to look for - may contain RegEx characters.</dd>
+<dd><code>requestBody</code> - string value to look for - may contain RegEx characters.</dd>
 <dt>Returns:</dt>
 <dd>list of valid value beans or
  InvalidParameterException one of the parameters is invalid or
