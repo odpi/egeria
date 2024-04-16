@@ -102,7 +102,7 @@ public enum CollectionType
     public String getQualifiedName()
     {
         return constructValidValueQualifiedName(null,
-                                                OpenMetadataProperty.PROJECT_PHASE.name,
+                                                OpenMetadataProperty.COLLECTION_TYPE.name,
                                                 null,
                                                 name);
     }
@@ -116,7 +116,7 @@ public enum CollectionType
     public String getCategory()
     {
         return constructValidValueCategory(null,
-                                           OpenMetadataProperty.PROJECT_PHASE.name,
+                                           OpenMetadataProperty.COLLECTION_TYPE.name,
                                            null);
     }
 
@@ -131,6 +131,6 @@ public enum CollectionType
     @Override
     public String toString()
     {
-        return "ProjectPhase{" + name + '}';
+        return "CollectionType{" + name + '}';
     }
 }

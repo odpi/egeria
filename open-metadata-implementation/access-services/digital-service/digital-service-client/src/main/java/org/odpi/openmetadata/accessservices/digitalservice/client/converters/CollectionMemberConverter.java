@@ -67,14 +67,12 @@ public class CollectionMemberConverter<B> extends DigitalServiceConverterBase<B>
                                                                      null,
                                                                      methodName));
 
-                ElementProperties elementProperties;
-
                 /*
-                 * The initial set of values come from the openMetadataElement.
+                 * The initial set of values come from the relationship properties.
                  */
                 if (relatedMetadataElement.getRelationshipProperties() != null)
                 {
-                    elementProperties = new ElementProperties(relatedMetadataElement.getRelationshipProperties());
+                    ElementProperties elementProperties = new ElementProperties(relatedMetadataElement.getRelationshipProperties());
 
                     membershipProperties.setMembershipRationale(this.removeMembershipRationale(elementProperties));
                     membershipProperties.setCreatedBy(this.removeCreatedBy(elementProperties));
@@ -94,10 +92,6 @@ public class CollectionMemberConverter<B> extends DigitalServiceConverterBase<B>
                      * assumed to be defined in a subtype.
                      */
                     membershipProperties.setExtendedProperties(this.getRemainingExtendedProperties(elementProperties));
-                }
-                else
-                {
-                    handleMissingMetadataInstance(beanClass.getName(), OpenMetadataElement.class.getName(), methodName);
                 }
 
                 bean.setMember(super.getElementStub(beanClass, relatedMetadataElement.getElement(), methodName));
