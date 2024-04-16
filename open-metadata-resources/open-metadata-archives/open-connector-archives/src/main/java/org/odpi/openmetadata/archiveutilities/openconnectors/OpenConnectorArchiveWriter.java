@@ -205,6 +205,18 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
         for (ResourceUse resourceUse : ResourceUse.values())
         {
+            Map<String, String> additionalProperties = null;
+
+            if (resourceUse.getResourceUseProperties() != null)
+            {
+                additionalProperties = new HashMap<>();
+
+                for (ResourceUseProperties resourceUseProperties : resourceUse.getResourceUseProperties())
+                {
+                    additionalProperties.put(resourceUseProperties.getName(), resourceUseProperties.getDescription());
+                }
+            }
+
             this.archiveHelper.addValidValue(null,
                                              resourceUseParentSetGUID,
                                              resourceUseParentSetGUID,
@@ -219,17 +231,28 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                              resourceUse.getResourceUse(),
                                              false,
                                              false,
-                                             null);
+                                             additionalProperties);
+        }
+
+        /*
+         * The resource use properties provide the mapNames for resource use properties.
+         * There are no values for these map names.
+         */
+        for (ResourceUseProperties resourceUseProperties : ResourceUseProperties.values())
+        {
+            this.getParentSet(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
+                              OpenMetadataProperty.RESOURCE_USE_PROPERTIES.name,
+                              resourceUseProperties.getName());
         }
 
         /*
          * Add the valid metadata values used in the resourceUse property of the ResourceList relationship.
          */
         String projectPhaseParentSetGUID = this.getParentSet(OpenMetadataType.PROJECT.typeName,
-                                                              OpenMetadataProperty.PROJECT_PHASE.name,
-                                                              null);
+                                                             OpenMetadataProperty.PROJECT_PHASE.name,
+                                                             null);
 
-        for (ProjectStatus projectStatus : ProjectStatus.values())
+        for (ProjectPhase projectStatus : ProjectPhase.values())
         {
             this.archiveHelper.addValidValue(null,
                                              projectPhaseParentSetGUID,
@@ -258,6 +281,10 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
         for (ProjectHealth projectHealth : ProjectHealth.values())
         {
+            Map<String, String> additionalProperties = new HashMap<>();
+
+            additionalProperties.put("colour", projectHealth.getColour());
+
             this.archiveHelper.addValidValue(null,
                                              projectHealthParentSetGUID,
                                              projectHealthParentSetGUID,
@@ -272,7 +299,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                              projectHealth.getName(),
                                              false,
                                              false,
-                                             null);
+                                             additionalProperties);
         }
 
 

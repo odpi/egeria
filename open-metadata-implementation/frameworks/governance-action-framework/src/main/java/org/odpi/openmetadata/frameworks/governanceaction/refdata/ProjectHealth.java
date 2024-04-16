@@ -115,6 +115,7 @@ public enum ProjectHealth
         return colour;
     }
 
+
     /**
      * Return the qualified name for this value.
      *

@@ -572,7 +572,12 @@ public enum FileExtension
      */
     public List<FileType> getFileTypes()
     {
-        return Arrays.asList(fileTypes);
+        if (fileTypes != null)
+        {
+            return Arrays.asList(fileTypes);
+        }
+
+        return null;
     }
 
 
