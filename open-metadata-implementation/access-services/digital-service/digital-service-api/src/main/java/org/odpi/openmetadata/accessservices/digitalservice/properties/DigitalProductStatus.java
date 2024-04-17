@@ -111,10 +111,7 @@ public enum DigitalProductStatus implements Serializable
      */
     OTHER                   (50, "Other",                   "The instance is in a locally defined state."),
 
-    /**
-     * Deleted - The instance has been deleted and is no longer available.
-     */
-    DELETED                 (99, "Deleted",                 "The instance has been deleted and is no longer available.");
+    ;
 
     private static final long serialVersionUID = 1L;
 

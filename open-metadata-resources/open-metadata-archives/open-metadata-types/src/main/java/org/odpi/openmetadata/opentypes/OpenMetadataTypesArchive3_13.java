@@ -1165,10 +1165,11 @@ public class OpenMetadataTypesArchive3_13
 
     private ClassificationDef addDigitalProductClassification()
     {
-        final String guid = "4aaaa7ca-6b4b-4c4b-997f-d5dfd42917b0";
-        final String name = "DigitalProduct";
-        final String description = "Identifies an element that represents a digital product.";
-        final String descriptionGUID = null;
+        final String guid = OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.typeGUID;
+        final String name = OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.typeName;
+        final String description = OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.description;
+        final String descriptionGUID = OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.descriptionGUID;
+        final String descriptionWiki = OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.wikiURL;
 
         final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
 
@@ -1177,6 +1178,7 @@ public class OpenMetadataTypesArchive3_13
                                                                                  null,
                                                                                  description,
                                                                                  descriptionGUID,
+                                                                                 descriptionWiki,
                                                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
                                                                                  true);
 

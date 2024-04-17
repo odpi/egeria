@@ -20,6 +20,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatu
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
@@ -307,30 +308,51 @@ public class KafkaTopicIntegrationConnector extends TopicIntegratorConnector imp
         }
 
         /*
-         * No Event broker is attached to the server, so add one
+         * No Event broker is attached to the server. See if it was created by the integration context.
          */
         String eventBrokerQualifiedName = server.getUniqueName() + ":EventBroker";
 
-        ElementProperties eventBrokerProperties = propertyHelper.addStringProperty(null,
-                                                                                   OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                   eventBrokerQualifiedName);
+        OpenMetadataElement eventBroker = openMetadataAccess.getMetadataElementByUniqueName(eventBrokerQualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
 
         ElementProperties supportedCapabilityProperties = propertyHelper.addEnumProperty(null,
                                                                                          OpenMetadataProperty.OPERATIONAL_STATUS.name,
                                                                                          OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
                                                                                          "Owns");
-        openMetadataAccess.createMetadataElementInStore(OpenMetadataType.EVENT_BROKER.typeName,
-                                                        ElementStatus.ACTIVE,
-                                                        null,
-                                                        server.getGUID(),
-                                                        false,
-                                                        null,
-                                                        null,
-                                                        eventBrokerProperties,
-                                                        server.getGUID(),
-                                                        OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
-                                                        supportedCapabilityProperties,
-                                                        true);
+
+        if (eventBroker == null)
+        {
+            /*
+             * No event broker, so create it
+             */
+            ElementProperties eventBrokerProperties = propertyHelper.addStringProperty(null,
+                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                       eventBrokerQualifiedName);
+
+            openMetadataAccess.createMetadataElementInStore(OpenMetadataType.EVENT_BROKER.typeName,
+                                                            ElementStatus.ACTIVE,
+                                                            null,
+                                                            server.getGUID(),
+                                                            false,
+                                                            null,
+                                                            null,
+                                                            eventBrokerProperties,
+                                                            server.getGUID(),
+                                                            OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
+                                                            supportedCapabilityProperties,
+                                                            true);
+        }
+        else
+        {
+            /*
+             * Connect the event broker to the server
+             */
+            openMetadataAccess.createRelatedElementsInStore(OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
+                                                            server.getGUID(),
+                                                            eventBroker.getElementGUID(),
+                                                            null,
+                                                            null,
+                                                            supportedCapabilityProperties);
+        }
 
         return eventBrokerQualifiedName;
     }

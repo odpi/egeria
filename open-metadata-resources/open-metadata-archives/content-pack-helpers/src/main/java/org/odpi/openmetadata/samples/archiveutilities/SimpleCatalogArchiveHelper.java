@@ -1958,41 +1958,6 @@ public class SimpleCatalogArchiveHelper
     }
 
 
-
-    /**
-     * Create a collection entity.
-     *
-     * @param suppliedTypeName type of collection
-     * @param classificationName name of classification to attach
-     * @param qualifiedName unique name for the collection entity
-     * @param displayName display name for the collection
-     * @param description description about the collection
-     * @param additionalProperties any other properties
-     * @param extendedProperties additional properties defined in the subtype
-     *
-     * @return unique identifier for subject area (collectionGUID)
-     */
-    public String addCollection(String               suppliedTypeName,
-                                String               classificationName,
-                                String               qualifiedName,
-                                String               displayName,
-                                String               description,
-                                Map<String, String>  additionalProperties,
-                                Map<String, Object>  extendedProperties)
-    {
-
-        return addCollection(suppliedTypeName,
-                             null,
-                             OpenMetadataType.COLLECTION.typeName,
-                             classificationName,
-                             qualifiedName,
-                             displayName,
-                             description,
-                             additionalProperties,
-                             extendedProperties);
-    }
-
-
     /**
      * Create a collection entity.
      *
@@ -2003,6 +1968,7 @@ public class SimpleCatalogArchiveHelper
      * @param qualifiedName unique name for the collection entity
      * @param displayName display name for the collection
      * @param description description about the collection
+     * @param collectionType type of collection
      * @param additionalProperties any other properties
      * @param extendedProperties additional properties defined in the subtype
      *
@@ -2015,6 +1981,7 @@ public class SimpleCatalogArchiveHelper
                                 String               qualifiedName,
                                 String               displayName,
                                 String               description,
+                                String               collectionType,
                                 Map<String, String>  additionalProperties,
                                 Map<String, Object>  extendedProperties)
     {
@@ -2049,6 +2016,7 @@ public class SimpleCatalogArchiveHelper
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAME.name, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.COLLECTION_TYPE.name, collectionType, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
         properties = archiveHelper.addPropertyMapToInstance(archiveRootName, properties, extendedProperties, methodName);
 

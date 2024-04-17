@@ -840,6 +840,50 @@ public enum OpenMetadataProperty
      */
     COLLECTION_TYPE("collectionType", "string", "Descriptive name of the concept that this collection represents.", "Product Contents", "05b7dcee-1c4c-4d2b-a484-bd84ec4d67e2"),
 
+    /**
+     * Display name of the product.
+     */
+    PRODUCT_STATUS("productStatus", "string",  "Lifecycle status of the product.", "DRAFT", "9aecda29-f1e1-4fe2-8066-2a9d094b990e"),
+
+    /**
+     * Display name of the product.
+     */
+    PRODUCT_NAME("productName", "string",  "Display name of the product.", "Teddy Bear Drop Foot Clinical Trial Patient Measurements", "aae2b086-05ea-433a-b1d6-502674c4ae6e"),
+
+    /**
+     * Type or category of the product.
+     */
+    PRODUCT_TYPE("productType", "string", "Type or category of the product.", "Files", "e64cd76f-f1b8-4c00-9ce9-87fcae8bd3d2"),
+
+    /**
+     * Date that the product was made available.
+     */
+    INTRODUCTION_DATE("introductionDate", "date", "Date that the product was made available.", null,  "9fffa5e8-f2d2-4184-be1d-482d7e093ec0"),
+
+    /**
+     * Date when is the next version is expected to be released.
+     */
+    NEXT_VERSION_DATE("nextVersionDate", "date",  "Date when is the next version is expected to be released.", null, "5866d607-157f-41f2-8875-00b60f534e99"),
+
+    /**
+     * Date when the product is expected to be (or has been) withdrawn, preventing new consumers from subscribing.
+     */
+    WITHDRAW_DATE("withdrawDate", "date", "Date when the product is expected to be (or has been) withdrawn, preventing new consumers from subscribing.", null, "f2fc6a12-6bf9-4c2f-ad99-68c892b44e76"),
+
+    /**
+     * Level of maturity for the product.
+     */
+    MATURITY("maturity", "string", "Level of maturity for the product.", "InDev",  "666b4e71-cb40-4421-9291-0736cfa5136e"),
+
+    /**
+     * Length of time that the product is expected to be in service.
+     */
+    SERVICE_LIFE("serviceLife", "string", "Length of time that the product is expected to be in service.", "2 years", "f61776bc-e78e-4c4a-9b22-275c8eb4c132"),
+
+    /**
+     * Which is the current supported version that is recommended for consumers.  Specified as a versionIdentifier from the asset.
+     */
+    CURRENT_VERSION("currentVersion", "string", "Which is the current supported version that is recommended for consumers.  Specified as a versionIdentifier from the asset.", "V1.0", "d863a1f5-5770-4a57-a331-01ef59994fba"),
     ;
 
 

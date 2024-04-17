@@ -1755,7 +1755,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     private String getAssetSurveyEngine(String assetSurveyEngineName)
     {
         final String assetSurveyEngineDisplayName = "Asset Survey Engine";
-        final String assetSurveyEngineDescription = "Extracts metadata about a digital resource and attach it to its asset description.";
+        final String assetSurveyEngineDescription = "Extracts information about a digital resource and attaches it to its asset description.";
 
         return archiveHelper.addGovernanceEngine(OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
                                                  assetSurveyEngineName,

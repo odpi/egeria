@@ -21,6 +21,7 @@ public class CollectionBuilder extends ReferenceableBuilder
 {
     private String displayName = null;
     private String description = null;
+    private String collectionType = null;
 
 
     /**
@@ -40,6 +41,7 @@ public class CollectionBuilder extends ReferenceableBuilder
     CollectionBuilder(String               qualifiedName,
                       String               displayName,
                       String               description,
+                      String               collectionType,
                       Map<String, String>  additionalProperties,
                       String               typeGUID,
                       String               typeName,
@@ -59,6 +61,7 @@ public class CollectionBuilder extends ReferenceableBuilder
 
         this.displayName = displayName;
         this.description = description;
+        this.collectionType = collectionType;
     }
 
 
@@ -136,6 +139,12 @@ public class CollectionBuilder extends ReferenceableBuilder
                                                                   description,
                                                                   methodName);
 
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.COLLECTION_TYPE.name,
+                                                                  collectionType,
+                                                                  methodName);
+
         return properties;
     }
 
@@ -167,44 +176,9 @@ public class CollectionBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.FOLDER.typeName);
+            errorHandler.handleUnsupportedType(error, methodName, classificationName);
         }
     }
-
-
-    /**
-     * Set up the classification to show that this collection is a folder.
-     *
-     * @param userId calling user
-     * @param orderBy the factor used to organize the members
-     * @param orderPropertyName name of property of OrderBy is 99 (OTHER)
-     * @param methodName name of the calling method
-     */
-    void setupFolderClassification(String userId,
-                                   int    orderBy,
-                                   String orderPropertyName,
-                                   String methodName) throws InvalidParameterException
-    {
-        try
-        {
-            Classification classification = repositoryHelper.getNewClassification(serviceName,
-                                                                                  null,
-                                                                                  null,
-                                                                                  InstanceProvenanceType.LOCAL_COHORT,
-                                                                                  userId,
-                                                                                  OpenMetadataType.FOLDER.typeName,
-                                                                                  typeName,
-                                                                                  ClassificationOrigin.ASSIGNED,
-                                                                                  null,
-                                                                                  getFolderProperties(orderBy, orderPropertyName, methodName));
-            newClassifications.put(classification.getName(), classification);
-        }
-        catch (TypeErrorException error)
-        {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.FOLDER.typeName);
-        }
-    }
-
 
 
     /**

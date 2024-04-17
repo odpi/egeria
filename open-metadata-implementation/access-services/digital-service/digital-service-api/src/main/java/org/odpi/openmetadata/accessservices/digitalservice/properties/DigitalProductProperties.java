@@ -31,7 +31,7 @@ public class DigitalProductProperties extends ClassificationProperties
     private String               maturity             = null;
     private String               serviceLife          = null;
     private String               currentVersion       = null;
-    private Date                 nextVersion          = null;
+    private Date                 nextVersionDate      = null;
     private Date                 withdrawDate         = null;
     private Map<String, String>  additionalProperties = null;
 
@@ -63,9 +63,9 @@ public class DigitalProductProperties extends ClassificationProperties
             introductionDate = template.getIntroductionDate();
             maturity = template.getMaturity();
             serviceLife = template.getServiceLife();
-            currentVersion = template.getCurrentVersion();
-            nextVersion = template.getNextVersion();
-            withdrawDate = template.getWithdrawDate();
+            currentVersion  = template.getCurrentVersion();
+            nextVersionDate = template.getNextVersionDate();
+            withdrawDate    = template.getWithdrawDate();
             additionalProperties = template.getAdditionalProperties();
         }
     }
@@ -252,20 +252,20 @@ public class DigitalProductProperties extends ClassificationProperties
      *
      * @return date
      */
-    public Date getNextVersion()
+    public Date getNextVersionDate()
     {
-        return nextVersion;
+        return nextVersionDate;
     }
 
 
     /**
      * Set up the date of the next version of the digital service.
      *
-     * @param nextVersion date
+     * @param nextVersionDate date
      */
-    public void setNextVersion(Date nextVersion)
+    public void setNextVersionDate(Date nextVersionDate)
     {
-        this.nextVersion = nextVersion;
+        this.nextVersionDate = nextVersionDate;
     }
 
 
@@ -333,7 +333,7 @@ public class DigitalProductProperties extends ClassificationProperties
                        ", maturity='" + maturity + '\'' +
                        ", serviceLife='" + serviceLife + '\'' +
                        ", currentVersion='" + currentVersion + '\'' +
-                       ", nextVersion=" + nextVersion +
+                       ", nextVersionDate=" + nextVersionDate +
                        ", withdrawDate=" + withdrawDate +
                        ", additionalProperties=" + additionalProperties +
                        '}';
@@ -366,7 +366,7 @@ public class DigitalProductProperties extends ClassificationProperties
                        Objects.equals(productType, that.productType) && Objects.equals(description, that.description) &&
                        Objects.equals(introductionDate, that.introductionDate) && Objects.equals(maturity, that.maturity) &&
                        Objects.equals(serviceLife, that.serviceLife) && Objects.equals(currentVersion, that.currentVersion) &&
-                       Objects.equals(nextVersion, that.nextVersion) && Objects.equals(withdrawDate, that.withdrawDate) &&
+                       Objects.equals(nextVersionDate, that.nextVersionDate) && Objects.equals(withdrawDate, that.withdrawDate) &&
                        Objects.equals(additionalProperties, that.additionalProperties);
     }
 
@@ -380,6 +380,6 @@ public class DigitalProductProperties extends ClassificationProperties
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), productStatus, productName, productType, description, introductionDate,
-                            maturity, serviceLife, currentVersion, nextVersion, withdrawDate, additionalProperties);
+                            maturity, serviceLife, currentVersion, nextVersionDate, withdrawDate, additionalProperties);
     }
 }

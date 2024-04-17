@@ -76,24 +76,23 @@ public class CollectionRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof CollectionProperties)
+                if (requestBody.getProperties() instanceof CollectionProperties properties)
                 {
-                    CollectionProperties properties = (CollectionProperties)requestBody.getProperties();
-
                     String collectionGUID = handler.createCollection(userId,
-                                                                    requestBody.getExternalSourceGUID(),
-                                                                    requestBody.getExternalSourceName(),
-                                                                    properties.getQualifiedName(),
-                                                                    properties.getName(),
-                                                                    properties.getDescription(),
-                                                                    properties.getAdditionalProperties(),
-                                                                    properties.getTypeName(),
-                                                                    properties.getExtendedProperties(),
-                                                                    null,
-                                                                    properties.getEffectiveFrom(),
-                                                                    properties.getEffectiveTo(),
-                                                                    new Date(),
-                                                                    methodName);
+                                                                     requestBody.getExternalSourceGUID(),
+                                                                     requestBody.getExternalSourceName(),
+                                                                     properties.getQualifiedName(),
+                                                                     properties.getName(),
+                                                                     properties.getDescription(),
+                                                                     properties.getCollectionType(),
+                                                                     properties.getAdditionalProperties(),
+                                                                     properties.getTypeName(),
+                                                                     properties.getExtendedProperties(),
+                                                                     null,
+                                                                     properties.getEffectiveFrom(),
+                                                                     properties.getEffectiveTo(),
+                                                                     new Date(),
+                                                                     methodName);
 
                     if (collectionGUID != null)
                     {
@@ -169,6 +168,7 @@ public class CollectionRESTServices
                                                                      properties.getQualifiedName(),
                                                                      properties.getName(),
                                                                      properties.getDescription(),
+                                                                     properties.getCollectionType(),
                                                                      properties.getAdditionalProperties(),
                                                                      properties.getTypeName(),
                                                                      properties.getExtendedProperties(),
@@ -268,6 +268,7 @@ public class CollectionRESTServices
                                             properties.getQualifiedName(),
                                             properties.getName(),
                                             properties.getDescription(),
+                                            properties.getCollectionType(),
                                             properties.getAdditionalProperties(),
                                             properties.getTypeName(),
                                             properties.getExtendedProperties(),

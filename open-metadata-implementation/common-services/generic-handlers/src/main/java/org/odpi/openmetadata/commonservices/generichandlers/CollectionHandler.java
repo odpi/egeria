@@ -87,6 +87,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * @param qualifiedName unique name for the collection - used in other configuration
      * @param displayName short display name for the collection
      * @param description description of the governance collection
+     * @param collectionType type of collection
      * @param additionalProperties additional properties for a collection
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a governance collection subtype
@@ -107,6 +108,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                    String              qualifiedName,
                                    String              displayName,
                                    String              description,
+                                   String              collectionType,
                                    Map<String, String> additionalProperties,
                                    String              suppliedTypeName,
                                    Map<String, Object> extendedProperties,
@@ -137,6 +139,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
         CollectionBuilder builder = new CollectionBuilder(qualifiedName,
                                                           displayName,
                                                           description,
+                                                          collectionType,
                                                           additionalProperties,
                                                           typeGUID,
                                                           typeName,
@@ -164,155 +167,6 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Create the folder object.  This is collection with a Folder classification attached
-     *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of the software capability that owns this collection
-     * @param externalSourceName unique name of the software capability that owns this collection
-     * @param qualifiedName unique name for the collection - used in other configuration
-     * @param displayName short display name for the collection
-     * @param description description of the governance collection
-     * @param additionalProperties additional properties for a collection
-     * @param suppliedTypeName type name from the caller (enables creation of subtypes)
-     * @param extendedProperties  properties for a governance collection subtype
-     * @param orderBy the factor used to organize the members
-     * @param orderPropertyName name of property of OrderBy is 99 (OTHER)
-     * @param effectiveFrom  the time that the relationship element must be effective from (null for any time, new Date() for now)
-     * @param effectiveTo  the time that the relationship must be effective to (null for any time, new Date() for now)
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return unique identifier of the new collection object
-     * @throws InvalidParameterException qualifiedName or userId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public String createFolder(String              userId,
-                               String              externalSourceGUID,
-                               String              externalSourceName,
-                               String              qualifiedName,
-                               String              displayName,
-                               String              description,
-                               Map<String, String> additionalProperties,
-                               String              suppliedTypeName,
-                               Map<String, Object> extendedProperties,
-                               int                 orderBy,
-                               String              orderPropertyName,
-                               Date                effectiveFrom,
-                               Date                effectiveTo,
-                               Date                effectiveTime,
-                               String              methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
-    {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
-
-        String typeName = OpenMetadataType.COLLECTION.typeName;
-
-        if (suppliedTypeName != null)
-        {
-            typeName = suppliedTypeName;
-        }
-
-        String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.COLLECTION.typeName,
-                                                                   serviceName,
-                                                                   methodName,
-                                                                   repositoryHelper);
-
-        CollectionBuilder builder = new CollectionBuilder(qualifiedName,
-                                                          displayName,
-                                                          description,
-                                                          additionalProperties,
-                                                          typeGUID,
-                                                          typeName,
-                                                          extendedProperties,
-                                                          repositoryHelper,
-                                                          serviceName,
-                                                          serverName);
-
-        builder.setupFolderClassification(userId, orderBy, orderPropertyName, methodName);
-
-        builder.setEffectivityDates(effectiveFrom, effectiveTo);
-
-        return this.createBeanInRepository(userId,
-                                           externalSourceGUID,
-                                           externalSourceName,
-                                           typeGUID,
-                                           typeName,
-                                           builder,
-                                           effectiveTime,
-                                           methodName);
-    }
-
-
-    /**
-     * Create a new metadata element to represent a collection using an existing metadata element as a template.
-     * The template defines additional classifications and relationships that should be added to the new collection.
-     *
-     * All categories and terms are linked to a single collection.  They are owned by this collection and if the
-     * collection is deleted, any linked terms and categories are deleted as well.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of the software capability that owns this collection
-     * @param externalSourceName unique name of the software capability that owns this collection
-     * @param templateGUID unique identifier of the metadata element to copy
-     * @param qualifiedName unique name for the collection - used in other configuration
-     * @param displayName short display name for the collection
-     * @param description description of the governance collection
-     * @param methodName calling method
-     *
-     * @return unique identifier of the new metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public String createCollectionFromTemplate(String userId,
-                                               String externalSourceGUID,
-                                               String externalSourceName,
-                                               String templateGUID,
-                                               String qualifiedName,
-                                               String displayName,
-                                               String description,
-                                               String methodName) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
-    {
-        final String templateGUIDParameterName   = "templateGUID";
-        final String qualifiedNameParameterName  = "qualifiedName";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
-
-        CollectionBuilder builder = new CollectionBuilder(qualifiedName,
-                                                          displayName,
-                                                          description,
-                                                          repositoryHelper,
-                                                          serviceName,
-                                                          serverName);
-
-        return this.createBeanFromTemplate(userId,
-                                           externalSourceGUID,
-                                           externalSourceName,
-                                           templateGUID,
-                                           templateGUIDParameterName,
-                                           OpenMetadataType.COLLECTION.typeGUID,
-                                           OpenMetadataType.COLLECTION.typeName,
-                                           qualifiedName,
-                                           OpenMetadataProperty.QUALIFIED_NAME.name,
-                                           builder,
-                                           supportedZones,
-                                           true,
-                                           false,
-                                           null,
-                                           methodName);
-    }
-
-
-    /**
      * Update the anchor object that all elements in a collection (terms and categories) are linked to.
      *
      * @param userId calling user
@@ -323,6 +177,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
      * @param qualifiedName unique name for the collection - used in other configuration
      * @param displayName short display name for the collection
      * @param description description of the governance collection
+     * @param collectionType type of collection
      * @param additionalProperties additional properties for a governance collection
      * @param suppliedTypeName type of collection
      * @param extendedProperties  properties for a governance collection subtype
@@ -346,6 +201,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                    String              qualifiedName,
                                    String              displayName,
                                    String              description,
+                                   String              collectionType,
                                    Map<String, String> additionalProperties,
                                    String              suppliedTypeName,
                                    Map<String, Object> extendedProperties,
@@ -379,6 +235,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
         CollectionBuilder builder = new CollectionBuilder(qualifiedName,
                                                           displayName,
                                                           description,
+                                                          collectionType,
                                                           additionalProperties,
                                                           typeGUID,
                                                           typeName,
@@ -456,48 +313,6 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
                                            forDuplicateProcessing,
                                            effectiveTime,
                                            methodName);
-    }
-
-
-    /**
-     * Remove the taxonomy designation from a collection.
-     *
-     * @param userId calling user
-     * @param collectionGUID unique identifier of asset
-     * @param collectionGUIDParameterName parameter name supplying collectionGUID
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     * @throws InvalidParameterException entity not known, null userId or guid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public void  removeFolderClassificationFromCollection(String  userId,
-                                                          String  collectionGUID,
-                                                          String  collectionGUIDParameterName,
-                                                          boolean forLineage,
-                                                          boolean forDuplicateProcessing,
-                                                          Date    effectiveTime,
-                                                          String  methodName) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
-    {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(collectionGUID, collectionGUIDParameterName, methodName);
-
-        this.removeClassificationFromRepository(userId,
-                                                null,
-                                                null,
-                                                collectionGUID,
-                                                collectionGUIDParameterName,
-                                                OpenMetadataType.COLLECTION.typeName,
-                                                OpenMetadataType.FOLDER.typeGUID,
-                                                OpenMetadataType.FOLDER.typeName,
-                                                forLineage,
-                                                forDuplicateProcessing,
-                                                effectiveTime,
-                                                methodName);
     }
 
 

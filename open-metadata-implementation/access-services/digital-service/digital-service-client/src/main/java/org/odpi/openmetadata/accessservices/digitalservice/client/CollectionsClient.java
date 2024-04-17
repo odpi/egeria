@@ -151,7 +151,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
 
             for (RelatedMetadataElement relatedMetadataElement : linkedResources)
             {
-                if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.COLLECTION.typeName))
+                if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.COLLECTION.typeName))
                 {
                     CollectionElement collectionElement = collectionConverter.getNewBean(collectionBeanClass, relatedMetadataElement, methodName);
 
@@ -651,7 +651,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         {
             openMetadataStoreClient.classifyMetadataElementInStore(userId,
                                                                    collectionGUID,
-                                                                   OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION_TYPE_NAME,
+                                                                   OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.typeName,
                                                                    false,
                                                                    false,
                                                                    digitalProductProperties.getEffectiveFrom(),
@@ -736,7 +736,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
 
         openMetadataStoreClient.reclassifyMetadataElementInStore(userId,
                                                                  collectionGUID,
-                                                                 OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION_TYPE_NAME,
+                                                                 OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.typeName,
                                                                  replaceAllProperties,
                                                                  false,
                                                                  false,
@@ -1220,11 +1220,18 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         if (digitalProductProperties != null)
         {
             ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                                   OpenMetadataType.PRODUCT_NAME_PROPERTY_NAME,
+                                                                                   OpenMetadataProperty.PRODUCT_NAME.name,
                                                                                    digitalProductProperties.getProductName());
 
+            if (digitalProductProperties.getProductStatus() != null)
+            {
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.PRODUCT_STATUS.name,
+                                                                     digitalProductProperties.getProductStatus().getName());
+            }
+
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.PRODUCT_TYPE_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.PRODUCT_TYPE.name,
                                                                  digitalProductProperties.getProductType());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
@@ -1232,27 +1239,27 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                  digitalProductProperties.getDescription());
 
             elementProperties = propertyHelper.addDateProperty(elementProperties,
-                                                               OpenMetadataType.INTRODUCTION_DATE_PROPERTY_NAME,
+                                                               OpenMetadataProperty.INTRODUCTION_DATE.name,
                                                                digitalProductProperties.getIntroductionDate());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.MATURITY_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.MATURITY.name,
                                                                  digitalProductProperties.getMaturity());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.SERVICE_LIFE_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.SERVICE_LIFE.name,
                                                                  digitalProductProperties.getServiceLife());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.CURRENT_VERSION_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.CURRENT_VERSION.name,
                                                                  digitalProductProperties.getCurrentVersion());
 
             elementProperties = propertyHelper.addDateProperty(elementProperties,
-                                                               OpenMetadataType.NEXT_VERSION_PROPERTY_NAME,
-                                                               digitalProductProperties.getNextVersion());
+                                                               OpenMetadataProperty.NEXT_VERSION_DATE.name,
+                                                               digitalProductProperties.getNextVersionDate());
 
             elementProperties = propertyHelper.addDateProperty(elementProperties,
-                                                               OpenMetadataType.WITHDRAW_DATE_PROPERTY_NAME,
+                                                               OpenMetadataProperty.WITHDRAW_DATE.name,
                                                                digitalProductProperties.getWithdrawDate());
 
             elementProperties = propertyHelper.addStringMapProperty(elementProperties,
