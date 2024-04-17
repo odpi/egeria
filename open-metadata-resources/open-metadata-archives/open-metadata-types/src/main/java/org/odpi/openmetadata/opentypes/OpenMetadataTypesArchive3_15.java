@@ -369,7 +369,7 @@ public class OpenMetadataTypesArchive3_15
         /*
          * Create the Patch
          */
-        final String typeName = "DigitalProduct";
+        final String typeName = OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -385,30 +385,30 @@ public class OpenMetadataTypesArchive3_15
         final String attribute1Name = "syncDatesByKey";
         final String attribute1Description = "Collection of synchronization dates identified by a key (deprecated, added in error).";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name = "productName";
-        final String attribute2Description = "Display name of the product.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name = "productType";
-        final String attribute3Description = "Type or category of the product.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name = "introductionDate";
-        final String attribute4Description = "Date that the product was made available.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name = "maturity";
-        final String attribute5Description = "Level of maturity for the product.";
-        final String attribute5DescriptionGUID = null;
-        final String attribute6Name = "serviceLife";
-        final String attribute6Description = "Length of time that the product is expected to be in service.";
-        final String attribute6DescriptionGUID = null;
-        final String attribute7Name = "currentVersion";
-        final String attribute7Description = "Which is the current supported version that is recommended for consumers.";
-        final String attribute7DescriptionGUID = null;
-        final String attribute8Name = "nextVersion";
-        final String attribute8Description = "When is the next version expected to be released.";
-        final String attribute8DescriptionGUID = null;
-        final String attribute9Name = "withdrawDate";
-        final String attribute9Description = "What date what the product withdrawn, preventing new consumers.";
-        final String attribute9DescriptionGUID = null;
+        final String attribute2Name = OpenMetadataProperty.PRODUCT_NAME.name;
+        final String attribute2Description = OpenMetadataProperty.PRODUCT_NAME.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.PRODUCT_NAME.descriptionGUID;
+        final String attribute3Name = OpenMetadataProperty.PRODUCT_TYPE.name;
+        final String attribute3Description = OpenMetadataProperty.PRODUCT_TYPE.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.PRODUCT_TYPE.descriptionGUID;
+        final String attribute4Name = OpenMetadataProperty.INTRODUCTION_DATE.name;
+        final String attribute4Description = OpenMetadataProperty.INTRODUCTION_DATE.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.INTRODUCTION_DATE.descriptionGUID;
+        final String attribute5Name = OpenMetadataProperty.MATURITY.name;
+        final String attribute5Description = OpenMetadataProperty.MATURITY.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.MATURITY.descriptionGUID;
+        final String attribute6Name = OpenMetadataProperty.SERVICE_LIFE.name;
+        final String attribute6Description = OpenMetadataProperty.SERVICE_LIFE.description;
+        final String attribute6DescriptionGUID = OpenMetadataProperty.SERVICE_LIFE.descriptionGUID;
+        final String attribute7Name = OpenMetadataProperty.CURRENT_VERSION.name;
+        final String attribute7Description = OpenMetadataProperty.CURRENT_VERSION.description;
+        final String attribute7DescriptionGUID = OpenMetadataProperty.CURRENT_VERSION.descriptionGUID;
+        final String attribute8Name = OpenMetadataProperty.NEXT_VERSION_DATE.name;
+        final String attribute8Description = OpenMetadataProperty.NEXT_VERSION_DATE.description;
+        final String attribute8DescriptionGUID = OpenMetadataProperty.NEXT_VERSION_DATE.descriptionGUID;
+        final String attribute9Name = OpenMetadataProperty.WITHDRAW_DATE.name;
+        final String attribute9Description = OpenMetadataProperty.WITHDRAW_DATE.description;
+        final String attribute9DescriptionGUID = OpenMetadataProperty.WITHDRAW_DATE.descriptionGUID;
         final String attribute10Name = OpenMetadataProperty.ADDITIONAL_PROPERTIES.name;
         final String attribute10Description = OpenMetadataProperty.ADDITIONAL_PROPERTIES.description;
         final String attribute10DescriptionGUID = OpenMetadataProperty.ADDITIONAL_PROPERTIES.descriptionGUID;

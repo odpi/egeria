@@ -23,7 +23,7 @@ Content-Type: application/json
 # Retrieving Collections: https://egeria-project.org/concepts/collection
 #
 
-@parentGUID=xxx
+@parentGUID=32bd6761-959b-4d9c-98e9-ce919717b8bd
 
 ###
 # @name getLinkedCollections
@@ -34,7 +34,6 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : ""
 }
 
 ###
@@ -57,7 +56,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : ""
+  "filter" : "Data Product Development Journey"
 }
 
 ###
@@ -68,7 +67,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : ""
+  "filter" : "DataJourneyProject:Data Acquisition Journey:{{projectName}}:ActivityFolder:Potential Data Sources"
 }
 
 ###
@@ -259,38 +258,46 @@ Content-Type: application/json
 }
 
 ###
+
+@digitalProductGUID=xxx
+
+###
 # @name createDigitalProduct
 # Create a new collection that represents a digital product.
+# Note: the three dates: introductionDate, nextVersionDate and withdrawDate must be valid dates if specified,
+# otherwise you will get a 400 error response.
+# The valid values for productStatus are: DRAFT, PREPARED, PROPOSED, APPROVED, REJECTED, APPROVED_CONCEPT,
+# UNDER_DEVELOPMENT, DEVELOPMENT_COMPLETE, APPROVED_FOR_DEPLOYMENT, ACTIVE, DISABLED, DEPRECATED,
+# OTHER.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/digital-products
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "NewDigitalProductRequestBody",
-  "anchorGUID" : "anchor GUID, if set then isOwnAnchor=false",
-  "isOwnAnchor" : false,
-  "parentGUID" : "parent GUID, if set, set all parameters beginning 'parent'",
-  "parentRelationshipTypeName" : "open metadata type name",
+  "isOwnAnchor" : true,
+  "parentGUID" : "@collectionGUID",
+  "parentRelationshipTypeName" : "CollectionMembership",
   "parentAtEnd1": true,
   "collectionProperties": {
     "class" : "CollectionProperties",
-    "qualifiedName": "Must provide a unique name here",
-    "name" : "Add display name here",
-    "description" : "Add description of the collection here",
-    "collectionType": "Add appropriate valid value for type"
+    "qualifiedName": "DigitalProduct:Add product name here",
+    "name" : "=Product contents",
+    "description" : "Add description of the contents of the product",
+    "collectionType": "Digital Product"
   },
   "digitalProductProperties" : {
     "class" : "DigitalProductProperties",
-    "productStatus" : "ACTIVE",
-    "productName" : "Add name here",
-    "productType" : "Add valid value here",
-    "description" : "Add description here",
-    "introductionDate" : "date",
+    "productStatus" : "DRAFT",
+    "productName" : "Add product name here",
+    "productType" : "Periodic Delta",
+    "description" : "Add description of product and its expected usage here",
     "maturity" : "Add valid value here",
     "serviceLife" : "Add the estimated lifetime of the product",
-    "currentVersion": "V1.0",
-    "nextVersion": "V1.1",
+    "introductionDate" : "date",
+    "nextVersionDate": "date",
     "withdrawDate": "date",
+    "currentVersion": "V0.1",
     "additionalProperties": {
       "property1Name" : "property1Value",
       "property2Name" : "property2Value"
@@ -316,21 +323,21 @@ Content-Type: application/json
 ###
 # @name updateDigitalProduct
 # Update the properties of the DigitalProduct classification attached to a collection.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/digital-products/{{collectionGUID}}/update?replaceAllProperties=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/digital-products/{{digitalProductGUID}}/update?replaceAllProperties=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "DigitalProductProperties",
   "productStatus" : "ACTIVE",
-  "productName" : "Add name here",
-  "productType" : "Add valid value here",
-  "description" : "Add description here",
+  "productName" : "Add product name here",
+  "productType" : "Periodic Delta",
+  "description" : "Add description of product and its expected usage here",
   "introductionDate" : "date",
   "maturity" : "Add valid value here",
   "serviceLife" : "Add the estimated lifetime of the product",
   "currentVersion": "V1.0",
-  "nextVersion": "V1.1",
+  "nextVersionDate": "date",
   "withdrawDate": "date",
   "additionalProperties": {
     "property1Name" : "property1Value",

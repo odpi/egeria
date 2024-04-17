@@ -85,9 +85,9 @@ public class OMAGServerResource
     @GetMapping(path = "/servers/{serverName}/instance/status")
 
     @Operation(summary="getActiveServerStatus",
-               description="Retrieve the status for a running instance of a server. The stored configuration " +
-                                   "document may have changed since the server was started.  This operation makes it possible to verify that " +
-                                   "all the services. An InvalidParameterException is returned if the server is not running.",
+               description="Retrieve the status for a running instance of a server. This includes the status of each running " +
+                       "service. It is used to verify that the required services are running. " +
+                       "An InvalidParameterException is returned if the server is not running.",
                externalDocs=@ExternalDocumentation(description="Further Information",
                                                    url="https://egeria-project.org/concepts/omag-server"))
 

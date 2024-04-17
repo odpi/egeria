@@ -13,6 +13,12 @@ import static org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetad
 public enum CollectionType
 {
     /**
+     * List of governance domain identifiers.
+     */
+    GOVERNANCE_DOMAIN_SET("Governance Domain Set",
+                          "List of governance domain identifiers."),
+
+    /**
      * A collection of guided activities either suggested, or taken, to complete a project.
      */
     ACTIVITY_FOLDER("Activity Folder",

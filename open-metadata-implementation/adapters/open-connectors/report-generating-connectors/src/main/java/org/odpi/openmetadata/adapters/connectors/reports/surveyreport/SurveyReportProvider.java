@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionService
 import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionTarget;
 
 /**
- * SurveyReportProvider is the OCF connector provider for the "SurveyReport" Governance Action Service.
+ * SurveyReportProvider is the OCF connector provider for the "SurveyReportService" Governance Action Service.
  */
 public class SurveyReportProvider extends GovernanceActionServiceProviderBase
 {

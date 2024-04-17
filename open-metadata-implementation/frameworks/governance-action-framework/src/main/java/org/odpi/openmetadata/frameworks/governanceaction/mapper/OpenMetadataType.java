@@ -1322,6 +1322,14 @@ public enum OpenMetadataType
            "Defines a list of activities such as ToDos, Tasks etc..."),
 
 
+    /**
+     * "Identifies an element that represents a digital product."
+     */
+    DIGITAL_PRODUCT_CLASSIFICATION("4aaaa7ca-6b4b-4c4b-997f-d5dfd42917b0",
+                                   "DigitalProduct",
+                                   OpenMetadataWikiPages.MODEL_0710_DIGITAL_SERVICE,
+                                   "6751673f-a4e7-4b64-84e4-4c59163d0102",
+                                   "Identifies an element that represents a digital product."),
     ;
 
 
@@ -4693,17 +4701,6 @@ public enum OpenMetadataType
 
     public static final String DIGITAL_SERVICE_TYPE_GUID = "f671e1fc-b204-4ee6-a4e2-da1633ecf50e";
     public static final String DIGITAL_SERVICE_TYPE_NAME = "DigitalService";
-
-    public static final String DIGITAL_PRODUCT_CLASSIFICATION_TYPE_GUID = "4aaaa7ca-6b4b-4c4b-997f-d5dfd42917b0";
-    public static final String DIGITAL_PRODUCT_CLASSIFICATION_TYPE_NAME = "DigitalProduct";
-    public static final String PRODUCT_NAME_PROPERTY_NAME               = "productName";
-    public static final String PRODUCT_TYPE_PROPERTY_NAME               = "productType";
-    public static final String INTRODUCTION_DATE_PROPERTY_NAME          = "introductionDate";
-    public static final String MATURITY_PROPERTY_NAME                   = "maturity";
-    public static final String SERVICE_LIFE_PROPERTY_NAME               = "serviceLife";
-    public static final String CURRENT_VERSION_PROPERTY_NAME            = "currentVersion";
-    public static final String NEXT_VERSION_PROPERTY_NAME               = "nextVersion";
-    public static final String WITHDRAW_DATE_PROPERTY_NAME              = "withdrawDate";
 
     public static final String DIGITAL_SERVICE_DEPENDENCY_RELATIONSHIP_TYPE_GUID = "e8303911-ba1c-4640-974e-c4d57ee1b310";
     public static final String DIGITAL_SERVICE_DEPENDENCY_RELATIONSHIP_TYPE_NAME = "DigitalServiceDependency";

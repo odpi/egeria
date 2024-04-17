@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2024-02-14T13:15:58.970Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/23.0.2 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="nSSC1gstU6Gd5i3FzZ-J" version="23.0.2" type="device" pages="5">
+<mxfile host="Electron" modified="2024-04-16T15:42:11.179Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.1.0 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="Q2K75yow1yGT9YcZdBL0" version="24.1.0" type="device" pages="6">
   <diagram id="bymaybEV-XofwodFpGOJ" name="organization">
-    <mxGraphModel dx="1242" dy="1989" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1201" dy="1981" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -535,7 +535,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="8ZwVPSeoz71TrKKyHyYc" name="governance-program">
-    <mxGraphModel dx="2069" dy="1989" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2028" dy="1981" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -824,7 +824,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="sustainability" id="NHkpheRC23g3hF7Z7nHF">
-    <mxGraphModel dx="1242" dy="1989" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1201" dy="1981" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="_1XDXPeCsNaQKAjM9Sxr-0" />
         <mxCell id="_1XDXPeCsNaQKAjM9Sxr-1" parent="_1XDXPeCsNaQKAjM9Sxr-0" />
@@ -1182,7 +1182,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="fJDXTGiPWzNe7bQ7AHq6" name="business-systems">
-    <mxGraphModel dx="1242" dy="820" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1201" dy="812" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1190,481 +1190,557 @@
     </mxGraphModel>
   </diagram>
   <diagram id="-ELIsMJvPHZYk9rVywXF" name="clinical-trials-templates">
-    <mxGraphModel dx="2268" dy="1944" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2028" dy="1981" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-1" value="CSVFile" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-1" value="CSVFile" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="90" y="260" width="120" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-31" target="SsqIV2EVZU1pNxFDm-sy-2">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-31" target="SsqIV2EVZU1pNxFDm-sy-2" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="-150" y="390" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-2" target="SsqIV2EVZU1pNxFDm-sy-8">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-2" target="SsqIV2EVZU1pNxFDm-sy-8" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-2" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-2" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="90" y="300" width="697" height="190" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-3" value="Template" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-3" value="Template" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
           <mxGeometry x="-420" y="-60" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-4" target="SsqIV2EVZU1pNxFDm-sy-2">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-4" target="SsqIV2EVZU1pNxFDm-sy-2" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="240" y="110" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-4" value="" style="rounded=1;whiteSpace=wrap;html=1;arcSize=6;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-4" value="" style="rounded=1;whiteSpace=wrap;html=1;arcSize=6;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
           <mxGeometry x="-420" y="-30" width="623" height="260" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-5" value="AssetZoneMembership" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-5" value="AssetZoneMembership" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="313" y="-70" width="170" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-6" value="AssetOrigin" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-6" value="AssetOrigin" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="473.5" y="90" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-8" value="LicenseType" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-8" value="LicenseType" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="379" y="827" width="120" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-9" value="Standard Clinical Trial License" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-9" value="Standard Clinical Trial License" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="379" y="857" width="280" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-49" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-2" target="SsqIV2EVZU1pNxFDm-sy-48">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-49" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-2" target="SsqIV2EVZU1pNxFDm-sy-48" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="880" y="330" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-10" value="qualifiedName&amp;nbsp; : CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}&lt;br&gt;name.&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;: {{hospitalName}}&amp;nbsp;teddy bear measurements received on {{dateReceived}} for {{clinicalTrialName}}&lt;br&gt;description&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; : Dated measurements of patient&#39;s progression presented in a tabular format &lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; with columns of&amp;nbsp;PatientId, Date, AngleLeft and AngleRight.&amp;nbsp;&lt;br&gt;versionIdentifier: V1.0&lt;br&gt;pathName&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;: {{pathName}}&lt;br&gt;deployedImplementationType :&amp;nbsp; Data File&lt;br&gt;fileName&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;: {{fileName}}&lt;br&gt;fileType&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;:&amp;nbsp;CSV File&lt;br&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;fileExtension.&amp;nbsp; &amp;nbsp; : csv&lt;br&gt;delimiterCharacter : ,&lt;br&gt;quoteCharacter : &quot;&lt;br&gt;&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-10" value="qualifiedName&amp;nbsp; : CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}&lt;br&gt;name.&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;: {{hospitalName}}&amp;nbsp;teddy bear measurements received on {{dateReceived}} for {{clinicalTrialName}}&lt;br&gt;description&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; : Dated measurements of patient&#39;s progression presented in a tabular format &lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; with columns of&amp;nbsp;PatientId, Date, AngleLeft and AngleRight.&amp;nbsp;&lt;br&gt;versionIdentifier: V1.0&lt;br&gt;pathName&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;: {{pathName}}&lt;br&gt;deployedImplementationType :&amp;nbsp; Data File&lt;br&gt;fileName&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;: {{fileName}}&lt;br&gt;fileType&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;:&amp;nbsp;CSV File&lt;br&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;fileExtension.&amp;nbsp; &amp;nbsp; : csv&lt;br&gt;delimiterCharacter : ,&lt;br&gt;quoteCharacter : &quot;&lt;br&gt;&lt;/span&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="97" y="300" width="690" height="190" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-11" value="{&lt;br&gt;&amp;nbsp; &amp;nbsp; clinicalTrialId&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; : Add the identifier of the clinical trial.&lt;br&gt;&amp;nbsp; &amp;nbsp; clinicalTrialName : Add the display name of the clinical trial.&lt;br&gt;&amp;nbsp; &amp;nbsp; hospitalName&amp;nbsp; &amp;nbsp; &amp;nbsp; : Add the name of the hospital that sent the measurements.&lt;br&gt;&amp;nbsp; &amp;nbsp; contactName&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;: Add the name of the person at the hospital who is responsible&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;for supplying the measurements.&lt;br&gt;&amp;nbsp; &amp;nbsp; contactDept&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;: Add the hospital department where the contact name works.&lt;br&gt;&amp;nbsp; &amp;nbsp; receivedDate&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;: Add the date that the measurements were received.&lt;br&gt;&amp;nbsp; &amp;nbsp; pathName&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;: Add the full name (absolute file name) of the file and its&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; enclosing directory structure.&lt;br&gt;&amp;nbsp; &amp;nbsp; fileName&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; : Add the name of the file without directory information.&lt;br&gt;}" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-11" value="{&lt;br&gt;&amp;nbsp; &amp;nbsp; clinicalTrialId&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; : Add the identifier of the clinical trial.&lt;br&gt;&amp;nbsp; &amp;nbsp; clinicalTrialName : Add the display name of the clinical trial.&lt;br&gt;&amp;nbsp; &amp;nbsp; hospitalName&amp;nbsp; &amp;nbsp; &amp;nbsp; : Add the name of the hospital that sent the measurements.&lt;br&gt;&amp;nbsp; &amp;nbsp; contactName&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;: Add the name of the person at the hospital who is responsible&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;for supplying the measurements.&lt;br&gt;&amp;nbsp; &amp;nbsp; contactDept&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;: Add the hospital department where the contact name works.&lt;br&gt;&amp;nbsp; &amp;nbsp; receivedDate&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;: Add the date that the measurements were received.&lt;br&gt;&amp;nbsp; &amp;nbsp; pathName&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;: Add the full name (absolute file name) of the file and its&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; enclosing directory structure.&lt;br&gt;&amp;nbsp; &amp;nbsp; fileName&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; : Add the name of the file without directory information.&lt;br&gt;}" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="-263" y="40" width="470" height="190" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-12" value="name&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; : Weekly teddy bear measurements for drop foot clinical trial&lt;br&gt;description&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; : This template supports the cataloguing of weekly measurement files.&amp;nbsp; &lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; Use it to catalog the files as they come into the landing area.&lt;br&gt;versionIdentifier&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; : 2.4&lt;br&gt;placeholderProperties&amp;nbsp; :" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-12" value="name&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; : Weekly teddy bear measurements for drop foot clinical trial&lt;br&gt;description&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; : This template supports the cataloguing of weekly measurement files.&amp;nbsp; &lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; Use it to catalog the files as they come into the landing area.&lt;br&gt;versionIdentifier&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; : 2.4&lt;br&gt;placeholderProperties&amp;nbsp; :" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="-397" y="-20" width="520" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-14" target="SsqIV2EVZU1pNxFDm-sy-2">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-14" target="SsqIV2EVZU1pNxFDm-sy-2" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-14" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-14" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="473.5" y="120" width="277.5" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-15" target="SsqIV2EVZU1pNxFDm-sy-2">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-15" target="SsqIV2EVZU1pNxFDm-sy-2" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-15" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-15" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="313" y="-40" width="250" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-16" value="organization : {{hospitalName}}&lt;br&gt;organizationPropertyName : name&lt;br&gt;otherOriginValues :&amp;nbsp;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-16" value="organization : {{hospitalName}}&lt;br&gt;organizationPropertyName : name&lt;br&gt;otherOriginValues :&amp;nbsp;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="480.5" y="130" width="210" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-17" value="{&lt;br&gt;&amp;nbsp; &amp;nbsp; contact : {{contactName}}&lt;br&gt;&amp;nbsp; &amp;nbsp; dept : {{contactDept}}&lt;br&gt;}" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-17" value="{&lt;br&gt;&amp;nbsp; &amp;nbsp; contact : {{contactName}}&lt;br&gt;&amp;nbsp; &amp;nbsp; dept : {{contactDept}}&lt;br&gt;}" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="588.5" y="161" width="170" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-18" value="zoneMembership : { landing-area, &lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;quarantine,&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;{{clinicalTrialId}} }" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-18" value="zoneMembership : { landing-area, &lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;quarantine,&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;{{clinicalTrialId}} }" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="323" y="-30" width="230" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-31" target="SsqIV2EVZU1pNxFDm-sy-22">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-31" target="SsqIV2EVZU1pNxFDm-sy-22" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-21" value="Connection" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-21" value="Connection" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="-610" y="550" width="120" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-22" value="ConnectorType" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-22" value="ConnectorType" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="-3" y="727" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-24" value="" style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-24" value="" style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="-3" y="757" width="300" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-25" value="TabularSchemaType" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-25" value="TabularSchemaType" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="1002" y="330" width="138" height="35" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-26" value="GlossaryTerm" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-26" value="GlossaryTerm" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" parent="1" vertex="1">
           <mxGeometry x="2319.5" y="493" width="120" height="32" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-27" value="Glossary" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-27" value="Glossary" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="2130" y="117.5" width="120" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-30" value="Endpoint" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-30" value="Endpoint" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="-383" y="807" width="120" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-31" target="SsqIV2EVZU1pNxFDm-sy-35">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-31" target="SsqIV2EVZU1pNxFDm-sy-35" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="-420.3333333333335" y="810" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-31" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-31" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="-610" y="590" width="750" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-34" value="ConnectionToAsset" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-34" value="ConnectionToAsset" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="-40" y="364" width="130" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-35" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-35" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="-383" y="847" width="743" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-36" value="qualifiedName :&amp;nbsp;CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}_connection" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-36" value="qualifiedName :&amp;nbsp;CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}_connection" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="-610" y="605" width="750" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-37" value="qualifiedName :&amp;nbsp;CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}_endpoint&lt;br&gt;networkAddress : {{pathName}}" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-37" value="qualifiedName :&amp;nbsp;CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}_endpoint&lt;br&gt;networkAddress : {{pathName}}" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="-373" y="857" width="740" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-38" value="ConnectionEndpoint" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-38" value="ConnectionEndpoint" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="-420" y="657" width="130" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-39" value="ConnectionConnectorType" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-39" value="ConnectionConnectorType" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="-47" y="650" width="170" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-46" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;dashed=1;endArrow=none;endFill=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-41">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-46" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;dashed=1;endArrow=none;endFill=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-41" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="440" y="667.8333333333335" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-41" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-41" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="490" y="550" width="466" height="233" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-42" value="licenseGUID :&amp;nbsp;ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}&lt;br&gt;licensedBy : {{hospitalName}}&lt;br&gt;licensedByTypeName : Organization&lt;br&gt;licensedByPropertyName : name&lt;br&gt;custodian : tanyatidie&lt;br&gt;custodianTypeName : UserIdentity&lt;br&gt;custodianPropertyName : userId&lt;br&gt;licensee : tessatube&lt;br&gt;licenseeTypeName : UserIdentity&lt;br&gt;licenseePropertyName : userId&lt;br&gt;entitlements : { research : true, marketing : false }&lt;br&gt;restrictions : { copying :&amp;nbsp; in-house-only }&lt;br&gt;obligations : { retention : 20 years }" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-42" value="licenseGUID :&amp;nbsp;ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}&lt;br&gt;licensedBy : {{hospitalName}}&lt;br&gt;licensedByTypeName : Organization&lt;br&gt;licensedByPropertyName : name&lt;br&gt;custodian : tanyatidie&lt;br&gt;custodianTypeName : UserIdentity&lt;br&gt;custodianPropertyName : userId&lt;br&gt;licensee : tessatube&lt;br&gt;licenseeTypeName : UserIdentity&lt;br&gt;licenseePropertyName : userId&lt;br&gt;entitlements : { research : true, marketing : false }&lt;br&gt;restrictions : { copying :&amp;nbsp; in-house-only }&lt;br&gt;obligations : { retention : 20 years }" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="501" y="566.5" width="460" height="200" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-47" value="License" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-47" value="License" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="441" y="493" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-56" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-48" target="SsqIV2EVZU1pNxFDm-sy-52">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-56" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-48" target="SsqIV2EVZU1pNxFDm-sy-52" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-48" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-48" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="1002" y="365" width="748" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-50" value="qualifiedName :&amp;nbsp;CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}_schemaType" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-50" value="qualifiedName :&amp;nbsp;CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}_schemaType" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="1010" y="380" width="760" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-51" value="TabularFileColumn" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-51" value="TabularFileColumn" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="1233" y="520" width="120" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-52" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-52" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="1233" y="560" width="777" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-53" value="TypeEmbeddedAttribute" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-53" value="TypeEmbeddedAttribute" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="1563" y="459" width="150" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-66" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" target="SsqIV2EVZU1pNxFDm-sy-52">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-66" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" parent="1" target="SsqIV2EVZU1pNxFDm-sy-52" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="1693" y="550" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-54" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-54" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="1563" y="489" width="260" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-55" value="schemaTypeName : PrimitiveSchemaType&lt;br&gt;dataType : string" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-55" value="schemaTypeName : PrimitiveSchemaType&lt;br&gt;dataType : string" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="1573" y="497" width="250" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-57" value="AttributeForSchema" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-57" value="AttributeForSchema" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="1190" y="430" width="130" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-100" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-52" target="SsqIV2EVZU1pNxFDm-sy-94">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-100" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-52" target="SsqIV2EVZU1pNxFDm-sy-94" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="2200" y="590" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-59" value="qualifiedName :&amp;nbsp;CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}_patientId_column&lt;br&gt;displayName : PatientId&lt;br&gt;position : 0" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-59" value="qualifiedName :&amp;nbsp;CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}_patientId_column&lt;br&gt;displayName : PatientId&lt;br&gt;position : 0" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="1241" y="570" width="780" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-67" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" target="SsqIV2EVZU1pNxFDm-sy-69" source="SsqIV2EVZU1pNxFDm-sy-48">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-67" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-48" target="SsqIV2EVZU1pNxFDm-sy-69" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="1160" y="489" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-68" value="TabularFileColumn" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-68" value="TabularFileColumn" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="1232.5" y="722" width="120" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-69" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-69" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="1232.5" y="762" width="777.5" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-70" value="TypeEmbeddedAttribute" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-70" value="TypeEmbeddedAttribute" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="1562.5" y="662" width="150" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-71" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-72" target="SsqIV2EVZU1pNxFDm-sy-69">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-71" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-72" target="SsqIV2EVZU1pNxFDm-sy-69" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-72" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-72" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="1562.5" y="692" width="260" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-60" value="qualifiedName :&amp;nbsp;CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}_date_column&lt;br&gt;displayName : Date&lt;br&gt;position : 1" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-60" value="qualifiedName :&amp;nbsp;CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}_date_column&lt;br&gt;displayName : Date&lt;br&gt;position : 1" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="1241.5" y="772.5" width="760" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-74" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="SsqIV2EVZU1pNxFDm-sy-76" source="SsqIV2EVZU1pNxFDm-sy-48">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-74" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-48" target="SsqIV2EVZU1pNxFDm-sy-76" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="1170" y="856" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-75" value="TabularFileColumn" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-75" value="TabularFileColumn" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="1231.5" y="978.5" width="120" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-76" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-76" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="1230" y="1018.5" width="787.5" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-77" value="TypeEmbeddedAttribute" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-77" value="TypeEmbeddedAttribute" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="1561.5" y="918.5" width="150" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-78" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-79" target="SsqIV2EVZU1pNxFDm-sy-76">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-78" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-79" target="SsqIV2EVZU1pNxFDm-sy-76" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-79" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-79" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="1561.5" y="948.5" width="260" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-80" value="schemaTypeName : PrimitiveSchemaType&lt;br&gt;dataType : integer" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-80" value="schemaTypeName : PrimitiveSchemaType&lt;br&gt;dataType : integer" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="1571.5" y="956.5" width="250" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-81" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="SsqIV2EVZU1pNxFDm-sy-83" source="SsqIV2EVZU1pNxFDm-sy-48">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-81" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-48" target="SsqIV2EVZU1pNxFDm-sy-83" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="1170" y="1079" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-82" value="TabularFileColumn" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-82" value="TabularFileColumn" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="1240.5" y="1244" width="120" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-83" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-83" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="1240.5" y="1284" width="799.5" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-84" value="TypeEmbeddedAttribute" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-84" value="TypeEmbeddedAttribute" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="1570.5" y="1184" width="150" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-85" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-86" target="SsqIV2EVZU1pNxFDm-sy-83">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-85" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-86" target="SsqIV2EVZU1pNxFDm-sy-83" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-86" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-86" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="1570.5" y="1214" width="260" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-87" value="schemaTypeName : PrimitiveSchemaType&lt;br&gt;dataType : integer" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-87" value="schemaTypeName : PrimitiveSchemaType&lt;br&gt;dataType : integer" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="1580.5" y="1222" width="250" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-61" value="qualifiedName :&amp;nbsp;CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}_angleLeft_column&lt;br&gt;displayName : AngleLeft&lt;br&gt;position : 2" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-61" value="qualifiedName :&amp;nbsp;CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}_angleLeft_column&lt;br&gt;displayName : AngleLeft&lt;br&gt;position : 2" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="1237.5" y="1028.5" width="780" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-62" value="qualifiedName :&amp;nbsp;CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}_angleRight_column&lt;br&gt;displayName : AngleRight&lt;br&gt;position : 3" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-62" value="qualifiedName :&amp;nbsp;CSVFile:ClinicalTrial:{{clinicalTrialId}}:WeeklyMeasurement:{{hospitalName}}:{{dateReceived}}:{{pathName}}_angleRight_column&lt;br&gt;displayName : AngleRight&lt;br&gt;position : 3" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="1250.5" y="1294" width="790" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-65" value="schemaTypeName : PrimitiveSchemaType&lt;br&gt;dataType : date&lt;br&gt;encodingStandard : YYYY-MM-DD" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-65" value="schemaTypeName : PrimitiveSchemaType&lt;br&gt;dataType : date&lt;br&gt;encodingStandard : YYYY-MM-DD" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="1572.5" y="693.5" width="250" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-88" value="AssetSchemaType" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-88" value="AssetSchemaType" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="787" y="364" width="120" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-99" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-89" target="SsqIV2EVZU1pNxFDm-sy-94">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-99" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-89" target="SsqIV2EVZU1pNxFDm-sy-94" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-110" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-89" target="SsqIV2EVZU1pNxFDm-sy-108">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-110" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-89" target="SsqIV2EVZU1pNxFDm-sy-108" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-154" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-89" target="SsqIV2EVZU1pNxFDm-sy-102">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-154" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-89" target="SsqIV2EVZU1pNxFDm-sy-102" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-155" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-89" target="SsqIV2EVZU1pNxFDm-sy-124">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-155" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-89" target="SsqIV2EVZU1pNxFDm-sy-124" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-156" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-89" target="SsqIV2EVZU1pNxFDm-sy-136">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-156" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-89" target="SsqIV2EVZU1pNxFDm-sy-136" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-157" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-89" target="SsqIV2EVZU1pNxFDm-sy-148">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-157" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-89" target="SsqIV2EVZU1pNxFDm-sy-148" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-89" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-89" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="2130" y="157.5" width="410" height="130" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-90" value="qualifiedName : Glossary:TeddyBearDropFootTerminology&lt;br&gt;displayName : Teddy Bear Drop Foot Terminology&lt;br&gt;usage : Used with the Teddy Bear Drop Foot Demonstration Study&lt;br&gt;description : This glossary describes terminology invented for the &lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;fictitious study into Teddy Bear Drop Foot that is being &lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;used to demonstrate aspects of open governance&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;without risk to real patient data.&amp;nbsp;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-90" value="qualifiedName : Glossary:TeddyBearDropFootTerminology&lt;br&gt;displayName : Teddy Bear Drop Foot Terminology&lt;br&gt;usage : Used with the Teddy Bear Drop Foot Demonstration Study&lt;br&gt;description : This glossary describes terminology invented for the &lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;fictitious study into Teddy Bear Drop Foot that is being &lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;used to demonstrate aspects of open governance&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;without risk to real patient data.&amp;nbsp;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="2150" y="167.5" width="380" height="110" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-105" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-94" target="SsqIV2EVZU1pNxFDm-sy-102">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-105" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-94" target="SsqIV2EVZU1pNxFDm-sy-102" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-94" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-94" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" parent="1" vertex="1">
           <mxGeometry x="2319.5" y="525" width="550" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-95" value="qualifiedName : GlossaryTerm:TeddyBearDropFootTerminology:TemplateSubstitute:PatientId&lt;br&gt;displayName : Patient Identifier&lt;br&gt;usage : Only for use in templates.&lt;br&gt;summary : Template Substitute for Patient Identifier." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-95" value="qualifiedName : GlossaryTerm:TeddyBearDropFootTerminology:TemplateSubstitute:PatientId&lt;br&gt;displayName : Patient Identifier&lt;br&gt;usage : Only for use in templates.&lt;br&gt;summary : Template Substitute for Patient Identifier." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="2331.5" y="543" width="520" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-97" value="CategoryAnchor" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-97" value="CategoryAnchor" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="2451" y="287.5" width="110" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-101" value="GlossaryTerm" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-101" value="GlossaryTerm" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="3171.5" y="399" width="120" height="32" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-102" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-102" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="3171.5" y="431" width="550" height="113" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-103" value="qualifiedName : GlossaryTerm:TeddyBearDropFootTerminology:PatientIdentifier&lt;br&gt;displayName : Patient Identifier&lt;br&gt;summary : Unique identifier of patient&lt;br&gt;usage : Definition for use in the Teddy Bear Drop Foot demonstration study.&lt;br&gt;description : Unique identifier for the teddy bear that has agree to take part in this study.&amp;nbsp; &lt;br&gt;The identifier on its own is anonymous, preserving the privacy of the patient.&amp;nbsp; However, there&lt;br&gt;&amp;nbsp;is a database that ties the patient identifier to the name of the bear." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-103" value="qualifiedName : GlossaryTerm:TeddyBearDropFootTerminology:PatientIdentifier&lt;br&gt;displayName : Patient Identifier&lt;br&gt;summary : Unique identifier of patient&lt;br&gt;usage : Definition for use in the Teddy Bear Drop Foot demonstration study.&lt;br&gt;description : Unique identifier for the teddy bear that has agree to take part in this study.&amp;nbsp; &lt;br&gt;The identifier on its own is anonymous, preserving the privacy of the patient.&amp;nbsp; However, there&lt;br&gt;&amp;nbsp;is a database that ties the patient identifier to the name of the bear." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="3192" y="434" width="520" height="110" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-106" value="SourcedFrom" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-106" value="SourcedFrom" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="2869.5" y="537" width="100" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-107" value="GlossaryCategory" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-107" value="GlossaryCategory" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="2895" y="248" width="120" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-111" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-108" target="SsqIV2EVZU1pNxFDm-sy-101">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-111" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-108" target="SsqIV2EVZU1pNxFDm-sy-101" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-108" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-108" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="2895" y="288" width="585" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-109" value="qualifiedName : GlossaryCategory:TeddyBearDropFootTerminology:DataFields&lt;br&gt;displayName : Teddy Bear Drop Foot Data Fields&lt;br&gt;description : These terms describe the types of data collected during the Teddy Bear Drop Foot study." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-109" value="qualifiedName : GlossaryCategory:TeddyBearDropFootTerminology:DataFields&lt;br&gt;displayName : Teddy Bear Drop Foot Data Fields&lt;br&gt;description : These terms describe the types of data collected during the Teddy Bear Drop Foot study." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="2910" y="293" width="560" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-112" value="TermCategorization" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-112" value="TermCategorization" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="2910" y="358" width="130" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-116" value="Semantic Assignment" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-116" value="Semantic Assignment" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="2010" y="569" width="140" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-117" value="GlossaryTerm" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-117" value="GlossaryTerm" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" parent="1" vertex="1">
           <mxGeometry x="2319.5" y="695.5" width="120" height="32" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-118" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" target="SsqIV2EVZU1pNxFDm-sy-121" source="SsqIV2EVZU1pNxFDm-sy-69">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-118" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-69" target="SsqIV2EVZU1pNxFDm-sy-121" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="2199.5" y="792.5" as="targetPoint" />
             <mxPoint x="1999.5" y="801.5" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-119" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" target="SsqIV2EVZU1pNxFDm-sy-121" source="SsqIV2EVZU1pNxFDm-sy-89">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-119" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-89" target="SsqIV2EVZU1pNxFDm-sy-121" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="2262.5" y="370.5" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-120" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-121" target="SsqIV2EVZU1pNxFDm-sy-124">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-120" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-121" target="SsqIV2EVZU1pNxFDm-sy-124" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-121" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-121" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" parent="1" vertex="1">
           <mxGeometry x="2319.5" y="727.5" width="550" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-122" value="qualifiedName : GlossaryTerm:TeddyBearDropFootTerminology:TemplateSubstitute:MeasurementDate&lt;br&gt;displayName : Measurement Date&lt;br&gt;usage : Only for use in templates.&lt;br&gt;summary : Template Substitute for Measurement Date." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-122" value="qualifiedName : GlossaryTerm:TeddyBearDropFootTerminology:TemplateSubstitute:MeasurementDate&lt;br&gt;displayName : Measurement Date&lt;br&gt;usage : Only for use in templates.&lt;br&gt;summary : Template Substitute for Measurement Date." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="2325" y="742.5" width="570" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-123" value="GlossaryTerm" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-123" value="GlossaryTerm" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="3171" y="607.5" width="120" height="32" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-124" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-124" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="3171" y="639.5" width="550" height="110.5" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-125" value="qualifiedName : GlossaryTerm:TeddyBearDropFootTerminology:MeasurementDate&lt;br&gt;displayName : Measurement Date&lt;br&gt;summary : The date that the measurement was made.&lt;br&gt;usage : Definition for use in the Teddy Bear Drop Foot demonstration study.&lt;br&gt;description : The measurements are from a discrete day so that any changes in a patient&#39;s condition&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; can be measured.&amp;nbsp; The format of the date may&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; vary depending on the source of the measurement." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-125" value="qualifiedName : GlossaryTerm:TeddyBearDropFootTerminology:MeasurementDate&lt;br&gt;displayName : Measurement Date&lt;br&gt;summary : The date that the measurement was made.&lt;br&gt;usage : Definition for use in the Teddy Bear Drop Foot demonstration study.&lt;br&gt;description : The measurements are from a discrete day so that any changes in a patient&#39;s condition&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; can be measured.&amp;nbsp; The format of the date may&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; vary depending on the source of the measurement." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="3179" y="640" width="550" height="110" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-126" value="SourcedFrom" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-126" value="SourcedFrom" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="2869.5" y="739.5" width="100" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-127" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" target="SsqIV2EVZU1pNxFDm-sy-123" source="SsqIV2EVZU1pNxFDm-sy-108">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-127" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-108" target="SsqIV2EVZU1pNxFDm-sy-123" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="3060" y="380" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-128" value="Semantic Assignment" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-128" value="Semantic Assignment" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="2009.5" y="776.5" width="140" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-129" value="GlossaryTerm" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-129" value="GlossaryTerm" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" parent="1" vertex="1">
           <mxGeometry x="2318.5" y="952" width="120" height="32" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-130" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" target="SsqIV2EVZU1pNxFDm-sy-133" source="SsqIV2EVZU1pNxFDm-sy-76">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-130" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-76" target="SsqIV2EVZU1pNxFDm-sy-133" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="2198.5" y="1049" as="targetPoint" />
             <mxPoint x="1998.5" y="1058" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-131" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" target="SsqIV2EVZU1pNxFDm-sy-133" source="SsqIV2EVZU1pNxFDm-sy-89">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-131" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-89" target="SsqIV2EVZU1pNxFDm-sy-133" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="2253.5" y="567" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-132" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-133" target="SsqIV2EVZU1pNxFDm-sy-136">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-132" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-133" target="SsqIV2EVZU1pNxFDm-sy-136" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="3307.5" y="1040" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-133" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-133" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" parent="1" vertex="1">
           <mxGeometry x="2318.5" y="984" width="550" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-134" value="qualifiedName : GlossaryTerm:TeddyBearDropFootTerminology:TemplateSubstitute:AngleLeft&lt;br&gt;displayName : AngleLeft&lt;br&gt;usage : Only for use in templates.&lt;br&gt;summary : Template Substitute for Left hip rotation angle." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-134" value="qualifiedName : GlossaryTerm:TeddyBearDropFootTerminology:TemplateSubstitute:AngleLeft&lt;br&gt;displayName : AngleLeft&lt;br&gt;usage : Only for use in templates.&lt;br&gt;summary : Template Substitute for Left hip rotation angle." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="2338.5" y="1003" width="520" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-135" value="GlossaryTerm" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-135" value="GlossaryTerm" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="3171" y="804" width="120" height="32" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-136" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-136" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="3171" y="836" width="550" height="144" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-137" value="qualifiedName : GlossaryTerm:TeddyBearDropFootTerminology:LeftHipRotationAngle&lt;br&gt;displayName : Left hip rotation angle&lt;br&gt;summary : The number of degrees of rotation of the left foot measured from vertical.&lt;br&gt;usage : Definition for use in the Teddy Bear Drop Foot demonstration study.&lt;br&gt;description : As the stuffing around the hip weakens, the foot on the attached leg rotates, &lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; typically outwards when the teddy bear is sitting.&amp;nbsp; This measurement is an integer&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; measuring the number of degrees of rotation of the left foot measured from vertical.&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; Positive values measure that the foot is rotating outwards." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-137" value="qualifiedName : GlossaryTerm:TeddyBearDropFootTerminology:LeftHipRotationAngle&lt;br&gt;displayName : Left hip rotation angle&lt;br&gt;summary : The number of degrees of rotation of the left foot measured from vertical.&lt;br&gt;usage : Definition for use in the Teddy Bear Drop Foot demonstration study.&lt;br&gt;description : As the stuffing around the hip weakens, the foot on the attached leg rotates, &lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; typically outwards when the teddy bear is sitting.&amp;nbsp; This measurement is an integer&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; measuring the number of degrees of rotation of the left foot measured from vertical.&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; Positive values measure that the foot is rotating outwards." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="3189" y="843" width="530" height="130" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-138" value="SourcedFrom" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-138" value="SourcedFrom" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="2868.5" y="996" width="100" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-139" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="SsqIV2EVZU1pNxFDm-sy-135" source="SsqIV2EVZU1pNxFDm-sy-108">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-139" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-108" target="SsqIV2EVZU1pNxFDm-sy-135" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="3045.5" y="643" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-140" value="Semantic Assignment" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-140" value="Semantic Assignment" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="2021" y="1028.5" width="140" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-141" value="GlossaryTerm" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-141" value="GlossaryTerm" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" parent="1" vertex="1">
           <mxGeometry x="2321.5" y="1217" width="120" height="32" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-142" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" target="SsqIV2EVZU1pNxFDm-sy-145" source="SsqIV2EVZU1pNxFDm-sy-83">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-142" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-83" target="SsqIV2EVZU1pNxFDm-sy-145" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="2207.5" y="1314" as="targetPoint" />
             <mxPoint x="2007.5" y="1323" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-143" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" target="SsqIV2EVZU1pNxFDm-sy-145" source="SsqIV2EVZU1pNxFDm-sy-89">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-143" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-89" target="SsqIV2EVZU1pNxFDm-sy-145" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="2253.5" y="769.5" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-144" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="SsqIV2EVZU1pNxFDm-sy-145" target="SsqIV2EVZU1pNxFDm-sy-148">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-144" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-145" target="SsqIV2EVZU1pNxFDm-sy-148" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-145" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-145" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" parent="1" vertex="1">
           <mxGeometry x="2321.5" y="1249" width="550" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-146" value="qualifiedName : GlossaryTerm:TeddyBearDropFootTerminology:TemplateSubstitute:AngleRight&lt;br&gt;displayName : AngleRight&lt;br&gt;usage : Only for use in templates.&lt;br&gt;summary : Template Substitute for Right hip rotation angle." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-146" value="qualifiedName : GlossaryTerm:TeddyBearDropFootTerminology:TemplateSubstitute:AngleRight&lt;br&gt;displayName : AngleRight&lt;br&gt;usage : Only for use in templates.&lt;br&gt;summary : Template Substitute for Right hip rotation angle." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="2341.5" y="1268" width="530" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-147" value="GlossaryTerm" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-147" value="GlossaryTerm" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="3170" y="1066.5" width="120" height="32" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-148" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-148" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="3170" y="1098.5" width="550" height="151.5" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-150" value="SourcedFrom" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-150" value="SourcedFrom" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="2871.5" y="1261" width="100" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-151" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="SsqIV2EVZU1pNxFDm-sy-147" source="SsqIV2EVZU1pNxFDm-sy-108">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-151" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="SsqIV2EVZU1pNxFDm-sy-108" target="SsqIV2EVZU1pNxFDm-sy-147" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="3045.5" y="845.5" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-152" value="Semantic Assignment" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-152" value="Semantic Assignment" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="2040.5" y="1294" width="140" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-153" value="TermAnchor" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-153" value="TermAnchor" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="2229.5" y="288" width="90" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-158" value="qualifiedName : GlossaryTerm:TeddyBearDropFootTerminology:RightHipRotationAngle&lt;br&gt;displayName : Right hip rotation angle&lt;br&gt;summary : The number of degrees of rotation of the right foot measured from vertical.&lt;br&gt;usage : Definition for use in the Teddy Bear Drop Foot demonstration study.&lt;br&gt;description : As the stuffing around the hip weakens, the foot on the attached leg rotates, &lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; typically outwards when the teddy bear is sitting.&amp;nbsp; This measurement is an integer&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; measuring the number of degrees of rotation of the right foot measured from vertical.&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; Positive values measure that the foot is rotating outwards." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-158" value="qualifiedName : GlossaryTerm:TeddyBearDropFootTerminology:RightHipRotationAngle&lt;br&gt;displayName : Right hip rotation angle&lt;br&gt;summary : The number of degrees of rotation of the right foot measured from vertical.&lt;br&gt;usage : Definition for use in the Teddy Bear Drop Foot demonstration study.&lt;br&gt;description : As the stuffing around the hip weakens, the foot on the attached leg rotates, &lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; typically outwards when the teddy bear is sitting.&amp;nbsp; This measurement is an integer&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; measuring the number of degrees of rotation of the right foot measured from vertical.&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; Positive values measure that the foot is rotating outwards." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="3182" y="1109.25" width="540" height="130" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-159" value="Template Subsitute" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-159" value="Template Subsitute" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" parent="1" vertex="1">
           <mxGeometry x="2749.5" y="691.5" width="120" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-160" value="Template Subsitute" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-160" value="Template Subsitute" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" parent="1" vertex="1">
           <mxGeometry x="2748.5" y="489" width="120" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-161" value="Template Subsitute" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-161" value="Template Subsitute" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" parent="1" vertex="1">
           <mxGeometry x="2749.5" y="947.5" width="120" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-162" value="Template Subsitute" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-162" value="Template Subsitute" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;" parent="1" vertex="1">
           <mxGeometry x="2751.5" y="1213" width="120" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="SsqIV2EVZU1pNxFDm-sy-165" value="&amp;nbsp; &amp;nbsp; :&lt;br&gt;connectorProviderClassName: CSVFileStoreProvider&lt;br&gt;&amp;nbsp; &amp;nbsp; :&amp;nbsp;&amp;nbsp;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+        <mxCell id="SsqIV2EVZU1pNxFDm-sy-165" value="&amp;nbsp; &amp;nbsp; :&lt;br&gt;connectorProviderClassName: CSVFileStoreProvider&lt;br&gt;&amp;nbsp; &amp;nbsp; :&amp;nbsp;&amp;nbsp;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
           <mxGeometry x="3" y="757" width="310" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="82pEXQkiQwSFLgjn__af" name="governance-engines">
+    <mxGraphModel dx="1201" dy="812" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="J3Uq83q0hkghFeF9kSO3-1" value="GovernanceActionService" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=2;fillColor=#a4c8a2;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="464" y="545" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="J3Uq83q0hkghFeF9kSO3-2" value="FileProvisioningGovernanceActionService" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#a4c8a2;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="464" y="260" width="290" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="J3Uq83q0hkghFeF9kSO3-3" value="WatchdogGovernanceActionService" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#a4c8a2;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="464" y="450" width="290" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="J3Uq83q0hkghFeF9kSO3-4" value="OriginSeekerGovernanceActionService" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#a4c8a2;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="464" y="575" width="290" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="J3Uq83q0hkghFeF9kSO3-5" value="ZonePublisherGovernanceActionService" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#a4c8a2;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="464" y="715" width="290" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="J3Uq83q0hkghFeF9kSO3-6" value="GovernanceActionService" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=2;fillColor=#a4c8a2;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="464" y="685" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="J3Uq83q0hkghFeF9kSO3-7" value="GovernanceActionService" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=2;fillColor=#a4c8a2;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="464" y="420" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="J3Uq83q0hkghFeF9kSO3-8" value="GovernanceActionService" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=2;fillColor=#a4c8a2;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="464" y="230" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="J3Uq83q0hkghFeF9kSO3-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;" edge="1" parent="1" source="J3Uq83q0hkghFeF9kSO3-15" target="J3Uq83q0hkghFeF9kSO3-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="J3Uq83q0hkghFeF9kSO3-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="J3Uq83q0hkghFeF9kSO3-15" target="J3Uq83q0hkghFeF9kSO3-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="434" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="J3Uq83q0hkghFeF9kSO3-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="J3Uq83q0hkghFeF9kSO3-15" target="J3Uq83q0hkghFeF9kSO3-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="J3Uq83q0hkghFeF9kSO3-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="J3Uq83q0hkghFeF9kSO3-15" target="J3Uq83q0hkghFeF9kSO3-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="J3Uq83q0hkghFeF9kSO3-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="J3Uq83q0hkghFeF9kSO3-15" target="J3Uq83q0hkghFeF9kSO3-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="J3Uq83q0hkghFeF9kSO3-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="J3Uq83q0hkghFeF9kSO3-15" target="J3Uq83q0hkghFeF9kSO3-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="J3Uq83q0hkghFeF9kSO3-15" value="AssetGovernanceEngine" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="74" y="380" width="290" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="J3Uq83q0hkghFeF9kSO3-16" value="GovernanceActionEngine" style="rounded=0;whiteSpace=wrap;html=1;fontStyle=2;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="74" y="350" width="150" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="J3Uq83q0hkghFeF9kSO3-17" value="simulate-ftp (copy-file, no lineage)" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="424" y="330" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="J3Uq83q0hkghFeF9kSO3-18" value="move-file" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="424" y="370" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="J3Uq83q0hkghFeF9kSO3-19" value="delete-file" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="424" y="350" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="J3Uq83q0hkghFeF9kSO3-20" value="watch-for-new-files (watch-nested-in-folder)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="174" y="480" width="250" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="J3Uq83q0hkghFeF9kSO3-21" value="seek-origin" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="174" y="575" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="J3Uq83q0hkghFeF9kSO3-22" value="set-zone-membership" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="174" y="715" width="140" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

@@ -1,0 +1,11 @@
+# Egeria-governance-server-omas
+
+@assetGUID=xxx
+@governanceService=yyy
+
+###
+# @name logAssetAuditMessage
+# Log an audit message about an asset.
+# Further Information: https://egeria-project.org/concepts/audit-log/
+GET {{baseURL}}/servers/{{server}}/open-metadata/access-services/governance-server/users/{{user}}/assets/{assetGUID}/log-records/{{governanceService}}
+

@@ -826,35 +826,36 @@ public class OpenMetadataTypesArchive4_1
         /*
          * Create the Patch
          */
-        final String typeName = "DigitalProduct";
+        final String typeName = OpenMetadataType.DIGITAL_PRODUCT_CLASSIFICATION.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
 
-
         /*
-         * Update the valid instance statuses
+         * Build the attributes
          */
-        ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
 
-        validInstanceStatusList.add(InstanceStatus.DRAFT);
-        validInstanceStatusList.add(InstanceStatus.PREPARED);
-        validInstanceStatusList.add(InstanceStatus.PROPOSED);
-        validInstanceStatusList.add(InstanceStatus.APPROVED);
-        validInstanceStatusList.add(InstanceStatus.REJECTED);
-        validInstanceStatusList.add(InstanceStatus.APPROVED_CONCEPT);
-        validInstanceStatusList.add(InstanceStatus.UNDER_DEVELOPMENT);
-        validInstanceStatusList.add(InstanceStatus.DEVELOPMENT_COMPLETE);
-        validInstanceStatusList.add(InstanceStatus.APPROVED_FOR_DEPLOYMENT);
-        validInstanceStatusList.add(InstanceStatus.ACTIVE);
-        validInstanceStatusList.add(InstanceStatus.DISABLED);
-        validInstanceStatusList.add(InstanceStatus.DEPRECATED);
-        validInstanceStatusList.add(InstanceStatus.OTHER);
-        validInstanceStatusList.add(InstanceStatus.DELETED);
+        final String attribute1Name = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
+        final String attribute2Name = OpenMetadataProperty.PRODUCT_STATUS.name;
+        final String attribute2Description = OpenMetadataProperty.PRODUCT_STATUS.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.PRODUCT_STATUS.descriptionGUID;
 
-        typeDefPatch.setValidInstanceStatusList(validInstanceStatusList);
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
 
         return typeDefPatch;
     }

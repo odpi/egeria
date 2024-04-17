@@ -29,6 +29,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.refdata.CollectionType;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -88,18 +89,18 @@ public class GovernanceDomainRESTServices
         {
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GovernanceDomainSetProperties)
+                if (requestBody.getProperties() instanceof GovernanceDomainSetProperties properties)
                 {
                     auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                     CollectionHandler<GovernanceDomainSetElement> handler = instanceHandler.getGovernanceDomainSetHandler(userId, serverName, methodName);
 
-                    GovernanceDomainSetProperties properties = (GovernanceDomainSetProperties) requestBody.getProperties();
                     String setGUID = handler.createCollection(userId,
                                                               requestBody.getExternalSourceGUID(),
                                                               requestBody.getExternalSourceName(),
                                                               properties.getQualifiedName(),
                                                               properties.getDisplayName(),
                                                               properties.getDescription(),
+                                                              CollectionType.GOVERNANCE_DOMAIN_SET.getName(),
                                                               properties.getAdditionalProperties(),
                                                               properties.getTypeName(),
                                                               properties.getExtendedProperties(),
@@ -161,12 +162,10 @@ public class GovernanceDomainRESTServices
         {
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GovernanceDomainSetProperties)
+                if (requestBody.getProperties() instanceof GovernanceDomainSetProperties properties)
                 {
                     auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                     CollectionHandler<GovernanceDomainSetElement> handler = instanceHandler.getGovernanceDomainSetHandler(userId, serverName, methodName);
-
-                    GovernanceDomainSetProperties properties = (GovernanceDomainSetProperties) requestBody.getProperties();
 
                     handler.updateCollection(userId,
                                              requestBody.getExternalSourceGUID(),
@@ -176,6 +175,7 @@ public class GovernanceDomainRESTServices
                                              properties.getQualifiedName(),
                                              properties.getDisplayName(),
                                              properties.getDescription(),
+                                             CollectionType.GOVERNANCE_DOMAIN_SET.getName(),
                                              properties.getAdditionalProperties(),
                                              properties.getTypeName(),
                                              properties.getExtendedProperties(),
@@ -488,12 +488,10 @@ public class GovernanceDomainRESTServices
         {
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GovernanceDomainProperties)
+                if (requestBody.getProperties() instanceof GovernanceDomainProperties properties)
                 {
                     auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                     GovernanceDomainHandler<GovernanceDomainElement> domainHandler = instanceHandler.getGovernanceDomainHandler(userId, serverName, methodName);
-
-                    GovernanceDomainProperties properties = (GovernanceDomainProperties) requestBody.getProperties();
 
                     String domainGUID = domainHandler.createGovernanceDomain(userId,
                                                                              properties.getQualifiedName(),
@@ -578,13 +576,12 @@ public class GovernanceDomainRESTServices
         {
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GovernanceDomainProperties)
+                if (requestBody.getProperties() instanceof GovernanceDomainProperties properties)
                 {
                     auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                    GovernanceDomainHandler<GovernanceDomainElement> domainHandler = instanceHandler.getGovernanceDomainHandler(userId, serverName,
+                    GovernanceDomainHandler<GovernanceDomainElement> domainHandler = instanceHandler.getGovernanceDomainHandler(userId,
+                                                                                                                                serverName,
                                                                                                                                 methodName);
-
-                    GovernanceDomainProperties properties = (GovernanceDomainProperties) requestBody.getProperties();
 
                     domainHandler.updateGovernanceDomain(userId,
                                                          governanceDomainGUID,

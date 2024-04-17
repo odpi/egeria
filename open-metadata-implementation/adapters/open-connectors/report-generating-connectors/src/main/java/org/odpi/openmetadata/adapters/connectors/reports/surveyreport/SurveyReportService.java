@@ -82,21 +82,6 @@ public class SurveyReportService extends GeneralGovernanceActionService
 
 
     /**
-     * Converts "Sun Jan 28 16:50:14 GMT 2024* to "#survey-report-Sun-Jan-28-165014-GMT-2024".
-     *
-     * @param creationTime creation time of report
-     * @return link to the section describing the report
-     */
-    private String getReportLinkURI(Date creationTime)
-    {
-        String noSpaces = creationTime.toString().replace(' ', 'x');
-        String noColons = noSpaces.replaceAll("[^a-zA-Z0-9]", "");
-
-        return "#survey-report-" + noColons.replace('x', '-');
-    }
-
-
-    /**
      * Return the title to use on an annotation section of the report.
      *
      * @param annotationElement element describing the annotation
