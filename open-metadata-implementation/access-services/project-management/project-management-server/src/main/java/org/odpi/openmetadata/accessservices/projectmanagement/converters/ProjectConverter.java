@@ -41,6 +41,25 @@ public class ProjectConverter<B> extends ProjectManagementOMASConverter<B>
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    @Override
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        String       methodName) throws PropertyServerException
+    {
+        return this.getNewBean(beanClass, entity, null, methodName);
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that
+     * contain a combination of the properties from an entity and that of a connected relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
      * @param relationship relationship containing the properties
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
