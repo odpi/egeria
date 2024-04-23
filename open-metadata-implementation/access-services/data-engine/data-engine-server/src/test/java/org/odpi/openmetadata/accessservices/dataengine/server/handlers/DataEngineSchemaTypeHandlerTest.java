@@ -21,8 +21,8 @@ import org.odpi.openmetadata.commonservices.generichandlers.SchemaTypeHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetailDifferences;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
@@ -239,7 +239,7 @@ class DataEngineSchemaTypeHandlerTest {
     void addDataFlowRelationship_throwsInvalidParameterException() throws UserNotAuthorizedException,
                                                                                 PropertyServerException,
                                                                                 InvalidParameterException {
-        when(dataEngineCommonHandler.findEntity(USER, TARGET_QUALIFIED_NAME, OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME)).thenReturn(Optional.empty());
+        when(dataEngineCommonHandler.findEntity(USER, TARGET_QUALIFIED_NAME, OpenMetadataType.SCHEMA_ATTRIBUTE.typeName)).thenReturn(Optional.empty());
 
         dataEngineSchemaTypeHandler.addDataFlowRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME, null, null);
@@ -262,7 +262,7 @@ class DataEngineSchemaTypeHandlerTest {
         Set<EntityDetail> entityDetails = new HashSet<>();
         entityDetails.add(entityDetail);
         when(dataEngineCommonHandler.getEntitiesForRelationship(USER, GUID, OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
-                                                                OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME, OpenMetadataType.SCHEMA_TYPE_TYPE_NAME)).thenReturn(entityDetails);
+                                                                OpenMetadataType.SCHEMA_ATTRIBUTE.typeName, OpenMetadataType.SCHEMA_TYPE_TYPE_NAME)).thenReturn(entityDetails);
 
         dataEngineSchemaTypeHandler.removeSchemaType(USER, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, DeleteSemantic.SOFT);
         verify(dataEngineCommonHandler, times(1)).removeEntity(USER, GUID,

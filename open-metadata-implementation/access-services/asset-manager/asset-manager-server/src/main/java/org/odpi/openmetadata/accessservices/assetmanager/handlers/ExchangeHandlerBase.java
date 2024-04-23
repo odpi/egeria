@@ -16,8 +16,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -590,7 +592,7 @@ class ExchangeHandlerBase
                                                                                       methodName));
 
             supplementaryProperties.setSummary(repositoryHelper.getStringProperty(serviceName,
-                                                                                  OpenMetadataType.SUMMARY_PROPERTY_NAME,
+                                                                                  OpenMetadataProperty.SUMMARY.name,
                                                                                   glossaryEntity.getProperties(),
                                                                                   methodName));
             supplementaryProperties.setDescription(repositoryHelper.getStringProperty(serviceName,
@@ -598,11 +600,11 @@ class ExchangeHandlerBase
                                                                                       glossaryEntity.getProperties(),
                                                                                       methodName));
             supplementaryProperties.setAbbreviation(repositoryHelper.getStringProperty(serviceName,
-                                                                                       OpenMetadataType.ABBREVIATION_PROPERTY_NAME,
+                                                                                       OpenMetadataProperty.ABBREVIATION.name,
                                                                                        glossaryEntity.getProperties(),
                                                                                        methodName));
             supplementaryProperties.setUsage(repositoryHelper.getStringProperty(serviceName,
-                                                                                OpenMetadataType.USAGE_PROPERTY_NAME,
+                                                                                OpenMetadataProperty.USAGE.name,
                                                                                 glossaryEntity.getProperties(),
                                                                                 methodName));
         }

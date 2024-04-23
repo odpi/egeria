@@ -9,6 +9,7 @@ dependencies {
     implementation project(':open-metadata-implementation:view-services:glossary-browser:glossary-browser-server')
     implementation project(':open-metadata-implementation:access-services:asset-manager:asset-manager-api')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
     implementation project(':open-metadata-implementation:framework-services:gaf-metadata-management:gaf-metadata-api')

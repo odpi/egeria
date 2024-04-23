@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.StarRating;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class TestStarRating
     {
         existingOrdinals = new ArrayList<>();
 
-        StarRating  testValue;
+        StarRating testValue;
 
         testValue = StarRating.NO_RECOMMENDATION;
 

@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetTy
 import org.odpi.openmetadata.frameworks.governanceaction.controls.GuardType;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestParameterType;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestTypeType;
-import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 
 import java.util.List;
 

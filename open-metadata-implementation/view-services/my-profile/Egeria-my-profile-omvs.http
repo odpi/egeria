@@ -44,11 +44,14 @@ Authorization: Bearer {{token}}
 
 ###
 # @name find ToDo
+# Retrieve the to dos that match the search string. The toDoStatus is optional.  If not specified than ToDos in any status are returned.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/my-profile/to-dos/find-by-search-string/?startFrom=0&pageSize=0&startsWith=true
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "ToDoStatusSearchString",
+  "searchString" : "enter search value",
+  "toDoStatus" : "OPEN"
  }
 

@@ -18,12 +18,12 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalGlos
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalGlossaryLinkProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermActivityType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermActivityType;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermCategorization;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermContextDefinition;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationship;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationshipStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.StagingGlossaryProperties;
@@ -33,7 +33,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GlossaryCategoryHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GlossaryHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GlossaryTermHandler;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -2792,10 +2792,10 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
     {
         if (status != null)
         {
-            return status.getOpenTypeOrdinal();
+            return status.getOrdinal();
         }
 
-        return GlossaryTermRelationshipStatus.ACTIVE.getOpenTypeOrdinal();
+        return GlossaryTermRelationshipStatus.ACTIVE.getOrdinal();
     }
 
 
@@ -2861,7 +2861,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                   glossaryTermGUID,
                                                   glossaryTermGUIDParameterName,
                                                   null,
-                                                  GlossaryTermRelationshipStatus.ACTIVE.getOpenTypeOrdinal(),
+                                                  GlossaryTermRelationshipStatus.ACTIVE.getOrdinal(),
                                                   null,
                                                   null,
                                                   forLineage,
@@ -3021,7 +3021,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                       glossaryTermTwoGUIDParameterName,
                                                       null,
                                                       null,
-                                                      GlossaryTermRelationshipStatus.ACTIVE.getOpenTypeOrdinal(),
+                                                      GlossaryTermRelationshipStatus.ACTIVE.getOrdinal(),
                                                       null,
                                                       null,
                                                       null,
@@ -3117,7 +3117,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
                                                        glossaryTermTwoGUIDParameterName,
                                                        null,
                                                        null,
-                                                       GlossaryTermRelationshipStatus.ACTIVE.getOpenTypeOrdinal(),
+                                                       GlossaryTermRelationshipStatus.ACTIVE.getOrdinal(),
                                                        null,
                                                        null,
                                                        null,
@@ -3530,10 +3530,10 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
     {
         if (activityType != null)
         {
-            return activityType.getOpenTypeOrdinal();
+            return activityType.getOrdinal();
         }
 
-        return GlossaryTermActivityType.ACTION.getOpenTypeOrdinal();
+        return GlossaryTermActivityType.ACTION.getOrdinal();
     }
 
 
@@ -4360,7 +4360,7 @@ public class GlossaryExchangeHandler extends ExchangeHandlerBase
             {
                 if (status != null)
                 {
-                    ordinals.add(status.getOpenTypeOrdinal());
+                    ordinals.add(status.getOrdinal());
                 }
             }
 

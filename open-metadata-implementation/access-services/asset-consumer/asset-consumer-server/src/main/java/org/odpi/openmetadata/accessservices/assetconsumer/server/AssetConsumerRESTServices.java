@@ -33,9 +33,9 @@ import org.odpi.openmetadata.commonservices.generichandlers.LikeHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIDummyBean;
 import org.odpi.openmetadata.commonservices.generichandlers.RatingHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.StarRating;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -561,11 +561,11 @@ public class AssetConsumerRESTServices
         {
             if (requestBody != null)
             {
-                int commentType = CommentType.STANDARD_COMMENT.getOpenTypeOrdinal();
+                int commentType = CommentType.STANDARD_COMMENT.getOrdinal();
 
                 if (requestBody.getCommentType() != null)
                 {
-                    commentType = requestBody.getCommentType().getOpenTypeOrdinal();
+                    commentType = requestBody.getCommentType().getOrdinal();
                 }
                 CommentHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
 
@@ -634,11 +634,11 @@ public class AssetConsumerRESTServices
         {
             if (requestBody != null)
             {
-                int commentType = CommentType.STANDARD_COMMENT.getOpenTypeOrdinal();
+                int commentType = CommentType.STANDARD_COMMENT.getOrdinal();
 
                 if (requestBody.getCommentType() != null)
                 {
-                    commentType = requestBody.getCommentType().getOpenTypeOrdinal();
+                    commentType = requestBody.getCommentType().getOrdinal();
                 }
 
                 CommentHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
@@ -708,11 +708,11 @@ public class AssetConsumerRESTServices
         {
             if (requestBody != null)
             {
-                int commentType = CommentType.STANDARD_COMMENT.getOpenTypeOrdinal();
+                int commentType = CommentType.STANDARD_COMMENT.getOrdinal();
 
                 if (requestBody.getCommentType() != null)
                 {
-                    commentType = requestBody.getCommentType().getOpenTypeOrdinal();
+                    commentType = requestBody.getCommentType().getOrdinal();
                 }
 
                 CommentHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
@@ -1027,8 +1027,8 @@ public class AssetConsumerRESTServices
                                                                               termGUID,
                                                                               guidParameterName,
                                                                               OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
-                                                                              OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_GUID,
-                                                                              OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                                                              OpenMetadataType.SEMANTIC_ASSIGNMENT.typeGUID,
+                                                                              OpenMetadataType.SEMANTIC_ASSIGNMENT.typeName,
                                                                               OpenMetadataType.REFERENCEABLE.typeName,
                                                                               null,
                                                                               null,

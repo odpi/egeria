@@ -6,7 +6,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementControlHeader;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ArrayTypePropertyValue;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
@@ -111,7 +111,7 @@ abstract public class OpenMetadataStoreConverter<B> extends OCFConverter<B>
      * Retrieve and delete the EngineActionStatus enum property from the instance properties of an entity
      *
      * @param properties  entity properties
-     * @return OwnerType  enum value
+     * @return AssetOwnerType  enum value
      */
     protected EngineActionStatus removeActionStatus(String               propertyName,
                                                     InstanceProperties   properties)

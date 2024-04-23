@@ -23,8 +23,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.OpenMetadataElementResponse;
@@ -1096,7 +1096,7 @@ public class GlossaryViewController
             properties.put(OpenMetadataProperty.DISPLAY_NAME.name, openMetadataGlossaryElement.getGlossaryProperties().getDisplayName());
             properties.put(OpenMetadataProperty.DESCRIPTION.name, openMetadataGlossaryElement.getGlossaryProperties().getDescription());
             properties.put(OpenMetadataType.LANGUAGE_PROPERTY_NAME, openMetadataGlossaryElement.getGlossaryProperties().getLanguage());
-            properties.put(OpenMetadataType.USAGE_PROPERTY_NAME, openMetadataGlossaryElement.getGlossaryProperties().getUsage());
+            properties.put(OpenMetadataProperty.USAGE.name, openMetadataGlossaryElement.getGlossaryProperties().getUsage());
 
             if (openMetadataGlossaryElement.getGlossaryProperties().getExtendedProperties() != null)
             {
@@ -1178,12 +1178,12 @@ public class GlossaryViewController
 
             properties.put(OpenMetadataProperty.QUALIFIED_NAME.name, openMetadataGlossaryTermElement.getGlossaryTermProperties().getQualifiedName());
             properties.put(OpenMetadataProperty.DISPLAY_NAME.name, openMetadataGlossaryTermElement.getGlossaryTermProperties().getDisplayName());
-            properties.put(OpenMetadataType.SUMMARY_PROPERTY_NAME, openMetadataGlossaryTermElement.getGlossaryTermProperties().getSummary());
+            properties.put(OpenMetadataProperty.SUMMARY.name, openMetadataGlossaryTermElement.getGlossaryTermProperties().getSummary());
             properties.put(OpenMetadataProperty.DESCRIPTION.name, openMetadataGlossaryTermElement.getGlossaryTermProperties().getDescription());
-            properties.put(OpenMetadataType.EXAMPLES_PROPERTY_NAME, openMetadataGlossaryTermElement.getGlossaryTermProperties().getExamples());
-            properties.put(OpenMetadataType.ABBREVIATION_PROPERTY_NAME, openMetadataGlossaryTermElement.getGlossaryTermProperties().getUsage());
-            properties.put(OpenMetadataType.USAGE_PROPERTY_NAME, openMetadataGlossaryTermElement.getGlossaryTermProperties().getUsage());
-            properties.put(OpenMetadataType.PUBLISH_VERSION_ID_PROPERTY_NAME, openMetadataGlossaryTermElement.getGlossaryTermProperties().getPublishVersionIdentifier());
+            properties.put(OpenMetadataProperty.EXAMPLES.name, openMetadataGlossaryTermElement.getGlossaryTermProperties().getExamples());
+            properties.put(OpenMetadataProperty.ABBREVIATION.name, openMetadataGlossaryTermElement.getGlossaryTermProperties().getUsage());
+            properties.put(OpenMetadataProperty.USAGE.name, openMetadataGlossaryTermElement.getGlossaryTermProperties().getUsage());
+            properties.put(OpenMetadataProperty.PUBLISH_VERSION_ID.name, openMetadataGlossaryTermElement.getGlossaryTermProperties().getPublishVersionIdentifier());
 
             if (openMetadataGlossaryTermElement.getGlossaryTermProperties().getExtendedProperties() != null)
             {

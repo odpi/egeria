@@ -11,7 +11,7 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ControlF
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.DataFlowProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.LineageMappingProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessCallProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessContainmentType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessContainmentType;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessStatus;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;

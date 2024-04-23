@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.governanceserver.connectors.outtopic
 import org.odpi.openmetadata.accessservices.governanceserver.events.*;
 import org.odpi.openmetadata.accessservices.governanceserver.ffdc.GovernanceServerAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 /**
  * GovernanceEngineOutTopicPublisher is responsible for pushing events to the Governance Server OMAS's out topic.

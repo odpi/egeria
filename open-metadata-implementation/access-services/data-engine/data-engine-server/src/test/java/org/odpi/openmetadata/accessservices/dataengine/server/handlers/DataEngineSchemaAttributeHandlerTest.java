@@ -15,8 +15,8 @@ import org.odpi.openmetadata.commonservices.generichandlers.SchemaAttributeHandl
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetailDifferences;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -59,7 +59,7 @@ class DataEngineSchemaAttributeHandlerTest {
 
     @Test
     void upsertSchemaAttributes_create() throws PropertyServerException, InvalidParameterException, UserNotAuthorizedException {
-        when(dataEngineCommonHandler.findEntity(USER, ATTRIBUTE_QUALIFIED_NAME, OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME)).thenReturn(Optional.empty());
+        when(dataEngineCommonHandler.findEntity(USER, ATTRIBUTE_QUALIFIED_NAME, OpenMetadataType.SCHEMA_ATTRIBUTE.typeName)).thenReturn(Optional.empty());
         when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         Attribute attribute = getAttribute();
@@ -82,7 +82,7 @@ class DataEngineSchemaAttributeHandlerTest {
         final String methodName = "updateSchemaAttribute";
         EntityDetail schemaAttributeEntity = mock(EntityDetail.class);
         when(schemaAttributeEntity.getGUID()).thenReturn(ATTRIBUTE_GUID);
-        when(dataEngineCommonHandler.findEntity(USER, ATTRIBUTE_QUALIFIED_NAME, OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME)).thenReturn(Optional.of(schemaAttributeEntity));
+        when(dataEngineCommonHandler.findEntity(USER, ATTRIBUTE_QUALIFIED_NAME, OpenMetadataType.SCHEMA_ATTRIBUTE.typeName)).thenReturn(Optional.of(schemaAttributeEntity));
         when(dataEngineRegistrationHandler.getExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         Attribute attribute = getAttribute();

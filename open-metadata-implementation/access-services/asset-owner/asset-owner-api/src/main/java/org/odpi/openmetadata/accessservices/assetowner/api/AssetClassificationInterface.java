@@ -11,7 +11,7 @@ import org.odpi.openmetadata.accessservices.assetowner.properties.SemanticAssign
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.AssetOwnerType;
 
 import java.util.List;
 import java.util.Map;
@@ -191,9 +191,9 @@ public interface AssetClassificationInterface
     void updateAssetOwner(String    userId,
                           String    assetGUID,
                           String    ownerId,
-                          OwnerType ownerType) throws InvalidParameterException,
-                                                      UserNotAuthorizedException,
-                                                      PropertyServerException;
+                          AssetOwnerType ownerType) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException;
 
 
     /**

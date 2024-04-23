@@ -3,9 +3,9 @@
 package org.odpi.openmetadata.accessservices.assetowner.converters;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaAttributeElement;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaTypeElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.DataItemSortOrder;
 import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaAttributeProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -66,9 +66,8 @@ public class SchemaAttributeConverter<B> extends AssetOwnerOMASConverter<B>
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof SchemaAttributeElement)
+            if (returnBean instanceof SchemaAttributeElement bean)
             {
-                SchemaAttributeElement bean = (SchemaAttributeElement) returnBean;
                 SchemaAttributeProperties schemaAttributeProperties = new SchemaAttributeProperties();
 
                 if (schemaAttributeEntity != null)
@@ -142,20 +141,20 @@ public class SchemaAttributeConverter<B> extends AssetOwnerOMASConverter<B>
         if (instanceProperties != null)
         {
             int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataType.SORT_ORDER_PROPERTY_NAME,
+                                                                     OpenMetadataProperty.SORT_ORDER.name,
                                                                      instanceProperties,
                                                                      methodName);
 
             for (DataItemSortOrder dataItemSortOrder : DataItemSortOrder.values())
             {
-                if (dataItemSortOrder.getOpenTypeOrdinal() == ordinal)
+                if (dataItemSortOrder.getOrdinal() == ordinal)
                 {
                     return dataItemSortOrder;
                 }
             }
         }
 
-        return DataItemSortOrder.UNKNOWN;
+        return DataItemSortOrder.UNSORTED;
     }
 
 }

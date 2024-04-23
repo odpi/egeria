@@ -126,9 +126,7 @@ Content-Type: application/json
     "qualifiedName": "Must provide a unique name here",
     "name" : "Add display name here",
     "description" : "Add description of the collection here",
-    "collectionType": "Add appropriate valid value for type",
-    "collectionOrdering" : "OTHER",
-    "orderPropertyName" : "Add property name if 'collectionOrdering' is OTHER"
+    "collectionType": "Add appropriate valid value for type"
   }
 }
 
@@ -219,8 +217,8 @@ Content-Type: application/json
     "name" : "Add display name here",
     "description" : "Add description of the collection here",
     "collectionType": "Add appropriate valid value for type",
-    "collectionOrdering" : "OTHER",
-    "orderPropertyName" : "Add property name if 'collectionOrdering' is OTHER"
+    "collectionOrder" : "OTHER",
+    "orderByPropertyName" : "Add property name if 'collectionOrder' is OTHER"
   }
 }
 
@@ -276,7 +274,7 @@ Content-Type: application/json
 {
   "class" : "NewDigitalProductRequestBody",
   "isOwnAnchor" : true,
-  "parentGUID" : "@collectionGUID",
+  "parentGUID" : "xxx",
   "parentRelationshipTypeName" : "CollectionMembership",
   "parentAtEnd1": true,
   "collectionProperties": {
@@ -410,7 +408,7 @@ Content-Type: application/json
   "createdBy": "user id here",
   "expression": "expression that described why the element is a part of this collection",
   "confidence": 100,
-  "status": "PROPOSED",
+  "membershipStatus": "PROPOSED",
   "userDefinedStatus": "Add valid value here",
   "steward": "identifier of steward that validated this member",
   "stewardTypeName": "type name of element identifying the steward",
@@ -432,7 +430,7 @@ Content-Type: application/json
   "createdBy": "user id here",
   "expression": "expression that described why the element is a part of this collection",
   "confidence": 100,
-  "status": "PROPOSED",
+  "membershipStatus": "PROPOSED",
   "userDefinedStatus": "Add valid value here",
   "steward": "identifier of steward that validated this member",
   "stewardTypeName": "type name of element identifying the steward",

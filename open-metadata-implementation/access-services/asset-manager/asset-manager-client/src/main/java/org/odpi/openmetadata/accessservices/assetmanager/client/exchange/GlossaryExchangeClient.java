@@ -15,6 +15,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
+import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus;
 
 import java.util.Date;
 import java.util.List;
@@ -1871,7 +1873,7 @@ public class GlossaryExchangeClient extends AssetManagerBaseClient implements Gl
                                                String                       glossaryGUID,
                                                ExternalIdentifierProperties externalIdentifierProperties,
                                                GlossaryTermProperties       glossaryTermProperties,
-                                               GlossaryTermStatus           initialStatus,
+                                               GlossaryTermStatus initialStatus,
                                                Date                         effectiveTime,
                                                boolean                      forLineage,
                                                boolean                      forDuplicateProcessing) throws InvalidParameterException, 

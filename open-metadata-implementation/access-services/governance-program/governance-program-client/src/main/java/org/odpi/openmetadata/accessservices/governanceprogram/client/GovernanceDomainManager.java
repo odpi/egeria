@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.governanceprogram.api.GovernanceDoma
 import org.odpi.openmetadata.accessservices.governanceprogram.client.rest.GovernanceProgramRESTClient;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDomainElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceDomainSetElement;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomain;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceDomain;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomainProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomainSetProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;

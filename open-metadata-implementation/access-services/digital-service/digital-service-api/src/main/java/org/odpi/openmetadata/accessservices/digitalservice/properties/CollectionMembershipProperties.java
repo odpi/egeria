@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.digitalservice.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CollectionMemberStatus;
 
 import java.util.Objects;
 
@@ -22,9 +23,9 @@ public class CollectionMembershipProperties extends RelationshipProperties
     private String                     membershipRationale = null;
     private String                     createdBy           = null;
     private String                     expression          = null;
-    private int                        confidence          = 0;
-    private CollectionMemberStatus     status              = null;
-    private String                     userDefinedStatus   = null;
+    private int                    confidence        = 0;
+    private CollectionMemberStatus status            = null;
+    private String                 userDefinedStatus = null;
     private String                     steward             = null;
     private String                     stewardTypeName     = null;
     private String                     stewardPropertyName = null;

@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.frameworkservices.oif.converters;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.integration.contextmanager.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.integration.properties.IntegrationConnectorElement;
 import org.odpi.openmetadata.frameworks.integration.properties.RegisteredIntegrationConnectorElement;

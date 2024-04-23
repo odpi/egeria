@@ -5,7 +5,7 @@ package org.odpi.openmetadata.viewservices.feedbackmanager.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.enums.CommentType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;
 
 import java.util.Objects;
 

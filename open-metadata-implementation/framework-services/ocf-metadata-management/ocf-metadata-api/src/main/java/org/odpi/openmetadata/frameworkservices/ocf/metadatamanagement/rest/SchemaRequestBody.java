@@ -56,7 +56,7 @@ public class SchemaRequestBody extends OCFOMASAPIRequestBody
     /**
      * Return the type of owner stored in the owner property.
      *
-     * @return OwnerType enum
+     * @return AssetOwnerType enum
      */
     public SchemaType getSchemaType()
     {
@@ -67,7 +67,7 @@ public class SchemaRequestBody extends OCFOMASAPIRequestBody
     /**
      * Set up the owner type for this asset.
      *
-     * @param schemaType OwnerType enum
+     * @param schemaType AssetOwnerType enum
      */
     public void setSchemaType(SchemaType schemaType)
     {

@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -23,8 +25,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CapabilityDeploymentProperties extends ConfigurationItemRelationshipProperties
 {
-    private static final long serialVersionUID = 1L;
-
     private static final String deploymentTimeProperty       = "deploymentTime";
     private static final String deployerProperty             = "deployer";
     private static final String deployerTypeNameProperty     = "deployerTypeName";

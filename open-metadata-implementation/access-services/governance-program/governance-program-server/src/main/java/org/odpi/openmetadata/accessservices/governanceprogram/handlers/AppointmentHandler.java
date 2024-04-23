@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.handlers;
 import org.odpi.openmetadata.accessservices.governanceprogram.converters.GovernanceProgramOMASConverter;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.*;
 import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;

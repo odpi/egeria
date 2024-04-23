@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -165,8 +165,8 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                  externalSourceName,
                                                                  templateGUID,
                                                                  templateGUIDParameterName,
-                                                                 OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_GUID,
-                                                                 OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                 OpenMetadataType.SCHEMA_ATTRIBUTE.typeGUID,
+                                                                 OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                  qualifiedName,
                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                  builder,
@@ -198,9 +198,9 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
 
             if ((parentEntity != null) && (parentEntity.getType() != null))
             {
-                if (repositoryHelper.isTypeOf(serviceName, parentEntity.getType().getTypeDefName(), OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME))
+                if (repositoryHelper.isTypeOf(serviceName, parentEntity.getType().getTypeDefName(), OpenMetadataType.SCHEMA_ATTRIBUTE.typeName))
                 {
-                    parentElementTypeName = OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME;
+                    parentElementTypeName = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
                     parentElementRelationshipTypeGUID = OpenMetadataType.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID;
                     parentElementRelationshipTypeName = OpenMetadataType.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME;
                 }
@@ -292,9 +292,9 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
 
         if ((parentEntity != null) && (parentEntity.getType() != null))
         {
-            if (repositoryHelper.isTypeOf(serviceName, parentEntity.getType().getTypeDefName(), OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME))
+            if (repositoryHelper.isTypeOf(serviceName, parentEntity.getType().getTypeDefName(), OpenMetadataType.SCHEMA_ATTRIBUTE.typeName))
             {
-                parentAttributeTypeName             = OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME;
+                parentAttributeTypeName             = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
                 parentAttributeRelationshipTypeGUID = OpenMetadataType.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID;
                 parentAttributeRelationshipTypeName = OpenMetadataType.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME;
             }
@@ -456,14 +456,14 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
         /*
          * Check that the type name requested for the schema attribute is valid.
          */
-        String schemaAttributeTypeName = OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME;
-        String schemaAttributeTypeId   = OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_GUID;
+        String schemaAttributeTypeName = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
+        String schemaAttributeTypeId   = OpenMetadataType.SCHEMA_ATTRIBUTE.typeGUID;
 
         if (typeName != null)
         {
             schemaAttributeTypeName = typeName;
             schemaAttributeTypeId = invalidParameterHandler.validateTypeName(typeName,
-                                                                             OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                             OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                              serviceName,
                                                                              methodName,
                                                                              repositoryHelper);
@@ -742,7 +742,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
         return this.getSchemaAttributesForComplexSchemaType(userId,
                                                             schemaTypeGUID,
                                                             guidParameterName,
-                                                            OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                            OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                             requiredClassificationName,
                                                             omittedClassificationName,
                                                             supportedZones,
@@ -798,7 +798,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
     {
         final String schemaAttributeGUIDParameterName = "schemaAttributeEntity.getGUID()";
 
-        String typeName = OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME;
+        String typeName = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
 
         if (schemaAttributeTypeName != null)
         {
@@ -955,7 +955,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
 
         if ((parentEntity != null) && (parentEntity.getType() != null))
         {
-            if (repositoryHelper.isTypeOf(serviceName, parentEntity.getType().getTypeDefName(), OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME))
+            if (repositoryHelper.isTypeOf(serviceName, parentEntity.getType().getTypeDefName(), OpenMetadataType.SCHEMA_ATTRIBUTE.typeName))
             {
                 return this.getNestedSchemaAttributes(userId,
                                                       parentElementGUID,
@@ -1027,7 +1027,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
         return getNestedSchemaAttributes(userId,
                                          schemaAttributeGUID,
                                          schemaAttributeGUIDParameterName,
-                                         OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                         OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                          supportedZones,
                                          startFrom,
                                          pageSize,
@@ -1077,7 +1077,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
     {
         final String nestedSchemaAttributeGUIDParameterName = "schemaAttributeEntity.getGUID()";
 
-        String resultTypeName = OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME;
+        String resultTypeName = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
 
         if (schemaAttributeTypeName != null)
         {
@@ -1087,7 +1087,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
         List<EntityDetail>  entities = this.getAttachedEntities(userId,
                                                                 schemaAttributeGUID,
                                                                 schemaAttributeGUIDParameterName,
-                                                                OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                 OpenMetadataType.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                 OpenMetadataType.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                 resultTypeName,
@@ -1132,10 +1132,10 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
             EntityDetail entity = this.getAttachedEntity(userId,
                                                          schemaAttributeGUID,
                                                          schemaAttributeGUIDParameterName,
-                                                         OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                         OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                          OpenMetadataType.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
                                                          OpenMetadataType.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
-                                                         OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                         OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                          2,
                                                          forLineage,
                                                          forDuplicateProcessing,
@@ -1204,11 +1204,11 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
         List<Relationship> relationships = this.getAttachmentLinks(userId,
                                                                    schemaAttributeEntity.getGUID(),
                                                                    schemaAttributeGUIDParameterName,
-                                                                   OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                   OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                    null,
                                                                    null,
                                                                    null,
-                                                                   OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                   OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                    0,
                                                                    forLineage,
                                                                    forDuplicateProcessing,
@@ -1331,7 +1331,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                 schemaType = schemaTypeHandler.getSchemaTypeForParent(userId,
                                                                       schemaAttributeGUID,
                                                                       schemaAttributeGUIDParameterName,
-                                                                      OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                      OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                       OpenMetadataType.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
                                                                       OpenMetadataType.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
                                                                       forLineage,
@@ -1763,14 +1763,14 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
         /*
          * Check that the type name requested is valid.
          */
-        String attributeTypeName = OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME;
-        String attributeTypeId   = OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_GUID;
+        String attributeTypeName = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
+        String attributeTypeId   = OpenMetadataType.SCHEMA_ATTRIBUTE.typeGUID;
 
         if (typeName != null)
         {
             attributeTypeName = typeName;
             attributeTypeId   = invalidParameterHandler.validateTypeName(typeName,
-                                                                         OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                         OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                          serviceName,
                                                                          methodName,
                                                                          repositoryHelper);
@@ -1827,8 +1827,8 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                         externalSourceName,
                                         schemaAttributeGUID,
                                         schemaAttributeGUIDParameterName,
-                                        OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_GUID,
-                                        OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                        OpenMetadataType.SCHEMA_ATTRIBUTE.typeGUID,
+                                        OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -1938,7 +1938,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
         /*
          * Check that the type name requested is valid.
          */
-        String attributeTypeName = OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME;
+        String attributeTypeName = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
 
         if (typeName != null)
         {
@@ -1965,8 +1965,8 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                         externalSourceName,
                                         schemaAttributeGUID,
                                         schemaAttributeGUIDParameterName,
-                                        OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_GUID,
-                                        OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                        OpenMetadataType.SCHEMA_ATTRIBUTE.typeGUID,
+                                        OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                         forLineage,
                                         forDuplicateProcessing,
                                         supportedZones,
@@ -2004,7 +2004,7 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                                                externalSourceName,
                                                                schemaAttributeGUID,
                                                                schemaAttributeGUIDParameterName,
-                                                               OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                               OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
                                                                OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
                                                                forLineage,
@@ -2090,8 +2090,8 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                     externalSourceName,
                                     schemaAttributeGUID,
                                     parameterName,
-                                    OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_GUID,
-                                    OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                    OpenMetadataType.SCHEMA_ATTRIBUTE.typeGUID,
+                                    OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                     forLineage,
                                     forDuplicateProcessing,
                                     supportedZones,
@@ -2140,8 +2140,8 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                     externalSourceName,
                                     schemaAttributeGUID,
                                     schemaAttributeGUIDParameterName,
-                                    OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_GUID,
-                                    OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                    OpenMetadataType.SCHEMA_ATTRIBUTE.typeGUID,
+                                    OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                     forLineage,
                                     forDuplicateProcessing,
                                     supportedZones,
@@ -2192,8 +2192,8 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                                     externalSourceName,
                                     schemaAttributeGUID,
                                     schemaAttributeGUIDParameterName,
-                                    OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_GUID,
-                                    OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                    OpenMetadataType.SCHEMA_ATTRIBUTE.typeGUID,
+                                    OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                     forLineage,
                                     forDuplicateProcessing,
                                     serviceSupportedZones,

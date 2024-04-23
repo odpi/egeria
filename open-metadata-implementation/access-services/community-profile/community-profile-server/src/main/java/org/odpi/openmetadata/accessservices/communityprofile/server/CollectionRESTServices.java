@@ -15,7 +15,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.CollectionHandler;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -183,7 +183,7 @@ public class CollectionRESTServices
                         handler.addFolderClassificationToCollection(userId,
                                                                     collectionGUID,
                                                                     collectionGUIDParameterName,
-                                                                    properties.getCollectionOrdering().getOpenTypeOrdinal(),
+                                                                    properties.getCollectionOrdering().getOrdinal(),
                                                                     properties.getCollectionOrderingProperty(),
                                                                     false,
                                                                     false,

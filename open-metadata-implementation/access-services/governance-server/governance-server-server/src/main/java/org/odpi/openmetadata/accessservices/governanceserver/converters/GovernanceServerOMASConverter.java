@@ -40,7 +40,7 @@ public class GovernanceServerOMASConverter<B> extends OpenMetadataStoreConverter
      *
      * @param properties entity properties
      *
-     * @return OwnerType  enum value
+     * @return AssetOwnerType  enum value
      */
     @SuppressWarnings(value = "deprecation")
     protected GovernanceActionStatus removeGovernanceActionStatus(String propertyName,

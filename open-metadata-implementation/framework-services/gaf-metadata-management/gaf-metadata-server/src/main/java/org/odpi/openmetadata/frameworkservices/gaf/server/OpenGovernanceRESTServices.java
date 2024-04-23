@@ -17,8 +17,9 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworkservices.gaf.handlers.MetadataElementHandler;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
@@ -2644,11 +2645,11 @@ public class OpenGovernanceRESTServices
             {
                 EngineActionHandler<EngineActionElement> handler = instanceHandler.getEngineActionHandler(userId, serverName, methodName);
 
-                int statusOrdinal = EngineActionStatus.ACTIONED.getOpenTypeOrdinal();
+                int statusOrdinal = EngineActionStatus.ACTIONED.getOrdinal();
 
                 if (requestBody.getStatus() != null)
                 {
-                    statusOrdinal = requestBody.getStatus().getOpenTypeOrdinal();
+                    statusOrdinal = requestBody.getStatus().getOrdinal();
                 }
 
                 handler.updateEngineActionStatus(userId,
@@ -2852,11 +2853,11 @@ public class OpenGovernanceRESTServices
             {
                 EngineActionHandler<EngineActionElement> handler = instanceHandler.getEngineActionHandler(userId, serverName, methodName);
 
-                int statusOrdinal = EngineActionStatus.ACTIONED.getOpenTypeOrdinal();
+                int statusOrdinal = EngineActionStatus.ACTIONED.getOrdinal();
 
                 if (requestBody.getStatus() != null)
                 {
-                    statusOrdinal = requestBody.getStatus().getOpenTypeOrdinal();
+                    statusOrdinal = requestBody.getStatus().getOrdinal();
                 }
                 handler.updateActionTargetStatus(userId,
                                                  requestBody.getActionTargetGUID(),
@@ -2918,7 +2919,7 @@ public class OpenGovernanceRESTServices
             {
                 EngineActionHandler<EngineActionElement> handler = instanceHandler.getEngineActionHandler(userId, serverName, methodName);
 
-                int statusOrdinal = EngineActionStatus.ACTIONED.getOpenTypeOrdinal();
+                int statusOrdinal = EngineActionStatus.ACTIONED.getOrdinal();
 
                 if (requestBody.getStatus() != null)
                 {

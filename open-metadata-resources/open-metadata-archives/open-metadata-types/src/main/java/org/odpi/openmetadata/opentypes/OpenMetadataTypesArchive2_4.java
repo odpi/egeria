@@ -3,8 +3,9 @@
 package org.odpi.openmetadata.opentypes;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ByteOrdering;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -780,9 +781,9 @@ public class OpenMetadataTypesArchive2_4
         final String attribute1Name            = "endianness";
         final String attribute1Description     = "Deprecated attribute. Use the byteOrdering attribute instead.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "byteOrdering";
-        final String attribute2Description     = "Definition of the hardware byte ordering.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute2Name            = OpenMetadataProperty.BYTE_ORDERING.name;
+        final String attribute2Description     = OpenMetadataProperty.BYTE_ORDERING.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.BYTE_ORDERING.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -792,7 +793,7 @@ public class OpenMetadataTypesArchive2_4
 
         properties.add(property);
 
-        property = archiveHelper.getEnumTypeDefAttribute("Endianness",
+        property = archiveHelper.getEnumTypeDefAttribute(ByteOrdering.getOpenTypeName(),
                                                          attribute2Name,
                                                          attribute2Description,
                                                          attribute2DescriptionGUID);
@@ -1089,13 +1090,10 @@ public class OpenMetadataTypesArchive2_4
     /**
      * 05xx - Replace enum properties with numbers and define values using entities so that an organization
      * can choose the values they use.  The enums are retained to provide utilities to define these values from
-     * and enum type - and these definitions provide a useful default set.  Because of this, the Confidentiality level enum
-     * is restored to the type system.
+     * and enum type - and these definitions provide a useful default set.
      */
     private void update04xxGovernanceEnums()
     {
-        archiveBuilder.addEnumDef(getConfidentialityLevelEnum());
-
         archiveBuilder.addEntityDef(addGovernanceDomainDescriptionEntity());
         archiveBuilder.addEntityDef(addGovernanceClassificationLevelEntity());
 

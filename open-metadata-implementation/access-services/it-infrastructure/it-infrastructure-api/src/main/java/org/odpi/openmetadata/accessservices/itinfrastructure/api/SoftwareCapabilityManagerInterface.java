@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.Se
 import org.odpi.openmetadata.accessservices.itinfrastructure.metadataelements.SoftwareCapabilityElement;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.CapabilityDeploymentProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ServerAssetUseProperties;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ServerAssetUseType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.SoftwareCapabilityProperties;
 import org.odpi.openmetadata.accessservices.itinfrastructure.properties.TemplateProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;

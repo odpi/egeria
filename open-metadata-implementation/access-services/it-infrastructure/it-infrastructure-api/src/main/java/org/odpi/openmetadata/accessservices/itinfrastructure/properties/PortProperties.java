@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PortType;
 
 import java.util.Objects;
 
@@ -21,10 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PortProperties extends ReferenceableProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String   displayName = null;
-    private PortType portType = null;
+    private PortType portType    = null;
 
 
     /**

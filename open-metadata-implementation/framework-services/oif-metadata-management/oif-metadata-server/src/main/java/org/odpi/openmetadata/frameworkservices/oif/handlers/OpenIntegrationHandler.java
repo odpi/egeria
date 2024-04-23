@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.properties.IntegrationReport;
 import org.odpi.openmetadata.frameworks.integration.properties.IntegrationReportProperties;
@@ -128,7 +128,7 @@ public class OpenIntegrationHandler
         List<Relationship> relationships = integrationGroupHandler.getAttachmentLinks(userId,
                                                                                       integrationConnectorGUID,
                                                                                       integrationConnectorGUIDParameter,
-                                                                                      OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME,
+                                                                                      OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
                                                                                       OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_GUID,
                                                                                       OpenMetadataType.CATALOG_TARGET_RELATIONSHIP_TYPE_NAME,
                                                                                       null,

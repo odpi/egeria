@@ -3,8 +3,9 @@
 package org.odpi.openmetadata.opentypes;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -326,71 +327,29 @@ public class OpenMetadataTypesArchive2_6
 
     private EnumDef getImpactSeverityEnum()
     {
-        final String guid            = "5b905856-90ec-4944-80c4-0d42bcad484a";
-        final String name            = "ImpactSeverity";
-        final String description     = "Defines the severity of the impact that a situation has.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(ImpactSeverity.getOpenTypeGUID(),
+                                                        ImpactSeverity.getOpenTypeName(),
+                                                        ImpactSeverity.getOpenTypeDescription(),
+                                                        ImpactSeverity.getOpenTypeDescriptionGUID(),
+                                                        ImpactSeverity.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "Unclassified";
-        final String element1Description     = "There is no assessment of the impact's severity on this data.";
-        final String element1DescriptionGUID = null;
+        for (ImpactSeverity enumValues : ImpactSeverity.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValues.getOrdinal(),
+                                                         enumValues.getName(),
+                                                         enumValues.getDescription(),
+                                                         enumValues.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
-        enumDef.setDefaultValue(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "Low";
-        final String element2Description     = "The impact is low.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "Medium";
-        final String element3Description     = "The impact is medium.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 3;
-        final String element4Value           = "High";
-        final String element4Description     = "The impact is high.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element99Ordinal         = 99;
-        final String element99Value           = "Other";
-        final String element99Description     = "Another impact level.";
-        final String element99DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
-                                                     element99Value,
-                                                     element99Description,
-                                                     element99DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValues.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
@@ -442,7 +401,7 @@ public class OpenMetadataTypesArchive2_6
         final String attribute7Description     = "Defined level for this classification.";
         final String attribute7DescriptionGUID = null;
 
-        property = archiveHelper.getEnumTypeDefAttribute("GovernanceClassificationStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(GovernanceClassificationStatus.getOpenTypeName(),
                                                          attribute1Name,
                                                          attribute1Description,
                                                          attribute1DescriptionGUID);
@@ -463,7 +422,7 @@ public class OpenMetadataTypesArchive2_6
                                                            attribute5Description,
                                                            attribute5DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("ImpactSeverity",
+        property = archiveHelper.getEnumTypeDefAttribute(ImpactSeverity.getOpenTypeName(),
                                                          attribute6Name,
                                                          attribute6Description,
                                                          attribute6DescriptionGUID);
@@ -484,7 +443,7 @@ public class OpenMetadataTypesArchive2_6
      */
 
     /**
-     * 0445 Add the OwnerType classification
+     * 0445 Add the AssetOwnerType classification
      */
     private void update0445GovernanceRoles()
     {
@@ -1355,136 +1314,29 @@ public class OpenMetadataTypesArchive2_6
 
     private EnumDef getEngineActionStatusEnum()
     {
-        final String guid            = "a6e698b0-a4f7-4a39-8c80-db0bb0f972ec";
-        final String name            = "EngineActionStatus";
-        final String description     = "Defines the current execution status of an engine action.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(EngineActionStatus.getOpenTypeGUID(),
+                                                        EngineActionStatus.getOpenTypeName(),
+                                                        EngineActionStatus.getOpenTypeDescription(),
+                                                        EngineActionStatus.getOpenTypeDescriptionGUID(),
+                                                        EngineActionStatus.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "Requested";
-        final String element1Description     = "The engine action has been created and is pending.";
-        final String element1DescriptionGUID = null;
+        for (EngineActionStatus enumValues : EngineActionStatus.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValues.getOrdinal(),
+                                                         enumValues.getName(),
+                                                         enumValues.getDescription(),
+                                                         enumValues.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "Approved";
-        final String element2Description     = "The engine action is approved to run.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "Waiting";
-        final String element3Description     = "The engine action is waiting for its start time or the right conditions to run.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 3;
-        final String element4Value           = "Activating";
-        final String element4Description     = "The governance service for the engine action is being initialized in the governance engine.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element9Ordinal         = 4;
-        final String element9Value           = "InProgress";
-        final String element9Description     = "The governance engine is running the associated governance service for the engine action.";
-        final String element9DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element9Ordinal,
-                                                     element9Value,
-                                                     element9Description,
-                                                     element9DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element5Ordinal         = 10;
-        final String element5Value           = "Actioned";
-        final String element5Description     = "The governance service for the engine action has successfully completed processing.";
-        final String element5DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
-                                                     element5Value,
-                                                     element5Description,
-                                                     element5DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element6Ordinal         = 11;
-        final String element6Value           = "Invalid";
-        final String element6Description     = "The engine action has not been run because it is not appropriate (for example, a false positive).";
-        final String element6DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element6Ordinal,
-                                                     element6Value,
-                                                     element6Description,
-                                                     element6DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element7Ordinal         = 12;
-        final String element7Value           = "Ignored";
-        final String element7Description     = "The engine action has not been run because a different engine action was chosen.";
-        final String element7DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element7Ordinal,
-                                                     element7Value,
-                                                     element7Description,
-                                                     element7DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element8Ordinal         = 13;
-        final String element8Value           = "Failed";
-        final String element8Description     = "The governance service for the engine action failed to execute.";
-        final String element8DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element8Ordinal,
-                                                     element8Value,
-                                                     element8Description,
-                                                     element8DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element10Ordinal         = 14;
-        final String element10Value           = "Cancelled";
-        final String element10Description     = "The engine action was cancelled by an external caller.";
-        final String element10DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element10Ordinal,
-                                                     element10Value,
-                                                     element10Description,
-                                                     element10DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element99Ordinal         = 99;
-        final String element99Value           = "Other";
-        final String element99Description     = "Undefined or unknown governance engine status.";
-        final String element99DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
-                                                     element99Value,
-                                                     element99Description,
-                                                     element99DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValues.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
@@ -1496,17 +1348,12 @@ public class OpenMetadataTypesArchive2_6
         /*
          * Build the Entity
          */
-        final String guid            = "c976d88a-2b11-4b40-b972-c38d41bfc6be";
-        final String name            = "EngineAction";
-        final String description     = "An engine action that has been created to support the active governance of the open metadata ecosystem and/or digital landscape.";
-        final String descriptionGUID = null;
-        final String superTypeName   = OpenMetadataType.REFERENCEABLE.typeName;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.ENGINE_ACTION.typeGUID,
+                                                                OpenMetadataType.ENGINE_ACTION.typeName,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                OpenMetadataType.ENGINE_ACTION.description,
+                                                                OpenMetadataType.ENGINE_ACTION.descriptionGUID,
+                                                                OpenMetadataType.ENGINE_ACTION.wikiURL);
 
         /*
          * Build the attributes
@@ -1558,7 +1405,7 @@ public class OpenMetadataTypesArchive2_6
                                                            attribute4Description,
                                                            attribute4DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("EngineActionStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(EngineActionStatus.getOpenTypeName(),
                                                          attribute6Name,
                                                          attribute6Description,
                                                          attribute6DescriptionGUID);
@@ -1587,19 +1434,13 @@ public class OpenMetadataTypesArchive2_6
 
     private RelationshipDef addEngineActionRequestSourceRelationship()
     {
-        final String guid            = "5323a705-4c1f-456a-9741-41fdcb8e93ac";
-        final String name            = "EngineActionRequestSource";
-        final String description     = "Link between an engine action and the source of the request that created it.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE.typeGUID,
+                                                                                OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE.description,
+                                                                                OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE.descriptionGUID,
+                                                                                OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
@@ -1623,7 +1464,7 @@ public class OpenMetadataTypesArchive2_6
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "EngineAction";
+        final String                     end2EntityType               = OpenMetadataType.ENGINE_ACTION.typeName;
         final String                     end2AttributeName            = "identifiedActions";
         final String                     end2AttributeDescription     = "Engine actions that were initiated for the linked element.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -1750,26 +1591,19 @@ public class OpenMetadataTypesArchive2_6
 
     private RelationshipDef addTargetForActionRelationship()
     {
-        final String guid            = "46ec49bf-af66-4575-aab7-06ce895120cd";
-        final String name            = "TargetForAction";
-        final String description     = "The element(s) that the engine action will work on.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.TARGET_FOR_ACTION.typeGUID,
+                                                                                OpenMetadataType.TARGET_FOR_ACTION.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.TARGET_FOR_ACTION.description,
+                                                                                OpenMetadataType.TARGET_FOR_ACTION.descriptionGUID,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "EngineAction";
+        final String                     end1EntityType               = OpenMetadataType.ENGINE_ACTION.typeName;
         final String                     end1AttributeName            = "identifiedEngineActions";
         final String                     end1AttributeDescription     = "Engine action that is acting on this element.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -1818,7 +1652,7 @@ public class OpenMetadataTypesArchive2_6
         final String attribute4Description     = "The name to identify the action target to the governance service that processes it.";
         final String attribute4DescriptionGUID = null;
 
-        property = archiveHelper.getEnumTypeDefAttribute("EngineActionStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(EngineActionStatus.getOpenTypeName(),
                                                          attribute1Name,
                                                          attribute1Description,
                                                          attribute1DescriptionGUID);
@@ -1843,26 +1677,19 @@ public class OpenMetadataTypesArchive2_6
 
     private RelationshipDef addNextEngineActionRelationship()
     {
-        final String guid            = "4efd16d4-f397-449c-a75d-ebea42fe581b";
-        final String name            = "NextEngineAction";
-        final String description     = "Linking of engine actions to show execution sequence.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.NEXT_ENGINE_ACTION.typeGUID,
+                                                                                OpenMetadataType.NEXT_ENGINE_ACTION.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.NEXT_ENGINE_ACTION.description,
+                                                                                OpenMetadataType.NEXT_ENGINE_ACTION.descriptionGUID,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "EngineAction";
+        final String                     end1EntityType               = OpenMetadataType.ENGINE_ACTION.typeName;
         final String                     end1AttributeName            = "previousActions";
         final String                     end1AttributeDescription     = "Engine action that triggered this engine action.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -1879,7 +1706,7 @@ public class OpenMetadataTypesArchive2_6
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "EngineAction";
+        final String                     end2EntityType               = OpenMetadataType.ENGINE_ACTION.typeName;
         final String                     end2AttributeName            = "followOnActions";
         final String                     end2AttributeDescription     = "Engine action(s) that should run next.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -1921,26 +1748,19 @@ public class OpenMetadataTypesArchive2_6
 
     private RelationshipDef addEngineActionExecutorRelationship()
     {
-        final String guid            = "e690ab17-6779-46b4-a8f1-6872d88c1bbb";
-        final String name            = "EngineActionExecutor";
-        final String description     = "Link between an engine action and the governance engine that will execute it.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ENGINE_ACTION_EXECUTOR.typeGUID,
+                                                                                OpenMetadataType.ENGINE_ACTION_EXECUTOR.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.ENGINE_ACTION_EXECUTOR.description,
+                                                                                OpenMetadataType.ENGINE_ACTION_EXECUTOR.descriptionGUID,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "EngineAction";
+        final String                     end1EntityType               = OpenMetadataType.ENGINE_ACTION.typeName;
         final String                     end1AttributeName            = "supportsEngineAction";
         final String                     end1AttributeDescription     = "Engine action that drives a governance engine.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -1957,7 +1777,7 @@ public class OpenMetadataTypesArchive2_6
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "GovernanceEngine";
+        final String                     end2EntityType               = OpenMetadataType.GOVERNANCE_ENGINE.typeName;
         final String                     end2AttributeName            = "governanceActionExecutor";
         final String                     end2AttributeDescription     = "Governance engine that will run the governance action.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -2212,92 +2032,29 @@ public class OpenMetadataTypesArchive2_6
 
     private EnumDef getIncidentReportStatusEnum()
     {
-        final String guid            = "a9d4f64b-fa24-4eb8-8bf6-308926ef2c14";
-        final String name            = "IncidentReportStatus";
-        final String description     = "Defines the status of an incident report.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(IncidentReportStatus.getOpenTypeGUID(),
+                                                        IncidentReportStatus.getOpenTypeName(),
+                                                        IncidentReportStatus.getOpenTypeDescription(),
+                                                        IncidentReportStatus.getOpenTypeDescriptionGUID(),
+                                                        IncidentReportStatus.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "Raised";
-        final String element1Description     = "The incident report has been raised but no processing has occurred.";
-        final String element1DescriptionGUID = null;
+        for (CriticalityLevel enumValues : CriticalityLevel.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValues.getOrdinal(),
+                                                         enumValues.getName(),
+                                                         enumValues.getDescription(),
+                                                         enumValues.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "Reviewed";
-        final String element2Description     = "The incident report has been reviewed, possibly classified but no action has been taken.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "Validated";
-        final String element3Description     = "The incident report records a valid incident and work is underway to resolve it.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 3;
-        final String element4Value           = "Resolved";
-        final String element4Description     = "The reported incident has been resolved.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element5Ordinal         = 4;
-        final String element5Value           = "Invalid";
-        final String element5Description     = "The incident report does not describe a valid incident and has been closed.";
-        final String element5DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
-                                                     element5Value,
-                                                     element5Description,
-                                                     element5DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element6Ordinal         = 5;
-        final String element6Value           = "Ignored";
-        final String element6Description     = "The incident report is valid but has been closed with no action.";
-        final String element6DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element6Ordinal,
-                                                     element6Value,
-                                                     element6Description,
-                                                     element6DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element99Ordinal         = 99;
-        final String element99Value           = "Other";
-        final String element99Description     = "Another incident report status.";
-        final String element99DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
-                                                     element99Value,
-                                                     element99Description,
-                                                     element99DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValues.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
@@ -2368,17 +2125,12 @@ public class OpenMetadataTypesArchive2_6
         /*
          * Build the Entity
          */
-        final String guid            = "072f252b-dea7-4b88-bb2e-8f741c9ca7f6e";
-        final String name            = "IncidentReport";
-        final String description     = "A description of an adverse situation or activity.";
-        final String descriptionGUID = null;
-        final String superTypeName   = OpenMetadataType.REFERENCEABLE.typeName;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.INCIDENT_REPORT.typeGUID,
+                                                                OpenMetadataType.INCIDENT_REPORT.typeName,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                OpenMetadataType.INCIDENT_REPORT.description,
+                                                                OpenMetadataType.INCIDENT_REPORT.descriptionGUID,
+                                                                OpenMetadataType.INCIDENT_REPORT.wikiURL);
 
         /*
          * Build the attributes
@@ -2392,9 +2144,9 @@ public class OpenMetadataTypesArchive2_6
         final String attribute2Name            = "background";
         final String attribute2Description     = "Description of the background cause or activity.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "description";
-        final String attribute3Description     = "Description of the incident.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute3Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute3Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute4Name            = "owner";
         final String attribute4Description     = "Person, team or engine responsible for this incident.";
         final String attribute4DescriptionGUID = null;
@@ -2404,12 +2156,12 @@ public class OpenMetadataTypesArchive2_6
         final String attribute6Name            = "incidentStatus";
         final String attribute6Description     = "Current lifecycle state of the incident report.";
         final String attribute6DescriptionGUID = null;
-        final String attribute7Name            = "startDate";
-        final String attribute7Description     = "Date and time when the incident report was create.";
-        final String attribute7DescriptionGUID = null;
-        final String attribute8Name            = "completionDate";
-        final String attribute8Description     = "Date and time when the incident report completed.";
-        final String attribute8DescriptionGUID = null;
+        final String attribute7Name            = OpenMetadataProperty.START_DATE.name;
+        final String attribute7Description     = OpenMetadataProperty.START_DATE.description;
+        final String attribute7DescriptionGUID = OpenMetadataProperty.START_DATE.descriptionGUID;
+        final String attribute8Name            = OpenMetadataProperty.COMPLETION_DATE.name;
+        final String attribute8Description     = OpenMetadataProperty.COMPLETION_DATE.description;
+        final String attribute8DescriptionGUID = OpenMetadataProperty.COMPLETION_DATE.descriptionGUID;
         final String attribute9Name            = "incidentClassifiers";
         final String attribute9Description     = "Map of label to level indicator to provide customizable grouping of incidents.";
         final String attribute9DescriptionGUID = null;
@@ -2431,7 +2183,7 @@ public class OpenMetadataTypesArchive2_6
                                                            attribute4Description,
                                                            attribute4DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("OwnerType",
+        property = archiveHelper.getEnumTypeDefAttribute("AssetOwnerType",
                                                          attribute5Name,
                                                          attribute5Description,
                                                          attribute5DescriptionGUID);

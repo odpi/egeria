@@ -5,7 +5,7 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.AssetMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.ReferenceableMapper;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.AssetOwnerType;
 import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -270,14 +270,14 @@ public class AssetConverter extends ReferenceableConverter
 
 
     /**
-     * Retrieve the OwnerType enum property from the instance properties of an entity
+     * Retrieve the AssetOwnerType enum property from the instance properties of an entity
      *
      * @param properties  entity properties
-     * @return OwnerType  enum value
+     * @return AssetOwnerType  enum value
      */
-    private OwnerType getOwnerTypeFromProperties(InstanceProperties   properties)
+    private AssetOwnerType getOwnerTypeFromProperties(InstanceProperties   properties)
     {
-        OwnerType ownerType = OwnerType.OTHER;
+        AssetOwnerType ownerType = AssetOwnerType.OTHER;
 
         if (properties != null)
         {
@@ -287,24 +287,15 @@ public class AssetConverter extends ReferenceableConverter
             {
                 InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(AssetMapper.OWNER_TYPE_PROPERTY_NAME);
 
-                if (instancePropertyValue instanceof EnumPropertyValue)
+                if (instancePropertyValue instanceof EnumPropertyValue enumPropertyValue)
                 {
-                    EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
-
-                    switch (enumPropertyValue.getOrdinal())
+                    ownerType = switch (enumPropertyValue.getOrdinal())
                     {
-                        case 0:
-                            ownerType = OwnerType.USER_ID;
-                            break;
-
-                        case 1:
-                            ownerType = OwnerType.PROFILE_ID;
-                            break;
-
-                        case 99:
-                            ownerType = OwnerType.OTHER;
-                            break;
-                    }
+                        case 0 -> AssetOwnerType.USER_ID;
+                        case 1 -> AssetOwnerType.PROFILE_ID;
+                        case 99 -> AssetOwnerType.OTHER;
+                        default -> ownerType;
+                    };
                 }
             }
         }
@@ -314,14 +305,14 @@ public class AssetConverter extends ReferenceableConverter
 
 
     /**
-     * Retrieve the OwnerType enum property from the instance properties of an entity
+     * Retrieve the AssetOwnerType enum property from the instance properties of an entity
      *
      * @param properties  entity properties
-     * @return OwnerType  enum value
+     * @return AssetOwnerType  enum value
      */
-    private OwnerType removeOwnerTypeFromProperties(InstanceProperties   properties)
+    private AssetOwnerType removeOwnerTypeFromProperties(InstanceProperties   properties)
     {
-        OwnerType ownerType = this.getOwnerTypeFromProperties(properties);
+        AssetOwnerType ownerType = this.getOwnerTypeFromProperties(properties);
 
         if (properties != null)
         {

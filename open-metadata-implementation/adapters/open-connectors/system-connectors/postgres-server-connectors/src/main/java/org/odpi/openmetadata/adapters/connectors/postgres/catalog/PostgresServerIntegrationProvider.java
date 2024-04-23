@@ -8,12 +8,8 @@ import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresServe
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * PostgresServerIntegrationProvider is the OCF connector provider for the PostgreSQL database server integration connector.

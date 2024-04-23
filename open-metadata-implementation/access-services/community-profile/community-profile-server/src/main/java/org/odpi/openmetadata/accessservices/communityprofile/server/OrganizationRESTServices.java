@@ -31,8 +31,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ContactDetailsHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ContributionRecordHandler;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -347,7 +347,7 @@ public class OrganizationRESTServices
 
                 if (requestBody.getProperties().getContactMethodType() != null)
                 {
-                    contactMethodTypeOrdinal = requestBody.getProperties().getContactMethodType().getOpenTypeOrdinal();
+                    contactMethodTypeOrdinal = requestBody.getProperties().getContactMethodType().getOrdinal();
                 }
 
                 handler.createContactMethod(userId,
@@ -422,8 +422,8 @@ public class OrganizationRESTServices
                                                requestBody.getExternalSourceName(),
                                                contactMethodGUID,
                                                guidParameterName,
-                                               OpenMetadataType.CONTACT_DETAILS_TYPE_GUID,
-                                               OpenMetadataType.CONTACT_DETAILS_TYPE_NAME,
+                                               OpenMetadataType.CONTACT_DETAILS.typeGUID,
+                                               OpenMetadataType.CONTACT_DETAILS.typeName,
                                                null,
                                                null,
                                                false,
@@ -438,8 +438,8 @@ public class OrganizationRESTServices
                                                null,
                                                contactMethodGUID,
                                                guidParameterName,
-                                               OpenMetadataType.CONTACT_DETAILS_TYPE_GUID,
-                                               OpenMetadataType.CONTACT_DETAILS_TYPE_NAME,
+                                               OpenMetadataType.CONTACT_DETAILS.typeGUID,
+                                               OpenMetadataType.CONTACT_DETAILS.typeName,
                                                null,
                                                null,
                                                false,
@@ -1095,8 +1095,8 @@ public class OrganizationRESTServices
                                                requestBody.getExternalSourceName(),
                                                personRoleGUID,
                                                guidParameterName,
-                                               OpenMetadataType.CONTACT_DETAILS_TYPE_GUID,
-                                               OpenMetadataType.CONTACT_DETAILS_TYPE_NAME,
+                                               OpenMetadataType.CONTACT_DETAILS.typeGUID,
+                                               OpenMetadataType.CONTACT_DETAILS.typeName,
                                                null,
                                                null,
                                                false,
@@ -1111,8 +1111,8 @@ public class OrganizationRESTServices
                                                null,
                                                personRoleGUID,
                                                guidParameterName,
-                                               OpenMetadataType.CONTACT_DETAILS_TYPE_GUID,
-                                               OpenMetadataType.CONTACT_DETAILS_TYPE_NAME,
+                                               OpenMetadataType.CONTACT_DETAILS.typeGUID,
+                                               OpenMetadataType.CONTACT_DETAILS.typeName,
                                                null,
                                                null,
                                                false,

@@ -14,7 +14,7 @@ import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.G
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleAppointee;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceRoleHistory;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomain;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceDomain;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceRoleProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;

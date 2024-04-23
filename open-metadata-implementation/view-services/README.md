@@ -51,7 +51,11 @@ The view services are as follows:
 * **[Reference Data](reference-data)** - manage reference data.
 
   The Reference Data OMVS is a REST API designed to support user interfaces (UIs) that maintain reference data values and their mappings.
-  
+
+* **[Valid Metadata](reference-data)** - manage valid values for metadata.
+
+  The Valid Metadata OMVS is a REST API designed to support user interfaces (UIs) that query and/or maintain list of valid values for open metadata attributes.
+
 * **[Template Manager](template-manager)** - locate and maintain templates.
 
   The Template Manager OMVS is a REST API designed to support user interfaces (UIs) that support the management of templates that are used when creating new metadata.

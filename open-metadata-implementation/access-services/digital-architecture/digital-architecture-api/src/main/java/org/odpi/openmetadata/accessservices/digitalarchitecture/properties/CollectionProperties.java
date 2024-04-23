@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.OrderBy;
 
 import java.util.Objects;
 
@@ -19,11 +20,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CollectionProperties extends ReferenceableProperties
 {
-    private String          name               = null;
-    private String          description        = null;
-    private String          collectionType     = null;
-    private CollectionOrder collectionOrdering = null;
-    private String          orderPropertyName  = null;
+    private String  name                = null;
+    private String  description         = null;
+    private String  collectionType      = null;
+    private OrderBy collectionOrder     = null;
+    private String  orderByPropertyName = null;
 
 
     /**
@@ -48,9 +49,9 @@ public class CollectionProperties extends ReferenceableProperties
         {
             this.name = template.getName();
             this.description = template.getDescription();
-            this.collectionType = template.getCollectionType();
-            this.collectionOrdering = template.getCollectionOrdering();
-            this.orderPropertyName = template.getOrderPropertyName();
+            this.collectionType    = template.getCollectionType();
+            this.collectionOrder     = template.getCollectionOrder();
+            this.orderByPropertyName = template.getOrderByPropertyName();
         }
     }
 
@@ -124,44 +125,44 @@ public class CollectionProperties extends ReferenceableProperties
     /**
      * Return the property to use to determine the order that assets are returned.
      *
-     * @return CollectionOrder enum
+     * @return OrderBy enum
      */
-    public CollectionOrder getCollectionOrdering()
+    public OrderBy getCollectionOrder()
     {
-        return collectionOrdering;
+        return collectionOrder;
     }
 
 
     /**
      * Set up the property to use to determine the order that assets are returned.
      *
-     * @param collectionOrdering CollectionOrder enum
+     * @param collectionOrder OrderBy enum
      */
-    public void setCollectionOrdering(CollectionOrder collectionOrdering)
+    public void setCollectionOrder(OrderBy collectionOrder)
     {
-        this.collectionOrdering = collectionOrdering;
+        this.collectionOrder = collectionOrder;
     }
 
 
     /**
-     * Return the property name for CollectionOrder.OTHER.
+     * Return the property name for OrderBy.OTHER.
      *
      * @return string property name
      */
-    public String getOrderPropertyName()
+    public String getOrderByPropertyName()
     {
-        return orderPropertyName;
+        return orderByPropertyName;
     }
 
 
     /**
-     * Set up the property name for CollectionOrder.OTHER.
+     * Set up the property name for OrderBy.OTHER.
      *
-     * @param orderPropertyName string property name
+     * @param orderByPropertyName string property name
      */
-    public void setOrderPropertyName(String orderPropertyName)
+    public void setOrderByPropertyName(String orderByPropertyName)
     {
-        this.orderPropertyName = orderPropertyName;
+        this.orderByPropertyName = orderByPropertyName;
     }
 
 
@@ -177,8 +178,8 @@ public class CollectionProperties extends ReferenceableProperties
                        "name='" + name + '\'' +
                        ", description='" + description + '\'' +
                        ", collectionType='" + collectionType + '\'' +
-                       ", collectionOrdering=" + collectionOrdering +
-                       ", orderPropertyName='" + orderPropertyName + '\'' +
+                       ", collectionOrdering=" + collectionOrder +
+                       ", orderPropertyName='" + orderByPropertyName + '\'' +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", effectiveFrom=" + getEffectiveFrom() +
@@ -211,11 +212,11 @@ public class CollectionProperties extends ReferenceableProperties
             return false;
         }
         CollectionProperties that = (CollectionProperties) objectToCompare;
-        return getCollectionOrdering() == that.getCollectionOrdering() &&
+        return getCollectionOrder() == that.getCollectionOrder() &&
                        Objects.equals(getName(), that.getName()) &&
                        Objects.equals(getDescription(), that.getDescription()) &&
                        Objects.equals(getCollectionType(), that.getCollectionType()) &&
-                       Objects.equals(getOrderPropertyName(), that.getOrderPropertyName());
+                       Objects.equals(getOrderByPropertyName(), that.getOrderByPropertyName());
     }
 
 
@@ -227,6 +228,6 @@ public class CollectionProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getName(), getDescription(), getCollectionType(), getCollectionOrdering(), getOrderPropertyName());
+        return Objects.hash(super.hashCode(), getName(), getDescription(), getCollectionType(), getCollectionOrder(), getOrderByPropertyName());
     }
 }

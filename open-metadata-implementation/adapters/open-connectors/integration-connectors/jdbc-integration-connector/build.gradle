@@ -11,6 +11,7 @@ description = 'Egeria integration connector that uses Generic JDBC resource conn
 dependencies {
     compileOnly 'org.slf4j:slf4j-api'
     compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-metadata-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     compileOnly project(':open-metadata-implementation:frameworks:governance-action-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-integration-framework')

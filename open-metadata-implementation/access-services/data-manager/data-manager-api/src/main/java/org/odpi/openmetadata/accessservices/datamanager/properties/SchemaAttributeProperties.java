@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.accessservices.datamanager.properties;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +32,9 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     private int               maxCardinality        = 0;
     private boolean           allowsDuplicateValues = false;
     private boolean           orderedValues         = false;
-    private String            defaultValueOverride  = null;
-    private DataItemSortOrder sortOrder             = null;
-    private int               minimumLength         = 0;
+    private String            defaultValueOverride = null;
+    private DataItemSortOrder sortOrder            = null;
+    private int               minimumLength        = 0;
     private int               length                = 0;
     private int               precision             = 0;
     private int               significantDigits     = 0;

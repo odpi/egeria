@@ -29,8 +29,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class ActorProfileProperties extends ReferenceableProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String knownName   = null;
     private String description = null;
 

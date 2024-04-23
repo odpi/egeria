@@ -6,10 +6,9 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.remediation;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * QualifiedNamePeerDuplicateGovernanceActionProvider is the OCF connector provider for the Deduplication Governance Action Service.

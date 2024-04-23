@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private static final String deployedImplementationTypeProperty = "deployedImplementationType";
     private static final String versionProperty                    = "platformVersion";
     private static final String sourceProperty                     = "source";

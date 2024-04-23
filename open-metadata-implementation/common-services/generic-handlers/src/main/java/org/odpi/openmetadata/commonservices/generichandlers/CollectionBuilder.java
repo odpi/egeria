@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
@@ -195,14 +195,14 @@ public class CollectionBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                                   null,
-                                                                                  OpenMetadataType.ORDER_BY_PROPERTY_NAME,
+                                                                                  OpenMetadataProperty.COLLECTION_ORDER.name,
                                                                                   orderBy,
                                                                                   methodName);
 
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.ORDER_PROPERTY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.ORDER_BY_PROPERTY_NAME.name,
                                                                   orderPropertyName,
                                                                   methodName);
 

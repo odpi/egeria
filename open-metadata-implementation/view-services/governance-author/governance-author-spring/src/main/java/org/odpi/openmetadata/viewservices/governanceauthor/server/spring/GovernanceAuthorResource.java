@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The GovernanceAuthorResource provides the Spring API endpoints of the Governance Author Open Metadata View Service (OMVS).
- * This interface provides a service for Egeria UIs.
- */
+= */
 
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/governance-author")

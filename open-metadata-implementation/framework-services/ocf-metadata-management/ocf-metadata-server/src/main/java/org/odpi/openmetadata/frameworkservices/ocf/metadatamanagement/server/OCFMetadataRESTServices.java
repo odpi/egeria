@@ -9,8 +9,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.ffdc.OCFMetadataAuditCode;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -517,7 +517,7 @@ public class OCFMetadataRESTServices
                                                                             methodName));
 
                     asset.setDisplaySummary(repositoryHelper.getStringProperty(instanceHandler.getServiceName(serviceURLName),
-                                                                               OpenMetadataType.SUMMARY_PROPERTY_NAME,
+                                                                               OpenMetadataProperty.SUMMARY.name,
                                                                                glossaryEntity.getProperties(),
                                                                                methodName));
                     asset.setDisplayDescription(repositoryHelper.getStringProperty(instanceHandler.getServiceName(serviceURLName),
@@ -525,11 +525,11 @@ public class OCFMetadataRESTServices
                                                                                    glossaryEntity.getProperties(),
                                                                                    methodName));
                     asset.setAbbreviation(repositoryHelper.getStringProperty(instanceHandler.getServiceName(serviceURLName),
-                                                                             OpenMetadataType.ABBREVIATION_PROPERTY_NAME,
+                                                                             OpenMetadataProperty.ABBREVIATION.name,
                                                                              glossaryEntity.getProperties(),
                                                                              methodName));
                     asset.setUsage(repositoryHelper.getStringProperty(instanceHandler.getServiceName(serviceURLName),
-                                                                      OpenMetadataType.USAGE_PROPERTY_NAME,
+                                                                      OpenMetadataProperty.USAGE.name,
                                                                       glossaryEntity.getProperties(),
                                                                       methodName));
                 }
@@ -826,7 +826,7 @@ public class OCFMetadataRESTServices
                                    assetGUIDParameterName,
                                    commentGUID,
                                    commentGUIDParameterName,
-                                   OpenMetadataType.COMMENT_TYPE_NAME,
+                                   OpenMetadataType.COMMENT.typeName,
                                    elementStart,
                                    maxElements,
                                    methodName);
@@ -1659,7 +1659,7 @@ public class OCFMetadataRESTServices
             List<SchemaAttribute> schemaAttributes = handler.getAttachedSchemaAttributes(userId,
                                                                                          parentSchemaGUID,
                                                                                          guidParameterName,
-                                                                                         OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                                         OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                                          instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                                                          elementStart,
                                                                                          maxElements,
@@ -1677,7 +1677,7 @@ public class OCFMetadataRESTServices
                     schemaAttribute.setMeanings(meaningHandler.getAttachedMeanings(userId,
                                                                                    schemaAttribute.getGUID(),
                                                                                    schemaAttributeGUIDParameterName,
-                                                                                   OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                                   OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                                    instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                                                    0,
                                                                                    0,

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.AssetOwnerType;
 
 import java.util.*;
 
@@ -76,9 +77,9 @@ public class Asset extends GovernedReferenceable
     protected String              connectionDescription = null;
     protected String              owner                 = null;
     protected String              ownerTypeName         = null;
-    protected String              ownerPropertyName     = null;
-    protected OwnerType           ownerType             = null;
-    protected List<String>        zoneMembership        = null;
+    protected String         ownerPropertyName = null;
+    protected AssetOwnerType ownerType         = null;
+    protected List<String>   zoneMembership    = null;
     protected Map<String, String> origin                = null;
     protected boolean             isReferenceData       = false;
 
@@ -404,9 +405,9 @@ public class Asset extends GovernedReferenceable
     /**
      * Return the type of owner stored in the owner property.
      *
-     * @return OwnerType enum
+     * @return AssetOwnerType enum
      */
-    public OwnerType getOwnerType()
+    public AssetOwnerType getOwnerType()
     {
         return ownerType;
     }
@@ -415,9 +416,9 @@ public class Asset extends GovernedReferenceable
     /**
      * Set up the owner type for this asset.
      *
-     * @param ownerType OwnerType enum
+     * @param ownerType AssetOwnerType enum
      */
-    public void setOwnerType(OwnerType ownerType)
+    public void setOwnerType(AssetOwnerType ownerType)
     {
         this.ownerType = ownerType;
     }

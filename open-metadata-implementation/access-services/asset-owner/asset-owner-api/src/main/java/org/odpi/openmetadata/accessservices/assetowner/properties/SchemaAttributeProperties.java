@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetowner.properties;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaAttributeElement;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
 
 import java.util.ArrayList;
 import java.util.List;

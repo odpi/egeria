@@ -243,7 +243,7 @@ public class Referenceable
     /**
      * Return the type of owner stored in the owner property.
      *
-     * @return OwnerType enum
+     * @return AssetOwnerType enum
      */
     public int getOwnerType()
     {
@@ -254,7 +254,7 @@ public class Referenceable
     /**
      * Set up the owner type for this asset.
      *
-     * @param ownerType OwnerType enum
+     * @param ownerType AssetOwnerType enum
      */
     public void setOwnerType(int ownerType)
     {

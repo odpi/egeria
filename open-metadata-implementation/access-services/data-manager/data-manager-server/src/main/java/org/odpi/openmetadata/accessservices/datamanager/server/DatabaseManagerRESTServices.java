@@ -15,6 +15,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -2925,15 +2927,13 @@ public class DatabaseManagerRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof DatabaseColumnProperties)
+                if (requestBody.getProperties() instanceof DatabaseColumnProperties databaseColumnProperties)
                 {
-                    DatabaseColumnProperties databaseColumnProperties = (DatabaseColumnProperties) requestBody.getProperties();
-
-                    int sortOrder = DataItemSortOrder.UNKNOWN.getOpenTypeOrdinal();
+                    int sortOrder = DataItemSortOrder.UNSORTED.getOrdinal();
 
                     if (databaseColumnProperties.getSortOrder() != null)
                     {
-                        sortOrder = databaseColumnProperties.getSortOrder().getOpenTypeOrdinal();
+                        sortOrder = databaseColumnProperties.getSortOrder().getOrdinal();
                     }
 
                     String databaseColumnGUID = handler.createDatabaseColumn(userId,
@@ -3129,15 +3129,13 @@ public class DatabaseManagerRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof DatabaseColumnProperties)
+                if (requestBody.getProperties() instanceof DatabaseColumnProperties databaseColumnProperties)
                 {
-                    DatabaseColumnProperties databaseColumnProperties = (DatabaseColumnProperties) requestBody.getProperties();
-
-                    int sortOrder = DataItemSortOrder.UNKNOWN.getOpenTypeOrdinal();
+                    int sortOrder = DataItemSortOrder.UNSORTED.getOrdinal();
 
                     if (databaseColumnProperties.getSortOrder() != null)
                     {
-                        sortOrder = databaseColumnProperties.getSortOrder().getOpenTypeOrdinal();
+                        sortOrder = databaseColumnProperties.getSortOrder().getOrdinal();
                     }
 
                     handler.updateDatabaseColumn(userId,

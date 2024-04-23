@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersAuditCode;
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
@@ -1099,7 +1099,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
             InstanceProperties existingProperties = externalIdLink.getProperties();
 
             if ((propertyUpdateNeeded(identifierDescription, OpenMetadataProperty.DESCRIPTION.name, existingProperties, methodName)) ||
-                (propertyUpdateNeeded(identifierUsage, OpenMetadataType.USAGE_PROPERTY_NAME, existingProperties, methodName)) ||
+                (propertyUpdateNeeded(identifierUsage, OpenMetadataProperty.USAGE.name, existingProperties, methodName)) ||
                 (propertyUpdateNeeded(identifierSource, OpenMetadataProperty.SOURCE.name, existingProperties, methodName)))
             {
                 InstanceProperties properties = builder.getExternalIdResourceLinkProperties(identifierDescription,

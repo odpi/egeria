@@ -2,8 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -115,15 +116,15 @@ class DataFieldBuilder extends OpenMetadataAPIGenericBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataType.DATA_FIELD_SORT_ORDER_PROPERTY_NAME,
-                                                                    OpenMetadataType.DATA_ITEM_SORT_ORDER_TYPE_GUID,
-                                                                    OpenMetadataType.DATA_ITEM_SORT_ORDER_TYPE_NAME,
+                                                                    OpenMetadataProperty.DATA_FIELD_SORT_ORDER.name,
+                                                                    DataItemSortOrder.getOpenTypeGUID(),
+                                                                    DataItemSortOrder.getOpenTypeName(),
                                                                     dataFieldSortOrder,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataType.SORT_ORDER_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataProperty.DATA_FIELD_SORT_ORDER.name);
         }
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,

@@ -2,8 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -97,8 +98,8 @@ public class EngineActionBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
-              OpenMetadataType.ENGINE_ACTION_TYPE_GUID,
-              OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+              OpenMetadataType.ENGINE_ACTION.typeGUID,
+              OpenMetadataType.ENGINE_ACTION.typeName,
               null,
               repositoryHelper,
               serviceName,
@@ -144,8 +145,8 @@ public class EngineActionBuilder extends ReferenceableBuilder
     {
         super(null,
               null,
-              OpenMetadataType.ENGINE_ACTION_TYPE_GUID,
-              OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+              OpenMetadataType.ENGINE_ACTION.typeGUID,
+              OpenMetadataType.ENGINE_ACTION.typeName,
               null,
               repositoryHelper,
               serviceName,
@@ -173,8 +174,8 @@ public class EngineActionBuilder extends ReferenceableBuilder
     {
         super(null,
               null,
-              OpenMetadataType.ENGINE_ACTION_TYPE_GUID,
-              OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+              OpenMetadataType.ENGINE_ACTION.typeGUID,
+              OpenMetadataType.ENGINE_ACTION.typeName,
               null,
               repositoryHelper,
               serviceName,
@@ -196,8 +197,8 @@ public class EngineActionBuilder extends ReferenceableBuilder
                         String               serviceName,
                         String               serverName)
     {
-        super(OpenMetadataType.ENGINE_ACTION_TYPE_GUID,
-              OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+        super(OpenMetadataType.ENGINE_ACTION.typeGUID,
+              OpenMetadataType.ENGINE_ACTION.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -310,15 +311,15 @@ public class EngineActionBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
-                                                                    OpenMetadataType.ENGINE_ACTION_STATUS_ENUM_TYPE_GUID,
-                                                                    OpenMetadataType.ENGINE_ACTION_STATUS_ENUM_TYPE_NAME,
+                                                                    OpenMetadataProperty.ACTION_STATUS.name,
+                                                                    EngineActionStatus.getOpenTypeGUID(),
+                                                                    EngineActionStatus.getOpenTypeName(),
                                                                     actionStatus,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataType.ACTION_STATUS_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataProperty.ACTION_STATUS.name);
         }
 
         if (requestedStartDate == null)
@@ -375,15 +376,15 @@ public class EngineActionBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
-                                                                    OpenMetadataType.ENGINE_ACTION_STATUS_ENUM_TYPE_GUID,
-                                                                    OpenMetadataType.ENGINE_ACTION_STATUS_ENUM_TYPE_NAME,
+                                                                    OpenMetadataProperty.ACTION_STATUS.name,
+                                                                    EngineActionStatus.getOpenTypeGUID(),
+                                                                    EngineActionStatus.getOpenTypeName(),
                                                                     actionStatus,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataType.ACTION_STATUS_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataProperty.ACTION_STATUS.name);
         }
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
@@ -411,15 +412,15 @@ public class EngineActionBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
-                                                                    OpenMetadataType.ENGINE_ACTION_STATUS_ENUM_TYPE_GUID,
-                                                                    OpenMetadataType.ENGINE_ACTION_STATUS_ENUM_TYPE_NAME,
+                                                                    OpenMetadataProperty.ACTION_STATUS.name,
+                                                                    EngineActionStatus.getOpenTypeGUID(),
+                                                                    EngineActionStatus.getOpenTypeName(),
                                                                     actionStatus,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataType.ACTION_STATUS_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataProperty.ACTION_STATUS.name);
         }
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
@@ -455,15 +456,15 @@ public class EngineActionBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
-                                                                    OpenMetadataType.ENGINE_ACTION_STATUS_ENUM_TYPE_GUID,
-                                                                    OpenMetadataType.ENGINE_ACTION_STATUS_ENUM_TYPE_NAME,
+                                                                    OpenMetadataProperty.ACTION_STATUS.name,
+                                                                    EngineActionStatus.getOpenTypeGUID(),
+                                                                    EngineActionStatus.getOpenTypeName(),
                                                                     actionStatus,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataType.ACTION_STATUS_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataProperty.ACTION_STATUS.name);
         }
 
         properties = repositoryHelper.addDatePropertyToInstance(serviceName,

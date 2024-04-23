@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
 import java.util.ArrayList;
 import java.util.List;

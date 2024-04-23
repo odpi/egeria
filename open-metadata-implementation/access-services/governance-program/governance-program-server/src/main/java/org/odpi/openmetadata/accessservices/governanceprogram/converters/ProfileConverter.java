@@ -7,9 +7,10 @@ import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.P
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.UserIdentityElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.ActorProfileProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.ContactMethodProperties;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.ContactMethodType;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.UserIdentityProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ContactMethodType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -128,7 +129,7 @@ public class ProfileConverter<B> extends GovernanceProgramOMASConverter<B>
 
                                     userIdentities.add(userBean);
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.CONTACT_DETAILS_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, entityTypeName, OpenMetadataType.CONTACT_DETAILS.typeName))
                                 {
                                     ContactMethodElement    contactMethodBean       = new ContactMethodElement();
                                     ContactMethodProperties contactMethodProperties = new ContactMethodProperties();
@@ -202,7 +203,7 @@ public class ProfileConverter<B> extends GovernanceProgramOMASConverter<B>
 
         if (properties != null)
         {
-            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName, OpenMetadataType.CONTACT_METHOD_TYPE_PROPERTY_NAME, properties, methodName);
+            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName, OpenMetadataProperty.CONTACT_METHOD_TYPE.name, properties, methodName);
 
             switch (ordinal)
             {

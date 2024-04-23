@@ -10,15 +10,14 @@ import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.Ac
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ToDoElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.NewActionTargetProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
@@ -130,7 +129,7 @@ public class ToDosTest
             ToDoProperties toDoProperties = new ToDoProperties();
 
             toDoProperties.setPriority(100);
-            toDoProperties.setStatus(ToDoStatus.IN_PROGRESS);
+            toDoProperties.setToDoStatus(ToDoStatus.IN_PROGRESS);
             toDoClient.updateToDo(userId, toDoGUID, true, toDoProperties);
 
             thisTest.checkToDoOK(activityName, toDoClient, toDoGUID, 100, ToDoStatus.IN_PROGRESS, assetGUID, sponsorGUID, originatorGUID, actorGUID, userId);
@@ -794,9 +793,9 @@ public class ToDosTest
             {
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad priority from Retrieve) =>> " + properties);
             }
-            if (toDoStatus != properties.getStatus())
+            if (toDoStatus != properties.getToDoStatus())
             {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad status from Retrieve) =>> " + properties.getStatus() + " rather than " + toDoStatus + ": " + properties);
+                throw new FVTUnexpectedCondition(testCaseName, activityName + "(Bad status from Retrieve) =>> " + properties.getToDoStatus() + " rather than " + toDoStatus + ": " + properties);
             }
 
             if (retrievedElement.getToDoSource() == null)

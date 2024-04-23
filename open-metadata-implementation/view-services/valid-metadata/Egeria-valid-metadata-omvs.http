@@ -1,0 +1,215 @@
+# Egeria-valid-metadata-view-service
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Managed the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
+# =====================================================================================================================
+# Valid values are identified by an optional type name, property name, optional map name and the preferred (valid) value.
+# If the type name is null it means the valid value applied to all properties of that name irrespective of the
+# type of element it appears in.
+# 
+# Further Information: https://egeria-project.org/guides/planning/valid-values/overview/
+
+@typeName=Project
+@propertyName=projectHealth
+@mapName=
+@preferredValue=
+@actualValue=
+
+###
+# @name setUpValidMetadataValue
+# Create or update the valid value for a particular open metadata property name.  If the typeName is null, this valid value
+# applies to properties of this name from all types.  The valid value is stored in the preferredValue property.  If a valid value is
+# already set up for this property (with overlapping effective dates) then the valid value is updated.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/setup-value/{{propertyName}}?typeName={{typeName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{                                       
+  "displayName": "",
+  "description": "",
+  "preferredValue": "",
+  "dataType": "",
+  "isCaseSensitive": false,
+  "isDeprecated" : false
+}
+
+
+###
+# @name setUpValidMetadataMapName
+# Create or update the valid value for a name that can be stored in a particular open metadata property name.
+# This property is of type map from name to string.
+# The mapName is stored in the preferredValue property of validMetadataValue.
+# If the typeName is null, this valid value applies to properties of this name from any open metadata type.
+# If a valid value is already set up for this property (with overlapping effective dates) then the valid value is updated.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/setup-map-name/{{propertyName}}?typeName={{typeName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "displayName": "",
+  "description": "",
+  "preferredValue": "put mapName value here",
+  "dataType": "",
+  "isCaseSensitive": false,
+  "isDeprecated" : false
+}
+
+
+###
+# @name setUpValidMetadataMapValue
+# Create or update the valid value for a name that can be stored in a particular open metadata property name.
+# This property is of type map from name to string.
+# The valid value is stored in the preferredValue property of validMetadataValue.
+# If the typeName is null, this valid value applies to properties of this name from any open metadata type.
+# If a valid value is already set up for this property (with overlapping effective dates) then the valid value is updated.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/setup-map-value/{{propertyName}}/{{mapName}}?typeName={{typeName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "displayName": "",
+  "description": "",
+  "preferredValue": "put map value here",
+  "dataType": "",
+  "isCaseSensitive": false
+}
+
+
+###
+# @name clearValidMetadataValue
+# Remove a valid value for a property.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/clear-value/{{propertyName}}?typeName={{typeName}}&preferredValue={{preferredValue}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name clearValidMetadataMapName
+# Remove a valid map name value for a property.  The match is done on mapName name.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/clear-map-name/{{propertyName}}?typeName={{typeName}}&mapName={{mapName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name clearValidMetadataMapValue
+# Remove a valid map name value for a property.  The match is done on preferred name.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/clear-map-value/{{propertyName}}/{{mapName}}?typeName={{typeName}}&preferredValue={{preferredValue}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name validateMetadataValue
+# Validate whether the value found in an open metadata property is valid.
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/validate-value/{{propertyName}}?typeName={{typeName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name validateMetadataMapName
+# Validate whether the name found in an open metadata map property is valid.
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/validate-map-name/{{propertyName}}?typeName={{typeName}}&mapName={{mapName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name validateMetadataMapValue
+# Validate whether the value found in an open metadata map property is valid.
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/validate-map-value/{{propertyName}}/{{mapName}}?typeName={{typeName}}&actualValue={{actualValue}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name getValidMetadataValue
+# Retrieve details of a specific valid value for a property.
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/get-value/{{propertyName}}?typeName={{typeName}}&preferredValue={{preferredValue}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name getValidMetadataMapName
+# Retrieve details of a specific valid name for a map property.
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/get-map-name/{{propertyName}}?typeName={{typeName}}&mapName={{mapName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name getValidMetadataMapValue
+# Retrieve details of a specific valid value for a map name.
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/get-map-value/{{propertyName}}/{{mapName}}?typeName={{typeName}}&preferredValue={{preferredValue}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name getValidMetadataValues
+# Retrieve all the valid values for the requested property.
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/get-valid-metadata-values/{{propertyName}}?typeName={{typeName}}&startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name getConsistentMetadataValues
+# Retrieve all the consistent valid values for the requested property.
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/{{propertyName}}/consistent-metadata-values?typeName={{typeName}}&mapName={{mapName}}&preferredValue={{preferredValue}}&startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+
+@typeName1=
+@propertyName1=
+@mapName1=
+@preferredValue1=
+
+@typeName2=
+@propertyName2=
+@mapName2=
+@preferredValue2=
+
+###
+# @name setConsistentMetadataValues
+# Set up consistent metadata values relationship between the two property values.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/{propertyName1}/consistent-metadata-values/{propertyName2}?typeName1={{typeName1}}&mapName1={{mapName1}}&preferredValue1={{preferredValue1}}&?typeName2={{typeName2}}&mapName2={{mapName2}}&preferredValue2={{preferredValue2}}
+Authorization: Bearer {{token}}
+Content-Type: application/json

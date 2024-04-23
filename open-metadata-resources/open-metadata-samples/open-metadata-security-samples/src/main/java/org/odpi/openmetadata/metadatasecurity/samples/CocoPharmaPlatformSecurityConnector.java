@@ -24,7 +24,7 @@ public class CocoPharmaPlatformSecurityConnector extends OpenMetadataPlatformSec
      */
     public void  validateUserForNewServer(String   userId) throws UserNotAuthorizedException
     {
-        if (! platformAdministrator.equals(userId))
+        if ((! platformAdministrator.equals(userId)) && (! platformOperations.equals(userId)))
         {
             super.validateUserForNewServer(userId);
         }
@@ -56,7 +56,7 @@ public class CocoPharmaPlatformSecurityConnector extends OpenMetadataPlatformSec
      */
     public void  validateUserAsInvestigatorForPlatform(String   userId) throws UserNotAuthorizedException
     {
-        if (! platformAdministrator.equals(userId))
+        if ((! platformAdministrator.equals(userId)) && (! platformOperations.equals(userId)))
         {
             super.validateUserAsInvestigatorForPlatform(userId);
         }

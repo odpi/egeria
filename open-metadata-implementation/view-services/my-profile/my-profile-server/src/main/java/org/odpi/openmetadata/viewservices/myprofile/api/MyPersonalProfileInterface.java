@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.viewservices.myprofile.api;
 
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContactMethodElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ContactMethodType;
 import org.odpi.openmetadata.viewservices.myprofile.metadataelements.PersonalProfileUniverse;
 
 import java.util.List;

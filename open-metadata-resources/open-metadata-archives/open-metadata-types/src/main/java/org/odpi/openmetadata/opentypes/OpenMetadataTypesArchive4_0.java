@@ -3,8 +3,10 @@
 package org.odpi.openmetadata.opentypes;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CollectionMemberStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -325,106 +327,32 @@ public class OpenMetadataTypesArchive4_0
 
     private EnumDef getMembershipStatusEnum()
     {
-        final String guid            = "a3bdb2ac-c28e-4e5a-8ab7-76aa01038832";
-        final String name            = "MembershipStatus";
-        final String description     = "Defines the provenance and confidence that a member belongs in a collection.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(CollectionMemberStatus.getOpenTypeGUID(),
+                                                        CollectionMemberStatus.getOpenTypeName(),
+                                                        CollectionMemberStatus.getOpenTypeDescription(),
+                                                        CollectionMemberStatus.getOpenTypeDescriptionGUID(),
+                                                        CollectionMemberStatus.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element0Ordinal         = 0;
-        final String element0Value           = "Unknown";
-        final String element0Description     = "The membership origin is unknown.";
-        final String element0DescriptionGUID = null;
+        for (CollectionMemberStatus collectionMemberStatus : CollectionMemberStatus.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(collectionMemberStatus.getOrdinal(),
+                                                         collectionMemberStatus.getName(),
+                                                         collectionMemberStatus.getDescription(),
+                                                         collectionMemberStatus.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element0Ordinal,
-                                                     element0Value,
-                                                     element0Description,
-                                                     element0DescriptionGUID);
-        elementDefs.add(elementDef);
-        enumDef.setDefaultValue(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element1Ordinal         = 1;
-        final String element1Value           = "Discovered";
-        final String element1Description     = "The membership was discovered by an automated process.";
-        final String element1DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element2Ordinal         = 2;
-        final String element2Value           = "Assigned";
-        final String element2Description     = "The membership was proposed by an expert curator.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 3;
-        final String element3Value           = "Imported";
-        final String element3Description     = "The membership was imported from another metadata system.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 4;
-        final String element4Value           = "Validated";
-        final String element4Description     = "The membership created by an automated process has been validated and approved by an expert curator.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element5Ordinal         = 5;
-        final String element5Value           = "Deprecated";
-        final String element5Description     = "The membership should no longer be used.";
-        final String element5DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
-                                                     element5Value,
-                                                     element5Description,
-                                                     element5DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element6Ordinal         = 6;
-        final String element6Value           = "Obsolete";
-        final String element6Description     = "The membership must no longer be used.";
-        final String element6DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element6Ordinal,
-                                                     element6Value,
-                                                     element6Description,
-                                                     element6DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element99Ordinal         = 99;
-        final String element99Value           = "Other";
-        final String element99Description     = "Another membership status.";
-        final String element99DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
-                                                     element99Value,
-                                                     element99Description,
-                                                     element99DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (collectionMemberStatus.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
+
         return enumDef;
     }
 
@@ -510,7 +438,7 @@ public class OpenMetadataTypesArchive4_0
         /*
          * Create the Patch
          */
-        final String typeName = "ActionTarget";
+        final String typeName = OpenMetadataType.ACTION_TARGET_RELATIONSHIP_TYPE_NAME;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -523,9 +451,9 @@ public class OpenMetadataTypesArchive4_0
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.STATUS.name;
-        final String attribute1Description     = OpenMetadataProperty.STATUS.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.STATUS.descriptionGUID;
+        final String attribute1Name            = OpenMetadataProperty.TO_DO_STATUS.name;
+        final String attribute1Description     = OpenMetadataProperty.TO_DO_STATUS.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.TO_DO_STATUS.descriptionGUID;
         final String attribute2Name            = OpenMetadataProperty.START_DATE.name;
         final String attribute2Description     = OpenMetadataProperty.START_DATE.description;
         final String attribute2DescriptionGUID = OpenMetadataProperty.START_DATE.descriptionGUID;
@@ -539,7 +467,7 @@ public class OpenMetadataTypesArchive4_0
         final String attribute5Description     = OpenMetadataProperty.COMPLETION_MESSAGE.description;
         final String attribute5DescriptionGUID = OpenMetadataProperty.COMPLETION_MESSAGE.descriptionGUID;
 
-        property = archiveHelper.getEnumTypeDefAttribute("ToDoStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(ToDoStatus.getOpenTypeName(),
                                                          attribute1Name,
                                                          attribute1Description,
                                                          attribute1DescriptionGUID);

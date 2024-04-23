@@ -11,6 +11,7 @@ plugins {
 dependencies {
     implementation project(':open-metadata-resources:open-metadata-reports:report-utilities')
     compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-metadata-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
     compileOnly project(':open-metadata-implementation:common-services:ffdc-services')

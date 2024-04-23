@@ -3,7 +3,8 @@
 package org.odpi.openmetadata.accessservices.governanceengine.converters;
 
 import org.odpi.openmetadata.accessservices.governanceengine.metadataelements.GovernanceActionElement;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedEngineActionElement;
@@ -98,7 +99,7 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
                     bean.setGovernanceActionTypeName(this.removeProcessStepName(instanceProperties));
                     bean.setMandatoryGuards(this.removeMandatoryGuards(instanceProperties));
                     bean.setReceivedGuards(this.removeReceivedGuards(instanceProperties));
-                    bean.setActionStatus(this.removeGovernanceActionStatus(OpenMetadataType.ACTION_STATUS_PROPERTY_NAME, instanceProperties));
+                    bean.setActionStatus(this.removeGovernanceActionStatus(OpenMetadataProperty.ACTION_STATUS.name, instanceProperties));
                     bean.setStartTime(this.removeStartDate(instanceProperties));
                     bean.setProcessingEngineUserId(this.removeProcessingEngineUserId(instanceProperties));
                     bean.setCompletionTime(this.removeCompletionDate(instanceProperties));
@@ -120,7 +121,7 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
                                 String actualTypeName = relationship.getType().getTypeDefName();
                                 instanceProperties = new InstanceProperties(relationship.getProperties());
 
-                                if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ENGINE_ACTION_EXECUTOR_TYPE_NAME))
+                                if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ENGINE_ACTION_EXECUTOR.typeName))
                                 {
                                     if (bean.getRequestType() == null)
                                     {
@@ -140,13 +141,13 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
                                         }
                                     }
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.TARGET_FOR_ACTION_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.TARGET_FOR_ACTION.typeName))
                                 {
                                     ActionTargetElement actionTargetElement = new ActionTargetElement();
 
                                     actionTargetElement.setActionTargetRelationshipGUID(relationship.getGUID());
                                     actionTargetElement.setActionTargetName(this.removeActionTargetName(instanceProperties));
-                                    actionTargetElement.setStatus(this.removeActionStatus(OpenMetadataType.ACTION_STATUS_PROPERTY_NAME, instanceProperties));
+                                    actionTargetElement.setStatus(this.removeActionStatus(OpenMetadataProperty.ACTION_STATUS.name, instanceProperties));
                                     actionTargetElement.setStartDate(this.removeStartDate(instanceProperties));
                                     actionTargetElement.setCompletionDate(this.removeCompletionDate(instanceProperties));
                                     actionTargetElement.setCompletionMessage(this.removeCompletionMessage(instanceProperties));
@@ -161,7 +162,7 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
 
                                     actionTargetElements.add(actionTargetElement);
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE.typeName))
                                 {
                                     String requestSourceGUID = relationship.getEntityOneProxy().getGUID();
 
@@ -180,7 +181,7 @@ public class GovernanceActionConverter<B> extends GovernanceEngineOMASConverter<
                                         requestSourceElements.add(requestSourceElement);
                                     }
                                 }
-                                else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.NEXT_ENGINE_ACTION_TYPE_NAME))
+                                else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.NEXT_ENGINE_ACTION.typeName))
                                 {
                                     RelatedEngineActionElement relatedAction = new RelatedEngineActionElement();
 

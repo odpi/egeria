@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -1089,7 +1089,7 @@ public class OpenMetadataTypesArchive2_10
                                                            attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("OwnerType",
+        property = archiveHelper.getEnumTypeDefAttribute("AssetOwnerType",
                                                          attribute2Name,
                                                          attribute2Description,
                                                          attribute2DescriptionGUID);

@@ -3,7 +3,8 @@
 package org.odpi.openmetadata.samples.archiveutilities.organization;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ContactMethodType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
 
 import java.text.MessageFormat;
@@ -407,7 +408,7 @@ public class CocoOrganizationArchiveWriter extends CocoBaseArchiveWriter
                                                 OpenMetadataType.PERSON_TYPE_NAME,
                                                 ContactTypeDefinition.COMPANY_EMAIL.getDisplayName(),
                                                 ContactTypeDefinition.COMPANY_EMAIL.getPreferredValue(),
-                                                OpenMetadataType.CONTACT_METHOD_TYPE_EMAIL,
+                                                ContactMethodType.EMAIL.getOrdinal(),
                                                 ContactTypeDefinition.COMPANY_EMAIL.getDescription(),
                                                 personDefinition.getEmail());
             }

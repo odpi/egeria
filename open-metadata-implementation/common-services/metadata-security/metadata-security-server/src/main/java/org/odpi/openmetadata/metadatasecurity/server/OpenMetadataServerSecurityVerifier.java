@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GovernanceClassificationStatus;
 import org.odpi.openmetadata.metadatasecurity.*;
 import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataServerSecurityConnector;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityAuditCode;
@@ -20,7 +21,6 @@ import org.odpi.openmetadata.metadatasecurity.properties.ConfidentialityGovernan
 import org.odpi.openmetadata.metadatasecurity.properties.Connection;
 import org.odpi.openmetadata.metadatasecurity.properties.CriticalityGovernanceClassification;
 import org.odpi.openmetadata.metadatasecurity.properties.Glossary;
-import org.odpi.openmetadata.metadatasecurity.properties.GovernanceClassificationStatus;
 import org.odpi.openmetadata.metadatasecurity.properties.ImpactGovernanceClassification;
 import org.odpi.openmetadata.metadatasecurity.properties.ReferenceableStatus;
 import org.odpi.openmetadata.metadatasecurity.properties.RetentionGovernanceClassification;
@@ -957,9 +957,9 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
             for (GovernanceClassificationStatus status : enums)
             {
-                if (status.getOpenTypeOrdinal() == enumOrdinal)
+                if (status.getOrdinal() == enumOrdinal)
                 {
-                    return status.getOpenTypeOrdinal();
+                    return status.getOrdinal();
                 }
             }
         }

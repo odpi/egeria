@@ -18,7 +18,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.RetentionCla
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SecurityTagsProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SemanticAssignmentProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SubjectAreaMemberProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;

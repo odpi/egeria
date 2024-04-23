@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.devops.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ServerAssetUseType;
 
 import java.util.Objects;
 
@@ -20,9 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ServerAssetUseProperties extends ConfigurationItemRelationshipProperties
 {
-    private static final long serialVersionUID = 1L;
-
-    private ServerAssetUseType useType = null;
+    private ServerAssetUseType useType     = null;
     private String             description = null;
     private boolean            minimumInstancesSet = false;
     private int                minimumInstances = 0;

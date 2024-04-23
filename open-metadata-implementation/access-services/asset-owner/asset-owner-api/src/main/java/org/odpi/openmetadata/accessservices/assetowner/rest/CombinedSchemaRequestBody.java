@@ -57,7 +57,7 @@ public class CombinedSchemaRequestBody extends AssetOwnerOMASAPIRequestBody
     /**
      * Return the type of owner stored in the owner property.
      *
-     * @return OwnerType enum
+     * @return AssetOwnerType enum
      */
     public SchemaTypeProperties getSchemaType()
     {
@@ -68,7 +68,7 @@ public class CombinedSchemaRequestBody extends AssetOwnerOMASAPIRequestBody
     /**
      * Set up the owner type for this asset.
      *
-     * @param schemaType OwnerType enum
+     * @param schemaType AssetOwnerType enum
      */
     public void setSchemaType(SchemaTypeProperties schemaType)
     {

@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.governanceaction.controls;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
 import java.util.List;

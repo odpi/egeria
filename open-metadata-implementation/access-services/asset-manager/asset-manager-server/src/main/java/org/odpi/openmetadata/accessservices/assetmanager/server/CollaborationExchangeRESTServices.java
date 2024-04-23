@@ -12,7 +12,6 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.FeedbackProp
 import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteLogProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.NoteProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.RatingProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.StarRating;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.TagProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.CommentElementResponse;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.CommentElementsResponse;
@@ -37,7 +36,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.InformalTagHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.LikeHandler;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.StarRating;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.RatingHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
@@ -787,7 +787,7 @@ public class CollaborationExchangeRESTServices
                 response.setElement(handler.getCommentByGUID(userId,
                                                              commentGUID,
                                                              guidParameterName,
-                                                             OpenMetadataType.COMMENT_TYPE_NAME,
+                                                             OpenMetadataType.COMMENT.typeName,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              requestBody.getEffectiveTime(),
@@ -798,7 +798,7 @@ public class CollaborationExchangeRESTServices
                 response.setElement(handler.getCommentByGUID(userId,
                                                              commentGUID,
                                                              guidParameterName,
-                                                             OpenMetadataType.COMMENT_TYPE_NAME,
+                                                             OpenMetadataType.COMMENT.typeName,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              null,

@@ -60,7 +60,7 @@ public class ReferenceableMapper
     /* End1 = Referenceable; End 2 = GlossaryTerm */
 
     public static final String TERM_ASSIGNMENT_STATUS_ENUM_TYPE_GUID             = "c8fe36ac-369f-4799-af75-46b9c1343ab3";
-    public static final String TERM_ASSIGNMENT_STATUS_ENUM_TYPE_NAME             = "TermAssignmentStatus";
+    public static final String TERM_ASSIGNMENT_STATUS_ENUM_TYPE_NAME             = "GlossaryTermAssignmentStatus";
 
     public static final String SEMANTIC_ASSIGNMENT_DESCRIPTION_PROPERTY_NAME     = "description";
     public static final String SEMANTIC_ASSIGNMENT_EXPRESSION_PROPERTY_NAME      = "expression";

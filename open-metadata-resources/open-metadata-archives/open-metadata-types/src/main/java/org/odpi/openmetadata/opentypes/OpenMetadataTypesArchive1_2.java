@@ -3,8 +3,9 @@
 package org.odpi.openmetadata.opentypes;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.AnnotationStatus;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
@@ -1985,37 +1986,29 @@ public class OpenMetadataTypesArchive1_2
 
     private EnumDef getEndiannessEnum()
     {
-        final String guid            = "e5612c3a-49bd-4148-8f67-cfdf145d5fd8";
-        final String name            = "Endianness";
-        final String description     = "Defines the sequential order in which bytes are arranged into larger numerical values when stored in memory or when transmitted over digital links.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(ByteOrdering.getOpenTypeGUID(),
+                                                        ByteOrdering.getOpenTypeName(),
+                                                        ByteOrdering.getOpenTypeDescription(),
+                                                        ByteOrdering.getOpenTypeDescriptionGUID(),
+                                                        ByteOrdering.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "BigEndian";
-        final String element1Description     = "Bits or bytes order from the big end.";
-        final String element1DescriptionGUID = null;
+        for (ByteOrdering byteOrdering : ByteOrdering.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(byteOrdering.getOrdinal(),
+                                                         byteOrdering.getName(),
+                                                         byteOrdering.getDescription(),
+                                                         byteOrdering.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "LittleEndian";
-        final String element2Description     = "Bits or bytes ordered from the little end.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (byteOrdering.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
@@ -2061,18 +2054,12 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getOperatingPlatformEntity()
     {
-        final String guid            = "bd96a997-8d78-42f6-adf7-8239bc98501c";
-        final String name            = "OperatingPlatform";
-        final String description     = "Characteristics of the operating system in use within a host.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.OPERATING_PLATFORM.typeGUID,
+                                                                OpenMetadataType.OPERATING_PLATFORM.typeName,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                OpenMetadataType.OPERATING_PLATFORM.description,
+                                                                OpenMetadataType.OPERATING_PLATFORM.descriptionGUID,
+                                                                OpenMetadataType.OPERATING_PLATFORM.wikiURL);
 
         /*
          * Build the attributes
@@ -2080,12 +2067,12 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "name";
-        final String attribute1Description     = "Name of the operating platform.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the operating platform.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = "operatingSystem";
         final String attribute3Description     = "Name of the operating system running on this operating platform.";
         final String attribute3DescriptionGUID = null;
@@ -3842,81 +3829,29 @@ public class OpenMetadataTypesArchive1_2
 
     private EnumDef getContactMethodTypeEnum()
     {
-        final String guid            = "30e7d8cd-df01-46e8-9247-a24c5650910d";
-        final String name            = "ContactMethodType";
-        final String description     = "Mechanism to contact an individual.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(ContactMethodType.getOpenTypeGUID(),
+                                                        ContactMethodType.getOpenTypeName(),
+                                                        ContactMethodType.getOpenTypeDescription(),
+                                                        ContactMethodType.getOpenTypeDescriptionGUID(),
+                                                        ContactMethodType.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "Email";
-        final String element1Description     = "Contact through email.";
-        final String element1DescriptionGUID = null;
+        for (ContactMethodType enumValues : ContactMethodType.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValues.getOrdinal(),
+                                                         enumValues.getName(),
+                                                         enumValues.getDescription(),
+                                                         enumValues.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "Phone";
-        final String element2Description     = "Contact through telephone number.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "Chat";
-        final String element3Description     = "Contact through chat account.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 3;
-        final String element4Value           = "Profile";
-        final String element4Description     = "Contact through open metadata profile.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element5Ordinal         = 4;
-        final String element5Value           = "Account";
-        final String element5Description     = "Contact through social media or similar account.";
-        final String element5DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
-                                                     element5Value,
-                                                     element5Description,
-                                                     element5DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element99Ordinal         = 99;
-        final String element99Value           = "Other";
-        final String element99Description     = "Another usage.";
-        final String element99DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
-                                                     element99Value,
-                                                     element99Description,
-                                                     element99DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValues.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
@@ -3986,18 +3921,12 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getContactDetailsEntity()
     {
-        final String guid            = "79296df8-645a-4ef7-a011-912d1cdcf75a";
-        final String name            = "ContactDetails";
-        final String description     = "Information on how to send a message to an individual or automated process.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.CONTACT_DETAILS.typeGUID,
+                                                                OpenMetadataType.CONTACT_DETAILS.typeName,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                OpenMetadataType.CONTACT_DETAILS.description,
+                                                                OpenMetadataType.CONTACT_DETAILS.descriptionGUID,
+                                                                OpenMetadataType.CONTACT_DETAILS.wikiURL);
 
         /*
          * Build the attributes
@@ -4005,17 +3934,17 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "contactMethodType";
-        final String attribute1Description     = "Method to contact an actor.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "contactMethodValue";
-        final String attribute2Description     = "Details of the contact method.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "contactMethodService";
-        final String attribute3Description     = "Details of the service supporting the contact method.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.CONTACT_METHOD_TYPE.name;
+        final String attribute1Description     = OpenMetadataProperty.CONTACT_METHOD_TYPE.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.CONTACT_METHOD_TYPE.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.CONTACT_METHOD_VALUE.name;
+        final String attribute2Description     = OpenMetadataProperty.CONTACT_METHOD_VALUE.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.CONTACT_METHOD_VALUE.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.CONTACT_METHOD_SERVICE.name;
+        final String attribute3Description     = OpenMetadataProperty.CONTACT_METHOD_SERVICE.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.CONTACT_METHOD_SERVICE.descriptionGUID;
 
-        property = archiveHelper.getEnumTypeDefAttribute("ContactMethodType",
+        property = archiveHelper.getEnumTypeDefAttribute(ContactMethodType.getOpenTypeName(),
                                                          attribute1Name,
                                                          attribute1Description,
                                                          attribute1DescriptionGUID);
@@ -4037,26 +3966,20 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getContactThroughRelationship()
     {
-        final String guid            = "6cb9af43-184e-4dfa-854a-1572bcf0fe75";
-        final String name            = "ContactThrough";
-        final String description     = "The contact details associated with an actor profile.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.typeGUID,
+                                                                                OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.description,
+                                                                                OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.descriptionGUID,
+                                                                                OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "ActorProfile";
+        final String                     end1EntityType               = OpenMetadataType.ACTOR_PROFILE_TYPE_NAME;
         final String                     end1AttributeName            = "contactDetails";
         final String                     end1AttributeDescription     = "Contact details owner.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -4073,7 +3996,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "ContactDetails";
+        final String                     end2EntityType               = OpenMetadataType.CONTACT_DETAILS.typeName;
         final String                     end2AttributeName            = "contacts";
         final String                     end2AttributeDescription     = "Contact information.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -4865,81 +4788,30 @@ public class OpenMetadataTypesArchive1_2
 
     private EnumDef getOrderByEnum()
     {
-        final String guid            = "1d412439-4272-4a7e-a940-1065f889fc56";
-        final String name            = "OrderBy";
-        final String description     = "Defines the sequencing for a collection.";
-        final String descriptionGUID = null;
+        final String guid            = OrderBy.getOpenTypeGUID();
+        final String name            = OrderBy.getOpenTypeName();
+        final String description     = OrderBy.getOpenTypeDescription();
+        final String descriptionGUID = OrderBy.getOpenTypeDescriptionGUID();
 
         EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "Name";
-        final String element1Description     = "Order by name property.";
-        final String element1DescriptionGUID = null;
+        for (OrderBy orderBy : OrderBy.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(orderBy.getOrdinal(),
+                                                         orderBy.getName(),
+                                                         orderBy.getDescription(),
+                                                         orderBy.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "Owner";
-        final String element2Description     = "Order by owner property.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "DateAdded";
-        final String element3Description     = "Order by date added to the metadata collection.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 3;
-        final String element4Value           = "DateUpdated";
-        final String element4Description     = "Order by date that the asset was updated.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element5Ordinal         = 4;
-        final String element5Value           = "DateCreated";
-        final String element5Description     = "Order by date that the asset was created.";
-        final String element5DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
-                                                     element5Value,
-                                                     element5Description,
-                                                     element5DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element99Ordinal         = 99;
-        final String element99Value           = "Other";
-        final String element99Description     = "Order by another property.";
-        final String element99DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
-                                                     element99Value,
-                                                     element99Description,
-                                                     element99DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (orderBy.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
@@ -5870,70 +5742,29 @@ public class OpenMetadataTypesArchive1_2
 
     private EnumDef getToDoStatusEnum()
     {
-        final String guid            = "7197ea39-334d-403f-a70b-d40231092df7";
-        final String name            = "ToDoStatus";
-        final String description     = "Progress on completing an action (to do).";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(ToDoStatus.getOpenTypeGUID(),
+                                                        ToDoStatus.getOpenTypeName(),
+                                                        ToDoStatus.getOpenTypeDescription(),
+                                                        ToDoStatus.getOpenTypeDescriptionGUID(),
+                                                        ToDoStatus.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "Open";
-        final String element1Description     = "No action has been taken.";
-        final String element1DescriptionGUID = null;
+        for (ToDoStatus toDoStatus : ToDoStatus.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(toDoStatus.getOrdinal(),
+                                                         toDoStatus.getName(),
+                                                         toDoStatus.getDescription(),
+                                                         toDoStatus.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "In Progress";
-        final String element2Description     = "Work is underway to complete the action.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "Waiting";
-        final String element3Description     = "Work is blocked waiting for resource of another action to complete.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 3;
-        final String element4Value           = "Complete";
-        final String element4Description     = "The action has been completed successfully.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element99Ordinal         = 99;
-        final String element99Value           = "Abandoned";
-        final String element99Description     = "Work has stopped on the action and will not recommence.";
-        final String element99DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
-                                                     element99Value,
-                                                     element99Description,
-                                                     element99DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (toDoStatus.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
@@ -5943,18 +5774,12 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getToDoEntity()
     {
-        final String guid            = "93dbc58d-c826-4bc2-b36f-195148d46f86";
-        final String name            = "ToDo";
-        final String description     = "An action assigned to an individual.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.TO_DO.typeGUID,
+                                                                OpenMetadataType.TO_DO.typeName,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                OpenMetadataType.TO_DO.description,
+                                                                OpenMetadataType.TO_DO.descriptionGUID,
+                                                                OpenMetadataType.TO_DO.wikiURL);
 
         /*
          * Build the attributes
@@ -5962,12 +5787,12 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "name";
-        final String attribute1Description     = "Name or title of the todo/action.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the required action.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = "creationTime";
         final String attribute3Description     = "When the requested action was identified.";
         final String attribute3DescriptionGUID = null;
@@ -5977,9 +5802,9 @@ public class OpenMetadataTypesArchive1_2
         final String attribute5Name            = "dueTime";
         final String attribute5Description     = "When the requested action needs to be completed.";
         final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "status";
-        final String attribute6Description     = "How complete is the action?";
-        final String attribute6DescriptionGUID = null;
+        final String attribute6Name            = OpenMetadataProperty.TO_DO_STATUS.name;
+        final String attribute6Description     = OpenMetadataProperty.TO_DO_STATUS.description;
+        final String attribute6DescriptionGUID = OpenMetadataProperty.TO_DO_STATUS.descriptionGUID;
         final String attribute7Name            = "completionTime";
         final String attribute7Description     = "When the requested action was completed.";
         final String attribute7DescriptionGUID = null;
@@ -6004,7 +5829,7 @@ public class OpenMetadataTypesArchive1_2
                                                          attribute5Description,
                                                          attribute5DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("ToDoStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(ToDoStatus.getOpenTypeName(),
                                                          attribute6Name,
                                                          attribute6Description,
                                                          attribute6DescriptionGUID);
@@ -6529,81 +6354,29 @@ public class OpenMetadataTypesArchive1_2
 
     private EnumDef getCommentTypeEnum()
     {
-        final String guid            = "06d5032e-192a-4f77-ade1-a4b97926e867";
-        final String name            = "CommentType";
-        final String description     = "Descriptor for a comment that indicated its intent.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(CommentType.getOpenTypeGUID(),
+                                                        CommentType.getOpenTypeName(),
+                                                        CommentType.getOpenTypeDescription(),
+                                                        CommentType.getOpenTypeDescriptionGUID(),
+                                                        CommentType.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "GeneralComment";
-        final String element1Description     = "General comment.";
-        final String element1DescriptionGUID = null;
+        for (CommentType commentType : CommentType.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(commentType.getOrdinal(),
+                                                         commentType.getName(),
+                                                         commentType.getDescription(),
+                                                         commentType.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "Question";
-        final String element2Description     = "A question.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "Answer";
-        final String element3Description     = "An answer to a previously asked question.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 3;
-        final String element4Value           = "Suggestion";
-        final String element4Description     = "A suggestion for improvement.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element5Ordinal         = 4;
-        final String element5Value           = "Experience";
-        final String element5Description     = "An account of an experience.";
-        final String element5DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
-                                                     element5Value,
-                                                     element5Description,
-                                                     element5DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element99Ordinal         = 99;
-        final String element99Value           = "Other";
-        final String element99Description     = "None of the above.";
-        final String element99DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
-                                                     element99Value,
-                                                     element99Description,
-                                                     element99DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (commentType.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
@@ -6662,18 +6435,12 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getCommentEntity()
     {
-        final String guid            = "1a226073-9c84-40e4-a422-fbddb9b84278";
-        final String name            = "Comment";
-        final String description     = "Descriptive feedback or discussion related to an item.";
-        final String descriptionGUID = null;
-
-        final String superType = OpenMetadataType.REFERENCEABLE.typeName;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superType),
-                                                                description,
-                                                                descriptionGUID);
+         EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.COMMENT.typeGUID,
+                                                                OpenMetadataType.COMMENT.typeName,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                OpenMetadataType.COMMENT.description,
+                                                                OpenMetadataType.COMMENT.descriptionGUID,
+                                                                OpenMetadataType.COMMENT.wikiURL);
 
         /*
          * Build the attributes
@@ -11139,70 +10906,29 @@ public class OpenMetadataTypesArchive1_2
 
     private EnumDef getTermRelationshipStatusEnum()
     {
-        final String guid            = "42282652-7d60-435e-ad3e-7cfe5291bcc7";
-        final String name            = "TermRelationshipStatus";
-        final String description     = "Defines the confidence in the assigned relationship.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(GlossaryTermRelationshipStatus.getOpenTypeGUID(),
+                                                        GlossaryTermRelationshipStatus.getOpenTypeName(),
+                                                        GlossaryTermRelationshipStatus.getOpenTypeDescription(),
+                                                        GlossaryTermRelationshipStatus.getOpenTypeDescriptionGUID(),
+                                                        GlossaryTermRelationshipStatus.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "Draft";
-        final String element1Description     = "The term relationship is in development.";
-        final String element1DescriptionGUID = null;
+        for (GlossaryTermRelationshipStatus enumValues : GlossaryTermRelationshipStatus.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValues.getOrdinal(),
+                                                         enumValues.getName(),
+                                                         enumValues.getDescription(),
+                                                         enumValues.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "Active";
-        final String element2Description     = "The term relationship is approved and in use.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "Deprecated";
-        final String element3Description     = "The term relationship should no longer be used.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 3;
-        final String element4Value           = "Obsolete";
-        final String element4Description     = "The term relationship must no longer be used.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element99Ordinal         = 99;
-        final String element99Value           = "Other";
-        final String element99Description     = "Another term relationship status.";
-        final String element99DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
-                                                     element99Value,
-                                                     element99Description,
-                                                     element99DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValues.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
@@ -11212,18 +10938,12 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getGlossaryTermEntity()
     {
-        final String guid            = "0db3e6ec-f5ef-4d75-ae38-b7ee6fd6ec0a";
-        final String name            = "GlossaryTerm";
-        final String description     = "A semantic description of something, such as a concept, object, asset, technology, role or group.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.GLOSSARY_TERM.typeGUID,
+                                                                OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                OpenMetadataType.GLOSSARY_TERM.description,
+                                                                OpenMetadataType.GLOSSARY_TERM.descriptionGUID,
+                                                                OpenMetadataType.GLOSSARY_TERM.wikiURL);
 
         /*
          * Build the attributes
@@ -11231,24 +10951,24 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "displayName";
-        final String attribute1Description     = "Consumable name for the glossary term, suitable for reports and user interfaces.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "summary";
-        final String attribute2Description     = "Short description of the glossary term.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "description";
-        final String attribute3Description     = "Full description of the glossary term.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "examples";
-        final String attribute4Description     = "Examples of this glossary term in use.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "abbreviation";
-        final String attribute5Description     = "How this glossary term is abbreviated.";
-        final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "usage";
-        final String attribute6Description     = "Further guidance on the use of this glossary term.";
-        final String attribute6DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.SUMMARY.name;
+        final String attribute2Description     = OpenMetadataProperty.SUMMARY.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.SUMMARY.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute3Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
+        final String attribute4Name            = OpenMetadataProperty.EXAMPLES.name;
+        final String attribute4Description     = OpenMetadataProperty.EXAMPLES.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.EXAMPLES.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.ABBREVIATION.name;
+        final String attribute5Description     = OpenMetadataProperty.ABBREVIATION.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.ABBREVIATION.descriptionGUID;
+        final String attribute6Name            = OpenMetadataProperty.USAGE.name;
+        final String attribute6Description     = OpenMetadataProperty.USAGE.description;
+        final String attribute6DescriptionGUID = OpenMetadataProperty.USAGE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -11283,26 +11003,20 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getTermAnchorRelationship()
     {
-        final String guid            = "1d43d661-bdc7-4a91-a996-3239b8f82e56";
-        final String name            = "TermAnchor";
-        final String description     = "Links a term to its owning glossary.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.TERM_ANCHOR.typeGUID,
+                                                                                OpenMetadataType.TERM_ANCHOR.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.TERM_ANCHOR.description,
+                                                                                OpenMetadataType.TERM_ANCHOR.descriptionGUID,
+                                                                                OpenMetadataType.TERM_ANCHOR.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Glossary";
+        final String                     end1EntityType               = OpenMetadataType.GLOSSARY_TYPE_NAME;
         final String                     end1AttributeName            = "anchor";
         final String                     end1AttributeDescription     = "Owning glossary.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -11319,7 +11033,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "GlossaryTerm";
+        final String                     end2EntityType               = OpenMetadataType.GLOSSARY_TERM.typeName;
         final String                     end2AttributeName            = "terms";
         final String                     end2AttributeDescription     = "Terms owned by this glossary.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -11338,26 +11052,20 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getTermCategorizationRelationship()
     {
-        final String guid            = "696a81f5-ac60-46c7-b9fd-6979a1e7ad27";
-        final String name            = "TermCategorization";
-        final String description     = "Links a glossary term into a glossary category.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.TERM_CATEGORIZATION.typeGUID,
+                                                                                OpenMetadataType.TERM_CATEGORIZATION.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.TERM_CATEGORIZATION.description,
+                                                                                OpenMetadataType.TERM_CATEGORIZATION.descriptionGUID,
+                                                                                OpenMetadataType.TERM_CATEGORIZATION.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "GlossaryCategory";
+        final String                     end1EntityType               = OpenMetadataType.GLOSSARY_CATEGORY_TYPE_NAME;
         final String                     end1AttributeName            = "categories";
         final String                     end1AttributeDescription     = "Glossary categories that this term is linked to.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -11374,7 +11082,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "GlossaryTerm";
+        final String                     end2EntityType               = OpenMetadataType.GLOSSARY_TERM.typeName;
         final String                     end2AttributeName            = "terms";
         final String                     end2AttributeDescription     = "Glossary terms linked to this category.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -11393,9 +11101,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Explanation of why this term is in this categorization.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute2Name            = "status";
         final String attribute2Description     = "Status of the relationship.";
         final String attribute2DescriptionGUID = null;
@@ -11404,7 +11112,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("TermRelationshipStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
                                                          attribute2Name,
                                                          attribute2Description,
                                                          attribute2DescriptionGUID);
@@ -11418,26 +11126,20 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getLibraryTermReferenceRelationship()
     {
-        final String guid            = "38c346e4-ddd2-42ef-b4aa-55d53c078d22";
-        final String name            = "LibraryTermReference";
-        final String description     = "Links a glossary term to a glossary term in an external glossary.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.LIBRARY_TERM_REFERENCE.typeGUID,
+                                                                                OpenMetadataType.LIBRARY_TERM_REFERENCE.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.LIBRARY_TERM_REFERENCE.description,
+                                                                                OpenMetadataType.LIBRARY_TERM_REFERENCE.descriptionGUID,
+                                                                                OpenMetadataType.LIBRARY_TERM_REFERENCE.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "GlossaryTerm";
+        final String                     end1EntityType               = OpenMetadataType.GLOSSARY_TERM.typeName;
         final String                     end1AttributeName            = "localTerms";
         final String                     end1AttributeDescription     = "Related local glossary terms.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -11530,81 +11232,29 @@ public class OpenMetadataTypesArchive1_2
 
     private EnumDef getActivityTypeEnum()
     {
-        final String guid            = "af7e403d-9865-4ebb-8c1a-1fd57b4f4bca";
-        final String name            = "ActivityType";
-        final String description     = "Different types of activities.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(GlossaryTermActivityType.getOpenTypeGUID(),
+                                                        GlossaryTermActivityType.getOpenTypeName(),
+                                                        GlossaryTermActivityType.getOpenTypeDescription(),
+                                                        GlossaryTermActivityType.getOpenTypeDescriptionGUID(),
+                                                        GlossaryTermActivityType.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "Operation";
-        final String element1Description     = "Normal processing.";
-        final String element1DescriptionGUID = null;
+        for (GlossaryTermActivityType enumValues : GlossaryTermActivityType.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValues.getOrdinal(),
+                                                         enumValues.getName(),
+                                                         enumValues.getDescription(),
+                                                         enumValues.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "Action";
-        final String element2Description     = "A requested or required change.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "Task";
-        final String element3Description     = "A piece of work for a person, organization or engine.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 3;
-        final String element4Value           = OpenMetadataType.PROCESS.typeName;
-        final String element4Description     = "A sequence of tasks.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element5Ordinal         = 3;
-        final String element5Value           = "Project";
-        final String element5Description     = "An organized activity to achieve a specific goal.";
-        final String element5DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
-                                                     element5Value,
-                                                     element5Description,
-                                                     element5DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element99Ordinal         = 99;
-        final String element99Value           = "Other";
-        final String element99Description     = "Another type of activity.";
-        final String element99DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
-                                                     element99Value,
-                                                     element99Description,
-                                                     element99DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValues.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
@@ -11614,20 +11264,13 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getActivityDescriptionClassification()
     {
-        final String guid            = "317f0e52-1548-41e6-b90c-6ae5e6c53fed";
-        final String name            = "ActivityDescription";
-        final String description     = "Identifies that this glossary term describes an activity.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = "GlossaryTerm";
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.ACTIVITY_DESCRIPTION_CLASSIFICATION.typeGUID,
+                                                                                 OpenMetadataType.ACTIVITY_DESCRIPTION_CLASSIFICATION.typeName,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
-                                                                                 this.archiveBuilder.getEntityDef(
-                                                                                         linkedToEntity),
+                                                                                 OpenMetadataType.ACTIVITY_DESCRIPTION_CLASSIFICATION.description,
+                                                                                 OpenMetadataType.ACTIVITY_DESCRIPTION_CLASSIFICATION.descriptionGUID,
+                                                                                 OpenMetadataType.ACTIVITY_DESCRIPTION_CLASSIFICATION.wikiURL,
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM_TYPE_NAME),
                                                                                  false);
 
         /*
@@ -11636,11 +11279,11 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "activityType";
+        final String attribute1Name            = OpenMetadataProperty.ACTIVITY_TYPE.name;
         final String attribute1Description     = "Classification of the activity.";
         final String attribute1DescriptionGUID = null;
 
-        property = archiveHelper.getEnumTypeDefAttribute("ActivityType",
+        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermActivityType.getOpenTypeName(),
                                                          attribute1Name,
                                                          attribute1Description,
                                                          attribute1DescriptionGUID);
@@ -11791,7 +11434,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("TermRelationshipStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
                                                          attribute3Name,
                                                          attribute3Description,
                                                          attribute3DescriptionGUID);
@@ -11892,7 +11535,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("TermRelationshipStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
                                                          attribute3Name,
                                                          attribute3Description,
                                                          attribute3DescriptionGUID);
@@ -11993,7 +11636,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("TermRelationshipStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
                                                          attribute3Name,
                                                          attribute3Description,
                                                          attribute3DescriptionGUID);
@@ -12094,7 +11737,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("TermRelationshipStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
                                                          attribute3Name,
                                                          attribute3Description,
                                                          attribute3DescriptionGUID);
@@ -12195,7 +11838,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("TermRelationshipStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
                                                          attribute3Name,
                                                          attribute3Description,
                                                          attribute3DescriptionGUID);
@@ -12296,7 +11939,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("TermRelationshipStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
                                                          attribute3Name,
                                                          attribute3Description,
                                                          attribute3DescriptionGUID);
@@ -12397,7 +12040,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("TermRelationshipStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
                                                          attribute3Name,
                                                          attribute3Description,
                                                          attribute3DescriptionGUID);
@@ -12498,7 +12141,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("TermRelationshipStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
                                                          attribute3Name,
                                                          attribute3Description,
                                                          attribute3DescriptionGUID);
@@ -12533,22 +12176,15 @@ public class OpenMetadataTypesArchive1_2
         this.archiveBuilder.addClassificationDef(getContextDefinitionClassification());
     }
 
-
     private RelationshipDef getUsedInContextRelationship()
     {
-        final String guid            = "2dc524d2-e29f-4186-9081-72ea956c75de";
-        final String name            = "UsedInContext";
-        final String description     = "Link between glossary terms where on describes the context where the other one is valid to use.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.USED_IN_CONTEXT.typeGUID,
+                                                                                OpenMetadataType.USED_IN_CONTEXT.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.USED_IN_CONTEXT.description,
+                                                                                OpenMetadataType.USED_IN_CONTEXT.descriptionGUID,
+                                                                                OpenMetadataType.USED_IN_CONTEXT.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
@@ -12615,7 +12251,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("TermRelationshipStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
                                                          attribute3Name,
                                                          attribute3Description,
                                                          attribute3DescriptionGUID);
@@ -12698,92 +12334,29 @@ public class OpenMetadataTypesArchive1_2
 
     private EnumDef getTermAssignmentStatusEnum()
     {
-        final String guid            = "c8fe36ac-369f-4799-af75-46b9c1343ab3";
-        final String name            = "TermAssignmentStatus";
-        final String description     = "Defines the provenance and confidence of a term assignment.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(GlossaryTermAssignmentStatus.getOpenTypeGUID(),
+                                                        GlossaryTermAssignmentStatus.getOpenTypeName(),
+                                                        GlossaryTermAssignmentStatus.getOpenTypeDescription(),
+                                                        GlossaryTermAssignmentStatus.getOpenTypeDescriptionGUID(),
+                                                        GlossaryTermAssignmentStatus.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "Discovered";
-        final String element1Description     = "The term assignment was discovered by an automated process.";
-        final String element1DescriptionGUID = null;
+        for (GlossaryTermAssignmentStatus enumValues : GlossaryTermAssignmentStatus.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValues.getOrdinal(),
+                                                         enumValues.getName(),
+                                                         enumValues.getDescription(),
+                                                         enumValues.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "Proposed";
-        final String element2Description     = "The term assignment was proposed by a subject matter expert.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "Imported";
-        final String element3Description     = "The term assignment was imported from another metadata system.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 3;
-        final String element4Value           = "Validated";
-        final String element4Description     = "The term assignment has been validated and approved by a subject matter expert.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element5Ordinal         = 4;
-        final String element5Value           = "Deprecated";
-        final String element5Description     = "The term assignment should no longer be used.";
-        final String element5DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
-                                                     element5Value,
-                                                     element5Description,
-                                                     element5DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element6Ordinal         = 5;
-        final String element6Value           = "Obsolete";
-        final String element6Description     = "The term assignment must no longer be used.";
-        final String element6DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element6Ordinal,
-                                                     element6Value,
-                                                     element6Description,
-                                                     element6DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element99Ordinal         = 99;
-        final String element99Value           = "Other";
-        final String element99Description     = "Another term assignment status.";
-        final String element99DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
-                                                     element99Value,
-                                                     element99Description,
-                                                     element99DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValues.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
@@ -12793,19 +12366,13 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getSemanticAssignmentRelationship()
     {
-        final String guid            = "e6670973-645f-441a-bec7-6f5570345b92";
-        final String name            = "SemanticAssignment";
-        final String description     = "Links a glossary term to another element such as an asset or schema element to define its meaning.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SEMANTIC_ASSIGNMENT.typeGUID,
+                                                                                OpenMetadataType.SEMANTIC_ASSIGNMENT.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.SEMANTIC_ASSIGNMENT.description,
+                                                                                OpenMetadataType.SEMANTIC_ASSIGNMENT.descriptionGUID,
+                                                                                OpenMetadataType.SEMANTIC_ASSIGNMENT.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
@@ -12829,7 +12396,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "GlossaryTerm";
+        final String                     end2EntityType               = OpenMetadataType.GLOSSARY_TYPE_NAME;
         final String                     end2AttributeName            = "meaning";
         final String                     end2AttributeDescription     = "Semantic definition for this element.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -12848,24 +12415,24 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description of the relationship.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute2Name            = "expression";
         final String attribute2Description     = "Expression describing the relationship.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "status";
-        final String attribute3Description     = "The status of the relationship.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute3Name            = OpenMetadataProperty.TERM_ASSIGNMENT_STATUS.name;
+        final String attribute3Description     = OpenMetadataProperty.TERM_ASSIGNMENT_STATUS.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.TERM_ASSIGNMENT_STATUS.descriptionGUID;
         final String attribute4Name            = "confidence";
         final String attribute4Description     = "Level of confidence in the correctness of the relationship.";
         final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "steward";
-        final String attribute5Description     = "Person responsible for the relationship.";
-        final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "source";
-        final String attribute6Description     = "Person, organization or automated process that created the relationship.";
-        final String attribute6DescriptionGUID = null;
+        final String attribute5Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute5Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute6Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute6Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute6DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -12875,7 +12442,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("TermAssignmentStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermAssignmentStatus.getOpenTypeName(),
                                                          attribute3Name,
                                                          attribute3Description,
                                                          attribute3DescriptionGUID);
@@ -12993,7 +12560,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("TermRelationshipStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
                                                          attribute3Name,
                                                          attribute3Description,
                                                          attribute3DescriptionGUID);
@@ -13087,7 +12654,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("TermRelationshipStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
                                                          attribute3Name,
                                                          attribute3Description,
                                                          attribute3DescriptionGUID);
@@ -13181,7 +12748,7 @@ public class OpenMetadataTypesArchive1_2
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("TermRelationshipStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(GlossaryTermRelationshipStatus.getOpenTypeName(),
                                                          attribute3Name,
                                                          attribute3Description,
                                                          attribute3DescriptionGUID);
@@ -14318,6 +13885,7 @@ public class OpenMetadataTypesArchive1_2
     private void add0422GovernanceActionClassifications()
     {
         this.archiveBuilder.addEnumDef(getGovernanceClassificationStatusEnum());
+        this.archiveBuilder.addEnumDef(getConfidentialityLevelEnum());
         this.archiveBuilder.addEnumDef(getConfidenceLevelEnum());
         this.archiveBuilder.addEnumDef(getRetentionBasisEnum());
         this.archiveBuilder.addEnumDef(getCriticalityLevelEnum());
@@ -14331,402 +13899,169 @@ public class OpenMetadataTypesArchive1_2
 
     private EnumDef getGovernanceClassificationStatusEnum()
     {
-        final String guid            = "cc540586-ac7c-41ba-8cc1-4da694a6a8e4";
-        final String name            = "GovernanceClassificationStatus";
-        final String description     = "Defines the status values of a governance action classification.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(GovernanceClassificationStatus.getOpenTypeGUID(),
+                                                        GovernanceClassificationStatus.getOpenTypeName(),
+                                                        GovernanceClassificationStatus.getOpenTypeDescription(),
+                                                        GovernanceClassificationStatus.getOpenTypeDescriptionGUID(),
+                                                        GovernanceClassificationStatus.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "Discovered";
-        final String element1Description     = "The classification assignment was discovered by an automated process.";
-        final String element1DescriptionGUID = null;
+        for (CriticalityLevel enumValues : CriticalityLevel.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValues.getOrdinal(),
+                                                         enumValues.getName(),
+                                                         enumValues.getDescription(),
+                                                         enumValues.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "Proposed";
-        final String element2Description     = "The classification assignment was proposed by a subject matter expert.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "Imported";
-        final String element3Description     = "The classification assignment was imported from another metadata system.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 3;
-        final String element4Value           = "Validated";
-        final String element4Description     = "The classification assignment has been validated and approved by a subject matter expert.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element5Ordinal         = 4;
-        final String element5Value           = "Deprecated";
-        final String element5Description     = "The classification assignment should no longer be used.";
-        final String element5DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
-                                                     element5Value,
-                                                     element5Description,
-                                                     element5DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element6Ordinal         = 5;
-        final String element6Value           = "Obsolete";
-        final String element6Description     = "The classification assignment must no longer be used.";
-        final String element6DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element6Ordinal,
-                                                     element6Value,
-                                                     element6Description,
-                                                     element6DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element99Ordinal         = 99;
-        final String element99Value           = "Other";
-        final String element99Description     = "Another classification assignment status.";
-        final String element99DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
-                                                     element99Value,
-                                                     element99Description,
-                                                     element99DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValues.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
         return enumDef;
     }
 
+    private EnumDef getConfidentialityLevelEnum()
+    {
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(ConfidentialityLevel.getOpenTypeGUID(),
+                                                        ConfidentialityLevel.getOpenTypeName(),
+                                                        ConfidentialityLevel.getOpenTypeDescription(),
+                                                        ConfidentialityLevel.getOpenTypeDescriptionGUID(),
+                                                        ConfidentialityLevel.getOpenTypeDescriptionWiki());
+
+        ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
+        EnumElementDef            elementDef;
+
+        for (ConfidentialityLevel enumValues : ConfidentialityLevel.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValues.getOrdinal(),
+                                                         enumValues.getName(),
+                                                         enumValues.getDescription(),
+                                                         enumValues.getDescriptionGUID());
+
+            elementDefs.add(elementDef);
+
+            if (enumValues.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
+
+        enumDef.setElementDefs(elementDefs);
+
+        return enumDef;
+    }
 
     private EnumDef getConfidenceLevelEnum()
     {
-        final String guid            = "ae846797-d88a-4421-ad9a-318bf7c1fe6f";
-        final String name            = "ConfidenceLevel";
-        final String description     = "Defines the level of confidence to place in the accuracy of a data item.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(ConfidenceLevel.getOpenTypeGUID(),
+                                                        ConfidenceLevel.getOpenTypeName(),
+                                                        ConfidenceLevel.getOpenTypeDescription(),
+                                                        ConfidenceLevel.getOpenTypeDescriptionGUID(),
+                                                        ConfidenceLevel.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "Unclassified";
-        final String element1Description     = "There is no assessment of the confidence level of this data.";
-        final String element1DescriptionGUID = null;
+        for (ConfidenceLevel enumValues : ConfidenceLevel.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValues.getOrdinal(),
+                                                         enumValues.getName(),
+                                                         enumValues.getDescription(),
+                                                         enumValues.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
-        enumDef.setDefaultValue(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "AdHoc";
-        final String element2Description     = "The data comes from an ad hoc process.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "Transactional";
-        final String element3Description     = "The data comes from a transactional system so it may have a narrow scope.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 3;
-        final String element4Value           = "Authoritative";
-        final String element4Description     = "The data comes from an authoritative source.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element5Ordinal         = 4;
-        final String element5Value           = "Derived";
-        final String element5Description     = "The data is derived from other data through an analytical process.";
-        final String element5DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
-                                                     element5Value,
-                                                     element5Description,
-                                                     element5DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element6Ordinal         = 5;
-        final String element6Value           = "Obsolete";
-        final String element6Description     = "The data comes from an obsolete source and must no longer be used.";
-        final String element6DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element6Ordinal,
-                                                     element6Value,
-                                                     element6Description,
-                                                     element6DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element99Ordinal         = 99;
-        final String element99Value           = "Other";
-        final String element99Description     = "Another confidence level.";
-        final String element99DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
-                                                     element99Value,
-                                                     element99Description,
-                                                     element99DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValues.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
         return enumDef;
     }
-
 
     private EnumDef getRetentionBasisEnum()
     {
-        final String guid            = "de79bf78-ecb0-4fd0-978f-ecc2cb4ff6c7";
-        final String name            = "RetentionBasis";
-        final String description     = "Defines the retention requirements associated with a data item.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(RetentionBasis.getOpenTypeGUID(),
+                                                        RetentionBasis.getOpenTypeName(),
+                                                        RetentionBasis.getOpenTypeDescription(),
+                                                        RetentionBasis.getOpenTypeDescriptionGUID(),
+                                                        RetentionBasis.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "Unclassified";
-        final String element1Description     = "There is no assessment of the retention requirements for this data.";
-        final String element1DescriptionGUID = null;
+        for (RetentionBasis enumValues : RetentionBasis.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValues.getOrdinal(),
+                                                         enumValues.getName(),
+                                                         enumValues.getDescription(),
+                                                         enumValues.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "Temporary";
-        final String element2Description     = "This data is temporary.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "ProjectLifetime";
-        final String element3Description     = "The data is needed for the lifetime of the referenced project.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 3;
-        final String element4Value           = "TeamLifetime";
-        final String element4Description     = "The data is needed for the lifetime of the referenced team.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element5Ordinal         = 4;
-        final String element5Value           = "ContractLifetime";
-        final String element5Description     = "The data is needed for the lifetime of the referenced contract.";
-        final String element5DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
-                                                     element5Value,
-                                                     element5Description,
-                                                     element5DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element6Ordinal         = 5;
-        final String element6Value           = "RegulatedLifetime";
-        final String element6Description     = "The retention period for the data is defined by the referenced regulation.";
-        final String element6DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element6Ordinal,
-                                                     element6Value,
-                                                     element6Description,
-                                                     element6DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element7Ordinal         = 6;
-        final String element7Value           = "TimeBoxedLifetime";
-        final String element7Description     = "The data is needed for the specified time.";
-        final String element7DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element7Ordinal,
-                                                     element7Value,
-                                                     element7Description,
-                                                     element7DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element99Ordinal         = 99;
-        final String element99Value           = "Other";
-        final String element99Description     = "Another basis for determining the retention requirement.";
-        final String element99DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
-                                                     element99Value,
-                                                     element99Description,
-                                                     element99DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValues.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
         return enumDef;
     }
-
 
     private EnumDef getCriticalityLevelEnum()
     {
-        final String guid            = "22bcbf49-83e1-4432-b008-e09a8f842a1e";
-        final String name            = "CriticalityLevel";
-        final String description     = "Defines how important a data item is to the organization.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(CriticalityLevel.getOpenTypeGUID(),
+                                                        CriticalityLevel.getOpenTypeName(),
+                                                        CriticalityLevel.getOpenTypeDescription(),
+                                                        CriticalityLevel.getOpenTypeDescriptionGUID(),
+                                                        CriticalityLevel.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "Unclassified";
-        final String element1Description     = "There is no assessment of the criticality of this data.";
-        final String element1DescriptionGUID = null;
+        for (CriticalityLevel enumValues : CriticalityLevel.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValues.getOrdinal(),
+                                                         enumValues.getName(),
+                                                         enumValues.getDescription(),
+                                                         enumValues.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
-        enumDef.setDefaultValue(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "Marginal";
-        final String element2Description     = "The data is of minor importance to the organization.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "Important";
-        final String element3Description     = "The data is important to the running of the organization.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 3;
-        final String element4Value           = "Critical";
-        final String element4Description     = "The data is critical to the operation of the organization.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element5Ordinal         = 4;
-        final String element5Value           = "Catastrophic";
-        final String element5Description     = "The data is so important that its loss is catastrophic putting the future of the organization in doubt.";
-        final String element5DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
-                                                     element5Value,
-                                                     element5Description,
-                                                     element5DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element99Ordinal         = 99;
-        final String element99Value           = "Other";
-        final String element99Description     = "Another criticality level.";
-        final String element99DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
-                                                     element99Value,
-                                                     element99Description,
-                                                     element99DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValues.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
         return enumDef;
     }
 
-
     private ClassificationDef getConfidentialityClassification()
     {
-        final String guid            = "742ddb7d-9a4a-4eb5-8ac2-1d69953bd2b6";
-        final String name            = "Confidentiality";
-        final String description     = "Defines the level of confidentiality of related data items.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeGUID,
+                                                                                 OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
+                                                                                 OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.description,
+                                                                                 OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.descriptionGUID,
+                                                                                 OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.wikiURL,
                                                                                  this.archiveBuilder.getEntityDef(
-                                                                                         linkedToEntity),
+                                                                                         OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  false);
 
         /*
@@ -14784,7 +14119,6 @@ public class OpenMetadataTypesArchive1_2
 
         return classificationDef;
     }
-
 
     private ClassificationDef getConfidenceClassification()
     {
@@ -14862,23 +14196,16 @@ public class OpenMetadataTypesArchive1_2
         return classificationDef;
     }
 
-
     private ClassificationDef getRetentionClassification()
     {
-        final String guid            = "83dbcdf2-9445-45d7-bb24-9fa661726553";
-        final String name            = "Retention";
-        final String description     = "Defines the retention requirements for related data items.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.RETENTION_CLASSIFICATION.typeGUID,
+                                                                                 OpenMetadataType.RETENTION_CLASSIFICATION.typeName,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
+                                                                                 OpenMetadataType.RETENTION_CLASSIFICATION.description,
+                                                                                 OpenMetadataType.RETENTION_CLASSIFICATION.descriptionGUID,
+                                                                                 OpenMetadataType.RETENTION_CLASSIFICATION.wikiURL,
                                                                                  this.archiveBuilder.getEntityDef(
-                                                                                         linkedToEntity),
+                                                                                         OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  false);
 
         /*
@@ -14959,23 +14286,16 @@ public class OpenMetadataTypesArchive1_2
         return classificationDef;
     }
 
-
     private ClassificationDef getCriticalityClassification()
     {
-        final String guid            = "d46d211a-bd22-40d5-b642-87b4954a167e";
-        final String name            = "Criticality";
-        final String description     = "Defines how critical the related data items are to the organization.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.CRITICALITY_CLASSIFICATION.typeGUID,
+                                                                                 OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
+                                                                                 OpenMetadataType.CRITICALITY_CLASSIFICATION.description,
+                                                                                 OpenMetadataType.CRITICALITY_CLASSIFICATION.descriptionGUID,
+                                                                                 OpenMetadataType.CRITICALITY_CLASSIFICATION.wikiURL,
                                                                                  this.archiveBuilder.getEntityDef(
-                                                                                         linkedToEntity),
+                                                                                         OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  false);
 
         /*
@@ -15063,7 +14383,7 @@ public class OpenMetadataTypesArchive1_2
                                                                                  null,
                                                                                  description,
                                                                                  descriptionGUID,
-                                                                                 this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  false);
 
         /*
@@ -18101,48 +17421,29 @@ public class OpenMetadataTypesArchive1_2
 
     private EnumDef getDataItemSortOrderEnum()
     {
-        final String guid            = "aaa4df8f-1aca-4de8-9abd-1ef2aadba300";
-        final String name            = "DataItemSortOrder";
-        final String description     = "Defines the suggested order that data values in this data item should be sorted by.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(DataItemSortOrder.getOpenTypeGUID(),
+                                                        DataItemSortOrder.getOpenTypeName(),
+                                                        DataItemSortOrder.getOpenTypeDescription(),
+                                                        DataItemSortOrder.getOpenTypeDescriptionGUID(),
+                                                        DataItemSortOrder.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "Ascending";
-        final String element1Description     = "Sort the data values so that they increase in value.";
-        final String element1DescriptionGUID = null;
+        for (DataItemSortOrder enumValues : DataItemSortOrder.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValues.getOrdinal(),
+                                                         enumValues.getName(),
+                                                         enumValues.getDescription(),
+                                                         enumValues.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "Descending";
-        final String element2Description     = "Sort the data values so that they decrease in value.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element8Ordinal         = 99;
-        final String element8Value           = "Ignore";
-        final String element8Description     = "No specific sort order.";
-        final String element8DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element8Ordinal,
-                                                     element8Value,
-                                                     element8Description,
-                                                     element8DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValues.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
@@ -18152,18 +17453,12 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getSchemaAttributeEntity()
     {
-        final String guid            = "1a5e159b-913a-43b1-95fe-04433b25fca9";
-        final String name            = "SchemaAttribute";
-        final String description     = "A schema element that nests another schema type in its parent.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "SchemaElement";
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.SCHEMA_ATTRIBUTE.typeGUID,
+                                                                OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ELEMENT_TYPE_NAME),
+                                                                OpenMetadataType.SCHEMA_ATTRIBUTE.description,
+                                                                OpenMetadataType.SCHEMA_ATTRIBUTE.descriptionGUID,
+                                                                OpenMetadataType.SCHEMA_ATTRIBUTE.wikiURL);
 
         /*
          * Build the attributes
@@ -18322,7 +17617,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "SchemaAttribute";
+        final String                     end2EntityType               = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
         final String                     end2AttributeName            = "attributes";
         final String                     end2AttributeDescription     = "The attributes defining the internal structure of the schema type.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -18360,7 +17655,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "SchemaAttribute";
+        final String                     end1EntityType               = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
         final String                     end1AttributeName            = "usedInSchemas";
         final String                     end1AttributeDescription     = "Occurrences of this schema type in other schemas.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -18415,7 +17710,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "SchemaAttribute";
+        final String                     end1EntityType               = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
         final String                     end1AttributeName            = "parentAttribute";
         final String                     end1AttributeDescription     = "Schema attribute containing this attribute.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -18432,7 +17727,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "SchemaAttribute";
+        final String                     end2EntityType               = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
         final String                     end2AttributeName            = "nestedAttributes";
         final String                     end2AttributeDescription     = "The attributes defining the internal structure of the parent attribute.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -18456,7 +17751,7 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "Type information embedded within an attribute.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "SchemaAttribute";
+        final String linkedToEntity = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
 
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
@@ -18772,7 +18067,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "SchemaAttribute";
+        final String                     end1EntityType               = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
         final String                     end1AttributeName            = "usedIn";
         final String                     end1AttributeDescription     = "Attributes of this type.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -18972,7 +18267,7 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "An attribute that is made up of values from another attribute.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "SchemaAttribute";
+        final String superTypeName = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -19060,7 +18355,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "SchemaAttribute";
+        final String                     end2EntityType               = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
         final String                     end2AttributeName            = "queryTarget";
         final String                     end2AttributeDescription     = "Used to derive this attribute.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -19150,7 +18445,7 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "A column attribute for a table oriented data structure.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "SchemaAttribute";
+        final String superTypeName = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
@@ -19203,7 +18498,7 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "A schema attribute for a hierarchical data structure.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "SchemaAttribute";
+        final String superTypeName = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
@@ -19336,7 +18631,7 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "An attribute in an object schema type.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "SchemaAttribute";
+        final String superTypeName = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
@@ -19388,7 +18683,7 @@ public class OpenMetadataTypesArchive1_2
         final String descriptionGUID = OpenMetadataType.GRAPH_VERTEX.descriptionGUID;
         final String descriptionWiki = OpenMetadataType.GRAPH_VERTEX.wikiURL;
 
-        final String superTypeName = OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
@@ -19407,7 +18702,7 @@ public class OpenMetadataTypesArchive1_2
         final String descriptionGUID = OpenMetadataType.GRAPH_EDGE.descriptionGUID;
         final String descriptionWiki = OpenMetadataType.GRAPH_EDGE.wikiURL;
 
-        final String superTypeName = OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME;
+        final String superTypeName = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
@@ -19598,7 +18893,7 @@ public class OpenMetadataTypesArchive1_2
         final String description     = "A table within a relational database schema type.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "SchemaAttribute";
+        final String superTypeName = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
@@ -20214,92 +19509,29 @@ public class OpenMetadataTypesArchive1_2
 
     private EnumDef getDataClassAssignmentStatusEnum()
     {
-        final String guid            = "2611892f-0527-478f-8843-a3aa2b9abb47";
-        final String name            = "DataClassAssignmentStatus";
-        final String description     = "Defines the provenance and confidence of a data class assignment.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(DataClassAssignmentStatus.getOpenTypeGUID(),
+                                                        DataClassAssignmentStatus.getOpenTypeName(),
+                                                        DataClassAssignmentStatus.getOpenTypeDescription(),
+                                                        DataClassAssignmentStatus.getOpenTypeDescriptionGUID(),
+                                                        DataClassAssignmentStatus.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "Discovered";
-        final String element1Description     = "The data class assignment was discovered by an automated process.";
-        final String element1DescriptionGUID = null;
+        for (CriticalityLevel enumValues : CriticalityLevel.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValues.getOrdinal(),
+                                                         enumValues.getName(),
+                                                         enumValues.getDescription(),
+                                                         enumValues.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "Proposed";
-        final String element2Description     = "The data class assignment was proposed by a subject matter expert.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "Imported";
-        final String element3Description     = "The data class assignment was imported from another metadata system.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 3;
-        final String element4Value           = "Validated";
-        final String element4Description     = "The data class assignment has been validated and approved by a subject matter expert.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element5Ordinal         = 4;
-        final String element5Value           = "Deprecated";
-        final String element5Description     = "The data class assignment should no longer be used.";
-        final String element5DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
-                                                     element5Value,
-                                                     element5Description,
-                                                     element5DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element6Ordinal         = 5;
-        final String element6Value           = "Obsolete";
-        final String element6Description     = "The data class assignment must no longer be used.";
-        final String element6DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element6Ordinal,
-                                                     element6Value,
-                                                     element6Description,
-                                                     element6DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element99Ordinal         = 99;
-        final String element99Value           = "Other";
-        final String element99Description     = "Another data class assignment status.";
-        final String element99DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
-                                                     element99Value,
-                                                     element99Description,
-                                                     element99DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValues.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
@@ -20309,18 +19541,12 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getDataClassEntity()
     {
-        final String guid            = "6bc727dc-e855-4979-8736-78ac3cfcd32f";
-        final String name            = "DataClass";
-        final String description     = "A logical data type specification.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
+       EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_CLASS.typeGUID,
+                                                                OpenMetadataType.DATA_CLASS.typeName,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                OpenMetadataType.DATA_CLASS.description,
+                                                                OpenMetadataType.DATA_CLASS.descriptionGUID,
+                                                                OpenMetadataType.DATA_CLASS.wikiURL);
 
         /*
          * Build the attributes
@@ -20328,11 +19554,11 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "name";
-        final String attribute1Description     = "Display name of the data class.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the data class.";
+        final String attribute1Name            = OpenMetadataProperty.NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute2DescriptionGUID = null;
         final String attribute3Name            = "classCode";
         final String attribute3Description     = "Name of processing class that can identify the data class.";
@@ -20410,26 +19636,20 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getDataClassHierarchyRelationship()
     {
-        final String guid            = "6b947ccc-1a70-4785-9ca3-d6326bc51291";
-        final String name            = "DataClassHierarchy";
-        final String description     = "Links a data class to another in a parent child hierarchy.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_CLASS_HIERARCHY.typeGUID,
+                                                                                OpenMetadataType.DATA_CLASS_HIERARCHY.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.DATA_CLASS_HIERARCHY.description,
+                                                                                OpenMetadataType.DATA_CLASS_HIERARCHY.descriptionGUID,
+                                                                                OpenMetadataType.DATA_CLASS_HIERARCHY.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "DataClass";
+        final String                     end1EntityType               = OpenMetadataType.DATA_CLASS.typeName;
         final String                     end1AttributeName            = "superDataClass";
         final String                     end1AttributeDescription     = "Data class that is the more abstract.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -20446,7 +19666,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "DataClass";
+        final String                     end2EntityType               = OpenMetadataType.DATA_CLASS.typeName;
         final String                     end2AttributeName            = "subDataClasses";
         final String                     end2AttributeDescription     = "Data classes that are more concrete.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -20465,26 +19685,20 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getDataClassCompositionRelationship()
     {
-        final String guid            = "767fb343-4699-49c1-a0f8-af6da78505f8";
-        final String name            = "DataClassComposition";
-        final String description     = "Links a data class to another in a part of hierarchy.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_CLASS_COMPOSITION.typeGUID,
+                                                                                OpenMetadataType.DATA_CLASS_COMPOSITION.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.DATA_CLASS_COMPOSITION.description,
+                                                                                OpenMetadataType.DATA_CLASS_COMPOSITION.descriptionGUID,
+                                                                                OpenMetadataType.DATA_CLASS_COMPOSITION.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "DataClass";
+        final String                     end1EntityType               = OpenMetadataType.DATA_CLASS.typeName;
         final String                     end1AttributeName            = "partOfDataClasses";
         final String                     end1AttributeDescription     = "Data classes that includes other data classes in its definition.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -20501,7 +19715,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "DataClass";
+        final String                     end2EntityType               = OpenMetadataType.DATA_CLASS.typeName;
         final String                     end2AttributeName            = "madeOfDataClasses";
         final String                     end2AttributeDescription     = "Data classes that provide part of another data class's definitions.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -20520,19 +19734,13 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getDataClassAssignmentRelationship()
     {
-        final String guid            = "4df37335-7f0c-4ced-82df-3b2fd07be1bd";
-        final String name            = "DataClassAssignment";
-        final String description     = "Links a data class to an asset or schema element to define its logical data type.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_CLASS_ASSIGNMENT.typeGUID,
+                                                                                OpenMetadataType.DATA_CLASS_ASSIGNMENT.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.DATA_CLASS_ASSIGNMENT.description,
+                                                                                OpenMetadataType.DATA_CLASS_ASSIGNMENT.descriptionGUID,
+                                                                                OpenMetadataType.DATA_CLASS_ASSIGNMENT.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
@@ -20556,7 +19764,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "DataClass";
+        final String                     end2EntityType               = OpenMetadataType.DATA_CLASS.typeName;
         final String                     end2AttributeName            = "dataClassesAssignedToElement";
         final String                     end2AttributeDescription     = "Logical data type for this element.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -22353,7 +21561,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "SchemaAttribute";
+        final String                     end1EntityType               = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
         final String                     end1AttributeName            = "sourceElement";
         final String                     end1AttributeDescription     = "Source Attribute.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -22370,7 +21578,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "SchemaAttribute";
+        final String                     end2EntityType               = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
         final String                     end2AttributeName            = "targetElement";
         final String                     end2AttributeDescription     = "Target Attribute.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -23309,18 +22517,12 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getDataFieldEntity()
     {
-        final String guid            = OpenMetadataType.DATA_FIELD_TYPE_GUID;
-        final String name            = OpenMetadataType.DATA_FIELD_TYPE_NAME;
-        final String description     = "A description of a data field discovered within an Asset.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.REFERENCEABLE.typeName;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_FIELD.typeGUID,
+                                                                OpenMetadataType.DATA_FIELD.typeName,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+                                                                OpenMetadataType.DATA_FIELD.description,
+                                                                OpenMetadataType.DATA_FIELD.descriptionGUID,
+                                                                OpenMetadataType.DATA_FIELD.wikiURL);
 
         /*
          * Build the attributes
@@ -23485,7 +22687,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.DATA_FIELD_TYPE_NAME;
+        final String                     end2EntityType               = OpenMetadataType.DATA_FIELD.typeName;
         final String                     end2AttributeName            = "discoveredDataFields";
         final String                     end2AttributeDescription     = "The data fields discovered during schema analysis.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -23557,7 +22759,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME;
+        final String                     end2EntityType               = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
         final String                     end2AttributeName            = "schemaAttributeDefinition";
         final String                     end2AttributeDescription     = "Official schema attribute definition.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -23595,7 +22797,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = OpenMetadataType.DATA_FIELD_TYPE_NAME;
+        final String                     end1EntityType               = OpenMetadataType.DATA_FIELD.typeName;
         final String                     end1AttributeName            = "parentDataField";
         final String                     end1AttributeDescription     = "Parent node.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -23612,7 +22814,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = OpenMetadataType.DATA_FIELD_TYPE_NAME;
+        final String                     end2EntityType               = OpenMetadataType.DATA_FIELD.typeName;
         final String                     end2AttributeName            = "nestedDataFields";
         final String                     end2AttributeDescription     = "Nested data fields.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -23668,7 +22870,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "DataField";
+        final String                     end1EntityType               = OpenMetadataType.DATA_FIELD.typeName;
         final String                     end1AttributeName            = "deployedDataClasses";
         final String                     end1AttributeDescription     = "The mapped data fields from deployed assets.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -23793,7 +22995,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "DataField";
+        final String                     end2EntityType               = OpenMetadataType.DATA_FIELD.typeName;
         final String                     end2AttributeName            = "annotatedDataFields";
         final String                     end2AttributeDescription     = "Data fields with addition properties attached.";
         final String                     end2AttributeDescriptionGUID = null;

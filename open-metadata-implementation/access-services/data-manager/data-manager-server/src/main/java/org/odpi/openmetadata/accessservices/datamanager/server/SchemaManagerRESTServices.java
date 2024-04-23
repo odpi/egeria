@@ -9,7 +9,6 @@ import org.odpi.openmetadata.accessservices.datamanager.ffdc.DataManagerErrorCod
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaAttributeElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ValidValueSetElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DataItemSortOrder;
 import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaAttributeProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
@@ -30,7 +29,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -1499,11 +1499,11 @@ public class SchemaManagerRESTServices
 
             if (requestBody != null)
             {
-                int sortOrder = DataItemSortOrder.UNKNOWN.getOpenTypeOrdinal();
+                int sortOrder = DataItemSortOrder.UNSORTED.getOrdinal();
 
                 if (requestBody.getSortOrder() != null)
                 {
-                    sortOrder = requestBody.getSortOrder().getOpenTypeOrdinal();
+                    sortOrder = requestBody.getSortOrder().getOrdinal();
                 }
 
                 String schemaAttributeGUID = handler.createNestedSchemaAttribute(userId,
@@ -1695,7 +1695,7 @@ public class SchemaManagerRESTServices
                                                      requestBody.getExternalSourceName(),
                                                      schemaAttributeGUID,
                                                      schemaAttributeGUIDParameterName,
-                                                     OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                     OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                      schemaTypeGUID,
                                                      schemaTypeGUIDParameterName,
                                                      OpenMetadataType.SCHEMA_TYPE_TYPE_NAME,
@@ -1830,11 +1830,11 @@ public class SchemaManagerRESTServices
 
             if (requestBody != null)
             {
-                int sortOrder = DataItemSortOrder.UNKNOWN.getOpenTypeOrdinal();
+                int sortOrder = DataItemSortOrder.UNSORTED.getOrdinal();
 
                 if (requestBody.getSortOrder() != null)
                 {
-                    sortOrder = requestBody.getSortOrder().getOpenTypeOrdinal();
+                    sortOrder = requestBody.getSortOrder().getOrdinal();
                 }
 
                 handler.updateSchemaAttribute(userId,
@@ -1944,8 +1944,8 @@ public class SchemaManagerRESTServices
                                                requestBody.getExternalSourceName(),
                                                schemaAttributeGUID,
                                                elementGUIDParameterName,
-                                               OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_GUID,
-                                               OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                               OpenMetadataType.SCHEMA_ATTRIBUTE.typeGUID,
+                                               OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                null,
                                                null,
                                                false,
@@ -2008,7 +2008,7 @@ public class SchemaManagerRESTServices
             SchemaAttributeHandler<SchemaAttributeElement,
                                           SchemaTypeElement> handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
 
-            TypeDef typeDef = handler.getTypeDefByName(typeName, OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME);
+            TypeDef typeDef = handler.getTypeDefByName(typeName, OpenMetadataType.SCHEMA_ATTRIBUTE.typeName);
 
             if (typeDef != null)
             {
@@ -2078,7 +2078,7 @@ public class SchemaManagerRESTServices
             List<SchemaAttributeElement> results = handler.getAttachedSchemaAttributes(userId,
                                                                                        parentSchemaElementGUID,
                                                                                        elementGUIDParameterName,
-                                                                                       OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                                       OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                                        startFrom,
                                                                                        pageSize,
                                                                                        false,
@@ -2138,7 +2138,7 @@ public class SchemaManagerRESTServices
                 SchemaAttributeHandler<SchemaAttributeElement,
                                               SchemaTypeElement> handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
 
-                TypeDef typeDef = handler.getTypeDefByName(typeName, OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME);
+                TypeDef typeDef = handler.getTypeDefByName(typeName, OpenMetadataType.SCHEMA_ATTRIBUTE.typeName);
 
                 if (typeDef != null)
                 {
@@ -2208,7 +2208,7 @@ public class SchemaManagerRESTServices
             SchemaAttributeElement result = handler.getSchemaAttribute(userId,
                                                                        schemaAttributeGUID,
                                                                        guidParameterName,
-                                                                       OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                       OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                        null,
                                                                        null,
                                                                        false,

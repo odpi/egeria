@@ -23,7 +23,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.ActorProfileHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ContactDetailsHandler;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -377,7 +377,7 @@ public class ITProfileRESTServices
 
                 if (requestBody.getProperties().getContactMethodType() != null)
                 {
-                    contactMethodTypeOrdinal = requestBody.getProperties().getContactMethodType().getOpenTypeOrdinal();
+                    contactMethodTypeOrdinal = requestBody.getProperties().getContactMethodType().getOrdinal();
                 }
 
                 handler.createContactMethod(userId,
@@ -452,8 +452,8 @@ public class ITProfileRESTServices
                                                requestBody.getExternalSourceName(),
                                                contactMethodGUID,
                                                guidParameterName,
-                                               OpenMetadataType.CONTACT_DETAILS_TYPE_GUID,
-                                               OpenMetadataType.CONTACT_DETAILS_TYPE_NAME,
+                                               OpenMetadataType.CONTACT_DETAILS.typeGUID,
+                                               OpenMetadataType.CONTACT_DETAILS.typeName,
                                                null,
                                                null,
                                                false,
@@ -468,8 +468,8 @@ public class ITProfileRESTServices
                                                null,
                                                contactMethodGUID,
                                                guidParameterName,
-                                               OpenMetadataType.CONTACT_DETAILS_TYPE_GUID,
-                                               OpenMetadataType.CONTACT_DETAILS_TYPE_NAME,
+                                               OpenMetadataType.CONTACT_DETAILS.typeGUID,
+                                               OpenMetadataType.CONTACT_DETAILS.typeName,
                                                null,
                                                null,
                                                false,

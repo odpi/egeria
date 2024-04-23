@@ -16,8 +16,8 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
@@ -421,11 +421,11 @@ public class StewardshipActionRESTServices
                             OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
 
                             duplicateProperties.setStatusIdentifier(repositoryHelper.getIntProperty(instanceHandler.getServiceName(),
-                                                                                                    OpenMetadataType.STATUS_IDENTIFIER_PROPERTY_NAME,
+                                                                                                    OpenMetadataProperty.STATUS_IDENTIFIER.name,
                                                                                                     relationship.getProperties(),
                                                                                                     methodName));
                             duplicateProperties.setSteward(repositoryHelper.getStringProperty(instanceHandler.getServiceName(),
-                                                                                              OpenMetadataType.STEWARD_PROPERTY_NAME,
+                                                                                              OpenMetadataProperty.STEWARD.name,
                                                                                               relationship.getProperties(),
                                                                                               methodName));
                             duplicateProperties.setStewardTypeName(repositoryHelper.getStringProperty(instanceHandler.getServiceName(),
@@ -519,13 +519,13 @@ public class StewardshipActionRESTServices
 
                 InstanceProperties properties = repositoryHelper.addIntPropertyToInstance(instanceHandler.getServiceName(),
                                                                                           null,
-                                                                                          OpenMetadataType.STATUS_IDENTIFIER_PROPERTY_NAME,
+                                                                                          OpenMetadataProperty.STATUS_IDENTIFIER.name,
                                                                                           requestBody.getStatusIdentifier(),
                                                                                           methodName);
 
                 properties = repositoryHelper.addStringPropertyToInstance(instanceHandler.getServiceName(),
                                                                           properties,
-                                                                          OpenMetadataType.STEWARD_PROPERTY_NAME,
+                                                                          OpenMetadataProperty.STEWARD.name,
                                                                           requestBody.getSteward(),
                                                                           methodName);
 

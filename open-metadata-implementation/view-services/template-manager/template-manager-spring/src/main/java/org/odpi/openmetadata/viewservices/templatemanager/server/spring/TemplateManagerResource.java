@@ -14,12 +14,11 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The TemplateManagerResource provides part of the server-side implementation of the Template Manager OMVS.
- * This interface provides access to an individual's personal profile.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/template-manager")
 
-@Tag(name="API: Template Manager OMVS", description="The Template Manager OMVS provides APIs for .",
+@Tag(name="API: Template Manager OMVS", description="The Template Manager OMVS provides APIs for retrieving, creating and maintaining templates.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/template-manager/overview/"))
 

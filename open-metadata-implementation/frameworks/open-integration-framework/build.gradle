@@ -9,6 +9,7 @@ dependencies {
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
     testImplementation 'org.testng:testng'
     implementation 'commons-io:commons-io'

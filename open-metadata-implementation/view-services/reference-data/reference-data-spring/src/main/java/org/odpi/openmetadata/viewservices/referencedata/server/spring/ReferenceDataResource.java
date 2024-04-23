@@ -4,18 +4,20 @@ package org.odpi.openmetadata.viewservices.referencedata.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.viewservices.referencedata.server.ReferenceDataRESTServices;
 import org.springframework.web.bind.annotation.*;
 
 
 /**
  * The ReferenceDataResource provides part of the server-side implementation of the Reference Data OMVS.
- * This interface provides access to an individual's personal profile.
- */
+= */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/reference-data")
 
-@Tag(name="API: Reference Data OMVS", description="The Reference Data OMVS provides APIs for retrieving and updating a user's personal profile.",
+@Tag(name="API: Reference Data OMVS", description="The Reference Data OMVS provides APIs for retrieving and updating code values and reference data.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/reference-data/overview/"))
 

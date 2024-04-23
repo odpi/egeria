@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.communityprofile.properties.ActionTa
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
@@ -87,7 +87,7 @@ public class ToDoConverter<B> extends CommunityProfileConverterBase<B>
                     toDoProperties.setDescription(this.removeDescription(elementProperties));
                     toDoProperties.setCreationTime(this.removeCreationTime(elementProperties));
                     toDoProperties.setPriority(this.removeIntPriority(elementProperties));
-                    toDoProperties.setStatus(super.removeToDoStatus(elementProperties));
+                    toDoProperties.setToDoStatus(super.removeToDoStatus(elementProperties));
                     toDoProperties.setLastReviewTime(this.removeLastReviewTime(elementProperties));
                     toDoProperties.setDueTime(this.removeDueTime(elementProperties));
                     toDoProperties.setCompletionTime(this.removeCompletionTime(elementProperties));

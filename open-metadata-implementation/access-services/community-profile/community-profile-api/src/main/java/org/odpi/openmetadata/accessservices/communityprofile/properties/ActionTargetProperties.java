@@ -3,14 +3,16 @@
 
 package org.odpi.openmetadata.accessservices.communityprofile.properties;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
+
 import java.util.Date;
 import java.util.Objects;
 
 public class ActionTargetProperties
 {
     private String     actionTargetName = null;
-    private ToDoStatus status            = null;
-    private Date       startDate         = null;
+    private ToDoStatus status           = null;
+    private Date       startDate        = null;
     private Date       completionDate    = null;
     private String     completionMessage = null;
 

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class TestKeyPattern
     {
         existingOrdinals = new ArrayList<>();
 
-        KeyPattern  testValue;
+        KeyPattern testValue;
 
         testValue = KeyPattern.LOCAL_KEY;
 

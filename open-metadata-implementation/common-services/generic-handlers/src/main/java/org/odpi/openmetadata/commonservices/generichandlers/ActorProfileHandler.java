@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -1218,14 +1218,14 @@ public class ActorProfileHandler<B> extends ReferenceableHandler<B>
                             supplementaryEntities.add(entity);
                         }
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, relationshipTypeName, OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.typeName))
                     {
                         EntityProxy entityProxy = repositoryHelper.getOtherEnd(serviceName, primaryEntity.getGUID(), relationship);
 
                         EntityDetail entity = getEntityFromRepository(userId,
                                                                       entityProxy.getGUID(),
                                                                       contactDetailsGUIDParameterName,
-                                                                      OpenMetadataType.CONTACT_DETAILS_TYPE_NAME,
+                                                                      OpenMetadataType.CONTACT_DETAILS.typeName,
                                                                       null,
                                                                       null,
                                                                       forLineage,

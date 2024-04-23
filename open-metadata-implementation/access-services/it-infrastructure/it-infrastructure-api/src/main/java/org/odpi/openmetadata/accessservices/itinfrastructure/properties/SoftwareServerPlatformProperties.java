@@ -6,9 +6,8 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -25,9 +24,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SoftwareServerPlatformProperties extends ITInfrastructureProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private static final String versionProperty                    = "platformVersion";
     private static final String sourceProperty                     = "source";
     private static final String userIdProperty                     = "userId";

@@ -6,8 +6,7 @@ package org.odpi.openmetadata.viewservices.myprofile.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
 
 import java.util.Objects;
 
@@ -22,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ToDoStatusRequestBody
 {
-    private ToDoStatus status = null;
+    private ToDoStatus toDoStatus = null;
 
 
     /**
@@ -43,7 +42,7 @@ public class ToDoStatusRequestBody
     {
         if (template != null)
         {
-            status = template.getStatus();
+            toDoStatus = template.getToDoStatus();
         }
     }
 
@@ -53,20 +52,20 @@ public class ToDoStatusRequestBody
      *
      * @return element status enum value
      */
-    public ToDoStatus getStatus()
+    public ToDoStatus getToDoStatus()
     {
-        return status;
+        return toDoStatus;
     }
 
 
     /**
      * Set up the status value.
      *
-     * @param status element status enum value
+     * @param toDoStatus element status enum value
      */
-    public void setStatus(ToDoStatus status)
+    public void setToDoStatus(ToDoStatus toDoStatus)
     {
-        this.status = status;
+        this.toDoStatus = toDoStatus;
     }
 
 
@@ -78,7 +77,7 @@ public class ToDoStatusRequestBody
     @Override
     public String toString()
     {
-        return "ToDoStatusRequestBody{newStatus=" + status + '}';
+        return "ToDoStatusRequestBody{newStatus=" + toDoStatus + '}';
     }
 
 
@@ -100,7 +99,7 @@ public class ToDoStatusRequestBody
             return false;
         }
         ToDoStatusRequestBody that = (ToDoStatusRequestBody) objectToCompare;
-        return status == that.status;
+        return toDoStatus == that.toDoStatus;
     }
 
 
@@ -112,6 +111,6 @@ public class ToDoStatusRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), status);
+        return Objects.hash(super.hashCode(), toDoStatus);
     }
 }

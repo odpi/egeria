@@ -17,14 +17,13 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The FeedbackManagerResource provides the Spring API endpoints of the Feedback Manager Open Metadata View Service (OMVS).
- * This interface provides a service for Egeria UIs.
- */
+= */
 
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/feedback-manager")
 
 @Tag(name="API: Feedback Manager OMVS",
-     description="Explore the contents of a glossary, such as its top-level glossary element, glossary categories and glossary terms, along with the elements that are linked to the terms, such assets.  Each operation includes optional forLineage and forDuplicateProcessing request parameters and an optional request body that includes an effective time field.  These affect the elements that are returned on the query.",
+     description="Add comments, reviews, tags and notes to elements of interest.",
      externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/services/omvs/feedback-manager/overview/"))
 
 public class FeedbackManagerResource

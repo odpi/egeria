@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ProcessProperties extends AssetProperties
 {
-    private static final long     serialVersionUID = 1L;
-
     private static final String formulaProperty                = "formula";
     private static final String formulaTypeProperty            = "formulaType";
     private static final String implementationLanguageProperty = "implementationLanguage";
