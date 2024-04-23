@@ -76,7 +76,7 @@ public class ProjectConverter<B> extends ProjectManagementConverterBase<B>
                     projectProperties.setIdentifier(this.removeIdentifier(elementProperties));
                     projectProperties.setName(this.removeName(elementProperties));
                     projectProperties.setDescription(this.removeDescription(elementProperties));
-                    projectProperties.setStatus(this.removeProjectStatus(elementProperties));
+                    projectProperties.setProjectStatus(this.removeProjectStatus(elementProperties));
                     projectProperties.setStartDate(this.removeStartDate(elementProperties));
                     projectProperties.setPlannedEndDate(this.removePlannedEndDate(elementProperties));
                     projectProperties.setEffectiveFrom(openMetadataElement.getEffectiveFromTime());
@@ -152,7 +152,7 @@ public class ProjectConverter<B> extends ProjectManagementConverterBase<B>
                     collectionProperties.setIdentifier(this.removeIdentifier(elementProperties));
                     collectionProperties.setName(this.removeName(elementProperties));
                     collectionProperties.setDescription(this.removeDescription(elementProperties));
-                    collectionProperties.setStatus(this.removeProjectStatus(elementProperties));
+                    collectionProperties.setProjectStatus(this.removeProjectStatus(elementProperties));
                     collectionProperties.setStartDate(this.removeStartDate(elementProperties));
                     collectionProperties.setPlannedEndDate(this.removePlannedEndDate(elementProperties));
                     collectionProperties.setEffectiveFrom(openMetadataElement.getEffectiveFromTime());

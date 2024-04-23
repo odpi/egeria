@@ -134,9 +134,9 @@ Content-Type: application/json
     "identifier" : "Add business identifier",
     "name" : "Add display name here",
     "description" : "Add description of the project here",
-    "phase" : "lifecycle phase of the project",
-    "status": "Add appropriate valid value for type",
-    "health" : "Add how well the project is tracking to plan",
+    "projectPhase" : "lifecycle phase of the project",
+    "projectStatus": "Add appropriate valid value for type",
+    "projectHealth" : "Add how well the project is tracking to plan",
     "startDate" : "date/time",
     "plannedEndDate" : "date/time"
   }
@@ -165,9 +165,9 @@ Content-Type: application/json
     "identifier" : "Add business identifier",
     "name" : "Add display name here",
     "description" : "Add description of the project here",
-    "phase" : "lifecycle phase of the project",
-    "status": "Add appropriate valid value for type",
-    "health" : "Add how well the project is tracking to plan",
+    "projectPhase" : "lifecycle phase of the project",
+    "projectStatus": "Add appropriate valid value for type",
+    "projectHealth" : "Add how well the project is tracking to plan",
     "startDate" : "date/time",
     "plannedEndDate" : "date/time"
   }
@@ -192,9 +192,9 @@ Content-Type: application/json
     "identifier" : "Add business identifier",
     "name" : "Add display name here",
     "description" : "Add description of the project here",
-    "phase" : "lifecycle phase of the project",
-    "status": "Add appropriate valid value for type",
-    "health" : "Add how well the project is tracking to plan",
+    "projectPhase" : "lifecycle phase of the project",
+    "projectStatus": "Add appropriate valid value for type",
+    "projectHealth" : "Add how well the project is tracking to plan",
     "startDate" : "date/time",
     "plannedEndDate" : "date/time"
   }
@@ -213,10 +213,10 @@ Content-Type: application/json
   "qualifiedName": "Must provide a unique name here",
   "identifier" : "Add business identifier",
   "name" : "Add display name here",
-  "description" : "Add description of the project here",
-  "phase" : "lifecycle phase of the project",
-  "status": "Add appropriate valid value for type",
-  "health" : "Add how well the project is tracking to plan",
+  "description" : "Add description of the task here",
+  "projectPhase" : "lifecycle phase of the task",
+  "projectStatus": "Add appropriate valid value for type",
+  "projectHealth" : "Add how well the task is tracking to plan",
   "startDate" : "date/time",
   "plannedEndDate" : "date/time"
 }
@@ -267,9 +267,9 @@ Content-Type: application/json
   "identifier" : "Add business identifier",
   "name" : "Add display name here",
   "description" : "Add description of the project here",
-  "phase" : "lifecycle phase of the project",
-  "status": "Add appropriate valid value for type",
-  "health" : "Add how well the project is tracking to plan",
+  "projectPhase" : "lifecycle phase of the project",
+  "projectStatus": "Add appropriate valid value for type",
+  "projectHealth" : "Add how well the project is tracking to plan",
   "startDate" : "date/time",
   "plannedEndDate" : "date/time"
 }
