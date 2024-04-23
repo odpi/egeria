@@ -210,6 +210,6 @@ Content-Type: application/json
 # @name setConsistentMetadataValues
 # Set up consistent metadata values relationship between the two property values.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/{propertyName1}/consistent-metadata-values/{propertyName2}?typeName1={{typeName1}}&mapName1={{mapName1}}&preferredValue1={{preferredValue1}}&?typeName2={{typeName2}}&mapName2={{mapName2}}&preferredValue2={{preferredValue2}}
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/{{propertyName1}}/consistent-metadata-values/{{propertyName2}}?typeName1={{typeName1}}&mapName1={{mapName1}}&preferredValue1={{preferredValue1}}&?typeName2={{typeName2}}&mapName2={{mapName2}}&preferredValue2={{preferredValue2}}
 Authorization: Bearer {{token}}
 Content-Type: application/json

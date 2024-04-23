@@ -23,9 +23,9 @@ public class ProjectProperties extends ReferenceableProperties
     private String identifier     = null;
     private String name           = null;
     private String description    = null;
-    private String phase          = null;
-    private String health         = null;
-    private String status         = null;
+    private String projectPhase   = null;
+    private String projectHealth  = null;
+    private String projectStatus  = null;
     private Date   startDate      = null;
     private Date   plannedEndDate = null;
 
@@ -52,11 +52,11 @@ public class ProjectProperties extends ReferenceableProperties
         {
             this.identifier = template.getIdentifier();
             this.name = template.getName();
-            this.description = template.getDescription();
-            this.status = template.getPhase();
-            this.status = template.getHealth();
-            this.status = template.getStatus();
-            this.startDate = template.getStartDate();
+            this.description   = template.getDescription();
+            this.projectStatus = template.getProjectPhase();
+            this.projectStatus = template.getProjectHealth();
+            this.projectStatus = template.getProjectStatus();
+            this.startDate     = template.getStartDate();
             this.plannedEndDate = template.getPlannedEndDate();
         }
     }
@@ -134,20 +134,20 @@ public class ProjectProperties extends ReferenceableProperties
      *
      * @return string
      */
-    public String getPhase()
+    public String getProjectPhase()
     {
-        return phase;
+        return projectPhase;
     }
 
 
     /**
      * Set up the current phase in the project lifecycle.
      *
-     * @param phase string
+     * @param projectPhase string
      */
-    public void setPhase(String phase)
+    public void setProjectPhase(String projectPhase)
     {
-        this.phase = phase;
+        this.projectPhase = projectPhase;
     }
 
 
@@ -156,20 +156,20 @@ public class ProjectProperties extends ReferenceableProperties
      *
      * @return string
      */
-    public String getHealth()
+    public String getProjectHealth()
     {
-        return health;
+        return projectHealth;
     }
 
 
     /**
      * Set up the current health of the project.
      *
-     * @param health string
+     * @param projectHealth string
      */
-    public void setHealth(String health)
+    public void setProjectHealth(String projectHealth)
     {
-        this.health = health;
+        this.projectHealth = projectHealth;
     }
 
 
@@ -178,20 +178,20 @@ public class ProjectProperties extends ReferenceableProperties
      *
      * @return string
      */
-    public String getStatus()
+    public String getProjectStatus()
     {
-        return status;
+        return projectStatus;
     }
 
 
     /**
      * Set up the status for this project.
      *
-     * @param status string
+     * @param projectStatus string
      */
-    public void setStatus(String status)
+    public void setProjectStatus(String projectStatus)
     {
-        this.status = status;
+        this.projectStatus = projectStatus;
     }
 
 
@@ -265,9 +265,9 @@ public class ProjectProperties extends ReferenceableProperties
                        "identifier='" + identifier + '\'' +
                        ", name='" + name + '\'' +
                        ", description='" + description + '\'' +
-                       ", phase='" + phase + '\'' +
-                       ", health='" + health + '\'' +
-                       ", status='" + status + '\'' +
+                       ", phase='" + projectPhase + '\'' +
+                       ", health='" + projectHealth + '\'' +
+                       ", status='" + projectStatus + '\'' +
                        ", startDate=" + startDate +
                        ", plannedEndDate=" + plannedEndDate +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
@@ -306,9 +306,9 @@ public class ProjectProperties extends ReferenceableProperties
         return Objects.equals(identifier, that.identifier) &&
                        Objects.equals(name, that.name) &&
                        Objects.equals(description, that.description) &&
-                       Objects.equals(phase, that.phase) &&
-                       Objects.equals(health, that.health) &&
-                       Objects.equals(status, that.status) &&
+                       Objects.equals(projectPhase, that.projectPhase) &&
+                       Objects.equals(projectHealth, that.projectHealth) &&
+                       Objects.equals(projectStatus, that.projectStatus) &&
                        Objects.equals(startDate, that.startDate) &&
                        Objects.equals(plannedEndDate, that.plannedEndDate);
     }
@@ -322,6 +322,6 @@ public class ProjectProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), identifier, name, description, phase, health, status, startDate, plannedEndDate);
+        return Objects.hash(super.hashCode(), identifier, name, description, projectPhase, projectHealth, projectStatus, startDate, plannedEndDate);
     }
 }

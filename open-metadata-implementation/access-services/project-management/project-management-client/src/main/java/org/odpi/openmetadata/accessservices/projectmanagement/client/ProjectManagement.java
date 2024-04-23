@@ -326,15 +326,15 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                  OpenMetadataProperty.PROJECT_PHASE.name,
-                                                                 projectProperties.getStatus());
+                                                                 projectProperties.getProjectStatus());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                  OpenMetadataProperty.PROJECT_HEALTH.name,
-                                                                 projectProperties.getStatus());
+                                                                 projectProperties.getProjectStatus());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                  OpenMetadataProperty.PROJECT_STATUS.name,
-                                                                 projectProperties.getStatus());
+                                                                 projectProperties.getProjectStatus());
 
             elementProperties = propertyHelper.addDateProperty(elementProperties,
                                                                OpenMetadataProperty.START_DATE.name,
@@ -675,7 +675,7 @@ public class ProjectManagement extends ProjectManagementBaseClient implements Pr
                 {
                     ProjectElement projectElement = projectConverter.getNewBean(projectBeanClass, relatedMetadataElement, methodName);
 
-                    if ((projectStatus == null) || (projectStatus.equals(projectElement.getProperties().getStatus())))
+                    if ((projectStatus == null) || (projectStatus.equals(projectElement.getProperties().getProjectStatus())))
                     {
                         filteredProjects.add(projectElement);
                     }
