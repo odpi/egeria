@@ -629,6 +629,7 @@ org.odpi.openmetadata.frameworks.auditlog.messagesets
 org.odpi.openmetadata.frameworks.connectors
 org.odpi.openmetadata.frameworks.connectors.controls
 org.odpi.openmetadata.frameworks.connectors.ffdc
+org.odpi.openmetadata.frameworks.connectors.mapper
 org.odpi.openmetadata.frameworks.connectors.properties
 org.odpi.openmetadata.frameworks.connectors.properties.beans
 org.odpi.openmetadata.frameworks.discovery
@@ -638,13 +639,10 @@ org.odpi.openmetadata.frameworks.governanceaction
 org.odpi.openmetadata.frameworks.governanceaction.client
 org.odpi.openmetadata.frameworks.governanceaction.controls
 org.odpi.openmetadata.frameworks.governanceaction.converters
-org.odpi.openmetadata.frameworks.governanceaction.enums
 org.odpi.openmetadata.frameworks.governanceaction.events
 org.odpi.openmetadata.frameworks.governanceaction.ffdc
 org.odpi.openmetadata.frameworks.governanceaction.fileclassifier
-org.odpi.openmetadata.frameworks.governanceaction.mapper
 org.odpi.openmetadata.frameworks.governanceaction.properties
-org.odpi.openmetadata.frameworks.governanceaction.refdata
 org.odpi.openmetadata.frameworks.governanceaction.search
 org.odpi.openmetadata.frameworks.integration.client
 org.odpi.openmetadata.frameworks.integration.connectors
@@ -655,6 +653,10 @@ org.odpi.openmetadata.frameworks.integration.ffdc
 org.odpi.openmetadata.frameworks.integration.filelistener
 org.odpi.openmetadata.frameworks.integration.properties
 org.odpi.openmetadata.frameworks.integration.reports
+org.odpi.openmetadata.frameworks.openmetadata.enums
+org.odpi.openmetadata.frameworks.openmetadata.mapper
+org.odpi.openmetadata.frameworks.openmetadata.refdata
+org.odpi.openmetadata.frameworks.openmetadata.types
 org.odpi.openmetadata.frameworks.surveyaction
 org.odpi.openmetadata.frameworks.surveyaction.controls
 org.odpi.openmetadata.frameworks.surveyaction.ffdc
@@ -1058,3 +1060,7 @@ org.odpi.openmetadata.viewservices.tex.api.rest
 org.odpi.openmetadata.viewservices.tex.handlers
 org.odpi.openmetadata.viewservices.tex.server
 org.odpi.openmetadata.viewservices.tex.server.spring
+org.odpi.openmetadata.viewservices.validmetadata.admin
+org.odpi.openmetadata.viewservices.validmetadata.ffdc
+org.odpi.openmetadata.viewservices.validmetadata.server
+org.odpi.openmetadata.viewservices.validmetadata.server.spring

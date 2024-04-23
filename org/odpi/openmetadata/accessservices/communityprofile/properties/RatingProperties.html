@@ -75,30 +75,15 @@ loadScripts(document, 'script');</script>
 <div class="inheritance">org.odpi.openmetadata.accessservices.communityprofile.properties.RatingProperties</div>
 </div>
 <section class="class-description" id="class-description">
-<dl class="notes">
-<dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code></dd>
-</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">RatingProperties</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">RatingProperties stores information about a rating connected to an asset.  Ratings provide informal feedback on the quality of assets
  and can be added at any time.
-
  Ratings have the userId of the person who added it, a star rating and an optional review comment.
-
  The content of the rating is a personal judgement (which is why the user's id is in the object)
  and there is no formal review of the ratings.  However, they can be used as a basis for crowd-sourcing
  feedback to asset owners.</div>
-<dl class="notes">
-<dt>See Also:</dt>
-<dd>
-<ul class="see-list">
-<li><a href="../../../../../../serialized-form.html#org.odpi.openmetadata.accessservices.communityprofile.properties.RatingProperties">Serialized Form</a></li>
-</ul>
-</dd>
-</dl>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -142,7 +127,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the review comments - null means no review is available.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="StarRating.html" title="enum class in org.odpi.openmetadata.accessservices.communityprofile.properties">StarRating</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/enums/StarRating.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">StarRating</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStarRating()" class="member-name-link">getStarRating</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the stars for the rating.</div>
@@ -173,7 +158,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="block">Set up the review comments - null means no review is available.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setStarRating(org.odpi.openmetadata.accessservices.communityprofile.properties.StarRating)" class="member-name-link">setStarRating</a><wbr>(<a href="StarRating.html" title="enum class in org.odpi.openmetadata.accessservices.communityprofile.properties">StarRating</a>&nbsp;starRating)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setStarRating(org.odpi.openmetadata.frameworks.openmetadata.enums.StarRating)" class="member-name-link">setStarRating</a><wbr>(<a href="../../../frameworks/openmetadata/enums/StarRating.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">StarRating</a>&nbsp;starRating)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the stars for the rating.</div>
 </div>
@@ -255,7 +240,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <li>
 <section class="detail" id="getStarRating()">
 <h3>getStarRating</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="StarRating.html" title="enum class in org.odpi.openmetadata.accessservices.communityprofile.properties">StarRating</a></span>&nbsp;<span class="element-name">getStarRating</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/enums/StarRating.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">StarRating</a></span>&nbsp;<span class="element-name">getStarRating</span>()</div>
 <div class="block">Return the stars for the rating.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -264,9 +249,9 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 </section>
 </li>
 <li>
-<section class="detail" id="setStarRating(org.odpi.openmetadata.accessservices.communityprofile.properties.StarRating)">
+<section class="detail" id="setStarRating(org.odpi.openmetadata.frameworks.openmetadata.enums.StarRating)">
 <h3>setStarRating</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setStarRating</span><wbr><span class="parameters">(<a href="StarRating.html" title="enum class in org.odpi.openmetadata.accessservices.communityprofile.properties">StarRating</a>&nbsp;starRating)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setStarRating</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/enums/StarRating.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">StarRating</a>&nbsp;starRating)</span></div>
 <div class="block">Set up the stars for the rating.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

@@ -119,9 +119,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Declare that all the processing for the governance action service is finished and the status of the work.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateActionTargetStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus,java.util.Date,java.util.Date,java.lang.String)" class="member-name-link">updateActionTargetStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateActionTargetStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus,java.util.Date,java.util.Date,java.lang.String)" class="member-name-link">updateActionTargetStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionTargetGUID,
- <a href="../properties/EngineActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionStatus</a>&nbsp;status,
+ <a href="../../openmetadata/enums/EngineActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">EngineActionStatus</a>&nbsp;status,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;startDate,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;completionDate,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;completionMessage)</code></div>
@@ -129,9 +129,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the status of a specific action target.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateEngineActionStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus)" class="member-name-link">updateEngineActionStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#updateEngineActionStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus)" class="member-name-link">updateEngineActionStatus</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineActionGUID,
- <a href="../properties/EngineActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionStatus</a>&nbsp;engineActionStatus)</code></div>
+ <a href="../../openmetadata/enums/EngineActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">EngineActionStatus</a>&nbsp;engineActionStatus)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Update the status of the engine action - providing the caller is permitted.</div>
 </div>
@@ -150,11 +150,11 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="updateEngineActionStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus)">
+<section class="detail" id="updateEngineActionStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus)">
 <h3>updateEngineActionStatus</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">updateEngineActionStatus</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;engineActionGUID,
- <a href="../properties/EngineActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionStatus</a>&nbsp;engineActionStatus)</span>
+ <a href="../../openmetadata/enums/EngineActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">EngineActionStatus</a>&nbsp;engineActionStatus)</span>
                        throws <span class="exceptions"><a href="../../connectors/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">InvalidParameterException</a>,
 <a href="../../connectors/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">UserNotAuthorizedException</a>,
 <a href="../../connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
@@ -219,11 +219,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateActionTargetStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus,java.util.Date,java.util.Date,java.lang.String)">
+<section class="detail" id="updateActionTargetStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus,java.util.Date,java.util.Date,java.lang.String)">
 <h3>updateActionTargetStatus</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">updateActionTargetStatus</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actionTargetGUID,
- <a href="../properties/EngineActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.properties">EngineActionStatus</a>&nbsp;status,
+ <a href="../../openmetadata/enums/EngineActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">EngineActionStatus</a>&nbsp;status,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;startDate,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;completionDate,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;completionMessage)</span>
