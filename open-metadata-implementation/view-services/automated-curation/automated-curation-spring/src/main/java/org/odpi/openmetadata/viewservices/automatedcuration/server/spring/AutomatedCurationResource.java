@@ -18,8 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The AutomatedCurationResource provides the Spring API endpoints of the Automated Curation Open Metadata View Service (OMVS).
- * This interface provides a service for Egeria UIs.
- */
+= */
 
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/automated-curation")

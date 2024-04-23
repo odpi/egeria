@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.governanceaction.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
 
 import java.util.Date;
 import java.util.Objects;

@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.accessservices.projectmanagement.converters;
 
 import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.ContactMethodType;
 import org.odpi.openmetadata.accessservices.projectmanagement.properties.RelationshipProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ContactMethodType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -133,7 +133,7 @@ public class ProjectManagementOMASConverter<B> extends OpenMetadataAPIGenericCon
 
         if (properties != null)
         {
-            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName, OpenMetadataType.CONTACT_METHOD_TYPE_PROPERTY_NAME, properties, methodName);
+            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName, OpenMetadataProperty.CONTACT_METHOD_TYPE.name, properties, methodName);
 
             switch (ordinal)
             {

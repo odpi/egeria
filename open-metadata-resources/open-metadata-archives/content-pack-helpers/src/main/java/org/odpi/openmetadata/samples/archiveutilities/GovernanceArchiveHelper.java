@@ -7,10 +7,10 @@ import org.odpi.openmetadata.frameworks.connectors.controls.ConfigurationPropert
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase;
 import org.odpi.openmetadata.frameworks.governanceaction.controls.*;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
-import org.odpi.openmetadata.frameworks.governanceaction.refdata.SpecificationPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType;
 import org.odpi.openmetadata.frameworks.connectors.controls.TemplateType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;

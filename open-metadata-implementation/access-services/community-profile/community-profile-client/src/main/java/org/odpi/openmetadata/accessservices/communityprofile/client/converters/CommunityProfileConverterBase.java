@@ -3,13 +3,12 @@
 package org.odpi.openmetadata.accessservices.communityprofile.client.converters;
 
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionMembershipStatus;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.RelationshipProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.frameworks.governanceaction.converters.OpenMetadataConverterBase;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
@@ -142,7 +141,7 @@ public abstract class CommunityProfileConverterBase<B> extends OpenMetadataConve
         if (elementProperties != null)
         {
             String retrievedProperty = propertyHelper.removeEnumProperty(serviceName,
-                                                                         OpenMetadataType.STATUS_PROPERTY_NAME,
+                                                                         OpenMetadataProperty.TO_DO_STATUS.name,
                                                                          elementProperties,
                                                                          methodName);
 

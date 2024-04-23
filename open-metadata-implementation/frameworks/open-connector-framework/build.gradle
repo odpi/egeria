@@ -9,6 +9,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     testImplementation 'org.testng:testng'
 }
 

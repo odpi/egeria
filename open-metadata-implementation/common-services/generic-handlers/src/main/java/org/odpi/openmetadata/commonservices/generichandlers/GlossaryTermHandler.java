@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryIteratorForEntities;
@@ -1459,8 +1459,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                            glossaryTermGUID,
                                            glossaryTermGUIDParameterName,
                                            OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
-                                           OpenMetadataType.ACTIVITY_DESC_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataType.ACTIVITY_DESC_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.ACTIVITY_DESCRIPTION_CLASSIFICATION.typeGUID,
+                                           OpenMetadataType.ACTIVITY_DESCRIPTION_CLASSIFICATION.typeName,
                                            builder.getActivityTypeProperties(activityType, methodName),
                                            isMergeUpdate,
                                            forLineage,
@@ -1508,8 +1508,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                                 glossaryTermGUID,
                                                 glossaryTermGUIDParameterName,
                                                 OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
-                                                OpenMetadataType.ACTIVITY_DESC_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataType.ACTIVITY_DESC_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.ACTIVITY_DESCRIPTION_CLASSIFICATION.typeGUID,
+                                                OpenMetadataType.ACTIVITY_DESCRIPTION_CLASSIFICATION.typeName,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -2490,7 +2490,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                             null,
                                             null,
                                             limitResultsByStatus,
-                                            OpenMetadataType.STATUS_PROPERTY_NAME,
+                                            OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
                                             2,
                                             forLineage,
                                             forDuplicateProcessing,
@@ -2580,7 +2580,7 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                             null,
                                             null,
                                             limitResultsByStatus,
-                                            OpenMetadataType.STATUS_PROPERTY_NAME,
+                                            OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
                                             0,
                                             forLineage,
                                             forDuplicateProcessing,
@@ -2631,8 +2631,8 @@ public class GlossaryTermHandler<B> extends ReferenceableHandler<B>
                                         elementGUID,
                                         elementGUIDParameterName,
                                         elementTypeName,
-                                        OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_GUID,
-                                        OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                        OpenMetadataType.SEMANTIC_ASSIGNMENT.typeGUID,
+                                        OpenMetadataType.SEMANTIC_ASSIGNMENT.typeName,
                                         OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
                                         null,
                                         null,

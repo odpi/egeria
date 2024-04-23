@@ -7,8 +7,8 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.Governan
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.governanceaction.events.*;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;

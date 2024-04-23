@@ -5,9 +5,7 @@ package org.odpi.openmetadata.frameworks.governanceaction.client;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 
 import java.util.Date;

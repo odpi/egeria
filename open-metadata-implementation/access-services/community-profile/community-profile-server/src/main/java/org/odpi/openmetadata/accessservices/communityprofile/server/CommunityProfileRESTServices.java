@@ -13,7 +13,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;

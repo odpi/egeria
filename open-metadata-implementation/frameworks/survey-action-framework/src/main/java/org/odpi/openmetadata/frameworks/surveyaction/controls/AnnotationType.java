@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.surveyaction.controls;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 /**
  * The AnnotationType enum describes the annotation types used by a survey action service.  This class is a template for

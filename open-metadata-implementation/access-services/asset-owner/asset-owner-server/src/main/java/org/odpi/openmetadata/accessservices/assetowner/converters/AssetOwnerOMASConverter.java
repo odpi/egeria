@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.accessservices.assetowner.converters;
 
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.RelatedElement;
-import org.odpi.openmetadata.accessservices.assetowner.properties.OwnerType;
 import org.odpi.openmetadata.accessservices.assetowner.properties.RelationshipProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.AssetOwnerType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -41,14 +41,14 @@ abstract class AssetOwnerOMASConverter<B> extends OpenMetadataAPIGenericConverte
 
 
     /**
-     * Retrieve and delete the OwnerType enum property from the instance properties of an entity
+     * Retrieve and delete the AssetOwnerType enum property from the instance properties of an entity
      *
      * @param properties  entity properties
-     * @return OwnerType  enum value
+     * @return AssetOwnerType  enum value
      */
-    OwnerType removeOwnerTypeFromProperties(InstanceProperties   properties)
+    AssetOwnerType removeOwnerTypeFromProperties(InstanceProperties   properties)
     {
-        OwnerType ownerType = this.getOwnerTypeFromProperties(properties);
+        AssetOwnerType ownerType = this.getOwnerTypeFromProperties(properties);
 
         if (properties != null)
         {
@@ -67,14 +67,14 @@ abstract class AssetOwnerOMASConverter<B> extends OpenMetadataAPIGenericConverte
 
 
     /**
-     * Retrieve the OwnerType enum property from the instance properties of a classification
+     * Retrieve the AssetOwnerType enum property from the instance properties of a classification
      *
      * @param properties  entity properties
-     * @return OwnerType  enum value
+     * @return AssetOwnerType  enum value
      */
-    OwnerType getOwnerTypeFromProperties(InstanceProperties   properties)
+    AssetOwnerType getOwnerTypeFromProperties(InstanceProperties   properties)
     {
-        OwnerType ownerType = OwnerType.OTHER;
+        AssetOwnerType ownerType = AssetOwnerType.OTHER;
 
         if (properties != null)
         {
@@ -91,15 +91,15 @@ abstract class AssetOwnerOMASConverter<B> extends OpenMetadataAPIGenericConverte
                     switch (enumPropertyValue.getOrdinal())
                     {
                         case 0:
-                            ownerType = OwnerType.USER_ID;
+                            ownerType = AssetOwnerType.USER_ID;
                             break;
 
                         case 1:
-                            ownerType = OwnerType.PROFILE_ID;
+                            ownerType = AssetOwnerType.PROFILE_ID;
                             break;
 
                         case 99:
-                            ownerType = OwnerType.OTHER;
+                            ownerType = AssetOwnerType.OTHER;
                             break;
                     }
                 }

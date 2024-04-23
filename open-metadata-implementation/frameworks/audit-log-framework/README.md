@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
-![Released](../../../images/egeria-content-status-released.png)
+![Released](../../../images/egeria-content-status-released.png#pagewidth)
 
 # Audit Log Framework (ALF)
 

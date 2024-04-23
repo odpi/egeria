@@ -2,11 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.governanceaction;
 
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PortType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.PortType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 
 

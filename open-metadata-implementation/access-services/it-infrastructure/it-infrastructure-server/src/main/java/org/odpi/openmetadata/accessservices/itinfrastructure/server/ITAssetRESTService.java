@@ -22,7 +22,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ProcessHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.RelatedAssetHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;

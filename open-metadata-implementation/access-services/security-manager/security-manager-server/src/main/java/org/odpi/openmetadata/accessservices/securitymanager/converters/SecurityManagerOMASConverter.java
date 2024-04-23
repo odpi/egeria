@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.securitymanager.converters;
 
 import org.odpi.openmetadata.accessservices.securitymanager.properties.ContactMethodType;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -51,7 +51,7 @@ public class SecurityManagerOMASConverter<B> extends OpenMetadataAPIGenericConve
 
         if (properties != null)
         {
-            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName, OpenMetadataType.CONTACT_METHOD_TYPE_PROPERTY_NAME, properties, methodName);
+            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName, OpenMetadataProperty.CONTACT_METHOD_TYPE.name, properties, methodName);
 
             switch (ordinal)
             {

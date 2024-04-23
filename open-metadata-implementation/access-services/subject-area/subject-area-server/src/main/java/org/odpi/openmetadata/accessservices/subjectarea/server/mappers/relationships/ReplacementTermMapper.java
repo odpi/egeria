@@ -7,8 +7,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
@@ -45,7 +45,7 @@ public class ReplacementTermMapper extends RelationshipMapper<ReplacementTerm> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, replacementTerm.getSource(), OpenMetadataProperty.SOURCE.name);
         }
         if (replacementTerm.getStatus() != null) {
-            SubjectAreaUtils.setStatusPropertyInInstanceProperties(properties, replacementTerm.getStatus(), OpenMetadataType.STATUS_PROPERTY_NAME);
+            SubjectAreaUtils.setStatusPropertyInInstanceProperties(properties, replacementTerm.getStatus(), OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name);
         }
     }
 
@@ -83,7 +83,7 @@ public class ReplacementTermMapper extends RelationshipMapper<ReplacementTerm> {
     @Override
     protected boolean mapEnumToRelationship(ReplacementTerm replacementTerm, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
-        if (propertyName.equals(OpenMetadataType.STATUS_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name)) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
             replacementTerm.setStatus(status);
             foundProperty = true;

@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersAuditCode;
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.GenericHandlersErrorCode;
@@ -15,7 +15,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
@@ -659,7 +659,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                        methodName);
 
             repositoryHandler.createRelationship(userId,
-                                                 OpenMetadataType.NEXT_ENGINE_ACTION_TYPE_GUID,
+                                                 OpenMetadataType.NEXT_ENGINE_ACTION.typeGUID,
                                                  null,
                                                  null,
                                                  previousEngineActionGUID,
@@ -736,9 +736,9 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
          */
         List<Relationship> previousResults = repositoryHandler.getRelationshipsByType(userId,
                                                                                       engineActionGUID,
-                                                                                      OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
-                                                                                      OpenMetadataType.NEXT_ENGINE_ACTION_TYPE_GUID,
-                                                                                      OpenMetadataType.NEXT_ENGINE_ACTION_TYPE_NAME,
+                                                                                      OpenMetadataType.ENGINE_ACTION.typeName,
+                                                                                      OpenMetadataType.NEXT_ENGINE_ACTION.typeGUID,
+                                                                                      OpenMetadataType.NEXT_ENGINE_ACTION.typeName,
                                                                                       1,
                                                                                       false,
                                                                                       false,
@@ -897,7 +897,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
         this.updateEngineActionStatus(userId,
                                       engineActionGUID,
-                                      OpenMetadataType.APPROVED_EA_STATUS_ORDINAL,
+                                      EngineActionStatus.APPROVED.getOrdinal(),
                                       serviceSupportedZones,
                                       null,
                                       methodName);
@@ -1007,7 +1007,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                               requestParameters,
                                                               mandatoryGuards,
                                                               receivedGuards,
-                                                              OpenMetadataType.REQUESTED_EA_STATUS_ORDINAL,
+                                                              EngineActionStatus.REQUESTED.getOrdinal(),
                                                               startTime,
                                                               null,
                                                               null,
@@ -1030,8 +1030,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         String engineActionGUID = this.createBeanInRepository(userId,
                                                               null,
                                                               null,
-                                                              OpenMetadataType.ENGINE_ACTION_TYPE_GUID,
-                                                              OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+                                                              OpenMetadataType.ENGINE_ACTION.typeGUID,
+                                                              OpenMetadataType.ENGINE_ACTION.typeName,
                                                               builder,
                                                               null,
                                                               methodName);
@@ -1081,12 +1081,12 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                   OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                   engineActionGUID,
                                                   engineActionGUIDParameterName,
-                                                  OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+                                                  OpenMetadataType.ENGINE_ACTION.typeName,
                                                   true,
                                                   true,
                                                   serviceSupportedZones,
-                                                  OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE_TYPE_GUID,
-                                                  OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE_TYPE_NAME,
+                                                  OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE.typeGUID,
+                                                  OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE.typeName,
                                                   originatorProperties,
                                                   null,
                                                   null,
@@ -1199,8 +1199,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<EntityDetail> entities =  this.getEntitiesByValue(userId,
                                                                processName,
                                                                nameParameterName,
-                                                               OpenMetadataType.ENGINE_ACTION_TYPE_GUID,
-                                                               OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+                                                               OpenMetadataType.ENGINE_ACTION.typeGUID,
+                                                               OpenMetadataType.ENGINE_ACTION.typeName,
                                                                specificMatchPropertyNames,
                                                                true,
                                                                false,
@@ -1239,7 +1239,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     /*
                      * Look for an engine action in REQUESTED state.
                      */
-                    EngineActionStatus status = this.getActionStatus(OpenMetadataType.ACTION_STATUS_PROPERTY_NAME, entity.getProperties());
+                    EngineActionStatus status = this.getActionStatus(OpenMetadataProperty.ACTION_STATUS.name, entity.getProperties());
 
                     if (status == EngineActionStatus.REQUESTED)
                     {
@@ -1333,15 +1333,15 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                   null,
                                                   engineActionGUID,
                                                   engineActionGUIDParameterName,
-                                                  OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+                                                  OpenMetadataType.ENGINE_ACTION.typeName,
                                                   actionTargetGUID,
                                                   actionTargetGUIDParameterName,
                                                   OpenMetadataType.REFERENCEABLE.typeName,
                                                   true,
                                                   true,
                                                   serviceSupportedZones,
-                                                  OpenMetadataType.TARGET_FOR_ACTION_TYPE_GUID,
-                                                  OpenMetadataType.TARGET_FOR_ACTION_TYPE_NAME,
+                                                  OpenMetadataType.TARGET_FOR_ACTION.typeGUID,
+                                                  OpenMetadataType.TARGET_FOR_ACTION.typeName,
                                                   properties,
                                                   null,
                                                   null,
@@ -1489,7 +1489,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         EntityDetail primaryEntity = this.getEntityFromRepository(userId,
                                                                   engineActionGUID,
                                                                   engineActionGUIDParameterName,
-                                                                  OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+                                                                  OpenMetadataType.ENGINE_ACTION.typeName,
                                                                   null,
                                                                   null,
                                                                   false,
@@ -1535,7 +1535,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                            invalidParameterHandler,
                                                                                            userId,
                                                                                            primaryEntity.getGUID(),
-                                                                                           OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+                                                                                           OpenMetadataType.ENGINE_ACTION.typeName,
                                                                                            null,
                                                                                            null,
                                                                                            0,
@@ -1554,7 +1554,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                 {
                     String actualTypeName = relationship.getType().getTypeDefName();
 
-                    if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.TARGET_FOR_ACTION_TYPE_NAME))
+                    if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.TARGET_FOR_ACTION.typeName))
                     {
                         relationships.add(relationship);
 
@@ -1573,7 +1573,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                methodName));
 
                     }
-                    else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE_TYPE_NAME))
+                    else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ENGINE_ACTION_REQUEST_SOURCE.typeName))
                     {
                         relationships.add(relationship);
 
@@ -1682,7 +1682,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         EntityDetail entity = this.getEntityFromRepository(userId,
                                                            engineActionGUID,
                                                            guidParameterName,
-                                                           OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+                                                           OpenMetadataType.ENGINE_ACTION.typeName,
                                                            null,
                                                            null,
                                                            false,
@@ -1697,7 +1697,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
             if (properties != null)
             {
-                EngineActionStatus status = this.getActionStatus(OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
+                EngineActionStatus status = this.getActionStatus(OpenMetadataProperty.ACTION_STATUS.name,
                                                                  properties);
 
                 String processingEngineUserId = repositoryHelper.getStringProperty(serviceName,
@@ -1707,7 +1707,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
                 if ((status == EngineActionStatus.APPROVED) && (processingEngineUserId == null))
                 {
-                    EngineActionBuilder builder = new EngineActionBuilder(OpenMetadataType.WAITING_EA_STATUS_ORDINAL,
+                    EngineActionBuilder builder = new EngineActionBuilder(EngineActionStatus.WAITING.getOrdinal(),
                                                                           userId,
                                                                           repositoryHelper,
                                                                           serviceName,
@@ -1718,8 +1718,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            null,
                                            engineActionGUID,
                                            guidParameterName,
-                                           OpenMetadataType.ENGINE_ACTION_TYPE_GUID,
-                                           OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+                                           OpenMetadataType.ENGINE_ACTION.typeGUID,
+                                           OpenMetadataType.ENGINE_ACTION.typeName,
                                            false,
                                            false,
                                            serviceSupportedZones,
@@ -1793,7 +1793,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         EntityDetail entity = this.getEntityFromRepository(userId,
                                                            engineActionGUID,
                                                            guidParameterName,
-                                                           OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+                                                           OpenMetadataType.ENGINE_ACTION.typeName,
                                                            null,
                                                            null,
                                                            false,
@@ -1808,10 +1808,10 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
             if (properties != null)
             {
-                EngineActionStatus status = this.getActionStatus(OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
+                EngineActionStatus status = this.getActionStatus(OpenMetadataProperty.ACTION_STATUS.name,
                                                                  properties);
 
-                EngineActionBuilder builder = new EngineActionBuilder(OpenMetadataType.CANCELLED_EA_STATUS_ORDINAL,
+                EngineActionBuilder builder = new EngineActionBuilder(EngineActionStatus.CANCELLED.getOrdinal(),
                                                                       userId,
                                                                       repositoryHelper,
                                                                       serviceName,
@@ -1822,8 +1822,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                        null,
                                        engineActionGUID,
                                        guidParameterName,
-                                       OpenMetadataType.ENGINE_ACTION_TYPE_GUID,
-                                       OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+                                       OpenMetadataType.ENGINE_ACTION.typeGUID,
+                                       OpenMetadataType.ENGINE_ACTION.typeName,
                                        false,
                                        false,
                                        serviceSupportedZones,
@@ -1867,19 +1867,14 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      */
     private String getEngineActionStatusName(int ordinal)
     {
-        return switch (ordinal)
-               {
-                   case OpenMetadataType.REQUESTED_EA_STATUS_ORDINAL -> "REQUESTED";
-                   case OpenMetadataType.APPROVED_EA_STATUS_ORDINAL -> "APPROVED";
-                   case OpenMetadataType.WAITING_EA_STATUS_ORDINAL -> "WAITING";
-                   case OpenMetadataType.IN_PROGRESS_EA_STATUS_ORDINAL -> "IN_PROGRESS";
-                   case OpenMetadataType.ACTIONED_EA_STATUS_ORDINAL -> "ACTIONED";
-                   case OpenMetadataType.INVALID_EA_STATUS_ORDINAL -> "INVALID";
-                   case OpenMetadataType.IGNORED_EA_STATUS_ORDINAL -> "IGNORED";
-                   case OpenMetadataType.FAILED_EA_STATUS_ORDINAL -> "FAILED";
-                   case OpenMetadataType.OTHER_EA_STATUS_ORDINAL -> "OTHER";
-                   default -> "UNKNOWN";
-               };
+        for (EngineActionStatus engineActionStatus : EngineActionStatus.values())
+        {
+            if (engineActionStatus.getOrdinal() == ordinal)
+            {
+                return engineActionStatus.name().toUpperCase();
+            }
+        }
+        return "UNKNOWN";
     }
 
 
@@ -1914,7 +1909,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         EntityDetail entity = this.getEntityFromRepository(userId,
                                                            engineActionGUID,
                                                            guidParameterName,
-                                                           OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+                                                           OpenMetadataType.ENGINE_ACTION.typeName,
                                                            null,
                                                            null,
                                                            false,
@@ -1930,7 +1925,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
             if (properties != null)
             {
                 int currentStatus = repositoryHelper.getEnumPropertyOrdinal(serviceName,
-                                                                            OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
+                                                                            OpenMetadataProperty.ACTION_STATUS.name,
                                                                             properties,
                                                                             methodName);
 
@@ -1939,25 +1934,25 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                    properties,
                                                                                    methodName);
 
-                if (((processingEngineUserId == null) && (engineActionStatus == OpenMetadataType.APPROVED_EA_STATUS_ORDINAL)) ||
+                if (((processingEngineUserId == null) && (engineActionStatus == EngineActionStatus.APPROVED.getOrdinal())) ||
                             (userId.equals(processingEngineUserId)))
                 {
                     try
                     {
                         properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                 null,
-                                                                                OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
-                                                                                OpenMetadataType.ENGINE_ACTION_STATUS_ENUM_TYPE_GUID,
-                                                                                OpenMetadataType.ENGINE_ACTION_STATUS_ENUM_TYPE_NAME,
+                                                                                OpenMetadataProperty.ACTION_STATUS.name,
+                                                                                EngineActionStatus.getOpenTypeGUID(),
+                                                                                EngineActionStatus.getOpenTypeName(),
                                                                                 engineActionStatus,
                                                                                 methodName);
                     }
                     catch (TypeErrorException error)
                     {
-                        throw new InvalidParameterException(error, OpenMetadataType.ACTIVITY_TYPE_PROPERTY_NAME);
+                        throw new InvalidParameterException(error, OpenMetadataProperty.ACTION_STATUS.name);
                     }
 
-                    if (engineActionStatus == OpenMetadataType.IN_PROGRESS_EA_STATUS_ORDINAL)
+                    if (engineActionStatus == EngineActionStatus.IN_PROGRESS.getOrdinal())
                     {
                         properties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                                 properties,
@@ -1971,8 +1966,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                            null,
                                            engineActionGUID,
                                            guidParameterName,
-                                           OpenMetadataType.ENGINE_ACTION_TYPE_GUID,
-                                           OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+                                           OpenMetadataType.ENGINE_ACTION.typeGUID,
+                                           OpenMetadataType.ENGINE_ACTION.typeName,
                                            false,
                                            false,
                                            serviceSupportedZones,
@@ -2062,7 +2057,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         EntityDetail engineActionEntity = this.getEntityFromRepository(userId,
                                                                        engineActionGUID,
                                                                        guidParameterName,
-                                                                       OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+                                                                       OpenMetadataType.ENGINE_ACTION.typeName,
                                                                        null,
                                                                        null,
                                                                        false,
@@ -2088,15 +2083,15 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                             methodName);
 
                 int storedStatus = repositoryHelper.getEnumPropertyOrdinal(serviceName,
-                                                                           OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
+                                                                           OpenMetadataProperty.ACTION_STATUS.name,
                                                                            properties,
                                                                            methodName);
 
-                if ((storedStatus == OpenMetadataType.REQUESTED_EA_STATUS_ORDINAL) ||
-                        (storedStatus == OpenMetadataType.APPROVED_EA_STATUS_ORDINAL) ||
-                        (storedStatus == OpenMetadataType.WAITING_EA_STATUS_ORDINAL) ||
-                        (storedStatus == OpenMetadataType.ACTIVATING_EA_STATUS_ORDINAL) ||
-                        (storedStatus == OpenMetadataType.IN_PROGRESS_EA_STATUS_ORDINAL))
+                if ((storedStatus == EngineActionStatus.REQUESTED.getOrdinal()) ||
+                        (storedStatus == EngineActionStatus.APPROVED.getOrdinal()) ||
+                        (storedStatus == EngineActionStatus.WAITING.getOrdinal()) ||
+                        (storedStatus == EngineActionStatus.ACTIVATING.getOrdinal()) ||
+                        (storedStatus == EngineActionStatus.IN_PROGRESS.getOrdinal()))
                 {
                     /*
                      * Only record completion on an engine action that has not already completed.
@@ -2112,8 +2107,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                  null,
                                                                  engineActionGUID,
                                                                  engineActionEntity,
-                                                                 OpenMetadataType.ENGINE_ACTION_TYPE_GUID,
-                                                                 OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+                                                                 OpenMetadataType.ENGINE_ACTION.typeGUID,
+                                                                 OpenMetadataType.ENGINE_ACTION.typeName,
                                                                  builder.getCompletionInstanceProperties(engineActionEntity.getProperties(),
                                                                                                          status,
                                                                                                          new Date(),
@@ -2224,7 +2219,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         this.validateAnchorEntity(userId,
                                   engineActionGUID,
                                   guidParameterName,
-                                  OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+                                  OpenMetadataType.ENGINE_ACTION.typeName,
                                   true,
                                   false,
                                   true,
@@ -2235,9 +2230,9 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
         List<Relationship> actionTargetRelationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                                 engineActionGUID,
-                                                                                                OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
-                                                                                                OpenMetadataType.TARGET_FOR_ACTION_TYPE_GUID,
-                                                                                                OpenMetadataType.TARGET_FOR_ACTION_TYPE_NAME,
+                                                                                                OpenMetadataType.ENGINE_ACTION.typeName,
+                                                                                                OpenMetadataType.TARGET_FOR_ACTION.typeGUID,
+                                                                                                OpenMetadataType.TARGET_FOR_ACTION.typeName,
                                                                                                 2,
                                                                                                 false,
                                                                                                 false,
@@ -2253,7 +2248,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                 {
                     InstanceProperties actionTargetProperties = actionTarget.getProperties();
 
-                    if (actionTargetProperties.getPropertyValue(OpenMetadataType.STATUS_PROPERTY_NAME) == null)
+                    if (actionTargetProperties.getPropertyValue(OpenMetadataProperty.TARGET_FOR_ACTION_STATUS.name) == null)
                     {
                         InstanceProperties newActionTargetProperties;
 
@@ -2261,9 +2256,9 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                         {
                             newActionTargetProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                                    actionTarget.getProperties(),
-                                                                                                   OpenMetadataType.STATUS_PROPERTY_NAME,
-                                                                                                   OpenMetadataType.ENGINE_ACTION_STATUS_ENUM_TYPE_GUID,
-                                                                                                   OpenMetadataType.ENGINE_ACTION_STATUS_ENUM_TYPE_NAME,
+                                                                                                   OpenMetadataProperty.ACTION_STATUS.name,
+                                                                                                   EngineActionStatus.getOpenTypeGUID(),
+                                                                                                   EngineActionStatus.getOpenTypeName(),
                                                                                                    status,
                                                                                                    methodName);
                         }
@@ -2274,7 +2269,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
                         newActionTargetProperties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                                                newActionTargetProperties,
-                                                                                               OpenMetadataType.COMPLETION_DATE_PROPERTY_NAME,
+                                                                                               OpenMetadataProperty.COMPLETION_DATE.name,
                                                                                                new Date(),
                                                                                                methodName);
 
@@ -2519,8 +2514,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         RepositoryEntitiesIterator iterator = new RepositoryEntitiesIterator(repositoryHandler,
                                                                              invalidParameterHandler,
                                                                              userId,
-                                                                             OpenMetadataType.ENGINE_ACTION_TYPE_GUID,
-                                                                             OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+                                                                             OpenMetadataType.ENGINE_ACTION.typeGUID,
+                                                                             OpenMetadataType.ENGINE_ACTION.typeName,
                                                                              OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                              null,
                                                                              null,
@@ -2588,8 +2583,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         RepositoryEntitiesIterator iterator = new RepositoryEntitiesIterator(repositoryHandler,
                                                                              invalidParameterHandler,
                                                                              userId,
-                                                                             OpenMetadataType.ENGINE_ACTION_TYPE_GUID,
-                                                                             OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+                                                                             OpenMetadataType.ENGINE_ACTION.typeGUID,
+                                                                             OpenMetadataType.ENGINE_ACTION.typeName,
                                                                              OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                              null,
                                                                              null,
@@ -2611,12 +2606,12 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
             if (entityCount > startFrom)
             {
                 int status = repositoryHelper.getEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
+                                                                     OpenMetadataProperty.ACTION_STATUS.name,
                                                                      nextEngineAction.getProperties(),
                                                                      methodName);
 
-                if ((status == OpenMetadataType.REQUESTED_EA_STATUS_ORDINAL) || (status == OpenMetadataType.APPROVED_EA_STATUS_ORDINAL) ||
-                    (status == OpenMetadataType.WAITING_EA_STATUS_ORDINAL) || (status == OpenMetadataType.IN_PROGRESS_EA_STATUS_ORDINAL))
+                if ((status == EngineActionStatus.REQUESTED.getOrdinal()) || (status == EngineActionStatus.APPROVED.getOrdinal()) ||
+                    (status == EngineActionStatus.WAITING.getOrdinal()) || (status == EngineActionStatus.IN_PROGRESS.getOrdinal()))
                 {
                     B bean = this.getEngineAction(userId, nextEngineAction, serviceSupportedZones, effectiveTime, methodName);
 
@@ -2678,7 +2673,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         RepositorySelectedEntitiesIterator iterator = new RepositorySelectedEntitiesIterator(repositoryHandler,
                                                                                              invalidParameterHandler,
                                                                                              userId,
-                                                                                             OpenMetadataType.ENGINE_ACTION_TYPE_GUID,
+                                                                                             OpenMetadataType.ENGINE_ACTION.typeGUID,
                                                                                              properties,
                                                                                              MatchCriteria.ANY,
                                                                                              OpenMetadataProperty.QUALIFIED_NAME.name,
@@ -2702,7 +2697,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
             if (entityCount > startFrom)
             {
                 int status = repositoryHelper.getEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
+                                                                     OpenMetadataProperty.ACTION_STATUS.name,
                                                                      nextEngineAction.getProperties(),
                                                                      methodName);
 
@@ -2711,7 +2706,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                                              nextEngineAction.getProperties(),
                                                                                              methodName);
                 if ((governanceEngineGUID.equals(engineActionGovernanceEngineGUID) &&
-                    ((status == OpenMetadataType.WAITING_EA_STATUS_ORDINAL) || (status == OpenMetadataType.IN_PROGRESS_EA_STATUS_ORDINAL))))
+                    ((status == EngineActionStatus.WAITING.getOrdinal()) || (status == EngineActionStatus.IN_PROGRESS.getOrdinal()))))
                 {
                     B bean = this.getEngineAction(userId, nextEngineAction, serviceSupportedZones, effectiveTime, methodName);
 
@@ -2772,8 +2767,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<EntityDetail> entities = this.findEntities(userId,
                                                         searchString,
                                                         searchStringParameterName,
-                                                        OpenMetadataType.ENGINE_ACTION_TYPE_GUID,
-                                                        OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+                                                        OpenMetadataType.ENGINE_ACTION.typeGUID,
+                                                        OpenMetadataType.ENGINE_ACTION.typeName,
                                                         null,
                                                         null,
                                                         null,
@@ -2849,8 +2844,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<EntityDetail> entities =  this.getEntitiesByValue(userId,
                                                                name,
                                                                nameParameterName,
-                                                               OpenMetadataType.ENGINE_ACTION_TYPE_GUID,
-                                                               OpenMetadataType.ENGINE_ACTION_TYPE_NAME,
+                                                               OpenMetadataType.ENGINE_ACTION.typeGUID,
+                                                               OpenMetadataType.ENGINE_ACTION.typeName,
                                                                specificMatchPropertyNames,
                                                                true,
                                                                false,
@@ -2927,7 +2922,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         Relationship actionTarget = repositoryHandler.getRelationshipByGUID(userId,
                                                                             actionTargetGUID,
                                                                             guidParameterName,
-                                                                            OpenMetadataType.TARGET_FOR_ACTION_TYPE_NAME,
+                                                                            OpenMetadataType.TARGET_FOR_ACTION.typeName,
                                                                             effectiveTime,
                                                                             methodName);
 
@@ -2939,9 +2934,9 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
             {
                 newActionTargetProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                        actionTarget.getProperties(),
-                                                                                       OpenMetadataType.STATUS_PROPERTY_NAME,
-                                                                                       OpenMetadataType.ENGINE_ACTION_STATUS_ENUM_TYPE_GUID,
-                                                                                       OpenMetadataType.ENGINE_ACTION_STATUS_ENUM_TYPE_NAME,
+                                                                                       OpenMetadataProperty.ACTION_STATUS.name,
+                                                                                       EngineActionStatus.getOpenTypeGUID(),
+                                                                                       EngineActionStatus.getOpenTypeName(),
                                                                                        status,
                                                                                        methodName);
             }

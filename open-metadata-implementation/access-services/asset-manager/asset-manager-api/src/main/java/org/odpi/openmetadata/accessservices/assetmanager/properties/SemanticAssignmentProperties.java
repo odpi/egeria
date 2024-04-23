@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermAssignmentStatus;
 
 import java.util.Objects;
 
@@ -21,9 +22,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class SemanticAssignmentProperties extends RelationshipProperties
 {
     private String               expression  = null;
-    private String               description = null;
-    private TermAssignmentStatus status      = null;
-    private int                  confidence  = 0;
+    private String                       description = null;
+    private GlossaryTermAssignmentStatus status      = null;
+    private int                          confidence  = 0;
     private String               createdBy   = null;
     private String               steward     = null;
     private String               source      = null;
@@ -107,7 +108,7 @@ public class SemanticAssignmentProperties extends RelationshipProperties
      *
      * @param status status enum
      */
-    public void setStatus(TermAssignmentStatus status)
+    public void setStatus(GlossaryTermAssignmentStatus status)
     {
         this.status = status;
     }
@@ -118,7 +119,7 @@ public class SemanticAssignmentProperties extends RelationshipProperties
      *
      * @return status enum
      */
-    public TermAssignmentStatus getStatus()
+    public GlossaryTermAssignmentStatus getStatus()
     {
         return status;
     }

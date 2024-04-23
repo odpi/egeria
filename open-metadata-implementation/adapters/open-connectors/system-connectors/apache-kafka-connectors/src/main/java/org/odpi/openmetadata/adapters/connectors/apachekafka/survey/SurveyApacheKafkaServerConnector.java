@@ -3,35 +3,17 @@
 package org.odpi.openmetadata.adapters.connectors.apachekafka.survey;
 
 
-import org.apache.kafka.clients.admin.DescribeTopicsResult;
-import org.apache.kafka.clients.admin.TopicDescription;
-import org.apache.kafka.common.Metric;
-import org.apache.kafka.common.MetricName;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.resource.ApacheKafkaAdminConnector;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.survey.controls.KafkaAnnotationType;
-import org.odpi.openmetadata.adapters.connectors.apachekafka.survey.ffdc.KafkaSurveyAuditCode;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.survey.ffdc.KafkaSurveyErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
-import org.odpi.openmetadata.frameworks.connectors.properties.NestedSchemaType;
-import org.odpi.openmetadata.frameworks.connectors.properties.SchemaAttributes;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
-import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceMeasureAnnotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceProfileAnnotation;
 
 import java.util.*;

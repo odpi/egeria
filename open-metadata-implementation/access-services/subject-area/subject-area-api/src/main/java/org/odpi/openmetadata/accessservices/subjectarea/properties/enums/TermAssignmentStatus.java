@@ -61,7 +61,7 @@ public enum TermAssignmentStatus implements Serializable {
     private final int ordinal;
     private final String description ;
     /**
-     * Default constructor sets up the specific values for an TermAssignmentStatus enum instance.
+     * Default constructor sets up the specific values for an GlossaryTermAssignmentStatus enum instance.
      *
      * @param ordinal int enum value ordinal
      * @param description String description
@@ -84,7 +84,7 @@ public enum TermAssignmentStatus implements Serializable {
      */
     public String getDescription() { return this.description; }
     /**
-     * Return the descriptive name for the TermAssignmentStatus enum instance
+     * Return the descriptive name for the GlossaryTermAssignmentStatus enum instance
      *
      * @return String name
      */

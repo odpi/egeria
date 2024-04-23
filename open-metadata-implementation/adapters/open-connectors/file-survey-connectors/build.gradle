@@ -6,6 +6,7 @@
 
 dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-metadata-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-connector-framework')
     compileOnly project(':open-metadata-implementation:frameworks:survey-action-framework')
     compileOnly project(':open-metadata-implementation:frameworks:governance-action-framework')

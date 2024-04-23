@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  *  MoreInformationResponse returns a list of referenceables that are connected to the
- *  element identified on the request that is connected by the MoreInformaiton relationship
+ *  element identified on the request that is connected by the MoreInformation relationship
  *  from the server.   The list may be too long to
  *  retrieve in a single call so there is support for paging of replies.
  */

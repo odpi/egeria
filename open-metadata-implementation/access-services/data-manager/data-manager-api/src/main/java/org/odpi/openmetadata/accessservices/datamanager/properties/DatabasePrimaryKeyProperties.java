@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.datamanager.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 
 import java.util.Objects;
 
@@ -22,8 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DatabasePrimaryKeyProperties extends ClassificationProperties
 {
-    private String     name             = null;
-    private KeyPattern keyPattern       = null;
+    private String     name       = null;
+    private KeyPattern keyPattern = null;
 
 
     /**

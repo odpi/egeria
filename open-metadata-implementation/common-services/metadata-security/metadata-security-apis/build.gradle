@@ -8,6 +8,7 @@ dependencies {
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
 }
 
 description = 'Metadata Security APIs'

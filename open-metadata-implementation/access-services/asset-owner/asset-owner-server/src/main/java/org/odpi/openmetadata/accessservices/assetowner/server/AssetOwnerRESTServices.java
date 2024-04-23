@@ -20,10 +20,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.AssetOwnerType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.AnnotationStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.SurveyReport;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -1403,11 +1405,11 @@ public class AssetOwnerRESTServices
 
         if (schemaAttribute != null)
         {
-            int sortOrder = DataItemSortOrder.UNKNOWN.getOpenTypeOrdinal();
+            int sortOrder = DataItemSortOrder.UNSORTED.getOrdinal();
 
             if (schemaAttribute.getSortOrder() != null)
             {
-                sortOrder = schemaAttribute.getSortOrder().getOpenTypeOrdinal();
+                sortOrder = schemaAttribute.getSortOrder().getOrdinal();
             }
 
             SchemaAttributeBuilder schemaAttributeBuilder =
@@ -3042,7 +3044,7 @@ public class AssetOwnerRESTServices
                                                              String                    serverName,
                                                              String                    methodName) throws InvalidParameterException
     {
-        String typeName = OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME;
+        String typeName = OpenMetadataType.SCHEMA_ATTRIBUTE.typeName;
 
         if (schemaAttributeProperties.getTypeName() != null)
         {
@@ -3050,7 +3052,7 @@ public class AssetOwnerRESTServices
         }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                   OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                   OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                    instanceHandler.getServiceName(),
                                                                    methodName,
                                                                    repositoryHelper);
@@ -3058,7 +3060,7 @@ public class AssetOwnerRESTServices
         int sortOrder = 0;
         if (schemaAttributeProperties.getSortOrder() != null)
         {
-            sortOrder = schemaAttributeProperties.getSortOrder().getOpenTypeOrdinal();
+            sortOrder = schemaAttributeProperties.getSortOrder().getOrdinal();
         }
 
         SchemaAttributeBuilder schemaAttributeBuilder = new SchemaAttributeBuilder(schemaAttributeProperties.getQualifiedName(),
@@ -3296,8 +3298,8 @@ public class AssetOwnerRESTServices
                                                null,
                                                schemaAttributeGUID,
                                                schemaAttributeGUIDParameterName,
-                                               OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_GUID,
-                                               OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                               OpenMetadataType.SCHEMA_ATTRIBUTE.typeGUID,
+                                               OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                null,
                                                null,
                                                false,
@@ -3361,8 +3363,8 @@ public class AssetOwnerRESTServices
                 response.setElementList(handler.findSchemaAttributes(userId,
                                                                      requestBody.getSearchString(),
                                                                      searchStringParameterName,
-                                                                     OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_GUID,
-                                                                     OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                     OpenMetadataType.SCHEMA_ATTRIBUTE.typeGUID,
+                                                                     OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                      null,
                                                                      null,
                                                                      startFrom,
@@ -3429,7 +3431,7 @@ public class AssetOwnerRESTServices
                 response.setElementList(handler.getAttachedSchemaAttributes(userId,
                                                                             schemaTypeGUID,
                                                                             elementGUIDParameterName,
-                                                                            OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                            OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                             startFrom,
                                                                             pageSize,
                                                                             false,
@@ -3490,8 +3492,8 @@ public class AssetOwnerRESTServices
                 SchemaAttributeHandler<SchemaAttributeElement, SchemaTypeElement> handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, methodName);
 
                 response.setElementList(handler.getSchemaAttributesByName(userId,
-                                                                          OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_GUID,
-                                                                          OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                          OpenMetadataType.SCHEMA_ATTRIBUTE.typeGUID,
+                                                                          OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                           requestBody.getName(),
                                                                           null,
                                                                           null,
@@ -3555,7 +3557,7 @@ public class AssetOwnerRESTServices
                 response.setElement(handler.getSchemaAttribute(userId,
                                                                schemaAttributeGUID,
                                                                guidParameterName,
-                                                               OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                               OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                null,
                                                                null,
                                                                false,
@@ -3749,7 +3751,7 @@ public class AssetOwnerRESTServices
                                                glossaryTermGUIDParameterName,
                                                requestBody.getDescription(),
                                                requestBody.getExpression(),
-                                               requestBody.getStatus().getOpenTypeOrdinal(),
+                                               requestBody.getStatus().getOrdinal(),
                                                requestBody.getConfidence(),
                                                requestBody.getCreatedBy(),
                                                requestBody.getSteward(),
@@ -4267,11 +4269,11 @@ public class AssetOwnerRESTServices
 
                 if ((ownerTypeName == null) && (requestBody.getOwnerType() != null))
                 {
-                    if (requestBody.getOwnerType() == org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType.USER_ID)
+                    if (requestBody.getOwnerType() == AssetOwnerType.USER_ID)
                     {
                         ownerTypeName = OpenMetadataType.USER_IDENTITY_TYPE_NAME;
                     }
-                    else if (requestBody.getOwnerType() == org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType.PROFILE_ID)
+                    else if (requestBody.getOwnerType() == AssetOwnerType.PROFILE_ID)
                     {
                         ownerTypeName = OpenMetadataType.ACTOR_PROFILE_TYPE_NAME;
                     }
@@ -5375,7 +5377,7 @@ public class AssetOwnerRESTServices
                                                                                       methodName));
 
             supplementaryProperties.setDisplaySummary(repositoryHelper.getStringProperty(serviceName,
-                                                                                         OpenMetadataType.SUMMARY_PROPERTY_NAME,
+                                                                                         OpenMetadataProperty.SUMMARY.name,
                                                                                          glossaryEntity.getProperties(),
                                                                                          methodName));
             supplementaryProperties.setDisplayDescription(repositoryHelper.getStringProperty(serviceName,
@@ -5383,11 +5385,11 @@ public class AssetOwnerRESTServices
                                                                                              glossaryEntity.getProperties(),
                                                                                              methodName));
             supplementaryProperties.setAbbreviation(repositoryHelper.getStringProperty(serviceName,
-                                                                                       OpenMetadataType.ABBREVIATION_PROPERTY_NAME,
+                                                                                       OpenMetadataProperty.ABBREVIATION.name,
                                                                                        glossaryEntity.getProperties(),
                                                                                        methodName));
             supplementaryProperties.setUsage(repositoryHelper.getStringProperty(serviceName,
-                                                                                OpenMetadataType.USAGE_PROPERTY_NAME,
+                                                                                OpenMetadataProperty.USAGE.name,
                                                                                 glossaryEntity.getProperties(),
                                                                                 methodName));
         }

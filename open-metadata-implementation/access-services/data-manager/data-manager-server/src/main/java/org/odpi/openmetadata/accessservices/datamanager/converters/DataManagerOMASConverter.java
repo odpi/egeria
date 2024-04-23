@@ -5,8 +5,9 @@ package org.odpi.openmetadata.accessservices.datamanager.converters;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -55,13 +56,13 @@ public class DataManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter
         if (instanceProperties != null)
         {
             int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataType.SORT_ORDER_PROPERTY_NAME,
+                                                                     OpenMetadataProperty.SORT_ORDER.name,
                                                                      instanceProperties,
                                                                      methodName);
 
             for (DataItemSortOrder dataItemSortOrder : DataItemSortOrder.values())
             {
-                if (dataItemSortOrder.getOpenTypeOrdinal() == ordinal)
+                if (dataItemSortOrder.getOrdinal() == ordinal)
                 {
                     return dataItemSortOrder;
                 }

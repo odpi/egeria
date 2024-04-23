@@ -5,6 +5,8 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.RelatedMediaType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.RelatedMediaUsage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +29,8 @@ public class RelatedMediaReference extends ExternalReference
     /*
      * Attributes of a related media reference
      */
-    protected RelatedMediaType        mediaType           = null;
-    protected List<RelatedMediaUsage> mediaUsageList      = null;
+    protected RelatedMediaType        mediaType      = null;
+    protected List<RelatedMediaUsage> mediaUsageList = null;
 
 
     /**

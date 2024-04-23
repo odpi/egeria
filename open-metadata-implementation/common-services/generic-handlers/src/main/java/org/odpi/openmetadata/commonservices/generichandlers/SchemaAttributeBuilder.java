@@ -2,8 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
@@ -59,8 +60,8 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                   String               serverName)
     {
         super(qualifiedName,
-              OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_GUID,
-              OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+              OpenMetadataType.SCHEMA_ATTRIBUTE.typeGUID,
+              OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -81,8 +82,8 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                   String               serviceName,
                                   String               serverName)
     {
-        super(OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_GUID,
-              OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+        super(OpenMetadataType.SCHEMA_ATTRIBUTE.typeGUID,
+              OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -388,15 +389,15 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataType.SORT_ORDER_PROPERTY_NAME,
-                                                                    OpenMetadataType.DATA_ITEM_SORT_ORDER_TYPE_GUID,
-                                                                    OpenMetadataType.DATA_ITEM_SORT_ORDER_TYPE_NAME,
+                                                                    OpenMetadataProperty.SORT_ORDER.name,
+                                                                    DataItemSortOrder.getOpenTypeGUID(),
+                                                                    DataItemSortOrder.getOpenTypeName(),
                                                                     sortOrder,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataType.SORT_ORDER_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataProperty.SORT_ORDER.name);
         }
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,

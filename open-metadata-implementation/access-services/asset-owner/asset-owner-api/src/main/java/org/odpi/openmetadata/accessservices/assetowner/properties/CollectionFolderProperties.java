@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetowner.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.OrderBy;
 
 import java.util.Objects;
 
@@ -19,8 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CollectionFolderProperties extends CollectionProperties
 {
-    private String              collectionOrderingProperty = null;
-    private CollectionOrder     collectionOrdering         = null;
+    private String  collectionOrderingProperty = null;
+    private OrderBy collectionOrdering         = null;
 
     /**
      * Default Constructor
@@ -53,7 +54,7 @@ public class CollectionFolderProperties extends CollectionProperties
      *
      * @return AssetCollectionOrder enum
      */
-    public CollectionOrder getCollectionOrdering()
+    public OrderBy getCollectionOrdering()
     {
         return collectionOrdering;
     }
@@ -64,7 +65,7 @@ public class CollectionFolderProperties extends CollectionProperties
      *
      * @param collectionOrdering AssetCollectionOrder enum
      */
-    public void setCollectionOrdering(CollectionOrder collectionOrdering)
+    public void setCollectionOrdering(OrderBy collectionOrdering)
     {
         this.collectionOrdering = collectionOrdering;
     }

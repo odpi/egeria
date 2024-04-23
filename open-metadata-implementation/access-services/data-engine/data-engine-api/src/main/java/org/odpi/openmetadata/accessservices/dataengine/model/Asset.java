@@ -71,7 +71,7 @@ public class Asset extends Referenceable {
      * The owner type for this asset
      * -- SETTER --
      * Set up the owner type for this asset.
-     * @param ownerType OwnerType enum
+     * @param ownerType AssetOwnerType enum
      * -- GETTER --
      * Return the type of owner stored in the owner property.
      * @return owner type

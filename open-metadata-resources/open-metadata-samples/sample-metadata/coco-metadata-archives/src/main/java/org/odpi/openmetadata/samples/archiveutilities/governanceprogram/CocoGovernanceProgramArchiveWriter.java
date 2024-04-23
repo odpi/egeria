@@ -3,9 +3,9 @@
 package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.refdata.CollectionType;
-import org.odpi.openmetadata.frameworks.governanceaction.refdata.ResourceUse;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.CollectionType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.samples.archiveutilities.combo.CocoBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
@@ -74,6 +74,7 @@ public class CocoGovernanceProgramArchiveWriter extends CocoBaseArchiveWriter
                                                                      "Coco Pharmaceuticals Governance Domains",
                                                                      "List of active governance domains at Coco Pharmaceuticals.",
                                                                      CollectionType.GOVERNANCE_DOMAIN_SET.getName(),
+                                                                     null,
                                                                      null,
                                                                      null);
 

@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.ActivityDesc
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
 
 import java.util.Date;
 import java.util.List;

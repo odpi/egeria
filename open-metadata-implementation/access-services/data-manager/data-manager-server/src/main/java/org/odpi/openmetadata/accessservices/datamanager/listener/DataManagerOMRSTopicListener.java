@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.datamanager.ffdc.DataManagerAuditCod
 import org.odpi.openmetadata.accessservices.datamanager.outtopic.DataManagerOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.datamanager.server.DataManagerServicesInstance;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -280,7 +280,7 @@ public class DataManagerOMRSTopicListener extends OMRSTopicListenerBase
                 if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.ASSET_TO_SCHEMA_TYPE_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.SERVER_ENDPOINT_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.SEMANTIC_ASSIGNMENT.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.API_ENDPOINT_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.ASSET_TO_CONNECTION_TYPE_NAME)) ||

@@ -2,12 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.myprofile.api;
 
-import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.PersonalRoleElement;
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ToDoElement;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ public interface MyRolesAndActionsInterface
      * Return a list of to dos assigned to the calling user.
      *
      * @param userId     userId of user making request.
-     * @param status     status of the to do (null means current active)
+     * @param toDoStatus     status of the to do (null means current active)
      * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -32,7 +31,7 @@ public interface MyRolesAndActionsInterface
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     List<ToDoElement> getMyToDos(String     userId,
-                                 ToDoStatus status,
+                                 ToDoStatus toDoStatus,
                                  int        startFrom,
                                  int        pageSize) throws InvalidParameterException,
                                                              PropertyServerException,

@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.Co
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionMembershipProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.CollectionMembershipStatus;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
@@ -127,7 +127,7 @@ public class CollectionMemberConverter<B> extends CommunityProfileConverterBase<
         if (elementProperties != null)
         {
             String retrievedProperty = propertyHelper.removeEnumProperty(serviceName,
-                                                                         OpenMetadataType.STATUS_PROPERTY_NAME,
+                                                                         OpenMetadataProperty.TO_DO_STATUS.name,
                                                                          elementProperties,
                                                                          methodName);
 

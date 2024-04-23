@@ -2,14 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermAssignmentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.mapper.PropertyFacetValidValues;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
@@ -1257,9 +1258,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        InstanceProperties properties = repositoryHelper.addIntPropertyToInstance(serviceName, null, OpenMetadataType.STATUS_IDENTIFIER_PROPERTY_NAME, statusIdentifier, methodName);
+        InstanceProperties properties = repositoryHelper.addIntPropertyToInstance(serviceName, null, OpenMetadataProperty.STATUS_IDENTIFIER.name, statusIdentifier, methodName);
         properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataType.CONFIDENCE_PROPERTY_NAME, confidence, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_PROPERTY_NAME, steward, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataProperty.STEWARD.name, steward, methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME, stewardTypeName, methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME, stewardPropertyName, methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataProperty.SOURCE.name, source, methodName);
@@ -1502,14 +1503,14 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
-        InstanceProperties properties = repositoryHelper.addIntPropertyToInstance(serviceName, null, OpenMetadataType.STATUS_IDENTIFIER_PROPERTY_NAME, statusIdentifier, methodName);
+        InstanceProperties properties = repositoryHelper.addIntPropertyToInstance(serviceName, null, OpenMetadataProperty.STATUS_IDENTIFIER.name, statusIdentifier, methodName);
         properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataType.CONFIDENCE_PROPERTY_NAME, confidence, methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_PROPERTY_NAME, steward, methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME, stewardTypeName, methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME, stewardPropertyName, methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataProperty.SOURCE.name, source, methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.NOTES_PROPERTY_NAME, notes, methodName);
-        properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataType.BASIS_IDENTIFIER_PROPERTY_NAME, basisIdentifier, methodName);
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataProperty.RETENTION_BASIS_IDENTIFIER.name, basisIdentifier, methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.RETENTION_ASSOCIATED_GUID_PROPERTY_NAME, associatedGUID, methodName);
         properties = repositoryHelper.addDatePropertyToInstance(serviceName, properties, OpenMetadataType.RETENTION_ARCHIVE_AFTER_PROPERTY_NAME, archiveAfter, methodName);
         properties = repositoryHelper.addDatePropertyToInstance(serviceName, properties, OpenMetadataType.RETENTION_DELETE_AFTER_PROPERTY_NAME, deleteAfter, methodName);
@@ -1520,8 +1521,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                            beanGUID,
                                            beanGUIDParameterName,
                                            beanGUIDTypeName,
-                                           OpenMetadataType.RETENTION_CLASSIFICATION_TYPE_GUID,
-                                           OpenMetadataType.RETENTION_CLASSIFICATION_TYPE_NAME,
+                                           OpenMetadataType.RETENTION_CLASSIFICATION.typeGUID,
+                                           OpenMetadataType.RETENTION_CLASSIFICATION.typeName,
                                            this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                            true,
                                            forLineage,
@@ -1568,8 +1569,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                 beanGUID,
                                                 beanGUIDParameterName,
                                                 beanGUIDTypeName,
-                                                OpenMetadataType.RETENTION_CLASSIFICATION_TYPE_GUID,
-                                                OpenMetadataType.RETENTION_CLASSIFICATION_TYPE_NAME,
+                                                OpenMetadataType.RETENTION_CLASSIFICATION.typeGUID,
+                                                OpenMetadataType.RETENTION_CLASSIFICATION.typeName,
                                                 forLineage,
                                                 forDuplicateProcessing,
                                                 effectiveTime,
@@ -1615,7 +1616,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
 
         List<EntityDetail> entities = repositoryHandler.getEntitiesForClassificationType(userId,
                                                                                          OpenMetadataType.REFERENCEABLE.typeGUID,
-                                                                                         OpenMetadataType.RETENTION_CLASSIFICATION_TYPE_NAME,
+                                                                                         OpenMetadataType.RETENTION_CLASSIFICATION.typeName,
                                                                                          forLineage,
                                                                                          forDuplicateProcessing,
                                                                                          startFrom,
@@ -1648,14 +1649,14 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
 
                         Classification classification = repositoryHelper.getClassificationFromEntity(serviceName,
                                                                                                      entity,
-                                                                                                     OpenMetadataType.RETENTION_CLASSIFICATION_TYPE_NAME,
+                                                                                                     OpenMetadataType.RETENTION_CLASSIFICATION.typeName,
                                                                                                      methodName);
                         if (classification != null)
                         {
                             if (returnSpecificBasisLevel)
                             {
                                 int storedLevelIdentifier = repositoryHelper.getIntProperty(serviceName,
-                                                                                            OpenMetadataType.BASIS_IDENTIFIER_PROPERTY_NAME,
+                                                                                            OpenMetadataProperty.RETENTION_BASIS_IDENTIFIER.name,
                                                                                             classification.getProperties(),
                                                                                             methodName);
 
@@ -3122,8 +3123,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_GUID,
-                                  OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                  OpenMetadataType.SEMANTIC_ASSIGNMENT.typeGUID,
+                                  OpenMetadataType.SEMANTIC_ASSIGNMENT.typeName,
                                   this.setUpEffectiveDates(null, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -3199,15 +3200,15 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataType.STATUS_PROPERTY_NAME,
-                                                                    OpenMetadataType.TERM_ASSIGNMENT_STATUS_ENUM_TYPE_GUID,
-                                                                    OpenMetadataType.TERM_ASSIGNMENT_STATUS_ENUM_TYPE_NAME,
+                                                                    OpenMetadataProperty.TERM_ASSIGNMENT_STATUS.name,
+                                                                    GlossaryTermAssignmentStatus.getOpenTypeGUID(),
+                                                                    GlossaryTermAssignmentStatus.getOpenTypeName(),
                                                                     statusOrdinal,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.TERM_ASSIGNMENT_STATUS_ENUM_TYPE_NAME);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataProperty.TERM_ASSIGNMENT_STATUS.name);
         }
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
@@ -3244,8 +3245,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
-                                  OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_GUID,
-                                  OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                  OpenMetadataType.SEMANTIC_ASSIGNMENT.typeGUID,
+                                  OpenMetadataType.SEMANTIC_ASSIGNMENT.typeName,
                                   this.setUpEffectiveDates(properties, effectiveFrom, effectiveTo),
                                   effectiveFrom,
                                   effectiveTo,
@@ -3302,8 +3303,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                       forLineage,
                                       forDuplicateProcessing,
                                       supportedZones,
-                                      OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_GUID,
-                                      OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                      OpenMetadataType.SEMANTIC_ASSIGNMENT.typeGUID,
+                                      OpenMetadataType.SEMANTIC_ASSIGNMENT.typeName,
                                       effectiveTime,
                                       methodName);
     }
@@ -3355,8 +3356,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         startingGUID,
                                         startingGUIDParameterName,
                                         startingTypeName,
-                                        OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_GUID,
-                                        OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                        OpenMetadataType.SEMANTIC_ASSIGNMENT.typeGUID,
+                                        OpenMetadataType.SEMANTIC_ASSIGNMENT.typeName,
                                         resultingTypeName,
                                         null,
                                         null,
@@ -3417,8 +3418,8 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                         startingGUID,
                                         startingGUIDParameterName,
                                         startingTypeName,
-                                        OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_GUID,
-                                        OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                        OpenMetadataType.SEMANTIC_ASSIGNMENT.typeGUID,
+                                        OpenMetadataType.SEMANTIC_ASSIGNMENT.typeName,
                                         resultingTypeName,
                                         null,
                                         null,
@@ -5251,7 +5252,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataType.STATUS_IDENTIFIER_PROPERTY_NAME,
+                                                               OpenMetadataProperty.STATUS_IDENTIFIER.name,
                                                                statusIdentifier,
                                                                methodName);
 
@@ -5701,9 +5702,9 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
 
         if (vendorProperties != null)
         {
-            PropertyFacetBuilder builder = new PropertyFacetBuilder(referenceableGUID + "_" + OpenMetadataValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
+            PropertyFacetBuilder builder = new PropertyFacetBuilder(referenceableGUID + "_" + PropertyFacetValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
                                                                     null,
-                                                                    OpenMetadataValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
+                                                                    PropertyFacetValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE,
                                                                     vendorProperties,
                                                                     repositoryHelper,
                                                                     serviceName,
@@ -5720,7 +5721,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                 propertyFacet.getProperties(),
                                                                                 methodName);
 
-                        if (OpenMetadataValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
+                        if (PropertyFacetValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
                         {
                             this.updateBeanInRepository(userId,
                                                         null,
@@ -5801,7 +5802,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                 propertyFacet.getProperties(),
                                                                                 methodName);
 
-                        if (OpenMetadataValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
+                        if (PropertyFacetValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
                         {
                             this.deleteBeanInRepository(userId,
                                                         null,
@@ -5880,7 +5881,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                             propertyFacet.getProperties(),
                                                                             methodName);
 
-                    if (OpenMetadataValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
+                    if (PropertyFacetValidValues.VENDOR_PROPERTIES_DESCRIPTION_VALUE.equals(description))
                     {
                         return repositoryHelper.getStringMapFromProperty(serviceName,
                                                                          OpenMetadataType.PROPERTIES_PROPERTY_NAME,

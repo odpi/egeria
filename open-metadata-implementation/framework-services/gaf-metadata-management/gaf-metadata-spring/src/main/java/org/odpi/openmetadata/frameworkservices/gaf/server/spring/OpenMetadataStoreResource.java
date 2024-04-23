@@ -1444,7 +1444,8 @@ public class OpenMetadataStoreResource
                                                 @PathVariable String          propertyName,
                                                 @RequestParam(required = false)
                                                               String          preferredValue,
-                                                @RequestBody  NullRequestBody requestBody)
+                                                @RequestBody(required = false)
+                                                              NullRequestBody requestBody)
     {
         return restAPI.clearValidMetadataValue(serverName, serviceURLMarker, userId, typeName, propertyName, preferredValue, requestBody);
     }
@@ -1476,7 +1477,8 @@ public class OpenMetadataStoreResource
                                                   @PathVariable String          propertyName,
                                                   @RequestParam(required = false)
                                                                 String          preferredValue,
-                                                  @RequestBody  NullRequestBody requestBody)
+                                                  @RequestBody(required = false)
+                                                                NullRequestBody requestBody)
     {
         return restAPI.clearValidMetadataMapName(serverName, serviceURLMarker, userId, typeName, propertyName, preferredValue, requestBody);
     }
@@ -1510,7 +1512,8 @@ public class OpenMetadataStoreResource
                                                    @PathVariable String          mapName,
                                                    @RequestParam(required = false)
                                                            String          preferredValue,
-                                                   NullRequestBody requestBody)
+                                                   @RequestBody(required = false)
+                                                       NullRequestBody requestBody)
     {
         return restAPI.clearValidMetadataMapValue(serverName, serviceURLMarker, userId, typeName, propertyName, mapName, preferredValue, requestBody);
     }
@@ -1799,7 +1802,8 @@ public class OpenMetadataStoreResource
                                                     @RequestParam(required = false)
                                                                   String          mapName2,
                                                     @RequestParam String          preferredValue2,
-                                                    @RequestBody  NullRequestBody requestBody)
+                                                    @RequestBody(required = false)
+                                                                  NullRequestBody requestBody)
     {
         return restAPI.setConsistentMetadataValues(serverName,
                                                    serviceURLMarker,

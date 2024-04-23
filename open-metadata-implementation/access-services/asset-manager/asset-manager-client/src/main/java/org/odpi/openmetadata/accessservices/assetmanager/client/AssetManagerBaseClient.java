@@ -10,8 +10,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Relate
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ClassificationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.FindProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationshipStatus;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceableProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.RelationshipProperties;
@@ -41,6 +40,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 
 import java.util.Date;

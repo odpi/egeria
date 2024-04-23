@@ -6,10 +6,10 @@ package org.odpi.openmetadata.accessservices.governanceserver.outtopic;
 import org.odpi.openmetadata.accessservices.governanceserver.ffdc.GovernanceServerAuditCode;
 import org.odpi.openmetadata.commonservices.generichandlers.EngineActionHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
@@ -146,7 +146,7 @@ public class GovernanceServerOMRSTopicListener extends OMRSTopicListenerBase
             {
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataType.INTEGRATION_CONNECTOR_TYPE_NAME))
+                                              OpenMetadataType.INTEGRATION_CONNECTOR.typeName))
                 {
                     eventPublisher.publishRefreshIntegrationConnectorEvent(entity.getGUID(),
                                                                            repositoryHelper.getStringProperty(sourceName,
@@ -382,9 +382,9 @@ public class GovernanceServerOMRSTopicListener extends OMRSTopicListenerBase
             {
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              OpenMetadataType.ENGINE_ACTION_TYPE_NAME))
+                                              OpenMetadataType.ENGINE_ACTION.typeName))
                 {
-                    EngineActionStatus status = engineActionHandler.getActionStatus(OpenMetadataType.ACTION_STATUS_PROPERTY_NAME,
+                    EngineActionStatus status = engineActionHandler.getActionStatus(OpenMetadataProperty.ACTION_STATUS.name,
                                                                                     entity.getProperties());
 
                     if (status == EngineActionStatus.APPROVED)

@@ -6,39 +6,18 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.client.ActionControlInterface;
-import org.odpi.openmetadata.frameworks.governanceaction.client.DuplicateManagementInterface;
-import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceActionProcessInterface;
-import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceCompletionInterface;
-import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.governanceaction.client.WatchDogEventInterface;
+import org.odpi.openmetadata.frameworks.governanceaction.client.*;
 import org.odpi.openmetadata.frameworks.governanceaction.events.WatchdogEventType;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.IncidentDependency;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.IncidentImpactedElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.NewActionTarget;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.PortType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
-import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.search.MatchCriteria;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypeCategory;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PrimitiveTypePropertyValue;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyComparisonOperator;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyCondition;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.governanceaction.search.SearchProperties;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworks.governanceaction.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PortType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 
 /**
@@ -269,7 +248,7 @@ public class GovernanceActionContext implements GovernanceContext,
      */
     @Override
     public void updateActionTargetStatus(String                 actionTargetGUID,
-                                         EngineActionStatus     status,
+                                         EngineActionStatus status,
                                          Date                   startDate,
                                          Date                   completionDate,
                                          String                 completionMessage) throws InvalidParameterException,
@@ -987,7 +966,7 @@ public class GovernanceActionContext implements GovernanceContext,
 
         if (portType != null)
         {
-            properties = propertyHelper.addEnumProperty(properties, portTypePropertyName, portTypeTypeName, portType.getOpenTypeSymbolicName());
+            properties = propertyHelper.addEnumProperty(properties, portTypePropertyName, portTypeTypeName, portType.getName());
         }
 
         String portGUID = openMetadataClient.createMetadataElementInStore(userId,

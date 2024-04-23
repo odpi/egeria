@@ -6,6 +6,8 @@ package org.odpi.openmetadata.accessservices.assetmanager.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
 
 import java.util.Date;
 import java.util.Map;

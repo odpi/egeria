@@ -6,9 +6,8 @@ package org.odpi.openmetadata.accessservices.assetmanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.TermAssignmentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermAssignmentStatus;
 
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,10 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TermAssignmentStatusListResponse extends AssetManagerOMASAPIResponse
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    private List<TermAssignmentStatus> statuses = null;
+    private List<GlossaryTermAssignmentStatus> statuses = null;
 
 
     /**
@@ -60,7 +56,7 @@ public class TermAssignmentStatusListResponse extends AssetManagerOMASAPIRespons
      *
      * @return result object
      */
-    public List<TermAssignmentStatus> getStatuses()
+    public List<GlossaryTermAssignmentStatus> getStatuses()
     {
         if (statuses == null)
         {
@@ -82,7 +78,7 @@ public class TermAssignmentStatusListResponse extends AssetManagerOMASAPIRespons
      *
      * @param statuses result object
      */
-    public void setStatuses(List<TermAssignmentStatus> statuses)
+    public void setStatuses(List<GlossaryTermAssignmentStatus> statuses)
     {
         this.statuses = statuses;
     }

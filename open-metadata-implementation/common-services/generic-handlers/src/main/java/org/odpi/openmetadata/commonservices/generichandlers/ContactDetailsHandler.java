@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -103,9 +103,9 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                         profileGUID,
                                         profileGUIDParameterName,
                                         OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
-                                        OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP_TYPE_GUID,
-                                        OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP_TYPE_NAME,
-                                        OpenMetadataType.CONTACT_DETAILS_TYPE_NAME,
+                                        OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.typeGUID,
+                                        OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.typeName,
+                                        OpenMetadataType.CONTACT_DETAILS.typeName,
                                         null,
                                         null,
                                         2,
@@ -187,8 +187,8 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
         String contactMethodGUID = this.createBeanInRepository(userId,
                                                                externalSourceGUID,
                                                                externalSourceName,
-                                                               OpenMetadataType.CONTACT_DETAILS_TYPE_GUID,
-                                                               OpenMetadataType.CONTACT_DETAILS_TYPE_NAME,
+                                                               OpenMetadataType.CONTACT_DETAILS.typeGUID,
+                                                               OpenMetadataType.CONTACT_DETAILS.typeName,
                                                                builder,
                                                                effectiveTime,
                                                                methodName);
@@ -205,12 +205,12 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                OpenMetadataType.ACTOR_PROFILE_TYPE_NAME,
                                                contactMethodGUID,
                                                contactMethodGUIDParameterName,
-                                               OpenMetadataType.CONTACT_DETAILS_TYPE_NAME,
+                                               OpenMetadataType.CONTACT_DETAILS.typeName,
                                                forLineage,
                                                forDuplicateProcessing,
                                                supportedZones,
-                                               OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP_TYPE_GUID,
-                                               OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP_TYPE_NAME,
+                                               OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.typeGUID,
+                                               OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.typeName,
                                                null,
                                                effectiveTime,
                                                methodName);
@@ -254,8 +254,8 @@ public class ContactDetailsHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                     externalSourceName,
                                     contactMethodGUID,
                                     contactMethodGUIDParameterName,
-                                    OpenMetadataType.CONTACT_DETAILS_TYPE_GUID,
-                                    OpenMetadataType.CONTACT_DETAILS_TYPE_NAME,
+                                    OpenMetadataType.CONTACT_DETAILS.typeGUID,
+                                    OpenMetadataType.CONTACT_DETAILS.typeName,
                                     null,
                                     null,
                                     forLineage,

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;
 
 import java.util.Objects;
 
@@ -14,9 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * The CommentProperties bean stores information about a comment connected to an asset.  Comments provide informal feedback to assets
  * and can be added at any time.
- *
  * Comments have the userId of the person who added the feedback, along with their comment text.
- *
  * The content of the comment is a personal statement (which is why the user's id is in the comment)
  * and there is no formal review of the content.
  */
@@ -25,8 +24,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CommentProperties extends ReferenceableProperties
 {
-    private static final long     serialVersionUID = 1L;
-
     private CommentType commentType = null;
     private String      commentText = null;
     private String      user        = null;

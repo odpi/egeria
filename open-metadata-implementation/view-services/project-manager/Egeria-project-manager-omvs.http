@@ -57,7 +57,7 @@ Content-Type: application/json
 # Returns the list of actors that are linked off of the project.  This includes the project managers.
 # The optional request body allows a teamRole to be specified as a filter.  To filter out the project managers,
 # specify "ProjectManagement" as the team role.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/team?startFrom=0&pageSize=0
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}/team?startFrom=0&pageSize=0
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -134,7 +134,9 @@ Content-Type: application/json
     "identifier" : "Add business identifier",
     "name" : "Add display name here",
     "description" : "Add description of the project here",
+    "phase" : "lifecycle phase of the project",
     "status": "Add appropriate valid value for type",
+    "health" : "Add how well the project is tracking to plan",
     "startDate" : "date/time",
     "plannedEndDate" : "date/time"
   }
@@ -163,7 +165,9 @@ Content-Type: application/json
     "identifier" : "Add business identifier",
     "name" : "Add display name here",
     "description" : "Add description of the project here",
+    "phase" : "lifecycle phase of the project",
     "status": "Add appropriate valid value for type",
+    "health" : "Add how well the project is tracking to plan",
     "startDate" : "date/time",
     "plannedEndDate" : "date/time"
   }
@@ -188,7 +192,9 @@ Content-Type: application/json
     "identifier" : "Add business identifier",
     "name" : "Add display name here",
     "description" : "Add description of the project here",
+    "phase" : "lifecycle phase of the project",
     "status": "Add appropriate valid value for type",
+    "health" : "Add how well the project is tracking to plan",
     "startDate" : "date/time",
     "plannedEndDate" : "date/time"
   }
@@ -208,7 +214,9 @@ Content-Type: application/json
   "identifier" : "Add business identifier",
   "name" : "Add display name here",
   "description" : "Add description of the project here",
+  "phase" : "lifecycle phase of the project",
   "status": "Add appropriate valid value for type",
+  "health" : "Add how well the project is tracking to plan",
   "startDate" : "date/time",
   "plannedEndDate" : "date/time"
 }
@@ -259,7 +267,9 @@ Content-Type: application/json
   "identifier" : "Add business identifier",
   "name" : "Add display name here",
   "description" : "Add description of the project here",
+  "phase" : "lifecycle phase of the project",
   "status": "Add appropriate valid value for type",
+  "health" : "Add how well the project is tracking to plan",
   "startDate" : "date/time",
   "plannedEndDate" : "date/time"
 }

@@ -8,7 +8,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 
 
 /**

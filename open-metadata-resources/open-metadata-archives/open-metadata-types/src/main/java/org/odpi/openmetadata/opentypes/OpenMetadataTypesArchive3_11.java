@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.opentypes;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -587,9 +587,7 @@ public class OpenMetadataTypesArchive3_11
         /*
          * Create the Patch
          */
-        final String typeName = "ContactDetails";
-
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONTACT_DETAILS.typeName);
 
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
@@ -600,12 +598,12 @@ public class OpenMetadataTypesArchive3_11
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "name";
-        final String attribute1Description     = "Name of contact method.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "contactType";
-        final String attribute2Description     = "Type of contact - such as home address, work mobile, emergency contact ...";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.CONTACT_TYPE.name;
+        final String attribute2Description     = OpenMetadataProperty.CONTACT_TYPE.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.CONTACT_TYPE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,

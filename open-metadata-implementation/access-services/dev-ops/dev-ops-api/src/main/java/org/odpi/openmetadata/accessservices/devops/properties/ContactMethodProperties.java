@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.devops.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ContactMethodType;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -23,9 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ContactMethodProperties implements Serializable
 {
-    private static final long serialVersionUID = 1L;
-
-    private ContactMethodType type = null;
+    private ContactMethodType type    = null;
     private String            service = null;
     private String            value = null;
 

@@ -10,7 +10,7 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ValidV
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.ValidValueMember;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ReferenceValueAssignmentProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueMembershipProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ValidValueProperties;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;

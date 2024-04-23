@@ -30,8 +30,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.StarRating;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 
 import java.util.ArrayList;

@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworks.discovery.properties;
 
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.DataItemSortOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
 
 import java.io.Serial;
 import java.util.HashMap;
@@ -25,9 +25,9 @@ public class DataField extends PropertyBase
     private String              dataFieldType        = null;
     private String              dataFieldDescription = null;
     private String              dataFieldNamespace   = null;
-    private List<String>        dataFieldAliases     = null;
-    private DataItemSortOrder   dataFieldSortOrder   = null;
-    private int                 minCardinality       = 0;
+    private List<String>       dataFieldAliases      = null;
+    private DataItemSortOrder  dataFieldSortOrder    = null;
+    private int                minCardinality         = 0;
     private int                 maxCardinality       = 0;
     private boolean             isNullable           = true;
     private int                 minimumLength        = 0;

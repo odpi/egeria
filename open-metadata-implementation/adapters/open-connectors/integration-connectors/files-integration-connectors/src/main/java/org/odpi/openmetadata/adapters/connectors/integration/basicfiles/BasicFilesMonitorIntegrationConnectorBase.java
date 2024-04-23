@@ -13,7 +13,7 @@ import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exc
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.integration.filelistener.FileDirectoryListenerInterface;
 import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
 import org.odpi.openmetadata.integrationservices.files.connector.FilesIntegratorConnector;

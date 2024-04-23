@@ -9,15 +9,15 @@ import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.To
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ActionTargetProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.NewActionTargetProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
@@ -729,7 +729,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                                                                               relatedMetadataElements,
                                                                               methodName);
 
-                    if ((toDoStatus == null) || (toDoStatus == toDoElement.getProperties().getStatus()))
+                    if ((toDoStatus == null) || (toDoStatus == toDoElement.getProperties().getToDoStatus()))
                     {
                         toDoElements.add(toDoElement);
                     }
@@ -787,7 +787,7 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                                                                               relatedElements,
                                                                               methodName);
 
-                    if ((toDoStatus == null) || (toDoStatus == toDoElement.getProperties().getStatus()))
+                    if ((toDoStatus == null) || (toDoStatus == toDoElement.getProperties().getToDoStatus()))
                     {
                         toDoElements.add(toDoElement);
                     }
@@ -854,12 +854,12 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                                                                     OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
                                                                     toDoProperties.getAdditionalProperties());
 
-            if (toDoProperties.getStatus() != null)
+            if (toDoProperties.getToDoStatus() != null)
             {
                 elementProperties = propertyHelper.addEnumProperty(elementProperties,
-                                                                   OpenMetadataType.STATUS_PROPERTY_NAME,
-                                                                   OpenMetadataType.TO_DO_STATUS_ENUM_TYPE_NAME,
-                                                                   toDoProperties.getStatus().getName());
+                                                                   OpenMetadataProperty.TO_DO_STATUS.name,
+                                                                   ToDoStatus.getOpenTypeName(),
+                                                                   toDoProperties.getToDoStatus().getName());
             }
 
             elementProperties = propertyHelper.addPropertyMap(elementProperties,
@@ -887,11 +887,11 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
                                                                                    actionTargetProperties.getActionTargetName());
 
             elementProperties = propertyHelper.addDateProperty(elementProperties,
-                                                               OpenMetadataType.START_DATE_PROPERTY_NAME,
+                                                               OpenMetadataProperty.START_DATE.name,
                                                                actionTargetProperties.getStartDate());
 
             elementProperties = propertyHelper.addDateProperty(elementProperties,
-                                                               OpenMetadataType.COMPLETION_DATE_PROPERTY_NAME,
+                                                               OpenMetadataProperty.COMPLETION_DATE.name,
                                                                actionTargetProperties.getCompletionDate());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
@@ -901,8 +901,8 @@ public class ToDoActionManagement extends CommunityProfileBaseClient implements 
             if (actionTargetProperties.getStatus() != null)
             {
                 elementProperties = propertyHelper.addEnumProperty(elementProperties,
-                                                                   OpenMetadataType.STATUS_PROPERTY_NAME,
-                                                                   OpenMetadataType.TO_DO_STATUS_ENUM_TYPE_NAME,
+                                                                   OpenMetadataProperty.TO_DO_STATUS.name,
+                                                                   ToDoStatus.getOpenTypeName(),
                                                                    actionTargetProperties.getStatus().getName());
             }
 

@@ -16,6 +16,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermActivityType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.ArchiveRequestBody;
 import org.odpi.openmetadata.viewservices.glossaryworkflow.rest.ClassificationRequestBody;

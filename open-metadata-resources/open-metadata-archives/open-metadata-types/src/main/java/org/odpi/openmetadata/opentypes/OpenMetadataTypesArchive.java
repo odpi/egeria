@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.opentypes;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -552,7 +552,7 @@ public class OpenMetadataTypesArchive
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.ENGINE_ACTION_TYPE_NAME;
+        final String typeName = OpenMetadataType.ENGINE_ACTION.typeName;
         final String superTypeName = OpenMetadataType.ACTION.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
@@ -3053,7 +3053,7 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = OpenMetadataType.ENGINE_ACTION_TYPE_NAME;
+        final String                     end1EntityType               = OpenMetadataType.ENGINE_ACTION.typeName;
         final String                     end1AttributeName            = "engineAction";
         final String                     end1AttributeDescription     = "The engine action controlling the survey action service invocation.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -3214,7 +3214,7 @@ public class OpenMetadataTypesArchive
         /*
          * Create the Patch
          */
-        final String typeName = OpenMetadataType.DATA_FIELD_TYPE_NAME;
+        final String typeName = OpenMetadataType.DATA_FIELD.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 

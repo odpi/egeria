@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -221,8 +221,8 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
         String  commentGUID = this.createBeanInRepository(userId,
                                                           externalSourceGUID,
                                                           externalSourceName,
-                                                          OpenMetadataType.COMMENT_TYPE_GUID,
-                                                          OpenMetadataType.COMMENT_TYPE_NAME,
+                                                          OpenMetadataType.COMMENT.typeGUID,
+                                                          OpenMetadataType.COMMENT.typeName,
                                                           builder,
                                                           effectiveTime,
                                                           methodName);
@@ -237,7 +237,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                                OpenMetadataType.REFERENCEABLE.typeName,
                                                commentGUID,
                                                commentGUIDParameter,
-                                               OpenMetadataType.COMMENT_TYPE_NAME,
+                                               OpenMetadataType.COMMENT.typeName,
                                                forLineage,
                                                forDuplicateProcessing,
                                                supportedZones,
@@ -302,7 +302,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
         EntityDetail startingEntity = repositoryHandler.getEntityByGUID(userId,
                                                                         commentGUID,
                                                                         commentGUIDParameterName,
-                                                                        OpenMetadataType.COMMENT_TYPE_NAME,
+                                                                        OpenMetadataType.COMMENT.typeName,
                                                                         forLineage,
                                                                         forDuplicateProcessing,
                                                                         effectiveTime,
@@ -323,8 +323,8 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     startingEntity,
                                     commentGUIDParameterName,
-                                    OpenMetadataType.COMMENT_TYPE_GUID,
-                                    OpenMetadataType.COMMENT_TYPE_NAME,
+                                    OpenMetadataType.COMMENT.typeGUID,
+                                    OpenMetadataType.COMMENT.typeName,
                                     forLineage,
                                     forDuplicateProcessing,
                                     supportedZones,
@@ -336,7 +336,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
         List<Relationship> relationships = this.getAttachmentLinks(userId,
                                                                    startingEntity,
                                                                    commentGUIDParameterName,
-                                                                   OpenMetadataType.COMMENT_TYPE_NAME,
+                                                                   OpenMetadataType.COMMENT.typeName,
                                                                    OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
                                                                    OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
                                                                    null,
@@ -354,7 +354,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
         if ((relationships == null) || (relationships.isEmpty()))
         {
             errorHandler.handleNoRelationship(commentGUID,
-                                              OpenMetadataType.COMMENT_TYPE_NAME,
+                                              OpenMetadataType.COMMENT.typeName,
                                               OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
                                               methodName);
         }
@@ -370,7 +370,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
         else
         {
             errorHandler.handleAmbiguousRelationships(commentGUID,
-                                                      OpenMetadataType.COMMENT_TYPE_NAME,
+                                                      OpenMetadataType.COMMENT.typeName,
                                                       OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
                                                       relationships,
                                                       methodName);
@@ -413,8 +413,8 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                     externalSourceName,
                                     commentGUID,
                                     commentGUIDParameterName,
-                                    OpenMetadataType.COMMENT_TYPE_GUID,
-                                    OpenMetadataType.COMMENT_TYPE_NAME,
+                                    OpenMetadataType.COMMENT.typeGUID,
+                                    OpenMetadataType.COMMENT.typeName,
                                     null,
                                     null,
                                     forLineage,
@@ -473,10 +473,10 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                   externalSourceName,
                                   questionCommentGUID,
                                   questionCommentGUIDParameterName,
-                                  OpenMetadataType.COMMENT_TYPE_NAME,
+                                  OpenMetadataType.COMMENT.typeName,
                                   answerCommentGUID,
                                   answerCommentGUIDParameterName,
-                                  OpenMetadataType.COMMENT_TYPE_NAME,
+                                  OpenMetadataType.COMMENT.typeName,
                                   forLineage,
                                   forDuplicateProcessing,
                                   supportedZones,
@@ -529,11 +529,11 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                       externalSourceName,
                                       questionCommentGUID,
                                       questionCommentGUIDParameterName,
-                                      OpenMetadataType.COMMENT_TYPE_NAME,
+                                      OpenMetadataType.COMMENT.typeName,
                                       answerCommentGUID,
                                       answerCommentGUIDParameterName,
-                                      OpenMetadataType.COMMENT_TYPE_GUID,
-                                      OpenMetadataType.COMMENT_TYPE_NAME,
+                                      OpenMetadataType.COMMENT.typeGUID,
+                                      OpenMetadataType.COMMENT.typeName,
                                       forLineage,
                                       forDuplicateProcessing,
                                       OpenMetadataType.ANSWER_RELATIONSHIP_TYPE_GUID,
@@ -589,7 +589,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                         elementTypeName,
                                         OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
                                         OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
-                                        OpenMetadataType.COMMENT_TYPE_NAME,
+                                        OpenMetadataType.COMMENT.typeName,
                                         null,
                                         null,
                                         2,
@@ -644,7 +644,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                         elementTypeName,
                                         OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
                                         OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
-                                        OpenMetadataType.COMMENT_TYPE_NAME,
+                                        OpenMetadataType.COMMENT.typeName,
                                         null,
                                         null,
                                         2,

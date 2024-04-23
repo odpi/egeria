@@ -38,8 +38,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.SchemaAttributes;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
 import org.odpi.openmetadata.frameworks.governanceaction.OpenMetadataStore;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
@@ -1239,7 +1239,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
         initialClassifications.put(OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
                                    classificationProperties);
 
-        String schemaAttributeGUID = openMetadataStore.createMetadataElementInStore(OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+        String schemaAttributeGUID = openMetadataStore.createMetadataElementInStore(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                                     ElementStatus.ACTIVE,
                                                                                     initialClassifications,
                                                                                     anchorGUID,

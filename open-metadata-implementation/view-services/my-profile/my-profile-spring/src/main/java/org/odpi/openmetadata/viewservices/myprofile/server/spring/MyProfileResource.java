@@ -17,12 +17,11 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The MyProfileResource provides part of the server-side implementation of the My Profile OMVS.
- * This interface provides access to an individual's personal profile.
- */
+= */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/my-profile")
 
-@Tag(name="API: My Profile OMVS", description="The My Profile OMVS provides APIs for retrieving and updating a user's personal profile.",
+@Tag(name="API: My Profile OMVS", description="The My Profile OMVS provides APIs for retrieving and updating a user's personal profile, roles and actions.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/my-profile/overview/"))
 
@@ -355,7 +354,7 @@ public class MyProfileResource
                                                     boolean                        endsWith,
                                       @RequestParam (required = false, defaultValue = "false")
                                                     boolean                        ignoreCase,
-                                      @RequestBody  ToDoStatusSearchString          requestBody)
+                                      @RequestBody  ToDoStatusSearchString         requestBody)
     {
         return restAPI.findToDos(serverName, startFrom, pageSize, startsWith, endsWith, ignoreCase, requestBody);
     }

@@ -4,7 +4,7 @@ package org.odpi.openmetadata.frameworkservices.gaf.converters;
 
 import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceServiceElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceServiceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;

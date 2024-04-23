@@ -3,8 +3,9 @@
 package org.odpi.openmetadata.commonservices.generichandlers;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CollectionMemberStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -484,15 +485,15 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataType.STATUS_PROPERTY_NAME,
-                                                                    OpenMetadataType.MEMBERSHIP_STATUS_ENUM_TYPE_GUID,
-                                                                    OpenMetadataType.MEMBERSHIP_STATUS_ENUM_TYPE_NAME,
+                                                                    OpenMetadataProperty.MEMBERSHIP_STATUS.name,
+                                                                    CollectionMemberStatus.getOpenTypeGUID(),
+                                                                    CollectionMemberStatus.getOpenTypeName(),
                                                                     membershipStatus,
                                                                     methodName);
         }
         catch (TypeErrorException classificationNotSupported)
         {
-            throw new InvalidParameterException(classificationNotSupported, OpenMetadataType.STATUS_PROPERTY_NAME);
+            throw new InvalidParameterException(classificationNotSupported, OpenMetadataProperty.MEMBERSHIP_STATUS.name);
         }
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
@@ -515,7 +516,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.STEWARD_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.STEWARD.name,
                                                                   steward,
                                                                   methodName);
 

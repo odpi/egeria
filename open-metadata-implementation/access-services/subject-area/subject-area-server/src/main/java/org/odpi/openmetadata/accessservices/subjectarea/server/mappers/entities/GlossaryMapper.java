@@ -13,8 +13,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAr
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.slf4j.Logger;
@@ -119,7 +119,7 @@ public class GlossaryMapper extends EntityDetailMapper<Glossary> {
         boolean foundProperty = true;
         if (propertyName.equals(OpenMetadataType.LANGUAGE_PROPERTY_NAME)) {
             glossary.setLanguage(stringValue);
-        } else if (propertyName.equals(OpenMetadataType.USAGE_PROPERTY_NAME)) {
+        } else if (propertyName.equals(OpenMetadataProperty.USAGE.name)) {
             glossary.setUsage(stringValue);
         } else {
             foundProperty = false;
@@ -140,7 +140,7 @@ public class GlossaryMapper extends EntityDetailMapper<Glossary> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, glossary.getLanguage(), OpenMetadataType.LANGUAGE_PROPERTY_NAME);
         }
         if (glossary.getUsage() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, glossary.getUsage(), OpenMetadataType.USAGE_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, glossary.getUsage(), OpenMetadataProperty.USAGE.name);
         }
         if (node.getName() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), OpenMetadataProperty.DISPLAY_NAME.name);

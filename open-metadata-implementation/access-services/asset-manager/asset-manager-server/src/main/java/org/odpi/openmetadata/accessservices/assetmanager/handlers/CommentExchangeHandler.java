@@ -6,11 +6,12 @@ import org.odpi.openmetadata.accessservices.assetmanager.converters.CommentConve
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.CommentElement;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.MetadataElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentType;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.CommentHandler;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -123,7 +124,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
                     comment.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                                 comment.getElementHeader().getGUID(),
                                                                                 commentGUIDParameterName,
-                                                                                OpenMetadataType.COMMENT_TYPE_NAME,
+                                                                                OpenMetadataType.COMMENT.typeName,
                                                                                 assetManagerGUID,
                                                                                 assetManagerName,
                                                                                 false,
@@ -176,11 +177,11 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateObject(commentProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(commentProperties.getCommentText(), commentText, methodName);
 
-        int commentType = CommentType.STANDARD_COMMENT.getOpenTypeOrdinal();
+        int commentType = CommentType.STANDARD_COMMENT.getOrdinal();
 
         if (commentProperties.getCommentType() != null)
         {
-            commentType = commentProperties.getCommentType().getOpenTypeOrdinal();
+            commentType = commentProperties.getCommentType().getOrdinal();
         }
 
         String commentGUID = commentHandler.attachNewComment(userId,
@@ -204,7 +205,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
             this.createExternalIdentifier(userId,
                                           commentGUID,
                                           commentGUIDParameterName,
-                                          OpenMetadataType.COMMENT_TYPE_NAME,
+                                          OpenMetadataType.COMMENT.typeName,
                                           correlationProperties,
                                           forLineage,
                                           forDuplicateProcessing,
@@ -255,17 +256,17 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateObject(commentProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(commentProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        int commentType = CommentType.STANDARD_COMMENT.getOpenTypeOrdinal();
+        int commentType = CommentType.STANDARD_COMMENT.getOrdinal();
 
         if (commentProperties.getCommentType() != null)
         {
-            commentType = commentProperties.getCommentType().getOpenTypeOrdinal();
+            commentType = commentProperties.getCommentType().getOrdinal();
         }
 
         this.validateExternalIdentifier(userId,
                                         commentGUID,
                                         commentGUIDParameterName,
-                                        OpenMetadataType.COMMENT_TYPE_NAME,
+                                        OpenMetadataType.COMMENT.typeName,
                                         correlationProperties,
                                         forLineage,
                                         forDuplicateProcessing,
@@ -322,7 +323,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
         this.validateExternalIdentifier(userId,
                                         commentGUID,
                                         commentGUIDParameterName,
-                                        OpenMetadataType.COMMENT_TYPE_NAME,
+                                        OpenMetadataType.COMMENT.typeName,
                                         correlationProperties,
                                         forLineage,
                                         forDuplicateProcessing,
@@ -414,9 +415,9 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
                                                           assetManagerName,
                                                           OpenMetadataType.ANSWER_RELATIONSHIP_TYPE_GUID,
                                                           questionCommentGUID,
-                                                          OpenMetadataType.COMMENT_TYPE_NAME,
+                                                          OpenMetadataType.COMMENT.typeName,
                                                           answerCommentGUID,
-                                                          OpenMetadataType.COMMENT_TYPE_NAME,
+                                                          OpenMetadataType.COMMENT.typeName,
                                                           methodName);
     }
 
@@ -469,9 +470,9 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
                                                          assetManagerName,
                                                          OpenMetadataType.ANSWER_RELATIONSHIP_TYPE_NAME,
                                                          questionCommentGUID,
-                                                         OpenMetadataType.COMMENT_TYPE_NAME,
+                                                         OpenMetadataType.COMMENT.typeName,
                                                          answerCommentGUID,
-                                                         OpenMetadataType.COMMENT_TYPE_NAME,
+                                                         OpenMetadataType.COMMENT.typeName,
                                                          methodName);
     }
 
@@ -515,9 +516,9 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
         List<CommentElement> results = commentHandler.findBeans(userId,
                                                                 searchString,
                                                                 searchStringParameterName,
-                                                                OpenMetadataType.COMMENT_TYPE_GUID,
-                                                                OpenMetadataType.COMMENT_TYPE_NAME,
-                                                                "qualifiedName",
+                                                                OpenMetadataType.COMMENT.typeGUID,
+                                                                OpenMetadataType.COMMENT.typeName,
+                                                                OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                 startFrom,
                                                                 pageSize,
                                                                 forLineage,
@@ -617,7 +618,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
         CommentElement comment = commentHandler.getBeanFromRepository(userId,
                                                                       commentGUID,
                                                                       guidParameterName,
-                                                                      OpenMetadataType.COMMENT_TYPE_NAME,
+                                                                      OpenMetadataType.COMMENT.typeName,
                                                                       forLineage,
                                                                       forDuplicateProcessing,
                                                                       effectiveTime,
@@ -628,7 +629,7 @@ public class CommentExchangeHandler extends ExchangeHandlerBase
             comment.setCorrelationHeaders(this.getCorrelationProperties(userId,
                                                                         commentGUID,
                                                                         guidParameterName,
-                                                                        OpenMetadataType.COMMENT_TYPE_NAME,
+                                                                        OpenMetadataType.COMMENT.typeName,
                                                                         assetManagerGUID,
                                                                         assetManagerName,
                                                                         forLineage,

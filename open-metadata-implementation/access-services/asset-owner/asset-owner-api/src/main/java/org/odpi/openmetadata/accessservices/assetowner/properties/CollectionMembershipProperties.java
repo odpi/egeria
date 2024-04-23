@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetowner.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CollectionMemberStatus;
 
 import java.util.Objects;
 
@@ -23,7 +24,7 @@ public class CollectionMembershipProperties
     private String                     createdBy           = null;
     private String                     expression          = null;
     private int                        confidence          = 0;
-    private CollectionMembershipStatus status              = null;
+    private CollectionMemberStatus     status              = null;
     private String                     userDefinedStatus   = null;
     private String                     steward             = null;
     private String                     stewardTypeName     = null;
@@ -164,7 +165,7 @@ public class CollectionMembershipProperties
      *
      * @return enum
      */
-    public CollectionMembershipStatus getStatus()
+    public CollectionMemberStatus getStatus()
     {
         return status;
     }
@@ -175,7 +176,7 @@ public class CollectionMembershipProperties
      *
      * @param status enum
      */
-    public void setStatus(CollectionMembershipStatus status)
+    public void setStatus(CollectionMemberStatus status)
     {
         this.status = status;
     }

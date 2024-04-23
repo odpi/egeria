@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.communityprofile.properties.NewActio
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ToDoElement;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ActionTargetProperties;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoProperties;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ToDoStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;

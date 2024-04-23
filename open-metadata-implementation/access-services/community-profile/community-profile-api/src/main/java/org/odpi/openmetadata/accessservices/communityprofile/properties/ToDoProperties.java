@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
 
 import java.util.*;
 
@@ -27,7 +28,7 @@ public class ToDoProperties extends ReferenceableProperties
     private Date       dueTime        = null;
     private Date       lastReviewTime = null;
     private Date       completionTime = null;
-    private ToDoStatus status         = ToDoStatus.OPEN;
+    private ToDoStatus toDoStatus     = ToDoStatus.OPEN;
 
 
 
@@ -59,7 +60,7 @@ public class ToDoProperties extends ReferenceableProperties
             lastReviewTime = template.getLastReviewTime();
             dueTime = template.getDueTime();
             completionTime = template.getCompletionTime();
-            status = template.getStatus();
+            toDoStatus     = template.getToDoStatus();
         }
     }
 
@@ -238,20 +239,20 @@ public class ToDoProperties extends ReferenceableProperties
      *
      * @return status enum
      */
-    public ToDoStatus getStatus()
+    public ToDoStatus getToDoStatus()
     {
-        return status;
+        return toDoStatus;
     }
 
 
     /**
      * Set up the status of the action/to do.
      *
-     * @param status status enum
+     * @param toDoStatus status enum
      */
-    public void setStatus(ToDoStatus status)
+    public void setToDoStatus(ToDoStatus toDoStatus)
     {
-        this.status = status;
+        this.toDoStatus = toDoStatus;
     }
 
 
@@ -271,7 +272,7 @@ public class ToDoProperties extends ReferenceableProperties
                        ", lastReviewTime=" + lastReviewTime +
                        ", dueTime=" + dueTime +
                        ", completionTime=" + completionTime +
-                       ", status=" + status +
+                       ", status=" + toDoStatus +
                        ", qualifiedName='" + getQualifiedName() + '\'' +
                        ", additionalProperties=" + getAdditionalProperties() +
                        ", effectiveFrom=" + getEffectiveFrom() +
@@ -312,7 +313,7 @@ public class ToDoProperties extends ReferenceableProperties
                        Objects.equals(lastReviewTime, that.lastReviewTime) &&
                        Objects.equals(dueTime, that.dueTime) &&
                        Objects.equals(completionTime, that.completionTime) &&
-                       status == that.status;
+                       toDoStatus == that.toDoStatus;
     }
 
 
@@ -326,6 +327,6 @@ public class ToDoProperties extends ReferenceableProperties
     {
         return Objects.hash(super.hashCode(), getName(), getDescription(), getCreationTime(), getPriority(),
                             getLastReviewTime(), getDueTime(), getCompletionTime(),
-                            getStatus(), getExtendedProperties(), getAdditionalProperties());
+                            getToDoStatus(), getExtendedProperties(), getAdditionalProperties());
     }
 }

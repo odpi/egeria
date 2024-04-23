@@ -2,15 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.connectors.mapper.OpenConnectorsValidValues;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
+import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -552,9 +553,9 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                                           connectorType.getProperties(),
                                                                           methodName);
 
-                    if ((framework == null) || (OpenMetadataValidValues.CONNECTOR_FRAMEWORK_DEFAULT.equals(framework)))
+                    if ((framework == null) || (OpenConnectorsValidValues.CONNECTOR_FRAMEWORK_DEFAULT.equals(framework)))
                     {
-                        if ((language == null) || (OpenMetadataValidValues.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT.equals(language)))
+                        if ((language == null) || (OpenConnectorsValidValues.CONNECTOR_INTERFACE_LANGUAGE_DEFAULT.equals(language)))
                         {
                             return connectorType.getGUID();
                         }

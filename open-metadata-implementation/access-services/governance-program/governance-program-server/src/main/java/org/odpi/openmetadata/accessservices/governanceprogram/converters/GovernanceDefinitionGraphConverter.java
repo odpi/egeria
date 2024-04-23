@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.governanceprogram.properties.Certifi
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDefinitionProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.LicenseTypeProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.SecurityGroupProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;

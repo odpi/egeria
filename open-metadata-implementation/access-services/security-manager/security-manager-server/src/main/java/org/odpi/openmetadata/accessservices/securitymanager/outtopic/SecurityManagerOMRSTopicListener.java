@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.securitymanager.outtopic;
 
 import org.odpi.openmetadata.accessservices.securitymanager.events.SecurityManagerEventType;
 import org.odpi.openmetadata.accessservices.securitymanager.metadataelements.UserIdentityElement;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.UserIdentityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;

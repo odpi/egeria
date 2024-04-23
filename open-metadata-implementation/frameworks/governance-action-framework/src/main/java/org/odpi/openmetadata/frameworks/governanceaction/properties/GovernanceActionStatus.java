@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.governanceaction.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.EngineActionStatus;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -21,7 +22,7 @@ public enum GovernanceActionStatus
     /**
      * The governance action has been created and is pending.
      */
-    REQUESTED       (0,  0,  "Requested",  "The governance action has been created and is pending.", EngineActionStatus.REQUESTED),
+    REQUESTED       (0, 0, "Requested", "The governance action has been created and is pending.", EngineActionStatus.REQUESTED),
 
     /**
      * The governance action is approved to run.

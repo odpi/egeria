@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.StarRating;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertFalse;

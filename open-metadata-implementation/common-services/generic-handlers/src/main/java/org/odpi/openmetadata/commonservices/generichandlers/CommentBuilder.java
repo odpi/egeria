@@ -2,8 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -39,8 +40,8 @@ public class CommentBuilder extends ReferenceableBuilder
                           String               serverName)
     {
         super(qualifiedName,
-              OpenMetadataType.COMMENT_TYPE_GUID,
-              OpenMetadataType.COMMENT_TYPE_NAME,
+              OpenMetadataType.COMMENT.typeGUID,
+              OpenMetadataType.COMMENT.typeName,
               repositoryHelper,
               serviceName,
               serverName);
@@ -93,15 +94,15 @@ public class CommentBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataType.COMMENT_TYPE_PROPERTY_NAME,
-                                                                    OpenMetadataType.COMMENT_TYPE_ENUM_TYPE_GUID,
-                                                                    OpenMetadataType.COMMENT_TYPE_ENUM_TYPE_NAME,
+                                                                    OpenMetadataProperty.COMMENT_TYPE.name,
+                                                                    CommentType.getOpenTypeGUID(),
+                                                                    CommentType.getOpenTypeName(),
                                                                     commentType,
                                                                     methodName);
         }
         catch (TypeErrorException  error)
         {
-            throw new InvalidParameterException(error, OpenMetadataType.COMMENT_TYPE_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataProperty.COMMENT_TYPE.name);
         }
 
         return properties;

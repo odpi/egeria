@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The CollectionManagerResource provides the Spring API endpoints of the Collection Manager Open Metadata View Service (OMVS).
- * This interface provides a service for Egeria UIs.
- */
+= */
 
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/collection-manager")

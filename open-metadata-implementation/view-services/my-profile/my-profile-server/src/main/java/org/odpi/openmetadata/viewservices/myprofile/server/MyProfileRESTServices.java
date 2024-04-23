@@ -472,7 +472,7 @@ public class MyProfileRESTServices extends TokenController
             {
                 response.setToDoElements(handler.getActionsForActionTarget(userId,
                                                                            elementGUID,
-                                                                           requestBody.getStatus(),
+                                                                           requestBody.getToDoStatus(),
                                                                            startFrom,
                                                                            pageSize));
             }
@@ -536,7 +536,7 @@ public class MyProfileRESTServices extends TokenController
             {
                 response.setToDoElements(handler.getActionsForSponsor(userId,
                                                                       elementGUID,
-                                                                      requestBody.getStatus(),
+                                                                      requestBody.getToDoStatus(),
                                                                       startFrom,
                                                                       pageSize));
             }
@@ -600,7 +600,7 @@ public class MyProfileRESTServices extends TokenController
             {
                 response.setToDoElements(handler.getAssignedActions(userId,
                                                                     actorGUID,
-                                                                    requestBody.getStatus(),
+                                                                    requestBody.getToDoStatus(),
                                                                     startFrom,
                                                                     pageSize));
             }
@@ -668,7 +668,7 @@ public class MyProfileRESTServices extends TokenController
             {
                 response.setToDoElements(handler.findToDos(userId,
                                                            instanceHandler.getSearchString(requestBody.getSearchString(), startsWith, endsWith, ignoreCase),
-                                                           requestBody.getStatus(),
+                                                           requestBody.getToDoStatus(),
                                                            startFrom,
                                                            pageSize));
             }
@@ -728,7 +728,7 @@ public class MyProfileRESTServices extends TokenController
             {
                 response.setToDoElements(handler.getToDosByType(userId,
                                                                 toDoType,
-                                                                requestBody.getStatus(),
+                                                                requestBody.getToDoStatus(),
                                                                 startFrom,
                                                                 pageSize));
             }

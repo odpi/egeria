@@ -3,7 +3,6 @@
 
 package org.odpi.openmetadata.adapters.connectors.postgres.catalog;
 
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.OperationalStatus;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.postgres.ffdc.PostgresAuditCode;
 import org.odpi.openmetadata.adapters.connectors.postgres.utilities.PostgresUtils;
@@ -16,11 +15,12 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
@@ -218,7 +218,7 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                                                                                       OpenMetadataType.SUPPORTED_CAPABILITY_RELATIONSHIP.typeName,
                                                                                       propertyHelper.addEnumProperty(null,
                                                                                                                      OpenMetadataProperty.OPERATIONAL_STATUS.name,
-                                                                                                                     OpenMetadataType.OPERATIONAL_STATUS_ENUM_TYPE_NAME,
+                                                                                                                     OperationalStatus.getOpenTypeName(),
                                                                                                                      OperationalStatus.ENABLED.getName()),
                                                                                       true);
             }

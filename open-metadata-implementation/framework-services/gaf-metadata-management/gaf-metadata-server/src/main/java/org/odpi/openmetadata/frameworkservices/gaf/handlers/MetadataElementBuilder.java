@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworkservices.gaf.handlers;
 
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericBuilder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;

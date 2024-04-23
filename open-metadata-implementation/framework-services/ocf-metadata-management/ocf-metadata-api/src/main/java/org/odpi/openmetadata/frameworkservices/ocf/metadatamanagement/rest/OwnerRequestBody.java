@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.AssetOwnerType;
 
 import java.util.Objects;
 
@@ -22,8 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OwnerRequestBody extends OCFOMASAPIRequestBody
 {
-    private OwnerType ownerType = null;
-    private String    ownerId   = null;
+    private AssetOwnerType ownerType = null;
+    private String         ownerId   = null;
 
 
     /**
@@ -56,7 +56,7 @@ public class OwnerRequestBody extends OCFOMASAPIRequestBody
      * 
      * @return string
      */
-    public OwnerType getOwnerType()
+    public AssetOwnerType getOwnerType()
     {
         return ownerType;
     }
@@ -67,7 +67,7 @@ public class OwnerRequestBody extends OCFOMASAPIRequestBody
      * 
      * @param ownerType string
      */
-    public void setOwnerType(OwnerType ownerType)
+    public void setOwnerType(AssetOwnerType ownerType)
     {
         this.ownerType = ownerType;
     }

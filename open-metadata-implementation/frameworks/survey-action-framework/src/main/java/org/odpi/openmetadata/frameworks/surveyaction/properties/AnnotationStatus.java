@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.surveyaction.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataWikiPages;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages;
 
 import java.io.Serializable;
 

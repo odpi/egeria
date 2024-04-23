@@ -7,8 +7,7 @@ import org.junit.Test;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.ExternalGlossaryLink;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryTerm;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetailResponse;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
 import java.util.Arrays;

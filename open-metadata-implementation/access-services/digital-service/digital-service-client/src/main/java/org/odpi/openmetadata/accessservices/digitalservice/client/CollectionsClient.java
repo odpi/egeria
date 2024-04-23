@@ -13,8 +13,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CollectionMemberStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.OrderBy;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
@@ -503,14 +505,14 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
             initialClassifications = new HashMap<>();
 
             ElementProperties classificationProperties = propertyHelper.addStringProperty(null,
-                                                                                          OpenMetadataType.ORDER_PROPERTY_NAME_PROPERTY_NAME,
-                                                                                          properties.getOrderPropertyName());
-            if (properties.getCollectionOrdering() != null)
+                                                                                          OpenMetadataProperty.ORDER_BY_PROPERTY_NAME.name,
+                                                                                          properties.getOrderByPropertyName());
+            if (properties.getCollectionOrder() != null)
             {
                 classificationProperties = propertyHelper.addEnumProperty(classificationProperties,
-                                                                          OpenMetadataType.ORDER_BY_PROPERTY_NAME,
-                                                                          OpenMetadataType.ORDER_BY_TYPE_ENUM_TYPE_NAME,
-                                                                          properties.getCollectionOrdering().getName());
+                                                                          OpenMetadataProperty.COLLECTION_ORDER.name,
+                                                                          OrderBy.getOpenTypeName(),
+                                                                          properties.getCollectionOrder().getName());
             }
 
             initialClassifications.put(OpenMetadataType.FOLDER.typeName, classificationProperties);
@@ -1295,8 +1297,8 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
             if (collectionMembershipProperties.getStatus() != null)
             {
                 elementProperties = propertyHelper.addEnumProperty(elementProperties,
-                                                                   OpenMetadataType.STATUS_PROPERTY_NAME,
-                                                                   OpenMetadataType.MEMBERSHIP_STATUS_ENUM_TYPE_NAME,
+                                                                   OpenMetadataProperty.MEMBERSHIP_STATUS.name,
+                                                                   CollectionMemberStatus.getOpenTypeName(),
                                                                    collectionMembershipProperties.getStatus().getName());
             }
 
@@ -1313,7 +1315,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                  collectionMembershipProperties.getCreatedBy());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.STEWARD_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.STEWARD.name,
                                                                  collectionMembershipProperties.getSteward());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,

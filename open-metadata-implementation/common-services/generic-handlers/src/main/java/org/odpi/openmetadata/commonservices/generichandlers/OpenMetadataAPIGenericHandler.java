@@ -2,8 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.mapper.SupplementaryPropertiesValidValues;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.*;
 import org.odpi.openmetadata.commonservices.generichandlers.ffdc.*;
@@ -39,15 +40,6 @@ import java.util.*;
 public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler<B>
 {
     private static final Logger log = LoggerFactory.getLogger(OpenMetadataAPIGenericHandler.class);
-
-    private final static String supplementaryPropertiesQualifiedNamePostFix = " Supplementary Properties";
-    private final static String supplementaryPropertiesGlossaryName = "Supplementary Properties Glossary";
-    private final static String supplementaryPropertiesGlossaryParameterName = "supplementaryPropertiesGlossaryName";
-    private final static String supplementaryPropertiesGlossaryDescription =
-            "This glossary contains glossary terms containing the business-oriented descriptive names and related properties for " +
-                    "open metadata assets.";
-
-
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -2048,7 +2040,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
          */
         Relationship relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                   attributeGUID,
-                                                                                  OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                                  OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                                   false,
                                                                                   OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                                   OpenMetadataType.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
@@ -2070,7 +2062,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
 
         relationship = repositoryHandler.getUniqueParentRelationshipByType(userId,
                                                                            attributeGUID,
-                                                                           OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                                           OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                                                            OpenMetadataType.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                            OpenMetadataType.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
                                                                            true,
@@ -2635,7 +2627,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
          */
         Relationship relationship = repositoryHandler.getUniqueRelationshipByType(userId,
                                                                                   dataFieldGUID,
-                                                                                  OpenMetadataType.DATA_FIELD_TYPE_NAME,
+                                                                                  OpenMetadataType.DATA_FIELD.typeName,
                                                                                   false,
                                                                                   OpenMetadataType.DISCOVERED_DATA_FIELD_TYPE_GUID,
                                                                                   OpenMetadataType.DISCOVERED_DATA_FIELD_TYPE_NAME,
@@ -2689,7 +2681,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
          */
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                     commentGUID,
-                                                                                    OpenMetadataType.COMMENT_TYPE_NAME,
+                                                                                    OpenMetadataType.COMMENT.typeName,
                                                                                     OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
                                                                                     OpenMetadataType.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
                                                                                     1,
@@ -2709,7 +2701,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                     if ((proxy != null) && (proxy.getGUID() != null) && (proxy.getType() != null))
                     {
                         if ((! commentGUID.equals(proxy.getGUID())) &&
-                            (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataType.COMMENT_TYPE_NAME)))
+                            (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataType.COMMENT.typeName)))
                         {
                             AnchorIdentifiers parentAnchorIdentifiers = this.getAnchorGUIDForComment(userId, proxy.getGUID(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
 
@@ -2912,7 +2904,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         {
             anchorIdentifiers = this.getAnchorGUIDForSchemaType(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.SCHEMA_ATTRIBUTE.typeName))
         {
             anchorIdentifiers = this.getAnchorGUIDForSchemaAttribute(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
@@ -2924,7 +2916,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         {
             anchorIdentifiers = this.getAnchorGUIDForEndpoint(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.COMMENT_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.COMMENT.typeName))
         {
             anchorIdentifiers = this.getAnchorGUIDForComment(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
@@ -2952,7 +2944,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
         {
             anchorIdentifiers = this.getAnchorGUIDForAnnotationReview(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.DATA_FIELD_TYPE_NAME))
+        else if (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.DATA_FIELD.typeName))
         {
             anchorIdentifiers = this.getAnchorGUIDForDataField(localServerUserId, targetGUID, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
@@ -3363,7 +3355,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             if (anchorEntityType != null)
             {
                 boolean isFeedbackEntity = (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.INFORMAL_TAG_TYPE_NAME)) ||
-                                           (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.COMMENT_TYPE_NAME)) ||
+                                           (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.COMMENT.typeName)) ||
                                            (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.RATING_TYPE_NAME)) ||
                                            (repositoryHelper.isTypeOf(serviceName, connectToType, OpenMetadataType.LIKE_TYPE_NAME));
 
@@ -4013,8 +4005,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                  PropertyServerException
     {
         String glossaryGUID = this.getEntityGUIDByValue(localServerUserId,
-                                                        supplementaryPropertiesGlossaryName,
-                                                        supplementaryPropertiesGlossaryParameterName,
+                                                        SupplementaryPropertiesValidValues.GLOSSARY_NAME,
+                                                        SupplementaryPropertiesValidValues.GLOSSARY_PARAMETER_NAME,
                                                         OpenMetadataType.GLOSSARY_TYPE_GUID,
                                                         OpenMetadataType.GLOSSARY_TYPE_NAME,
                                                         qualifiedNamePropertyNamesList,
@@ -4028,19 +4020,19 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                          null,
                                                                                          OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                         supplementaryPropertiesGlossaryName,
+                                                                                         SupplementaryPropertiesValidValues.GLOSSARY_NAME,
                                                                                          methodName);
 
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataProperty.DISPLAY_NAME.name,
-                                                                      supplementaryPropertiesGlossaryName,
+                                                                      SupplementaryPropertiesValidValues.GLOSSARY_NAME,
                                                                       methodName);
 
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       OpenMetadataProperty.DESCRIPTION.name,
-                                                                      supplementaryPropertiesGlossaryDescription,
+                                                                      SupplementaryPropertiesValidValues.GLOSSARY_DESCRIPTION,
                                                                       methodName);
 
             glossaryGUID = repositoryHandler.createEntity(localServerUserId,
@@ -4094,7 +4086,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.SUMMARY_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.SUMMARY.name,
                                                                   summary,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
@@ -4104,12 +4096,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.ABBREVIATION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.ABBREVIATION.name,
                                                                   abbreviation,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.USAGE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.USAGE.name,
                                                                   usage,
                                                                   methodName);
         return properties;
@@ -4165,7 +4157,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                            elementTypeName,
                                                            OpenMetadataType.SUPPLEMENTARY_PROPERTIES_TYPE_GUID,
                                                            OpenMetadataType.SUPPLEMENTARY_PROPERTIES_TYPE_NAME,
-                                                           OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                                           OpenMetadataType.GLOSSARY_TERM.typeName,
                                                            2,
                                                            forLineage,
                                                            forDuplicateProcessing,
@@ -4178,7 +4170,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             if (displayName != null || summary != null || description != null || abbreviation != null || usage != null)
             {
                 InstanceProperties glossaryTermProperties = this.getSupplementaryInstanceProperties(null,
-                                                                                                    elementQualifiedName + supplementaryPropertiesQualifiedNamePostFix,
+                                                                                                    elementQualifiedName + SupplementaryPropertiesValidValues.QUALIFIED_NAME_POST_FIX,
                                                                                                     displayName,
                                                                                                     summary,
                                                                                                     description,
@@ -4218,7 +4210,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                                   InstanceProvenanceType.LOCAL_COHORT,
                                                                                                   userId,
                                                                                                   OpenMetadataType.ANCHORS_CLASSIFICATION.typeName,
-                                                                                                  OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                                                                                  OpenMetadataType.GLOSSARY_TERM.typeName,
                                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                                   null,
                                                                                                   classificationProperties);
@@ -4230,7 +4222,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                    InstanceProvenanceType.LOCAL_COHORT,
                                                                                    userId,
                                                                                    OpenMetadataType.ELEMENT_SUPPLEMENT_CLASSIFICATION_TYPE_NAME,
-                                                                                   OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                                                                   OpenMetadataType.GLOSSARY_TERM.typeName,
                                                                                    ClassificationOrigin.ASSIGNED,
                                                                                    null,
                                                                                    null);
@@ -4242,8 +4234,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                         }
 
                         String glossaryTermGUID = repositoryHandler.createEntity(localServerUserId,
-                                                                                 OpenMetadataType.GLOSSARY_TERM_TYPE_GUID,
-                                                                                 OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                                                                 OpenMetadataType.GLOSSARY_TERM.typeGUID,
+                                                                                 OpenMetadataType.GLOSSARY_TERM.typeName,
                                                                                  null,
                                                                                  null,
                                                                                  glossaryTermProperties,
@@ -4252,7 +4244,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                                  methodName);
 
                         repositoryHandler.createRelationship(userId,
-                                                             OpenMetadataType.TERM_ANCHOR_TYPE_GUID,
+                                                             OpenMetadataType.TERM_ANCHOR.typeGUID,
                                                              null,
                                                              null,
                                                              glossaryGUID,
@@ -4279,7 +4271,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             if (isMergeUpdate)
             {
                 glossaryTermProperties = this.getSupplementaryInstanceProperties(glossaryTerm.getProperties(),
-                                                                                 elementQualifiedName + supplementaryPropertiesQualifiedNamePostFix,
+                                                                                 elementQualifiedName + SupplementaryPropertiesValidValues.QUALIFIED_NAME_POST_FIX,
                                                                                  displayName,
                                                                                  summary,
                                                                                  description,
@@ -4290,7 +4282,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             else
             {
                 glossaryTermProperties = this.getSupplementaryInstanceProperties(null,
-                                                                                 elementQualifiedName + supplementaryPropertiesQualifiedNamePostFix,
+                                                                                 elementQualifiedName + SupplementaryPropertiesValidValues.QUALIFIED_NAME_POST_FIX,
                                                                                  displayName,
                                                                                  summary,
                                                                                  description,
@@ -4304,8 +4296,8 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                      null,
                                                      glossaryTerm.getGUID(),
                                                      glossaryTerm,
-                                                     OpenMetadataType.GLOSSARY_TERM_TYPE_GUID,
-                                                     OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                                     OpenMetadataType.GLOSSARY_TERM.typeGUID,
+                                                     OpenMetadataType.GLOSSARY_TERM.typeName,
                                                      glossaryTermProperties,
                                                      methodName);
         }
@@ -4347,7 +4339,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                       elementTypeName,
                                       OpenMetadataType.SUPPLEMENTARY_PROPERTIES_TYPE_GUID,
                                       OpenMetadataType.SUPPLEMENTARY_PROPERTIES_TYPE_NAME,
-                                      OpenMetadataType.GLOSSARY_TERM_TYPE_NAME,
+                                      OpenMetadataType.GLOSSARY_TERM.typeName,
                                       2,
                                       forLineage,
                                       forDuplicateProcessing,

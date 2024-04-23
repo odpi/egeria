@@ -6,7 +6,7 @@ package org.odpi.openmetadata.viewservices.glossarybrowser.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationshipStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.AssetManagerOMASAPIResponse;
 
 import java.util.ArrayList;

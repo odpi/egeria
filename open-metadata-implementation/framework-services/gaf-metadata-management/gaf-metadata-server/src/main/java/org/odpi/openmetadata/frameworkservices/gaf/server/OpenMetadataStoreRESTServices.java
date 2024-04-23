@@ -19,9 +19,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworkservices.gaf.converters.RelatedElementsConverter;
 import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenMetadataStoreAuditCode;
@@ -38,8 +38,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues.constructValidValueCategory;
-import static org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
+import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
+import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 
 /**

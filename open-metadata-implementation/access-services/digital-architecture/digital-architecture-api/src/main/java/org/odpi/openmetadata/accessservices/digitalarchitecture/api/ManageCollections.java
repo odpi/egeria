@@ -5,10 +5,10 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.api;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.CollectionElement;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.CollectionMember;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.CollectionOrder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.OrderBy;
 
 import java.util.List;
 import java.util.Map;
@@ -107,7 +107,7 @@ public interface ManageCollections
                         String              displayName,
                         String              description,
                         String              collectionUse,
-                        CollectionOrder     collectionOrder,
+                        OrderBy             collectionOrder,
                         Map<String, Object> additionalProperties) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException;

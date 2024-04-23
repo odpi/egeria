@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -21,9 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SoftwareServerProperties extends ITInfrastructureProperties
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private static final String versionProperty                    = "serverVersion";
     private static final String sourceProperty                     = "source";
     private static final String userIdProperty                     = "userId";

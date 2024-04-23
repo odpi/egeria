@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryEntitiesIterator;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -3974,8 +3974,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                         termGUID,
                                         termGUIDParameterName,
                                         OpenMetadataType.GLOSSARY_TYPE_NAME,
-                                        OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_GUID,
-                                        OpenMetadataType.REFERENCEABLE_TO_MEANING_TYPE_NAME,
+                                        OpenMetadataType.SEMANTIC_ASSIGNMENT.typeGUID,
+                                        OpenMetadataType.SEMANTIC_ASSIGNMENT.typeName,
                                         OpenMetadataType.ASSET.typeName,
                                         null,
                                         null,

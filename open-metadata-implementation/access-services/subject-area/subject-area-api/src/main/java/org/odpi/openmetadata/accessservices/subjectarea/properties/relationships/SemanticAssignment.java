@@ -87,7 +87,7 @@ public class SemanticAssignment extends Relationship {
     /**
      * {@literal The status of the relationship. }
      *
-     * @return {@code TermAssignmentStatus }
+     * @return {@code GlossaryTermAssignmentStatus }
      */
     public TermAssignmentStatus getStatus() {
         return this.status;

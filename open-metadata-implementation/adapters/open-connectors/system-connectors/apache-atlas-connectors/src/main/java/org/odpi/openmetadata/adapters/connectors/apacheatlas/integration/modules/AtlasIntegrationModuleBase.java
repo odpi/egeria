@@ -8,12 +8,12 @@ import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.Metada
 import org.odpi.openmetadata.accessservices.assetmanager.properties.DataAssetProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.DataStoreProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalIdentifierProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.KeyPattern;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.OwnerProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ProcessProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaAttributeProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.SchemaTypeProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.SynchronizationDirection;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc.AtlasIntegrationAuditCode;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc.AtlasIntegrationErrorCode;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTConnector;

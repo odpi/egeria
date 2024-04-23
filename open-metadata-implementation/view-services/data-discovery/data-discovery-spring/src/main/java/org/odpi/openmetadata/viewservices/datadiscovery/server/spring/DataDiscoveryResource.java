@@ -10,12 +10,11 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The DataDiscoveryResource provides part of the server-side implementation of the Data Discovery OMVS.
- * This interface provides access to an individual's personal profile.
- */
+= */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/data-discovery")
 
-@Tag(name="API: Data Discovery OMVS", description="The Data Discovery OMVS provides APIs for retrieving and updating a user's personal profile.",
+@Tag(name="API: Data Discovery OMVS", description="The Data Discovery OMVS provides APIs for retrieving and data specifications and save searches.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/data-discovery/overview/"))
 

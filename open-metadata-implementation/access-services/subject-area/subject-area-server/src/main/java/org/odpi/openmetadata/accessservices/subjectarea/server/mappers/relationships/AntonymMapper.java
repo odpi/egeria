@@ -7,8 +7,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
@@ -46,7 +46,7 @@ public class AntonymMapper extends RelationshipMapper<Antonym> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, antonym.getSource(), OpenMetadataProperty.SOURCE.name);
         }
         if (antonym.getStatus() != null) {
-            SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, antonym.getStatus(), OpenMetadataType.STATUS_PROPERTY_NAME);
+            SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, antonym.getStatus(), OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name);
         }
     }
 
@@ -84,7 +84,7 @@ public class AntonymMapper extends RelationshipMapper<Antonym> {
     @Override
     protected boolean mapEnumToRelationship(Antonym antonym, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
-        if (propertyName.equals(OpenMetadataType.STATUS_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name)) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
             antonym.setStatus(status);
             foundProperty = true;

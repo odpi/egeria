@@ -12,6 +12,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
 import org.odpi.openmetadata.integrationservices.catalog.ffdc.CatalogIntegratorErrorCode;
 
 import java.util.Date;

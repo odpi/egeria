@@ -24,8 +24,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.governanceaction.search.*;
@@ -37,7 +37,7 @@ import java.util.*;
  */
 public class ProjectManagement extends ProjectManagementBaseClient implements ProjectsInterface
 {
-    private static final String projectURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/project-profile/users/{1}/projects";
+    private static final String projectURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/project-management/users/{1}/projects";
 
 
     final private ProjectConverter<ProjectElement>       projectConverter;

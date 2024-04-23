@@ -2,7 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.AssetOwnerType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -208,32 +211,32 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataType.SORT_ORDER_PROPERTY_NAME,
+                                                                     OpenMetadataProperty.SORT_ORDER.name,
                                                                      instanceProperties,
                                                                      methodName);
 
             for (DataItemSortOrder dataItemSortOrder : DataItemSortOrder.values())
             {
-                if (dataItemSortOrder.getOpenTypeOrdinal() == ordinal)
+                if (dataItemSortOrder.getOrdinal() == ordinal)
                 {
                     return dataItemSortOrder;
                 }
             }
         }
 
-        return DataItemSortOrder.UNKNOWN;
+        return DataItemSortOrder.UNSORTED;
     }
 
 
     /**
-     * Retrieve and delete the OwnerType enum property from the instance properties of an entity
+     * Retrieve and delete the AssetOwnerType enum property from the instance properties of an entity
      *
      * @param properties  entity properties
-     * @return OwnerType  enum value
+     * @return AssetOwnerType  enum value
      */
-    protected OwnerType removeOwnerTypeFromProperties(InstanceProperties   properties)
+    protected AssetOwnerType removeOwnerTypeFromProperties(InstanceProperties   properties)
     {
-        OwnerType ownerType = this.getOwnerTypeFromProperties(properties);
+        AssetOwnerType ownerType = this.getOwnerTypeFromProperties(properties);
 
         if (properties != null)
         {
@@ -252,14 +255,14 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Retrieve the OwnerType enum property from the instance properties of a classification
+     * Retrieve the AssetOwnerType enum property from the instance properties of a classification
      *
      * @param properties  entity properties
-     * @return OwnerType  enum value
+     * @return AssetOwnerType  enum value
      */
-    protected OwnerType getOwnerTypeFromProperties(InstanceProperties   properties)
+    protected AssetOwnerType getOwnerTypeFromProperties(InstanceProperties   properties)
     {
-        OwnerType ownerType = null;
+        AssetOwnerType ownerType = null;
 
         if (properties != null)
         {
@@ -276,15 +279,15 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
                     switch (enumPropertyValue.getOrdinal())
                     {
                         case 0:
-                            ownerType = OwnerType.USER_ID;
+                            ownerType = AssetOwnerType.USER_ID;
                             break;
 
                         case 1:
-                            ownerType = OwnerType.PROFILE_ID;
+                            ownerType = AssetOwnerType.PROFILE_ID;
                             break;
 
                         case 99:
-                            ownerType = OwnerType.OTHER;
+                            ownerType = AssetOwnerType.OTHER;
                             break;
                     }
                 }

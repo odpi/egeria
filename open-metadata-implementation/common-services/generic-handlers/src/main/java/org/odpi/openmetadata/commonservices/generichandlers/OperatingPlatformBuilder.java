@@ -2,8 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ByteOrdering;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -99,15 +100,15 @@ public class OperatingPlatformBuilder extends ReferenceableBuilder
         {
             return repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                               properties,
-                                                              OpenMetadataType.BYTE_ORDERING_PROPERTY_NAME,
-                                                              OpenMetadataType.ENDIANNESS_ENUM_TYPE_GUID,
-                                                              OpenMetadataType.ENDIANNESS_ENUM_TYPE_NAME,
+                                                              OpenMetadataProperty.BYTE_ORDERING.name,
+                                                              ByteOrdering.getOpenTypeGUID(),
+                                                              ByteOrdering.getOpenTypeName(),
                                                               byteOrdering,
                                                               methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataType.BYTE_ORDERING_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataProperty.BYTE_ORDERING.name);
         }
     }
 }

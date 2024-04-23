@@ -51,7 +51,7 @@ public class TemplateManagerInstance extends OMVSServiceInstance
 
 
     /**
-     * Return the organization management client.  This client is from Community Profile OMAS and is for maintaining information .
+     * Return the open metadata store client.  This client is from the Digital Architecture OMAS and is for maintaining information .
      *
      * @return client
      */

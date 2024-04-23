@@ -35,7 +35,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceDefinitionHandler;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -273,7 +273,7 @@ public class StewardshipExchangeRESTServices
                 if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
                 {
                     response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                          OpenMetadataType.CONFIDENCE_CLASSIFICATION_TYPE_NAME,
+                                                                                          OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
                                                                                           properties.getReturnSpecificLevel(),
                                                                                           properties.getLevelIdentifier(),
                                                                                           startFrom,
@@ -286,7 +286,7 @@ public class StewardshipExchangeRESTServices
                 else if (requestBody.getProperties() == null)
                 {
                     response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                          OpenMetadataType.CONFIDENCE_CLASSIFICATION_TYPE_NAME,
+                                                                                          OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
                                                                                           false,
                                                                                           0,
                                                                                           startFrom,
@@ -304,7 +304,7 @@ public class StewardshipExchangeRESTServices
             else
             {
                 response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                      OpenMetadataType.CONFIDENCE_CLASSIFICATION_TYPE_NAME,
+                                                                                      OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
                                                                                       false,
                                                                                       0,
                                                                                       startFrom,
@@ -375,8 +375,8 @@ public class StewardshipExchangeRESTServices
                                                                   elementGUID,
                                                                   elementGUIDParameter,
                                                                   OpenMetadataType.REFERENCEABLE.typeName,
-                                                                  OpenMetadataType.CONFIDENCE_CLASSIFICATION_TYPE_GUID,
-                                                                  OpenMetadataType.CONFIDENCE_CLASSIFICATION_TYPE_NAME,
+                                                                  OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeGUID,
+                                                                  OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
                                                                   properties.getStatus(),
                                                                   properties.getConfidence(),
                                                                   properties.getSteward(),
@@ -400,8 +400,8 @@ public class StewardshipExchangeRESTServices
                                                                   elementGUID,
                                                                   elementGUIDParameter,
                                                                   OpenMetadataType.REFERENCEABLE.typeName,
-                                                                  OpenMetadataType.CONFIDENCE_CLASSIFICATION_TYPE_GUID,
-                                                                  OpenMetadataType.CONFIDENCE_CLASSIFICATION_TYPE_NAME,
+                                                                  OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeGUID,
+                                                                  OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
                                                                   properties.getStatus(),
                                                                   properties.getConfidence(),
                                                                   properties.getSteward(),
@@ -444,7 +444,7 @@ public class StewardshipExchangeRESTServices
      *
      * @param serverName  name of the server instance to connect to
      * @param userId calling user
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
@@ -485,8 +485,8 @@ public class StewardshipExchangeRESTServices
                                                                  elementGUID,
                                                                  elementGUIDParameter,
                                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                                 OpenMetadataType.CONFIDENCE_CLASSIFICATION_TYPE_GUID,
-                                                                 OpenMetadataType.CONFIDENCE_CLASSIFICATION_TYPE_NAME,
+                                                                 OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeGUID,
+                                                                 OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
                                                                  requestBody.getEffectiveTime(),
@@ -500,8 +500,8 @@ public class StewardshipExchangeRESTServices
                                                                  elementGUID,
                                                                  elementGUIDParameter,
                                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                                 OpenMetadataType.CONFIDENCE_CLASSIFICATION_TYPE_GUID,
-                                                                 OpenMetadataType.CONFIDENCE_CLASSIFICATION_TYPE_NAME,
+                                                                 OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeGUID,
+                                                                 OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
                                                                  requestBody.getEffectiveTime(),
@@ -516,8 +516,8 @@ public class StewardshipExchangeRESTServices
                                                              elementGUID,
                                                              elementGUIDParameter,
                                                              OpenMetadataType.REFERENCEABLE.typeName,
-                                                             OpenMetadataType.CONFIDENCE_CLASSIFICATION_TYPE_GUID,
-                                                             OpenMetadataType.CONFIDENCE_CLASSIFICATION_TYPE_NAME,
+                                                             OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeGUID,
+                                                             OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              null,
@@ -575,7 +575,7 @@ public class StewardshipExchangeRESTServices
                 if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
                 {
                     response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                          OpenMetadataType.CONFIDENCE_CLASSIFICATION_TYPE_NAME,
+                                                                                          OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
                                                                                           properties.getReturnSpecificLevel(),
                                                                                           properties.getLevelIdentifier(),
                                                                                           startFrom,
@@ -588,7 +588,7 @@ public class StewardshipExchangeRESTServices
                 else if (requestBody.getProperties() == null)
                 {
                     response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                          OpenMetadataType.CONFIDENCE_CLASSIFICATION_TYPE_NAME,
+                                                                                          OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
                                                                                           false,
                                                                                           0,
                                                                                           startFrom,
@@ -606,7 +606,7 @@ public class StewardshipExchangeRESTServices
             else
             {
                 response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                      OpenMetadataType.CONFIDENCE_CLASSIFICATION_TYPE_NAME,
+                                                                                      OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
                                                                                       false,
                                                                                       0,
                                                                                       startFrom,
@@ -676,8 +676,8 @@ public class StewardshipExchangeRESTServices
                                                                   elementGUID,
                                                                   elementGUIDParameter,
                                                                   OpenMetadataType.REFERENCEABLE.typeName,
-                                                                  OpenMetadataType.CRITICALITY_CLASSIFICATION_TYPE_GUID,
-                                                                  OpenMetadataType.CRITICALITY_CLASSIFICATION_TYPE_NAME,
+                                                                  OpenMetadataType.CRITICALITY_CLASSIFICATION.typeGUID,
+                                                                  OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName,
                                                                   properties.getStatus(),
                                                                   properties.getConfidence(),
                                                                   properties.getSteward(),
@@ -701,8 +701,8 @@ public class StewardshipExchangeRESTServices
                                                                   elementGUID,
                                                                   elementGUIDParameter,
                                                                   OpenMetadataType.REFERENCEABLE.typeName,
-                                                                  OpenMetadataType.CRITICALITY_CLASSIFICATION_TYPE_GUID,
-                                                                  OpenMetadataType.CRITICALITY_CLASSIFICATION_TYPE_NAME,
+                                                                  OpenMetadataType.CRITICALITY_CLASSIFICATION.typeGUID,
+                                                                  OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName,
                                                                   properties.getStatus(),
                                                                   properties.getConfidence(),
                                                                   properties.getSteward(),
@@ -745,7 +745,7 @@ public class StewardshipExchangeRESTServices
      *
      * @param serverName  name of the server instance to connect to
      * @param userId calling user
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
@@ -786,8 +786,8 @@ public class StewardshipExchangeRESTServices
                                                                  elementGUID,
                                                                  elementGUIDParameter,
                                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                                 OpenMetadataType.CRITICALITY_CLASSIFICATION_TYPE_GUID,
-                                                                 OpenMetadataType.CRITICALITY_CLASSIFICATION_TYPE_NAME,
+                                                                 OpenMetadataType.CRITICALITY_CLASSIFICATION.typeGUID,
+                                                                 OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
                                                                  requestBody.getEffectiveTime(),
@@ -801,8 +801,8 @@ public class StewardshipExchangeRESTServices
                                                                  elementGUID,
                                                                  elementGUIDParameter,
                                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                                 OpenMetadataType.CRITICALITY_CLASSIFICATION_TYPE_GUID,
-                                                                 OpenMetadataType.CRITICALITY_CLASSIFICATION_TYPE_NAME,
+                                                                 OpenMetadataType.CRITICALITY_CLASSIFICATION.typeGUID,
+                                                                 OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
                                                                  requestBody.getEffectiveTime(),
@@ -817,8 +817,8 @@ public class StewardshipExchangeRESTServices
                                                              elementGUID,
                                                              elementGUIDParameter,
                                                              OpenMetadataType.REFERENCEABLE.typeName,
-                                                             OpenMetadataType.CRITICALITY_CLASSIFICATION_TYPE_GUID,
-                                                             OpenMetadataType.CRITICALITY_CLASSIFICATION_TYPE_NAME,
+                                                             OpenMetadataType.CRITICALITY_CLASSIFICATION.typeGUID,
+                                                             OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              null,
@@ -876,7 +876,7 @@ public class StewardshipExchangeRESTServices
                 if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
                 {
                     response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                          OpenMetadataType.CRITICALITY_CLASSIFICATION_TYPE_NAME,
+                                                                                          OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName,
                                                                                           properties.getReturnSpecificLevel(),
                                                                                           properties.getLevelIdentifier(),
                                                                                           startFrom,
@@ -889,7 +889,7 @@ public class StewardshipExchangeRESTServices
                 else if (requestBody.getProperties() == null)
                 {
                     response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                          OpenMetadataType.CRITICALITY_CLASSIFICATION_TYPE_NAME,
+                                                                                          OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName,
                                                                                           false,
                                                                                           0,
                                                                                           startFrom,
@@ -907,7 +907,7 @@ public class StewardshipExchangeRESTServices
             else
             {
                 response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                      OpenMetadataType.CRITICALITY_CLASSIFICATION_TYPE_NAME,
+                                                                                      OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName,
                                                                                       false,
                                                                                       0,
                                                                                       startFrom,
@@ -979,8 +979,8 @@ public class StewardshipExchangeRESTServices
                                                                   elementGUID,
                                                                   elementGUIDParameter,
                                                                   OpenMetadataType.REFERENCEABLE.typeName,
-                                                                  OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION_TYPE_GUID,
-                                                                  OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME,
+                                                                  OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeGUID,
+                                                                  OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
                                                                   properties.getStatus(),
                                                                   properties.getConfidence(),
                                                                   properties.getSteward(),
@@ -1004,8 +1004,8 @@ public class StewardshipExchangeRESTServices
                                                                   elementGUID,
                                                                   elementGUIDParameter,
                                                                   OpenMetadataType.REFERENCEABLE.typeName,
-                                                                  OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION_TYPE_GUID,
-                                                                  OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME,
+                                                                  OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeGUID,
+                                                                  OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
                                                                   properties.getStatus(),
                                                                   properties.getConfidence(),
                                                                   properties.getSteward(),
@@ -1089,8 +1089,8 @@ public class StewardshipExchangeRESTServices
                                                                  elementGUID,
                                                                  elementGUIDParameter,
                                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                                 OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION_TYPE_GUID,
-                                                                 OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME,
+                                                                 OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeGUID,
+                                                                 OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
                                                                  requestBody.getEffectiveTime(),
@@ -1104,8 +1104,8 @@ public class StewardshipExchangeRESTServices
                                                                  elementGUID,
                                                                  elementGUIDParameter,
                                                                  OpenMetadataType.REFERENCEABLE.typeName,
-                                                                 OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION_TYPE_GUID,
-                                                                 OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME,
+                                                                 OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeGUID,
+                                                                 OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
                                                                  forLineage,
                                                                  forDuplicateProcessing,
                                                                  requestBody.getEffectiveTime(),
@@ -1120,8 +1120,8 @@ public class StewardshipExchangeRESTServices
                                                              elementGUID,
                                                              elementGUIDParameter,
                                                              OpenMetadataType.REFERENCEABLE.typeName,
-                                                             OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION_TYPE_GUID,
-                                                             OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME,
+                                                             OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeGUID,
+                                                             OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
                                                              forLineage,
                                                              forDuplicateProcessing,
                                                              null,
@@ -1179,7 +1179,7 @@ public class StewardshipExchangeRESTServices
                 if (requestBody.getProperties() instanceof LevelIdentifierProperties properties)
                 {
                     response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                          OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME,
+                                                                                          OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
                                                                                           properties.getReturnSpecificLevel(),
                                                                                           properties.getLevelIdentifier(),
                                                                                           startFrom,
@@ -1192,7 +1192,7 @@ public class StewardshipExchangeRESTServices
                 else if (requestBody.getProperties() == null)
                 {
                     response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                          OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME,
+                                                                                          OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
                                                                                           false,
                                                                                           0,
                                                                                           startFrom,
@@ -1210,7 +1210,7 @@ public class StewardshipExchangeRESTServices
             else
             {
                 response.setElementList(handler.getGovernanceActionClassifiedElements(userId,
-                                                                                      OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION_TYPE_NAME,
+                                                                                      OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
                                                                                       false,
                                                                                       0,
                                                                                       startFrom,
@@ -1353,7 +1353,7 @@ public class StewardshipExchangeRESTServices
      *
      * @param serverName  name of the server instance to connect to
      * @param userId calling user
-     * @param elementGUID unique identifier of the metadata element to unclassify
+     * @param elementGUID unique identifier of the metadata element to declassify
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param requestBody properties for the request
@@ -2511,7 +2511,7 @@ public class StewardshipExchangeRESTServices
 
                     if (properties.getStatus() != null)
                     {
-                        statusOrdinal = properties.getStatus().getOpenTypeOrdinal();
+                        statusOrdinal = properties.getStatus().getOrdinal();
                     }
 
                     handler.saveSemanticAssignment(userId,

@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.outtopic;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.events.DigitalArchitectureEventType;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;

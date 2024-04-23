@@ -122,7 +122,7 @@ public enum ViewServiceDescription
      * Build collections of asset and other metadata.
      */
     COLLECTION_MANAGER  (809,
-                         ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                         ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                          "Collection Manager",
                          "Collection Manager OMVS",
                          "collection-manager",
@@ -146,7 +146,7 @@ public enum ViewServiceDescription
      * Work with comments, informal tags, ratings/reviews and likes.
      */
     FEEDBACK_MANAGER  (811,
-                         ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                         ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                          "Feedback Manager",
                          "Feedback Manager OMVS",
                          "feedback-manager",
@@ -158,7 +158,7 @@ public enum ViewServiceDescription
      * Maintain definitions of governance actions such as governance action processes and governance action types.
      */
     GOVERNANCE_AUTHOR(812,
-                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                       "Governance Author",
                       "Governance Author OMVS",
                       "governance-author",
@@ -170,7 +170,7 @@ public enum ViewServiceDescription
      * Set up and manage projects.
      */
     PROJECT_MANAGER  (813,
-                         ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                         ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                          "Project Manager",
                          "Project Manager OMVS",
                          "project-manager",
@@ -214,6 +214,18 @@ public enum ViewServiceDescription
                        "Work with code tables and associated reference data.",
                        "https://egeria-project.org/services/omvs/reference-data/overview/",
                        AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceFullName()),
+
+    /**
+     * Maintain and query valid values for metadata.
+     */
+    VALID_METADATA (817,
+                     ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                     "Valid Metadata",
+                     "Valid Metadata OMVS",
+                     "valid-metadata",
+                     "Maintain and query valid values for metadata.",
+                     "https://egeria-project.org/services/omvs/valid-metadata/overview/",
+                     AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceFullName()),
     ;
 
 

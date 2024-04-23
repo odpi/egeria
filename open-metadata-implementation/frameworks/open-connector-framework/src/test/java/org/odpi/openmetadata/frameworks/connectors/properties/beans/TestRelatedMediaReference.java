@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.RelatedMediaType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.RelatedMediaUsage;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -20,8 +22,8 @@ public class TestRelatedMediaReference
 {
     private ElementType                 type                 = new ElementType();
     private List<ElementClassification> classifications      = new ArrayList<>();
-    private Map<String, String>         additionalProperties = new HashMap<>();
-    private List<RelatedMediaUsage>     relatedMediaUsage    = new ArrayList<>();
+    private Map<String, String>     additionalProperties = new HashMap<>();
+    private List<RelatedMediaUsage> relatedMediaUsage    = new ArrayList<>();
 
 
 

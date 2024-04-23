@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.AssetOwnerType;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class TestAsset
         testObject.setUsage("TestUsage");
         testObject.setConnectionDescription("TestConnectionDescription");
         testObject.setOwner("TestOwner");
-        testObject.setOwnerType(OwnerType.USER_ID);
+        testObject.setOwnerType(AssetOwnerType.USER_ID);
         testObject.setZoneMembership(zoneMembership);
         testObject.setExtendedProperties(assetProperties);
 
@@ -95,7 +96,7 @@ public class TestAsset
         assertTrue(resultObject.getDescription().equals("TestResourceDescription"));
         assertTrue(resultObject.getConnectionDescription().equals("TestConnectionDescription"));
         assertTrue(resultObject.getOwner().equals("TestOwner"));
-        assertTrue(resultObject.getOwnerType() == OwnerType.USER_ID);
+        assertTrue(resultObject.getOwnerType() == AssetOwnerType.USER_ID);
         assertTrue(resultObject.getZoneMembership() != null);
         assertTrue(resultObject.getExtendedProperties() == null);
     }

@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The ProjectManagerResource provides the Spring API endpoints of the Project Manager Open Metadata View Service (OMVS).
- * This interface provides a service for Egeria UIs.
- */
+= */
 
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/project-manager")

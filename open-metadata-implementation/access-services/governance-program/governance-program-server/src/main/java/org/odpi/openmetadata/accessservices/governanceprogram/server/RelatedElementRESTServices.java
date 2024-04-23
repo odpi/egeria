@@ -18,7 +18,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceDefinitionHandler;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.commonservices.generichandlers.PersonRoleHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ReferenceableHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;

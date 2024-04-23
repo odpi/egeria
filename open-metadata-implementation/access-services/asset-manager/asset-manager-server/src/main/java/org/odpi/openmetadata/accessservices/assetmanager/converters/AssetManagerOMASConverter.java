@@ -5,15 +5,17 @@ package org.odpi.openmetadata.accessservices.assetmanager.converters;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.RelatedElement;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PortType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SynchronizationDirection;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-
-import java.util.Map;
 
 
 /**
@@ -110,20 +112,20 @@ public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGeneri
         if (instanceProperties != null)
         {
             int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataType.SORT_ORDER_PROPERTY_NAME,
+                                                                     OpenMetadataProperty.SORT_ORDER.name,
                                                                      instanceProperties,
                                                                      methodName);
 
             for (DataItemSortOrder dataItemSortOrder : DataItemSortOrder.values())
             {
-                if (dataItemSortOrder.getOpenTypeOrdinal() == ordinal)
+                if (dataItemSortOrder.getOrdinal() == ordinal)
                 {
                     return dataItemSortOrder;
                 }
             }
         }
 
-        return DataItemSortOrder.UNKNOWN;
+        return DataItemSortOrder.UNSORTED;
     }
 
 
@@ -214,136 +216,5 @@ public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGeneri
         }
 
         return PortType.OTHER;
-    }
-
-
-    /**
-     * Extract and delete the processContainmentType property from the supplied instance properties.
-     *
-     * @param instanceProperties properties from entity
-     * @return ProcessContainmentType enum
-     */
-    ProcessContainmentType removeProcessContainmentType(InstanceProperties  instanceProperties)
-    {
-        final String methodName = "removeProcessContainmentType";
-
-        if (instanceProperties != null)
-        {
-            int ordinal = repositoryHelper.removeEnumPropertyOrdinal(serviceName,
-                                                                     OpenMetadataType.CONTAINMENT_TYPE_PROPERTY_NAME,
-                                                                     instanceProperties,
-                                                                     methodName);
-
-            for (ProcessContainmentType containmentType : ProcessContainmentType.values())
-            {
-                if (containmentType.getOpenTypeOrdinal() == ordinal)
-                {
-                    return containmentType;
-                }
-            }
-        }
-
-        return ProcessContainmentType.OTHER;
-    }
-
-
-    /**
-     * Retrieve and delete the EngineActionStatus enum property from the instance properties of an entity
-     *
-     * @param properties  entity properties
-     * @return OwnerType  enum value
-     */
-    GovernanceActionStatus removeActionStatus(String               propertyName,
-                                              InstanceProperties   properties)
-    {
-        GovernanceActionStatus ownerCategory = this.getActionStatus(propertyName, properties);
-
-        if (properties != null)
-        {
-            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
-
-            if (instancePropertiesMap != null)
-            {
-                instancePropertiesMap.remove(propertyName);
-            }
-
-            properties.setInstanceProperties(instancePropertiesMap);
-        }
-
-        return ownerCategory;
-    }
-
-
-    /**
-     * Retrieve the ActionStatus enum property from the instance properties of a Governance Action.
-     *
-     * @param propertyName name ot property to extract the enum from
-     * @param properties  entity properties
-     * @return ActionStatus  enum value
-     */
-    private GovernanceActionStatus getActionStatus(String               propertyName,
-                                                   InstanceProperties   properties)
-    {
-        GovernanceActionStatus governanceActionStatus = GovernanceActionStatus.OTHER;
-
-        if (properties != null)
-        {
-            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
-
-            if (instancePropertiesMap != null)
-            {
-                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(propertyName);
-
-                if (instancePropertyValue instanceof EnumPropertyValue)
-                {
-                    EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
-
-                    switch (enumPropertyValue.getOrdinal())
-                    {
-                        case 0:
-                            governanceActionStatus = GovernanceActionStatus.REQUESTED;
-                            break;
-
-                        case 1:
-                            governanceActionStatus = GovernanceActionStatus.APPROVED;
-                            break;
-
-                        case 2:
-                            governanceActionStatus = GovernanceActionStatus.WAITING;
-                            break;
-
-                        case 3:
-                            governanceActionStatus = GovernanceActionStatus.ACTIVATING;
-                            break;
-
-                        case 4:
-                            governanceActionStatus = GovernanceActionStatus.IN_PROGRESS;
-                            break;
-
-                        case 10:
-                            governanceActionStatus = GovernanceActionStatus.ACTIONED;
-                            break;
-
-                        case 11:
-                            governanceActionStatus = GovernanceActionStatus.INVALID;
-                            break;
-
-                        case 12:
-                            governanceActionStatus = GovernanceActionStatus.IGNORED;
-                            break;
-
-                        case 13:
-                            governanceActionStatus = GovernanceActionStatus.FAILED;
-                            break;
-
-                        case 99:
-                            governanceActionStatus = GovernanceActionStatus.OTHER;
-                            break;
-                    }
-                }
-            }
-        }
-
-        return governanceActionStatus;
     }
 }

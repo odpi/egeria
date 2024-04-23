@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.itinfrastructure.properties.ProcessContainmentType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessContainmentType;
 
 import java.util.Objects;
 

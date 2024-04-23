@@ -58,6 +58,7 @@ dependencies {
         runtimeOnly project(':open-metadata-implementation:view-services:reference-data:reference-data-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:my-profile:my-profile-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:template-manager:template-manager-spring')
+        runtimeOnly project(':open-metadata-implementation:view-services:valid-metadata:valid-metadata-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:rex-view:rex-view-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:tex-view:tex-view-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:dino-view:dino-view-spring')

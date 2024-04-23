@@ -30,10 +30,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ServerAssetUseProperties.class, name = "ServerAssetUseProperties"),
                 @JsonSubTypes.Type(value = SupportedCapabilityProperties.class, name = "SupportedCapabilityProperties"),
         })
-public class ConfigurationItemRelationshipProperties implements Serializable
+public class ConfigurationItemRelationshipProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private Date effectiveFrom = null;
     private Date effectiveTo   = null;
 

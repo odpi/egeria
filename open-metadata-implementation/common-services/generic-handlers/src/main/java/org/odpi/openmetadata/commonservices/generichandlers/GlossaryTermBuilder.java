@@ -2,8 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermActivityType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
@@ -181,7 +183,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.SUMMARY_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.SUMMARY.name,
                                                                   summary,
                                                                   methodName);
 
@@ -193,25 +195,25 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.EXAMPLES_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.EXAMPLES.name,
                                                                   examples,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.ABBREVIATION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.ABBREVIATION.name,
                                                                   abbreviation,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.USAGE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.USAGE.name,
                                                                   usage,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.PUBLISH_VERSION_ID_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.PUBLISH_VERSION_ID.name,
                                                                   publishVersionIdentifier,
                                                                   methodName);
 
@@ -236,15 +238,15 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     null,
-                                                                    OpenMetadataType.ACTIVITY_TYPE_PROPERTY_NAME,
-                                                                    OpenMetadataType.ACTIVITY_TYPE_ENUM_TYPE_GUID,
-                                                                    OpenMetadataType.ACTIVITY_TYPE_ENUM_TYPE_NAME,
+                                                                    OpenMetadataProperty.ACTIVITY_TYPE.name,
+                                                                    GlossaryTermActivityType.getOpenTypeGUID(),
+                                                                    GlossaryTermActivityType.getOpenTypeName(),
                                                                     activityType,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataType.ACTIVITY_TYPE_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataProperty.ACTIVITY_TYPE.name);
         }
 
         setEffectivityDates(properties);
@@ -311,7 +313,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataType.STATUS_PROPERTY_NAME,
+                                                                    OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
                                                                     OpenMetadataType.TERM_RELATIONSHIP_STATUS_ENUM_TYPE_GUID,
                                                                     OpenMetadataType.TERM_RELATIONSHIP_STATUS_ENUM_TYPE_NAME,
                                                                     relationshipStatus,
@@ -319,7 +321,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataType.ACTIVITY_TYPE_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataType.STARS_PROPERTY_NAME);
         }
 
         setEffectivityDates(properties);
@@ -366,20 +368,20 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                     properties,
-                                                                    OpenMetadataType.STATUS_PROPERTY_NAME,
-                                                                    OpenMetadataType.TERM_RELATIONSHIP_STATUS_ENUM_TYPE_GUID,
-                                                                    OpenMetadataType.TERM_RELATIONSHIP_STATUS_ENUM_TYPE_NAME,
+                                                                    OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
+                                                                    GlossaryTermRelationshipStatus.getOpenTypeGUID(),
+                                                                    GlossaryTermRelationshipStatus.getOpenTypeName(),
                                                                     relationshipStatus,
                                                                     methodName);
         }
         catch (TypeErrorException error)
         {
-            throw new InvalidParameterException(error, OpenMetadataType.ACTIVITY_TYPE_PROPERTY_NAME);
+            throw new InvalidParameterException(error, OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name);
         }
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.STEWARD_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.STEWARD.name,
                                                                   steward,
                                                                   methodName);
 

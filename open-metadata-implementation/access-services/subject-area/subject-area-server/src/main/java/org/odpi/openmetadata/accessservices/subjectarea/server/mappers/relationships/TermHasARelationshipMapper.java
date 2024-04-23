@@ -7,8 +7,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
@@ -42,7 +42,7 @@ public class TermHasARelationshipMapper extends RelationshipMapper<HasA> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termHasARelationship.getSource(), OpenMetadataProperty.SOURCE.name);
         }
         if (termHasARelationship.getStatus() != null) {
-            SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, termHasARelationship.getStatus(), OpenMetadataType.STATUS_PROPERTY_NAME);
+            SubjectAreaUtils.setStatusPropertyInInstanceProperties(instanceProperties, termHasARelationship.getStatus(), OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name);
         }
     }
 
@@ -76,7 +76,7 @@ public class TermHasARelationshipMapper extends RelationshipMapper<HasA> {
     @Override
     protected boolean mapEnumToRelationship(HasA termHasARelationship, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
-        if (propertyName.equals(OpenMetadataType.STATUS_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name)) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
             termHasARelationship.setStatus(status);
             foundProperty = true;

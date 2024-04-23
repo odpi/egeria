@@ -6,8 +6,8 @@ package org.odpi.openmetadata.viewservices.glossaryworkflow.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermActivityType;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.AssetManagerOMASAPIResponse;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermActivityType;
 
 import java.util.ArrayList;
 import java.util.Arrays;

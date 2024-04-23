@@ -4,32 +4,16 @@ package org.odpi.openmetadata.accessservices.projectmanagement.converters;
 
 
 import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ActorProfileElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ContactMethodElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ContributionRecordElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ProfileIdentityElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.ProfileLocationElement;
-import org.odpi.openmetadata.accessservices.projectmanagement.metadataelements.UserIdentityElement;
 import org.odpi.openmetadata.accessservices.projectmanagement.properties.ActorProfileProperties;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.ContactMethodProperties;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.ContributionRecord;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.ProfileIdentityProperties;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.ProfileLocationProperties;
-import org.odpi.openmetadata.accessservices.projectmanagement.properties.UserIdentityProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * ActorProfileConverter generates a ActorProfileElement bean from a ActorProfile entity.

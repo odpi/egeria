@@ -11,6 +11,7 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
     implementation project(':open-metadata-implementation:admin-services:admin-services-registration')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
     implementation project(':open-metadata-implementation:access-services:digital-service:digital-service-api')

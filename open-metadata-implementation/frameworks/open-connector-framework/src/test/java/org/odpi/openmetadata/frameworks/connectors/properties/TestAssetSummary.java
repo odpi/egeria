@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.AssetOwnerType;
 import org.testng.annotations.Test;
 
 import java.util.*;
@@ -58,7 +58,7 @@ public class TestAssetSummary
         testObject.setQualifiedName("TestQualifiedName");
         testObject.setResourceName("TestResourceName");
         testObject.setOwner("TestOwner");
-        testObject.setOwnerType(OwnerType.PROFILE_ID);
+        testObject.setOwnerType(AssetOwnerType.PROFILE_ID);
         testObject.setConnectionDescription("TestShortDescription");
         testObject.setResourceDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
@@ -110,7 +110,7 @@ public class TestAssetSummary
         testObject.setQualifiedName("TestDifferentQualifiedName");
         testObject.setResourceName("TestResourceName");
         testObject.setOwner("TestOwner");
-        testObject.setOwnerType(OwnerType.PROFILE_ID);
+        testObject.setOwnerType(AssetOwnerType.PROFILE_ID);
         testObject.setConnectionDescription("TestShortDescription");
         testObject.setResourceDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);

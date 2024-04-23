@@ -9,7 +9,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAr
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.slf4j.Logger;
@@ -59,13 +60,13 @@ public class TermMapper extends EntityDetailMapper<Term> {
     protected boolean mapPrimitiveToNode(Term term, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = true;
-        if (propertyName.equals(OpenMetadataType.SUMMARY_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.SUMMARY.name)) {
             term.setSummary(stringValue);
-        } else if (propertyName.equals(OpenMetadataType.ABBREVIATION_PROPERTY_NAME)) {
+        } else if (propertyName.equals(OpenMetadataProperty.ABBREVIATION.name)) {
             term.setAbbreviation(stringValue);
-        } else if (propertyName.equals(OpenMetadataType.EXAMPLES_PROPERTY_NAME)) {
+        } else if (propertyName.equals(OpenMetadataProperty.EXAMPLES.name)) {
             term.setExamples(stringValue);
-        } else if (propertyName.equals(OpenMetadataType.USAGE_PROPERTY_NAME)) {
+        } else if (propertyName.equals(OpenMetadataProperty.USAGE.name)) {
             term.setUsage(stringValue);
         } else {
             foundProperty =false;
@@ -80,19 +81,19 @@ public class TermMapper extends EntityDetailMapper<Term> {
     @Override
     protected void mapNodeToInstanceProperties(Term term, InstanceProperties instanceProperties) {
         if (term.getSummary()!=null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getSummary(), OpenMetadataType.SUMMARY_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getSummary(), OpenMetadataProperty.SUMMARY.name);
         }
         if (term.getAbbreviation()!=null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getAbbreviation(), OpenMetadataType.ABBREVIATION_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getAbbreviation(), OpenMetadataProperty.ABBREVIATION.name);
         }
         if (term.getExamples()!=null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getExamples(), OpenMetadataType.EXAMPLES_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getExamples(), OpenMetadataProperty.EXAMPLES.name);
         }
         if (term.getUsage()!=null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getUsage(), OpenMetadataType.USAGE_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getUsage(), OpenMetadataProperty.USAGE.name);
         }
         if (term.getName()!=null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getName(), "displayName");
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getName(), OpenMetadataProperty.DISPLAY_NAME.name);
         }
     }
 

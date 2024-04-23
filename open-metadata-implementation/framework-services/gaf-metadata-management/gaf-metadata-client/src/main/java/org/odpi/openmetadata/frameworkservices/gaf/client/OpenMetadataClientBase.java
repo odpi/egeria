@@ -10,8 +10,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStatus;
 import org.odpi.openmetadata.frameworks.governanceaction.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
 import org.odpi.openmetadata.frameworks.governanceaction.search.*;
 import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
@@ -3003,8 +3004,8 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                    priority);
 
         properties = propertyHelper.addEnumProperty(properties,
-                                                    OpenMetadataProperty.STATUS.name,
-                                                    OpenMetadataType.TO_DO_STATUS_ENUM_TYPE_NAME,
+                                                    OpenMetadataProperty.TO_DO_STATUS.name,
+                                                    ToDoStatus.getOpenTypeName(),
                                                     openEnumPropertyValue);
 
         String todoGUID = this.createMetadataElementInStore(userId,

@@ -11,8 +11,8 @@ import org.odpi.openmetadata.accessservices.assetmanager.properties.CommentPrope
 import org.odpi.openmetadata.accessservices.assetmanager.properties.DataFieldQueryProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.FeedbackProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.FindNameProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermActivityType;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermRelationshipStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermActivityType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryTermStatus;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.LevelIdentifierProperties;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.RatingProperties;

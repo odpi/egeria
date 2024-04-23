@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.devops.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
 
 import java.util.Date;
 import java.util.Objects;
@@ -21,8 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SupportedCapabilityProperties extends ConfigurationItemRelationshipProperties
 {
-    private static final long serialVersionUID = 1L;
-
     private Date              deploymentTime         = null;
     private String            deployer               = null;
     private String            deployerTypeName       = null;

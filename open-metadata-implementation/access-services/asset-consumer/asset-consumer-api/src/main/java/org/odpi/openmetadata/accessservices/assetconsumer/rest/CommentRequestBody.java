@@ -5,10 +5,9 @@ package org.odpi.openmetadata.accessservices.assetconsumer.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;
 
 import java.util.Objects;
-
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;

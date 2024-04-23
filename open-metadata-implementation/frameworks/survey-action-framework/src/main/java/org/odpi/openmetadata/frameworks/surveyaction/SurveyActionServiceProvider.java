@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.surveyaction;
 
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase;
-import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.*;
 
 import java.util.List;

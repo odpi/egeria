@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
@@ -17,7 +17,6 @@ import org.odpi.openmetadata.frameworks.integration.ffdc.OIFErrorCode;
 import org.odpi.openmetadata.frameworks.integration.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
 
-import java.sql.DriverManager;
 import java.util.*;
 
 /**

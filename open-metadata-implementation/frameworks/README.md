@@ -14,6 +14,8 @@ The open metadata and governance frameworks supported by Egeria are as follows:
 enable connectors of all types to support natural language diagnostic messages for both
 exceptions and the audit log.
 
+* **[Open Metadata Framework (OMF)](open-metadata-framework)** provides basic definitions for the open metadata types.
+
 * **[Open Connector Framework (OCF)](open-connector-framework)** provides the interfaces and base implementations for components
 (called [connectors](https://egeria-project.org/concepts/connector/)) that access real-world
 [digital resources](https://egeria-project.org/concepts/resource).

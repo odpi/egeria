@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.Ac
 import org.odpi.openmetadata.accessservices.communityprofile.metadataelements.ContributionRecordElement;
 import org.odpi.openmetadata.accessservices.communityprofile.outtopic.CommunityProfileOutTopicPublisher;
 import org.odpi.openmetadata.accessservices.communityprofile.server.CommunityProfileServicesInstance;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
@@ -231,7 +231,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                 if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.ACTOR_PROFILE_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.USER_IDENTITY_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.PERSON_ROLE_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.CONTACT_DETAILS_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.CONTACT_DETAILS.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.COMMUNITY_TYPE_NAME)))
                 {
 
@@ -297,7 +297,7 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                 if ((repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.ACTOR_PROFILE_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.USER_IDENTITY_TYPE_NAME)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.PERSON_ROLE_TYPE_NAME)) ||
-                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.CONTACT_DETAILS_TYPE_NAME)) ||
+                            (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.CONTACT_DETAILS.typeName)) ||
                             (repositoryHelper.isTypeOf(sourceName, instanceTypeName, OpenMetadataType.COMMUNITY_TYPE_NAME)))
                 {
 

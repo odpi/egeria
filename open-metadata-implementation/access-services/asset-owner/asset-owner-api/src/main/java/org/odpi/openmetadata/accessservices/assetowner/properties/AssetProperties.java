@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.properties;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.AssetOwnerType;
 
 import java.util.*;
 
@@ -58,9 +59,9 @@ public class AssetProperties extends SupplementaryProperties
     private String              name                         = null;
     private String              versionIdentifier            = null;
     private String              description                  = null;
-    private String              owner                        = null;
-    private OwnerType           ownerType                    = null;
-    private String              ownerTypeName                = null;
+    private String         owner         = null;
+    private AssetOwnerType ownerType     = null;
+    private String         ownerTypeName = null;
     private String              ownerPropertyName            = null;
     private List<String>        zoneMembership               = null;
     private String              originOrganizationGUID       = null;
@@ -238,10 +239,10 @@ public class AssetProperties extends SupplementaryProperties
     /**
      * Return the type of owner stored in the owner property.
      *
-     * @return OwnerType enum
+     * @return AssetOwnerType enum
      */
     @Deprecated
-    public OwnerType getOwnerType()
+    public AssetOwnerType getOwnerType()
     {
         return ownerType;
     }
@@ -250,10 +251,10 @@ public class AssetProperties extends SupplementaryProperties
     /**
      * Set up the owner type for this asset.
      *
-     * @param ownerType OwnerType enum
+     * @param ownerType AssetOwnerType enum
      */
     @Deprecated()
-    public void setOwnerType(OwnerType ownerType)
+    public void setOwnerType(AssetOwnerType ownerType)
     {
         this.ownerType = ownerType;
     }

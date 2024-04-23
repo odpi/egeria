@@ -6,8 +6,9 @@ package org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.converter
 import org.odpi.openmetadata.commonservices.generichandlers.OCFConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Comment;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -64,7 +65,7 @@ public class CommentConverter<B> extends OCFConverter<B>
                 /*
                  * Check that the entity is of the correct type.
                  */
-                this.setUpElementHeader(bean, entity, OpenMetadataType.COMMENT_TYPE_NAME, methodName);
+                this.setUpElementHeader(bean, entity, OpenMetadataType.COMMENT.typeName, methodName);
 
                 /*
                  * The initial set of values come from the entity.
@@ -125,8 +126,7 @@ public class CommentConverter<B> extends OCFConverter<B>
 
             if (instancePropertiesMap != null)
             {
-                instancePropertiesMap.remove(OpenMetadataType.COMMENT_TYPE_PROPERTY_NAME);
-                instancePropertiesMap.remove(OpenMetadataType.COMMENT_TYPE_PROPERTY_NAME_DEP);
+                instancePropertiesMap.remove(OpenMetadataProperty.COMMENT_TYPE.name);
             }
 
             properties.setInstanceProperties(instancePropertiesMap);
@@ -152,36 +152,20 @@ public class CommentConverter<B> extends OCFConverter<B>
 
             if (instancePropertiesMap != null)
             {
-                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataType.COMMENT_TYPE_PROPERTY_NAME);
+                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataProperty.COMMENT_TYPE.name);
 
                 if (instancePropertyValue instanceof EnumPropertyValue enumPropertyValue)
                 {
-                    switch (enumPropertyValue.getOrdinal())
+                    commentType = switch (enumPropertyValue.getOrdinal())
                     {
-                        case 0:
-                            commentType = CommentType.STANDARD_COMMENT;
-                            break;
-
-                        case 1:
-                            commentType = CommentType.QUESTION;
-                            break;
-
-                        case 2:
-                            commentType = CommentType.ANSWER;
-                            break;
-
-                        case 3:
-                            commentType = CommentType.SUGGESTION;
-                            break;
-
-                        case 4:
-                            commentType = CommentType.USAGE_EXPERIENCE;
-                            break;
-
-                        case 99:
-                            commentType = CommentType.OTHER;
-                            break;
-                    }
+                        case 0 -> CommentType.STANDARD_COMMENT;
+                        case 1 -> CommentType.QUESTION;
+                        case 2 -> CommentType.ANSWER;
+                        case 3 -> CommentType.SUGGESTION;
+                        case 4 -> CommentType.USAGE_EXPERIENCE;
+                        case 99 -> CommentType.OTHER;
+                        default -> commentType;
+                    };
                 }
             }
         }

@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.properties.classificati
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.KeyPattern;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

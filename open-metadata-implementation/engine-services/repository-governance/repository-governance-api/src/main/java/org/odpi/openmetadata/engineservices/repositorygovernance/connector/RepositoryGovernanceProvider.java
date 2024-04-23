@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.engineservices.repositorygovernance.connector;
 
 import org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase;
-import org.odpi.openmetadata.frameworks.governanceaction.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 
 
 /**

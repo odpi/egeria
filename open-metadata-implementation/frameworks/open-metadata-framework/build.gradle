@@ -1,0 +1,18 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    implementation 'commons-io:commons-io'
+    implementation 'org.slf4j:slf4j-api'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+
+}
+
+description = 'Open Metadata Framework (OMF)'
+
+java {
+    withJavadocJar()
+}

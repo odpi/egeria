@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.converters;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ConnectionElement;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.EmbeddedConnection;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;

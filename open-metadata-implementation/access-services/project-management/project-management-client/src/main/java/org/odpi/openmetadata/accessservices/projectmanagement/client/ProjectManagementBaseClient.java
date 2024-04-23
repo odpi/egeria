@@ -42,7 +42,7 @@ public class ProjectManagementBaseClient implements RelatedElementsInterface
     final PropertyHelper propertyHelper = new PropertyHelper();
 
     final OpenMetadataStoreClient     openMetadataStoreClient;
-    private static final String elementsURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/related-elements";
+    private static final String elementsURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/project-management/users/{1}/related-elements";
 
 
     /**

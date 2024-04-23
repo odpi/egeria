@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetowner.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.AssetOwnerType;
 
 import java.util.Objects;
 
@@ -21,8 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OwnerRequestBody extends AssetOwnerOMASAPIRequestBody
 {
-    private OwnerType ownerType = null;
-    private String    ownerId   = null;
+    private AssetOwnerType ownerType = null;
+    private String         ownerId   = null;
     private String    ownerTypeName = null;
     private String    ownerPropertyName = null;
 
@@ -59,7 +59,7 @@ public class OwnerRequestBody extends AssetOwnerOMASAPIRequestBody
      * @return string
      */
     @Deprecated
-    public OwnerType getOwnerType()
+    public AssetOwnerType getOwnerType()
     {
         return ownerType;
     }
@@ -71,7 +71,7 @@ public class OwnerRequestBody extends AssetOwnerOMASAPIRequestBody
      * @param ownerType string
      */
     @Deprecated
-    public void setOwnerType(OwnerType ownerType)
+    public void setOwnerType(AssetOwnerType ownerType)
     {
         this.ownerType = ownerType;
     }

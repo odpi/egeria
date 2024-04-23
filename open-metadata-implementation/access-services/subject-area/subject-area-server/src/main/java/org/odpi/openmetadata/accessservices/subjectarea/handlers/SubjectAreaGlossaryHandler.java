@@ -19,8 +19,8 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDef
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.mapper.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.slf4j.Logger;
@@ -461,17 +461,17 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                 specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
                 specificMatchPropertyNames.add(OpenMetadataProperty.DESCRIPTION.name);
                 specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
-                specificMatchPropertyNames.add(OpenMetadataType.SUMMARY_PROPERTY_NAME);
-                specificMatchPropertyNames.add(OpenMetadataType.EXAMPLES_PROPERTY_NAME);
-                specificMatchPropertyNames.add(OpenMetadataType.ABBREVIATION_PROPERTY_NAME);
-                specificMatchPropertyNames.add(OpenMetadataType.USAGE_PROPERTY_NAME);
+                specificMatchPropertyNames.add(OpenMetadataProperty.SUMMARY.name);
+                specificMatchPropertyNames.add(OpenMetadataProperty.EXAMPLES.name);
+                specificMatchPropertyNames.add(OpenMetadataProperty.ABBREVIATION.name);
+                specificMatchPropertyNames.add(OpenMetadataProperty.USAGE.name);
 
                 List<EntityDetail> entities = genericHandler.getAttachedFilteredEntities(userId,
                                                                                          guid,
                                                                                          "guid",
                                                                                          OpenMetadataType.GLOSSARY_TYPE_NAME,
-                                                                                         OpenMetadataType.TERM_ANCHOR_TYPE_NAME,
-                                                                                         OpenMetadataType.TERM_ANCHOR_TYPE_GUID,
+                                                                                         OpenMetadataType.TERM_ANCHOR.typeName,
+                                                                                         OpenMetadataType.TERM_ANCHOR.typeGUID,
                                                                                          2,      // get only the children
                                                                                          specificMatchPropertyNames,
                                                                                          searchCriteria,
