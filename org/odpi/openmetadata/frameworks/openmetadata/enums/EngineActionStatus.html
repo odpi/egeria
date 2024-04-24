@@ -79,11 +79,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="EngineActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">EngineActionStatus</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="EngineActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">EngineActionStatus</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code>, <code><a href="OpenMetadataEnum.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.enums">OpenMetadataEnum</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">EngineActionStatus</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="EngineActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">EngineActionStatus</a>&gt;</span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="EngineActionStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">EngineActionStatus</a>&gt;
+implements <a href="OpenMetadataEnum.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.enums">OpenMetadataEnum</a></span></div>
 <div class="block">EngineActionStatus defines the current status for a engine action.</div>
 </section>
 <section class="summary">
@@ -381,6 +382,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getOrdinal</span>()</div>
 <div class="block">Return the numeric representation of the enumeration.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="OpenMetadataEnum.html#getOrdinal()">getOrdinal</a></code>&nbsp;in interface&nbsp;<code><a href="OpenMetadataEnum.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.enums">OpenMetadataEnum</a></code></dd>
 <dt>Returns:</dt>
 <dd>int ordinal</dd>
 </dl>
@@ -392,6 +395,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getName</span>()</div>
 <div class="block">Return the default name of the enumeration.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="OpenMetadataEnum.html#getName()">getName</a></code>&nbsp;in interface&nbsp;<code><a href="OpenMetadataEnum.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.enums">OpenMetadataEnum</a></code></dd>
 <dt>Returns:</dt>
 <dd>String name</dd>
 </dl>
@@ -403,6 +408,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
 <div class="block">Return the default description of the enumeration.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="OpenMetadataEnum.html#getDescription()">getDescription</a></code>&nbsp;in interface&nbsp;<code><a href="OpenMetadataEnum.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.enums">OpenMetadataEnum</a></code></dd>
 <dt>Returns:</dt>
 <dd>String description</dd>
 </dl>
@@ -414,6 +421,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescriptionGUID</span>()</div>
 <div class="block">Return the unique identifier for the valid value that represents the enum value.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="OpenMetadataEnum.html#getDescriptionGUID()">getDescriptionGUID</a></code>&nbsp;in interface&nbsp;<code><a href="OpenMetadataEnum.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.enums">OpenMetadataEnum</a></code></dd>
 <dt>Returns:</dt>
 <dd>guid</dd>
 </dl>
@@ -425,6 +434,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isDefault</span>()</div>
 <div class="block">Return whether the enum is the default value or not.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="OpenMetadataEnum.html#isDefault()">isDefault</a></code>&nbsp;in interface&nbsp;<code><a href="OpenMetadataEnum.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.enums">OpenMetadataEnum</a></code></dd>
 <dt>Returns:</dt>
 <dd>boolean</dd>
 </dl>

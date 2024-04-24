@@ -79,11 +79,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="ToDoStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ToDoStatus</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="ToDoStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ToDoStatus</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code>, <code><a href="OpenMetadataEnum.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.enums">OpenMetadataEnum</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">ToDoStatus</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="ToDoStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ToDoStatus</a>&gt;</span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="ToDoStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ToDoStatus</a>&gt;
+implements <a href="OpenMetadataEnum.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.enums">OpenMetadataEnum</a></span></div>
 <div class="block">ToDoStatus defines the progress towards completing a to do.
  <ul>
      <li>Open - The to do has been documented but no action taken.</li>
@@ -147,59 +148,49 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCategory()" class="member-name-link">getCategory</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the category for this value.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the default description of the enumeration.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescriptionGUID()" class="member-name-link">getDescriptionGUID</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescriptionGUID()" class="member-name-link">getDescriptionGUID</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the unique identifier for the valid value that represents the enum value.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the default name of the enumeration.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getOpenTypeDescription()" class="member-name-link">getOpenTypeDescription</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getOpenTypeDescription()" class="member-name-link">getOpenTypeDescription</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Return the description for the open metadata enum type that this enum class represents.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getOpenTypeDescriptionGUID()" class="member-name-link">getOpenTypeDescriptionGUID</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Return the unique identifier for the valid value element for the open metadata enum type that this enum class represents.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getOpenTypeDescriptionWiki()" class="member-name-link">getOpenTypeDescriptionWiki</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getOpenTypeDescriptionGUID()" class="member-name-link">getOpenTypeDescriptionGUID</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Return the unique identifier for the valid value element for the open metadata enum type that this enum class represents.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getOpenTypeGUID()" class="member-name-link">getOpenTypeGUID</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getOpenTypeDescriptionWiki()" class="member-name-link">getOpenTypeDescriptionWiki</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Return the unique identifier for the valid value element for the open metadata enum type that this enum class represents.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getOpenTypeGUID()" class="member-name-link">getOpenTypeGUID</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Return the unique identifier for the open metadata enum type that this enum class represents.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getOpenTypeName()" class="member-name-link">getOpenTypeName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getOpenTypeName()" class="member-name-link">getOpenTypeName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Return the unique name for the open metadata enum type that this enum class represents.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOrdinal()" class="member-name-link">getOrdinal</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the numeric representation of the enumeration.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQualifiedName()" class="member-name-link">getQualifiedName</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOrdinal()" class="member-name-link">getOrdinal</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the qualified name for this value.</div>
+<div class="block">Return the numeric representation of the enumeration.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isDefault()" class="member-name-link">isDefault</a>()</code></div>
@@ -322,6 +313,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getOrdinal</span>()</div>
 <div class="block">Return the numeric representation of the enumeration.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="OpenMetadataEnum.html#getOrdinal()">getOrdinal</a></code>&nbsp;in interface&nbsp;<code><a href="OpenMetadataEnum.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.enums">OpenMetadataEnum</a></code></dd>
 <dt>Returns:</dt>
 <dd>int ordinal</dd>
 </dl>
@@ -333,6 +326,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getName</span>()</div>
 <div class="block">Return the default name of the enumeration.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="OpenMetadataEnum.html#getName()">getName</a></code>&nbsp;in interface&nbsp;<code><a href="OpenMetadataEnum.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.enums">OpenMetadataEnum</a></code></dd>
 <dt>Returns:</dt>
 <dd>String name</dd>
 </dl>
@@ -344,6 +339,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
 <div class="block">Return the default description of the enumeration.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="OpenMetadataEnum.html#getDescription()">getDescription</a></code>&nbsp;in interface&nbsp;<code><a href="OpenMetadataEnum.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.enums">OpenMetadataEnum</a></code></dd>
 <dt>Returns:</dt>
 <dd>String description</dd>
 </dl>
@@ -355,6 +352,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescriptionGUID</span>()</div>
 <div class="block">Return the unique identifier for the valid value that represents the enum value.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="OpenMetadataEnum.html#getDescriptionGUID()">getDescriptionGUID</a></code>&nbsp;in interface&nbsp;<code><a href="OpenMetadataEnum.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.enums">OpenMetadataEnum</a></code></dd>
 <dt>Returns:</dt>
 <dd>guid</dd>
 </dl>
@@ -366,6 +365,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isDefault</span>()</div>
 <div class="block">Return whether the enum is the default value or not.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="OpenMetadataEnum.html#isDefault()">isDefault</a></code>&nbsp;in interface&nbsp;<code><a href="OpenMetadataEnum.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.enums">OpenMetadataEnum</a></code></dd>
 <dt>Returns:</dt>
 <dd>boolean</dd>
 </dl>
@@ -423,28 +424,6 @@ not permitted.)</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>string guid</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getQualifiedName()">
-<h3>getQualifiedName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getQualifiedName</span>()</div>
-<div class="block">Return the qualified name for this value.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getCategory()">
-<h3>getCategory</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getCategory</span>()</div>
-<div class="block">Return the category for this value.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string</dd>
 </dl>
 </section>
 </li>
