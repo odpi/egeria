@@ -217,6 +217,10 @@ Content-Type: application/json
 ###
 
 # @name getAllTypes
+# Returns the list of different types of metadata organized into two groups.  The first are the
+# attribute type definitions (AttributeTypeDefs).  These provide types for attributes in full
+# type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
+# and classifications.
 #
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types
 Authorization: Bearer {{token}}
@@ -243,16 +247,24 @@ GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-met
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
+###
+
+@standard=
+@organization=
+@identifier=
 
 ####
 # @name findTypesByExternalId
+# Return the types that are linked to the elements from the specified standard.
 #
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/external-id
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/external-id?standard={{standard}}&organization={{organization}}&identifier={{identifier}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ####
 # @name getSubTypes
+# Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the
+# type has no subtypes.
 #
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/sub-types/{{typeName}}
 Authorization: Bearer {{token}}
@@ -260,6 +272,7 @@ Content-Type: application/json
 
 ####
 # @name getValidRelationshipTypes
+# Returns all the TypeDefs for relationships that can be attached to the requested entity type.
 #
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/{{typeName}}/attached-relationships
 Authorization: Bearer {{token}}
@@ -267,6 +280,7 @@ Content-Type: application/json
 
 ####
 # @name getValidClassificationTypes
+# Returns all the TypeDefs for classifications that can be attached to the requested entity type.
 #
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/{{typeName}}/attached-classifications
 Authorization: Bearer {{token}}
