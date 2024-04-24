@@ -5,13 +5,10 @@ package org.odpi.openmetadata.frameworks.openmetadata.enums;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
  * IncidentReportStatus defines the status of an incident report.
@@ -19,7 +16,7 @@ import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataV
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum IncidentReportStatus
+public enum IncidentReportStatus implements OpenMetadataEnum
 {
     /**
      * The incident report has been raised but no processing has occurred.
@@ -186,33 +183,6 @@ public enum IncidentReportStatus
     public static String getOpenTypeDescriptionWiki()
     {
         return ENUM_DESCRIPTION_WIKI;
-    }
-
-
-    /**
-     * Return the qualified name for this value.
-     *
-     * @return string
-     */
-    public String getQualifiedName()
-    {
-        return constructValidValueQualifiedName(ENUM_TYPE_NAME,
-                                                OpenMetadataProperty.INCIDENT_STATUS.name,
-                                                null,
-                                                name);
-    }
-
-
-    /**
-     * Return the category for this value.
-     *
-     * @return string
-     */
-    public String getCategory()
-    {
-        return constructValidValueCategory(ENUM_TYPE_NAME,
-                                           OpenMetadataProperty.INCIDENT_STATUS.name,
-                                           null);
     }
 
 

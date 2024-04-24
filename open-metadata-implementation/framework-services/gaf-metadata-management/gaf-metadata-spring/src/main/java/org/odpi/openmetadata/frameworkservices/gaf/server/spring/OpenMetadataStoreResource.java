@@ -72,60 +72,83 @@ public class OpenMetadataStoreResource
 
 
     /**
-     * Returns all the TypeDefs for a specific category.
+     * Returns all the entity type definitions.
      *
      * @param serverName unique identifier for requested server.
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId unique identifier for requesting user.
-     * @param category find parameters used to limit the returned results.
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @GetMapping(path = "/open-metadata-types/category/{category}")
+    @GetMapping(path = "/open-metadata-types/entity-defs")
 
-    @Operation(summary="findTypeDefsByCategory",
-            description="Returns all the TypeDefs for a specific category.",
+    @Operation(summary="getEntityDefs",
+            description="Returns all the entity type definitions.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/types/"))
 
-    public TypeDefListResponse findTypeDefsByCategory(@PathVariable String                      serverName,
-                                                      @PathVariable String                      serviceURLMarker,
-                                                      @PathVariable String                      userId,
-                                                      @PathVariable OpenMetadataTypeDefCategory category)
+    public TypeDefListResponse getEntityDefs(@PathVariable String serverName,
+                                             @PathVariable String serviceURLMarker,
+                                             @PathVariable String userId)
     {
-        return restAPI.findTypeDefsByCategory(serverName, serviceURLMarker, userId, category);
+        return restAPI.findTypeDefsByCategory(serverName, serviceURLMarker, userId, OpenMetadataTypeDefCategory.ENTITY_DEF);
     }
 
 
     /**
-     * Returns all the AttributeTypeDefs for a specific category.
+     * Returns all the relationship type definitions.
      *
      * @param serverName unique identifier for requested server.
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId unique identifier for requesting user.
-     * @param category find parameters used to limit the returned results.
-     * @return AttributeTypeDefListResponse:
-     * AttributeTypeDefs list or
+     * @return TypeDefListResponse:
+     * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @GetMapping(path = "/open-metadata-attribute-types/category/{category}")
+    @GetMapping(path = "/open-metadata-types/relationship-defs")
 
-    @Operation(summary="findAttributeTypeDefsByCategory",
-            description="Returns all the AttributeTypeDefs for a specific category.",
+    @Operation(summary="getRelationshipDefs",
+            description="Returns all the relationship type definitions.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/types/"))
 
-    public AttributeTypeDefListResponse findAttributeTypeDefsByCategory(@PathVariable String                               serverName,
-                                                                        @PathVariable String                               serviceURLMarker,
-                                                                        @PathVariable String                               userId,
-                                                                        @PathVariable OpenMetadataAttributeTypeDefCategory category)
+    public TypeDefListResponse getRelationshipDefs(@PathVariable String serverName,
+                                                   @PathVariable String serviceURLMarker,
+                                                   @PathVariable String userId)
     {
-        return restAPI.findAttributeTypeDefsByCategory(serverName, serviceURLMarker, userId, category);
+        return restAPI.findTypeDefsByCategory(serverName, serviceURLMarker, userId, OpenMetadataTypeDefCategory.RELATIONSHIP_DEF);
+    }
+
+
+    /**
+     * Returns all the classification type definitions.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
+     * @param userId unique identifier for requesting user.
+     * @return TypeDefListResponse:
+     * TypeDefs list or
+     * InvalidParameterException the TypeDefCategory is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @GetMapping(path = "/open-metadata-types/classification-defs")
+
+    @Operation(summary="getClassificationDefs",
+            description="Returns all the classification type definitions.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/types/"))
+
+    public TypeDefListResponse getClassificationDefs(@PathVariable String serverName,
+                                             @PathVariable String serviceURLMarker,
+                                             @PathVariable String userId)
+    {
+        return restAPI.findTypeDefsByCategory(serverName, serviceURLMarker, userId, OpenMetadataTypeDefCategory.CLASSIFICATION_DEF);
     }
 
 

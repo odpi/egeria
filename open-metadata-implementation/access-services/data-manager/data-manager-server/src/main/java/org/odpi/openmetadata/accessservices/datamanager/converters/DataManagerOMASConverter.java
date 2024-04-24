@@ -92,7 +92,7 @@ public class DataManagerOMASConverter<B> extends OpenMetadataAPIGenericConverter
 
             for (KeyPattern keyPattern : KeyPattern.values())
             {
-                if (keyPattern.getOpenTypeOrdinal() == ordinal)
+                if (keyPattern.getOrdinal() == ordinal)
                 {
                     return keyPattern;
                 }

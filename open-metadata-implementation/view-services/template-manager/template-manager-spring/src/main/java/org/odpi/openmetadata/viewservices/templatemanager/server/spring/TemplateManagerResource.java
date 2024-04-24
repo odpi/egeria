@@ -5,7 +5,6 @@ package org.odpi.openmetadata.viewservices.templatemanager.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.OpenMetadataElementsResponse;
 import org.odpi.openmetadata.viewservices.templatemanager.rest.TemplateClassificationRequestBody;
 import org.odpi.openmetadata.viewservices.templatemanager.server.TemplateManagerRESTServices;

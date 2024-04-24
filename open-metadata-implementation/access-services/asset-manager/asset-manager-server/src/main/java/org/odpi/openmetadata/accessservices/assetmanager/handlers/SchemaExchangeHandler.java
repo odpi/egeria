@@ -1584,7 +1584,7 @@ public class SchemaExchangeHandler extends ExchangeHandlerBase
         int keyPatternOrdinal = 0;
         if (primaryKeyPattern != null)
         {
-            keyPatternOrdinal = primaryKeyPattern.getOpenTypeOrdinal();
+            keyPatternOrdinal = primaryKeyPattern.getOrdinal();
         }
 
         try

@@ -229,6 +229,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                              resourceUse.getDescription(),
                                              resourceUse.getCategory(),
                                              OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                             "string",
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                              resourceUse.getResourceUse(),
                                              false,
@@ -268,6 +269,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                              projectStatus.getDescription(),
                                              projectStatus.getCategory(),
                                              OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                             "string",
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                              projectStatus.getName(),
                                              false,
@@ -300,6 +302,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                              projectHealth.getDescription(),
                                              projectHealth.getCategory(),
                                              OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                             "string",
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                              projectHealth.getName(),
                                              false,
@@ -328,6 +331,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                              projectStatus.getDescription(),
                                              projectStatus.getCategory(),
                                              OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                             "string",
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                              projectStatus.getName(),
                                              false,
@@ -356,6 +360,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                              collectionType.getDescription(),
                                              collectionType.getCategory(),
                                              OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                             "string",
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                              collectionType.getName(),
                                              false,
@@ -381,513 +386,126 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         /*===========================================
          * Add the open metadata type enums
          */
-        String byteOrderingParentSetGUID = this.getParentSet(null,
-                                                             OpenMetadataType.OPERATING_PLATFORM.typeName,
-                                                             OpenMetadataProperty.BYTE_ORDERING.name,
-                                                             null);
-        for (ByteOrdering byteOrdering : ByteOrdering.values())
-        {
-            this.archiveHelper.addValidValue(byteOrdering.getDescriptionGUID(),
-                                             byteOrderingParentSetGUID,
-                                             byteOrderingParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             byteOrdering.getQualifiedName(),
-                                             byteOrdering.getName(),
-                                             byteOrdering.getDescription(),
-                                             byteOrdering.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             byteOrdering.getName().toUpperCase(),
-                                             false,
-                                             false,
-                                             null);
-        }
+        addOpenMetadataEnumValidNames(OpenMetadataType.OPERATING_PLATFORM.typeName,
+                                      OpenMetadataProperty.BYTE_ORDERING.name,
+                                      ByteOrdering.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(ByteOrdering.values())));
 
-        String collectionMemberStatusParentSetGUID = this.getParentSet(null,
-                                                                       OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
-                                                                       OpenMetadataProperty.MEMBERSHIP_STATUS.name,
-                                                                       null);
-        for (CollectionMemberStatus collectionMemberStatus : CollectionMemberStatus.values())
-        {
-            this.archiveHelper.addValidValue(collectionMemberStatus.getDescriptionGUID(),
-                                             collectionMemberStatusParentSetGUID,
-                                             collectionMemberStatusParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             collectionMemberStatus.getQualifiedName(),
-                                             collectionMemberStatus.getName(),
-                                             collectionMemberStatus.getDescription(),
-                                             collectionMemberStatus.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             collectionMemberStatus.getName().toUpperCase(),
-                                             false,
-                                             false,
-                                             null);
-        }
+        addOpenMetadataEnumValidNames(OpenMetadataType.EXTERNAL_ID.typeName,
+                                      OpenMetadataProperty.KEY_PATTERN.name,
+                                      KeyPattern.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(KeyPattern.values())));
 
-        String commentTypeParentSetGUID = this.getParentSet(null,
-                                                            OpenMetadataType.COMMENT.typeName,
-                                                            OpenMetadataProperty.COMMENT_TYPE.name,
-                                                            null);
-        for (CommentType commentType : CommentType.values())
-        {
-            this.archiveHelper.addValidValue(commentType.getDescriptionGUID(),
-                                             commentTypeParentSetGUID,
-                                             commentTypeParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             commentType.getQualifiedName(),
-                                             commentType.getName(),
-                                             commentType.getDescription(),
-                                             commentType.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             commentType.getName().toUpperCase(),
-                                             false,
-                                             false,
-                                             null);
-        }
+        addOpenMetadataEnumValidNames(OpenMetadataType.PRIMARY_KEY_CLASSIFICATION_TYPE_NAME,
+                                      OpenMetadataProperty.KEY_PATTERN.name,
+                                      KeyPattern.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(KeyPattern.values())));
 
-        String confidenceLevelParentSetGUID = this.getParentSet(null,
-                                                                OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
-                                                                OpenMetadataProperty.CONFIDENCE_LEVEL_IDENTIFIER.name,
-                                                                null);
-        for (ConfidenceLevel enumValues : ConfidenceLevel.values())
-        {
-            this.archiveHelper.addValidValue(enumValues.getDescriptionGUID(),
-                                             confidenceLevelParentSetGUID,
-                                             confidenceLevelParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             enumValues.getQualifiedName(),
-                                             enumValues.getName(),
-                                             enumValues.getDescription(),
-                                             enumValues.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             Integer.toString(enumValues.getOrdinal()),
-                                             false,
-                                             false,
-                                             null);
-        }
+        addOpenMetadataEnumValidNames(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                      OpenMetadataProperty.MEMBERSHIP_STATUS.name,
+                                      CollectionMemberStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(CollectionMemberStatus.values())));
 
-        String confidentialityLevelParentSetGUID = this.getParentSet(null,
-                                                                     OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
-                                                                     OpenMetadataProperty.CONFIDENTIALITY_LEVEL_IDENTIFIER.name,
-                                                                     null);
-        for (ConfidentialityLevel enumValues : ConfidentialityLevel.values())
-        {
-            this.archiveHelper.addValidValue(enumValues.getDescriptionGUID(),
-                                             confidentialityLevelParentSetGUID,
-                                             confidentialityLevelParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             enumValues.getQualifiedName(),
-                                             enumValues.getName(),
-                                             enumValues.getDescription(),
-                                             enumValues.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             Integer.toString(enumValues.getOrdinal()),
-                                             false,
-                                             false,
-                                             null);
-        }
+        addOpenMetadataEnumValidNames(OpenMetadataType.COMMENT.typeName,
+                                      OpenMetadataProperty.COMMENT_TYPE.name,
+                                      CommentType.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(CommentType.values())));
 
-        String ContactMethodTypeParentSetGUID = this.getParentSet(null,
-                                                                  OpenMetadataType.CONTACT_DETAILS.typeName,
-                                                                  OpenMetadataProperty.CONTACT_METHOD_TYPE.name,
-                                                                  null);
-        for (ContactMethodType enumValues : ContactMethodType.values())
-        {
-            this.archiveHelper.addValidValue(enumValues.getDescriptionGUID(),
-                                             ContactMethodTypeParentSetGUID,
-                                             ContactMethodTypeParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             enumValues.getQualifiedName(),
-                                             enumValues.getName(),
-                                             enumValues.getDescription(),
-                                             enumValues.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             enumValues.getName().toUpperCase(),
-                                             false,
-                                             false,
-                                             null);
-        }
+        addOpenMetadataEnumValidIdentifiers(OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName,
+                                            OpenMetadataProperty.CONFIDENCE_LEVEL_IDENTIFIER.name,
+                                            new ArrayList<>(Arrays.asList(ConfidenceLevel.values())));
 
-        String criticalityLevelParentSetGUID = this.getParentSet(null,
-                                                                 OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName,
-                                                                 OpenMetadataProperty.CRITICALITY_LEVEL_IDENTIFIER.name,
-                                                                 null);
-        for (CriticalityLevel enumValues : CriticalityLevel.values())
-        {
-            this.archiveHelper.addValidValue(enumValues.getDescriptionGUID(),
-                                             criticalityLevelParentSetGUID,
-                                             criticalityLevelParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             enumValues.getQualifiedName(),
-                                             enumValues.getName(),
-                                             enumValues.getDescription(),
-                                             enumValues.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             Integer.toString(enumValues.getOrdinal()),
-                                             false,
-                                             false,
-                                             null);
-        }
+        addOpenMetadataEnumValidIdentifiers(OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName,
+                                            OpenMetadataProperty.CONFIDENTIALITY_LEVEL_IDENTIFIER.name,
+                                            new ArrayList<>(Arrays.asList(ConfidentialityLevel.values())));
 
-        String dataClassAssignmentStatusParentSetGUID = this.getParentSet(null,
-                                                                          OpenMetadataType.DATA_CLASS_ASSIGNMENT.typeName,
-                                                                          OpenMetadataProperty.DATA_CLASS_ASSIGNMENT_STATUS.name,
-                                                                          null);
-        for (DataClassAssignmentStatus enumValues : DataClassAssignmentStatus.values())
-        {
-            this.archiveHelper.addValidValue(enumValues.getDescriptionGUID(),
-                                             dataClassAssignmentStatusParentSetGUID,
-                                             dataClassAssignmentStatusParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             enumValues.getQualifiedName(),
-                                             enumValues.getName(),
-                                             enumValues.getDescription(),
-                                             enumValues.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             enumValues.getName().toUpperCase(),
-                                             false,
-                                             false,
-                                             null);
-        }
+        addOpenMetadataEnumValidNames(OpenMetadataType.CONTACT_DETAILS.typeName,
+                                      OpenMetadataProperty.CONTACT_METHOD_TYPE.name,
+                                      ContactMethodType.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(ContactMethodType.values())));
 
-        String sortOrderParentSetGUID = this.getParentSet(null,
-                                                          OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
-                                                          OpenMetadataProperty.SORT_ORDER.name,
-                                                          null);
-        for (DataItemSortOrder enumValues : DataItemSortOrder.values())
-        {
-            this.archiveHelper.addValidValue(enumValues.getDescriptionGUID(),
-                                             sortOrderParentSetGUID,
-                                             sortOrderParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             enumValues.getQualifiedName(),
-                                             enumValues.getName(),
-                                             enumValues.getDescription(),
-                                             enumValues.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             enumValues.getName().toUpperCase(),
-                                             false,
-                                             false,
-                                             null);
-        }
+        addOpenMetadataEnumValidIdentifiers(OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName,
+                                            OpenMetadataProperty.CRITICALITY_LEVEL_IDENTIFIER.name,
+                                            new ArrayList<>(Arrays.asList(CriticalityLevel.values())));
 
-        String dataFieldSortOrderParentSetGUID = this.getParentSet(null,
-                                                                   OpenMetadataType.DATA_FIELD.typeName,
-                                                                   OpenMetadataProperty.DATA_FIELD_SORT_ORDER.name,
-                                                                   null);
-        for (DataItemSortOrder enumValues : DataItemSortOrder.values())
-        {
-            this.archiveHelper.addValidValue(enumValues.getDescriptionGUID(),
-                                             dataFieldSortOrderParentSetGUID,
-                                             dataFieldSortOrderParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             enumValues.getQualifiedName(),
-                                             enumValues.getName(),
-                                             enumValues.getDescription(),
-                                             enumValues.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             enumValues.getName().toUpperCase(),
-                                             false,
-                                             false,
-                                             null);
-        }
+        addOpenMetadataEnumValidNames(OpenMetadataType.DATA_CLASS_ASSIGNMENT.typeName,
+                                      OpenMetadataProperty.DATA_CLASS_ASSIGNMENT_STATUS.name,
+                                      DataClassAssignmentStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(DataClassAssignmentStatus.values())));
 
-        String actionStatusParentSetGUID = this.getParentSet(null,
-                                                             OpenMetadataType.ENGINE_ACTION.typeName,
-                                                             OpenMetadataProperty.ACTION_STATUS.name,
-                                                             null);
-        for (EngineActionStatus enumValues : EngineActionStatus.values())
-        {
-            this.archiveHelper.addValidValue(enumValues.getDescriptionGUID(),
-                                             actionStatusParentSetGUID,
-                                             actionStatusParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             enumValues.getQualifiedName(),
-                                             enumValues.getName(),
-                                             enumValues.getDescription(),
-                                             enumValues.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             enumValues.getName().toUpperCase(),
-                                             false,
-                                             false,
-                                             null);
-        }
+        addOpenMetadataEnumValidNames(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
+                                      OpenMetadataProperty.SORT_ORDER.name,
+                                      DataItemSortOrder.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(DataItemSortOrder.values())));
 
-        String targetForActionStatusParentSetGUID = this.getParentSet(null,
-                                                                      OpenMetadataType.TARGET_FOR_ACTION.typeName,
-                                                                      OpenMetadataProperty.TARGET_FOR_ACTION_STATUS.name,
-                                                                      null);
-        for (EngineActionStatus enumValues : EngineActionStatus.values())
-        {
-            this.archiveHelper.addValidValue(enumValues.getDescriptionGUID(),
-                                             targetForActionStatusParentSetGUID,
-                                             targetForActionStatusParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             enumValues.getQualifiedName(),
-                                             enumValues.getName(),
-                                             enumValues.getDescription(),
-                                             enumValues.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             enumValues.getName().toUpperCase(),
-                                             false,
-                                             false,
-                                             null);
-        }
+        addOpenMetadataEnumValidNames(OpenMetadataType.DATA_FIELD.typeName,
+                                      OpenMetadataProperty.DATA_FIELD_SORT_ORDER.name,
+                                      DataItemSortOrder.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(DataItemSortOrder.values())));
 
-        String activityTypeParentSetGUID = this.getParentSet(null,
-                                                             OpenMetadataType.ACTIVITY_DESCRIPTION_CLASSIFICATION.typeName,
-                                                             OpenMetadataProperty.ACTIVITY_TYPE.name,
-                                                             null);
+        addOpenMetadataEnumValidNames(OpenMetadataType.ENGINE_ACTION.typeName,
+                                      OpenMetadataProperty.ACTION_STATUS.name,
+                                      EngineActionStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(EngineActionStatus.values())));
 
-        for (GlossaryTermActivityType enumValues : GlossaryTermActivityType.values())
-        {
-            this.archiveHelper.addValidValue(enumValues.getDescriptionGUID(),
-                                             activityTypeParentSetGUID,
-                                             activityTypeParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             enumValues.getQualifiedName(),
-                                             enumValues.getName(),
-                                             enumValues.getDescription(),
-                                             enumValues.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             enumValues.getName().toUpperCase(),
-                                             false,
-                                             false,
-                                             null);
-        }
+        addOpenMetadataEnumValidNames(OpenMetadataType.TARGET_FOR_ACTION.typeName,
+                                      OpenMetadataProperty.TARGET_FOR_ACTION_STATUS.name,
+                                      EngineActionStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(EngineActionStatus.values())));
 
-        String termAssignmentStatusParentSetGUID = this.getParentSet(null,
-                                                                     OpenMetadataType.SEMANTIC_ASSIGNMENT.typeName,
-                                                                     OpenMetadataProperty.TERM_ASSIGNMENT_STATUS.name,
-                                                                     null);
-        for (GlossaryTermAssignmentStatus enumValues : GlossaryTermAssignmentStatus.values())
-        {
-            this.archiveHelper.addValidValue(enumValues.getDescriptionGUID(),
-                                             termAssignmentStatusParentSetGUID,
-                                             termAssignmentStatusParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             enumValues.getQualifiedName(),
-                                             enumValues.getName(),
-                                             enumValues.getDescription(),
-                                             enumValues.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             enumValues.getName().toUpperCase(),
-                                             false,
-                                             false,
-                                             null);
-        }
+        addOpenMetadataEnumValidNames(OpenMetadataType.ACTIVITY_DESCRIPTION_CLASSIFICATION.typeName,
+                                      OpenMetadataProperty.ACTIVITY_TYPE.name,
+                                      GlossaryTermActivityType.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(GlossaryTermActivityType.values())));
 
-        String termCategorizationParentSetGUID = this.getParentSet(null,
-                                                                   OpenMetadataType.TERM_CATEGORIZATION.typeName,
-                                                                   OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
-                                                                   null);
-        for (GlossaryTermRelationshipStatus enumValues : GlossaryTermRelationshipStatus.values())
-        {
-            this.archiveHelper.addValidValue(enumValues.getDescriptionGUID(),
-                                             termCategorizationParentSetGUID,
-                                             termCategorizationParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             enumValues.getQualifiedName(),
-                                             enumValues.getName(),
-                                             enumValues.getDescription(),
-                                             enumValues.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             enumValues.getName().toUpperCase(),
-                                             false,
-                                             false,
-                                             null);
-        }
+        addOpenMetadataEnumValidNames(OpenMetadataType.SEMANTIC_ASSIGNMENT.typeName,
+                                      OpenMetadataProperty.TERM_ASSIGNMENT_STATUS.name,
+                                      GlossaryTermAssignmentStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(GlossaryTermAssignmentStatus.values())));
 
-        String relatedTermParentSetGUID = this.getParentSet(null,
-                                                            OpenMetadataType.RELATED_TERM_RELATIONSHIP_NAME,
-                                                            OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
-                                                            null);
-        for (GlossaryTermRelationshipStatus enumValues : GlossaryTermRelationshipStatus.values())
-        {
-            this.archiveHelper.addValidValue(enumValues.getDescriptionGUID(),
-                                             relatedTermParentSetGUID,
-                                             relatedTermParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             enumValues.getQualifiedName(),
-                                             enumValues.getName(),
-                                             enumValues.getDescription(),
-                                             enumValues.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             enumValues.getName().toUpperCase(),
-                                             false,
-                                             false,
-                                             null);
-        }
+        addOpenMetadataEnumValidNames(OpenMetadataType.TERM_CATEGORIZATION.typeName,
+                                      OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
+                                      GlossaryTermRelationshipStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(GlossaryTermRelationshipStatus.values())));
 
-        String usedInContextParentSetGUID = this.getParentSet(null,
-                                                            OpenMetadataType.USED_IN_CONTEXT.typeName,
-                                                            OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
-                                                            null);
-        for (GlossaryTermRelationshipStatus enumValues : GlossaryTermRelationshipStatus.values())
-        {
-            this.archiveHelper.addValidValue(enumValues.getDescriptionGUID(),
-                                             usedInContextParentSetGUID,
-                                             usedInContextParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             enumValues.getQualifiedName(),
-                                             enumValues.getName(),
-                                             enumValues.getDescription(),
-                                             enumValues.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             enumValues.getName().toUpperCase(),
-                                             false,
-                                             false,
-                                             null);
-        }
+        addOpenMetadataEnumValidNames(OpenMetadataType.RELATED_TERM_RELATIONSHIP_NAME,
+                                      OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
+                                      GlossaryTermRelationshipStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(GlossaryTermRelationshipStatus.values())));
 
-        String governanceClassificationStatusParentSetGUID = this.getParentSet(null,
-                                                                               null,
-                                                                               OpenMetadataProperty.STATUS_IDENTIFIER.name,
-                                                                               null);
-        for (GovernanceClassificationStatus enumValues : GovernanceClassificationStatus.values())
-        {
-            this.archiveHelper.addValidValue(enumValues.getDescriptionGUID(),
-                                             governanceClassificationStatusParentSetGUID,
-                                             governanceClassificationStatusParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             enumValues.getQualifiedName(),
-                                             enumValues.getName(),
-                                             enumValues.getDescription(),
-                                             enumValues.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             Integer.toString(enumValues.getOrdinal()),
-                                             false,
-                                             false,
-                                             null);
-        }
+        addOpenMetadataEnumValidNames(OpenMetadataType.USED_IN_CONTEXT.typeName,
+                                      OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
+                                      GlossaryTermRelationshipStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(GlossaryTermRelationshipStatus.values())));
 
-        String impactSeverityParentSetGUID = this.getParentSet(null,
-                                                               null,
-                                                               OpenMetadataProperty.SEVERITY_IDENTIFIER.name,
-                                                               null);
-        for (ImpactSeverity enumValues : ImpactSeverity.values())
-        {
-            this.archiveHelper.addValidValue(enumValues.getDescriptionGUID(),
-                                             impactSeverityParentSetGUID,
-                                             impactSeverityParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             enumValues.getQualifiedName(),
-                                             enumValues.getName(),
-                                             enumValues.getDescription(),
-                                             enumValues.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             Integer.toString(enumValues.getOrdinal()),
-                                             false,
-                                             false,
-                                             null);
-        }
+        addOpenMetadataEnumValidIdentifiers(null,
+                                            OpenMetadataProperty.STATUS_IDENTIFIER.name,
+                                            new ArrayList<>(Arrays.asList(GovernanceClassificationStatus.values())));
 
-        String incidentStatusParentSetGUID = this.getParentSet(null,
-                                                               OpenMetadataType.INCIDENT_REPORT.typeName,
-                                                               OpenMetadataProperty.INCIDENT_STATUS.name,
-                                                               null);
+        addOpenMetadataEnumValidIdentifiers(null,
+                                            OpenMetadataProperty.SEVERITY_IDENTIFIER.name,
+                                            new ArrayList<>(Arrays.asList(ImpactSeverity.values())));
 
-        for (IncidentReportStatus enumValues : IncidentReportStatus.values())
-        {
-            this.archiveHelper.addValidValue(enumValues.getDescriptionGUID(),
-                                             incidentStatusParentSetGUID,
-                                             incidentStatusParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             enumValues.getQualifiedName(),
-                                             enumValues.getName(),
-                                             enumValues.getDescription(),
-                                             enumValues.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             enumValues.getName().toUpperCase(),
-                                             false,
-                                             false,
-                                             null);
-        }
+        addOpenMetadataEnumValidNames(OpenMetadataType.INCIDENT_REPORT.typeName,
+                                      OpenMetadataProperty.INCIDENT_STATUS.name,
+                                      IncidentReportStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(IncidentReportStatus.values())));
 
-        String retentionParentSetGUID = this.getParentSet(null,
-                                                          OpenMetadataType.RETENTION_CLASSIFICATION.typeName,
-                                                          OpenMetadataProperty.RETENTION_BASIS_IDENTIFIER.name,
-                                                          null);
-        for (RetentionBasis enumValues : RetentionBasis.values())
-        {
-            this.archiveHelper.addValidValue(enumValues.getDescriptionGUID(),
-                                             retentionParentSetGUID,
-                                             retentionParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             enumValues.getQualifiedName(),
-                                             enumValues.getName(),
-                                             enumValues.getDescription(),
-                                             enumValues.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             Integer.toString(enumValues.getOrdinal()),
-                                             false,
-                                             false,
-                                             null);
-        }
 
-        String toDoStatusParentSetGUID = this.getParentSet(null,
-                                                           OpenMetadataType.TO_DO.typeName,
-                                                           OpenMetadataProperty.TO_DO_STATUS.name,
-                                                           null);
-        for (ToDoStatus enumValues : ToDoStatus.values())
-        {
-            this.archiveHelper.addValidValue(enumValues.getDescriptionGUID(),
-                                             toDoStatusParentSetGUID,
-                                             toDoStatusParentSetGUID,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             OpenMetadataType.VALID_VALUE_SET.typeName,
-                                             enumValues.getQualifiedName(),
-                                             enumValues.getName(),
-                                             enumValues.getDescription(),
-                                             enumValues.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             enumValues.getName().toUpperCase(),
-                                             false,
-                                             false,
-                                             null);
-        }
+        addOpenMetadataEnumValidIdentifiers(OpenMetadataType.RETENTION_CLASSIFICATION.typeName,
+                                            OpenMetadataProperty.RETENTION_BASIS_IDENTIFIER.name,
+                                            new ArrayList<>(Arrays.asList(RetentionBasis.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataType.TO_DO.typeName,
+                                      OpenMetadataProperty.TO_DO_STATUS.name,
+                                      ToDoStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(ToDoStatus.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataType.RATING_TYPE_NAME,
+                                      OpenMetadataType.STARS_PROPERTY_NAME,
+                                      StarRating.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(StarRating.values())));
+
 
         /*
          * Add valid metadata values for deployedImplementationType.  The GUIDs are saved in a look-up map
@@ -1348,6 +966,90 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
 
     /**
+     * Set up a valid value list for an enum based on its names.
+     *
+     * @param enumConsumingTypeName entity type name
+     * @param enumConsumingProperty attribute name
+     * @param enumTypeName type name for enum
+     * @param openMetadataEnums list of valid values
+     */
+    private void addOpenMetadataEnumValidNames(String                 enumConsumingTypeName,
+                                               String                 enumConsumingProperty,
+                                               String                 enumTypeName,
+                                               List<OpenMetadataEnum> openMetadataEnums)
+    {
+        String parentSetGUID = this.getParentSet(null, enumConsumingTypeName, enumConsumingProperty, null);
+
+        for (OpenMetadataEnum enumValue : openMetadataEnums)
+        {
+            String enumPreferredValue = enumValue.getName().toUpperCase();
+            this.archiveHelper.addValidValue(enumValue.getDescriptionGUID(),
+                                             parentSetGUID,
+                                             parentSetGUID,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             constructValidValueQualifiedName(enumConsumingTypeName,
+                                                                              enumConsumingProperty,
+                                                                              null,
+                                                                              enumPreferredValue),
+                                             enumValue.getName(),
+                                             enumValue.getDescription(),
+                                             constructValidValueCategory(enumConsumingTypeName,
+                                                                         enumConsumingProperty,
+                                                                         null),
+                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                             enumTypeName,
+                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                             enumPreferredValue,
+                                             false,
+                                             false,
+                                             null);
+        }
+    }
+
+
+    /**
+     * Set up a valid value list for an enum based on its ordinals.
+     *
+     * @param enumConsumingTypeName entity type name
+     * @param enumConsumingProperty attribute name
+     * @param openMetadataEnums list of valid values
+     */
+    private void addOpenMetadataEnumValidIdentifiers(String                 enumConsumingTypeName,
+                                                     String                 enumConsumingProperty,
+                                                     List<OpenMetadataEnum> openMetadataEnums)
+    {
+        String parentSetGUID = this.getParentSet(null, enumConsumingTypeName, enumConsumingProperty, null);
+
+        for (OpenMetadataEnum enumValue : openMetadataEnums)
+        {
+            String enumPreferredValue = Integer.toString(enumValue.getOrdinal());
+            this.archiveHelper.addValidValue(enumValue.getDescriptionGUID(),
+                                             parentSetGUID,
+                                             parentSetGUID,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             OpenMetadataType.VALID_VALUE_SET.typeName,
+                                             constructValidValueQualifiedName(enumConsumingTypeName,
+                                                                              enumConsumingProperty,
+                                                                              null,
+                                                                              enumPreferredValue),
+                                             enumValue.getName(),
+                                             enumValue.getDescription(),
+                                             constructValidValueCategory(enumConsumingTypeName,
+                                                                         enumConsumingProperty,
+                                                                         null),
+                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                             "int",
+                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                             enumPreferredValue,
+                                             false,
+                                             false,
+                                             null);
+        }
+    }
+
+
+    /**
      * Create a template got a software server and link it to the associated deployed implementation type.
      * The template consists of a SoftwareServer asset linked to a software capability, plus a connection, linked
      * to the supplied connector type and an endpoint,
@@ -1777,6 +1479,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                                  openMetadataType.description,
                                                                  category,
                                                                  OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                                                 "string",
                                                                  OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                                                  openMetadataType.typeName,
                                                                  false,
@@ -1864,6 +1567,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                                  description,
                                                                  category,
                                                                  OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                                                 "string",
                                                                  OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                                                  deployedImplementationType,
                                                                  false,
@@ -1966,6 +1670,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                          description,
                                          category,
                                          OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                         "string",
                                          OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                          fileTypeName,
                                          false,
@@ -2015,6 +1720,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                          null,
                                          category,
                                          OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                         "string",
                                          OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                          fileName,
                                          false,
@@ -2074,6 +1780,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                          null,
                                          category,
                                          OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                         "string",
                                          OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                          fileExtension,
                                          false,
@@ -2095,7 +1802,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
 
     /**
-     * Add reference data for a file extension.
+     * Add reference data for an attribute name.
      *
      * @param attributeName   name of the attribute
      * @param attributeDescription  description of the attribute
@@ -2127,6 +1834,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                          attributeDescription,
                                          category,
                                          OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                         "string",
                                          OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                          attributeName,
                                          false,
@@ -2182,6 +1890,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                                          parentDescription,
                                                          constructValidValueCategory(typeName, propertyName, mapName),
                                                          OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                                         null,
                                                          OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                                          null,
                                                          false,

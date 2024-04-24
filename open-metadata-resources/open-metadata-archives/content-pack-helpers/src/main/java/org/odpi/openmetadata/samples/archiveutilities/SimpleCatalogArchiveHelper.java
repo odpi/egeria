@@ -5442,54 +5442,7 @@ public class SimpleCatalogArchiveHelper
                                 boolean             isDeprecated,
                                 Map<String, String> additionalProperties)
     {
-        return this.addValidValue(null, null, null, null, typeName, qualifiedName, name, description, null, usage, scope, preferredValue, isDeprecated, false, additionalProperties);
-    }
-
-
-    /**
-     * Add a valid value definition/set.
-     *
-     * @param typeName unique name of the valid value - ie a definition or a set
-     * @param qualifiedName unique name of the valid value
-     * @param name display name of the valid value
-     * @param category category of the valid value
-     * @param scope short description of the valid value
-     * @param description description of the valid value
-     * @param preferredValue preferredValue of the valid value
-     * @param usage how is the valid value used
-     * @param isDeprecated is value active
-     * @param isCaseSensitive is value case sensitive
-     * @param additionalProperties any other properties.
-     *
-     * @return unique identifier of the valid value
-     */
-    public String addValidValue(String              typeName,
-                                String              qualifiedName,
-                                String              name,
-                                String              description,
-                                String              category,
-                                String              usage,
-                                String              scope,
-                                String              preferredValue,
-                                boolean             isDeprecated,
-                                boolean             isCaseSensitive,
-                                Map<String, String> additionalProperties)
-    {
-        return this.addValidValue(null,
-                                  null,
-                                  null,
-                                  null,
-                                  typeName,
-                                  qualifiedName,
-                                  name,
-                                  description,
-                                  category,
-                                  usage,
-                                  scope,
-                                  preferredValue,
-                                  isDeprecated,
-                                  isCaseSensitive,
-                                  additionalProperties);
+        return this.addValidValue(null, null, null, null, typeName, qualifiedName, name, description, null, usage, null, scope, preferredValue, isDeprecated, false, additionalProperties);
     }
 
 
@@ -5505,6 +5458,7 @@ public class SimpleCatalogArchiveHelper
      * @param name display name of the valid value
      * @param category category of the valid value
      * @param scope short description of the valid value
+     * @param dataType type for preferred value
      * @param description description of the valid value
      * @param preferredValue preferredValue of the valid value
      * @param usage how is the valid value used
@@ -5524,6 +5478,7 @@ public class SimpleCatalogArchiveHelper
                                 String              description,
                                 String              category,
                                 String              usage,
+                                String              dataType,
                                 String              scope,
                                 String              preferredValue,
                                 boolean             isDeprecated,
@@ -5550,6 +5505,7 @@ public class SimpleCatalogArchiveHelper
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.CATEGORY_PROPERTY_NAME, category, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.USAGE.name, usage, methodName);
+            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DATA_TYPE.name, dataType, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.SCOPE_PROPERTY_NAME, scope, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME, preferredValue, methodName);
             properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataType.IS_DEPRECATED_PROPERTY_NAME, isDeprecated, methodName);

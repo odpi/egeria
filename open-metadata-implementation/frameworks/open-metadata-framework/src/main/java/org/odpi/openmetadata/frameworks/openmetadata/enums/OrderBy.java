@@ -5,12 +5,9 @@ package org.odpi.openmetadata.frameworks.openmetadata.enums;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
  * OrderBy specifies the sequencing to use in a specific collection.
@@ -27,7 +24,7 @@ import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataV
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum OrderBy
+public enum OrderBy implements OpenMetadataEnum
 {
     /**
      * Order the collection by the names of the members in the collection.
@@ -179,33 +176,6 @@ public enum OrderBy
     public static String getOpenTypeDescriptionGUID()
     {
         return ENUM_DESCRIPTION_GUID;
-    }
-
-
-    /**
-     * Return the qualified name for this value.
-     *
-     * @return string
-     */
-    public String getQualifiedName()
-    {
-        return constructValidValueQualifiedName(ENUM_TYPE_NAME,
-                                                OpenMetadataProperty.COLLECTION_ORDER.name,
-                                                null,
-                                                name);
-    }
-
-
-    /**
-     * Return the category for this value.
-     *
-     * @return string
-     */
-    public String getCategory()
-    {
-        return constructValidValueCategory(ENUM_TYPE_NAME,
-                                           OpenMetadataProperty.COLLECTION_ORDER.name,
-                                           null);
     }
 
 

@@ -3584,15 +3584,13 @@ public class DatabaseManagerRESTServices
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof DatabasePrimaryKeyProperties)
+                if (requestBody.getProperties() instanceof DatabasePrimaryKeyProperties databasePrimaryKeyProperties)
                 {
-                    DatabasePrimaryKeyProperties databasePrimaryKeyProperties = (DatabasePrimaryKeyProperties) requestBody.getProperties();
-
-                    int keyPattern = KeyPattern.LOCAL_KEY.getOpenTypeOrdinal();
+                    int keyPattern = KeyPattern.LOCAL_KEY.getOrdinal();
 
                     if (databasePrimaryKeyProperties.getKeyPattern() != null)
                     {
-                        keyPattern = databasePrimaryKeyProperties.getKeyPattern().getOpenTypeOrdinal();
+                        keyPattern = databasePrimaryKeyProperties.getKeyPattern().getOrdinal();
                     }
 
                     handler.setPrimaryKeyOnColumn(userId,

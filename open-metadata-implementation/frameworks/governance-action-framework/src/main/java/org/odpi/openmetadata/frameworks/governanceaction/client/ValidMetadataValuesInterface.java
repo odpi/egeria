@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * ValidMetadataValuesInterface maintains valid value sets for the properties found in open metadata elements.  Valid values can be set up
@@ -372,4 +373,19 @@ public interface ValidMetadataValuesInterface
                                      String preferredValue2) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException;
+
+    /**
+     * Retrieve the reference data for this element.
+     *
+     * @param userId calling user
+     * @param elementGUID element to query
+     * @return map of reference data
+     * @throws InvalidParameterException bad parameter
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException authorization issue
+     */
+    Map<String, List<Map<String, String>>> getSpecification(String userId,
+                                                            String elementGUID) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException;
 }

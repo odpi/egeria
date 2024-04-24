@@ -347,9 +347,7 @@ public class AutomatedCurationRESTServices extends TokenController
                                                 }
 
                                                 resourceDescription.setRelatedElement(resource.getRelatedElement());
-                                                resourceDescription.setSpecification(this.getSpecification(userId,
-                                                                                                           resource.getRelatedElement().getGUID(),
-                                                                                                           openHandler));
+                                                resourceDescription.setSpecification(openHandler.getSpecification(userId, resource.getRelatedElement().getGUID()));
 
                                                 resources.add(resourceDescription);
                                             }
@@ -408,9 +406,7 @@ public class AutomatedCurationRESTServices extends TokenController
                                                 }
                                             }
 
-                                            catalogTemplate.setSpecification(this.getSpecification(userId,
-                                                                                                   templateElement.getRelatedElement().getGUID(),
-                                                                                                   openHandler));
+                                            catalogTemplate.setSpecification(openHandler.getSpecification(userId, templateElement.getRelatedElement().getGUID()));
 
                                             catalogTemplates.add(catalogTemplate);
                                         }
@@ -450,89 +446,6 @@ public class AutomatedCurationRESTServices extends TokenController
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
-    }
-
-
-    /**
-     * Retrieve the reference data for this element.
-     *
-     * @param userId calling user
-     * @param elementGUID element to query
-     * @param openHandler client
-     * @return map of reference data
-     * @throws InvalidParameterException bad parameter
-     * @throws PropertyServerException repository error
-     * @throws UserNotAuthorizedException authorization issue
-     */
-    private Map<String, List<Map<String, String>>> getSpecification(String                  userId,
-                                                                    String                  elementGUID,
-                                                                    OpenMetadataStoreClient openHandler) throws InvalidParameterException,
-                                                                                                                PropertyServerException,
-                                                                                                                UserNotAuthorizedException
-    {
-        final String methodName = "getSpecification";
-
-        Map<String, List<Map<String, String>>> specification = new HashMap<>();
-
-        List<RelatedMetadataElement> refDataElements = openHandler.getRelatedMetadataElements(userId,
-                                                                                              elementGUID,
-                                                                                              1,
-                                                                                              OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
-                                                                                              false,
-                                                                                              false,
-                                                                                              new Date(),
-                                                                                              0,
-                                                                                              0);
-
-        if (refDataElements != null)
-        {
-            for (RelatedMetadataElement refDataElement : refDataElements)
-            {
-                if (refDataElement != null)
-                {
-                    String propertyType = propertyHelper.getStringProperty(instanceHandler.getServiceName(),
-                                                                            OpenMetadataProperty.PROPERTY_TYPE.name,
-                                                                            refDataElement.getRelationshipProperties(),
-                                                                            methodName);
-                    if (propertyType != null)
-                    {
-                        Map<String, String> additionalProperties = propertyHelper.getStringMapFromProperty(instanceHandler.getServiceName(),
-                                                                                                           OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
-                                                                                                           refDataElement.getElement().getElementProperties(),
-                                                                                                           methodName);
-
-                        if (additionalProperties == null)
-                        {
-                            additionalProperties = new HashMap<>();
-                        }
-
-                        additionalProperties.put("placeholderName",
-                                                 propertyHelper.getStringProperty(instanceHandler.getServiceName(),
-                                                                                  OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME,
-                                                                                  refDataElement.getElement().getElementProperties(),
-                                                                                  methodName));
-
-                        List<Map<String, String>> properties = specification.get(propertyType);
-
-                        if (properties == null)
-                        {
-                            properties = new ArrayList<>();
-                        }
-
-                        properties.add(additionalProperties);
-
-                        specification.put(propertyType, properties);
-                    }
-                }
-            }
-        }
-
-        if (! specification.isEmpty())
-        {
-            return specification;
-        }
-
-        return null;
     }
 
 

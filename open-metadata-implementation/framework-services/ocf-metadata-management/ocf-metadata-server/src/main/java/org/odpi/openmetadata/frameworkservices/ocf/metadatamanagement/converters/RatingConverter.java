@@ -128,7 +128,7 @@ public class RatingConverter<B> extends OCFConverter<B>
      */
     private StarRating getStarRatingFromProperties(InstanceProperties   properties)
     {
-        StarRating starRating = StarRating.NO_RECOMMENDATION;
+        StarRating starRating = StarRating.NOT_RECOMMENDED;
 
         if (properties != null)
         {
@@ -142,7 +142,7 @@ public class RatingConverter<B> extends OCFConverter<B>
                 {
                     switch (enumPropertyValue.getOrdinal())
                     {
-                        case 0 -> starRating = StarRating.NO_RECOMMENDATION;
+                        case 0 -> starRating = StarRating.NOT_RECOMMENDED;
                         case 1 -> starRating = StarRating.ONE_STAR;
                         case 2 -> starRating = StarRating.TWO_STARS;
                         case 3 -> starRating = StarRating.THREE_STARS;

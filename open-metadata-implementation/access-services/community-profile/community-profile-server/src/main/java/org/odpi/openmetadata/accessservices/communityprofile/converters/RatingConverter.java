@@ -159,7 +159,7 @@ public class RatingConverter<B> extends CommunityProfileOMASConverter<B>
      */
     private StarRating getStarRatingFromProperties(InstanceProperties   properties)
     {
-        StarRating starRating = StarRating.NO_RECOMMENDATION;
+        StarRating starRating = StarRating.NOT_RECOMMENDED;
 
         if (properties != null)
         {
@@ -176,7 +176,7 @@ public class RatingConverter<B> extends CommunityProfileOMASConverter<B>
                     switch (enumPropertyValue.getOrdinal())
                     {
                         case 0:
-                            starRating = StarRating.NO_RECOMMENDATION;
+                            starRating = StarRating.NOT_RECOMMENDED;
                             break;
 
                         case 1:

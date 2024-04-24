@@ -8,6 +8,7 @@ import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
 
 
 /**
@@ -16,7 +17,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
  * This is used on each call to the server.
  */
 abstract class DigitalArchitectureClientBase
-
 {
     DigitalArchitectureRESTClient restClient;    /* Initialized in constructor */
 
@@ -29,6 +29,8 @@ abstract class DigitalArchitectureClientBase
     static NullRequestBody nullRequestBody = new NullRequestBody();
 
     final OpenMetadataStoreClient openMetadataStoreClient;
+    final PropertyHelper propertyHelper = new PropertyHelper();
+
 
 
     /**

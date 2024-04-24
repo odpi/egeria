@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.enums;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -16,119 +17,129 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum StarRating
+public enum StarRating implements OpenMetadataEnum
 {
     /**
-     * No recommendation.
+     * Not recommended.
      */
-    NO_RECOMMENDATION (0, 0, "X", "No recommendation"),
+    NOT_RECOMMENDED("cd72592e-cd29-4fb7-ae28-2da10542eb5e", 0, "X", "Not recommended", false),
 
     /**
      * Poor
      */
-    ONE_STAR          (1, 1, "*", "Poor"),
+    ONE_STAR          ("10d17243-5000-49c0-84fe-f125c3a8557b", 1, "*", "Poor", false),
 
     /**
      * Usable
      */
-    TWO_STARS         (2, 2, "**", "Usable"),
+    TWO_STARS         ("88bb3fb6-e5a4-4b9d-9039-c9551ef374aa", 2, "**", "Usable", false),
 
     /**
      * Good
      */
-    THREE_STARS       (3, 3, "***", "Good"),
+    THREE_STARS       ("f0f86c72-cc02-4202-9c31-e8e592d2e1cb", 3, "***", "Good", false),
 
     /**
      * Very good
      */
-    FOUR_STARS        (4, 4, "****", "Very Good"),
+    FOUR_STARS        ("30694a0f-c142-4fac-8286-733cf92871fc", 4, "****", "Very Good", false),
 
     /**
      * Excellent
      */
-    FIVE_STARS        (5, 5, "*****", "Excellent");
+    FIVE_STARS        ("4c1535c8-8e78-4dde-be9b-2a732f8609ee", 5, "*****", "Excellent", false);
 
     private static final String ENUM_TYPE_GUID  = "77fea3ef-6ec1-4223-8408-38567e9d3c93";
     private static final String ENUM_TYPE_NAME  = "StarRating";
 
-    private final int    openTypeOrdinal;
 
-    private final int    ordinal;
-    private final String name;
-    private final String description;
+    private static final String ENUM_DESCRIPTION = "Level of support or appreciation for an item.";
+    private static final String ENUM_DESCRIPTION_GUID = "6c22fabf-077f-40c0-8739-eedf7c516927";
+    private static final String ENUM_DESCRIPTION_WIKI = OpenMetadataWikiPages.MODEL_0150_FEEDBACK;
 
+    private final String descriptionGUID;
+
+    private final int            ordinal;
+    private final String         name;
+    private final String         description;
+    private final boolean        isDefault;
 
 
     /**
-     * Constructor to set up the instance of this enum.
+     * Default constructor for the enumeration.
      *
-     * @param ordinal code number
-     * @param openTypeOrdinal code number from the equivalent Enum Type
-     * @param name default name
-     * @param description default description
+     * @param ordinal numerical representation of the enumeration
+     * @param descriptionGUID identifier for valid value
+     * @param name default string name of the enumeration
+     * @param description default string description of the enumeration
+     * @param isDefault is this the default value for the enum?
      */
-    StarRating(int    ordinal,
-               int    openTypeOrdinal,
-               String name,
-               String description)
+    StarRating(String  descriptionGUID,
+               int     ordinal,
+               String  name,
+               String  description,
+               boolean isDefault)
     {
-        this.ordinal         = ordinal;
-        this.openTypeOrdinal = openTypeOrdinal;
+        this.ordinal = ordinal;
         this.name            = name;
+        this.descriptionGUID = descriptionGUID;
         this.description     = description;
+        this.isDefault = isDefault;
+    }
+
+
+
+    /**
+     * Return the numeric representation of the enumeration.
+     *
+     * @return int ordinal
+     */
+    public int getOrdinal() { return ordinal; }
+
+
+    /**
+     * Return the default name of the enumeration.
+     *
+     * @return String name
+     */
+    public String getName() { return name; }
+
+
+    /**
+     * Return the default description of the enumeration.
+     *
+     * @return String description
+     */
+    public String getDescription() { return description; }
+
+
+    /**
+     * Return the unique identifier for the valid value that represents the enum value.
+     *
+     * @return  guid
+     */
+    public  String getDescriptionGUID()
+    {
+        return descriptionGUID;
     }
 
 
     /**
-     * Return the code for this enum instance
+     * Return whether the enum is the default value or not.
      *
-     * @return int star rating code
+     * @return boolean
      */
-    public int getOrdinal()
+    public boolean isDefault()
     {
-        return ordinal;
+        return isDefault;
     }
-
-
-    /**
-     * Return the default symbol for this enum instance.
-     *
-     * @return String default symbol
-     */
-    public String getName()
-    {
-        return name;
-    }
-
-
-    /**
-     * Return the default description for the star rating for this enum instance.
-     *
-     * @return String default description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Return the code for this enum that comes from the Open Metadata Type that this enum represents.
-     *
-     * @return int code number
-     */
-    public int getOpenTypeOrdinal()
-    {
-        return openTypeOrdinal;
-    }
-
 
     /**
      * Return the unique identifier for the open metadata enum type that this enum class represents.
      *
      * @return string guid
      */
-    public String getOpenTypeGUID() { return ENUM_TYPE_GUID; }
+    public static String getOpenTypeGUID() { return ENUM_TYPE_GUID; }
 
 
     /**
@@ -136,7 +147,40 @@ public enum StarRating
      *
      * @return string name
      */
-    public String getOpenTypeName() { return ENUM_TYPE_NAME; }
+    public static String getOpenTypeName() { return ENUM_TYPE_NAME; }
+
+
+    /**
+     * Return the description for the open metadata enum type that this enum class represents.
+     *
+     * @return string description
+     */
+    public static String getOpenTypeDescription()
+    {
+        return ENUM_DESCRIPTION;
+    }
+
+
+    /**
+     * Return the unique identifier for the valid value element for the open metadata enum type that this enum class represents.
+     *
+     * @return string guid
+     */
+    public static String getOpenTypeDescriptionGUID()
+    {
+        return ENUM_DESCRIPTION_GUID;
+    }
+
+
+    /**
+     * Return the unique identifier for the valid value element for the open metadata enum type that this enum class represents.
+     *
+     * @return string guid
+     */
+    public static String getOpenTypeDescriptionWiki()
+    {
+        return ENUM_DESCRIPTION_WIKI;
+    }
 
 
     /**
@@ -147,10 +191,6 @@ public enum StarRating
     @Override
     public String toString()
     {
-        return "StarRating{" +
-                "starRatingCode=" + ordinal +
-                ", starRatingSymbol='" + name + '\'' +
-                ", starRatingDescription='" + description + '\'' +
-                '}';
+        return "StarRating{starRatingSymbol='" + name + '}';
     }
 }

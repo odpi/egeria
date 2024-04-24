@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -17,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum ServerAssetUseType implements Serializable
+public enum ServerAssetUseType// implements OpenMetadataEnum
 {
     OWNS      (0, 0,  "Owns",      "The software server capability is accountable for the maintenance and protection of the asset."),
     GOVERNS   (1, 1,  "Governs",   "The software server capability provides management or oversight of the asset."),
@@ -34,8 +32,6 @@ public enum ServerAssetUseType implements Serializable
     private final int    openTypeOrdinal;
     private final String name;
     private final String description;
-
-    private static final long     serialVersionUID = 1L;
 
 
     /**

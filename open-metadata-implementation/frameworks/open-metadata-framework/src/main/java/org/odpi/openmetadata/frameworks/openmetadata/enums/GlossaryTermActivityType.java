@@ -19,7 +19,7 @@ import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataV
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum GlossaryTermActivityType
+public enum GlossaryTermActivityType implements OpenMetadataEnum
 {
     /**
      * Operation - A small, well-defined processing operation.

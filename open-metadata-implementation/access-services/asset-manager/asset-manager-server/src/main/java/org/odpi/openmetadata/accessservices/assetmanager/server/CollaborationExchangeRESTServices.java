@@ -102,11 +102,11 @@ public class CollaborationExchangeRESTServices
             {
                 RatingHandler<RatingElement> handler = instanceHandler.getRatingHandler(userId, serverName, methodName);
 
-                int starRating = StarRating.NO_RECOMMENDATION.getOpenTypeOrdinal();
+                int starRating = StarRating.NOT_RECOMMENDED.getOrdinal();
 
                 if (requestBody.getStarRating() != null)
                 {
-                    starRating = requestBody.getStarRating().getOpenTypeOrdinal();
+                    starRating = requestBody.getStarRating().getOrdinal();
                 }
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);

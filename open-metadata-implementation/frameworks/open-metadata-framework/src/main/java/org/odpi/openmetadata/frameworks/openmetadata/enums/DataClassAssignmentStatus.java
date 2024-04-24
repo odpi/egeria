@@ -20,7 +20,7 @@ import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataV
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum DataClassAssignmentStatus
+public enum DataClassAssignmentStatus implements OpenMetadataEnum
 {
     /**
      * Discovered - The term assignment was discovered by an automated process.

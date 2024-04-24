@@ -357,11 +357,11 @@ class ExchangeHandlerBase
      */
     private int getKeyPattern(KeyPattern keyPattern)
     {
-        int keyPatternOrdinal = KeyPattern.LOCAL_KEY.getOpenTypeOrdinal();
+        int keyPatternOrdinal = KeyPattern.LOCAL_KEY.getOrdinal();
 
         if (keyPattern != null)
         {
-            keyPatternOrdinal = keyPattern.getOpenTypeOrdinal();
+            keyPatternOrdinal = keyPattern.getOrdinal();
         }
 
         return keyPatternOrdinal;

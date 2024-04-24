@@ -4,10 +4,14 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.api;
 
 
+import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.TemplateElement;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.TemplateClassificationProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,41 +23,110 @@ public interface ManageTemplates
      * Classify an asset as suitable to be used as a template for cataloguing assets of a similar types.
      *
      * @param userId calling user
-     * @param assetGUID unique identifier of the asset to classify
-     * @param name name of the template
-     * @param versionIdentifier version identifier for the template eg 1.0
-     * @param description description of when, where and how to use the template
-     * @param additionalProperties any additional properties
+     * @param elementGUID unique identifier of the element to classify as a template
+     * @param properties properties of the template
+     * @param specification values required to use the template
      *
-     * @throws InvalidParameterException asset or element not known, null userId or guid
+     * @throws InvalidParameterException element not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    void addTemplateClassification(String              userId,
-                                   String              assetGUID,
-                                   String              name,
-                                   String              versionIdentifier,
-                                   String              description,
-                                   Map<String, String> additionalProperties) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException;
+    void addTemplateClassification(String                                 userId,
+                                   String                                 elementGUID,
+                                   TemplateClassificationProperties       properties,
+                                   Map<String, List<Map<String, String>>> specification) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException;
 
 
     /**
      * Remove the classification that indicates that this asset can be used as a template.
      *
      * @param userId calling user
-     * @param assetGUID unique identifier of the asset to declassify
+     * @param elementGUID unique identifier of the element to declassify
      *
-     * @throws InvalidParameterException asset or element not known, null userId or guid
+     * @throws InvalidParameterException  element not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
     void removeTemplateClassification(String userId,
-                                      String assetGUID) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException;
+                                      String elementGUID) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException;
 
 
+    /**
+     * Return a list of templates for a particular open metadata type of element.
+     *
+     * @param userId calling user
+     * @param typeName type name to query
+     * @param effectiveTime optional effective time
+     * @param startFrom starting element
+     * @param pageSize maximum number of elements
+     *
+     * @return list of templates
+     *
+     * @throws InvalidParameterException  element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<TemplateElement> getTemplatesForType(String userId,
+                                              String typeName,
+                                              Date   effectiveTime,
+                                              int    startFrom,
+                                              int    pageSize) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException;
 
+
+    /**
+     * Find templates with the requested RegEx in the string properties of the template properties.
+     *
+     * @param userId calling user
+     * @param searchString string to search for (regEx)
+     * @param typeName      type name to query (if null, any type is returned)
+     * @param effectiveTime optional effective time
+     * @param startFrom starting element
+     * @param pageSize maximum number of elements
+     *
+     * @return list of templates
+     *
+     * @throws InvalidParameterException  element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<TemplateElement> findTemplates(String userId,
+                                        String searchString,
+                                        String typeName,
+                                        Date   effectiveTime,
+                                        int    startFrom,
+                                        int    pageSize) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException;
+
+
+    /**
+     * Return the templates with the requested name.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param typeName      type name to query (if null, any type is returned)
+     * @param effectiveTime optional effective time
+     * @param startFrom starting element
+     * @param pageSize maximum number of elements
+     *
+     * @return list of templates
+     *
+     * @throws InvalidParameterException  element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<TemplateElement> getTemplatesByName(String userId,
+                                             String name,
+                                             String typeName,
+                                             Date   effectiveTime,
+                                             int    startFrom,
+                                             int    pageSize) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException;
 }

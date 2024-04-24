@@ -328,11 +328,11 @@ public class AssetConsumerRESTServices
             {
                 RatingHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getRatingHandler(userId, serverName, methodName);
 
-                int starRating = StarRating.NO_RECOMMENDATION.getOpenTypeOrdinal();
+                int starRating = StarRating.NOT_RECOMMENDED.getOrdinal();
 
                 if (requestBody.getStarRating() != null)
                 {
-                    starRating = requestBody.getStarRating().getOpenTypeOrdinal();
+                    starRating = requestBody.getStarRating().getOrdinal();
                 }
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 handler.saveRating(userId,

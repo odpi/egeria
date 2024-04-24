@@ -148,7 +148,7 @@ public abstract class AssetManagerOMASConverter<B> extends OpenMetadataAPIGeneri
 
             for (KeyPattern keyPattern : KeyPattern.values())
             {
-                if (keyPattern.getOpenTypeOrdinal() == ordinal)
+                if (keyPattern.getOrdinal() == ordinal)
                 {
                     return keyPattern;
                 }
