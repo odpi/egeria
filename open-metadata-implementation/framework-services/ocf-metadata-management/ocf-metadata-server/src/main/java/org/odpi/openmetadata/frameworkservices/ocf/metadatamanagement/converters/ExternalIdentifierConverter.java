@@ -141,7 +141,7 @@ public class ExternalIdentifierConverter<B> extends OCFConverter<B>
 
             for (KeyPattern keyPattern : KeyPattern.values())
             {
-                if (keyPattern.getOpenTypeOrdinal() == ordinal)
+                if (keyPattern.getOrdinal() == ordinal)
                 {
                     return keyPattern;
                 }

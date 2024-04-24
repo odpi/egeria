@@ -18,9 +18,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.search.*;
 import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * OpenMetadataClientBase provides an interface to the open metadata store.  This is part of the Governance Action Framework (GAF)
@@ -176,7 +174,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                         UserNotAuthorizedException
     {
         final String methodName  = "getAllTypes";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/open-metadata-types/all";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/open-metadata-types";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -220,18 +218,29 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
     {
         final String methodName  = "findTypeDefsByCategory";
         final String categoryParameterName  = "category";
-        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/open-metadata-types/category/{3}";
+        final String entityURLTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/open-metadata-types/entity-defs";
+        final String relationshipURLTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/open-metadata-types/relationship-defs";
+        final String classificationURLTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-metadata-store/users/{2}/open-metadata-types/classification-defs";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateEnum(category, categoryParameterName, methodName);
+
+        String urlTemplate = entityURLTemplate;
+
+        if (category == OpenMetadataTypeDefCategory.CLASSIFICATION_DEF)
+        {
+            urlTemplate = classificationURLTemplate;
+        }
+        else if (category == OpenMetadataTypeDefCategory.RELATIONSHIP_DEF)
+        {
+            urlTemplate = relationshipURLTemplate;
+        }
 
         TypeDefListResponse restResult = restClient.callTypeDefListGetRESTCall(methodName,
                                                                                urlTemplate,
                                                                                serverName,
                                                                                serviceURLMarker,
-                                                                               userId,
-                                                                               category);
-
+                                                                               userId);
 
         return restResult.getTypeDefs();
     }
@@ -3871,4 +3880,87 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                         mapName1,
                                         mapName2);
     }
+
+
+
+    /**
+     * Retrieve the reference data for this element.
+     *
+     * @param userId calling user
+     * @param elementGUID element to query
+     * @return map of reference data
+     * @throws InvalidParameterException bad parameter
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException authorization issue
+     */
+    public Map<String, List<Map<String, String>>> getSpecification(String userId,
+                                                                   String elementGUID) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        final String methodName = "getSpecification";
+
+        Map<String, List<Map<String, String>>> specification = new HashMap<>();
+
+        List<RelatedMetadataElement> refDataElements = this.getRelatedMetadataElements(userId,
+                                                                                       elementGUID,
+                                                                                       1,
+                                                                                       OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                                       false,
+                                                                                       false,
+                                                                                       new Date(),
+                                                                                       0,
+                                                                                       0);
+
+        if (refDataElements != null)
+        {
+            for (RelatedMetadataElement refDataElement : refDataElements)
+            {
+                if (refDataElement != null)
+                {
+                    String propertyType = propertyHelper.getStringProperty(serviceURLMarker,
+                                                                           OpenMetadataProperty.PROPERTY_TYPE.name,
+                                                                           refDataElement.getRelationshipProperties(),
+                                                                           methodName);
+                    if (propertyType != null)
+                    {
+                        Map<String, String> additionalProperties = propertyHelper.getStringMapFromProperty(serviceURLMarker,
+                                                                                                           OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                                                           refDataElement.getElement().getElementProperties(),
+                                                                                                           methodName);
+
+                        if (additionalProperties == null)
+                        {
+                            additionalProperties = new HashMap<>();
+                        }
+
+                        additionalProperties.put("placeholderName",
+                                                 propertyHelper.getStringProperty(serviceURLMarker,
+                                                                                  OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME,
+                                                                                  refDataElement.getElement().getElementProperties(),
+                                                                                  methodName));
+
+                        List<Map<String, String>> properties = specification.get(propertyType);
+
+                        if (properties == null)
+                        {
+                            properties = new ArrayList<>();
+                        }
+
+                        properties.add(additionalProperties);
+
+                        specification.put(propertyType, properties);
+                    }
+                }
+            }
+        }
+
+        if (! specification.isEmpty())
+        {
+            return specification;
+        }
+
+        return null;
+    }
+
 }

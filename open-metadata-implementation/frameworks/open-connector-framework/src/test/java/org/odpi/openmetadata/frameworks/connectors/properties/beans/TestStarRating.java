@@ -50,7 +50,7 @@ public class TestStarRating
 
         StarRating testValue;
 
-        testValue = StarRating.NO_RECOMMENDATION;
+        testValue = StarRating.NOT_RECOMMENDED;
 
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);

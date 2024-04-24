@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -24,13 +22,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public enum ProcessContainmentType implements Serializable
+public enum ProcessContainmentType// implements OpenMetadataEnum
 {
     OWNED (0,  0,  "Owned",  "The parent process owns the child process in the relationship, such that if the parent is removed the child should also be removed. A child can have at most one such parent."),
     USED  (1,  1,  "Used",   "The child process is simply used by the parent. A child process can have many such relationships to parents."),
     OTHER (99, 99, "Other",  "None of the above.");
-
-    private static final long serialVersionUID = 1L;
 
     private static final String ENUM_TYPE_GUID  = "1bb4b908-7983-4802-a2b5-91b095552ee9";
     private static final String ENUM_TYPE_NAME  = "ProcessContainmentType";

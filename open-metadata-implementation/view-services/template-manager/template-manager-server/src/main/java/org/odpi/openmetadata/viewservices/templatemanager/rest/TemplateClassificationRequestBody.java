@@ -5,7 +5,9 @@ package org.odpi.openmetadata.viewservices.templatemanager.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.TemplateClassificationProperties;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -13,25 +15,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * TemplateClassificationRequestBody carries the parameters for classifying an element as suitable to use for a template.
+ * TemplateClassificationRequestBody carries the parameters for working with template classifications.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TemplateClassificationRequestBody
 {
-    private String              name                 = null;
-    private String              description          = null;
-    private String              versionIdentifier    = null;
-    private Map<String, String> additionalProperties = null;
-
+    private TemplateClassificationProperties       templateClassificationProperties = null;
+    private Map<String, List<Map<String, String>>> specification                    = null;
 
     /**
      * Default constructor
      */
     public TemplateClassificationRequestBody()
     {
-        super();
     }
 
 
@@ -44,154 +42,97 @@ public class TemplateClassificationRequestBody
     {
         if (template != null)
         {
-            name = template.getName();
-            description = template.getDescription();
-            versionIdentifier = template.getVersionIdentifier();
-            additionalProperties = template.getAdditionalProperties();
+            templateClassificationProperties = template.getTemplateClassificationProperties();
+            specification = template.getSpecification();
         }
     }
 
 
     /**
-     * Returns the name property for the template.
-     * If no name is available then null is returned.
+     * Return the properties that describe the template.
      *
-     * @return String name
+     * @return properties
      */
-    public String getName()
+    public TemplateClassificationProperties getTemplateClassificationProperties()
     {
-        return name;
+        return templateClassificationProperties;
     }
 
 
     /**
-     * Set up the name property for the template.
+     *  Set up the properties that describe the template.
      *
-     * @param name String name
+     * @param templateClassificationProperties properties
      */
-    public void setName(String name)
+    public void setTemplateClassificationProperties(TemplateClassificationProperties templateClassificationProperties)
     {
-        this.name = name;
+        this.templateClassificationProperties = templateClassificationProperties;
     }
 
 
     /**
-     * Returns the description property for the template.
-     * If no description is provided then null is returned.
+     * Return the specification reference data for the template.
      *
-     * @return description String text
+     * @return specification (attributeName, list[propertyName, propertyValue])
      */
-    public String getDescription()
+    public Map<String, List<Map<String, String>>> getSpecification()
     {
-        return description;
+        return specification;
     }
 
 
     /**
-     * Set up the description property associated with the template.
+     * Set up the specification reference data for the template.
      *
-     * @param description String text
+     * @param specification specification
      */
-    public void setDescription(String description)
+    public void setSpecification(Map<String, List<Map<String, String>>> specification)
     {
-        this.description = description;
+        this.specification = specification;
     }
 
 
-    /**
-     * Return the version identifier.
-     *
-     * @return string
-     */
-    public String getVersionIdentifier()
-    {
-        return versionIdentifier;
-    }
-
 
     /**
-     * Set up the version identifier.
+     * JSON-style toString
      *
-     * @param versionIdentifier string
-     */
-    public void setVersionIdentifier(String versionIdentifier)
-    {
-        this.versionIdentifier = versionIdentifier;
-    }
-
-
-    /**
-     * Return a copy of the additional properties.  Null means no additional properties are available.
-     *
-     * @return AdditionalProperties
-     */
-    public Map<String, String> getAdditionalProperties()
-    {
-        return additionalProperties;
-    }
-
-
-    /**
-     * Set up additional properties.
-     *
-     * @param additionalProperties Additional properties object
-     */
-    public void setAdditionalProperties(Map<String, String> additionalProperties)
-    {
-        this.additionalProperties = additionalProperties;
-    }
-
-
-    /**
-     * Generate a string containing the properties.
-     *
-     * @return string value
+     * @return return string containing the property names and values
      */
     @Override
     public String toString()
     {
         return "TemplateClassificationRequestBody{" +
-                       "name='" + name + '\'' +
-                       ", description='" + description + '\'' +
-                       ", versionIdentifier='" + versionIdentifier + '\'' +
-                       ", additionalProperties=" + additionalProperties +
-                       '}';
+                "templateClassificationProperties=" + templateClassificationProperties +
+                ", specification=" + specification +
+                '}';
     }
 
 
     /**
-     * Compare the values of the supplied object with those stored in the current object.
+     * Return comparison result based on the content of the properties.
      *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
+     * @param objectToCompare test object
+     * @return result of comparison
      */
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         TemplateClassificationRequestBody that = (TemplateClassificationRequestBody) objectToCompare;
-        return Objects.equals(name, that.name) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(versionIdentifier, that.versionIdentifier) &&
-                Objects.equals(additionalProperties, that.additionalProperties);
+        return Objects.equals(templateClassificationProperties, that.templateClassificationProperties) &&
+                Objects.equals(specification, that.specification);
     }
 
 
     /**
-     * Return hash code based on properties.
+     * Return hash code for this object
      *
-     * @return int
+     * @return int hash code
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(name, description, versionIdentifier, additionalProperties);
+        return Objects.hash(templateClassificationProperties, specification);
     }
 }

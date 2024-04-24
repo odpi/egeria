@@ -26,11 +26,11 @@ Content-Type: application/json
 # 
 # Further Information: https://egeria-project.org/guides/planning/valid-values/overview/
 
-@typeName=Project
-@propertyName=projectHealth
+@typeName=AssetOwner
+@propertyName=collectionType
 @mapName=
-@preferredValue=
-@actualValue=
+@preferredValue=Data Journey
+@actualValue=BIGENDIAN
 
 ###
 # @name setUpValidMetadataValue
@@ -126,7 +126,7 @@ Content-Type: application/json
 # @name validateMetadataValue
 # Validate whether the value found in an open metadata property is valid.
 #
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/validate-value/{{propertyName}}?typeName={{typeName}}
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/validate-value/{{propertyName}}?typeName={{typeName}}&actualValue={{actualValue}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -211,5 +211,84 @@ Content-Type: application/json
 # Set up consistent metadata values relationship between the two property values.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/{{propertyName1}}/consistent-metadata-values/{{propertyName2}}?typeName1={{typeName1}}&mapName1={{mapName1}}&preferredValue1={{preferredValue1}}&?typeName2={{typeName2}}&mapName2={{mapName2}}&preferredValue2={{preferredValue2}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+# @name getAllTypes
+# Returns the list of different types of metadata organized into two groups.  The first are the
+# attribute type definitions (AttributeTypeDefs).  These provide types for attributes in full
+# type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
+# and classifications.
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+####
+# @name getEntityDefs
+# Returns all the entity type definitions.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/entity-defs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+####
+# @name getRelationshipDefs
+# Returns all the relationship type definitions.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/relationship-defs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+####
+# @name getClassificationDefs
+# Returns all the classification type definitions.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/classification-defs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+@standard=
+@organization=
+@identifier=
+
+####
+# @name findTypesByExternalId
+# Return the types that are linked to the elements from the specified standard.
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/external-id?standard={{standard}}&organization={{organization}}&identifier={{identifier}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+####
+# @name getSubTypes
+# Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the
+# type has no subtypes.
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/sub-types/{{typeName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+####
+# @name getValidRelationshipTypes
+# Returns all the TypeDefs for relationships that can be attached to the requested entity type.
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/{{typeName}}/attached-relationships
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+####
+# @name getValidClassificationTypes
+# Returns all the TypeDefs for classifications that can be attached to the requested entity type.
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/{{typeName}}/attached-classifications
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+####
+# @name getTypeDefByName
+# Return the TypeDef identified by the unique name.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/name/{{typeName}}
 Authorization: Bearer {{token}}
 Content-Type: application/json

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.viewservices.templatemanager.server;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.client.OpenMetadataStoreClient;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.client.TemplateManager;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -17,6 +18,7 @@ public class TemplateManagerInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.TEMPLATE_MANAGER;
 
+    private final TemplateManager         templateManager;
     private final OpenMetadataStoreClient openMetadataStoreClient;
 
 
@@ -46,12 +48,26 @@ public class TemplateManagerInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
+        templateManager = new TemplateManager(remoteServerName, remoteServerURL, maxPageSize);
         openMetadataStoreClient = new OpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
     }
 
 
     /**
-     * Return the open metadata store client.  This client is from the Digital Architecture OMAS and is for maintaining information .
+     * Return the template manager client.  This client is from the Digital Architecture OMAS and is for maintaining
+     * template classifications and associated specifications.
+     *
+     * @return client
+     */
+    public TemplateManager getTemplateManagerClient()
+    {
+        return templateManager;
+    }
+
+
+    /**
+     * Return the open metadata store client.  This client is from the Digital Architecture OMAS and
+     * provides a generic interface to open metadata.
      *
      * @return client
      */

@@ -22,8 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConnectorTypeResponse extends DigitalArchitectureOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private ConnectorTypeElement element = null;
 
 
@@ -81,7 +79,7 @@ public class ConnectorTypeResponse extends DigitalArchitectureOMASAPIResponse
     @Override
     public String toString()
     {
-        return "ConnectorReportResponse{" +
+        return "ConnectorTypeResponse{" +
                 "element=" + element +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +

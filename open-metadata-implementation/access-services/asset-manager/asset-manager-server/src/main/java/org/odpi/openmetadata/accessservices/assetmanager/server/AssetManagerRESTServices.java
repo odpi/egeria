@@ -322,10 +322,10 @@ public class AssetManagerRESTServices
                     permittedSynchronizationOrdinal = requestBody.getSynchronizationDirection().getOpenTypeOrdinal();
                 }
 
-                int keyPatternOrdinal = KeyPattern.LOCAL_KEY.getOpenTypeOrdinal();
+                int keyPatternOrdinal = KeyPattern.LOCAL_KEY.getOrdinal();
                 if (requestBody.getKeyPattern() != null)
                 {
-                    keyPatternOrdinal = requestBody.getKeyPattern().getOpenTypeOrdinal();
+                    keyPatternOrdinal = requestBody.getKeyPattern().getOrdinal();
                 }
 
                 handler.setUpExternalIdentifier(userId,
@@ -430,10 +430,10 @@ public class AssetManagerRESTServices
                     permittedSynchronizationOrdinal = requestBody.getSynchronizationDirection().getOpenTypeOrdinal();
                 }
 
-                int keyPatternOrdinal = KeyPattern.LOCAL_KEY.getOpenTypeOrdinal();
+                int keyPatternOrdinal = KeyPattern.LOCAL_KEY.getOrdinal();
                 if (requestBody.getKeyPattern() != null)
                 {
-                    keyPatternOrdinal = requestBody.getKeyPattern().getOpenTypeOrdinal();
+                    keyPatternOrdinal = requestBody.getKeyPattern().getOrdinal();
                 }
 
                 handler.setUpExternalIdentifier(userId,
@@ -634,10 +634,10 @@ public class AssetManagerRESTServices
                     permittedSynchronizationOrdinal = requestBody.getMetadataCorrelationProperties().getSynchronizationDirection().getOpenTypeOrdinal();
                 }
 
-                int keyPatternOrdinal = KeyPattern.LOCAL_KEY.getOpenTypeOrdinal();
+                int keyPatternOrdinal = KeyPattern.LOCAL_KEY.getOrdinal();
                 if (requestBody.getMetadataCorrelationProperties().getKeyPattern() != null)
                 {
-                    keyPatternOrdinal = requestBody.getMetadataCorrelationProperties().getKeyPattern().getOpenTypeOrdinal();
+                    keyPatternOrdinal = requestBody.getMetadataCorrelationProperties().getKeyPattern().getOrdinal();
                 }
 
                 handler.removeExternalIdentifier(userId,

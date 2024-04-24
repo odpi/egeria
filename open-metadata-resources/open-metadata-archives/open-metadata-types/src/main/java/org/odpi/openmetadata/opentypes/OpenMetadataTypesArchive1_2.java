@@ -1053,103 +1053,29 @@ public class OpenMetadataTypesArchive1_2
 
     private EnumDef getKeyPatternEnum()
     {
-        final String guid            = "8904df8f-1aca-4de8-9abd-1ef2aadba300";
-        final String name            = "KeyPattern";
-        final String description     = "Defines the type of identifier used for an asset.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(KeyPattern.getOpenTypeGUID(),
+                                                        KeyPattern.getOpenTypeName(),
+                                                        KeyPattern.getOpenTypeDescription(),
+                                                        KeyPattern.getOpenTypeDescriptionGUID(),
+                                                        KeyPattern.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "LocalKey";
-        final String element1Description     = "Unique key allocated and used within the scope of a single system.";
-        final String element1DescriptionGUID = null;
+        for (KeyPattern enumValue : KeyPattern.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValue.getOrdinal(),
+                                                         enumValue.getName(),
+                                                         enumValue.getDescription(),
+                                                         enumValue.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "RecycledKey";
-        final String element2Description     = "Key allocated and used within the scope of a single system that is periodically reused for different records.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "NaturalKey";
-        final String element3Description     = "Key derived from an attribute of the entity, such as email address, passport number.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 3;
-        final String element4Value           = "MirrorKey";
-        final String element4Description     = "Key value copied from another system.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element5Ordinal         = 4;
-        final String element5Value           = "AggregateKey";
-        final String element5Description     = "Key formed by combining keys from multiple systems.";
-        final String element5DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
-                                                     element5Value,
-                                                     element5Description,
-                                                     element5DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element6Ordinal         = 5;
-        final String element6Value           = "CallersKey";
-        final String element6Description     = "Key from another system can bey used if system name provided.";
-        final String element6DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element6Ordinal,
-                                                     element6Value,
-                                                     element6Description,
-                                                     element6DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element7Ordinal         = 6;
-        final String element7Value           = "StableKey";
-        final String element7Description     = "Key value will remain active even if records are merged.";
-        final String element7DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element7Ordinal,
-                                                     element7Value,
-                                                     element7Description,
-                                                     element7DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element8Ordinal         = 99;
-        final String element8Value           = "Other";
-        final String element8Description     = "Another key pattern.";
-        final String element8DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element8Ordinal,
-                                                     element8Value,
-                                                     element8Description,
-                                                     element8DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValue.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 
@@ -6270,81 +6196,29 @@ public class OpenMetadataTypesArchive1_2
 
     private EnumDef getStarRatingEnum()
     {
-        final String guid            = "77fea3ef-6ec1-4223-8408-38567e9d3c93";
-        final String name            = "StarRating";
-        final String description     = "Level of support or appreciation for an item.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(StarRating.getOpenTypeGUID(),
+                                                        StarRating.getOpenTypeName(),
+                                                        StarRating.getOpenTypeDescription(),
+                                                        StarRating.getOpenTypeDescriptionGUID(),
+                                                        StarRating.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "NotRecommended";
-        final String element1Description     = "This content is not recommended.";
-        final String element1DescriptionGUID = null;
+        for (StarRating enumValue : StarRating.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(enumValue.getOrdinal(),
+                                                         enumValue.getName(),
+                                                         enumValue.getDescription(),
+                                                         enumValue.getDescriptionGUID());
 
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
+            elementDefs.add(elementDef);
 
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "OneStar";
-        final String element2Description     = "One star rating.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "TwoStar";
-        final String element3Description     = "Two star rating.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 3;
-        final String element4Value           = "ThreeStar";
-        final String element4Description     = "Three star rating.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element5Ordinal         = 4;
-        final String element5Value           = "FourStar";
-        final String element5Description     = "Four star rating.";
-        final String element5DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
-                                                     element5Value,
-                                                     element5Description,
-                                                     element5DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element6Ordinal         = 5;
-        final String element6Value           = "FiveStar";
-        final String element6Description     = "Five star rating.";
-        final String element6DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element6Ordinal,
-                                                     element6Value,
-                                                     element6Description,
-                                                     element6DescriptionGUID);
-        elementDefs.add(elementDef);
+            if (enumValue.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
 
         enumDef.setElementDefs(elementDefs);
 

@@ -11,13 +11,18 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ValidMetadataValue;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.ValidMetadataValueDetailListResponse;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.ValidMetadataValueListResponse;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.ValidMetadataValueResponse;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -863,6 +868,421 @@ public class ValidMetadataRESTServices extends TokenController
                                                propertyName2,
                                                mapName2,
                                                preferredValue2);
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Returns the list of different types of metadata organized into two groups.  The first are the
+     * attribute type definitions (AttributeTypeDefs).  These provide types for properties in full
+     * type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
+     * and classifications.
+     *
+     * @param serverName unique identifier for requested server.
+     * @return TypeDefGalleryResponse:
+     * List of different categories of type definitions or
+     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public TypeDefGalleryResponse getAllTypes(String serverName)
+    {
+        final String methodName = "getAllTypes";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        TypeDefGalleryResponse response = new TypeDefGalleryResponse();
+        AuditLog               auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+
+            OpenMetadataTypeDefGallery typeDefGallery = client.getAllTypes(userId);
+
+            if (typeDefGallery != null)
+            {
+                response.setTypeDefs(typeDefGallery.getTypeDefs());
+                response.setAttributeTypeDefs(typeDefGallery.getAttributeTypeDefs());
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Returns all the TypeDefs for a specific category.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param category find parameters used to limit the returned results.
+     * @return TypeDefListResponse:
+     * TypeDefs list or
+     * InvalidParameterException the TypeDefCategory is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public TypeDefListResponse getTypeDefsByCategory(String                      serverName,
+                                                     OpenMetadataTypeDefCategory category)
+    {
+        final String methodName = "getTypeDefsByCategory";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        TypeDefListResponse response = new TypeDefListResponse();
+        AuditLog            auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+
+            response.setTypeDefs(client.findTypeDefsByCategory(userId, category));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return the types that are linked to the elements from the specified standard.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param standard name of the standard null means any.
+     * @param organization name of the organization null means any.
+     * @param identifier identifier of the element in the standard null means any.
+     * @return TypeDefsGalleryResponse:
+     * A list of types or
+     * InvalidParameterException all attributes of the external id are null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public TypeDefListResponse findTypesByExternalId(String    serverName,
+                                                     String    standard,
+                                                     String    organization,
+                                                     String    identifier)
+    {
+        final String methodName = "findTypesByExternalId";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        TypeDefListResponse response = new TypeDefListResponse();
+        AuditLog            auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+
+            response.setTypeDefs(client.findTypesByExternalId(userId, standard, organization, identifier));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the
+     * type has no subtypes.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param typeName name of type to retrieve against.
+     * @return TypeDefListResponse:
+     * TypeDefs list or
+     * InvalidParameterException the typeName is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public TypeDefListResponse getSubTypes(String serverName,
+                                           String typeName)
+    {
+        final String methodName = "getSubTypes";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        TypeDefListResponse response = new TypeDefListResponse();
+        AuditLog            auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+
+            response.setTypeDefs(client.getSubTypes(userId, typeName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Returns all the TypeDefs for relationships that can be attached to the requested entity type.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param typeName name of entity type to retrieve against.
+     * @return TypeDefsGalleryResponse:
+     * A list of types or
+     * InvalidParameterException all attributes of the external id are null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public TypeDefListResponse getValidRelationshipTypes(String serverName,
+                                                         String typeName)
+    {
+        final String methodName = "getValidRelationshipTypes";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        TypeDefListResponse response = new TypeDefListResponse();
+        AuditLog            auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+
+            OpenMetadataTypeDef entityDef = client.getTypeDefByName(userId, typeName);
+
+            if (entityDef != null)
+            {
+                List<String> entityTypeNames = this.getEntityTypeNames(userId, entityDef, client);
+
+                List<OpenMetadataTypeDef> relationshipDefs = client.findTypeDefsByCategory(userId, OpenMetadataTypeDefCategory.RELATIONSHIP_DEF);
+
+                if (relationshipDefs != null)
+                {
+                    Map<String, OpenMetadataTypeDef> results = new HashMap<>();
+
+                    for (OpenMetadataTypeDef typeDef : relationshipDefs)
+                    {
+                        if (typeDef instanceof OpenMetadataRelationshipDef relationshipDef)
+                        {
+                            for (String entityTypeName : entityTypeNames)
+                            {
+                                if (entityTypeName.equals(relationshipDef.getEndDef1().getEntityType().getName()))
+                                {
+                                    results.put(relationshipDef.getName(), relationshipDef);
+                                }
+
+                                if (entityTypeName.equals(relationshipDef.getEndDef2().getEntityType().getName()))
+                                {
+                                    results.put(relationshipDef.getName(), relationshipDef);
+                                }
+                            }
+                        }
+                    }
+
+                    response.setTypeDefs(new ArrayList<>(results.values()));
+                }
+            }
+
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return the list of entity type names starting from the requested entity, walking its suerType hierarchy.
+     *
+     * @param userId calling user
+     * @param entityDef retrieved entity
+     * @param client  client to retrieve more types
+     * @return list of type names
+     * @throws InvalidParameterException bad parameter
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException security error
+     */
+    List<String> getEntityTypeNames(String                  userId,
+                                    OpenMetadataTypeDef     entityDef,
+                                    OpenMetadataStoreClient client) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
+    {
+        List<String>        entityTypeNames = new ArrayList<>();
+
+        OpenMetadataTypeDef currentEntityDef = entityDef;
+        entityTypeNames.add(currentEntityDef.getName());
+
+        while (currentEntityDef.getSuperType() != null)
+        {
+            currentEntityDef = client.getTypeDefByName(userId, currentEntityDef.getSuperType().getName());
+            entityTypeNames.add(currentEntityDef.getName());
+        }
+
+        return entityTypeNames;
+    }
+
+
+    /**
+     * Returns all the TypeDefs for classifications that can be attached to the requested entity type.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param typeName name of type to retrieve against.
+     * @return TypeDefsGalleryResponse:
+     * A list of types or
+     * InvalidParameterException all attributes of the external id are null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public TypeDefListResponse getValidClassificationTypes(String serverName,
+                                                           String typeName)
+    {
+        final String methodName = "getValidClassificationTypes";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        TypeDefListResponse response = new TypeDefListResponse();
+        AuditLog            auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+
+            OpenMetadataTypeDef entityDef = client.getTypeDefByName(userId, typeName);
+
+            if (entityDef != null)
+            {
+                List<String> entityTypeNames = this.getEntityTypeNames(userId, entityDef, client);
+
+                List<OpenMetadataTypeDef> classificationDefs = client.findTypeDefsByCategory(userId, OpenMetadataTypeDefCategory.CLASSIFICATION_DEF);
+
+                if (classificationDefs != null)
+                {
+                    Map<String, OpenMetadataTypeDef> results = new HashMap<>();
+
+                    for (OpenMetadataTypeDef typeDef : classificationDefs)
+                    {
+                        if (typeDef instanceof OpenMetadataClassificationDef classificationDef)
+                        {
+                            if (classificationDef.getValidEntityDefs() != null)
+                            {
+                                for (String entityTypeName : entityTypeNames)
+                                {
+                                    for (OpenMetadataTypeDefLink assignToEntity : classificationDef.getValidEntityDefs())
+                                    {
+                                        if (entityTypeName.equals(assignToEntity.getName()))
+                                        {
+                                            results.put(classificationDef.getName(), classificationDef);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    response.setTypeDefs(new ArrayList<>(results.values()));
+                }
+            }
+
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return the TypeDef identified by the unique name.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param name String name of the TypeDef.
+     * @return TypeDefResponse:
+     * TypeDef structure describing its category and properties or
+     * InvalidParameterException the name is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * TypeDefNotKnownException the requested TypeDef is not found in the metadata collection or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public TypeDefResponse getTypeDefByName(String    serverName,
+                                            String    name)
+    {
+        final String methodName = "getTypeDefByName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        TypeDefResponse response = new TypeDefResponse();
+        AuditLog            auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+
+            response.setTypeDef(client.getTypeDefByName(userId, name));
         }
         catch (Exception error)
         {
