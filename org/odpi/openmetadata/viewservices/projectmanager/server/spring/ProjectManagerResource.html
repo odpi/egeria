@@ -322,7 +322,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getProjectTeam(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
 <h3>getProjectTeam</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/metadata-elements/{projectGUID}/projects/team")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/projects/{projectGUID}/team")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/ProjectMemberListResponse.html" title="class in org.odpi.openmetadata.viewservices.projectmanager.rest">ProjectMemberListResponse</a></span>&nbsp;<span class="element-name">getProjectTeam</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
@@ -365,7 +365,7 @@ loadScripts(document, 'script');</script>
  int&nbsp;startFrom,
  @RequestParam(required=false,defaultValue="0")
  int&nbsp;pageSize,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Returns the list of projects matching the search string.</div>
 <dl class="notes">
@@ -395,7 +395,7 @@ loadScripts(document, 'script');</script>
  int&nbsp;startFrom,
  @RequestParam(required=false,defaultValue="0")
  int&nbsp;pageSize,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Returns the list of projects with a particular name.</div>
 <dl class="notes">
@@ -592,7 +592,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;projectGUID,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;actorGUID,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/NullRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NullRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Remove an actor from a project.</div>
 <dl class="notes">
