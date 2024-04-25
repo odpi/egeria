@@ -108,6 +108,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                                                             null,
                                                             null,
                                                             suppliedProject.getStatus(),
+                                                            0,
                                                             null,
                                                             OpenMetadataType.PROJECT.typeGUID,
                                                             OpenMetadataType.PROJECT.typeName,

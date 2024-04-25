@@ -4661,7 +4661,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
-     * Extract the priority property from the supplied instance properties.
+     * Extract the priority(importance) property from the supplied instance properties.
      *
      * @param instanceProperties properties from governance entities
      * @return string property or null
@@ -4673,7 +4673,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataType.PRIORITY_PROPERTY_NAME,
+                                                         OpenMetadataType.IMPORTANCE_PROPERTY_NAME,
                                                          instanceProperties,
                                                          methodName);
         }

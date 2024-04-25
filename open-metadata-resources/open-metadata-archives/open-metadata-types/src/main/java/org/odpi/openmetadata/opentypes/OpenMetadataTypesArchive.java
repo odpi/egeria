@@ -679,6 +679,9 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = OpenMetadataProperty.PROJECT_HEALTH.name;
         final String attribute1Description     = OpenMetadataProperty.PROJECT_HEALTH.description;
         final String attribute1DescriptionGUID = OpenMetadataProperty.PROJECT_HEALTH.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.PRIORITY.name;
+        final String attribute2Description     = OpenMetadataProperty.PRIORITY.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.PRIORITY.descriptionGUID;
         final String attribute3Name            = OpenMetadataProperty.PROJECT_PHASE.name;
         final String attribute3Description     = OpenMetadataProperty.PROJECT_PHASE.description;
         final String attribute3DescriptionGUID = OpenMetadataProperty.PROJECT_PHASE.descriptionGUID;
@@ -686,6 +689,10 @@ public class OpenMetadataTypesArchive
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
+                                                        attribute2Description,
+                                                        attribute2DescriptionGUID);
         properties.add(property);
         property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                                                            attribute3Description,

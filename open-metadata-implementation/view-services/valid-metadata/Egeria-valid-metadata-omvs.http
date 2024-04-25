@@ -254,14 +254,6 @@ Content-Type: application/json
 @identifier=
 
 ####
-# @name findTypesByExternalId
-# Return the types that are linked to the elements from the specified standard.
-#
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/external-id?standard={{standard}}&organization={{organization}}&identifier={{identifier}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-####
 # @name getSubTypes
 # Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the
 # type has no subtypes.

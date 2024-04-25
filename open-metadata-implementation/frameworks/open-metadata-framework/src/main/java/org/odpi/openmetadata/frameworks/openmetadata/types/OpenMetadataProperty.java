@@ -1024,6 +1024,10 @@ public enum OpenMetadataProperty
      */
     DATA_CLASS_ASSIGNMENT_STATUS("status", DataClassAssignmentStatus.getOpenTypeName(), DataClassAssignmentStatus.getOpenTypeDescription(), DataClassAssignmentStatus.IMPORTED.getName(), "71e53cf4-7158-4054-b7f8-da643a34d2da"),
 
+    /**
+     * An indication of the relative position in which this work item should be tackled compared to others in the overall work list.
+     */
+    PRIORITY("priority", "int", "An indication of the relative position in which this work item should be tackled compared to others in the overall work list.", "10", "6168ae13-f6ee-49e7-9f21-693e7a401926"),
     ;
 
 

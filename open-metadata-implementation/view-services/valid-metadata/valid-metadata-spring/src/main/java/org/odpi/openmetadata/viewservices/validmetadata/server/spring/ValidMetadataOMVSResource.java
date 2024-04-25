@@ -656,35 +656,6 @@ public class ValidMetadataOMVSResource
 
 
     /**
-     * Return the types that are linked to the elements from the specified standard.
-     *
-     * @param serverName unique identifier for requested server.
-     * @param standard name of the standard null means any.
-     * @param organization name of the organization null means any.
-     * @param identifier identifier of the element in the standard null means any.
-     * @return TypeDefsGalleryResponse:
-     * A list of types or
-     * InvalidParameterException all attributes of the external id are null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
-     * UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    @GetMapping(path = "/open-metadata-types/external-id")
-
-    @Operation(summary="findTypesByExternalId",
-            description="Return the types that are linked to the elements from the specified standard.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/types/"))
-
-    public TypeDefListResponse findTypesByExternalId(@PathVariable                   String    serverName,
-                                                     @RequestParam(required = false) String    standard,
-                                                     @RequestParam(required = false) String    organization,
-                                                     @RequestParam(required = false) String    identifier)
-    {
-        return restAPI.findTypesByExternalId(serverName, standard, organization, identifier);
-    }
-
-
-    /**
      * Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the
      * type has no subtypes.
      *

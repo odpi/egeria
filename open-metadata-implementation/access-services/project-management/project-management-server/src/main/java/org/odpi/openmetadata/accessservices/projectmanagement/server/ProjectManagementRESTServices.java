@@ -108,6 +108,7 @@ public class ProjectManagementRESTServices
                                                                properties.getProjectPhase(),
                                                                properties.getProjectHealth(),
                                                                properties.getProjectStatus(),
+                                                               properties.getPriority(),
                                                                properties.getAdditionalProperties(),
                                                                properties.getTypeName(),
                                                                properties.getExtendedProperties(),
@@ -205,6 +206,7 @@ public class ProjectManagementRESTServices
                                           properties.getProjectPhase(),
                                           properties.getProjectHealth(),
                                           properties.getProjectStatus(),
+                                          properties.getPriority(),
                                           properties.getAdditionalProperties(),
                                           properties.getTypeName(),
                                           properties.getExtendedProperties(),
@@ -326,8 +328,20 @@ public class ProjectManagementRESTServices
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+                handler.addActorToProject(userId,
+                                          null,
+                                          null,
+                                          projectGUID,
+                                          projectGUIDParameterName,
+                                          projectRoleGUID,
+                                          projectRoleGUIDParameterName,
+                                          null,
+                                          null,
+                                          null,
+                                          false,
+                                          false,
+                                          new Date(),
+                                          methodName);            }
         }
         catch (Exception error)
         {
@@ -391,8 +405,17 @@ public class ProjectManagementRESTServices
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+                handler.removeActorFromProject(userId,
+                                               null,
+                                               null,
+                                               projectGUID,
+                                               projectGUIDParameterName,
+                                               actorProfileGUID,
+                                               actorProfileGUIDParameterName,
+                                               false,
+                                               false,
+                                               new Date(),
+                                               methodName);            }
         }
         catch (Exception error)
         {
@@ -479,8 +502,19 @@ public class ProjectManagementRESTServices
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+                handler.addProjectManager(userId,
+                                          null,
+                                          null,
+                                          projectGUID,
+                                          projectGUIDParameterName,
+                                          projectRoleGUID,
+                                          projectRoleGUIDParameterName,
+                                          null,
+                                          null,
+                                          false,
+                                          false,
+                                          new Date(),
+                                          methodName);            }
         }
         catch (Exception error)
         {
@@ -544,8 +578,17 @@ public class ProjectManagementRESTServices
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+                handler.removeProjectManager(userId,
+                                             null,
+                                             null,
+                                             projectGUID,
+                                             projectGUIDParameterName,
+                                             projectRoleGUID,
+                                             projectRoleGUIDParameterName,
+                                             false,
+                                             false,
+                                             new Date(),
+                                             methodName);            }
         }
         catch (Exception error)
         {
@@ -586,12 +629,12 @@ public class ProjectManagementRESTServices
 
         try
         {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ProjectHandler<ProjectElement> handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-                ProjectHandler<ProjectElement> handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
-
                 handler.removeProject(userId,
                                       requestBody.getExternalSourceGUID(),
                                       requestBody.getExternalSourceName(),
@@ -604,7 +647,15 @@ public class ProjectManagementRESTServices
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                handler.removeProject(userId,
+                                      null,
+                                      null,
+                                      projectGUID,
+                                      projectGUIDParameterName,
+                                      false,
+                                      false,
+                                      new Date(),
+                                      methodName);
             }
         }
         catch (Exception error)

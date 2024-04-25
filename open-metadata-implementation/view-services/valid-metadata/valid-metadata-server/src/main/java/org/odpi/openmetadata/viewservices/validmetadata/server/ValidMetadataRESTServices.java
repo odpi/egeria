@@ -972,53 +972,6 @@ public class ValidMetadataRESTServices extends TokenController
 
 
     /**
-     * Return the types that are linked to the elements from the specified standard.
-     *
-     * @param serverName unique identifier for requested server.
-     * @param standard name of the standard null means any.
-     * @param organization name of the organization null means any.
-     * @param identifier identifier of the element in the standard null means any.
-     * @return TypeDefsGalleryResponse:
-     * A list of types or
-     * InvalidParameterException all attributes of the external id are null or
-     * RepositoryErrorException there is a problem communicating with the metadata repository or
-     * UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public TypeDefListResponse findTypesByExternalId(String    serverName,
-                                                     String    standard,
-                                                     String    organization,
-                                                     String    identifier)
-    {
-        final String methodName = "findTypesByExternalId";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        TypeDefListResponse response = new TypeDefListResponse();
-        AuditLog            auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            OpenMetadataStoreClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
-
-            response.setTypeDefs(client.findTypesByExternalId(userId, standard, organization, identifier));
-        }
-        catch (Exception error)
-        {
-            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
      * Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the
      * type has no subtypes.
      *

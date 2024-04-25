@@ -28,6 +28,7 @@ public class ProjectBuilder extends ReferenceableBuilder
     private String projectPhase  = null;
     private String projectHealth  = null;
     private String projectStatus  = null;
+    private int    priority       = 0;
 
 
     /**
@@ -42,6 +43,7 @@ public class ProjectBuilder extends ReferenceableBuilder
      * @param projectPhase lifecycle phase of project
      * @param projectHealth how well is the project tracking to plan
      * @param projectStatus status of the project
+     * @param priority priority
      * @param additionalProperties additional properties for a Project
      * @param typeGUID unique identifier of this element's type
      * @param typeName unique name of this element's type
@@ -59,6 +61,7 @@ public class ProjectBuilder extends ReferenceableBuilder
                           String               projectPhase,
                           String               projectHealth,
                           String               projectStatus,
+                          int                  priority,
                           Map<String, String>  additionalProperties,
                           String               typeGUID,
                           String               typeName,
@@ -84,6 +87,7 @@ public class ProjectBuilder extends ReferenceableBuilder
         this.projectPhase = projectPhase;
         this.projectHealth = projectHealth;
         this.projectStatus = projectStatus;
+        this.priority = priority;
     }
 
 
@@ -259,6 +263,12 @@ public class ProjectBuilder extends ReferenceableBuilder
                                                                   OpenMetadataProperty.PROJECT_STATUS.name,
                                                                   projectStatus,
                                                                   methodName);
+
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                               properties,
+                                                               OpenMetadataProperty.PRIORITY.name,
+                                                               priority,
+                                                               methodName);
 
         return properties;
     }

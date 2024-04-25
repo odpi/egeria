@@ -5722,9 +5722,9 @@ public class OpenMetadataTypesArchive1_2
         final String attribute3Name            = "creationTime";
         final String attribute3Description     = "When the requested action was identified.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "priority";
-        final String attribute4Description     = "How urgent is this action?";
-        final String attribute4DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.PRIORITY.name;
+        final String attribute4Description     = OpenMetadataProperty.PRIORITY.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.PRIORITY.descriptionGUID;
         final String attribute5Name            = "dueTime";
         final String attribute5Description     = "When the requested action needs to be completed.";
         final String attribute5DescriptionGUID = null;
@@ -12981,7 +12981,7 @@ public class OpenMetadataTypesArchive1_2
         final String attribute5Name            = "domain";
         final String attribute5Description     = "Governance domain for this governance definition.";
         final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "priority";
+        final String attribute6Name            = "importance";
         final String attribute6Description     = "Relative importance of this governance definition compared to its peers.";
         final String attribute6DescriptionGUID = null;
         final String attribute7Name            = "implications";
