@@ -90,6 +90,7 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
      * @param projectPhase lifecycle phase of project
      * @param projectHealth how well is the project tracking to plan
      * @param projectStatus status of the project
+     * @param priority priority of project
      * @param additionalProperties additional properties for a project
      * @param suppliedTypeName type name from the caller (enables creation of subtypes)
      * @param extendedProperties  properties for a governance project subtype
@@ -118,6 +119,7 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                 String              projectPhase,
                                 String              projectHealth,
                                 String              projectStatus,
+                                int                 priority,
                                 Map<String, String> additionalProperties,
                                 String              suppliedTypeName,
                                 Map<String, Object> extendedProperties,
@@ -156,6 +158,7 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                                     projectPhase,
                                                     projectHealth,
                                                     projectStatus,
+                                                    priority,
                                                     additionalProperties,
                                                     typeGUID,
                                                     typeName,
@@ -208,6 +211,7 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
      * @param projectPhase lifecycle phase of project
      * @param projectHealth how well is the project tracking to plan
      * @param projectStatus status of the project
+     * @param priority priority of project
      * @param additionalProperties additional properties for a governance project
      * @param suppliedTypeName type of project
      * @param extendedProperties  properties for a governance project subtype
@@ -237,6 +241,7 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                 String              projectPhase,
                                 String              projectHealth,
                                 String              projectStatus,
+                                int                 priority,
                                 Map<String, String> additionalProperties,
                                 String              suppliedTypeName,
                                 Map<String, Object> extendedProperties,
@@ -280,6 +285,7 @@ public class ProjectHandler<B> extends ReferenceableHandler<B>
                                                     projectPhase,
                                                     projectHealth,
                                                     projectStatus,
+                                                    priority,
                                                     additionalProperties,
                                                     typeGUID,
                                                     typeName,

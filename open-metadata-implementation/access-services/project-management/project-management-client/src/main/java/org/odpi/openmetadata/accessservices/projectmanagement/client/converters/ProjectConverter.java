@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetad
 import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElements;
 import org.odpi.openmetadata.frameworks.governanceaction.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -133,7 +134,7 @@ public class ProjectConverter<B> extends ProjectManagementConverterBase<B>
 
             if (returnBean instanceof ProjectElement bean)
             {
-                ProjectProperties collectionProperties = new ProjectProperties();
+                ProjectProperties    projectProperties    = new ProjectProperties();
                 OpenMetadataElement  openMetadataElement  = relatedMetadataElement.getElement();
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, openMetadataElement, methodName));
@@ -147,30 +148,33 @@ public class ProjectConverter<B> extends ProjectManagementConverterBase<B>
                 {
                     elementProperties = new ElementProperties(openMetadataElement.getElementProperties());
 
-                    collectionProperties.setQualifiedName(this.removeQualifiedName(elementProperties));
-                    collectionProperties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
-                    collectionProperties.setIdentifier(this.removeIdentifier(elementProperties));
-                    collectionProperties.setName(this.removeName(elementProperties));
-                    collectionProperties.setDescription(this.removeDescription(elementProperties));
-                    collectionProperties.setProjectStatus(this.removeProjectStatus(elementProperties));
-                    collectionProperties.setStartDate(this.removeStartDate(elementProperties));
-                    collectionProperties.setPlannedEndDate(this.removePlannedEndDate(elementProperties));
-                    collectionProperties.setEffectiveFrom(openMetadataElement.getEffectiveFromTime());
-                    collectionProperties.setEffectiveTo(openMetadataElement.getEffectiveToTime());
+                    projectProperties.setQualifiedName(this.removeQualifiedName(elementProperties));
+                    projectProperties.setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
+                    projectProperties.setIdentifier(this.removeIdentifier(elementProperties));
+                    projectProperties.setName(this.removeName(elementProperties));
+                    projectProperties.setDescription(this.removeDescription(elementProperties));
+                    projectProperties.setProjectStatus(this.removeProjectStatus(elementProperties));
+                    projectProperties.setProjectHealth(this.removeProjectHealth(elementProperties));
+                    projectProperties.setProjectPhase(this.removeProjectPhase(elementProperties));
+                    projectProperties.setPriority(this.removeIntPriority(elementProperties));
+                    projectProperties.setStartDate(this.removeStartDate(elementProperties));
+                    projectProperties.setPlannedEndDate(this.removePlannedEndDate(elementProperties));
+                    projectProperties.setEffectiveFrom(openMetadataElement.getEffectiveFromTime());
+                    projectProperties.setEffectiveTo(openMetadataElement.getEffectiveToTime());
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
-                    collectionProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    collectionProperties.setExtendedProperties(this.getRemainingExtendedProperties(elementProperties));
+                    projectProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    projectProperties.setExtendedProperties(this.getRemainingExtendedProperties(elementProperties));
                 }
                 else
                 {
                     handleMissingMetadataInstance(beanClass.getName(), OpenMetadataElement.class.getName(), methodName);
                 }
 
-                bean.setProperties(collectionProperties);
+                bean.setProperties(projectProperties);
 
                 bean.setRelatedElement(super.getRelatedElement(beanClass, relatedMetadataElement, methodName));
             }

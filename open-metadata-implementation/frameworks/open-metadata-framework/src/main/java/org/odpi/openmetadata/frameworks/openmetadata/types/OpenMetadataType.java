@@ -2375,6 +2375,7 @@ public enum OpenMetadataType
      * priority
      */
     public static final String PRIORITY_PROPERTY_NAME = "priority";                          /* from Area 1 */
+    public static final String IMPORTANCE_PROPERTY_NAME = "importance";                          /* from Area 1 */
 
     /**
      * dueTime

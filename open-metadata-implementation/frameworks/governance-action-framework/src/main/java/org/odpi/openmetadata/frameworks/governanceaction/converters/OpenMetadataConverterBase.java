@@ -4561,7 +4561,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.PRIORITY_PROPERTY_NAME,
+                                                       OpenMetadataType.IMPORTANCE_PROPERTY_NAME,
                                                        elementProperties,
                                                        methodName);
         }
@@ -5676,6 +5676,50 @@ public abstract class OpenMetadataConverterBase<B>
         {
             return propertyHelper.removeStringProperty(serviceName,
                                                        OpenMetadataProperty.PROJECT_STATUS.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the health property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return String text or null
+     */
+    protected String removeProjectHealth(ElementProperties elementProperties)
+    {
+        final String methodName = "removeProjectHealth";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.PROJECT_HEALTH.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the phase property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return String text or null
+     */
+    protected String removeProjectPhase(ElementProperties elementProperties)
+    {
+        final String methodName = "removeProjectPhase";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.PROJECT_PHASE.name,
                                                        elementProperties,
                                                        methodName);
         }

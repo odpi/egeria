@@ -67,10 +67,6 @@ public abstract class ProjectManagementConverterBase<B> extends OpenMetadataConv
 
             relatedElement.setRelationshipProperties(relationshipProperties);
         }
-        else
-        {
-            handleMissingMetadataInstance(beanClass.getName(), RelatedMetadataElements.class.getName(), methodName);
-        }
 
         if (element != null)
         {
