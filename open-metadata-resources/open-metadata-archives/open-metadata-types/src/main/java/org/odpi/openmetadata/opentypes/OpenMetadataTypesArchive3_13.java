@@ -540,18 +540,12 @@ public class OpenMetadataTypesArchive3_13
 
     private EntityDef getParquetFileEntity()
     {
-        final String guid            = OpenMetadataType.PARQUET_FILE_TYPE_GUID;
-        final String name            = OpenMetadataType.PARQUET_FILE_TYPE_NAME;
-        final String description     = "A data file which is formatted using the Apache Parquet format.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.PARQUET_FILE.typeGUID,
+                                                 OpenMetadataType.PARQUET_FILE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FILE.typeName),
+                                                 OpenMetadataType.PARQUET_FILE.description,
+                                                 OpenMetadataType.PARQUET_FILE.descriptionGUID,
+                                                 OpenMetadataType.PARQUET_FILE.wikiURL);
     }
 
 

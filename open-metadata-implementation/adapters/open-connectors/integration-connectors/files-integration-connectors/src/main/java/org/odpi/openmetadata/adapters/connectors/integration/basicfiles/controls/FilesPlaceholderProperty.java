@@ -16,9 +16,29 @@ import java.util.List;
 public enum FilesPlaceholderProperty
 {
     /**
+     * The name of the leaf directory, without its enclosing directories.
+     */
+    FOLDER_NAME("folderName", "The name of the leaf directory, without its enclosing directories.", "string", "myFolder"),
+
+    /**
+     * The display name of the data set.
+     */
+    DATA_SET_NAME("dataSetName", "The display name of the data set.", "string", "myDataSet"),
+
+    /**
+     * The formula used to populate the data set.
+     */
+    FORMULA("formula", "The formula used to populate the data set.", "string", null),
+
+    /**
+     * The language/format used in the data set's formula.
+     */
+    FORMULA_TYPE("formulaType", "The language/format used in the data set's formula.", "string", null),
+
+    /**
      * The full pathname of the file including the directory names, file name and file extension.
      */
-    PATH_NAME ("pathName", "The full pathname of the file including the directory names, file name and file extension.", "string", "/a/b/c/myFile.txt"),
+    PATH_NAME ("pathName", "The full pathname of the file including the directory names, file name and optional file extension, if applicable.", "string", "/a/b/c/myFile.txt"),
 
     /**
      * The short name of the file with its extension but without the directory names.
@@ -49,7 +69,41 @@ public enum FilesPlaceholderProperty
                        "string",
                        "JSON"),
 
-        ;
+    /**
+     * The deployed implementation type for the file.
+     */
+    DEPLOYED_IMPLEMENTATION_TYPE ("deployedImplementationType",
+                   "The deployed implementation type for the file.",
+                   "string",
+                   "Build File"),
+
+
+    /**
+     * The description of the resource to help a consumer understand its content and purpose.
+     */
+    DESCRIPTION ("description",
+                 "The description of the resource to help a consumer understand its content and purpose.",
+                 "string",
+                 "This file contains a moth-worth of patient data for the Teddy Bear Drop Foot clinical trial."),
+
+
+    /**
+     * The programming language used to encode the file.
+     */
+    PROGRAMMING_LANGUAGE ("programmingLanguage",
+                          "The programming language used to encode the file.",
+                          "string",
+                          "Java"),
+
+    /**
+     * Descriptive metadata values embedded within the file.
+     */
+    EMBEDDED_METADATA ("embeddedMetadata",
+                          "Descriptive metadata values embedded within the file.",
+                          "map<string, string>",
+                          null),
+
+    ;
 
     public final String name;
     public final String description;
@@ -133,22 +187,100 @@ public enum FilesPlaceholderProperty
 
 
     /**
-     * Retrieve all the defined placeholder properties
+     * Retrieve all the defined placeholder properties for data files
      *
      * @return list of placeholder property types
      */
-    public static List<PlaceholderPropertyType> getFilesPlaceholderPropertyTypes()
+    public static List<PlaceholderPropertyType> getDataFilesPlaceholderPropertyTypes()
     {
         List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
 
-        for (FilesPlaceholderProperty placeholderProperty : FilesPlaceholderProperty.values())
-        {
-            placeholderPropertyTypes.add(placeholderProperty.getPlaceholderType());
-        }
+        placeholderPropertyTypes.add(DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholderType());
+        placeholderPropertyTypes.add(PATH_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(FILE_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(FILE_TYPE.getPlaceholderType());
+        placeholderPropertyTypes.add(FILE_EXTENSION.getPlaceholderType());
+        placeholderPropertyTypes.add(FILE_ENCODING.getPlaceholderType());
 
         return placeholderPropertyTypes;
     }
 
+
+    /**
+     * Retrieve all the defined placeholder properties for data files
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getMediaFilesPlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholderType());
+        placeholderPropertyTypes.add(PATH_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(FILE_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(FILE_TYPE.getPlaceholderType());
+        placeholderPropertyTypes.add(FILE_EXTENSION.getPlaceholderType());
+        placeholderPropertyTypes.add(FILE_ENCODING.getPlaceholderType());
+        placeholderPropertyTypes.add(EMBEDDED_METADATA.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
+
+    /**
+     * Retrieve all the defined placeholder properties for directories (file folder)
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getFolderPlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholderType());
+        placeholderPropertyTypes.add(PATH_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(FOLDER_NAME.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
+
+    /**
+     * Retrieve all the defined placeholder properties for directories (file folder)
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getDataSetPlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholderType());
+        placeholderPropertyTypes.add(DATA_SET_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(FORMULA.getPlaceholderType());
+        placeholderPropertyTypes.add(FORMULA_TYPE.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
+
+    /**
+     * Retrieve all the defined placeholder properties for files associated with software
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getSoftwareFilesPlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholderType());
+        placeholderPropertyTypes.add(PATH_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(FILE_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(FILE_TYPE.getPlaceholderType());
+        placeholderPropertyTypes.add(FILE_EXTENSION.getPlaceholderType());
+        placeholderPropertyTypes.add(FILE_ENCODING.getPlaceholderType());
+        placeholderPropertyTypes.add(PROGRAMMING_LANGUAGE.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
 
     /**
      * Return a summary of this enum to use in a service provider.

@@ -8579,18 +8579,12 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getMediaFileEntity()
     {
-        final String guid            = "c5ce5499-9582-42ea-936c-9771fbd475f8";
-        final String name            = "MediaFile";
-        final String description     = "A data file containing unstructured data.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.MEDIA_FILE.typeGUID,
+                                                                OpenMetadataType.MEDIA_FILE.typeName,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FILE.typeName),
+                                                                OpenMetadataType.MEDIA_FILE.description,
+                                                                OpenMetadataType.MEDIA_FILE.descriptionGUID,
+                                                                OpenMetadataType.MEDIA_FILE.wikiURL);
 
         /*
          * Build the attributes
@@ -8598,9 +8592,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "embeddedMetadata";
-        final String attribute1Description     = "Metadata properties embedded in the media file.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.EMBEDDED_METADATA.name;
+        final String attribute1Description     = OpenMetadataProperty.EMBEDDED_METADATA.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.EMBEDDED_METADATA.descriptionGUID;
 
 
         property = archiveHelper.getMapStringStringTypeDefAttribute(attribute1Name,
@@ -8634,18 +8628,12 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getDocumentEntity()
     {
-        final String guid            = "b463827c-c0a0-4cfb-a2b2-ddc63746ded4";
-        final String name            = "Document";
-        final String description     = "A data file containing unstructured text.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "MediaFile";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DOCUMENT.typeGUID,
+                                                 OpenMetadataType.DOCUMENT.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.MEDIA_FILE.typeName),
+                                                 OpenMetadataType.DOCUMENT.description,
+                                                 OpenMetadataType.DOCUMENT.descriptionGUID,
+                                                 OpenMetadataType.DOCUMENT.wikiURL);
     }
 
 
@@ -8704,7 +8692,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "MediaFile";
+        final String                     end2EntityType               = OpenMetadataType.MEDIA_FILE.typeName;
         final String                     end2AttributeName            = "dataSetMembers";
         final String                     end2AttributeDescription     = "Media files that make up this media collection.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -8742,7 +8730,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "MediaFile";
+        final String                     end1EntityType               = OpenMetadataType.MEDIA_FILE.typeName;
         final String                     end1AttributeName            = "linkedMediaFiles";
         final String                     end1AttributeDescription     = "Link to related media files.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -8759,7 +8747,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "MediaFile";
+        final String                     end2EntityType               = OpenMetadataType.MEDIA_FILE.typeName;
         final String                     end2AttributeName            = "linkedMediaFiles";
         final String                     end2AttributeDescription     = "Link to related media files.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -9632,35 +9620,23 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getKeystoreFileEntity()
     {
-        final String guid            = OpenMetadataType.KEYSTORE_FILE_TYPE_GUID;
-        final String name            = OpenMetadataType.KEYSTORE_FILE_TYPE_NAME;
-        final String description     = "An encrypted data store containing authentication and related security information.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.KEYSTORE_FILE.typeGUID,
+                                                 OpenMetadataType.KEYSTORE_FILE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FILE.typeName),
+                                                 OpenMetadataType.KEYSTORE_FILE.description,
+                                                 OpenMetadataType.KEYSTORE_FILE.descriptionGUID,
+                                                 OpenMetadataType.KEYSTORE_FILE.wikiURL);
     }
 
 
     private EntityDef geSecretsCollectionEntity()
     {
-        final String guid            = OpenMetadataType.SECRETS_COLLECTION_TYPE_GUID;
-        final String name            = OpenMetadataType.SECRETS_COLLECTION_TYPE_NAME;
-        final String description     = "A data set containing authentication and related security information.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.DATA_SET.typeName;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SECRETS_COLLECTION.typeGUID,
+                                                 OpenMetadataType.SECRETS_COLLECTION.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_SET.typeName),
+                                                 OpenMetadataType.SECRETS_COLLECTION.description,
+                                                 OpenMetadataType.SECRETS_COLLECTION.descriptionGUID,
+                                                 OpenMetadataType.SECRETS_COLLECTION.wikiURL);
     }
 
 

@@ -1086,19 +1086,12 @@ public class OpenMetadataTypesArchive
      */
     private EntityDef addSpreadsheetFileEntity()
     {
-        final String guid = OpenMetadataType.SPREADSHEET_FILE_TYPE_GUID;
-
-        final String name            = OpenMetadataType.SPREADSHEET_FILE_TYPE_NAME;
-        final String description     = "A file containing tabular data with formula.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SPREADSHEET_FILE.typeGUID,
+                                                 OpenMetadataType.SPREADSHEET_FILE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FILE.typeName),
+                                                 OpenMetadataType.SPREADSHEET_FILE.description,
+                                                 OpenMetadataType.SPREADSHEET_FILE.descriptionGUID,
+                                                 OpenMetadataType.SPREADSHEET_FILE.wikiURL);
     }
 
 
@@ -1109,19 +1102,12 @@ public class OpenMetadataTypesArchive
      */
     private EntityDef addXMLFileEntity()
     {
-        final String guid = OpenMetadataType.XML_FILE_TYPE_GUID;
-
-        final String name            = OpenMetadataType.XML_FILE_TYPE_NAME;
-        final String description     = "A file containing an XML structure.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.XML_FILE.typeGUID,
+                                                 OpenMetadataType.XML_FILE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FILE.typeName),
+                                                 OpenMetadataType.XML_FILE.description,
+                                                 OpenMetadataType.XML_FILE.descriptionGUID,
+                                                 OpenMetadataType.XML_FILE.wikiURL);
     }
 
 
@@ -1151,18 +1137,12 @@ public class OpenMetadataTypesArchive
      */
     private EntityDef addAudioFileEntity()
     {
-        final String guid            = OpenMetadataType.AUDIO_FILE_TYPE_GUID;
-        final String name            = OpenMetadataType.AUDIO_FILE_TYPE_NAME;
-        final String description     = "A file containing an audio recording.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.MEDIA_FILE_TYPE_NAME;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.AUDIO_FILE.typeGUID,
+                                                 OpenMetadataType.AUDIO_FILE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.MEDIA_FILE.typeName),
+                                                 OpenMetadataType.AUDIO_FILE.description,
+                                                 OpenMetadataType.AUDIO_FILE.descriptionGUID,
+                                                 OpenMetadataType.AUDIO_FILE.wikiURL);
     }
 
 
@@ -1173,18 +1153,12 @@ public class OpenMetadataTypesArchive
      */
     private EntityDef addVideoFileEntity()
     {
-        final String guid            = OpenMetadataType.VIDEO_FILE_TYPE_GUID;
-        final String name            = OpenMetadataType.VIDEO_FILE_TYPE_NAME;
-        final String description     = "A file containing a video recording.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.MEDIA_FILE_TYPE_NAME;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.VIDEO_FILE.typeGUID,
+                                                 OpenMetadataType.VIDEO_FILE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.MEDIA_FILE.typeName),
+                                                 OpenMetadataType.VIDEO_FILE.description,
+                                                 OpenMetadataType.VIDEO_FILE.descriptionGUID,
+                                                 OpenMetadataType.VIDEO_FILE.wikiURL);
     }
 
 
@@ -1195,18 +1169,12 @@ public class OpenMetadataTypesArchive
      */
     private EntityDef add3DImageFileEntity()
     {
-        final String guid            = OpenMetadataType.THREE_D_IMAGE_FILE_TYPE_GUID;
-        final String name            = OpenMetadataType.THREE_D_IMAGE_FILE_TYPE_NAME;
-        final String description     = "A file containing a three dimensional image.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.MEDIA_FILE_TYPE_NAME;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.THREE_D_IMAGE_FILE.typeGUID,
+                                                 OpenMetadataType.THREE_D_IMAGE_FILE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.MEDIA_FILE.typeName),
+                                                 OpenMetadataType.THREE_D_IMAGE_FILE.description,
+                                                 OpenMetadataType.THREE_D_IMAGE_FILE.descriptionGUID,
+                                                 OpenMetadataType.THREE_D_IMAGE_FILE.wikiURL);
     }
 
 
@@ -1217,18 +1185,12 @@ public class OpenMetadataTypesArchive
      */
     private EntityDef addRasterFileEntity()
     {
-        final String guid            = OpenMetadataType.RASTER_FILE_TYPE_GUID;
-        final String name            = OpenMetadataType.RASTER_FILE_TYPE_NAME;
-        final String description     = "A file containing an image as a matrix of pixels.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.MEDIA_FILE_TYPE_NAME;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.RASTER_FILE.typeGUID,
+                                                 OpenMetadataType.RASTER_FILE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.MEDIA_FILE.typeName),
+                                                 OpenMetadataType.RASTER_FILE.description,
+                                                 OpenMetadataType.RASTER_FILE.descriptionGUID,
+                                                 OpenMetadataType.RASTER_FILE.wikiURL);
     }
 
 
@@ -1239,20 +1201,13 @@ public class OpenMetadataTypesArchive
      */
     private EntityDef addVectorFileEntity()
     {
-        final String guid            = OpenMetadataType.VECTOR_FILE_TYPE_GUID;
-        final String name            = OpenMetadataType.VECTOR_FILE_TYPE_NAME;
-        final String description     = "A file containing an image described using mathematical formulas.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.MEDIA_FILE_TYPE_NAME;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.VECTOR_FILE.typeGUID,
+                                                 OpenMetadataType.VECTOR_FILE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.MEDIA_FILE.typeName),
+                                                 OpenMetadataType.VECTOR_FILE.description,
+                                                 OpenMetadataType.VECTOR_FILE.descriptionGUID,
+                                                 OpenMetadataType.VECTOR_FILE.wikiURL);
     }
-
 
     /**
      * Deprecate the GroupedMedia - use DataContentForDataSet
@@ -1295,18 +1250,12 @@ public class OpenMetadataTypesArchive
      */
     private EntityDef addArchiveFileEntity()
     {
-        final String guid            = OpenMetadataType.ARCHIVE_FILE_TYPE_GUID;
-        final String name            = OpenMetadataType.ARCHIVE_FILE_TYPE_NAME;
-        final String description     = "A file containing compressed files.  These files may be organized into a directory (folder) structure.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.ARCHIVE_FILE.typeGUID,
+                                                 OpenMetadataType.ARCHIVE_FILE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FILE.typeName),
+                                                 OpenMetadataType.ARCHIVE_FILE.description,
+                                                 OpenMetadataType.ARCHIVE_FILE.descriptionGUID,
+                                                 OpenMetadataType.ARCHIVE_FILE.wikiURL);
     }
 
 
@@ -1317,26 +1266,20 @@ public class OpenMetadataTypesArchive
      */
     private RelationshipDef addArchiveContentsRelationship()
     {
-        final String guid            = OpenMetadataType.ARCHIVE_CONTENTS_TYPE_GUID;
-        final String name            = OpenMetadataType.ARCHIVE_CONTENTS_TYPE_NAME;
-        final String description     = "Links an archive to a collection that has a description of the archive's contents as its members.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ARCHIVE_CONTENTS_RELATIONSHIP.typeGUID,
+                                                                                OpenMetadataType.ARCHIVE_CONTENTS_RELATIONSHIP.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.ARCHIVE_CONTENTS_RELATIONSHIP.description,
+                                                                                OpenMetadataType.ARCHIVE_CONTENTS_RELATIONSHIP.descriptionGUID,
+                                                                                OpenMetadataType.ARCHIVE_CONTENTS_RELATIONSHIP.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = OpenMetadataType.ARCHIVE_FILE_TYPE_NAME;
+        final String                     end1EntityType               = OpenMetadataType.ARCHIVE_FILE.typeName;
         final String                     end1AttributeName            = "packagedInArchiveFiles";
         final String                     end1AttributeDescription     = "Associated archive file.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -1392,37 +1335,12 @@ public class OpenMetadataTypesArchive
      */
     private EntityDef addSourceCodeFileEntity()
     {
-        final String guid            = OpenMetadataType.SOURCE_CODE_FILE_TYPE_GUID;
-        final String name            = OpenMetadataType.SOURCE_CODE_FILE_TYPE_NAME;
-        final String description     = "A file containing an audio recording.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = OpenMetadataType.PROGRAMMING_LANGUAGE_PROPERTY_NAME;
-        final String attribute1Description     = "The programming language used in the code.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SOURCE_CODE_FILE.typeGUID,
+                                                 OpenMetadataType.SOURCE_CODE_FILE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FILE.typeName),
+                                                 OpenMetadataType.SOURCE_CODE_FILE.description,
+                                                 OpenMetadataType.SOURCE_CODE_FILE.descriptionGUID,
+                                                 OpenMetadataType.SOURCE_CODE_FILE.wikiURL);
     }
 
 
@@ -1433,37 +1351,12 @@ public class OpenMetadataTypesArchive
      */
     private EntityDef addBuildInstructionFileEntity()
     {
-        final String guid            = OpenMetadataType.BUILD_INSTRUCTION_FILE_TYPE_GUID;
-        final String name            = OpenMetadataType.BUILD_INSTRUCTION_FILE_TYPE_NAME;
-        final String description     = "A file containing instructions to run a build of a software artifact or system.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = OpenMetadataType.PROGRAMMING_LANGUAGE_PROPERTY_NAME;
-        final String attribute1Description     = "The programming language used in the code.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.BUILD_INSTRUCTION_FILE.typeGUID,
+                                                 OpenMetadataType.BUILD_INSTRUCTION_FILE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FILE.typeName),
+                                                 OpenMetadataType.BUILD_INSTRUCTION_FILE.description,
+                                                 OpenMetadataType.BUILD_INSTRUCTION_FILE.descriptionGUID,
+                                                 OpenMetadataType.BUILD_INSTRUCTION_FILE.wikiURL);
     }
 
 
@@ -1474,37 +1367,12 @@ public class OpenMetadataTypesArchive
      */
     private EntityDef addExecutableFileEntity()
     {
-        final String guid            = OpenMetadataType.EXECUTABLE_FILE_TYPE_GUID;
-        final String name            = OpenMetadataType.EXECUTABLE_FILE_TYPE_NAME;
-        final String description     = "A file containing compiled code that can be executed.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = OpenMetadataType.PROGRAMMING_LANGUAGE_PROPERTY_NAME;
-        final String attribute1Description     = "The programming language used in the code.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.EXECUTABLE_FILE.typeGUID,
+                                                 OpenMetadataType.EXECUTABLE_FILE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FILE.typeName),
+                                                 OpenMetadataType.EXECUTABLE_FILE.description,
+                                                 OpenMetadataType.EXECUTABLE_FILE.descriptionGUID,
+                                                 OpenMetadataType.EXECUTABLE_FILE.wikiURL);
     }
 
 
@@ -1515,37 +1383,12 @@ public class OpenMetadataTypesArchive
      */
     private EntityDef addScriptFileEntity()
     {
-        final String guid            = OpenMetadataType.SCRIPT_FILE_TYPE_GUID;
-        final String name            = OpenMetadataType.SCRIPT_FILE_TYPE_NAME;
-        final String description     = "A file containing code that is interpreted when it is run.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = OpenMetadataType.PROGRAMMING_LANGUAGE_PROPERTY_NAME;
-        final String attribute1Description     = "The programming language used in the code.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SCRIPT_FILE.typeGUID,
+                                                 OpenMetadataType.SCRIPT_FILE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FILE.typeName),
+                                                 OpenMetadataType.SCRIPT_FILE.description,
+                                                 OpenMetadataType.SCRIPT_FILE.descriptionGUID,
+                                                 OpenMetadataType.SCRIPT_FILE.wikiURL);
     }
 
 
@@ -1556,18 +1399,12 @@ public class OpenMetadataTypesArchive
      */
     private EntityDef addPropertiesFileEntity()
     {
-        final String guid            = OpenMetadataType.PROPERTIES_FILE_TYPE_GUID;
-        final String name            = OpenMetadataType.PROPERTIES_FILE_TYPE_NAME;
-        final String description     = "A file containing a list of properties, typically used for configuration.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.DATA_FILE.typeName;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.PROPERTIES_FILE.typeGUID,
+                                                 OpenMetadataType.PROPERTIES_FILE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FILE.typeName),
+                                                 OpenMetadataType.PROPERTIES_FILE.description,
+                                                 OpenMetadataType.PROPERTIES_FILE.descriptionGUID,
+                                                 OpenMetadataType.PROPERTIES_FILE.wikiURL);
     }
 
 
@@ -1578,18 +1415,12 @@ public class OpenMetadataTypesArchive
      */
     private EntityDef addYAMLFileEntity()
     {
-        final String guid            = OpenMetadataType.YAML_FILE_TYPE_GUID;
-        final String name            = OpenMetadataType.YAML_FILE_TYPE_NAME;
-        final String description     = "A file containing properties in YAML format.  This it typically used for configuration";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.PROPERTIES_FILE_TYPE_NAME;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.YAML_FILE.typeGUID,
+                                                 OpenMetadataType.YAML_FILE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.PROPERTIES_FILE.typeName),
+                                                 OpenMetadataType.YAML_FILE.description,
+                                                 OpenMetadataType.YAML_FILE.descriptionGUID,
+                                                 OpenMetadataType.YAML_FILE.wikiURL);
     }
 
 

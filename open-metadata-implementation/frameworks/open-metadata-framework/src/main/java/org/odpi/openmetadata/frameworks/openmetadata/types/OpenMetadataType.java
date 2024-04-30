@@ -667,6 +667,150 @@ public enum OpenMetadataType
               "A description of a file that follows the JavaScript Object Notation specification."),
 
     /**
+     * A text file containing a program written in a language that needs to be complied into an executable form before it can run.
+     */
+    SOURCE_CODE_FILE("5b26a2d2-3159-4e8e-bf28-e71904113fc8",
+                     "SourceCodeFile",
+                     OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS,
+                     "e241c208-9055-476f-bf56-38c627d98848",
+                     "A text file containing a program written in a language that needs to be complied into an executable form before it can run."),
+
+    /**
+     * A file containing instructions to run a build of a software artifact or system.
+     */
+    BUILD_INSTRUCTION_FILE("b1697a55-c731-4ef8-a9ff-d29c143cc1c3",
+                           "BuildInstructionFile",
+                           OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS,
+                           "e26b1579-2397-4a42-ad1a-55fa351117d8",
+                           "A file containing instructions to run a build of a software artifact or system."),
+
+    /**
+     * A file containing compiled code that can be executed.
+     */
+    EXECUTABLE_FILE("314219ed-4b81-4e1d-b66b-22958a05f0c9",
+                    "ExecutableFile",
+                    OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS,
+                    "b1ed127d-c5c7-41aa-b295-d3a13053e24f",
+                    "A file containing compiled code that can be executed."),
+
+    /**
+     * A file containing code that is interpreted when it is run.
+     */
+    SCRIPT_FILE("cae5d609-16b0-4812-8582-adb742bbef89",
+                "ScriptFile",
+                OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS,
+                "b03e1bcd-6451-4e9c-b8ec-0e686c2ed18b",
+                "A file containing code that is interpreted when it is run."),
+
+    /**
+     * A file containing a list of properties, typically used for configuration of some software.
+     */
+    PROPERTIES_FILE("febdb5b9-92cc-4eb1-b058-86934f2ec18b",
+                    "PropertiesFile",
+                    OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS,
+                    "b09718ca-f956-41a7-9528-a0976b87a5ea",
+                    "A file containing a list of properties, typically used for configuration of some software."),
+
+    /**
+     * A file containing properties in YAML format.  This it typically used for configuration.
+     */
+    YAML_FILE("2bd6feb5-1b79-417a-b430-4e8e1e0a63dd",
+              "YAMLFile",
+              OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS,
+              "5e0ea8d1-bb58-4a85-931d-886f8388b9d2",
+              "A file containing properties in YAML format.  This it typically used for configuration."),
+
+    /**
+     * A file containing tabular data with formula.
+     */
+    SPREADSHEET_FILE("2f38d248-8633-402b-b085-c88fcbc33fa8",
+                     "SpreadsheetFile",
+                     OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
+                     "777064c4-756e-4c78-84d7-268316481b9d",
+                     "A file containing tabular data with formula."),
+
+    /**
+     * A file containing an XML structure.
+     */
+    XML_FILE("e1d8d6f1-3e75-41c7-a038-6e25ab985b44",
+             "XMLFile",
+             OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
+             "0dbaed30-1cd5-4259-a0b2-f586966890ee",
+             "A file containing an XML structure."),
+
+    /**
+     * A data file which is formatted using the Apache Parquet format.
+     */
+    PARQUET_FILE("97cba3a0-1dfd-4129-82b6-798de3eec0a4",
+                 "ParquetFile",
+                 OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
+                 "b472c4a1-708d-4787-b0c3-730052cf19f4",
+                 "A data file which is formatted using the Apache Parquet format."),
+
+    /**
+     * A data file containing formatted media such as images, audio or video.
+     */
+    MEDIA_FILE("c5ce5499-9582-42ea-936c-9771fbd475f8",
+               "MediaFile",
+               OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
+               "6e9220c4-6f47-417a-93b5-18f365e19ade",
+               "A data file containing formatted media such as images, audio or video."),
+
+    /**
+     * A data file containing formatted text.
+     */
+    DOCUMENT("b463827c-c0a0-4cfb-a2b2-ddc63746ded4",
+             "Document",
+             OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
+             "d5f2b2eb-9fc9-4088-b64e-539ec5a70f2a",
+             "A data file containing formatted text."),
+
+    /**
+     * A file containing an audio recording.
+     */
+    AUDIO_FILE("713c26b6-7158-4cd7-918b-7d6f9d216893",
+               "AudioFile",
+               OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
+               "a064efd8-eff6-44ae-8608-4580691a3fb0",
+               "A file containing an audio recording."),
+
+    /**
+     * A file containing a video recording.
+     */
+    VIDEO_FILE("68f06c88-083e-42f0-8268-f4f822aeab0e",
+               "VideoFile",
+               OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
+               "adc363ff-49ba-449c-9e0b-8e1705dcd436",
+               "A file containing a video recording."),
+
+    /**
+     * A file containing a three-dimensional image.
+     */
+   THREE_D_IMAGE_FILE("b2d56d90-ef55-4fa4-b1d6-a6049fd49466",
+                      "3DImageFile",
+                      OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
+                      "a37ea95a-4e43-499b-b2c6-a73ac99abbf8",
+                      "A file containing a three-dimensional image."),
+
+    /**
+     * A file containing an image as a matrix of pixels.
+     */
+    RASTER_FILE("6703bfd6-3f0f-4e35-a3e7-b94e2b5c9147",
+                "RasterFile",
+                OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
+                "b92af812-05c4-4764-a8f0-d898277f69c1",
+                "A file containing an image as a matrix of pixels."),
+
+    /**
+     * A file containing an image described using mathematical formulas.
+     */
+    VECTOR_FILE("007620a2-960e-4c3b-b625-cbefebefc737",
+                "VectorFile",
+                OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
+                "35d56124-280c-4434-9206-84eff153f73b",
+                "A file containing an image described using mathematical formulas."),
+
+    /**
      * A data set that consists of a collection files (do not need to be co-located).
      */
     DATA_FILE_COLLECTION("962de053-ab51-40eb-b843-85b98013f5ca",
@@ -721,6 +865,41 @@ public enum OpenMetadataType
                    "A tabular data source (typically a database table) that is an asset in its own right."),
 
 
+    /**
+     * A file containing compressed files.  These files may be organized into a directory (folder) structure.
+     */
+    ARCHIVE_FILE("ba5111df-3878-4694-82d7-0b0e47565523",
+                 "ArchiveFile",
+                 OpenMetadataWikiPages.MODEL_0226_ARCHIVE_FILES,
+                 "de153806-44cd-465f-981b-4b703536018b",
+                 "A file containing compressed files.  These files may be organized into a directory (folder) structure."),
+
+    /**
+     * Links an archive to a collection that has a description of the archive's contents as its members.
+     */
+    ARCHIVE_CONTENTS_RELATIONSHIP("51e59b71-013b-4f77-9a51-2d6fbb3dfeeb",
+                                  "ArchiveContents",
+                                  OpenMetadataWikiPages.MODEL_0226_ARCHIVE_FILES,
+                                  "01341540-1132-4412-adb1-e5725d55ab6f",
+                                  "Links an archive to a collection that has a description of the archive's contents as its members."),
+
+    /**
+     * An encrypted data store containing authentication and related security information.
+     */
+    KEYSTORE_FILE("17bee904-5b35-4c81-ac63-871c615424a2",
+                  "KeystoreFile",
+                  OpenMetadataWikiPages.MODEL_0227_KEYSTORES,
+                  "8b628220-8c35-4ca7-814f-7f391ab0466e",
+                  "An encrypted data store containing authentication and related security information."),
+
+    /**
+     * A data set containing authentication and related security information.
+     */
+    SECRETS_COLLECTION("979d97dd-6782-4648-8e2a-8982994533e6",
+                       "SecretsCollection",
+                       OpenMetadataWikiPages.MODEL_0227_KEYSTORES,
+                       "4aa6aae8-a0d6-4e05-8b93-6bab1962c3a6",
+                       "A data set containing authentication and related security information."),
 
     /* ============================================================================================================================*/
     /* Area 3 - Glossary                                                                                                         */
@@ -2964,107 +3143,7 @@ public enum OpenMetadataType
      */
     public static final String LINKED_FILE_TYPE_NAME = "LinkedFile";
 
-    
-    /**
-     * 2f38d248-8633-402b-b085-c88fcbc33fa8
-     */
-    public static final String SPREADSHEET_FILE_TYPE_GUID = "2f38d248-8633-402b-b085-c88fcbc33fa8";
 
-    /**
-     * SpreadsheetFile
-     */
-    public static final String SPREADSHEET_FILE_TYPE_NAME = "SpreadsheetFile";
-
-    /**
-     * e1d8d6f1-3e75-41c7-a038-6e25ab985b44
-     */
-    public static final String XML_FILE_TYPE_GUID = "e1d8d6f1-3e75-41c7-a038-6e25ab985b44";
-
-    /**
-     * XMLFile
-     */
-    public static final String XML_FILE_TYPE_NAME = "XMLFile";
-
-    /**
-     * 97cba3a0-1dfd-4129-82b6-798de3eec0a4
-     */
-    public static final String PARQUET_FILE_TYPE_GUID = "97cba3a0-1dfd-4129-82b6-798de3eec0a4";
-
-    /**
-     * ParquetFile - inherits from DataFile
-     */
-    public static final String PARQUET_FILE_TYPE_NAME = "ParquetFile";
-
-
-    /**
-     * c5ce5499-9582-42ea-936c-9771fbd475f8
-     */
-    public static final String MEDIA_FILE_TYPE_GUID = "c5ce5499-9582-42ea-936c-9771fbd475f8";  /* from Area 2 */
-
-    /**
-     * MediaFile
-     */
-    public static final String MEDIA_FILE_TYPE_NAME = "MediaFile";
-
-    /**
-     * b463827c-c0a0-4cfb-a2b2-ddc63746ded4
-     */
-    public static final String DOCUMENT_TYPE_GUID = "b463827c-c0a0-4cfb-a2b2-ddc63746ded4";  /* from Area 2 */
-
-    /**
-     * Document - inherits from MediaFile
-     */
-    public static final String DOCUMENT_TYPE_NAME = "Document";
-
-    /**
-     * 713c26b6-7158-4cd7-918b-7d6f9d216893
-     */
-    public static final String AUDIO_FILE_TYPE_GUID = "713c26b6-7158-4cd7-918b-7d6f9d216893";
-
-    /**
-     * AudioFile - inherits from MediaFile
-     */
-    public static final String AUDIO_FILE_TYPE_NAME = "AudioFile";
-
-    /**
-     * 68f06c88-083e-42f0-8268-f4f822aeab0e
-     */
-    public static final String VIDEO_FILE_TYPE_GUID = "68f06c88-083e-42f0-8268-f4f822aeab0e";
-
-    /**
-     * VideoFile - inherits from MediaFile
-     */
-    public static final String VIDEO_FILE_TYPE_NAME = "VideoFile";
-
-    /**
-     * b2d56d90-ef55-4fa4-b1d6-a6049fd49466
-     */
-    public static final String THREE_D_IMAGE_FILE_TYPE_GUID = "b2d56d90-ef55-4fa4-b1d6-a6049fd49466";
-
-    /**
-     * 3DImageFile - inherits from MediaFile
-     */
-    public static final String THREE_D_IMAGE_FILE_TYPE_NAME = "3DImageFile";
-
-    /**
-     * 6703bfd6-3f0f-4e35-a3e7-b94e2b5c9147
-     */
-    public static final String RASTER_FILE_TYPE_GUID = "6703bfd6-3f0f-4e35-a3e7-b94e2b5c9147";
-
-    /**
-     * RasterFile - inherits from MediaFile
-     */
-    public static final String RASTER_FILE_TYPE_NAME = "RasterFile";
-
-    /**
-     * 007620a2-960e-4c3b-b625-cbefebefc737
-     */
-    public static final String VECTOR_FILE_TYPE_GUID = "007620a2-960e-4c3b-b625-cbefebefc737";
-
-    /**
-     * VectorFile - inherits from MediaFile
-     */
-    public static final String VECTOR_FILE_TYPE_NAME = "VectorFile";
 
     /**
      * 37156790-feac-4e1a-a42e-88858ae6f8e1
@@ -3124,45 +3203,6 @@ public enum OpenMetadataType
      */
     public static final String QUOTE_CHARACTER_PROPERTY_NAME = "quoteCharacter";                       /* from CSVFile entity */
 
-    /**
-     * ba5111df-3878-4694-82d7-0b0e47565523
-     */
-    public static final String ARCHIVE_FILE_TYPE_GUID = "ba5111df-3878-4694-82d7-0b0e47565523";
-
-    /**
-     * ArchiveFile - inherits from DataFile
-     */
-    public static final String ARCHIVE_FILE_TYPE_NAME = "ArchiveFile";
-
-    /**
-     * 51e59b71-013b-4f77-9a51-2d6fbb3dfeeb
-     */
-    public static final String ARCHIVE_CONTENTS_TYPE_GUID = "51e59b71-013b-4f77-9a51-2d6fbb3dfeeb";
-
-    /**
-     * ArchiveContents - End 1 ArchiveFile; end 2 Collection
-     */
-    public static final String ARCHIVE_CONTENTS_TYPE_NAME = "ArchiveContents";
-
-    /**
-     * 17bee904-5b35-4c81-ac63-871c615424a2
-     */
-    public static final String KEYSTORE_FILE_TYPE_GUID = "17bee904-5b35-4c81-ac63-871c615424a2";
-
-    /**
-     * KeystoreFile
-     */
-    public static final String KEYSTORE_FILE_TYPE_NAME = "KeystoreFile";
-
-    /**
-     * 979d97dd-6782-4648-8e2a-8982994533e6
-     */
-    public static final String SECRETS_COLLECTION_TYPE_GUID = "979d97dd-6782-4648-8e2a-8982994533e6";
-
-    /**
-     * SecretsCollection
-     */
-    public static final String SECRETS_COLLECTION_TYPE_NAME = "SecretsCollection";
 
     /**
      * eab811ec-556a-45f1-9091-bc7ac8face0f
@@ -3457,71 +3497,6 @@ public enum OpenMetadataType
      * PortDelegation - End1 = Port delegating from; End 2 = Port delegating to
      */
     public static final String PORT_DELEGATION_TYPE_NAME = "PortDelegation";
-
-    /**
-     * 5b26a2d2-3159-4e8e-bf28-e71904113fc8
-     */
-    public static final String SOURCE_CODE_FILE_TYPE_GUID = "5b26a2d2-3159-4e8e-bf28-e71904113fc8";
-
-    /**
-     * SourceCodeFile - inherits from DataFile
-     */
-    public static final String SOURCE_CODE_FILE_TYPE_NAME = "SourceCodeFile";
-
-    /**
-     * b1697a55-c731-4ef8-a9ff-d29c143cc1c3
-     */
-    public static final String BUILD_INSTRUCTION_FILE_TYPE_GUID = "b1697a55-c731-4ef8-a9ff-d29c143cc1c3";
-
-    /**
-     * BuildInstructionFile - inherits from DataFile
-     */
-    public static final String BUILD_INSTRUCTION_FILE_TYPE_NAME = "BuildInstructionFile";
-
-    /**
-     * 314219ed-4b81-4e1d-b66b-22958a05f0c9
-     */
-    public static final String EXECUTABLE_FILE_TYPE_GUID = "314219ed-4b81-4e1d-b66b-22958a05f0c9";
-
-    /**
-     * ExecutableFile - inherits from DataFile
-     */
-    public static final String EXECUTABLE_FILE_TYPE_NAME = "ExecutableFile";
-
-    /**
-     * cae5d609-16b0-4812-8582-adb742bbef89
-     */
-    public static final String SCRIPT_FILE_TYPE_GUID = "cae5d609-16b0-4812-8582-adb742bbef89";
-
-    /**
-     * ScriptFile - inherits from DataFile
-     */
-    public static final String SCRIPT_FILE_TYPE_NAME = "ScriptFile";
-
-    /**
-     * febdb5b9-92cc-4eb1-b058-86934f2ec18b
-     */
-    public static final String PROPERTIES_FILE_TYPE_GUID = "febdb5b9-92cc-4eb1-b058-86934f2ec18b";
-
-    /**
-     * PropertiesFile
-     */
-    public static final String PROPERTIES_FILE_TYPE_NAME = "PropertiesFile";
-
-    /**
-     * 2bd6feb5-1b79-417a-b430-4e8e1e0a63dd
-     */
-    public static final String YAML_FILE_TYPE_GUID = "2bd6feb5-1b79-417a-b430-4e8e1e0a63dd";
-
-    /**
-     * YAMLFile
-     */
-    public static final String YAML_FILE_TYPE_NAME = "YAMLFile";
-
-    /**
-     * programmingLanguage
-     */
-    public static final String PROGRAMMING_LANGUAGE_PROPERTY_NAME = "programmingLanguage";             /* from many entities */
 
 
     /* ============================================================================================================================*/

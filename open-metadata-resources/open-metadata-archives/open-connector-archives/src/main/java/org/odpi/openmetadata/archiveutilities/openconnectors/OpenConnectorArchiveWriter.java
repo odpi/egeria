@@ -947,6 +947,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         /*
          * Add catalog templates
          */
+        this.addFileTemplates();
         this.addPostgresServerCatalogTemplate();
         this.addPostgresDatabaseCatalogTemplate();
         this.addPostgresDatabaseSchemaCatalogTemplate();
@@ -1051,7 +1052,373 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
 
     /**
-     * Create a template got a software server and link it to the associated deployed implementation type.
+     * Add templates to the open metadata types for files.
+     */
+    private void addFileTemplates()
+    {
+        String basicFileConnectorTypeGUID = new BasicFileStoreProvider().getConnectorType().getGUID();
+
+        createFolderCatalogTemplate(OpenMetadataType.FILE_FOLDER.typeName, basicFileConnectorTypeGUID, null, null);
+        createFolderCatalogTemplate(OpenMetadataType.DATA_FOLDER.typeName, new DataFolderProvider().getConnectorType().getGUID(), null, null);
+        createDataSetCatalogTemplate(OpenMetadataType.DATA_FILE_COLLECTION.typeName, null, null, null);
+
+        createDataFileCatalogTemplate(OpenMetadataType.DATA_FILE.typeName, basicFileConnectorTypeGUID, null, null);
+        createDataFileCatalogTemplate(OpenMetadataType.CSV_FILE.typeName, new CSVFileStoreProvider().getConnectorType().getGUID(), null, null);
+        createDataFileCatalogTemplate(OpenMetadataType.AVRO_FILE.typeName, basicFileConnectorTypeGUID, null, null);
+        createDataFileCatalogTemplate(OpenMetadataType.JSON_FILE.typeName, basicFileConnectorTypeGUID, null, null);
+        createDataFileCatalogTemplate(OpenMetadataType.PARQUET_FILE.typeName, basicFileConnectorTypeGUID, null, null);
+        createDataFileCatalogTemplate(OpenMetadataType.SPREADSHEET_FILE.typeName, basicFileConnectorTypeGUID, null, null);
+        createDataFileCatalogTemplate(OpenMetadataType.XML_FILE.typeName, basicFileConnectorTypeGUID, null, null);
+        createDataFileCatalogTemplate(OpenMetadataType.MEDIA_FILE.typeName, basicFileConnectorTypeGUID, null, null);
+        createDataFileCatalogTemplate(OpenMetadataType.DOCUMENT.typeName, basicFileConnectorTypeGUID, null, null);
+        createDataFileCatalogTemplate(OpenMetadataType.AUDIO_FILE.typeName, basicFileConnectorTypeGUID, null, null);
+        createDataFileCatalogTemplate(OpenMetadataType.VIDEO_FILE.typeName, basicFileConnectorTypeGUID, null, null);
+        createDataFileCatalogTemplate(OpenMetadataType.THREE_D_IMAGE_FILE.typeName, basicFileConnectorTypeGUID, null, null);
+        createDataFileCatalogTemplate(OpenMetadataType.RASTER_FILE.typeName, basicFileConnectorTypeGUID, null, null);
+        createDataFileCatalogTemplate(OpenMetadataType.VECTOR_FILE.typeName, basicFileConnectorTypeGUID, null, null);
+        createDataFileCatalogTemplate(OpenMetadataType.ARCHIVE_FILE.typeName, basicFileConnectorTypeGUID, null, null);
+        createDataFileCatalogTemplate(OpenMetadataType.KEYSTORE_FILE.typeName, basicFileConnectorTypeGUID, null, null);
+
+        createSoftwareFileCatalogTemplate(OpenMetadataType.SOURCE_CODE_FILE.typeName, basicFileConnectorTypeGUID, null, null);
+        createSoftwareFileCatalogTemplate(OpenMetadataType.BUILD_INSTRUCTION_FILE.typeName, basicFileConnectorTypeGUID, null, null);
+        createSoftwareFileCatalogTemplate(OpenMetadataType.EXECUTABLE_FILE.typeName, basicFileConnectorTypeGUID, null, null);
+        createSoftwareFileCatalogTemplate(OpenMetadataType.SCRIPT_FILE.typeName, basicFileConnectorTypeGUID, null, null);
+        createSoftwareFileCatalogTemplate(OpenMetadataType.PROPERTIES_FILE.typeName, basicFileConnectorTypeGUID, null, null);
+        createSoftwareFileCatalogTemplate(OpenMetadataType.YAML_FILE.typeName, basicFileConnectorTypeGUID, null, null);
+    }
+
+
+    /**
+     * Create a template for a data file and link it to the associated open metadata type.
+     * The template consists of a DataFile asset plus an optional connection, linked
+     * to the supplied connector type and an endpoint,
+     *
+     * @param openMetadataTypeName typeName for the template
+     * @param connectorTypeGUID connector type to link to the connection
+     * @param configurationProperties configuration properties
+     * @param replacementAttributeTypes list of reference values
+     */
+    private   void createDataFileCatalogTemplate(String                         openMetadataTypeName,
+                                                 String                         connectorTypeGUID,
+                                                 Map<String, Object>            configurationProperties,
+                                                 List<ReplacementAttributeType> replacementAttributeTypes)
+    {
+        final String methodName    = "createDataFileCatalogTemplate";
+
+        String               qualifiedName = openMetadataTypeName + ":" + FilesPlaceholderProperty.PATH_NAME.getPlaceholder();
+        String               versionIdentifier = "V1.0";
+        Map<String, Object>  extendedProperties = new HashMap<>();
+        List<Classification> classifications = new ArrayList<>();
+
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, FilesPlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, FilesPlaceholderProperty.PATH_NAME.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, FilesPlaceholderProperty.FILE_TYPE.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, FilesPlaceholderProperty.FILE_EXTENSION.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.FILE_NAME.name, FilesPlaceholderProperty.FILE_NAME.getPlaceholder());
+
+        classifications.add(archiveHelper.getTemplateClassification(openMetadataTypeName + " template",
+                                                                    "Create an asset of type " + openMetadataTypeName + " with an associated Connection.",
+                                                                    "V1.0",
+                                                                    null, methodName));
+
+        classifications.add(archiveHelper.getDataStoreEncodingClassification(FilesPlaceholderProperty.FILE_ENCODING.getPlaceholder(), null, null, null));
+
+        String assetGUID = archiveHelper.addAsset(openMetadataTypeName,
+                                                  qualifiedName,
+                                                  FilesPlaceholderProperty.FILE_NAME.getPlaceholder(),
+                                                  versionIdentifier,
+                                                  null,
+                                                  null,
+                                                  extendedProperties,
+                                                  classifications);
+
+        String endpointGUID = archiveHelper.addEndpoint(assetGUID,
+                                                        openMetadataTypeName,
+                                                        qualifiedName + ":Endpoint",
+                                                        FilesPlaceholderProperty.PATH_NAME.getPlaceholder() + " endpoint",
+                                                        null,
+                                                        FilesPlaceholderProperty.PATH_NAME.getPlaceholder(),
+                                                        null,
+                                                        null);
+
+        String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
+                                                            FilesPlaceholderProperty.PATH_NAME.getPlaceholder() + " connection",
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            null,
+                                                            configurationProperties,
+                                                            null,
+                                                            connectorTypeGUID,
+                                                            endpointGUID,
+                                                            assetGUID,
+                                                            openMetadataTypeName);
+
+        archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
+
+        String openMetadataTypeGUID = openMetadataTypeGUIDs.get(openMetadataTypeName);
+
+        archiveHelper.addCatalogTemplateRelationship(openMetadataTypeGUID, assetGUID);
+
+        archiveHelper.addReplacementAttributes(assetGUID,
+                                               openMetadataTypeName,
+                                               replacementAttributeTypes);
+
+        archiveHelper.addPlaceholderProperties(assetGUID,
+                                               openMetadataTypeName,
+                                               FilesPlaceholderProperty.getDataFilesPlaceholderPropertyTypes());
+    }
+
+
+    /**
+     * Create a template for a file directory and link it to the associated open metadata type.
+     * The template consists of a DataFile asset plus an optional connection, linked
+     * to the supplied connector type and an endpoint,
+     *
+     * @param openMetadataTypeName typeName for the template
+     * @param connectorTypeGUID connector type to link to the connection
+     * @param configurationProperties configuration properties
+     * @param replacementAttributeTypes list of reference values
+     */
+    private   void createFolderCatalogTemplate(String                         openMetadataTypeName,
+                                               String                         connectorTypeGUID,
+                                               Map<String, Object>            configurationProperties,
+                                               List<ReplacementAttributeType> replacementAttributeTypes)
+    {
+        final String methodName    = "createFolderCatalogTemplate";
+
+        final String deployedImplementationType = FilesPlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholder();
+        final String pathName                   = FilesPlaceholderProperty.PATH_NAME.getPlaceholder();
+        final String folderName                 = FilesPlaceholderProperty.FOLDER_NAME.getPlaceholder();
+
+        String               qualifiedName = openMetadataTypeName + ":" + pathName;
+        String               versionIdentifier = "V1.0";
+        Map<String, Object>  extendedProperties = new HashMap<>();
+        List<Classification> classifications = new ArrayList<>();
+
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType);
+
+        classifications.add(archiveHelper.getTemplateClassification(openMetadataTypeName + " template",
+                                                                    "Create an asset of type " + openMetadataTypeName + " with an associated Connection.",
+                                                                    "V1.0",
+                                                                    null, methodName));
+
+        String assetGUID = archiveHelper.addAsset(openMetadataTypeName,
+                                                  qualifiedName,
+                                                  folderName,
+                                                  versionIdentifier,
+                                                  null,
+                                                  null,
+                                                  extendedProperties,
+                                                  classifications);
+
+        if (connectorTypeGUID != null)
+        {
+            String endpointGUID = archiveHelper.addEndpoint(assetGUID,
+                                                            openMetadataTypeName,
+                                                            qualifiedName + ":Endpoint",
+                                                            pathName + " endpoint",
+                                                            null,
+                                                            pathName,
+                                                            null,
+                                                            null);
+
+            String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
+                                                                pathName + " connection",
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                configurationProperties,
+                                                                null,
+                                                                connectorTypeGUID,
+                                                                endpointGUID,
+                                                                assetGUID,
+                                                                openMetadataTypeName);
+
+            archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
+        }
+
+        String openMetadataTypeGUID = openMetadataTypeGUIDs.get(openMetadataTypeName);
+
+        archiveHelper.addCatalogTemplateRelationship(openMetadataTypeGUID, assetGUID);
+
+        archiveHelper.addReplacementAttributes(assetGUID,
+                                               openMetadataTypeName,
+                                               replacementAttributeTypes);
+
+        archiveHelper.addPlaceholderProperties(assetGUID,
+                                               openMetadataTypeName,
+                                               FilesPlaceholderProperty.getFolderPlaceholderPropertyTypes());
+    }
+
+
+    /**
+     * Create a template for a file directory and link it to the associated open metadata type.
+     * The template consists of a DataFile asset plus an optional connection, linked
+     * to the supplied connector type and an endpoint,
+     *
+     * @param openMetadataTypeName typeName for the template
+     * @param connectorTypeGUID connector type to link to the connection
+     * @param configurationProperties configuration properties
+     * @param replacementAttributeTypes list of reference values
+     */
+    private   void createDataSetCatalogTemplate(String                         openMetadataTypeName,
+                                                String                         connectorTypeGUID,
+                                                Map<String, Object>            configurationProperties,
+                                                List<ReplacementAttributeType> replacementAttributeTypes)
+    {
+        final String methodName    = "createDataSetCatalogTemplate";
+
+        String               qualifiedName = openMetadataTypeName + ":" + FilesPlaceholderProperty.DATA_SET_NAME.getPlaceholder();
+        String               versionIdentifier = "V1.0";
+        Map<String, Object>  extendedProperties = new HashMap<>();
+        List<Classification> classifications = new ArrayList<>();
+
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, FilesPlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.FORMULA.name, FilesPlaceholderProperty.FORMULA.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.FORMULA_TYPE.name, FilesPlaceholderProperty.FORMULA_TYPE.getPlaceholder());
+
+        classifications.add(archiveHelper.getTemplateClassification(openMetadataTypeName + " template",
+                                                                    "Create an asset of type " + openMetadataTypeName + " with an associated Connection.",
+                                                                    "V1.0",
+                                                                    null, methodName));
+
+        String assetGUID = archiveHelper.addAsset(openMetadataTypeName,
+                                                  qualifiedName,
+                                                  FilesPlaceholderProperty.DATA_SET_NAME.getPlaceholder(),
+                                                  versionIdentifier,
+                                                  null,
+                                                  null,
+                                                  extendedProperties,
+                                                  classifications);
+
+        if (connectorTypeGUID != null)
+        {
+            String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
+                                                                FilesPlaceholderProperty.DATA_SET_NAME.getPlaceholder() + " connection",
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                configurationProperties,
+                                                                null,
+                                                                connectorTypeGUID,
+                                                                null,
+                                                                assetGUID,
+                                                                openMetadataTypeName);
+
+            archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
+        }
+
+        String openMetadataTypeGUID = openMetadataTypeGUIDs.get(openMetadataTypeName);
+
+        archiveHelper.addCatalogTemplateRelationship(openMetadataTypeGUID, assetGUID);
+
+        archiveHelper.addReplacementAttributes(assetGUID,
+                                               openMetadataTypeName,
+                                               replacementAttributeTypes);
+
+        archiveHelper.addPlaceholderProperties(assetGUID,
+                                               openMetadataTypeName,
+                                               FilesPlaceholderProperty.getDataSetPlaceholderPropertyTypes());
+    }
+
+
+    /**
+     * Create a template for a software file and link it to the associated open metadata type.
+     * The template consists of a DataFile asset plus an optional connection, linked
+     * to the supplied connector type and an endpoint,
+     *
+     * @param openMetadataTypeName typeName for the template
+     * @param connectorTypeGUID connector type to link to the connection
+     * @param configurationProperties configuration properties
+     * @param replacementAttributeTypes list of reference values
+     */
+    private   void createSoftwareFileCatalogTemplate(String                         openMetadataTypeName,
+                                                     String                         connectorTypeGUID,
+                                                     Map<String, Object>            configurationProperties,
+                                                     List<ReplacementAttributeType> replacementAttributeTypes)
+    {
+        final String methodName    = "createSoftwareFileCatalogTemplate";
+
+        String               qualifiedName = openMetadataTypeName + ":" + FilesPlaceholderProperty.PATH_NAME.getPlaceholder();
+        String               versionIdentifier = "V1.0";
+        Map<String, Object>  extendedProperties = new HashMap<>();
+        List<Classification> classifications = new ArrayList<>();
+
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, FilesPlaceholderProperty.DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, FilesPlaceholderProperty.PATH_NAME.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, FilesPlaceholderProperty.FILE_TYPE.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, FilesPlaceholderProperty.FILE_EXTENSION.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.FILE_NAME.name, FilesPlaceholderProperty.FILE_NAME.getPlaceholder());
+
+        classifications.add(archiveHelper.getTemplateClassification(openMetadataTypeName + " template",
+                                                                    "Create an asset of type " + openMetadataTypeName + " with an associated Connection.",
+                                                                    "V1.0",
+                                                                    null, methodName));
+
+        classifications.add(archiveHelper.getDataStoreEncodingClassification(FilesPlaceholderProperty.FILE_ENCODING.getPlaceholder(),
+                                                                             FilesPlaceholderProperty.PROGRAMMING_LANGUAGE.getPlaceholder(),
+                                                                             null,
+                                                                             null));
+
+        String assetGUID = archiveHelper.addAsset(openMetadataTypeName,
+                                                  qualifiedName,
+                                                  FilesPlaceholderProperty.FILE_NAME.getPlaceholder(),
+                                                  versionIdentifier,
+                                                  FilesPlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                  null,
+                                                  extendedProperties,
+                                                  classifications);
+
+        if (connectorTypeGUID != null)
+        {
+            String endpointGUID = archiveHelper.addEndpoint(assetGUID,
+                                                            openMetadataTypeName,
+                                                            qualifiedName + ":Endpoint",
+                                                            FilesPlaceholderProperty.PATH_NAME.getPlaceholder() + " endpoint",
+                                                            null,
+                                                            FilesPlaceholderProperty.PATH_NAME.getPlaceholder(),
+                                                            null,
+                                                            null);
+
+            String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
+                                                                FilesPlaceholderProperty.PATH_NAME.getPlaceholder() + " connection",
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                configurationProperties,
+                                                                null,
+                                                                connectorTypeGUID,
+                                                                endpointGUID,
+                                                                assetGUID,
+                                                                openMetadataTypeName);
+
+            archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
+        }
+
+        String openMetadataTypeGUID = openMetadataTypeGUIDs.get(openMetadataTypeName);
+
+        archiveHelper.addCatalogTemplateRelationship(openMetadataTypeGUID, assetGUID);
+
+        archiveHelper.addReplacementAttributes(assetGUID,
+                                               openMetadataTypeName,
+                                               replacementAttributeTypes);
+
+        archiveHelper.addPlaceholderProperties(assetGUID,
+                                               openMetadataTypeName,
+                                               FilesPlaceholderProperty.getSoftwareFilesPlaceholderPropertyTypes());
+    }
+
+
+    /**
+     * Create a template for a software server and link it to the associated deployed implementation type.
      * The template consists of a SoftwareServer asset linked to a software capability, plus a connection, linked
      * to the supplied connector type and an endpoint,
      *
@@ -1161,94 +1528,6 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
                                                placeholderPropertyTypes);
-    }
-
-
-    /**
-     * Create a template got a software server and link it to the associated deployed implementation type.
-     * The template consists of a SoftwareServer asset linked to a software capability, plus a connection, linked
-     * to the supplied connector type and an endpoint,
-     *
-     * @param deployedImplementationType deployed implementation type for the technology
-     * @param connectorTypeGUID connector type to link to the connection
-     */
-    private   void createFileCatalogTemplate(DeployedImplementationType     deployedImplementationType,
-                                             String                         connectorTypeGUID,
-                                             Map<String, Object>            configurationProperties,
-                                             List<ReplacementAttributeType> replacementAttributeTypes)
-    {
-        final String methodName    = "createFileCatalogTemplate";
-
-        final String pathName      = "{{pathName}}";
-        final String fileName      = "{{fileName}}";
-        final String fileType      = "{{fileType}}";
-        final String fileExtension = "{{fileExtension}}";
-        final String fileEncoding  = "{{fileEncoding}}";
-
-        String               qualifiedName = deployedImplementationType.getDeployedImplementationType() + ":" + pathName;
-        String               versionIdentifier = "V1.0";
-        String               description = deployedImplementationType.getDescription();
-        Map<String, Object>  extendedProperties = new HashMap<>();
-        List<Classification> classifications = new ArrayList<>();
-
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
-        extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, pathName);
-        extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, fileType);
-        extendedProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, fileExtension);
-        extendedProperties.put(OpenMetadataProperty.FILE_NAME.name, fileName);
-
-        // todo set up DataStoreEncoding classification
-
-        classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
-                                                                    "Create a " + deployedImplementationType.getAssociatedTypeName() + " asset with an associated Connection.",
-                                                                    "V1.0",
-                                                                    null, methodName));
-
-        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
-                                                  qualifiedName,
-                                                  fileName,
-                                                  versionIdentifier,
-                                                  description,
-                                                  null,
-                                                  extendedProperties,
-                                                  classifications);
-
-        String endpointGUID = archiveHelper.addEndpoint(assetGUID,
-                                                        deployedImplementationType.getAssociatedTypeName(),
-                                                        qualifiedName + ":Endpoint",
-                                                        pathName + " endpoint",
-                                                        null,
-                                                        pathName,
-                                                        null,
-                                                        null);
-
-        String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
-                                                            pathName + " connection",
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            configurationProperties,
-                                                            null,
-                                                            connectorTypeGUID,
-                                                            endpointGUID,
-                                                            assetGUID,
-                                                            deployedImplementationType.getAssociatedTypeName());
-
-        archiveHelper.addConnectionForAsset(assetGUID, null, connectionGUID);
-
-        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
-
-        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
-
-        archiveHelper.addReplacementAttributes(assetGUID,
-                                               deployedImplementationType.getAssociatedTypeName(),
-                                               replacementAttributeTypes);
-
-        archiveHelper.addPlaceholderProperties(assetGUID,
-                                               deployedImplementationType.getAssociatedTypeName(),
-                                               FilesPlaceholderProperty.getFilesPlaceholderPropertyTypes());
     }
 
 
@@ -1610,7 +1889,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
             this.archiveHelper.addExternalReferenceLink(validValueGUID, externalReferenceGUID, null, null, null);
         }
 
-        return null;
+        return validValueGUID;
     }
 
 
