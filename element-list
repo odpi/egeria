@@ -454,6 +454,7 @@ org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship
 org.odpi.openmetadata.adapters.connectors.governanceactions.verification
 org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles
+org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exception
 org.odpi.openmetadata.adapters.connectors.integration.csvlineageimporter
@@ -949,6 +950,7 @@ org.odpi.openmetadata.utilities.serverconfig
 org.odpi.openmetadata.utilities.serverops
 org.odpi.openmetadata.viewservices.assetcatalog.admin
 org.odpi.openmetadata.viewservices.assetcatalog.beans
+org.odpi.openmetadata.viewservices.assetcatalog.converters
 org.odpi.openmetadata.viewservices.assetcatalog.ffdc
 org.odpi.openmetadata.viewservices.assetcatalog.rest
 org.odpi.openmetadata.viewservices.assetcatalog.server
