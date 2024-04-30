@@ -106,6 +106,22 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code><a href="#DATA_SET_NAME" class="member-name-link">DATA_SET_NAME</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The display name of the data set.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#DEPLOYED_IMPLEMENTATION_TYPE" class="member-name-link">DEPLOYED_IMPLEMENTATION_TYPE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The deployed implementation type for the file.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#DESCRIPTION" class="member-name-link">DESCRIPTION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The description of the resource to help a consumer understand its content and purpose.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#EMBEDDED_METADATA" class="member-name-link">EMBEDDED_METADATA</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Descriptive metadata values embedded within the file.</div>
+</div>
 <div class="col-first even-row-color"><code><a href="#FILE_ENCODING" class="member-name-link">FILE_ENCODING</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">The encoding scheme used on the file.</div>
@@ -122,9 +138,25 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">The logical file type of the file.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PATH_NAME" class="member-name-link">PATH_NAME</a></code></div>
+<div class="col-first even-row-color"><code><a href="#FOLDER_NAME" class="member-name-link">FOLDER_NAME</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">The name of the leaf directory, without its enclosing directories.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#FORMULA" class="member-name-link">FORMULA</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The formula used to populate the data set.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#FORMULA_TYPE" class="member-name-link">FORMULA_TYPE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The language/format used in the data set's formula.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#PATH_NAME" class="member-name-link">PATH_NAME</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The full pathname of the file including the directory names, file name and file extension.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#PROGRAMMING_LANGUAGE" class="member-name-link">PROGRAMMING_LANGUAGE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The programming language used to encode the file.</div>
 </div>
 </div>
 </section>
@@ -164,6 +196,16 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getDataFilesPlaceholderPropertyTypes()" class="member-name-link">getDataFilesPlaceholderPropertyTypes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieve all the defined placeholder properties for data files</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getDataSetPlaceholderPropertyTypes()" class="member-name-link">getDataSetPlaceholderPropertyTypes</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieve all the defined placeholder properties for directories (file folder)</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataType()" class="member-name-link">getDataType</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -180,24 +222,34 @@ loadScripts(document, 'script');</script>
 <div class="block">Return an example of the placeholder property to help users understand how to set it up.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getFilesPlaceholderPropertyTypes()" class="member-name-link">getFilesPlaceholderPropertyTypes</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getFolderPlaceholderPropertyTypes()" class="member-name-link">getFolderPlaceholderPropertyTypes</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Retrieve all the defined placeholder properties</div>
+<div class="block">Retrieve all the defined placeholder properties for directories (file folder)</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the name of the placeholder property.</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getMediaFilesPlaceholderPropertyTypes()" class="member-name-link">getMediaFilesPlaceholderPropertyTypes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieve all the defined placeholder properties for data files</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlaceholder()" class="member-name-link">getPlaceholder</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the name of the placeholder property.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlaceholder()" class="member-name-link">getPlaceholder</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the placeholder to use when building templates.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlaceholderType()" class="member-name-link">getPlaceholderType</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPlaceholderType()" class="member-name-link">getPlaceholderType</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a summary of this enum to use in a service provider.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getSoftwareFilesPlaceholderPropertyTypes()" class="member-name-link">getSoftwareFilesPlaceholderPropertyTypes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieve all the defined placeholder properties for files associated with software</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -236,6 +288,34 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="FOLDER_NAME">
+<h3>FOLDER_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="FilesPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls">FilesPlaceholderProperty</a></span>&nbsp;<span class="element-name">FOLDER_NAME</span></div>
+<div class="block">The name of the leaf directory, without its enclosing directories.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DATA_SET_NAME">
+<h3>DATA_SET_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="FilesPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls">FilesPlaceholderProperty</a></span>&nbsp;<span class="element-name">DATA_SET_NAME</span></div>
+<div class="block">The display name of the data set.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="FORMULA">
+<h3>FORMULA</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="FilesPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls">FilesPlaceholderProperty</a></span>&nbsp;<span class="element-name">FORMULA</span></div>
+<div class="block">The formula used to populate the data set.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="FORMULA_TYPE">
+<h3>FORMULA_TYPE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="FilesPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls">FilesPlaceholderProperty</a></span>&nbsp;<span class="element-name">FORMULA_TYPE</span></div>
+<div class="block">The language/format used in the data set's formula.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="PATH_NAME">
 <h3>PATH_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="FilesPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls">FilesPlaceholderProperty</a></span>&nbsp;<span class="element-name">PATH_NAME</span></div>
@@ -268,6 +348,34 @@ the order they are declared.</div>
 <h3>FILE_ENCODING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="FilesPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls">FilesPlaceholderProperty</a></span>&nbsp;<span class="element-name">FILE_ENCODING</span></div>
 <div class="block">The encoding scheme used on the file.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DEPLOYED_IMPLEMENTATION_TYPE">
+<h3>DEPLOYED_IMPLEMENTATION_TYPE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="FilesPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls">FilesPlaceholderProperty</a></span>&nbsp;<span class="element-name">DEPLOYED_IMPLEMENTATION_TYPE</span></div>
+<div class="block">The deployed implementation type for the file.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="DESCRIPTION">
+<h3>DESCRIPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="FilesPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls">FilesPlaceholderProperty</a></span>&nbsp;<span class="element-name">DESCRIPTION</span></div>
+<div class="block">The description of the resource to help a consumer understand its content and purpose.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="PROGRAMMING_LANGUAGE">
+<h3>PROGRAMMING_LANGUAGE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="FilesPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls">FilesPlaceholderProperty</a></span>&nbsp;<span class="element-name">PROGRAMMING_LANGUAGE</span></div>
+<div class="block">The programming language used to encode the file.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="EMBEDDED_METADATA">
+<h3>EMBEDDED_METADATA</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="FilesPlaceholderProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.integration.basicfiles.controls">FilesPlaceholderProperty</a></span>&nbsp;<span class="element-name">EMBEDDED_METADATA</span></div>
+<div class="block">Descriptive metadata values embedded within the file.</div>
 </section>
 </li>
 </ul>
@@ -397,10 +505,54 @@ not permitted.)</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getFilesPlaceholderPropertyTypes()">
-<h3>getFilesPlaceholderPropertyTypes</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getFilesPlaceholderPropertyTypes</span>()</div>
-<div class="block">Retrieve all the defined placeholder properties</div>
+<section class="detail" id="getDataFilesPlaceholderPropertyTypes()">
+<h3>getDataFilesPlaceholderPropertyTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getDataFilesPlaceholderPropertyTypes</span>()</div>
+<div class="block">Retrieve all the defined placeholder properties for data files</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of placeholder property types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMediaFilesPlaceholderPropertyTypes()">
+<h3>getMediaFilesPlaceholderPropertyTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getMediaFilesPlaceholderPropertyTypes</span>()</div>
+<div class="block">Retrieve all the defined placeholder properties for data files</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of placeholder property types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getFolderPlaceholderPropertyTypes()">
+<h3>getFolderPlaceholderPropertyTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getFolderPlaceholderPropertyTypes</span>()</div>
+<div class="block">Retrieve all the defined placeholder properties for directories (file folder)</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of placeholder property types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getDataSetPlaceholderPropertyTypes()">
+<h3>getDataSetPlaceholderPropertyTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getDataSetPlaceholderPropertyTypes</span>()</div>
+<div class="block">Retrieve all the defined placeholder properties for directories (file folder)</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of placeholder property types</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSoftwareFilesPlaceholderPropertyTypes()">
+<h3>getSoftwareFilesPlaceholderPropertyTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../../frameworks/governanceaction/controls/PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.controls">PlaceholderPropertyType</a>&gt;</span>&nbsp;<span class="element-name">getSoftwareFilesPlaceholderPropertyTypes</span>()</div>
+<div class="block">Retrieve all the defined placeholder properties for files associated with software</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of placeholder property types</dd>
