@@ -1671,12 +1671,6 @@ public enum OpenMetadataType
     public static final String MEDIA_ID_PROPERTY_NAME          = "mediaId";              /* from MediaReference relationship */
 
 
-    /**
-     * membershipRationale
-     */
-    public static final String MEMBERSHIP_RATIONALE_PROPERTY_NAME = "membershipRationale";
-
-
 
     /**
      * 6403a704-aad6-41c2-8e08-b9525c006f85
@@ -3663,12 +3657,7 @@ public enum OpenMetadataType
     public static final String TERM_TYPED_BY_RELATIONSHIP_NAME = "TermTYPEDBYRelationship";
 
 
-    public static final String EXPRESSION_PROPERTY_NAME            = "expression";
     public static final String USER_DEFINED_STATUS_PROPERTY_NAME   = "userDefinedStatus";
-    public static final String CONFIDENCE_PROPERTY_NAME            = "confidence";
-    public static final String STEWARD_PROPERTY_NAME               = "steward";
-    public static final String STEWARD_TYPE_NAME_PROPERTY_NAME     = "stewardTypeName";
-    public static final String STEWARD_PROPERTY_NAME_PROPERTY_NAME = "stewardPropertyName";
     public static final String CREATED_BY_PROPERTY_NAME            = "createdBy";
 
 

@@ -122,11 +122,11 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @Override
-    public List<CollectionElement> getLinkedCollections(String userId,
-                                                        String parentGUID,
-                                                        String collectionType,
-                                                        int    startFrom,
-                                                        int    pageSize) throws InvalidParameterException,
+    public List<CollectionElement> getAttachedCollections(String userId,
+                                                          String parentGUID,
+                                                          String collectionType,
+                                                          int    startFrom,
+                                                          int    pageSize) throws InvalidParameterException,
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
@@ -1287,11 +1287,11 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
         if (collectionMembershipProperties != null)
         {
             ElementProperties elementProperties = propertyHelper.addStringProperty(null,
-                                                                                   OpenMetadataType.MEMBERSHIP_RATIONALE_PROPERTY_NAME,
+                                                                                   OpenMetadataProperty.MEMBERSHIP_RATIONALE.name,
                                                                                    collectionMembershipProperties.getMembershipRationale());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.EXPRESSION_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.EXPRESSION.name,
                                                                  collectionMembershipProperties.getExpression());
 
             if (collectionMembershipProperties.getStatus() != null)
@@ -1307,7 +1307,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                  collectionMembershipProperties.getUserDefinedStatus());
 
             elementProperties = propertyHelper.addIntProperty(elementProperties,
-                                                              OpenMetadataType.CONFIDENCE_PROPERTY_NAME,
+                                                              OpenMetadataProperty.CONFIDENCE.name,
                                                               collectionMembershipProperties.getConfidence());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
@@ -1319,11 +1319,11 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                  collectionMembershipProperties.getSteward());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.STEWARD_TYPE_NAME.name,
                                                                  collectionMembershipProperties.getStewardTypeName());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.STEWARD_PROPERTY_NAME.name,
                                                                  collectionMembershipProperties.getStewardPropertyName());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
@@ -1331,7 +1331,7 @@ public class CollectionsClient extends DigitalServiceBaseClient implements Colle
                                                                  collectionMembershipProperties.getSource());
 
             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                 OpenMetadataType.NOTES_PROPERTY_NAME,
+                                                                 OpenMetadataProperty.NOTES.name,
                                                                  collectionMembershipProperties.getNotes());
 
             return elementProperties;

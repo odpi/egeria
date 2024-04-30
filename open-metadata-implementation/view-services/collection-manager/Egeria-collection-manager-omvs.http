@@ -26,8 +26,8 @@ Content-Type: application/json
 @parentGUID=32bd6761-959b-4d9c-98e9-ce919717b8bd
 
 ###
-# @name getLinkedCollections
-# Returns the list of collections that are linked off of the supplied element.
+# @name getAttachedCollections
+# Returns the list of collections that are linked off of the supplied element using the ResourceList relationship.
 
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/metadata-elements/{{parentGUID}}/collections?startFrom=0&pageSize=0
 Authorization: Bearer {{token}}

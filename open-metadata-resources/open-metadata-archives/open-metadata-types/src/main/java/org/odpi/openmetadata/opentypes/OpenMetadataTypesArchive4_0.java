@@ -301,9 +301,9 @@ public class OpenMetadataTypesArchive4_0
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Short description of the update.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -361,7 +361,7 @@ public class OpenMetadataTypesArchive4_0
         /*
          * Create the Patch
          */
-        final String typeName = "CollectionMembership";
+        final String typeName = OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -374,24 +374,24 @@ public class OpenMetadataTypesArchive4_0
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "membershipRationale";
-        final String attribute1Description     = "Description of how the member is used, or why it is useful in this collection.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "expression";
-        final String attribute2Description     = "Expression describing the membership relationship.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "status";
-        final String attribute3Description     = "The status of the membership relationship.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "confidence";
-        final String attribute4Description     = "Level of confidence in the correctness of the membership relationship.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "steward";
-        final String attribute5Description     = "Person responsible for the membership relationship.";
-        final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "source";
-        final String attribute6Description     = "Person, organization or automated process that created the membership relationship.";
-        final String attribute6DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.MEMBERSHIP_RATIONALE.name;
+        final String attribute1Description     = OpenMetadataProperty.MEMBERSHIP_RATIONALE.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.MEMBERSHIP_RATIONALE.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.EXPRESSION.name;
+        final String attribute2Description     = OpenMetadataProperty.EXPRESSION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.EXPRESSION.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.MEMBERSHIP_STATUS.name;
+        final String attribute3Description     = OpenMetadataProperty.MEMBERSHIP_STATUS.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.MEMBERSHIP_STATUS.descriptionGUID;
+        final String attribute4Name            = OpenMetadataProperty.CONFIDENCE.name;
+        final String attribute4Description     = OpenMetadataProperty.CONFIDENCE.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.CONFIDENCE.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute5Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute6Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute6Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute6DescriptionGUID = OpenMetadataProperty.SOURCE.description;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -401,7 +401,7 @@ public class OpenMetadataTypesArchive4_0
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("MembershipStatus",
+        property = archiveHelper.getEnumTypeDefAttribute(CollectionMemberStatus.getOpenTypeName(),
                                                          attribute3Name,
                                                          attribute3Description,
                                                          attribute3DescriptionGUID);
@@ -1462,9 +1462,9 @@ public class OpenMetadataTypesArchive4_0
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description of the relationship.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,

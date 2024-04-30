@@ -56,13 +56,13 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public CollectionListResponse getLinkedCollections(String            serverName,
-                                                       String            parentGUID,
-                                                       int               startFrom,
-                                                       int               pageSize,
-                                                       FilterRequestBody requestBody)
+    public CollectionListResponse getAttachedCollections(String            serverName,
+                                                         String            parentGUID,
+                                                         int               startFrom,
+                                                         int               pageSize,
+                                                         FilterRequestBody requestBody)
     {
-        final String methodName = "getLinkedCollections";
+        final String methodName = "getAttachedCollections";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -81,11 +81,11 @@ public class CollectionManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.getLinkedCollections(userId, parentGUID, requestBody.getFilter(), startFrom, pageSize));
+                response.setElements(handler.getAttachedCollections(userId, parentGUID, requestBody.getFilter(), startFrom, pageSize));
             }
             else
             {
-                response.setElements(handler.getLinkedCollections(userId, parentGUID, null, startFrom, pageSize));
+                response.setElements(handler.getAttachedCollections(userId, parentGUID, null, startFrom, pageSize));
             }
         }
         catch (Exception error)

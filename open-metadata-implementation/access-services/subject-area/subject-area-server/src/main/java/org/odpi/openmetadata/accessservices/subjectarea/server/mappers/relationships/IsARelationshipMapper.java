@@ -37,10 +37,10 @@ public class IsARelationshipMapper extends RelationshipMapper<IsA> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, iSARelationship.getDescription(), OpenMetadataProperty.DESCRIPTION.name);
         }
         if (iSARelationship.getExpression() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, iSARelationship.getExpression(), OpenMetadataType.EXPRESSION_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, iSARelationship.getExpression(), OpenMetadataProperty.EXPRESSION.name);
         }
         if (iSARelationship.getSteward() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, iSARelationship.getSteward(), OpenMetadataType.STEWARD_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, iSARelationship.getSteward(), OpenMetadataProperty.STEWARD.name);
         }
         if (iSARelationship.getSource() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, iSARelationship.getSource(), OpenMetadataProperty.SOURCE.name);
@@ -66,11 +66,11 @@ public class IsARelationshipMapper extends RelationshipMapper<IsA> {
             iSARelationship.setDescription(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataType.EXPRESSION_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.EXPRESSION.name)) {
             iSARelationship.setExpression(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataType.STEWARD_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.STEWARD.name)) {
             iSARelationship.setSteward(stringValue);
             foundProperty = true;
         }

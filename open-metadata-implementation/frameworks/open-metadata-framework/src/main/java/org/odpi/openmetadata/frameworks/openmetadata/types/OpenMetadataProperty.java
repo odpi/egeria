@@ -369,7 +369,22 @@ public enum OpenMetadataProperty
     /**
      * User identifier for the steward performing the review.
      */
-    STEWARD("Steward", "string", "User identifier for the steward performing the review.", null, "6777fa1e-3289-4896-a032-1097b4ad78b2"),
+    STEWARD("steward", "string", "Unique identifier for the steward performing the action.", null, "6777fa1e-3289-4896-a032-1097b4ad78b2"),
+
+    /**
+     * Type name of the Actor entity identifying the steward.
+     */
+    STEWARD_TYPE_NAME("stewardTypeName", "string", "Type name of the Actor entity identifying the steward.", "Person", "b4c4637d-b196-4268-86a2-c6daf444dd7d"),
+
+    /**
+     * Property name for the steward's unique identifier (typically guid or qualifiedName).
+     */
+    STEWARD_PROPERTY_NAME("stewardPropertyName", "string", "Property name for the steward's unique identifier (typically guid or qualifiedName).", "guid", "b9e55ebe-43fb-4eb0-8485-6ef22e07f0a8"),
+
+    /**
+     * Notes on why decision were made relating to this element, and other useful information.
+     */
+    NOTES("notes", "string", "Notes on why decision were made relating to this element, and other useful information.", null, "577281c3-82f8-4c1d-ad95-04ef5919e57c"),
 
     /**
      * Notes provided by the steward.
@@ -808,14 +823,19 @@ public enum OpenMetadataProperty
     KEY_PATTERN("keyPattern", "KeyPattern", "Type of identifier that identifies its lifecycle, for example, its scope and whether the value is reused.", null, "a8805753-865d-4860-ab95-1e83c3eaf01d"),
 
     /**
-     * Description of how the element can be used.
+     * Guidance on how the element should be used.
      */
-    USAGE("usage"   , "string", "Description of how the element can be used.", null, "e92f8669-5a07-4130-9ad6-62aadca7a505"),
+    USAGE("usage"   , "string", "Guidance on how the element should be used.", null, "e92f8669-5a07-4130-9ad6-62aadca7a505"),
 
     /**
      * Details of where the element was sourced from.
      */
-    SOURCE("source"   , "string", "Details of where the element was sourced from.", null, "9c40c4e3-1d6d-45fd-8df0-f1a2e09db636"),
+    SOURCE("source"   , "string", "Details of the organization, person or process that created the element, or provided the information used to create the element.", null, "9c40c4e3-1d6d-45fd-8df0-f1a2e09db636"),
+
+    /**
+     * Level of confidence in the correctness of the element.
+     */
+    CONFIDENCE("confidence"   , "int", "Level of confidence in the correctness of the element. 0=unknown; 1=low confidence; 100=total confidence.", "100", "26dd007a-cff3-45e7-963d-2a753c2b7000"),
 
     /**
      * The integration connector needs to use blocking calls to a third party technology and so needs to run in its own thread.
@@ -906,6 +926,11 @@ public enum OpenMetadataProperty
      * Defines the provenance and confidence that a member belongs in a collection.
      */
     MEMBERSHIP_STATUS("membershipStatus", CollectionMemberStatus.getOpenTypeName(), CollectionMemberStatus.getOpenTypeDescription(), CollectionMemberStatus.PROPOSED.getName(), "e304a92d-60d2-4605-8e3f-d338bd33e6d3"),
+
+    /**
+     * Description of how the member is used, or why it is useful in this collection.
+     */
+    MEMBERSHIP_RATIONALE("membershipRationale", "string", "Description of how the member is used, or why it is useful in this collection.", null, "f4c0da71-f8e8-4d05-a92c-5a1e6b4a263e"),
 
     /**
      * Defines the sequencing for a collection.

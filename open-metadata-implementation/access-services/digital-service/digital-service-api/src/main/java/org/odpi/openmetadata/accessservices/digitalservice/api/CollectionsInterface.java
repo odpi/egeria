@@ -37,13 +37,13 @@ public interface CollectionsInterface
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<CollectionElement> getLinkedCollections(String userId,
-                                                 String parentGUID,
-                                                 String collectionType,
-                                                 int    startFrom,
-                                                 int    pageSize) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException;
+    List<CollectionElement> getAttachedCollections(String userId,
+                                                   String parentGUID,
+                                                   String collectionType,
+                                                   int    startFrom,
+                                                   int    pageSize) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException;
 
 
     /**

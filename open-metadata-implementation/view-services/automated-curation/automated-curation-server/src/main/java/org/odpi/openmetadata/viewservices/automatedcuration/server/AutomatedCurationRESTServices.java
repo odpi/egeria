@@ -681,6 +681,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the integration connector definition.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse removeCatalogTarget(String          serverName,
                                             String          integrationConnectorGUID,
                                             String          metadataElementGUID,
@@ -701,16 +702,9 @@ public class AutomatedCurationRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            if (requestBody != null)
-            {
-                OpenIntegrationServiceClient handler = instanceHandler.getOpenIntegrationServiceClient(userId, serverName, methodName);
+            OpenIntegrationServiceClient handler = instanceHandler.getOpenIntegrationServiceClient(userId, serverName, methodName);
 
-                handler.removeCatalogTarget(userId, integrationConnectorGUID, metadataElementGUID);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
+            handler.removeCatalogTarget(userId, integrationConnectorGUID, metadataElementGUID);
         }
         catch (Exception error)
         {

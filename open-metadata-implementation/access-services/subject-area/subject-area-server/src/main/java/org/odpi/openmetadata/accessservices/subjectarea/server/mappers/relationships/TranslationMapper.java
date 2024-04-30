@@ -34,10 +34,10 @@ public class TranslationMapper extends RelationshipMapper<Translation> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, translation.getDescription(), OpenMetadataProperty.DESCRIPTION.name);
         }
         if (translation.getExpression() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, translation.getExpression(), OpenMetadataType.EXPRESSION_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, translation.getExpression(), OpenMetadataProperty.EXPRESSION.name);
         }
         if (translation.getSteward() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, translation.getSteward(), OpenMetadataType.STEWARD_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, translation.getSteward(), OpenMetadataProperty.STEWARD.name);
         }
         if (translation.getSource() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, translation.getSource(), OpenMetadataProperty.SOURCE.name);
@@ -63,11 +63,11 @@ public class TranslationMapper extends RelationshipMapper<Translation> {
             translation.setDescription(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataType.EXPRESSION_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.EXPRESSION.name)) {
             translation.setExpression(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataType.STEWARD_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.STEWARD.name)) {
             translation.setSteward(stringValue);
             foundProperty = true;
         }

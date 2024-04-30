@@ -39,13 +39,13 @@ public class SemanticAssignmentMapper extends RelationshipMapper<SemanticAssignm
             SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getDescription(), OpenMetadataProperty.DESCRIPTION.name);
         }
         if (semanticAssignment.getExpression() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getExpression(), OpenMetadataType.EXPRESSION_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getExpression(), OpenMetadataProperty.EXPRESSION.name);
         }
         if (semanticAssignment.getConfidence() != null) {
-            SubjectAreaUtils.setIntegerPropertyInInstanceProperties(properties, semanticAssignment.getConfidence(), OpenMetadataType.CONFIDENCE_PROPERTY_NAME);
+            SubjectAreaUtils.setIntegerPropertyInInstanceProperties(properties, semanticAssignment.getConfidence(), OpenMetadataProperty.CONFIDENCE.name);
         }
         if (semanticAssignment.getSteward() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getSteward(), OpenMetadataType.STEWARD_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getSteward(), OpenMetadataProperty.STEWARD.name);
         }
         if (semanticAssignment.getSource() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getSource(), OpenMetadataProperty.SOURCE.name);
@@ -76,15 +76,15 @@ public class SemanticAssignmentMapper extends RelationshipMapper<SemanticAssignm
             semanticAssignment.setDescription(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataType.EXPRESSION_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.EXPRESSION.name)) {
             semanticAssignment.setExpression(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataType.CONFIDENCE_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.CONFIDENCE.name)) {
             semanticAssignment.setConfidence((Integer) value);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataType.STEWARD_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.STEWARD.name)) {
             semanticAssignment.setSteward(stringValue);
             foundProperty = true;
         }

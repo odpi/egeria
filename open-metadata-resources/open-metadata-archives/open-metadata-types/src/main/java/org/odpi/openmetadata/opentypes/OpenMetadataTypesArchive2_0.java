@@ -277,9 +277,9 @@ public class OpenMetadataTypesArchive2_0
         final String attribute1Name            = "scopeDescription";
         final String attribute1Description     = "Deprecated attribute. Use the description attribute to describe the scope.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of how each item is related to the project.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
                                                          attribute1Description,

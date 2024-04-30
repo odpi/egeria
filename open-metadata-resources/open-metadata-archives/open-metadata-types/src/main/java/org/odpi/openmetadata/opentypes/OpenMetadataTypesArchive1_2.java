@@ -787,18 +787,18 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "displayName";
-        final String attribute1Description     = "Consumable name for reports and user interfaces.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
         final String attribute2Name            = "url";
         final String attribute2Description     = "Location of the external reference.";
         final String attribute2DescriptionGUID = null;
         final String attribute3Name            = "version";
         final String attribute3Description     = "Version number of the external reference.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "description";
-        final String attribute4Description     = "Description of the external reference.";
-        final String attribute4DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute4Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute5Name            = "organization";
         final String attribute5Description     = "Organization supplying the reference.";
         final String attribute5DescriptionGUID = null;
@@ -934,9 +934,9 @@ public class OpenMetadataTypesArchive1_2
         final String attribute1Name            = "referenceId";
         final String attribute1Description     = "Local identifier for the reference.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the relevance of this reference to the linked item.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -1013,9 +1013,9 @@ public class OpenMetadataTypesArchive1_2
         final String attribute1Name            = "mediaId";
         final String attribute1Description     = "Local identifier for the media.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the relevance of this media to the linked item.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -1403,9 +1403,9 @@ public class OpenMetadataTypesArchive1_2
         final String attribute1Name            = "version";
         final String attribute1Description     = "Version of the property facet schema.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the property facet contents.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = "properties";
         final String attribute3Description     = "Properties for the property facet.";
         final String attribute3DescriptionGUID = null;
@@ -1487,9 +1487,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "source";
-        final String attribute1Description     = "Source of this property facet.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute1Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -1545,12 +1545,12 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "displayName";
-        final String attribute1Description     = "Consumable name for reports and user interfaces.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the location.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -1828,9 +1828,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description of the security at this location.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute2Name            = "level";
         final String attribute2Description     = "Level of security at this location.";
         final String attribute2DescriptionGUID = null;
@@ -2392,9 +2392,9 @@ public class OpenMetadataTypesArchive1_2
         final String attribute2Name            = "version";
         final String attribute2Description     = "Version number of the software server platform.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "source";
-        final String attribute3Description     = "Supplier of the software server platform.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute3Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute3Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
         final String attribute4Name            = "userId";
         final String attribute4Description     = "Server platform's authentication name.";
         final String attribute4DescriptionGUID = null;
@@ -2557,9 +2557,9 @@ public class OpenMetadataTypesArchive1_2
         final String attribute2Name            = "version";
         final String attribute2Description     = "Version number of the software server.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "source";
-        final String attribute3Description     = "Supplier of the software server.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute3Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute3Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
         final String attribute4Name            = "userId";
         final String attribute4Description     = "Server's authentication name.";
         final String attribute4DescriptionGUID = null;
@@ -2608,12 +2608,12 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "name";
-        final String attribute1Description     = "Name of the endpoint.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the endpoint and its capabilities.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = "networkAddress";
         final String attribute3Description     = "Name used to connect to the endpoint.";
         final String attribute3DescriptionGUID = null;
@@ -3806,12 +3806,12 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "name";
-        final String attribute1Description     = "Name of the actor.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the actor.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -4133,13 +4133,13 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "name";
-        final String attribute1Description     = "Name of the role.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NAME.descriptionGUID;
 
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Brief description of the role.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         final String attribute3Name            = "scope";
         final String attribute3Description     = "Breadth of responsibility.";
@@ -4849,9 +4849,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "membershipRationale";
-        final String attribute1Description     = "Description of how the member is used, or why it is useful in this collection.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.MEMBERSHIP_RATIONALE.name;
+        final String attribute1Description     = OpenMetadataProperty.MEMBERSHIP_RATIONALE.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.MEMBERSHIP_RATIONALE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -5073,12 +5073,12 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "name";
-        final String attribute1Description     = "Name of the project.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the project.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = "startDate";
         final String attribute3Description     = "Start date of the project.";
         final String attribute3DescriptionGUID = null;
@@ -6047,12 +6047,12 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "name";
-        final String attribute1Description     = "Name of the community.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the community.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = "mission";
         final String attribute3Description     = "Purpose of the community.";
         final String attribute3DescriptionGUID = null;
@@ -7081,12 +7081,12 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "name";
-        final String attribute1Description     = "Name of the note log.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the note log.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = OpenMetadataProperty.IS_PUBLIC.name;
         final String attribute3Description     = "Is the note log visible to more than the note log authors?";
         final String attribute3DescriptionGUID = null;
@@ -7362,12 +7362,12 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "displayName";
-        final String attribute1Description     = "Consumable name for the connection, suitable for reports and user interfaces.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the connection.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = "securedProperties";
         final String attribute3Description     = "Private properties accessible only to the connector.";
         final String attribute3DescriptionGUID = null;
@@ -7440,12 +7440,12 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "displayName";
-        final String attribute1Description     = "Consumable name for the connector type, suitable for reports and user interfaces.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the connector type.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = "connectorProviderClassName";
         final String attribute3Description     = "Name of the Java class that implements this connector type's open connector framework (OCF) connector provider.";
         final String attribute3DescriptionGUID = null;
@@ -7691,9 +7691,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "displayName";
-        final String attribute1Description     = "Name for the embedded connection.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
         final String attribute2Name            = "arguments";
         final String attribute2Description     = "Additional arguments needed by the virtual connector when using each connection.";
         final String attribute2DescriptionGUID = null;
@@ -8778,9 +8778,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description of the relationship.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -9168,9 +9168,9 @@ public class OpenMetadataTypesArchive1_2
         final String attribute2Name            = "version";
         final String attribute2Description     = "Version of the database server software.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "source";
-        final String attribute3Description     = "Source of the database software.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute3Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute3Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -9294,9 +9294,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description of the scope of the open metadata repository cohort.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute2Name            = "topic";
         final String attribute2Description     = "Name of the topic used to exchange registration, type definitions and metadata instances between the members of the open metadata repository cohort.";
         final String attribute2DescriptionGUID = null;
@@ -10007,9 +10007,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "displayName";
-        final String attribute1Description     = "Display name of the port";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
 
         final String attribute2Name            = "portType";
         final String attribute2Description     = "Type of port";
@@ -10267,18 +10267,18 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "displayName";
-        final String attribute1Description     = "Consumable name for the glossary, suitable for reports and user interfaces.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the glossary.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = "language";
         final String attribute3Description     = "Natural language used in the glossary.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "usage";
-        final String attribute4Description     = "Guidance on the usage of this glossary content.";
-        final String attribute4DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.USAGE.name;
+        final String attribute4Description     = OpenMetadataProperty.USAGE.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.USAGE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -10495,12 +10495,12 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "displayName";
-        final String attribute1Description     = "Consumable name for the glossary category, suitable for reports and user interfaces.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the glossary category.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -10687,12 +10687,12 @@ public class OpenMetadataTypesArchive1_2
         final String attribute1Name            = "identifier";
         final String attribute1Description     = "Identifier of the corresponding element from the external glossary.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the corresponding element from the external glossary.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "steward";
-        final String attribute3Description     = "Person who established the link to the external glossary.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute3Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
         final String attribute4Name            = "lastVerified";
         final String attribute4Description     = "Date when this reference was last checked.";
         final String attribute4DescriptionGUID = null;
@@ -10743,9 +10743,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "name";
-        final String attribute1Description     = "Name of the subject area.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NAME.descriptionGUID;
 
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
@@ -11052,12 +11052,12 @@ public class OpenMetadataTypesArchive1_2
         final String attribute1Name            = "identifier";
         final String attribute1Description     = "Identifier of the corresponding element from the external glossary.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the corresponding element from the external glossary.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "steward";
-        final String attribute3Description     = "Person who established the link to the external glossary.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute3Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
         final String attribute4Name            = "lastVerified";
         final String attribute4Description     = "Date when this reference was last checked.";
         final String attribute4DescriptionGUID = null;
@@ -11284,21 +11284,21 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description of the relationship.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute2Name            = "expression";
         final String attribute2Description     = "An expression that explains the relationship.";
         final String attribute2DescriptionGUID = null;
         final String attribute3Name            = "status";
         final String attribute3Description     = "The status of or confidence in the relationship.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "steward";
-        final String attribute4Description     = "Person responsible for the relationship.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "source";
-        final String attribute5Description     = "Person, organization or automated process that created the relationship.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute4Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute5Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -11385,21 +11385,21 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description of the relationship.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute2Name            = "expression";
         final String attribute2Description     = "An expression that explains the relationship.";
         final String attribute2DescriptionGUID = null;
         final String attribute3Name            = "status";
         final String attribute3Description     = "The status of or confidence in the relationship.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "steward";
-        final String attribute4Description     = "Person responsible for the relationship.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "source";
-        final String attribute5Description     = "Person, organization or automated process that created the relationship.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute4Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute5Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -11486,21 +11486,21 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description of the relationship.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute2Name            = "expression";
         final String attribute2Description     = "An expression that explains the relationship.";
         final String attribute2DescriptionGUID = null;
         final String attribute3Name            = "status";
         final String attribute3Description     = "The status of or confidence in the relationship.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "steward";
-        final String attribute4Description     = "Person responsible for the relationship.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "source";
-        final String attribute5Description     = "Person, organization or automated process that created the relationship.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute4Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute5Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -11587,21 +11587,21 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description of the relationship.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute2Name            = "expression";
         final String attribute2Description     = "An expression that explains the relationship.";
         final String attribute2DescriptionGUID = null;
         final String attribute3Name            = "status";
         final String attribute3Description     = "The status of or confidence in the relationship.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "steward";
-        final String attribute4Description     = "Person responsible for the relationship.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "source";
-        final String attribute5Description     = "Person, organization or automated process that created the relationship.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute4Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute5Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -11688,21 +11688,21 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description of the relationship.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute2Name            = "expression";
         final String attribute2Description     = "An expression that explains the relationship.";
         final String attribute2DescriptionGUID = null;
         final String attribute3Name            = "status";
         final String attribute3Description     = "The status of or confidence in the relationship.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "steward";
-        final String attribute4Description     = "Person responsible for the relationship.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "source";
-        final String attribute5Description     = "Person, organization or automated process that created the relationship.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute4Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute5Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -11789,21 +11789,21 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description of the relationship.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute2Name            = "expression";
         final String attribute2Description     = "An expression that explains the relationship.";
         final String attribute2DescriptionGUID = null;
         final String attribute3Name            = "status";
         final String attribute3Description     = "The status of or confidence in the relationship.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "steward";
-        final String attribute4Description     = "Person responsible for the relationship.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "source";
-        final String attribute5Description     = "Person, organization or automated process that created the relationship.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute4Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute5Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -11890,21 +11890,21 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description of the relationship.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute2Name            = "expression";
         final String attribute2Description     = "An expression that explains the relationship.";
         final String attribute2DescriptionGUID = null;
         final String attribute3Name            = "status";
         final String attribute3Description     = "The status of or confidence in the relationship.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "steward";
-        final String attribute4Description     = "Person responsible for the relationship.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "source";
-        final String attribute5Description     = "Person, organization or automated process that created the relationship.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute4Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute5Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -11991,21 +11991,21 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description of the relationship.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute2Name            = "expression";
         final String attribute2Description     = "An expression that explains the relationship.";
         final String attribute2DescriptionGUID = null;
         final String attribute3Name            = "status";
         final String attribute3Description     = "The status of or confidence in the relationship.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "steward";
-        final String attribute4Description     = "Person responsible for the relationship.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "source";
-        final String attribute5Description     = "Person, organization or automated process that created the relationship.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute4Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute5Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -12101,21 +12101,21 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description of the relationship.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute2Name            = "expression";
         final String attribute2Description     = "An expression that explains the relationship.";
         final String attribute2DescriptionGUID = null;
         final String attribute3Name            = "status";
         final String attribute3Description     = "The status of or confidence in the relationship.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "steward";
-        final String attribute4Description     = "Person responsible for the relationship.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "source";
-        final String attribute5Description     = "Person, organization or automated process that created the relationship.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute4Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute5Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -12169,9 +12169,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description for how the context is used.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute2Name            = "scope";
         final String attribute2Description     = "Scope of influence of the context.";
         final String attribute2DescriptionGUID = null;
@@ -12298,9 +12298,9 @@ public class OpenMetadataTypesArchive1_2
         final String attribute3Name            = OpenMetadataProperty.TERM_ASSIGNMENT_STATUS.name;
         final String attribute3Description     = OpenMetadataProperty.TERM_ASSIGNMENT_STATUS.description;
         final String attribute3DescriptionGUID = OpenMetadataProperty.TERM_ASSIGNMENT_STATUS.descriptionGUID;
-        final String attribute4Name            = "confidence";
-        final String attribute4Description     = "Level of confidence in the correctness of the relationship.";
-        final String attribute4DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.CONFIDENCE.name;
+        final String attribute4Description     = OpenMetadataProperty.CONFIDENCE.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.CONFIDENCE.descriptionGUID;
         final String attribute5Name            = OpenMetadataProperty.STEWARD.name;
         final String attribute5Description     = OpenMetadataProperty.STEWARD.description;
         final String attribute5DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
@@ -12417,18 +12417,18 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description of the relationship.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = "status";
         final String attribute3Description     = "The status of or confidence in the relationship.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "steward";
-        final String attribute4Description     = "Person responsible for the relationship.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "source";
-        final String attribute5Description     = "Person, organization or automated process that created the relationship.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute4Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute5Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -12511,18 +12511,18 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description of the relationship.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = "status";
         final String attribute3Description     = "The status of or confidence in the relationship.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "steward";
-        final String attribute4Description     = "Person responsible for the relationship.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "source";
-        final String attribute5Description     = "Person, organization or automated process that created the relationship.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute4Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute5Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -12605,18 +12605,18 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description of the relationship.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = "status";
         final String attribute3Description     = "The status of or confidence in the relationship.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "steward";
-        final String attribute4Description     = "Person responsible for the relationship.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "source";
-        final String attribute5Description     = "Person, organization or automated process that created the relationship.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute4Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute5Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -12972,9 +12972,9 @@ public class OpenMetadataTypesArchive1_2
         final String attribute2Name            = "summary";
         final String attribute2Description     = "Short summary of the governance definition.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "description";
-        final String attribute3Description     = "Detailed description of the governance definition.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute3Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute3Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute4Name            = "scope";
         final String attribute4Description     = "Scope of impact for this governance definition.";
         final String attribute4DescriptionGUID = null;
@@ -13335,9 +13335,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description of the relationship.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -13672,9 +13672,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description of the relationship.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -13724,12 +13724,12 @@ public class OpenMetadataTypesArchive1_2
         final String attribute1Name            = "level";
         final String attribute1Description     = "Numeric value for the confidentiality - the higher the number, the more confidential";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "displayName";
-        final String attribute2Description     = "Short descriptive name";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "description";
-        final String attribute3Description     = "Explanation of the meaning of this level of confidentiality";
-        final String attribute3DescriptionGUID = null;
+        final String attribute2Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute2Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute3Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
                                                         attribute1Description,
@@ -13947,18 +13947,18 @@ public class OpenMetadataTypesArchive1_2
         final String attribute1Name            = "status";
         final String attribute1Description     = "Status of this classification.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "confidence";
-        final String attribute2Description     = "Level of confidence in the classification (0=none -> 100=excellent).";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "steward";
-        final String attribute3Description     = "Person responsible for maintaining this classification.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "source";
-        final String attribute4Description     = "Source of the classification.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "notes";
-        final String attribute5Description     = "Information relating to the classification.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute2Name            = OpenMetadataProperty.CONFIDENCE.name;
+        final String attribute2Description     = OpenMetadataProperty.CONFIDENCE.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.CONFIDENCE.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute3Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute4Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute4Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.NOTES.name;
+        final String attribute5Description     = OpenMetadataProperty.NOTES.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.NOTES.descriptionGUID;
         final String attribute6Name            = "level";
         final String attribute6Description     = "Level of confidentiality.";
         final String attribute6DescriptionGUID = null;
@@ -14021,18 +14021,18 @@ public class OpenMetadataTypesArchive1_2
         final String attribute1Name            = "status";
         final String attribute1Description     = "Status of this classification.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "confidence";
-        final String attribute2Description     = "Level of confidence in the classification (0=none -> 100=excellent).";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "steward";
-        final String attribute3Description     = "Person responsible for maintaining this classification.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "source";
-        final String attribute4Description     = "Source of the classification.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "notes";
-        final String attribute5Description     = "Information relating to the classification.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute2Name            = OpenMetadataProperty.CONFIDENCE.name;
+        final String attribute2Description     = OpenMetadataProperty.CONFIDENCE.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.CONFIDENCE.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute3Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute4Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute4Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.NOTES.name;
+        final String attribute5Description     = OpenMetadataProperty.NOTES.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.NOTES.descriptionGUID;
         final String attribute6Name            = "level";
         final String attribute6Description     = "Level of confidence in the quality of this data.";
         final String attribute6DescriptionGUID = null;
@@ -14091,18 +14091,18 @@ public class OpenMetadataTypesArchive1_2
         final String attribute1Name            = "status";
         final String attribute1Description     = "Status of this classification.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "confidence";
-        final String attribute2Description     = "Level of confidence in the classification (0=none -> 100=excellent).";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "steward";
-        final String attribute3Description     = "Person responsible for maintaining this classification.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "source";
-        final String attribute4Description     = "Source of the classification.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "notes";
-        final String attribute5Description     = "Information relating to the classification.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute2Name            = OpenMetadataProperty.CONFIDENCE.name;
+        final String attribute2Description     = OpenMetadataProperty.CONFIDENCE.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.CONFIDENCE.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute3Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute4Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute4Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.NOTES.name;
+        final String attribute5Description     = OpenMetadataProperty.NOTES.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.NOTES.descriptionGUID;
         final String attribute6Name            = "basis";
         final String attribute6Description     = "Basis on which the retention period is defined.";
         final String attribute6DescriptionGUID = null;
@@ -14181,18 +14181,18 @@ public class OpenMetadataTypesArchive1_2
         final String attribute1Name            = "status";
         final String attribute1Description     = "Status of this classification.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "confidence";
-        final String attribute2Description     = "Level of confidence in the classification (0=none -> 100=excellent).";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "steward";
-        final String attribute3Description     = "Person responsible for maintaining this classification.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "source";
-        final String attribute4Description     = "Source of the classification.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "notes";
-        final String attribute5Description     = "Information relating to the classification.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute2Name            = OpenMetadataProperty.CONFIDENCE.name;
+        final String attribute2Description     = OpenMetadataProperty.CONFIDENCE.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.CONFIDENCE.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute3Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute4Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute4Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.NOTES.name;
+        final String attribute5Description     = OpenMetadataProperty.NOTES.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.NOTES.descriptionGUID;
         final String attribute6Name            = "level";
         final String attribute6Description     = "How critical is this data to the organization.";
         final String attribute6DescriptionGUID = null;
@@ -14367,12 +14367,12 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "displayName";
-        final String attribute1Description     = "Consumable name this zone for user interfaces and reports.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of this zone.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = "criteria";
         final String attribute3Description     = "Definition of the types of assets that belong in this zone.";
         final String attribute3DescriptionGUID = null;
@@ -14616,9 +14616,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "notes";
-        final String attribute1Description     = "Documents reasons for implementing the rule using this implementation.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NOTES.name;
+        final String attribute1Description     = OpenMetadataProperty.NOTES.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NOTES.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -14688,9 +14688,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "notes";
-        final String attribute1Description     = "Documents reasons for implementing the process using this implementation.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NOTES.name;
+        final String attribute1Description     = OpenMetadataProperty.NOTES.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NOTES.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -14961,9 +14961,9 @@ public class OpenMetadataTypesArchive1_2
         final String attribute1Name            = "type";
         final String attribute1Description     = "Type of business capability.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the business capability.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getEnumTypeDefAttribute("BusinessCapabilityType",
                                                          attribute1Name,
@@ -15706,12 +15706,12 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "displayName";
-        final String attribute1Description     = "Consumable name suitable for user interfaces and reports.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the governance metric.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = "measurement";
         final String attribute3Description     = "Format or description of the measurements captured for this metric.";
         final String attribute3DescriptionGUID = null;
@@ -15913,9 +15913,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description of the use of the data set for governance metrics.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -16006,18 +16006,18 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "notes";
-        final String attribute1Description     = "Notes on usage, purpose and type of exception backlog.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "steward";
-        final String attribute2Description     = "Unique identifier of the person or team responsible for this exception backlog.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NOTES.name;
+        final String attribute1Description     = OpenMetadataProperty.NOTES.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NOTES.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute2Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
         final String attribute3Name            = "process";
         final String attribute3Description     = "Unique identifier of the automated process that processes this exception backlog.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "source";
-        final String attribute4Description     = "Source of the exception backlog.";
-        final String attribute4DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute4Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -16066,15 +16066,15 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "notes";
-        final String attribute1Description     = "Notes on usage, purpose and type of exception backlog.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NOTES.name;
+        final String attribute1Description     = OpenMetadataProperty.NOTES.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NOTES.descriptionGUID;
         final String attribute2Name            = "process";
         final String attribute2Description     = "Unique identifier of the automated process that processes this exception backlog.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "source";
-        final String attribute3Description     = "Source of the exception backlog.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute3Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute3Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -16119,15 +16119,15 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "notes";
-        final String attribute1Description     = "Notes on usage, purpose and type of exception backlog.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NOTES.name;
+        final String attribute1Description     = OpenMetadataProperty.NOTES.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NOTES.descriptionGUID;
         final String attribute2Name            = "process";
         final String attribute2Description     = "Unique identifier of the automated process that processes this exception backlog.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "source";
-        final String attribute3Description     = "Source of the exception backlog.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute3Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute3Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -16380,9 +16380,9 @@ public class OpenMetadataTypesArchive1_2
         final String attribute7Name            = "licensee";
         final String attribute7Description     = "The person or organization that holds the license.";
         final String attribute7DescriptionGUID = null;
-        final String attribute8Name            = "notes";
-        final String attribute8Description     = "Additional notes about the license.";
-        final String attribute8DescriptionGUID = null;
+        final String attribute8Name            = OpenMetadataProperty.NOTES.name;
+        final String attribute8Description     = OpenMetadataProperty.NOTES.description;
+        final String attribute8DescriptionGUID = OpenMetadataProperty.NOTES.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -16549,9 +16549,9 @@ public class OpenMetadataTypesArchive1_2
         final String attribute7Name            = "recipient";
         final String attribute7Description     = "The person or organization that received the certification.";
         final String attribute7DescriptionGUID = null;
-        final String attribute8Name            = "notes";
-        final String attribute8Description     = "Additional notes about the certification.";
-        final String attribute8DescriptionGUID = null;
+        final String attribute8Name            = OpenMetadataProperty.NOTES.name;
+        final String attribute8Description     = OpenMetadataProperty.NOTES.description;
+        final String attribute8DescriptionGUID = OpenMetadataProperty.NOTES.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -16731,12 +16731,12 @@ public class OpenMetadataTypesArchive1_2
         final String attribute1Name            = "anchorGUID";
         final String attribute1Description     = "Optional identification of the referenceable that this schema element is a part of.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "displayName";
-        final String attribute2Description     = "Display name for the element.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "description";
-        final String attribute3Description     = "Description of the element.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute2Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute2Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute3Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
@@ -16787,9 +16787,9 @@ public class OpenMetadataTypesArchive1_2
         final String attribute3Name            = "author";
         final String attribute3Description     = "User name of the person or process that created the schema type.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "usage";
-        final String attribute4Description     = "Guidance on how the schema should be used.";
-        final String attribute4DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.USAGE.name;
+        final String attribute4Description     = OpenMetadataProperty.USAGE.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.USAGE.descriptionGUID;
         final String attribute5Name            = "encodingStandard";
         final String attribute5Description     = "Format of the schema.";
         final String attribute5DescriptionGUID = null;
@@ -17126,9 +17126,9 @@ public class OpenMetadataTypesArchive1_2
         final String attribute3Name            = "version";
         final String attribute3Description     = "Version number of the snippet.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "usage";
-        final String attribute4Description     = "Guidance on how the snippet should be used.";
-        final String attribute4DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.USAGE.name;
+        final String attribute4Description     = OpenMetadataProperty.USAGE.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.USAGE.descriptionGUID;
         final String attribute5Name            = "curator";
         final String attribute5Description     = "User name of the person or process that is maintaining the snippet.";
         final String attribute5DescriptionGUID = null;
@@ -18997,21 +18997,21 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Description of the relationship.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "confidence";
-        final String attribute2Description     = "Level of confidence in the correctness of the relationship.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "steward";
-        final String attribute3Description     = "Person responsible for the relationship.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "source";
-        final String attribute4Description     = "Person, organization or automated process that created the relationship.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "name";
-        final String attribute5Description     = "Display name for the foreign key.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.CONFIDENCE.name;
+        final String attribute2Description     = OpenMetadataProperty.CONFIDENCE.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.CONFIDENCE.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute3Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute4Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute4Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.NAME.name;
+        final String attribute5Description     = OpenMetadataProperty.NAME.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.NAME.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -19666,21 +19666,21 @@ public class OpenMetadataTypesArchive1_2
         final String attribute3Name            = "partialMatch";
         final String attribute3Description     = "Are there data values outside of the data class specification?";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "confidence";
-        final String attribute4Description     = "Level of confidence in the correctness of the data class assignment.";
-        final String attribute4DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.CONFIDENCE.name;
+        final String attribute4Description     = OpenMetadataProperty.CONFIDENCE.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.CONFIDENCE.descriptionGUID;
         final String attribute5Name            = "threshold";
         final String attribute5Description     = "What was the threshold result used to determine that the data class matched.";
         final String attribute5DescriptionGUID = null;
         final String attribute6Name            = "valueFrequency";
         final String attribute6Description     = "How often does the data class specification match the data values.";
         final String attribute6DescriptionGUID = null;
-        final String attribute7Name            = "steward";
-        final String attribute7Description     = "Person responsible for validating the data class assignment.";
-        final String attribute7DescriptionGUID = null;
-        final String attribute8Name            = "source";
-        final String attribute8Description     = "Person, organization or automated process that created the data class assignment.";
-        final String attribute8DescriptionGUID = null;
+        final String attribute7Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute7Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute7DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute8Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute8Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute8DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -20084,15 +20084,15 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "displayName";
-        final String attribute1Description     = "Display name of the model element.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
         final String attribute2Name            = "technicalName";
         final String attribute2Description     = "Technical name (no spaces) that can be used in artifact generation.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "description";
-        final String attribute3Description     = "Description of what the model element represents.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute3Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute3Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute4Name            = "versionNumber";
         final String attribute4Description     = "Version number of the model element.";
         final String attribute4DescriptionGUID = null;
@@ -20463,15 +20463,15 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "displayName";
-        final String attribute1Description     = "Display name of the model element.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
         final String attribute2Name            = "technicalName";
         final String attribute2Description     = "Technical name (no spaces) that can be used in artifact generation.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "description";
-        final String attribute3Description     = "Description of what the model element represents.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute3Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute3Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute4Name            = "versionNumber";
         final String attribute4Description     = "Version number of the model element.";
         final String attribute4DescriptionGUID = null;
@@ -21326,9 +21326,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "description";
-        final String attribute1Description     = "Definition of the relationship between the two design patterns.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute1Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -21716,12 +21716,12 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "displayName";
-        final String attribute1Description     = "Display name for the report.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "description";
-        final String attribute2Description     = "Description of the content of the report.";
-        final String attribute2DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute2Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute3Name            = "executionDate";
         final String attribute3Description     = "Date that the analysis was run.";
         final String attribute3DescriptionGUID = null;
