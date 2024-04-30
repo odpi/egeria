@@ -3303,6 +3303,8 @@ public class SimpleCatalogArchiveHelper
     }
 
 
+
+
     /**
      * Create the relationship between a data set and an asset that is providing all or part of its content.
      *
@@ -3333,6 +3335,52 @@ public class SimpleCatalogArchiveHelper
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
+    }
+
+
+    /**
+     * Create a DataStoreEncoding classification containing the supplied properties.
+     *
+     * @param encoding encoding format
+     * @param language encoding language
+     * @param description encoding description
+     * @param properties additional properties
+     * @return classification
+     */
+    public Classification getDataStoreEncodingClassification(String              encoding,
+                                                             String              language,
+                                                             String              description,
+                                                             Map<String, String> properties)
+    {
+        final String methodName = "getDataStoreEncodingClassification";
+
+        InstanceProperties instanceProperties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                                          null,
+                                                                                          OpenMetadataProperty.ENCODING.name,
+                                                                                          encoding,
+                                                                                          methodName);
+
+        instanceProperties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                       instanceProperties,
+                                                                       OpenMetadataProperty.ENCODING_LANGUAGE.name,
+                                                                       language,
+                                                                       methodName);
+
+        instanceProperties = archiveHelper.addStringPropertyToInstance(archiveRootName,
+                                                                       instanceProperties,
+                                                                       OpenMetadataProperty.ENCODING_DESCRIPTION.name,
+                                                                       description,
+                                                                       methodName);
+
+        instanceProperties = archiveHelper.addStringMapPropertyToInstance(archiveRootName,
+                                                                          instanceProperties,
+                                                                          OpenMetadataProperty.ENCODING_PROPERTIES.name,
+                                                                          properties,
+                                                                          methodName);
+
+        return archiveHelper.getClassification(OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName,
+                                               instanceProperties,
+                                               InstanceStatus.ACTIVE);
     }
 
 
@@ -4397,6 +4445,7 @@ public class SimpleCatalogArchiveHelper
         return archiveHelper.getClassification(OpenMetadataType.TEMPLATE_SUBSTITUTE_CLASSIFICATION.typeName,
                                                null, InstanceStatus.ACTIVE);
     }
+
 
 
     /**

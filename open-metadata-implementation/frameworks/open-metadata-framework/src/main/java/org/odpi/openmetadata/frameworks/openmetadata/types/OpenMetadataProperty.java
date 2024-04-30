@@ -1053,6 +1053,13 @@ public enum OpenMetadataProperty
      * An indication of the relative position in which this work item should be tackled compared to others in the overall work list.
      */
     PRIORITY("priority", "int", "An indication of the relative position in which this work item should be tackled compared to others in the overall work list.", "10", "6168ae13-f6ee-49e7-9f21-693e7a401926"),
+
+    /**
+     * Metadata properties embedded in the media file.
+     */
+    EMBEDDED_METADATA("embeddedMetadata", "map<string,string>", "Metadata properties embedded in the media file.", null, "af5a6693-e14c-489e-a76c-1a45248e9dbd"),
+
+
     ;
 
 

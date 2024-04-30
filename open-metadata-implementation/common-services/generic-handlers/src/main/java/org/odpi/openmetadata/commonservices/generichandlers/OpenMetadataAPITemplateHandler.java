@@ -597,11 +597,12 @@ public class OpenMetadataAPITemplateHandler<B> extends OpenMetadataAPIGenericHan
             }
 
             /*
-             * Skip "SourcedFrom" and "SpecificationPropertyAssignment" relationships since they are part of the template
+             * Skip "SourcedFrom", "CatalogTemplate" and "SpecificationPropertyAssignment" relationships since they are part of the template
              * description rather than the template itself.
              */
             if ((! repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName)) &&
-                (! repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName)))
+                (! repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName)) &&
+                (! repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.CATALOG_TEMPLATE_RELATIONSHIP.typeName)))
             {
                 /*
                  * If the element is a template substitute then use the entity that it is sourced from.

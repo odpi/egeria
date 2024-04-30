@@ -248,8 +248,8 @@ public class AutomatedCurationRESTServices extends TokenController
     public TechnologyTypeReportResponse getTechnologyTypeDetail(String            serverName,
                                                                 FilterRequestBody requestBody)
     {
-        final String methodName = "getTechnologyTypesForOpenMetadataType";
-        final String parameterName = "requestBody.string";
+        final String methodName = "getTechnologyTypeDetail";
+        final String parameterName = "requestBody.filter";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
