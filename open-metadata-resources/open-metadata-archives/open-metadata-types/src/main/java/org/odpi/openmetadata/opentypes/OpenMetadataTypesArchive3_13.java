@@ -707,12 +707,12 @@ public class OpenMetadataTypesArchive3_13
         final String attribute3Name            = "obligations";
         final String attribute3Description     = "The list of actions, duties or commitments required.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "displayName";
-        final String attribute4Description     = "Short name for the terms and conditions.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "description";
-        final String attribute5Description     = "An overview of the terms and conditions.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute4Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute5Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getMapStringStringTypeDefAttribute(attribute1Name,
                                                                     attribute1Description,
@@ -796,9 +796,9 @@ public class OpenMetadataTypesArchive3_13
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "displayName";
-        final String attribute1Description     = "Short name for the related terms and conditions.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute1Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -848,12 +848,12 @@ public class OpenMetadataTypesArchive3_13
         final String attribute1Name            = "agreementType";
         final String attribute1Description     = "The type of agreement - values typically defined in a valid value set.";
         final String attribute1DescriptionGUID = null;
-        final String attribute4Name            = "displayName";
-        final String attribute4Description     = "Short name for the terms and conditions.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "description";
-        final String attribute5Description     = "An overview of the terms and conditions.";
-        final String attribute5DescriptionGUID = null;
+        final String attribute4Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute4Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute5Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,

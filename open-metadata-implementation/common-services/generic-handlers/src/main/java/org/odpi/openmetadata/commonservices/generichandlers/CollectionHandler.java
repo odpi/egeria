@@ -358,7 +358,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      null,
-                                                                                     OpenMetadataType.MEMBERSHIP_RATIONALE_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.MEMBERSHIP_RATIONALE.name,
                                                                                      membershipRationale,
                                                                                      methodName);
         this.linkElementToElement(userId,
@@ -471,13 +471,13 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.MEMBERSHIP_RATIONALE_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.MEMBERSHIP_RATIONALE.name,
                                                                   membershipRationale,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.EXPRESSION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.EXPRESSION.name,
                                                                   expression,
                                                                   methodName);
 
@@ -504,7 +504,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataType.CONFIDENCE_PROPERTY_NAME,
+                                                               OpenMetadataProperty.CONFIDENCE.name,
                                                                confidence,
                                                                methodName);
 
@@ -522,13 +522,13 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.STEWARD_TYPE_NAME.name,
                                                                   stewardTypeName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.STEWARD_PROPERTY_NAME.name,
                                                                   stewardPropertyName,
                                                                   methodName);
 
@@ -540,7 +540,7 @@ public class CollectionHandler<B> extends ReferenceableHandler<B>
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.NOTES_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.NOTES.name,
                                                                   notes,
                                                                   methodName);
 

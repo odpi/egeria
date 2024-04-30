@@ -1036,7 +1036,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
 
         InstanceProperties relationshipProperties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                                               null,
-                                                                                              OpenMetadataType.CONFIDENCE_PROPERTY_NAME,
+                                                                                              OpenMetadataProperty.CONFIDENCE.name,
                                                                                               confidence,
                                                                                               methodName);
 
@@ -1048,25 +1048,25 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
 
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,
-                                                                              OpenMetadataType.STEWARD_PROPERTY_NAME,
+                                                                              OpenMetadataProperty.STEWARD.name,
                                                                               steward,
                                                                               methodName);
 
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,
-                                                                              OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                              OpenMetadataProperty.STEWARD_TYPE_NAME.name,
                                                                               stewardTypeName,
                                                                               methodName);
 
         relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                               relationshipProperties,
-                                                                              OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                              OpenMetadataProperty.STEWARD_PROPERTY_NAME.name,
                                                                               stewardPropertyName,
                                                                               methodName);
 
        relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                              relationshipProperties,
-                                                                             OpenMetadataType.NOTES_PROPERTY_NAME,
+                                                                             OpenMetadataProperty.NOTES.name,
                                                                              notes,
                                                                              methodName);
 

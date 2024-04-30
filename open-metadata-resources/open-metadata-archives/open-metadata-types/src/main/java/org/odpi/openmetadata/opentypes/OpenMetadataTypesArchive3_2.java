@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
@@ -247,12 +248,12 @@ public class OpenMetadataTypesArchive3_2
         final String attribute1Name            = "levelIdentifier";
         final String attribute1Description     = "Numeric value for the classification level";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "displayName";
-        final String attribute2Description     = "Short descriptive name in common use";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "description";
-        final String attribute3Description     = "Explanation of the meaning of this level of the classification";
-        final String attribute3DescriptionGUID = null;
+        final String attribute2Name            = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute2Description     = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute3Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
         property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
                                                         attribute1Description,
@@ -364,12 +365,12 @@ public class OpenMetadataTypesArchive3_2
         final String attribute5Name            = "severityIdentifier";
         final String attribute5Description     = "Defined level of severity for this classification. Values defined by GovernanceClassificationLevel.";
         final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "stewardTypeName";
-        final String attribute6Description     = "Type of element used to identify the steward.";
-        final String attribute6DescriptionGUID = null;
-        final String attribute7Name            = "stewardPropertyName";
-        final String attribute7Description     = "Name of property used to identify the steward.";
-        final String attribute7DescriptionGUID = null;
+        final String attribute6Name            = OpenMetadataProperty.STEWARD_TYPE_NAME.name;
+        final String attribute6Description     = OpenMetadataProperty.STEWARD_TYPE_NAME.description;
+        final String attribute6DescriptionGUID = OpenMetadataProperty.STEWARD_TYPE_NAME.descriptionGUID;
+        final String attribute7Name            = OpenMetadataProperty.STEWARD_PROPERTY_NAME.name;
+        final String attribute7Description     = OpenMetadataProperty.STEWARD_PROPERTY_NAME.description;
+        final String attribute7DescriptionGUID = OpenMetadataProperty.STEWARD_PROPERTY_NAME.descriptionGUID;
 
         property = archiveHelper.getEnumTypeDefAttribute("GovernanceClassificationStatus",
                                                          attribute1Name,
@@ -444,12 +445,12 @@ public class OpenMetadataTypesArchive3_2
         final String attribute4Name            = "levelIdentifier";
         final String attribute4Description     = "Defined criticality level for this classification. Values defined by GovernanceClassificationLevel.";
         final String attribute4DescriptionGUID = null;
-        final String attribute6Name            = "stewardTypeName";
-        final String attribute6Description     = "Type of element used to identify the steward.";
-        final String attribute6DescriptionGUID = null;
-        final String attribute7Name            = "stewardPropertyName";
-        final String attribute7Description     = "Name of property used to identify the steward.";
-        final String attribute7DescriptionGUID = null;
+        final String attribute6Name            = OpenMetadataProperty.STEWARD_TYPE_NAME.name;
+        final String attribute6Description     = OpenMetadataProperty.STEWARD_TYPE_NAME.description;
+        final String attribute6DescriptionGUID = OpenMetadataProperty.STEWARD_TYPE_NAME.descriptionGUID;
+        final String attribute7Name            = OpenMetadataProperty.STEWARD_PROPERTY_NAME.name;
+        final String attribute7Description     = OpenMetadataProperty.STEWARD_PROPERTY_NAME.description;
+        final String attribute7DescriptionGUID = OpenMetadataProperty.STEWARD_PROPERTY_NAME.descriptionGUID;
 
         property = archiveHelper.getEnumTypeDefAttribute("GovernanceClassificationStatus",
                                                          attribute1Name,
@@ -518,12 +519,12 @@ public class OpenMetadataTypesArchive3_2
         final String attribute4Name            = "levelIdentifier";
         final String attribute4Description     = "Defined confidentiality level for this classification. Values defined by GovernanceClassificationLevel.";
         final String attribute4DescriptionGUID = null;
-        final String attribute6Name            = "stewardTypeName";
-        final String attribute6Description     = "Type of element used to identify the steward.";
-        final String attribute6DescriptionGUID = null;
-        final String attribute7Name            = "stewardPropertyName";
-        final String attribute7Description     = "Name of property used to identify the steward.";
-        final String attribute7DescriptionGUID = null;
+        final String attribute6Name            = OpenMetadataProperty.STEWARD_TYPE_NAME.name;
+        final String attribute6Description     = OpenMetadataProperty.STEWARD_TYPE_NAME.description;
+        final String attribute6DescriptionGUID = OpenMetadataProperty.STEWARD_TYPE_NAME.descriptionGUID;
+        final String attribute7Name            = OpenMetadataProperty.STEWARD_PROPERTY_NAME.name;
+        final String attribute7Description     = OpenMetadataProperty.STEWARD_PROPERTY_NAME.description;
+        final String attribute7DescriptionGUID = OpenMetadataProperty.STEWARD_PROPERTY_NAME.descriptionGUID;
 
         property = archiveHelper.getEnumTypeDefAttribute("GovernanceClassificationStatus",
                                                          attribute1Name,
@@ -591,12 +592,12 @@ public class OpenMetadataTypesArchive3_2
         final String attribute4Name            = "levelIdentifier";
         final String attribute4Description     = "Defined confidence level for this classification. Values defined by GovernanceClassificationLevel.";
         final String attribute4DescriptionGUID = null;
-        final String attribute6Name            = "stewardTypeName";
-        final String attribute6Description     = "Type of element used to identify the steward.";
-        final String attribute6DescriptionGUID = null;
-        final String attribute7Name            = "stewardPropertyName";
-        final String attribute7Description     = "Name of property used to identify the steward.";
-        final String attribute7DescriptionGUID = null;
+        final String attribute6Name            = OpenMetadataProperty.STEWARD_TYPE_NAME.name;
+        final String attribute6Description     = OpenMetadataProperty.STEWARD_TYPE_NAME.description;
+        final String attribute6DescriptionGUID = OpenMetadataProperty.STEWARD_TYPE_NAME.descriptionGUID;
+        final String attribute7Name            = OpenMetadataProperty.STEWARD_PROPERTY_NAME.name;
+        final String attribute7Description     = OpenMetadataProperty.STEWARD_PROPERTY_NAME.description;
+        final String attribute7DescriptionGUID = OpenMetadataProperty.STEWARD_PROPERTY_NAME.descriptionGUID;
 
         property = archiveHelper.getEnumTypeDefAttribute("GovernanceClassificationStatus",
                                                          attribute1Name,
@@ -665,12 +666,12 @@ public class OpenMetadataTypesArchive3_2
         final String attribute4Name            = "basisIdentifier";
         final String attribute4Description     = "Defined retention basis for this classification. Values defined by GovernanceClassificationLevel.";
         final String attribute4DescriptionGUID = null;
-        final String attribute6Name            = "stewardTypeName";
-        final String attribute6Description     = "Type of element used to identify the steward.";
-        final String attribute6DescriptionGUID = null;
-        final String attribute7Name            = "stewardPropertyName";
-        final String attribute7Description     = "Name of property used to identify the steward.";
-        final String attribute7DescriptionGUID = null;
+        final String attribute6Name            = OpenMetadataProperty.STEWARD_TYPE_NAME.name;
+        final String attribute6Description     = OpenMetadataProperty.STEWARD_TYPE_NAME.description;
+        final String attribute6DescriptionGUID = OpenMetadataProperty.STEWARD_TYPE_NAME.descriptionGUID;
+        final String attribute7Name            = OpenMetadataProperty.STEWARD_PROPERTY_NAME.name;
+        final String attribute7Description     = OpenMetadataProperty.STEWARD_PROPERTY_NAME.description;
+        final String attribute7DescriptionGUID = OpenMetadataProperty.STEWARD_PROPERTY_NAME.descriptionGUID;
 
         property = archiveHelper.getEnumTypeDefAttribute("GovernanceClassificationStatus",
                                                          attribute1Name,
@@ -818,16 +819,15 @@ public class OpenMetadataTypesArchive3_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "notes";
-        final String attribute1Description     = "Notes on the processing of the log records.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NOTES.name;
+        final String attribute1Description     = OpenMetadataProperty.NOTES.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NOTES.descriptionGUID;
         final String attribute2Name            = "process";
         final String attribute2Description     = "Unique identifier of the automated process that produced this analysis.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "source";
-        final String attribute3Description     = "Source of the analysis process.";
-        final String attribute3DescriptionGUID = null;
-
+        final String attribute3Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute3Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
         final String attribute4Name            = "counts";
         final String attribute4Description     = "A set of metric name to count value pairs.";
         final String attribute4DescriptionGUID = null;
@@ -927,15 +927,15 @@ public class OpenMetadataTypesArchive3_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "notes";
-        final String attribute1Description     = "Notes on usage, purpose and type of lineage log events.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NOTES.name;
+        final String attribute1Description     = OpenMetadataProperty.NOTES.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NOTES.descriptionGUID;
         final String attribute2Name            = "process";
         final String attribute2Description     = "Unique identifier of the automated process that processes this lineage log.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "source";
-        final String attribute3Description     = "Source of the lineage log.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute3Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute3Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -980,15 +980,15 @@ public class OpenMetadataTypesArchive3_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "notes";
-        final String attribute1Description     = "Notes on usage, purpose and type of audit log records in the collection.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NOTES.name;
+        final String attribute1Description     = OpenMetadataProperty.NOTES.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NOTES.descriptionGUID;
         final String attribute2Name            = "process";
         final String attribute2Description     = "Unique identifier of the automated process that processes this audit log.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "source";
-        final String attribute3Description     = "Source of the audit log.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute3Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute3Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -1033,15 +1033,15 @@ public class OpenMetadataTypesArchive3_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "notes";
-        final String attribute1Description     = "Notes on usage, purpose and type of metering log records in this collection.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NOTES.name;
+        final String attribute1Description     = OpenMetadataProperty.NOTES.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NOTES.descriptionGUID;
         final String attribute2Name            = "process";
         final String attribute2Description     = "Unique identifier of the automated process that processes this metering log.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "source";
-        final String attribute3Description     = "Source of the metering log.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute3Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute3Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -1086,24 +1086,24 @@ public class OpenMetadataTypesArchive3_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "notes";
-        final String attribute1Description     = "Notes on usage, purpose and type of exception backlog.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "steward";
-        final String attribute2Description     = "Unique identifier of the person or team responsible for this exception backlog.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "stewardTypeName";
-        final String attribute3Description     = "Type of element used to identify the steward.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "stewardPropertyName";
-        final String attribute4Description     = "Name of property used to identify the steward.";
-        final String attribute4DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.NOTES.name;
+        final String attribute1Description     = OpenMetadataProperty.NOTES.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.NOTES.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute2Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.STEWARD_TYPE_NAME.name;
+        final String attribute3Description     = OpenMetadataProperty.STEWARD_TYPE_NAME.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.STEWARD_TYPE_NAME.descriptionGUID;
+        final String attribute4Name            = OpenMetadataProperty.STEWARD_PROPERTY_NAME.name;
+        final String attribute4Description     = OpenMetadataProperty.STEWARD_PROPERTY_NAME.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.STEWARD_PROPERTY_NAME.descriptionGUID;
         final String attribute5Name            = "process";
         final String attribute5Description     = "Unique identifier of the automated process that processes this exception backlog.";
         final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "source";
-        final String attribute6Description     = "Source of the exception backlog.";
-        final String attribute6DescriptionGUID = null;
+        final String attribute6Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute6Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute6DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -1191,21 +1191,21 @@ public class OpenMetadataTypesArchive3_2
         final String attribute2Name            = "statusIdentifier";
         final String attribute2Description     = "Status of the consolidated entity. Value defined by GovernanceClassificationLevel.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "steward";
-        final String attribute3Description     = "Person responsible for maintaining this consolidated entity.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "stewardTypeName";
-        final String attribute4Description     = "Type of element used to identify the steward.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "stewardPropertyName";
-        final String attribute5Description     = "Name of property used to identify the steward.";
-        final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "source";
-        final String attribute6Description     = "Source of the duplicate detection.";
-        final String attribute6DescriptionGUID = null;
-        final String attribute7Name            = "notes";
-        final String attribute7Description     = "Information for the steward(s) relating to the survivorship rules and consolidation decisions.";
-        final String attribute7DescriptionGUID = null;
+        final String attribute3Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute3Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute4Name            = OpenMetadataProperty.STEWARD_TYPE_NAME.name;
+        final String attribute4Description     = OpenMetadataProperty.STEWARD_TYPE_NAME.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.STEWARD_TYPE_NAME.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.STEWARD_PROPERTY_NAME.name;
+        final String attribute5Description     = OpenMetadataProperty.STEWARD_PROPERTY_NAME.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.STEWARD_PROPERTY_NAME.descriptionGUID;
+        final String attribute6Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute6Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute6DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
+        final String attribute7Name            = OpenMetadataProperty.NOTES.name;
+        final String attribute7Description     = OpenMetadataProperty.NOTES.description;
+        final String attribute7DescriptionGUID = OpenMetadataProperty.NOTES.descriptionGUID;
 
         property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
                                                         attribute2Description,
@@ -1298,21 +1298,21 @@ public class OpenMetadataTypesArchive3_2
         final String attribute2Name            = "statusIdentifier";
         final String attribute2Description     = "Status of the duplicate processing. Value defined by GovernanceClassificationLevel.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "steward";
-        final String attribute3Description     = "Person responsible for maintaining this relationship.";
-        final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "stewardTypeName";
-        final String attribute4Description     = "Type of element used to identify the steward.";
-        final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "stewardPropertyName";
-        final String attribute5Description     = "Name of property used to identify the steward.";
-        final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "source";
-        final String attribute6Description     = "Source of the duplicate detection.";
-        final String attribute6DescriptionGUID = null;
-        final String attribute7Name            = "notes";
-        final String attribute7Description     = "Information for the steward(s) relating to the duplicate detection.";
-        final String attribute7DescriptionGUID = null;
+        final String attribute3Name            = OpenMetadataProperty.STEWARD.name;
+        final String attribute3Description     = OpenMetadataProperty.STEWARD.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.STEWARD.descriptionGUID;
+        final String attribute4Name            = OpenMetadataProperty.STEWARD_TYPE_NAME.name;
+        final String attribute4Description     = OpenMetadataProperty.STEWARD_TYPE_NAME.description;
+        final String attribute4DescriptionGUID = OpenMetadataProperty.STEWARD_TYPE_NAME.descriptionGUID;
+        final String attribute5Name            = OpenMetadataProperty.STEWARD_PROPERTY_NAME.name;
+        final String attribute5Description     = OpenMetadataProperty.STEWARD_PROPERTY_NAME.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.STEWARD_PROPERTY_NAME.descriptionGUID;
+        final String attribute6Name            = OpenMetadataProperty.SOURCE.name;
+        final String attribute6Description     = OpenMetadataProperty.SOURCE.description;
+        final String attribute6DescriptionGUID = OpenMetadataProperty.SOURCE.descriptionGUID;
+        final String attribute7Name            = OpenMetadataProperty.NOTES.name;
+        final String attribute7Description     = OpenMetadataProperty.NOTES.description;
+        final String attribute7DescriptionGUID = OpenMetadataProperty.NOTES.descriptionGUID;
 
         property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
                                                         attribute2Description,

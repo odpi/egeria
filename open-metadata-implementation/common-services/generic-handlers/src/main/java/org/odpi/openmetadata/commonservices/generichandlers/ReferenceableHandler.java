@@ -1259,12 +1259,12 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                             PropertyServerException
     {
         InstanceProperties properties = repositoryHelper.addIntPropertyToInstance(serviceName, null, OpenMetadataProperty.STATUS_IDENTIFIER.name, statusIdentifier, methodName);
-        properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataType.CONFIDENCE_PROPERTY_NAME, confidence, methodName);
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataProperty.CONFIDENCE.name, confidence, methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataProperty.STEWARD.name, steward, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME, stewardTypeName, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME, stewardPropertyName, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataProperty.STEWARD_TYPE_NAME.name, stewardTypeName, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataProperty.STEWARD_PROPERTY_NAME.name, stewardPropertyName, methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataProperty.SOURCE.name, source, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.NOTES_PROPERTY_NAME, notes, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataProperty.NOTES.name, notes, methodName);
         properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataType.LEVEL_IDENTIFIER_PROPERTY_NAME, levelIdentifier, methodName);
 
         this.setClassificationInRepository(userId,
@@ -1504,12 +1504,12 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                                      PropertyServerException
     {
         InstanceProperties properties = repositoryHelper.addIntPropertyToInstance(serviceName, null, OpenMetadataProperty.STATUS_IDENTIFIER.name, statusIdentifier, methodName);
-        properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataType.CONFIDENCE_PROPERTY_NAME, confidence, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_PROPERTY_NAME, steward, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME, stewardTypeName, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME, stewardPropertyName, methodName);
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataProperty.CONFIDENCE.name, confidence, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataProperty.STEWARD.name, steward, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataProperty.STEWARD_TYPE_NAME.name, stewardTypeName, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataProperty.STEWARD_PROPERTY_NAME.name, stewardPropertyName, methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataProperty.SOURCE.name, source, methodName);
-        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.NOTES_PROPERTY_NAME, notes, methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataProperty.NOTES.name, notes, methodName);
         properties = repositoryHelper.addIntPropertyToInstance(serviceName, properties, OpenMetadataProperty.RETENTION_BASIS_IDENTIFIER.name, basisIdentifier, methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties, OpenMetadataType.RETENTION_ASSOCIATED_GUID_PROPERTY_NAME, associatedGUID, methodName);
         properties = repositoryHelper.addDatePropertyToInstance(serviceName, properties, OpenMetadataType.RETENTION_ARCHIVE_AFTER_PROPERTY_NAME, archiveAfter, methodName);
@@ -3192,7 +3192,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.EXPRESSION_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.EXPRESSION.name,
                                                                   expression,
                                                                   methodName);
 
@@ -3213,7 +3213,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
                                                                properties,
-                                                               OpenMetadataType.CONFIDENCE_PROPERTY_NAME,
+                                                               OpenMetadataProperty.CONFIDENCE.name,
                                                                confidence,
                                                                methodName);
 
@@ -3224,7 +3224,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.STEWARD_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.STEWARD.name,
                                                                   steward,
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
@@ -5223,18 +5223,18 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
     {
         InstanceProperties properties  = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                       null,
-                                                                                      OpenMetadataType.STEWARD_PROPERTY_NAME,
+                                                                                      OpenMetadataProperty.STEWARD.name,
                                                                                       steward,
                                                                                       methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.STEWARD_TYPE_NAME.name,
                                                                   stewardTypeName,
                                                                   methodName);
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.STEWARD_PROPERTY_NAME.name,
                                                                   stewardPropertyName,
                                                                   methodName);
 
@@ -5246,7 +5246,7 @@ public class ReferenceableHandler<B> extends OpenMetadataAPITemplateHandler<B>
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataType.NOTES_PROPERTY_NAME,
+                                                                  OpenMetadataProperty.NOTES.name,
                                                                   notes,
                                                                   methodName);
 

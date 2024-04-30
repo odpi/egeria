@@ -253,7 +253,7 @@ public class OpenMetadataTypesArchive1_6
         final String attribute7Name            = "name";
         final String attribute7Description     = "Name of schema attribute (deprecated).";
         final String attribute7DescriptionGUID = null;
-        final String attribute7ReplacedBy      = "displayName";
+        final String attribute7ReplacedBy      = OpenMetadataProperty.DISPLAY_NAME.name;
 
         property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
                                                         attribute1Description,
@@ -319,21 +319,21 @@ public class OpenMetadataTypesArchive1_6
         final String attribute2Name             = OpenMetadataProperty.QUALIFIED_NAME.name;
         final String attribute2Description      = OpenMetadataProperty.QUALIFIED_NAME.description;
         final String attribute2DescriptionGUID  = OpenMetadataProperty.QUALIFIED_NAME.descriptionGUID;
-        final String attribute3Name             = "displayName";
-        final String attribute3Description      = "Display name for the schema type.";
-        final String attribute3DescriptionGUID  = null;
-        final String attribute4Name             = "description";
-        final String attribute4Description      = "Description of the schema type.";
-        final String attribute4DescriptionGUID  = null;
+        final String attribute3Name             = OpenMetadataProperty.DISPLAY_NAME.name;
+        final String attribute3Description      = OpenMetadataProperty.DISPLAY_NAME.description;
+        final String attribute3DescriptionGUID  = OpenMetadataProperty.DISPLAY_NAME.descriptionGUID;
+        final String attribute4Name             = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute4Description      = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute4DescriptionGUID  = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
         final String attribute5Name             = "versionNumber";
         final String attribute5Description      = "Version of the schema type.";
         final String attribute5DescriptionGUID  = null;
         final String attribute6Name             = "author";
         final String attribute6Description      = "User name of the person or process that created the schema type.";
         final String attribute6DescriptionGUID  = null;
-        final String attribute7Name             = "usage";
-        final String attribute7Description      = "Guidance on how the schema should be used.";
-        final String attribute7DescriptionGUID  = null;
+        final String attribute7Name             = OpenMetadataProperty.USAGE.name;
+        final String attribute7Description      = OpenMetadataProperty.USAGE.description;
+        final String attribute7DescriptionGUID  = OpenMetadataProperty.USAGE.descriptionGUID;
         final String attribute8Name             = "defaultValue";
         final String attribute8Description      = "Initial value for data stored in this schema type (primitive and enum types).";
         final String attribute8DescriptionGUID  = null;

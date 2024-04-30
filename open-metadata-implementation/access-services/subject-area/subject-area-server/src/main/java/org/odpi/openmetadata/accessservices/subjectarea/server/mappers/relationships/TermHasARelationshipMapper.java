@@ -36,7 +36,7 @@ public class TermHasARelationshipMapper extends RelationshipMapper<HasA> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termHasARelationship.getDescription(), OpenMetadataProperty.DESCRIPTION.name);
         }
         if (termHasARelationship.getSteward() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termHasARelationship.getSteward(), OpenMetadataType.STEWARD_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termHasARelationship.getSteward(), OpenMetadataProperty.STEWARD.name);
         }
         if (termHasARelationship.getSource() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, termHasARelationship.getSource(), OpenMetadataProperty.SOURCE.name);
@@ -62,7 +62,7 @@ public class TermHasARelationshipMapper extends RelationshipMapper<HasA> {
             termHasARelationship.setDescription(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataType.STEWARD_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.STEWARD.name)) {
             termHasARelationship.setSteward(stringValue);
             foundProperty = true;
         }

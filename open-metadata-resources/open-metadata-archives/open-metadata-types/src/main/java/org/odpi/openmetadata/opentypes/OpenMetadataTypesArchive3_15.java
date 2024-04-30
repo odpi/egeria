@@ -239,7 +239,7 @@ public class OpenMetadataTypesArchive3_15
         /*
          * Create the Patch
          */
-        final String typeName = "EngineAction";
+        final String typeName = OpenMetadataType.ENGINE_ACTION.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -252,9 +252,9 @@ public class OpenMetadataTypesArchive3_15
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "completionMessage";
-        final String attribute1Description     = "Message to provide additional information on the results of running the governance service or the reasons for its failure.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.COMPLETION_MESSAGE.name;
+        final String attribute1Description     = OpenMetadataProperty.COMPLETION_MESSAGE.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.COMPLETION_MESSAGE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -272,7 +272,7 @@ public class OpenMetadataTypesArchive3_15
         /*
          * Create the Patch
          */
-        final String typeName = "TargetForAction";
+        final String typeName = OpenMetadataType.TARGET_FOR_ACTION.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -285,9 +285,9 @@ public class OpenMetadataTypesArchive3_15
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "completionMessage";
-        final String attribute1Description     = "Message to provide additional information on the results of acting on the target by the governance service or the reasons for any failures.";
-        final String attribute1DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.COMPLETION_MESSAGE.name;
+        final String attribute1Description     = OpenMetadataProperty.COMPLETION_MESSAGE.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.COMPLETION_MESSAGE.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,

@@ -59,21 +59,21 @@ public class CollectionManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-elements/{parentGUID}/collections")
-    @Operation(summary="getLinkedCollections",
-            description="Returns the list of collections that are linked off of the supplied element.",
+    @Operation(summary="getAttachedCollections",
+            description="Returns the list of collections that are linked off of the supplied element using the ResourceList relationship.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/collection"))
 
-    public CollectionListResponse getLinkedCollections(@PathVariable String            serverName,
-                                                       @PathVariable String            parentGUID,
-                                                       @RequestParam(required = false, defaultValue = "0")
-                                                                     int    startFrom,
-                                                       @RequestParam(required = false, defaultValue = "0")
-                                                                     int    pageSize,
-                                                       @RequestBody(required = false)
-                                                                     FilterRequestBody requestBody)
+    public CollectionListResponse getAttachedCollections(@PathVariable String            serverName,
+                                                         @PathVariable String            parentGUID,
+                                                         @RequestParam(required = false, defaultValue = "0")
+                                                                       int    startFrom,
+                                                         @RequestParam(required = false, defaultValue = "0")
+                                                                       int    pageSize,
+                                                         @RequestBody(required = false)
+                                                                       FilterRequestBody requestBody)
     {
-        return restAPI.getLinkedCollections(serverName, parentGUID, startFrom, pageSize, requestBody);
+        return restAPI.getAttachedCollections(serverName, parentGUID, startFrom, pageSize, requestBody);
     }
 
 

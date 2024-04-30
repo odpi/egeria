@@ -18,26 +18,47 @@ type system, frameworks, APIs, event payloads and interchange protocols to enabl
 engines and platforms to exchange metadata in order to get the best
 value from data, whilst ensuring it is properly governed.
 
+## Building and running Egeria
+
 This git repository contains the core Egeria code and resources.  This includes the build for Egeria's runtimes.
 The project is built using `gradle`.  Clone or download the contents of this repository.
 You will also need the [Java 17 SDK installed](https://adoptium.net/).
 Then run the following gradle command from the top-level directory to build the code and run the tests.
 
 ```bash
-../gradlew clean build
+./gradlew clean build
 ```
 
-Once you see the "Build Successful" message, go to the `open-metadata-distributions` directory.
-There are three choices of assembly to use:
+Once you see the "Build Successful" message, go to the `open-metadata-distributions/omag-server-platform/build` directory.
 
-* `open-metadata-assemblies` contains all of the Egeria runtimes. This is the assembly that is used in our standard [Docker containers](https://hub.docker.com/r/odpi/egeria).
-* `omag-server-platform` contains just the [OMAG Server Platform](https://egeria-project.org/concepts/omag-server-platform/) runtime.
-* `egeria-ui-application` contains the Egeria UI REST Services application.
+```bash
+cd ./open-metadata-distribution/omag-server-platform/build
+```
+when you list the directory, you will see four subdirectories, two of which are interesting: 
 
-Change into the directory for the assembly you need and then look in `build/unpacked`.
-There you will see the built and assembled libraries and associated content.
+```bash
+ls
+```
 
-Details on how to run Egeria can be found on [our website](https://egeria-project.org/education/tutorials/omag-server-tutorial/overview/).
+* `distributions` contains the zipped and compressed distribution file for Egeria's platform.  This file provides a convenient package to copy Egeria onto a specific machine to run. See [Installing Egeria](https://egeria-project.org/education/tutorials/building-egeria-tutorial/overview/#installing-egeria) for information on how to unpack this file.
+* `unpacked` contains an unzipped copy of the distribution file, useful for running Egeria on the machine where it is built.
+
+To run Egeria on the machine you used to run gradle, change directory as follows:
+
+```bash
+cd unpacked/egeria*gz
+```
+
+There you will see another `README.md` with further information.
+
+```bash
+cat README.md
+```
+
+### Further documentation
+
+If you are new to Egeria, see the [getting started with Egeria](https://getting-started-with-egeria.pdr-associates.com/introduction.html) blogs, or alternatively,
+visit [the Egeria website](https://egeria-project.org/).
 
 ## Egeria governance
 

@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -175,7 +177,7 @@ public class OpenMetadataTypesArchive4_2
         /*
          * Create the Patch
          */
-        final String typeName = "CollectionMembership";
+        final String typeName = OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName;
 
         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
@@ -191,15 +193,15 @@ public class OpenMetadataTypesArchive4_2
         final String attribute1Name            = "userDefinedStatus";
         final String attribute1Description     = "Extend or replace the valid instance statuses with additional statuses controlled through valid metadata values.";
         final String attribute1DescriptionGUID = null;
-        final String attribute5Name            = "notes";
-        final String attribute5Description     = "Information relating to the classification.";
-        final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "stewardTypeName";
-        final String attribute6Description     = "Type of element used to identify the steward.";
-        final String attribute6DescriptionGUID = null;
-        final String attribute7Name            = "stewardPropertyName";
-        final String attribute7Description     = "Name of property used to identify the steward.";
-        final String attribute7DescriptionGUID = null;
+        final String attribute5Name            = OpenMetadataProperty.NOTES.name;
+        final String attribute5Description     = OpenMetadataProperty.NOTES.description;
+        final String attribute5DescriptionGUID = OpenMetadataProperty.NOTES.descriptionGUID;
+        final String attribute6Name            = OpenMetadataProperty.STEWARD_TYPE_NAME.name;
+        final String attribute6Description     = OpenMetadataProperty.STEWARD_TYPE_NAME.description;
+        final String attribute6DescriptionGUID = OpenMetadataProperty.STEWARD_TYPE_NAME.descriptionGUID;
+        final String attribute7Name            = OpenMetadataProperty.STEWARD_PROPERTY_NAME.name;
+        final String attribute7Description     = OpenMetadataProperty.STEWARD_PROPERTY_NAME.description;
+        final String attribute7DescriptionGUID = OpenMetadataProperty.STEWARD_PROPERTY_NAME.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,

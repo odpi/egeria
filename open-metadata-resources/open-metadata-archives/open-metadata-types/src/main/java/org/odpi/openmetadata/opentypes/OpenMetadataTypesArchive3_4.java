@@ -309,9 +309,9 @@ public class OpenMetadataTypesArchive3_4
         final String attribute2Name            = "roleGUID";
         final String attribute2Description     = "The unique identifier of the specific PersonRole that the UserIdentity is used for.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "description";
-        final String attribute3Description     = "A human readable description of the use of the UserIdentity by the actor.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute3Name            = OpenMetadataProperty.DESCRIPTION.name;
+        final String attribute3Description     = OpenMetadataProperty.DESCRIPTION.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.DESCRIPTION.descriptionGUID;
 
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
@@ -714,7 +714,7 @@ public class OpenMetadataTypesArchive3_4
         /*
          * Create the Patch
          */
-        final String typeName = "EngineAction";
+        final String typeName = OpenMetadataType.ENGINE_ACTION.typeName;
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 

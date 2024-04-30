@@ -36,7 +36,7 @@ public class IsATypeOfMapper extends RelationshipMapper<IsATypeOf> {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOf.getDescription(), OpenMetadataProperty.DESCRIPTION.name);
         }
         if (isATypeOf.getSteward() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOf.getSteward(), OpenMetadataType.STEWARD_PROPERTY_NAME);
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOf.getSteward(), OpenMetadataProperty.STEWARD.name);
         }
         if (isATypeOf.getSource() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, isATypeOf.getSource(), OpenMetadataProperty.SOURCE.name);
@@ -62,7 +62,7 @@ public class IsATypeOfMapper extends RelationshipMapper<IsATypeOf> {
             isATypeOf.setDescription(stringValue);
             foundProperty = true;
         }
-        if (propertyName.equals(OpenMetadataType.STEWARD_PROPERTY_NAME)) {
+        if (propertyName.equals(OpenMetadataProperty.STEWARD.name)) {
             isATypeOf.setSteward(stringValue);
             foundProperty = true;
         }

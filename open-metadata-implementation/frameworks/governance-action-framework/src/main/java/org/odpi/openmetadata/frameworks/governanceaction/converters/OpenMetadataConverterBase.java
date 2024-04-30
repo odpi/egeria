@@ -1626,7 +1626,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.MEMBERSHIP_RATIONALE_PROPERTY_NAME,
+                                                       OpenMetadataProperty.MEMBERSHIP_RATIONALE.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -6148,7 +6148,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.getIntProperty(serviceName,
-                                                 OpenMetadataType.CONFIDENCE_PROPERTY_NAME,
+                                                 OpenMetadataProperty.CONFIDENCE.name,
                                                  elementProperties,
                                                  methodName);
         }
@@ -6170,7 +6170,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.getStringProperty(serviceName,
-                                                    OpenMetadataType.STEWARD_PROPERTY_NAME,
+                                                    OpenMetadataProperty.STEWARD.name,
                                                     elementProperties,
                                                     methodName);
         }
@@ -6193,7 +6193,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.getStringProperty(serviceName,
-                                                    OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                    OpenMetadataProperty.STEWARD_TYPE_NAME.name,
                                                     elementProperties,
                                                     methodName);
         }
@@ -6215,7 +6215,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.getStringProperty(serviceName,
-                                                    OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                    OpenMetadataProperty.STEWARD_PROPERTY_NAME.name,
                                                     elementProperties,
                                                     methodName);
         }
@@ -6238,7 +6238,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.getStringProperty(serviceName,
-                                                    OpenMetadataType.NOTES_PROPERTY_NAME,
+                                                    OpenMetadataProperty.NOTES.name,
                                                     elementProperties,
                                                     methodName);
         }
@@ -6634,7 +6634,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeIntProperty(serviceName,
-                                                    OpenMetadataType.CONFIDENCE_PROPERTY_NAME,
+                                                    OpenMetadataProperty.CONFIDENCE.name,
                                                     elementProperties,
                                                     methodName);
         }
@@ -6788,7 +6788,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.STEWARD_TYPE_NAME_PROPERTY_NAME,
+                                                       OpenMetadataProperty.STEWARD_TYPE_NAME.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -6810,7 +6810,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.STEWARD_PROPERTY_NAME_PROPERTY_NAME,
+                                                       OpenMetadataProperty.STEWARD_PROPERTY_NAME.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -6832,7 +6832,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.NOTES_PROPERTY_NAME,
+                                                       OpenMetadataProperty.NOTES.name,
                                                        elementProperties,
                                                        methodName);
         }

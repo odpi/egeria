@@ -2256,7 +2256,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                         {
                             newActionTargetProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                                    actionTarget.getProperties(),
-                                                                                                   OpenMetadataProperty.ACTION_STATUS.name,
+                                                                                                   OpenMetadataProperty.TARGET_FOR_ACTION_STATUS.name,
                                                                                                    EngineActionStatus.getOpenTypeGUID(),
                                                                                                    EngineActionStatus.getOpenTypeName(),
                                                                                                    status,
@@ -2934,7 +2934,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
             {
                 newActionTargetProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                        actionTarget.getProperties(),
-                                                                                       OpenMetadataProperty.ACTION_STATUS.name,
+                                                                                       OpenMetadataProperty.TARGET_FOR_ACTION_STATUS.name,
                                                                                        EngineActionStatus.getOpenTypeGUID(),
                                                                                        EngineActionStatus.getOpenTypeName(),
                                                                                        status,
@@ -2947,19 +2947,19 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
 
             newActionTargetProperties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                                    newActionTargetProperties,
-                                                                                   OpenMetadataType.START_DATE_PROPERTY_NAME,
+                                                                                   OpenMetadataProperty.START_DATE.name,
                                                                                    startDate,
                                                                                    methodName);
 
             newActionTargetProperties = repositoryHelper.addDatePropertyToInstance(serviceName,
                                                                                    newActionTargetProperties,
-                                                                                   OpenMetadataType.COMPLETION_DATE_PROPERTY_NAME,
+                                                                                   OpenMetadataProperty.COMPLETION_DATE.name,
                                                                                    completionDate,
                                                                                    methodName);
 
             newActionTargetProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                      newActionTargetProperties,
-                                                                                     OpenMetadataType.COMPLETION_MESSAGE_PROPERTY_NAME,
+                                                                                     OpenMetadataProperty.COMPLETION_MESSAGE.name,
                                                                                      completionMessage,
                                                                                      methodName);
 
