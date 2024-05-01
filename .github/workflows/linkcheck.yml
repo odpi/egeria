@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4.1.0
       - name: Link Checker
-        uses: lycheeverse/lychee-action@v1.9.3
+        uses: lycheeverse/lychee-action@v1.10.0
         with:
           # Can switch to true once we run clean
           fail: false
