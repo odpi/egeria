@@ -1078,7 +1078,7 @@ public class AssetOwnerRESTServices
 
             if (relationship.getProperties() != null)
             {
-                if (OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME.equals(relationship.getType().getTypeDefName()))
+                if (OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName.equals(relationship.getType().getTypeDefName()))
                 {
                     DataContentForDataSetProperties properties = new DataContentForDataSetProperties();
 
@@ -1896,7 +1896,10 @@ public class AssetOwnerRESTServices
                 invalidParameterHandler.validateUserId(userId, methodName);
                 invalidParameterHandler.validateGUID(schemaTypeGUID, schemaTypeGUIDParameterName, methodName);
                 invalidParameterHandler.validateObject(requestBody, propertiesParameterName, methodName);
-                invalidParameterHandler.validateName(requestBody.getQualifiedName(), qualifiedNameParameterName, methodName);
+                if (! isMergeUpdate)
+                {
+                    invalidParameterHandler.validateName(requestBody.getQualifiedName(), qualifiedNameParameterName, methodName);
+                }
 
                 SchemaTypeBuilder builder = this.getSchemaTypeBuilder(requestBody,
                                                                       instanceHandler.getRepositoryHelper(userId, serverName, methodName),

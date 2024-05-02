@@ -287,7 +287,10 @@ public class ConnectionExchangeClient extends ExchangeClientBase implements Conn
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(connectionGUID, connectionGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(connectionProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(connectionProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(connectionProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         ConnectionRequestBody requestBody = new ConnectionRequestBody();
         requestBody.setElementProperties(connectionProperties);
@@ -1160,7 +1163,10 @@ public class ConnectionExchangeClient extends ExchangeClientBase implements Conn
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(endpointGUID, endpointGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(endpointProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(endpointProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(endpointProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         EndpointRequestBody requestBody = new EndpointRequestBody();
         requestBody.setElementProperties(endpointProperties);

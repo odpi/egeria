@@ -288,7 +288,10 @@ public class LineageExchangeClient extends SchemaExchangeClientBase implements L
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, processGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(processProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(processProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(processProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         ProcessRequestBody requestBody = new ProcessRequestBody();
         requestBody.setElementProperties(processProperties);

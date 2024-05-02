@@ -328,7 +328,10 @@ public class NoteLogExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(noteLogGUID, noteLogGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(noteLogProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(noteLogProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(noteLogProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         this.validateExternalIdentifier(userId,
                                         noteLogGUID,

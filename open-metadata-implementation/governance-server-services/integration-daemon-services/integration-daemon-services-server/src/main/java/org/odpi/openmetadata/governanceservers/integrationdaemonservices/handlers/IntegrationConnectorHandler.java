@@ -20,6 +20,7 @@ import org.odpi.openmetadata.frameworks.integration.properties.RegisteredIntegra
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.ffdc.IntegrationDaemonServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.properties.IntegrationConnectorStatus;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.IntegrationConnectorDedicatedThread;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.IntegrationConnectorRefreshThread;
 
 import java.util.Date;
 import java.util.Map;
@@ -52,9 +53,6 @@ public class IntegrationConnectorHandler
     private final AuditLog                  auditLog;
 
 
-
-
-
     /*
      * These values change as the connector handler operates
      */
@@ -63,6 +61,7 @@ public class IntegrationConnectorHandler
     private Connector                           genericConnector                    = null;
     private IntegrationConnector                integrationConnector                = null;
     private IntegrationConnectorDedicatedThread integrationConnectorDedicatedThread = null;
+    private IntegrationConnectorRefreshThread   integrationConnectorRefreshThread   = null;
     private IntegrationConnectorStatus          integrationConnectorStatus          = null;
     private Date                                lastStatusChange                    = null;
     private String                              failingExceptionMessage             = null;
@@ -387,9 +386,25 @@ public class IntegrationConnectorHandler
         {
             if (needDedicatedThread)
             {
+                if (integrationConnectorDedicatedThread != null)
+                {
+                    integrationConnectorDedicatedThread.stop();
+                }
+
                 integrationConnectorDedicatedThread = new IntegrationConnectorDedicatedThread(integrationDaemonName, this, auditLog);
 
                 integrationConnectorDedicatedThread.start();
+            }
+            else
+            {
+                if (integrationConnectorRefreshThread != null)
+                {
+                    integrationConnectorRefreshThread.stop();
+                }
+
+                integrationConnectorRefreshThread = new IntegrationConnectorRefreshThread(integrationDaemonName, this, auditLog);
+
+                integrationConnectorRefreshThread.start();
             }
         }
         catch (Exception error)
@@ -404,7 +419,7 @@ public class IntegrationConnectorHandler
      *
      * @return property map
      */
-    public synchronized Map<String, Object> getConfigurationProperties()
+    public Map<String, Object> getConfigurationProperties()
     {
         if (connection != null)
         {
@@ -762,6 +777,11 @@ public class IntegrationConnectorHandler
         if (integrationConnectorDedicatedThread != null)
         {
             integrationConnectorDedicatedThread.stop();
+        }
+
+        if (integrationConnectorRefreshThread != null)
+        {
+            integrationConnectorRefreshThread.stop();
         }
 
         this.updateStatus(null);

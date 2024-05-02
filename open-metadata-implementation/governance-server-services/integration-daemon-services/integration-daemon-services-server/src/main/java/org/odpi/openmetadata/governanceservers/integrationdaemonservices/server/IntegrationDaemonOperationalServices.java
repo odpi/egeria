@@ -21,7 +21,6 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handler
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.handlers.IntegrationServiceHandler;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.GroupConfigurationRefreshThread;
-import org.odpi.openmetadata.governanceservers.integrationdaemonservices.threads.IntegrationDaemonThread;
 import org.odpi.openmetadata.serveroperations.properties.OMAGServerServiceStatus;
 import org.odpi.openmetadata.serveroperations.properties.ServerActiveStatus;
 
@@ -50,7 +49,6 @@ public class IntegrationDaemonOperationalServices
     private final Map<String, ServerActiveStatus> serviceStatusMap          = new HashMap<>();
 
     private final List<GroupConfigurationRefreshThread> configurationRefreshThreads = new ArrayList<>();
-    private IntegrationDaemonThread integrationDaemonThread = null;
 
     /**
      * Constructor used at server startup.
@@ -291,12 +289,6 @@ public class IntegrationDaemonOperationalServices
             }
 
             /*
-             * Create the thread that calls refresh on all the connectors.
-             */
-            integrationDaemonThread = new IntegrationDaemonThread(localServerName, daemonConnectorHandlers, auditLog);
-            integrationDaemonThread.start();
-
-            /*
              * Create the integration daemon instance.
              */
             integrationDaemonInstance = new IntegrationDaemonInstance(localServerName,
@@ -304,7 +296,6 @@ public class IntegrationDaemonOperationalServices
                                                                       auditLog,
                                                                       localServerUserId,
                                                                       maxPageSize,
-                                                                      integrationDaemonThread,
                                                                       integrationServiceHandlerMap,
                                                                       integrationGroupHandlerMap,
                                                                       daemonConnectorHandlers);
@@ -643,11 +634,6 @@ public class IntegrationDaemonOperationalServices
         for (String serviceName : serviceStatusMap.keySet())
         {
             serviceStatusMap.put(serviceName, ServerActiveStatus.STOPPING);
-        }
-
-        if (integrationDaemonThread != null)
-        {
-            integrationDaemonThread.stop();
         }
 
         for (GroupConfigurationRefreshThread groupConfigurationRefreshThread : configurationRefreshThreads)

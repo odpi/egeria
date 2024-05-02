@@ -536,7 +536,10 @@ public class CapabilityManagerClient extends AssetManagerClientBase implements S
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(capabilityGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(capabilityProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(capabilityProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(capabilityProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         final String urlTemplate = serverPlatformURLRoot + capabilityURLTemplatePrefix + "/{2}?isMergeUpdate={3}";
 

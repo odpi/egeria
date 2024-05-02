@@ -233,7 +233,7 @@ public class DataEngineRelationalDataHandler {
                 databaseSchemaAssetHandler.linkElementToElement(userId, externalSourceGUID, externalSourceName, databaseGUID,
                                                                 DATABASE_GUID, OpenMetadataType.DATABASE_TYPE_NAME, databaseSchemaGUID, DATABASE_SCHEMA_GUID,
                                                                 OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME, false, false,
-                                                                OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID, OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
+                                                                OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeGUID, OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName,
                                                                 (InstanceProperties) null, null, null, now, methodName);
             }
         }

@@ -266,7 +266,10 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(formGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(formProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(formProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (!isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(formProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         final String urlTemplate = serverPlatformURLRoot + formURLTemplatePrefix + "/{2}?isMergeUpdate={3}";
 
@@ -724,7 +727,10 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(reportGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(reportProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(reportProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (!isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(reportProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         final String urlTemplate = serverPlatformURLRoot + reportURLTemplatePrefix + "/{2}?isMergeUpdate={3}";
 
@@ -1182,7 +1188,10 @@ public class DisplayApplicationClient extends SchemaManagerClient implements Dis
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(queryGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(queryProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(queryProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(queryProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         final String urlTemplate = serverPlatformURLRoot + queryURLTemplatePrefix + "/{2}?isMergeUpdate={3}";
 

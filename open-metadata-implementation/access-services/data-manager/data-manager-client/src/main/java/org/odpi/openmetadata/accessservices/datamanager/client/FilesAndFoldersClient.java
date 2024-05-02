@@ -440,7 +440,10 @@ public class FilesAndFoldersClient extends SchemaManagerClient implements FilesA
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(dataFileGUID, dataFileGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(dataFileProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(dataFileProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (!isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(dataFileProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/data-files/{2}?isMergeUpdate={3}";
 

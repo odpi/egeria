@@ -1435,7 +1435,10 @@ public class GovernanceConfigurationHandler
         final String qualifiedNameParameter = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameter, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(properties.getQualifiedName(), qualifiedNameParameter, methodName);
+        }
 
         SoftwareCapabilityBuilder builder = new SoftwareCapabilityBuilder(properties.getQualifiedName(),
                                                                           properties.getDisplayName(),

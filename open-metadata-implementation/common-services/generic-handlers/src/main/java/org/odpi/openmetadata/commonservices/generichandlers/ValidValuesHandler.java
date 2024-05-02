@@ -1301,7 +1301,7 @@ public class ValidValuesHandler<B> extends ReferenceableHandler<B>
      * @param forLineage                the request is to support lineage retrieval this means entities with the Memento classification can be returned
      * @param forDuplicateProcessing    the request is for duplicate processing and so must not deduplicate
      * @param suppliedSupportedZones    list of zones that any asset must be a member of at least one to be visible
-     * @param effectiveTime        the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param effectiveTime              the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName                 calling method
      * @return list of valid value beans
      * @throws InvalidParameterException  one of the parameters is invalid.

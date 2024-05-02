@@ -544,7 +544,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
-        final String   methodName = "getValidValueByName";
+        final String   methodName = "findValidValues";
         final String   parameterName = "searchString";
         final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/by-search-string?startFrom={3}&pageSize={4}";
 
