@@ -1465,7 +1465,14 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         instanceAuditHeader.setType(type);
         instanceAuditHeader.setUpdatedBy(null);
         instanceAuditHeader.setUpdateTime(null);
-        instanceAuditHeader.setVersion(1L);
+        if (creationDate == null)
+        {
+            instanceAuditHeader.setVersion(1L);
+        }
+        else
+        {
+            instanceAuditHeader.setVersion(creationDate.getTime());
+        }
         instanceAuditHeader.setStatus(status);
     }
 

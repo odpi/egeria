@@ -1078,7 +1078,10 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         final String qualifiedNameParameterName  = "qualifiedName";
         final String elementGUIDParameterName    = "schemaTypeGUID";
 
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        }
 
         String typeName = OpenMetadataType.SCHEMA_TYPE_TYPE_NAME;
 

@@ -367,6 +367,10 @@ public class DataFilesMonitorIntegrationConnector extends BasicFilesMonitorInteg
                         }
                     }
                 }
+                else
+                {
+                    updateFileInCatalog(file);
+                }
             }
             catch (Exception error)
             {

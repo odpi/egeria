@@ -15910,51 +15910,11 @@ public class OpenMetadataTypesArchive1_2
 
     private void add0455ExceptionManagement()
     {
-        this.archiveBuilder.addClassificationDef(getExceptionLogFileClassification());
-        this.archiveBuilder.addClassificationDef(getAuditLogFileClassification());
         this.archiveBuilder.addClassificationDef(getExceptionBacklogClassification());
         this.archiveBuilder.addClassificationDef(getAuditLogClassification());
         this.archiveBuilder.addClassificationDef(getMeteringLogClassification());
         this.archiveBuilder.addClassificationDef(getStewardshipServerClassification());
         this.archiveBuilder.addClassificationDef(getGovernanceDaemonClassification());
-    }
-
-
-    private ClassificationDef getExceptionLogFileClassification()
-    {
-        final String guid            = "4756a6da-e0c2-4e81-b9ab-99df2f735eec";
-        final String name            = "ExceptionLogFile";
-        final String description     = "A data file containing exceptions.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = OpenMetadataType.DATA_FILE.typeName;
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
-                                                  null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
-                                                  false);
-    }
-
-
-    private ClassificationDef getAuditLogFileClassification()
-    {
-        final String guid            = "109d6d13-a3cf-4687-a0c1-c3802dc6b3a2";
-        final String name            = "AuditLogFile";
-        final String description     = "A data file containing audit log records.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = OpenMetadataType.DATA_FILE.typeName;
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
-                                                  null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
-                                                  false);
     }
 
 

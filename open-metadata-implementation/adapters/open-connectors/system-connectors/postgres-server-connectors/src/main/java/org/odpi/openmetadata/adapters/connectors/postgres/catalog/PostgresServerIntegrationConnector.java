@@ -339,6 +339,8 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                                                                                        UserNotAuthorizedException,
                                                                                        ConnectorCheckedException
     {
+        final String methodName = "catalogDatabase";
+
         OpenMetadataAccess openMetadataAccess = getContext().getIntegrationGovernanceContext().getOpenMetadataAccess();
         ElementProperties   serverAssetUseProperties = propertyHelper.addEnumProperty(null,
                                                                                       OpenMetadataProperty.USE_TYPE.name,
@@ -363,20 +365,32 @@ public class PostgresServerIntegrationConnector extends InfrastructureIntegrator
                                                                                             OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                             placeholderProperties);
 
-                if (openMetadataAccess.getMetadataElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name) == null)
+                OpenMetadataElement databaseElement = openMetadataAccess.getMetadataElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
+
+                if (databaseElement != null)
                 {
-                    openMetadataAccess.createMetadataElementFromTemplate(OpenMetadataType.RELATIONAL_DATABASE_TYPE_NAME,
-                                                                         databaseServerGUID,
-                                                                         false,
-                                                                         null,
-                                                                         null,
-                                                                         catalogTemplateGUID,
-                                                                         null,
-                                                                         placeholderProperties,
-                                                                         databaseManagerGUID,
-                                                                         OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
-                                                                         serverAssetUseProperties,
-                                                                         true);
+                    auditLog.logMessage(methodName, PostgresAuditCode.SKIPPING_DATABASE.getMessageDefinition(connectorName,
+                                                                                                             databaseElement.getElementGUID(),
+                                                                                                             qualifiedName));
+                }
+                else
+                {
+                    String databaseGUID = openMetadataAccess.createMetadataElementFromTemplate(OpenMetadataType.RELATIONAL_DATABASE_TYPE_NAME,
+                                                                                               databaseServerGUID,
+                                                                                               false,
+                                                                                               null,
+                                                                                               null,
+                                                                                               catalogTemplateGUID,
+                                                                                               null,
+                                                                                               placeholderProperties,
+                                                                                               databaseManagerGUID,
+                                                                                               OpenMetadataType.SERVER_ASSET_USE_RELATIONSHIP.typeName,
+                                                                                               serverAssetUseProperties,
+                                                                                               true);
+
+                    auditLog.logMessage(methodName, PostgresAuditCode.CATALOGED_DATABASE.getMessageDefinition(connectorName,
+                                                                                                              qualifiedName,
+                                                                                                              databaseGUID));
                 }
             }
             else

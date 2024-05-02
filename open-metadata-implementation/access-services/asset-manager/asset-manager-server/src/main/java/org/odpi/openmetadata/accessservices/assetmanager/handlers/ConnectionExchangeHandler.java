@@ -1527,7 +1527,10 @@ public class ConnectionExchangeHandler extends ExchangeHandlerBase
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(endpointGUID, endpointGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(endpointProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(endpointProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(endpointProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         endpointHandler.updateEndpoint(userId,
                                        this.getExternalSourceGUID(correlationProperties),

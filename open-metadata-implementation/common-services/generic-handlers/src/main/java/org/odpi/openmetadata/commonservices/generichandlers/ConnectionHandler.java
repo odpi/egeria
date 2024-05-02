@@ -1562,7 +1562,10 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
     {
         final String nameParameter = "qualifiedName";
 
-        invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
+        }
 
         String typeGUID = invalidParameterHandler.validateTypeName(typeName,
                                                                    OpenMetadataType.CONNECTION_TYPE_NAME,

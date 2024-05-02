@@ -646,7 +646,7 @@ public enum OpenMetadataType
              "CSVFile",
              OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
              "4072c15f-9792-45a3-a4c9-d0602f4ffe87",
-             "A description of a comma separated value (CSV) file."),
+             "A file containing comma-separated (or similar delimited) data."),
 
     /**
      * A description of a file that follows the Apache Avro specification.
@@ -3146,26 +3146,6 @@ public enum OpenMetadataType
 
 
     /**
-     * 37156790-feac-4e1a-a42e-88858ae6f8e1
-     */
-    public static final String DOCUMENT_STORE_TYPE_GUID = "37156790-feac-4e1a-a42e-88858ae6f8e1";  /* from Area 2 */
-
-    /**
-     * DocumentStore
-     */
-    public static final String DOCUMENT_STORE_TYPE_NAME = "DocumentStore";
-
-    /**
-     * 0075d603-1627-41c5-8cae-f5458d1247fe
-     */
-    public static final String MEDIA_COLLECTION_TYPE_GUID = "0075d603-1627-41c5-8cae-f5458d1247fe";  /* from Area 2 */
-
-    /**
-     * MediaCollection
-     */
-    public static final String MEDIA_COLLECTION_TYPE_NAME = "MediaCollection";
-
-    /**
      * cee3a190-fc8d-4e53-908a-f1b9689581e0
      */
     public static final String LINKED_MEDIA_TYPE_GUID = "cee3a190-fc8d-4e53-908a-f1b9689581e0";  /* from Area 2 */
@@ -3175,22 +3155,7 @@ public enum OpenMetadataType
      */
     public static final String LINKED_MEDIA_TYPE_NAME = "LinkedMedia";
 
-    /**
-     * 7d881574-461d-475c-ab44-077451528cb8
-     */
-    @Deprecated
-    public static final String GROUPED_MEDIA_TYPE_GUID = "7d881574-461d-475c-ab44-077451528cb8";  /* from Area 2 */
 
-    /**
-     * GroupedMedia - End1 = MediaCollection; End 2 = MediaFile
-     */
-    @Deprecated
-    public static final String GROUPED_MEDIA_TYPE_NAME = "GroupedMedia";
-
-    /**
-     * embeddedMetadata
-     */
-    public static final String EMBEDDED_METADATA_PROPERTY_NAME = "embeddedMetadata";                      /* from MediaFile entity */
 
 
     /**
@@ -3213,16 +3178,6 @@ public enum OpenMetadataType
      * DeployedDatabaseSchema
      */
     public static final String DEPLOYED_DATABASE_SCHEMA_TYPE_NAME = "DeployedDatabaseSchema";
-
-    /**
-     * b827683c-2924-4df3-a92d-7be1888e23c0
-     */
-    public static final String DATA_CONTENT_FOR_DATA_SET_TYPE_GUID = "b827683c-2924-4df3-a92d-7be1888e23c0";  /* from Area 2 */
-
-    /**
-     * DataContentForDataSet - End1 = Asset; End 2 = DataSet
-     */
-    public static final String DATA_CONTENT_FOR_DATA_SET_TYPE_NAME = "DataContentForDataSet";
 
 
     /**

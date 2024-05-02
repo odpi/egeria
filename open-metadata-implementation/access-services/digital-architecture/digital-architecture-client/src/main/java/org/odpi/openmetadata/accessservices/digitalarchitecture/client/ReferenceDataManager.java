@@ -319,7 +319,10 @@ public class ReferenceDataManager extends DigitalArchitectureClientBase implemen
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(validValueGUID, guidParameter, methodName);
-        invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
+        }
 
         final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/{2}/update?isMergeUpdate={3}";
 

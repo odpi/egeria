@@ -12,15 +12,10 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
+import org.odpi.openmetadata.frameworks.integration.properties.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.governanceaction.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.integration.properties.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.frameworkservices.oif.rest.CatalogTargetResponse;
 import org.odpi.openmetadata.frameworkservices.oif.rest.CatalogTargetsResponse;
@@ -33,7 +28,10 @@ import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeR
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeSummaryListResponse;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -48,8 +46,6 @@ public class AutomatedCurationRESTServices extends TokenController
 
     private static final RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(AutomatedCurationRESTServices.class),
                                                                             instanceHandler.getServiceName());
-
-    private final PropertyHelper propertyHelper = new PropertyHelper();
 
     /**
      * Default constructor
@@ -77,6 +73,9 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public TechnologyTypeSummaryListResponse findTechnologyTypes(String            serverName,
+                                                                 boolean           startsWith,
+                                                                 boolean           endsWith,
+                                                                 boolean           ignoreCase,
                                                                  int               startFrom,
                                                                  int               pageSize,
                                                                  FilterRequestBody requestBody)
@@ -94,21 +93,38 @@ public class AutomatedCurationRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            ValidValuesAssetOwner handler = instanceHandler.getValidValuesAssetOwner(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                ValidValuesAssetOwner handler = instanceHandler.getValidValuesAssetOwner(userId, serverName, methodName);
-
-                List<ValidValueElement> validValues = handler.findValidValues(userId,
-                                                                              "Egeria:ValidMetadataValue.*(.*" + requestBody.getFilter() + ".*)",
-                                                                              startFrom,
-                                                                              pageSize,
-                                                                              requestBody.getEffectiveTime());
-                response.setElements(this.getTechnologySummaries(validValues));
+                if ((requestBody.getFilter() != null) && (! requestBody.getFilter().isBlank()))
+                {
+                    List<ValidValueElement> validValues = handler.findValidValues(userId,
+                                                                                  "Egeria:ValidMetadataValue.*deployedImplementationType.*" + requestBody.getFilter() + ".*",
+                                                                                  startFrom,
+                                                                                  pageSize,
+                                                                                  requestBody.getEffectiveTime());
+                    response.setElements(this.getTechnologySummaries(validValues));
+                }
+                else
+                {
+                    List<ValidValueElement> validValues = handler.findValidValues(userId,
+                                                                                  "Egeria:ValidMetadataValue.*deployedImplementationType-(.*)",
+                                                                                  startFrom,
+                                                                                  pageSize,
+                                                                                  requestBody.getEffectiveTime());
+                    response.setElements(this.getTechnologySummaries(validValues));
+                }
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                List<ValidValueElement> validValues = handler.findValidValues(userId,
+                                                                              "Egeria:ValidMetadataValue.*deployedImplementationType-(.*)",
+                                                                              startFrom,
+                                                                              pageSize,
+                                                                              new Date());
+                response.setElements(this.getTechnologySummaries(validValues));
             }
         }
         catch (Exception error)

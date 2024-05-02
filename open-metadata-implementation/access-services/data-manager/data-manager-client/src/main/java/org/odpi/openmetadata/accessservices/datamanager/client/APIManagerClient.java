@@ -302,7 +302,10 @@ public class APIManagerClient extends SchemaManagerClient implements APIManagerI
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(apiGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(apiProperties, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(apiProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(apiProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+        }
 
         final String urlTemplate = serverPlatformURLRoot + apiURLTemplatePrefix + "/{2}?isMergeUpdate={3}";
 

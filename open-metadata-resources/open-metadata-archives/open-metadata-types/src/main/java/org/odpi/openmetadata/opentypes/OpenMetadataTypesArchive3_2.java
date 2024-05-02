@@ -786,8 +786,6 @@ public class OpenMetadataTypesArchive3_2
     private void update0455ExceptionManagement()
     {
         this.archiveBuilder.addClassificationDef(getLogAnalysisClassification());
-        this.archiveBuilder.addClassificationDef(getMeteringLogFileClassification());
-        this.archiveBuilder.addClassificationDef(getLineageLogFileClassification());
         this.archiveBuilder.addClassificationDef(getLineageLogClassification());
 
         this.archiveBuilder.addTypeDefPatch(updateExceptionBacklogClassification());
@@ -866,42 +864,6 @@ public class OpenMetadataTypesArchive3_2
         classificationDef.setPropertiesDefinition(properties);
 
         return classificationDef;
-    }
-
-    private ClassificationDef getMeteringLogFileClassification()
-    {
-        final String guid            = "5ceb0c07-4271-4910-9e24-b0894f395d93";
-        final String name            = "MeteringLogFile";
-        final String description     = "A data file containing resource use events.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = OpenMetadataType.DATA_FILE.typeName;
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
-                                                  null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
-                                                  false);
-    }
-
-    private ClassificationDef getLineageLogFileClassification()
-    {
-        final String guid            = "9992758d-d7dd-432d-b84e-62fe007a6364";
-        final String name            = "LineageLogFile";
-        final String description     = "A data file containing operational lineage events.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = OpenMetadataType.DATA_FILE.typeName;
-
-        return archiveHelper.getClassificationDef(guid,
-                                                  name,
-                                                  null,
-                                                  description,
-                                                  descriptionGUID,
-                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
-                                                  false);
     }
 
     private ClassificationDef getLineageLogClassification()

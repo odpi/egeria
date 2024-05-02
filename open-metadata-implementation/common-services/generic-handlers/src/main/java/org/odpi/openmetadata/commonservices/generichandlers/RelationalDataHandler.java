@@ -958,7 +958,10 @@ public class RelationalDataHandler<DATABASE,
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        }
 
         String assetTypeName = OpenMetadataType.DATABASE_TYPE_NAME;
 
@@ -1587,8 +1590,8 @@ public class RelationalDataHandler<DATABASE,
                                                        OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                                                        forLineage,
                                                        forDuplicateProcessing,
-                                                       OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
-                                                       OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
+                                                       OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeGUID,
+                                                       OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName,
                                                        null,
                                                        effectiveFrom,
                                                        effectiveTo,
@@ -1742,8 +1745,8 @@ public class RelationalDataHandler<DATABASE,
                                                        OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                                                        forLineage,
                                                        forDuplicateProcessing,
-                                                       OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
-                                                       OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
+                                                       OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeGUID,
+                                                       OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName,
                                                        null,
                                                        effectiveFrom,
                                                        effectiveTo,
@@ -1853,8 +1856,8 @@ public class RelationalDataHandler<DATABASE,
                                                        OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                                                        forLineage,
                                                        forDuplicateProcessing,
-                                                       OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
-                                                       OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
+                                                       OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeGUID,
+                                                       OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName,
                                                        null,
                                                        effectiveFrom,
                                                        effectiveTo,
@@ -1932,7 +1935,10 @@ public class RelationalDataHandler<DATABASE,
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        }
 
         String assetTypeName = OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME;
 
@@ -2230,8 +2236,8 @@ public class RelationalDataHandler<DATABASE,
                                                          databaseGUID,
                                                          parentElementGUIDParameterName,
                                                          OpenMetadataType.DATABASE_TYPE_NAME,
-                                                         OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
-                                                         OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
+                                                         OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeGUID,
+                                                         OpenMetadataType.DATA_CONTENT_FOR_DATA_SET_RELATIONSHIP.typeName,
                                                          OpenMetadataType.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
                                                          null,
                                                          null,
@@ -2952,7 +2958,10 @@ public class RelationalDataHandler<DATABASE,
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseTableGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        }
 
         /*
          * A database table is represented as a schemaAttribute of type RelationalTable (or a subtype).
@@ -3709,7 +3718,10 @@ public class RelationalDataHandler<DATABASE,
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseViewGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        }
 
         String  expectedTypeName = OpenMetadataType.RELATIONAL_TABLE_TYPE_NAME;
         if (typeName != null)
@@ -4914,7 +4926,10 @@ public class RelationalDataHandler<DATABASE,
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseColumnGUID, elementGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        if (! isMergeUpdate)
+        {
+            invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+        }
 
         /*
          * A database column is represented as a schemaAttribute of type RelationalColumn (or a subtype).
