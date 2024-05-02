@@ -115,9 +115,17 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#NO_DATABASES" class="member-name-link">NO_DATABASES</a></code></div>
+<div class="col-first even-row-color"><code><a href="#CATALOGED_DATABASE" class="member-name-link">CATALOGED_DATABASE</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">POSTGRES-CONNECTOR-0003 - The {0} integration connector has catalogued PostgreSQL Database {1} ({2})</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NO_DATABASES" class="member-name-link">NO_DATABASES</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">POSTGRES-CONNECTOR-0002 - The {0} survey action service is unable to retrieve details of any databases for PostgreSQL Database Server {1}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SKIPPING_DATABASE" class="member-name-link">SKIPPING_DATABASE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">POSTGRES-CONNECTOR-0004 - he {0} integration connector is skipping PostgreSQL Database {1} ({2}) because it is already catalogued</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
 <div class="col-last odd-row-color">
@@ -195,6 +203,20 @@ the order they are declared.</div>
 <h3>NO_DATABASES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.ffdc">PostgresAuditCode</a></span>&nbsp;<span class="element-name">NO_DATABASES</span></div>
 <div class="block">POSTGRES-CONNECTOR-0002 - The {0} survey action service is unable to retrieve details of any databases for PostgreSQL Database Server {1}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CATALOGED_DATABASE">
+<h3>CATALOGED_DATABASE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.ffdc">PostgresAuditCode</a></span>&nbsp;<span class="element-name">CATALOGED_DATABASE</span></div>
+<div class="block">POSTGRES-CONNECTOR-0003 - The {0} integration connector has catalogued PostgreSQL Database {1} ({2})</div>
+</section>
+</li>
+<li>
+<section class="detail" id="SKIPPING_DATABASE">
+<h3>SKIPPING_DATABASE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.ffdc">PostgresAuditCode</a></span>&nbsp;<span class="element-name">SKIPPING_DATABASE</span></div>
+<div class="block">POSTGRES-CONNECTOR-0004 - he {0} integration connector is skipping PostgreSQL Database {1} ({2}) because it is already catalogued</div>
 </section>
 </li>
 </ul>
