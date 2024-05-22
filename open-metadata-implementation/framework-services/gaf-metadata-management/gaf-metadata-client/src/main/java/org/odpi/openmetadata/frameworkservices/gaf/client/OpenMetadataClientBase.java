@@ -3934,7 +3934,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                             additionalProperties = new HashMap<>();
                         }
 
-                        additionalProperties.put("placeholderName",
+                        additionalProperties.put(propertyType + "Name",
                                                  propertyHelper.getStringProperty(serviceURLMarker,
                                                                                   OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME,
                                                                                   refDataElement.getElement().getElementProperties(),
@@ -3962,5 +3962,4 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
         return null;
     }
-
 }

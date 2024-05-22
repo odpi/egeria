@@ -195,7 +195,6 @@ public enum FilesPlaceholderProperty
     {
         List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
 
-        placeholderPropertyTypes.add(DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholderType());
         placeholderPropertyTypes.add(PATH_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(FILE_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(FILE_TYPE.getPlaceholderType());
@@ -215,7 +214,6 @@ public enum FilesPlaceholderProperty
     {
         List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
 
-        placeholderPropertyTypes.add(DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholderType());
         placeholderPropertyTypes.add(PATH_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(FILE_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(FILE_TYPE.getPlaceholderType());
@@ -236,7 +234,6 @@ public enum FilesPlaceholderProperty
     {
         List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
 
-        placeholderPropertyTypes.add(DEPLOYED_IMPLEMENTATION_TYPE.getPlaceholderType());
         placeholderPropertyTypes.add(PATH_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(FOLDER_NAME.getPlaceholderType());
 

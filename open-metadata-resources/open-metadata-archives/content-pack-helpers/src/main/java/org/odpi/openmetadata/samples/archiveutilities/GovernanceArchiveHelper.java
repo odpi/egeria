@@ -950,7 +950,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            annotationTypeType.getName(),
                                                            false,
                                                            true,
-                                                           annotationTypeType.getOtherPropertyValues());
+                                                           additionalProperties);
 
                 if (validValueGUID != null)
                 {
@@ -1012,7 +1012,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            producedRequestParameter.getName(),
                                                            false,
                                                            true,
-                                                           producedRequestParameter.getOtherPropertyValues());
+                                                           additionalProperties);
 
                 if (validValueGUID != null)
                 {
@@ -1074,7 +1074,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            actionTargetType.getName(),
                                                            false,
                                                            true,
-                                                           actionTargetType.getOtherPropertyValues());
+                                                           additionalProperties);
 
                 if (validValueGUID != null)
                 {
@@ -1128,7 +1128,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            guardType.getGuard(),
                                                            false,
                                                            true,
-                                                           guardType.getOtherPropertyValues());
+                                                           additionalProperties);
 
                 if (validValueGUID != null)
                 {

@@ -71,15 +71,15 @@ import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataV
  */
 public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 {
-    private static final String archiveFileName = "OpenConnectorsArchive.omarchive";
+    private static final String archiveFileName = "CoreContentPack.omarchive";
 
     /*
      * This is the header information for the archive.
      */
     private static final String                  archiveGUID        = "09450b83-20ff-4a8b-a8fb-f9b527bbcba6";
-    private static final String                  archiveName        = "OpenConnectorsArchive";
+    private static final String                  archiveName        = "CoreContentPack";
     private static final String                  archiveLicense     = "Apache-2.0";
-    private static final String                  archiveDescription = "Connector Types and Categories for connectors from the Egeria project.";
+    private static final String                  archiveDescription = "Connector Types and Categories for connectors from the Egeria project along with metadata valid values for the types of technology supported by these connectors.";
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
     private static final String                  originatorName     = "Egeria Project";
     private static final Date                    creationDate       = new Date();
@@ -107,9 +107,10 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
 
     /*
-     * Specific values for initializing TypeDefs
+     * Specific values for initializing elements.  The version number is based off of the build time to ensure the
+     * latest version of the archive elements is loaded.
      */
-    private static final long   versionNumber = 1L;
+    private static final long   versionNumber = creationDate.getTime();
     private static final String versionName   = "1.0";
 
     private final OMRSArchiveBuilder      archiveBuilder;
@@ -450,7 +451,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                       new ArrayList<>(Arrays.asList(EngineActionStatus.values())));
 
         addOpenMetadataEnumValidNames(OpenMetadataType.TARGET_FOR_ACTION.typeName,
-                                      OpenMetadataProperty.TARGET_FOR_ACTION_STATUS.name,
+                                      OpenMetadataProperty.ACTION_STATUS.name,
                                       EngineActionStatus.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(EngineActionStatus.values())));
 
@@ -1058,7 +1059,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
     {
         String basicFileConnectorTypeGUID = new BasicFileStoreProvider().getConnectorType().getGUID();
 
-        createFolderCatalogTemplate(DeployedImplementationType.FILE_FOLDER, basicFileConnectorTypeGUID);
+        createFolderCatalogTemplate(DeployedImplementationType.FILE_FOLDER, new BasicFolderProvider().getConnectorType().getGUID());
         createFolderCatalogTemplate(DeployedImplementationType.DATA_FOLDER, new DataFolderProvider().getConnectorType().getGUID());
 
         createDataFileCatalogTemplate(DeployedImplementationType.FILE, basicFileConnectorTypeGUID, null);
@@ -2686,8 +2687,8 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
             String governanceActionTypeGUID = archiveHelper.addGovernanceActionType(null,
                                                                                     governanceEngineGUID,
                                                                                     governanceEngineTypeName,
-                                                                                    "Egeria:GovernanceActionType:" + governanceEngineGUID + governanceRequestType,
-                                                                                    governanceRequestType + ":" + governanceEngineName,
+                                                                                    "Egeria:GovernanceActionType:" + governanceEngineName + ":" + governanceRequestType,
+                                                                                    governanceRequestType + " (" + governanceEngineName + ")",
                                                                                     governanceActionDescription.governanceServiceDescription,
                                                                                     0,
                                                                                     governanceActionDescription.supportedRequestParameters,

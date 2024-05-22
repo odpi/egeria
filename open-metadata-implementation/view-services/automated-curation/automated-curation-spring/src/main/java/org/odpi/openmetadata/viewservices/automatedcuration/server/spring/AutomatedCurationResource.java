@@ -420,7 +420,8 @@ public class AutomatedCurationResource
                                                                                                boolean                 endsWith,
                                                                                  @RequestParam (required = false, defaultValue = "false")
                                                                                                boolean                 ignoreCase,
-                                                                                 @RequestBody  FilterRequestBody       requestBody)
+                                                                                 @RequestBody  (required = false)
+                                                                                               FilterRequestBody       requestBody)
     {
         return restAPI.findGovernanceActionProcesses(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
     }
@@ -720,7 +721,8 @@ public class AutomatedCurationResource
                                                                         boolean                 endsWith,
                                                           @RequestParam (required = false, defaultValue = "false")
                                                                         boolean                 ignoreCase,
-                                                          @RequestBody  FilterRequestBody       requestBody)
+                                                          @RequestBody  (required = false)
+                                                                        FilterRequestBody       requestBody)
     {
         return restAPI.findEngineActions(serverName, startsWith, endsWith, ignoreCase, startFrom, pageSize, requestBody);
     }

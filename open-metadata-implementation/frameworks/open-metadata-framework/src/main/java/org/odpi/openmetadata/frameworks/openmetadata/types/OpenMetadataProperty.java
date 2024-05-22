@@ -803,7 +803,7 @@ public enum OpenMetadataProperty
     EXT_INSTANCE_VERSION("externalInstanceVersion" , "long", "The latest version of the element in the external system.", null, "349199e2-5781-4413-8550-c85241e20cc5"),
 
     /**
-     * Additional properties to aid the mapping to the the element in an external metadata source.
+     * Additional properties to aid the mapping to the element in an external metadata source.
      */
     MAPPING_PROPERTIES("mappingProperties", "map<string, string>", "Additional properties to aid the mapping to the the element in an external metadata source.", null, "8161e120-993b-490c-bf66-cb9fd85192fc"),
 
@@ -1025,11 +1025,6 @@ public enum OpenMetadataProperty
     ACTION_STATUS("actionStatus", EngineActionStatus.getOpenTypeName(), EngineActionStatus.getOpenTypeDescription(), EngineActionStatus.ACTIVATING.getName(), "c2d8fd79-0c16-4e01-888f-2ae7a9cdf11d"),
 
     /**
-     * Defines the current execution status of an engine action.
-     */
-    TARGET_FOR_ACTION_STATUS("status", EngineActionStatus.getOpenTypeName(), EngineActionStatus.getOpenTypeDescription(), EngineActionStatus.ACTIVATING.getName(), "8c9f0f64-6f58-46c7-aafc-b634d173f3de"),
-
-    /**
      * Different types of activities.
      */
     ACTIVITY_TYPE("type", GlossaryTermActivityType.getOpenTypeName(), GlossaryTermActivityType.getOpenTypeDescription(), GlossaryTermActivityType.PROJECT.getName(), "6949c588-d7ab-441f-be03-a97b1dc2900b"),
@@ -1040,14 +1035,14 @@ public enum OpenMetadataProperty
     TERM_RELATIONSHIP_STATUS("status", GlossaryTermRelationshipStatus.getOpenTypeName(), GlossaryTermRelationshipStatus.getOpenTypeDescription(), GlossaryTermRelationshipStatus.DRAFT.getName(), "5cc02a53-2428-434a-9b97-883eae896552"),
 
     /**
-     * Defines the provenance and confidence of a term assignment.
+     * Defines the provenance and confidence of a semantic assignment.
      */
-    TERM_ASSIGNMENT_STATUS("status", GlossaryTermAssignmentStatus.getOpenTypeName(), GlossaryTermAssignmentStatus.getOpenTypeDescription(), GlossaryTermAssignmentStatus.IMPORTED.getName(), "d842dfdd-f080-4539-9a3c-eacdf0a03d07"),
+    TERM_ASSIGNMENT_STATUS("termAssignmentStatus", GlossaryTermAssignmentStatus.getOpenTypeName(), GlossaryTermAssignmentStatus.getOpenTypeDescription(), GlossaryTermAssignmentStatus.IMPORTED.getName(), "d842dfdd-f080-4539-9a3c-eacdf0a03d07"),
 
     /**
      * Defines the provenance and confidence of a data class assignment.
      */
-    DATA_CLASS_ASSIGNMENT_STATUS("status", DataClassAssignmentStatus.getOpenTypeName(), DataClassAssignmentStatus.getOpenTypeDescription(), DataClassAssignmentStatus.IMPORTED.getName(), "71e53cf4-7158-4054-b7f8-da643a34d2da"),
+    DATA_CLASS_ASSIGNMENT_STATUS("dataClassAssignmentStatus", DataClassAssignmentStatus.getOpenTypeName(), DataClassAssignmentStatus.getOpenTypeDescription(), DataClassAssignmentStatus.IMPORTED.getName(), "71e53cf4-7158-4054-b7f8-da643a34d2da"),
 
     /**
      * An indication of the relative position in which this work item should be tackled compared to others in the overall work list.
