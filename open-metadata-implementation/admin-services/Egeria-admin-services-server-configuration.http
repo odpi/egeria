@@ -372,7 +372,7 @@ Content-Type: application/json
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/{{server}}/open-metadata-archives/file
 Content-Type: text/plain
 
-content-packs/OpenConnectorsArchive.omarchive
+content-packs/CoreContentPack.omarchive
 
 ###
 # group: Configuring OMAG Servers / Configuration for Cohort Members / Configuration for Metadata Access Points / Configuration for Metadata Servers

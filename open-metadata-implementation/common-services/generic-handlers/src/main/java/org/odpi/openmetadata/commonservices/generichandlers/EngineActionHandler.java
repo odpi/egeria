@@ -2248,7 +2248,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                 {
                     InstanceProperties actionTargetProperties = actionTarget.getProperties();
 
-                    if (actionTargetProperties.getPropertyValue(OpenMetadataProperty.TARGET_FOR_ACTION_STATUS.name) == null)
+                    if (actionTargetProperties.getPropertyValue(OpenMetadataProperty.ACTION_STATUS.name) == null)
                     {
                         InstanceProperties newActionTargetProperties;
 
@@ -2256,7 +2256,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                         {
                             newActionTargetProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                                    actionTarget.getProperties(),
-                                                                                                   OpenMetadataProperty.TARGET_FOR_ACTION_STATUS.name,
+                                                                                                   OpenMetadataProperty.ACTION_STATUS.name,
                                                                                                    EngineActionStatus.getOpenTypeGUID(),
                                                                                                    EngineActionStatus.getOpenTypeName(),
                                                                                                    status,
@@ -2934,7 +2934,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
             {
                 newActionTargetProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
                                                                                        actionTarget.getProperties(),
-                                                                                       OpenMetadataProperty.TARGET_FOR_ACTION_STATUS.name,
+                                                                                       OpenMetadataProperty.ACTION_STATUS.name,
                                                                                        EngineActionStatus.getOpenTypeGUID(),
                                                                                        EngineActionStatus.getOpenTypeName(),
                                                                                        status,

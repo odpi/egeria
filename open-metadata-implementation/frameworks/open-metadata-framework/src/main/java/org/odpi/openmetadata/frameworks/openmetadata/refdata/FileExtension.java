@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * FileExtension describes the standard file extensions recognized by Egeria. These are encoded in the OpenConnectorsArchive.omarchive and are
+ * FileExtension describes the standard file extensions recognized by Egeria. These are encoded in the CoreContentPack.omarchive and are
  * available in the open metadata repository as valid values.
  */
 public enum FileExtension

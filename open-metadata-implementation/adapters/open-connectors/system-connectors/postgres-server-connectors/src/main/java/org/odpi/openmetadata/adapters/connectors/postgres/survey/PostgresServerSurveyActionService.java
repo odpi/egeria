@@ -84,7 +84,7 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
 
             annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
 
-            Map<String, Long> databases = new HashMap<>();
+            Map<String, DatabaseStats> databases = new HashMap<>();
 
             DataSource jdbcDataSource = assetConnector.getDataSource();
             Connection jdbcConnection = jdbcDataSource.getConnection();
@@ -106,7 +106,11 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
                     long oid = resultSet.getLong("oid");
                     String databaseName = resultSet.getString("datname");
 
-                    databases.put(databaseName, oid);
+                    DatabaseStats databaseStats = new DatabaseStats();
+
+                    databaseStats.oid = oid;
+
+                    databases.put(databaseName, databaseStats);
                 }
             }
 
@@ -121,7 +125,33 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
             }
             else
             {
-                Map<String, Long> profileCounts = new HashMap<>();
+                String pg_stat_user_tablesSQLCommand = "SELECT datname, tup_fetched, tup_inserted, tup_updated, tup_deleted, session_time, active_time, stats_reset FROM pg_catalog.pg_stat_database;";
+                preparedStatement = jdbcConnection.prepareStatement(pg_stat_user_tablesSQLCommand);
+
+                resultSet = preparedStatement.executeQuery();
+
+                while (resultSet.next())
+                {
+                    String databaseName = resultSet.getString("datname");
+
+                    DatabaseStats databaseStats = databases.get(databaseName);
+
+                    if (databaseStats != null)
+                    {
+                        databaseStats.tuplesFetched = resultSet.getLong("tup_fetched");
+                        databaseStats.tuplesInserted = resultSet.getLong("tup_inserted");
+                        databaseStats.tuplesUpdated = resultSet.getLong("tup_updated");
+                        databaseStats.tuplesDeleted = resultSet.getLong("tup_deleted");
+                        databaseStats.sessionTime = resultSet.getDouble("session_time");
+                        databaseStats.activeTime = resultSet.getDouble("active_time");
+                        databaseStats.statsReset = resultSet.getDate("stats_reset");
+
+                        databases.put(databaseName, databaseStats);
+                    }
+                }
+
+                resultSet.close();
+                preparedStatement.close();
 
                 for (String databaseName : databases.keySet())
                 {
@@ -134,16 +164,16 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
 
                         if (resultSet.next())
                         {
-                            profileCounts.put(databaseName, resultSet.getLong("pg_database_size"));
-                        }
-                        else
-                        {
-                            profileCounts.put(databaseName, 0L);
+                            DatabaseStats databaseStats = databases.get(databaseName);
+
+                            databaseStats.size = resultSet.getLong("pg_database_size");
+
+                            databases.put(databaseName, databaseStats);
                         }
                     }
                     catch (Exception noSize)
                     {
-                        profileCounts.put(databaseName, 0L);
+                        // Nothing to do
                     }
 
                     resultSet.close();
@@ -156,7 +186,7 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
                 annotation.setSummary(PostgresAnnotationType.DATABASE_SIZES.getSummary());
                 annotation.setExplanation(PostgresAnnotationType.DATABASE_SIZES.getExplanation());
 
-                annotation.setProfileCounts(profileCounts);
+                //annotation.setProfileCounts(profileCounts);
 
                 annotationStore.addAnnotation(annotation, surveyContext.getAssetGUID());
             }
@@ -186,5 +216,22 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
         }
 
         super.disconnect();
+    }
+
+
+    /**
+     * DatabaseStats captures information about a particular database.
+     */
+    static class DatabaseStats
+    {
+        long   oid            = 0L;
+        long   size           = 0L;
+        long   tuplesFetched  = 0L;
+        long   tuplesInserted = 0L;
+        long   tuplesUpdated  = 0L;
+        long   tuplesDeleted  = 0L;
+        double sessionTime    = 0;
+        double activeTime     = 0;
+        Date   statsReset     = null;
     }
 }

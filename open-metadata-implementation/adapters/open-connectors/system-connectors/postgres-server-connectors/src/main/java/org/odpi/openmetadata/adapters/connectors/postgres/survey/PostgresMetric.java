@@ -12,6 +12,12 @@ import java.util.List;
 public enum PostgresMetric
 {
     DATABASE_SIZE ("Database size", "Number of stored bytes in the database."),
+    ROWS_FETCHED ("Rows Fetched", "Number of rows retrieved from any table in the database."),
+    ROWS_INSERTED ("Rows Inserted", "Number of rows inserted from any table in the database."),
+    ROWS_UPDATED ("Rows Updated", "Number of rows updated from any table in the database."),
+    ROWS_DELETED ("Rows Deleted", "Number of rows deleted from any table in the database.."),
+    SESSION_TIME ("Session Time", "The length of time (milliseconds) that the database had at least one open session from an external client."),
+    ACTIVE_TIME ("Active Time", "The length of time (milliseconds) that the database was being actively queried."),
     TABLE_SIZE ("Table size", "Number of stored bytes in the table."),
     TOTAL_TABLE_SIZE ("Total size of tables", "Sum of the sizes (in bytes) of the tables in the schema."),
     TABLE_NAME ("Table name", "Name of table."),

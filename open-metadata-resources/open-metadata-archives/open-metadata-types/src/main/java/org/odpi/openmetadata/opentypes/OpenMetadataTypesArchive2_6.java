@@ -1639,9 +1639,9 @@ public class OpenMetadataTypesArchive2_6
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.TARGET_FOR_ACTION_STATUS.name;
-        final String attribute1Description     = OpenMetadataProperty.TARGET_FOR_ACTION_STATUS.description;
-        final String attribute1DescriptionGUID = OpenMetadataProperty.TARGET_FOR_ACTION_STATUS.descriptionGUID;
+        final String attribute1Name            = OpenMetadataProperty.ACTION_STATUS.name;
+        final String attribute1Description     = OpenMetadataProperty.ACTION_STATUS.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.ACTION_STATUS.descriptionGUID;
         final String attribute2Name            = OpenMetadataProperty.START_DATE.name;
         final String attribute2Description     = OpenMetadataProperty.START_DATE.description;
         final String attribute2DescriptionGUID = OpenMetadataProperty.START_DATE.descriptionGUID;

@@ -946,11 +946,11 @@ public class AutomatedCurationRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
                 response.setElements(handler.getGovernanceActionProcessesByName(userId,
                                                                                 instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
                                                                                 startFrom,
@@ -959,7 +959,11 @@ public class AutomatedCurationRESTServices extends TokenController
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setElements(handler.getGovernanceActionProcessesByName(userId,
+                                                                                instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                                                startFrom,
+                                                                                pageSize,
+                                                                                new Date()));
             }
         }
         catch (Exception error)
@@ -1343,11 +1347,11 @@ public class AutomatedCurationRESTServices extends TokenController
 
             restCallLogger.setUserId(token, userId);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
+
             if (requestBody != null)
             {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
                 response.setElements(handler.findEngineActions(userId,
                                                                instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
                                                                startFrom,
@@ -1355,7 +1359,10 @@ public class AutomatedCurationRESTServices extends TokenController
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setElements(handler.findEngineActions(userId,
+                                                               instanceHandler.getSearchString(null, startsWith, endsWith, ignoreCase),
+                                                               startFrom,
+                                                               pageSize));
             }
         }
         catch (Exception error)

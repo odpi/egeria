@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
-import java.io.Serial;
-import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -21,13 +21,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceActionProcessStepElement implements Serializable
+public class GovernanceActionProcessStepElement
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    private ElementHeader                         elementHeader         = null;
-    private GovernanceActionProcessStepProperties processStepProperties = null;
+    private ElementHeader                          elementHeader         = null;
+    private GovernanceActionProcessStepProperties  processStepProperties = null;
+    private Map<String, List<Map<String, String>>> specification        = null;
 
 
     /**
@@ -48,8 +46,9 @@ public class GovernanceActionProcessStepElement implements Serializable
     {
         if (template != null)
         {
-            elementHeader      = template.getElementHeader();
+            elementHeader         = template.getElementHeader();
             processStepProperties = template.getProcessStepProperties();
+            specification         = template.getSpecification();
         }
     }
 
@@ -98,6 +97,28 @@ public class GovernanceActionProcessStepElement implements Serializable
 
 
     /**
+     * Return the specification for the governance action.
+     *
+     * @return specification map
+     */
+    public Map<String, List<Map<String, String>>> getSpecification()
+    {
+        return specification;
+    }
+
+
+    /**
+     * Set up the specification for the governance action.
+     *
+     * @param specification specification map
+     */
+    public void setSpecification(Map<String, List<Map<String, String>>> specification)
+    {
+        this.specification = specification;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -108,7 +129,8 @@ public class GovernanceActionProcessStepElement implements Serializable
         return "GovernanceActionProcessStepElement{" +
                        "elementHeader=" + elementHeader +
                        ", processStepProperties=" + processStepProperties +
-                       '}';
+                       ", specification=" + specification +
+                '}';
     }
 
 
@@ -135,7 +157,8 @@ public class GovernanceActionProcessStepElement implements Serializable
         }
         GovernanceActionProcessStepElement that = (GovernanceActionProcessStepElement) objectToCompare;
         return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(processStepProperties, that.processStepProperties);
+                Objects.equals(processStepProperties, that.processStepProperties) &&
+                Objects.equals(specification, that.specification);
     }
 
 
@@ -147,6 +170,6 @@ public class GovernanceActionProcessStepElement implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, processStepProperties);
+        return Objects.hash(super.hashCode(), elementHeader, processStepProperties, specification);
     }
 }

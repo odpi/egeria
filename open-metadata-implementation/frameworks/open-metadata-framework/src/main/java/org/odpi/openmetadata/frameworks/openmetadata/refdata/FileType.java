@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.refdata;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 /**
- * FileType describes the standard file types supplied with Egeria.  These are encoded in the OpenConnectorsArchive.omarchive and are
+ * FileType describes the standard file types supplied with Egeria.  These are encoded in the CoreContentPack.omarchive and are
  * available in the open metadata repository as valid values.
  */
 public enum FileType

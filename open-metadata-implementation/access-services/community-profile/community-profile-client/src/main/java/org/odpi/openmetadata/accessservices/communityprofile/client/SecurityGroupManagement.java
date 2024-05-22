@@ -11,7 +11,6 @@ import org.odpi.openmetadata.accessservices.communityprofile.properties.Security
 import org.odpi.openmetadata.accessservices.communityprofile.rest.ElementStubsResponse;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.SecurityGroupResponse;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.SecurityGroupsResponse;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;

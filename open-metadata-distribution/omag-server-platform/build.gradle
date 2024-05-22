@@ -282,7 +282,8 @@ distributions {
             }
             into('assembly/platform') {
                 from(rootProject.projectDir) {
-                    include 'content-packs/OpenConnectorsArchive.omarchive'
+                    include 'content-packs/CoreContentPack.omarchive'
+                    include 'content-packs/SimpleCatalog.omarchive'
                 }
                 fileMode = 0755
             }

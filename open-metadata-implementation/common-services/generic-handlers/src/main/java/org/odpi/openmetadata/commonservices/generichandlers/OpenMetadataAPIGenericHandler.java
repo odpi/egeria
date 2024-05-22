@@ -3531,7 +3531,6 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      * @param newProperties properties to test
      * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
      * @param methodName calling method for exceptions and error messages
-     *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem accessing the properties in the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -15071,5 +15070,112 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
                                                                  methodName);
 
         return entityDetail != null && entityDetail.getType().getTypeDefName().equals(entityTypeName);
+    }
+
+
+    /**
+     * Retrieve the reference data for this element.
+     *
+     * @param userId calling user
+     * @param elementGUID element to query
+     * @param elementGUIDParameterName parameter name
+     * @param elementTypeName  type name
+     * @param serviceSupportedZones supported zones for the service
+     * @return map of reference data
+     * @throws InvalidParameterException bad parameter
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException authorization issue
+     */
+    public Map<String, List<Map<String, String>>> getSpecification(String       userId,
+                                                                   String       elementGUID,
+                                                                   String       elementGUIDParameterName,
+                                                                   String       elementTypeName,
+                                                                   List<String> serviceSupportedZones) throws InvalidParameterException,
+                                                                                                              PropertyServerException,
+                                                                                                              UserNotAuthorizedException
+    {
+        final String methodName = "getSpecification";
+        final String parameterName = "refDataRelationship.getEntityTwoProxy().getGUID()";
+
+        Map<String, List<Map<String, String>>> specification = new HashMap<>();
+
+        List<Relationship> refDataRelationships = this.getAttachmentLinks(userId,
+                                                                          elementGUID,
+                                                                          elementGUIDParameterName,
+                                                                          elementTypeName,
+                                                                          OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeGUID,
+                                                                          OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                          null,
+                                                                          OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                                          2,
+                                                                          false,
+                                                                          false,
+                                                                          serviceSupportedZones,
+                                                                          0,
+                                                                          0,
+                                                                          new Date(),
+                                                                          methodName);
+
+        if (refDataRelationships != null)
+        {
+            for (Relationship refDataRelationship : refDataRelationships)
+            {
+                if (refDataRelationship != null)
+                {
+                    String propertyType = repositoryHelper.getStringProperty(serviceName,
+                                                                             OpenMetadataProperty.PROPERTY_TYPE.name,
+                                                                             refDataRelationship.getProperties(),
+                                                                             methodName);
+                    if (propertyType != null)
+                    {
+                        EntityDetail specificationDetail = getEntityFromRepository(userId,
+                                                                                   refDataRelationship.getEntityTwoProxy().getGUID(),
+                                                                                   parameterName,
+                                                                                   OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                                                   null,
+                                                                                   null,
+                                                                                   false,
+                                                                                   false,
+                                                                                   serviceSupportedZones,
+                                                                                   new Date(),
+                                                                                   methodName);
+
+                        Map<String, String> additionalProperties = repositoryHelper.getStringMapFromProperty(serviceName,
+                                                                                                           OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                                                           specificationDetail.getProperties(),
+                                                                                                           methodName);
+
+                        if (additionalProperties == null)
+                        {
+                            additionalProperties = new HashMap<>();
+                        }
+
+                        additionalProperties.put(propertyType + "Name",
+                                                 repositoryHelper.getStringProperty(serviceName,
+                                                                                    OpenMetadataType.PREFERRED_VALUE_PROPERTY_NAME,
+                                                                                    specificationDetail.getProperties(),
+                                                                                    methodName));
+
+                        List<Map<String, String>> properties = specification.get(propertyType);
+
+                        if (properties == null)
+                        {
+                            properties = new ArrayList<>();
+                        }
+
+                        properties.add(additionalProperties);
+
+                        specification.put(propertyType, properties);
+                    }
+                }
+            }
+        }
+
+        if (! specification.isEmpty())
+        {
+            return specification;
+        }
+
+        return null;
     }
 }
