@@ -25,9 +25,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AccessServiceConfig extends AdminServicesConfigHeader
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private int                        accessServiceId                = 0;
     private ComponentDevelopmentStatus accessServiceDevelopmentStatus = null;
     private String                     accessServiceAdminClass        = null;

@@ -1063,6 +1063,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         createFolderCatalogTemplate(DeployedImplementationType.DATA_FOLDER, new DataFolderProvider().getConnectorType().getGUID());
 
         createDataFileCatalogTemplate(DeployedImplementationType.FILE, basicFileConnectorTypeGUID, null);
+        createDataFileCatalogTemplate(DeployedImplementationType.DATA_FILE, basicFileConnectorTypeGUID, null);
         createDataFileCatalogTemplate(DeployedImplementationType.CSV_FILE, new CSVFileStoreProvider().getConnectorType().getGUID(), null);
         createDataFileCatalogTemplate(DeployedImplementationType.AVRO_FILE, basicFileConnectorTypeGUID,  null);
         createDataFileCatalogTemplate(DeployedImplementationType.JSON_FILE, basicFileConnectorTypeGUID,  null);
@@ -1078,6 +1079,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
         createDataFileCatalogTemplate(DeployedImplementationType.ARCHIVE_FILE, basicFileConnectorTypeGUID, null);
         createDataFileCatalogTemplate(DeployedImplementationType.KEYSTORE_FILE, basicFileConnectorTypeGUID, null);
 
+        createSoftwareFileCatalogTemplate(DeployedImplementationType.PROGRAM_FILE, basicFileConnectorTypeGUID);
         createSoftwareFileCatalogTemplate(DeployedImplementationType.SOURCE_CODE_FILE, basicFileConnectorTypeGUID);
         createSoftwareFileCatalogTemplate(DeployedImplementationType.BUILD_FILE, basicFileConnectorTypeGUID);
         createSoftwareFileCatalogTemplate(DeployedImplementationType.EXECUTABLE_FILE, basicFileConnectorTypeGUID);

@@ -9,8 +9,6 @@ import java.util.Objects;
  */
 public class AssetFeedback extends AssetPropertyElementBase
 {
-    private static final long     serialVersionUID = 1L;
-
     /*
      * Lists of objects that make up the feedback on the asset.
      */

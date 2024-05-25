@@ -26,8 +26,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DigitalService extends DataPrivacyElementHeader
 {
-    private static final long    serialVersionUID = 1L;
-
     private String                            url                  = null;
     private String                            guid                 = null;
     private String                            typeId               = null;

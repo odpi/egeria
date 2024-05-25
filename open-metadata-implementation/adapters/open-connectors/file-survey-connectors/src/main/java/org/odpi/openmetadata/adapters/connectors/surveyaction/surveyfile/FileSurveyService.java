@@ -93,9 +93,9 @@ public class FileSurveyService extends SurveyActionServiceConnector
             measurementAnnotation.setAnnotationType(SurveyFileAnnotationType.MEASUREMENTS.getName());
             measurementAnnotation.setSummary(SurveyFileAnnotationType.MEASUREMENTS.getSummary());
             measurementAnnotation.setExplanation(SurveyFileAnnotationType.MEASUREMENTS.getExplanation());
-            measurementAnnotation.setCreateTime(new Date(attr.creationTime().toMillis()));
-            measurementAnnotation.setModifiedTime(new Date(file.lastModified()));
-            measurementAnnotation.setLastAccessedTime(new Date(attr.lastAccessTime().toMillis()));
+            measurementAnnotation.setCreateTime(fileClassification.getCreationTime());
+            measurementAnnotation.setModifiedTime(fileClassification.getLastModifiedTime());
+            measurementAnnotation.setLastAccessedTime(fileClassification.getLastAccessedTime());
             measurementAnnotation.setSize(assetConnector.getFileLength());
 
             Map<String, String> dataSourceProperties = new HashMap<>();

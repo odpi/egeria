@@ -7,7 +7,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Note;
 
-import java.io.Serial;
 import java.util.Iterator;
 
 /**
@@ -17,9 +16,6 @@ import java.util.Iterator;
  */
 public abstract class Notes extends PropertyIteratorBase implements Iterator<Note>
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     /**
      * Typical Constructor creates an iterator with the supplied list of elements.
      *

@@ -5,8 +5,6 @@ package org.odpi.openmetadata.frameworks.surveyaction.properties;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,15 +25,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = Annotation.class, name = "Annotation"),
                 @JsonSubTypes.Type(value = SurveyReport.class, name = "DiscoveryAnalysisReport"),
         })
-public abstract class PropertyBase implements Serializable
+public abstract class PropertyBase
 {
     /**
      * Header version for this implementation
      */
     public static final long CURRENT_AUDIT_HEADER_VERSION = 1;
-
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     /*
      * The Element header is only set when items are retrieved from the metadata repositories.

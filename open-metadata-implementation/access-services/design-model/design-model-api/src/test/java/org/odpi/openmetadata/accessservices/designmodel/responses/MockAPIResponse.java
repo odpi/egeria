@@ -9,8 +9,6 @@ import org.odpi.openmetadata.accessservices.designmodel.rest.DesignModelOMASAPIR
  */
 public class MockAPIResponse extends DesignModelOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Default constructor
      */

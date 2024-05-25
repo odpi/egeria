@@ -246,7 +246,7 @@ public abstract class Differences
         differing.put(name, valuePair);
     }
 
-    static class ValuePair
+    public static class ValuePair
     {
         private final Object left;
         private final Object right;

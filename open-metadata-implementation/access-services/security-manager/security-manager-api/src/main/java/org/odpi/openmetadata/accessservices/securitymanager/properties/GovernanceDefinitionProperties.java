@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,10 +46,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = SecurityGroupProperties.class, name = "SecurityGroupProperties"),
         })
-public class GovernanceDefinitionProperties implements Serializable
+public class GovernanceDefinitionProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String                           documentIdentifier   = null;
     private Map<String, String>              additionalProperties = null;
 

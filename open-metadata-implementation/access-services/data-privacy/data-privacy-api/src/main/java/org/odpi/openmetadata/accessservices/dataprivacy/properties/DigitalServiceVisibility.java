@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -37,15 +35,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum DigitalServiceVisibility implements Serializable
+public enum DigitalServiceVisibility
 {
     UNCLASSIFIED_VISIBILITY (0,  "Unclassified",        "The digital service has no assigned visibility."),
     EXTERNAL_SERVICE        (1,  "External Service",    "The digital service is available to consumers outside of the organization."),
     PARTNER_SERVICE         (2,  "Partner Service",     "The digital service is provided by another organization."),
     INTERNAL_SERVICE        (3,  "Internal Service",    "The digital service is for internal use only."),
     OTHER                   (99, "Other",               "The digital service has a locally defined visibility.");
-
-    private static final long serialVersionUID = 1L;
 
     private final int            ordinal;
     private final String         name;

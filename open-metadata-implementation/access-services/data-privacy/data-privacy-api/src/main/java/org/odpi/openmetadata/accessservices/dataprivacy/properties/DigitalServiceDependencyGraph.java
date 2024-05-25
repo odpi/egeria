@@ -9,8 +9,6 @@ import java.util.List;
  */
 public class DigitalServiceDependencyGraph extends DataPrivacyElementHeader
 {
-    private static final long    serialVersionUID = 1L;
-
     private DigitalServiceDependencyDirection direction                  = null;
     private DigitalService                    root                       = null;
     private List<DigitalService>              relatedDigitalServices     = null;

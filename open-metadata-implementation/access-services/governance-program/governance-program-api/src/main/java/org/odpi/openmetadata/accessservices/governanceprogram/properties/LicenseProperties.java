@@ -21,8 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LicenseProperties extends RelationshipProperties
 {
-    private static final long serialVersionUID = 1L;
-
     private String              licenseId              = null;
     private Date                startDate              = null;
     private Date                endDate                = null;

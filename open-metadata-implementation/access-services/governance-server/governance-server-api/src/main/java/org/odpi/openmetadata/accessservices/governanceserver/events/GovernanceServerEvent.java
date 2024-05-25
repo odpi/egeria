@@ -4,8 +4,6 @@ package org.odpi.openmetadata.accessservices.governanceserver.events;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -13,7 +11,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * GovernanceEngineEvent provides a common base for all events from the access service.
- * It implements Serializable and a version identifier.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -27,11 +24,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = IntegrationGroupConfigurationEvent.class, name = "IntegrationGroupConfigurationEvent"),
         @JsonSubTypes.Type(value = IntegrationConnectorConfigurationEvent.class, name = "IntegrationConnectorConfigurationEvent"),
 })
-public abstract class GovernanceServerEvent implements Serializable
+public abstract class GovernanceServerEvent
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private long                      eventVersionId       = 1L;
     private GovernanceServerEventType eventType            = null;
 

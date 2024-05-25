@@ -19,8 +19,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenMetadataRelationshipEndDef extends OpenMetadataTypeDefElementHeader
 {
-    private static final long    serialVersionUID = 1L;
-
     private OpenMetadataTypeDefLink entityType    = null;
     private String                  attributeName = null;
     private String                     attributeDescription     = null;

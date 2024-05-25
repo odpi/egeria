@@ -22,8 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ConnectionResponse extends DevOpsOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private ConnectionElement element = null;
 
 

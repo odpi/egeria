@@ -35,9 +35,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class IntegrationConnectorConfig extends AdminServicesConfigHeader
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String                   connectorId                 = UUID.randomUUID().toString();
     private String                   connectorName               = null;
     private String                   connectorUserId             = null;

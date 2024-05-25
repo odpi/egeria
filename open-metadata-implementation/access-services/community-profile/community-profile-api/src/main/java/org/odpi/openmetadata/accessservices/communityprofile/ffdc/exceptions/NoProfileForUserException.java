@@ -17,8 +17,8 @@ import java.util.Objects;
 public class NoProfileForUserException extends CommunityProfileCheckedExceptionBase
 {
     @Serial
-    private static final long serialVersionUID = 1L;
-    private String  userId;
+    private static final long   serialVersionUID = 1L;
+    private final        String userId;
 
 
     /**

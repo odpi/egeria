@@ -13,11 +13,8 @@ import java.util.Objects;
 /**
  * IntegrationServiceRegistration is used to describe an integration service and register it with the integration daemon registry.
  */
-public class IntegrationServiceRegistration implements Serializable
+public class IntegrationServiceRegistration
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private int                        integrationServiceId                  = 0;
     private ComponentDevelopmentStatus integrationServiceDevelopmentStatus   = null;
     private String                     integrationServiceName                = null;

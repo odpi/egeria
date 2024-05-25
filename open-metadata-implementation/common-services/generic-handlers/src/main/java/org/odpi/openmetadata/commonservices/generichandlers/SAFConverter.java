@@ -263,9 +263,12 @@ public abstract class SAFConverter<B> extends OCFConverter<B>
             annotation.setInferredLength(this.removeInferredLength(remainingProperties));
             annotation.setInferredPrecision(this.removeInferredPrecision(remainingProperties));
             annotation.setInferredScale(this.removeInferredScale(remainingProperties));
+            annotation.setProfileStartDate(this.removeProfileStartDate(remainingProperties));
+            annotation.setProfileEndDate(this.removeProfileEndDate(remainingProperties));
             annotation.setProfileProperties(this.removeProfileProperties(remainingProperties));
             annotation.setProfileFlags(this.removeProfileFlags(remainingProperties));
             annotation.setProfileCounts(this.removeProfileCounts(remainingProperties));
+            annotation.setProfileDoubles(this.removeProfileDoubles(remainingProperties));
             annotation.setValueList(this.removeValueList(remainingProperties));
             annotation.setValueCount(this.removeValueCount(remainingProperties));
             annotation.setValueRangeFrom(this.removeValueRangeFrom(remainingProperties));

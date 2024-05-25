@@ -21,8 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ServerAssetUseProperties extends ConfigurationItemRelationshipProperties
 {
-    private static final long serialVersionUID = 1L;
-
     private ServerAssetUseType useType     = null;
     private String             description = null;
     private boolean            minimumInstancesSet = false;

@@ -25,8 +25,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelatedAssetListResponse extends ITInfrastructureOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private List<RelatedAssetElement> elementList = null;
 
 

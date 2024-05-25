@@ -48,8 +48,6 @@ public enum PropertyCategory
      */
     ARRAY       (5, "Array",     "An ordered list of values, each with the same type.");
 
-    private static final long serialVersionUID = 1L;
-
     private final int            typeCode;
     private final String         typeName;
     private final String         typeDescription;

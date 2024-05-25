@@ -24,9 +24,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ViewServiceRequestBody extends OMAGServerClientConfig
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private Map<String, Object>          viewServiceOptions = null;
     private List<ResourceEndpointConfig> resourceEndpoints;
 

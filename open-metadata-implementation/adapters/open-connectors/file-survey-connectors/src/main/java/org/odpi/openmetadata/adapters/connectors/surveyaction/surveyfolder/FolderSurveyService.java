@@ -36,12 +36,17 @@ public class FolderSurveyService extends SurveyActionServiceConnector
     private       Connector      connector      = null;
 
 
-    private long fileCount = 0L;
-    private long folderCount = 0L;
+    private long fileCount       = 0L;
+    private long folderCount     = 0L;
     private long canReadCount    = 0L;
     private long canWriteCount   = 0L;
     private long canExecuteCount = 0L;
 
+    private Date lastFileCreationTime     = null;
+    private Date lastFileModificationTime = null;
+    private Date lastFileAccessTime       = null;
+
+    private final List<InaccessibleFile> inaccessibleFiles = new ArrayList<>();
 
     private final Map<String, Integer>     fileExtensionCounts              = new HashMap<>();
     private final Map<String, Integer>     fileTypeCounts                   = new HashMap<>();
@@ -166,13 +171,27 @@ public class FolderSurveyService extends SurveyActionServiceConnector
             dataProfileLog.setResourceProfileLogGUIDs(dataProfileDataGUIDs);
             annotationStore.addAnnotation(dataProfileLog, null);
 
-            RequestForActionAnnotation requestForActionAnnotation = new RequestForActionAnnotation();
+            if (! missingReferenceData.isEmpty())
+            {
+                RequestForActionAnnotation requestForActionAnnotation = new RequestForActionAnnotation();
 
-            setUpAnnotation(requestForActionAnnotation, SurveyFolderAnnotationType.MISSING_REF_DATA);
-            List<String> requestForActionTargetGUIDs = new ArrayList<>();
-            requestForActionTargetGUIDs.add(setUpExternalLogFile(annotationStore.getSurveyReportGUID(), missingReferenceData));
-            requestForActionAnnotation.setActionTargetGUIDs(requestForActionTargetGUIDs);
-            annotationStore.addAnnotation(requestForActionAnnotation, null);
+                setUpAnnotation(requestForActionAnnotation, SurveyFolderAnnotationType.MISSING_REF_DATA);
+                List<String> requestForActionTargetGUIDs = new ArrayList<>();
+                requestForActionTargetGUIDs.add(setUpMissingRefDateExternalLogFile(annotationStore.getSurveyReportGUID(), missingReferenceData));
+                requestForActionAnnotation.setActionTargetGUIDs(requestForActionTargetGUIDs);
+                annotationStore.addAnnotation(requestForActionAnnotation, null);
+            }
+
+            if (! inaccessibleFiles.isEmpty())
+            {
+                RequestForActionAnnotation requestForActionAnnotation = new RequestForActionAnnotation();
+
+                setUpAnnotation(requestForActionAnnotation, SurveyFolderAnnotationType.INACCESSIBLE_FILES);
+                List<String> requestForActionTargetGUIDs = new ArrayList<>();
+                requestForActionTargetGUIDs.add(setUpInaccessibleFilesExternalLogFile(annotationStore.getSurveyReportGUID(), inaccessibleFiles));
+                requestForActionAnnotation.setActionTargetGUIDs(requestForActionTargetGUIDs);
+                annotationStore.addAnnotation(requestForActionAnnotation, null);
+            }
 
             dataProfile = new ResourceProfileAnnotation();
 
@@ -202,6 +221,19 @@ public class FolderSurveyService extends SurveyActionServiceConnector
             fileCountProperties.put(FolderMetric.READABLE_FILE_COUNT.getName(), Long.toString(canReadCount));
             fileCountProperties.put(FolderMetric.WRITEABLE_FILE_COUNT.getName(), Long.toString(canWriteCount));
             fileCountProperties.put(FolderMetric.EXECUTABLE_FILE_COUNT.getName(), Long.toString(canExecuteCount));
+            if (lastFileCreationTime != null)
+            {
+                fileCountProperties.put(FolderMetric.LAST_FILE_CREATION_TIME.getName(), lastFileCreationTime.toString());
+            }
+            if (lastFileModificationTime != null)
+            {
+                fileCountProperties.put(FolderMetric.LAST_FILE_MODIFIED_TIME.getName(), lastFileModificationTime.toString());
+            }
+            if (lastFileAccessTime != null)
+            {
+                fileCountProperties.put(FolderMetric.LAST_FILE_ACCESSED_TIME.getName(), lastFileAccessTime.toString());
+            }
+
             resourceMeasureAnnotation.setResourceProperties(fileCountProperties);
 
             annotationStore.addAnnotation(resourceMeasureAnnotation, null);
@@ -231,6 +263,7 @@ public class FolderSurveyService extends SurveyActionServiceConnector
         annotation.setSummary(annotationType.getSummary());
         annotation.setExplanation(annotationType.getExplanation());
     }
+
 
     /**
      * Create and catalog a CSV file to store data about the file names.
@@ -312,12 +345,12 @@ public class FolderSurveyService extends SurveyActionServiceConnector
      * @throws UserNotAuthorizedException authorization problem creating CSV file asset
      * @throws ConnectorCheckedException exception thrown if connector is no longer active
      */
-    private String setUpExternalLogFile(String                   surveyReportGUID,
-                                        List<FileClassification> missingReferenceData) throws IOException,
-                                                                                              InvalidParameterException,
-                                                                                              PropertyServerException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              ConnectorCheckedException
+    private String setUpMissingRefDateExternalLogFile(String                   surveyReportGUID,
+                                                      List<FileClassification> missingReferenceData) throws IOException,
+                                                                                                            InvalidParameterException,
+                                                                                                            PropertyServerException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            ConnectorCheckedException
     {
         final String methodName = "setUpExternalLogFile";
 
@@ -361,24 +394,98 @@ public class FolderSurveyService extends SurveyActionServiceConnector
 
         for (FileClassification fileClassification : missingReferenceData)
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            String stringBuilder = fileClassification.getFileName() +
+                    "," +
+                    fileClassification.getFileExtension() +
+                    "," +
+                    fileClassification.getPathName() +
+                    "," +
+                    fileClassification.getFileType() +
+                    "," +
+                    fileClassification.getAssetTypeName() +
+                    "," +
+                    fileClassification.getDeployedImplementationType() +
+                    "," +
+                    fileClassification.getEncoding() +
+                    "\n";
 
-            stringBuilder.append(fileClassification.getFileName());
-            stringBuilder.append(",");
-            stringBuilder.append(fileClassification.getFileExtension());
-            stringBuilder.append(",");
-            stringBuilder.append(fileClassification.getPathName());
-            stringBuilder.append(",");
-            stringBuilder.append(fileClassification.getFileType());
-            stringBuilder.append(",");
-            stringBuilder.append(fileClassification.getAssetTypeName());
-            stringBuilder.append(",");
-            stringBuilder.append(fileClassification.getDeployedImplementationType());
-            stringBuilder.append(",");
-            stringBuilder.append(fileClassification.getEncoding());
-            stringBuilder.append("\n");
+            FileUtils.writeStringToFile(logFile, stringBuilder, (String)null, true);
+        }
 
-            FileUtils.writeStringToFile(logFile, stringBuilder.toString(), (String)null, true);
+        return assetGUID;
+    }
+
+
+
+    /**
+     * Create and catalog a CSV file to store data about the file names.
+     *
+     * @param surveyReportGUID identifier of the survey report
+     * @param inaccessibleFiles list of files that could not be accessed
+     * @return unique identifier of the GUID for the CSV asset
+     * @throws IOException problem writing file
+     * @throws InvalidParameterException problem creating CSV file asset
+     * @throws PropertyServerException repository problem creating CSV file asset
+     * @throws UserNotAuthorizedException authorization problem creating CSV file asset
+     * @throws ConnectorCheckedException exception thrown if connector is no longer active
+     */
+    private String setUpInaccessibleFilesExternalLogFile(String                 surveyReportGUID,
+                                                         List<InaccessibleFile> inaccessibleFiles) throws IOException,
+                                                                                                          InvalidParameterException,
+                                                                                                          PropertyServerException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          ConnectorCheckedException
+    {
+        final String methodName = "setUpExternalLogFile";
+
+        String           logFileName = "surveys/report-" + surveyReportGUID + "-inaccessibleFiles.csv";
+        SurveyAssetStore assetStore = surveyContext.getAssetStore();
+        File             logFile = new File(logFileName);
+        boolean          newLogFile = false;
+
+        try
+        {
+            FileUtils.sizeOf(logFile);
+        }
+        catch (IllegalArgumentException notFound)
+        {
+            newLogFile = true;
+            FileUtils.writeStringToFile(logFile, "FileName,Exception,Message\n", (String)null, false);
+        }
+
+        String assetGUID = assetStore.addCSVFileToCatalog("Inaccessible files detected by " + surveyReportGUID,
+                                                          "Shows the files that could not be accessed.",
+                                                          logFile.getAbsolutePath(),
+                                                          null,
+                                                          ',',
+                                                          '"');
+
+
+        if (newLogFile)
+        {
+            auditLog.logMessage(methodName,
+                                SurveyServiceAuditCode.CREATING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
+                                                                                              logFileName,
+                                                                                              assetGUID));
+        }
+        else
+        {
+            auditLog.logMessage(methodName,
+                                SurveyServiceAuditCode.REUSING_LOG_FILE.getMessageDefinition(surveyActionServiceName,
+                                                                                             logFileName));
+        }
+
+
+        for (InaccessibleFile inaccessibleFile : inaccessibleFiles)
+        {
+            String stringBuilder = inaccessibleFile.fileName +
+                    "," +
+                    inaccessibleFile.exceptionClassName +
+                    "," +
+                    inaccessibleFile.exceptionMessage +
+                    "\n";
+
+            FileUtils.writeStringToFile(logFile, stringBuilder, (String)null, true);
         }
 
         return assetGUID;
@@ -419,38 +526,76 @@ public class FolderSurveyService extends SurveyActionServiceConnector
                     }
                     else if (nestedFile.isFile())
                     {
-                        fileCount++;
-                        logFileProgress.logFilesProcessed();
-
-                        FileClassifier fileClassifier = surveyContext.getFileClassifier();
-                        FileClassification fileClassification = fileClassifier.classifyFile(nestedFile);
-
-                        if ((fileClassification.getFileType() == null) ||
-                                fileClassification.getAssetTypeName() == null ||
-                                fileClassification.getDeployedImplementationType() == null)
+                        try
                         {
-                            missingReferenceData.add(fileClassification);
+                            FileClassifier     fileClassifier     = surveyContext.getFileClassifier();
+                            FileClassification fileClassification = fileClassifier.classifyFile(nestedFile);
+
+                            fileCount++;
+                            logFileProgress.logFilesProcessed();
+
+                            if ((fileClassification.getFileType() == null) ||
+                                    fileClassification.getAssetTypeName() == null ||
+                                    fileClassification.getDeployedImplementationType() == null)
+                            {
+                                missingReferenceData.add(fileClassification);
+                            }
+
+                            if ((lastFileCreationTime == null) || ((fileClassification.getCreationTime() != null) &&
+                                    (lastFileCreationTime.before(fileClassification.getCreationTime()))))
+                            {
+                                lastFileCreationTime = fileClassification.getCreationTime();
+                            }
+
+                            if ((lastFileModificationTime == null) || ((fileClassification.getLastModifiedTime() != null) &&
+                                    (lastFileModificationTime.before(fileClassification.getLastModifiedTime()))))
+                            {
+                                lastFileModificationTime = fileClassification.getLastModifiedTime();
+                            }
+
+                            if ((lastFileAccessTime == null) || ((fileClassification.getLastAccessedTime() != null) &&
+                                    (lastFileAccessTime.before(fileClassification.getLastAccessedTime()))))
+                            {
+                                lastFileAccessTime = fileClassification.getLastAccessedTime();
+                            }
+
+                            updateValueCount(fileExtensionCounts, fileClassification.getFileExtension());
+                            updateValueCount(fileNameCounts, fileClassification.getFileName());
+                            updateValueCount(fileTypeCounts, fileClassification.getFileType());
+                            updateValueCount(deployedImplementationTypeCounts, fileClassification.getDeployedImplementationType());
+                            updateValueCount(assetTypeCounts, fileClassification.getAssetTypeName());
+
+                            if (fileClassification.isCanRead())
+                            {
+                                canReadCount++;
+                            }
+
+                            if (fileClassification.isCanWrite())
+                            {
+                                canWriteCount++;
+                            }
+
+                            if (fileClassification.isCanExecute())
+                            {
+                                canExecuteCount++;
+                            }
                         }
-
-                        updateValueCount(fileExtensionCounts, fileClassification.getFileExtension());
-                        updateValueCount(fileNameCounts, fileClassification.getFileName());
-                        updateValueCount(fileTypeCounts, fileClassification.getFileType());
-                        updateValueCount(deployedImplementationTypeCounts, fileClassification.getDeployedImplementationType());
-                        updateValueCount(assetTypeCounts, fileClassification.getAssetTypeName());
-
-                        if (fileClassification.isCanRead())
+                        catch (IOException invalidFile)
                         {
-                            canReadCount++;
-                        }
+                            final String methodName = "Profile Folder";
 
-                        if (fileClassification.isCanWrite())
-                        {
-                            canWriteCount++;
-                        }
+                            auditLog.logException(methodName, SurveyServiceAuditCode.FILE_IO_ERROR.getMessageDefinition(methodName,
+                                                                                                                        nestedFile.getPath(),
+                                                                                                                        invalidFile.getMessage()),
+                                                  invalidFile);
 
-                        if (fileClassification.isCanExecute())
-                        {
-                            canExecuteCount++;
+                            InaccessibleFile inaccessibleFile = new InaccessibleFile();
+
+                            inaccessibleFile.fileName = nestedFile.getPath();
+                            inaccessibleFile.exceptionClassName = invalidFile.getClass().getName();
+                            inaccessibleFile.exceptionMessage = invalidFile.getMessage();
+
+                            inaccessibleFiles.add(inaccessibleFile);
                         }
                     }
                 }
@@ -503,6 +648,19 @@ public class FolderSurveyService extends SurveyActionServiceConnector
             }
         }
     }
+
+
+
+    /**
+     * This class is used in capturing details of files that returned an IOException when the surveyor tried to access its basic properties.
+     */
+    static class InaccessibleFile
+    {
+        String fileName;
+        String exceptionClassName;
+        String exceptionMessage;
+    }
+
 
 
     /**

@@ -22,8 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @Deprecated
 public class SchemaImplementationQuery extends PropertyBase
 {
-    private static final long     serialVersionUID = 1L;
-
     private String queryId         = null;
     private String query           = null;
     private String queryType       = null;

@@ -20,8 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class StakeholderProperties extends RelationshipProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     String stakeholderRole = null;
 
     /**

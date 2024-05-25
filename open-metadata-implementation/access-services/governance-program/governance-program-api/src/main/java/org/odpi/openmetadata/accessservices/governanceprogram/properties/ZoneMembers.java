@@ -4,17 +4,14 @@ package org.odpi.openmetadata.accessservices.governanceprogram.properties;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.AssetElement;
 
-import java.io.Serializable;
 import java.util.Iterator;
 
 
 /**
  * An iterator to walk through the list of assets assigned to a zone.
  */
-public class ZoneMembers implements Iterator<AssetElement>, Serializable
+public class ZoneMembers implements Iterator<AssetElement>
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * The iterator can only be used once to step through the elements.  This method returns
      * a boolean to indicate if it has got to the end of the list yet.

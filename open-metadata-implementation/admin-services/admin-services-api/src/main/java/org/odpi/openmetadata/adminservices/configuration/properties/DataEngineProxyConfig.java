@@ -24,9 +24,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DataEngineProxyConfig extends AdminServicesConfigHeader
 {
-    @Serial
-    private static final long serialVersionUID = 2L;
-
     /* Properties needed to call the access service REST APIs */
     private String     accessServiceRootURL    = null;
     private String     accessServiceServerName = null;
@@ -39,7 +36,8 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader
     /**
      * Default constructor
      */
-    public DataEngineProxyConfig() {
+    public DataEngineProxyConfig()
+    {
         super();
     }
 
@@ -48,7 +46,8 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader
      *
      * @param template an existing Data Engine proxy configuration from which to copy
      */
-    public DataEngineProxyConfig(DataEngineProxyConfig template) {
+    public DataEngineProxyConfig(DataEngineProxyConfig template)
+    {
         if (template != null) {
             this.accessServiceRootURL    = template.accessServiceRootURL;
             this.accessServiceServerName = template.accessServiceServerName;

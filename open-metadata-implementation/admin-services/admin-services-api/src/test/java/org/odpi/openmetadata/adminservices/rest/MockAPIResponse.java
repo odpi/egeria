@@ -7,8 +7,6 @@ package org.odpi.openmetadata.adminservices.rest;
  */
 public class MockAPIResponse extends AdminServicesAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Default constructor
      */

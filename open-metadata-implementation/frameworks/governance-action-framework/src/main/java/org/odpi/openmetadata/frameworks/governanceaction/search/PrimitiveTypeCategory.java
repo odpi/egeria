@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum PrimitiveTypeCategory implements Serializable
+public enum PrimitiveTypeCategory
 {
     OM_PRIMITIVE_TYPE_UNKNOWN   (0,  "object",     "java.lang.Object",      "1c4b21f4-0b67-41a7-a6ed-2af185eb9b3b"),
     OM_PRIMITIVE_TYPE_BOOLEAN   (1,  "boolean",    "java.lang.Boolean",     "3863f010-611c-41fe-aaae-5d4d427f863b"),
@@ -34,8 +34,6 @@ public enum PrimitiveTypeCategory implements Serializable
     OM_PRIMITIVE_TYPE_BIGDECIMAL(10, "bigdecimal", "java.math.BigDecimal",  "d5c8ad9f-8fee-4a64-80b3-63ce1e47f6bb"),
     OM_PRIMITIVE_TYPE_STRING    (11, "string",     "java.lang.String",      "b34a64b9-554a-42b1-8f8a-7d5c2339f9c4"),
     OM_PRIMITIVE_TYPE_DATE      (12, "date",       "java.lang.Long",        "1bef35ca-d4f9-48db-87c2-afce4649362d");
-
-    private static final long serialVersionUID = 1L;
 
     private final int         code;
     private final String      name;

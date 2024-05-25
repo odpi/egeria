@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.governanceaction.ffdc;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
 
+import java.io.Serial;
 import java.util.Map;
 
 /**
@@ -14,7 +15,8 @@ import java.util.Map;
  */
 public class GAFRuntimeException extends OCFRuntimeException
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * This is the typical constructor used for creating an OCFRuntimeException.

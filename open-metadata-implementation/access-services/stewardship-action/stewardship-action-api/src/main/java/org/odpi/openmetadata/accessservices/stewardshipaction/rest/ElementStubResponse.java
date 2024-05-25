@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ElementStubResponse extends StewardshipActionOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private ElementStub element = null;
 
 

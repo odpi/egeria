@@ -28,9 +28,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class Annotation extends PropertyBase
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String           annotationType   = null;
     private String           summary          = null;
     private int              confidenceLevel  = 0;

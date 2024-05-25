@@ -24,8 +24,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ITProfileListResponse extends DevOpsOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private List<ITProfileElement> elements = null;
 
 

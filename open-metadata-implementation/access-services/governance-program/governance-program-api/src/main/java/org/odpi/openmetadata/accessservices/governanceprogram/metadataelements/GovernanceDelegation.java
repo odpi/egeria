@@ -19,9 +19,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceDelegation extends ElementStub
 {
-    private static final long    serialVersionUID = 1L;
-
-
     private String rationale = null;
 
 

@@ -108,8 +108,6 @@ public enum SecurityManagerAuditCode implements AuditLogMessageSet
 
     ;
 
-    private static final long    serialVersionUID = 1L;
-
     private final String                      logMessageId;
     private final AuditLogRecordSeverityLevel severity;
     private final String                      logMessage;

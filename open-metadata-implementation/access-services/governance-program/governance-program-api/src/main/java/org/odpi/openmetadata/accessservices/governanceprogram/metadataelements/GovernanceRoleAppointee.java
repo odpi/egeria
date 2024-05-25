@@ -26,8 +26,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
               })
 public class GovernanceRoleAppointee extends GovernanceRoleElement
 {
-    private static final long serialVersionUID = 1L;
-
     private List<GovernanceAppointee> currentAppointees = null;
 
 

@@ -26,8 +26,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Comment extends Referenceable
 {
-    private static final long     serialVersionUID = 1L;
-
     protected CommentType commentType = null;
     protected String      commentText = null;
     protected String      user        = null;

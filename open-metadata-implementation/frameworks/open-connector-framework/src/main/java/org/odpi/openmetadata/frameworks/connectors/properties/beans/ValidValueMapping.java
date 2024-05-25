@@ -20,9 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ValidValueMapping extends PropertyBase
 {
-    private static final long         serialVersionUID = 1L;
-
-
     private String     associationDescription = null;
     private int        confidence             = 0;
     private String     steward                = null;

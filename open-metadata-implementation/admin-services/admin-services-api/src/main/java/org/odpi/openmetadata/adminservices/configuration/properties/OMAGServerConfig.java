@@ -60,9 +60,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OMAGServerConfig extends AdminServicesConfigHeader
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     public static final String         VERSION_ONE = "V1.0";
     public static final String         VERSION_TWO = "V2.0";
     public static final List<String>   COMPATIBLE_VERSIONS = new ArrayList<>(List.of(VERSION_TWO));

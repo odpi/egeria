@@ -20,9 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenMetadataElement extends ElementControlHeader
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String                       elementGUID       = null;
     private Date                         effectiveFromTime = null;
     private Date                         effectiveToTime   = null;

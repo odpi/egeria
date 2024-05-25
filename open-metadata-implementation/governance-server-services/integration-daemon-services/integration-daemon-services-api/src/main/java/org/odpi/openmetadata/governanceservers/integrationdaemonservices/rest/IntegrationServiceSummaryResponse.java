@@ -25,9 +25,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class IntegrationServiceSummaryResponse extends FFDCResponseBase
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private List<IntegrationServiceSummary> integrationServiceSummaries = null;
 
 

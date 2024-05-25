@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetmanager.properties;
 
-import java.io.Serial;
 import java.util.Objects;
 
 /**

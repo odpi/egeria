@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -25,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum CollectionStatus implements Serializable
+public enum CollectionStatus
 {
     /**
      * All the collection members with a current effective dates (default).
@@ -46,8 +44,6 @@ public enum CollectionStatus implements Serializable
      * All the collection members linked to the collection irrespective of their effective dates.
      */
     ALL      (99, "All",      "All the collection members linked to the collection irrespective of their effective dates.");
-
-    private static final long serialVersionUID = 1L;
 
     private final int            ordinal;
     private final String         name;

@@ -23,10 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 
-public class SecurityManagerOutTopicEvent implements java.io.Serializable
+public class SecurityManagerOutTopicEvent
 {
-    private static final long        serialVersionUID = 1L;
-
     private long                     eventVersionId     = 1L;
     private SecurityManagerEventType eventType          = null;
     private Date                     eventTime          = null;

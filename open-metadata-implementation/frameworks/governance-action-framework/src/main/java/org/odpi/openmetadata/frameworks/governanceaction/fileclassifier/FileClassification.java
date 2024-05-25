@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.frameworks.governanceaction.fileclassifier;
 
+import java.util.Date;
+
 /**
  * FileClassification holds the classification information for a specific file
  */
@@ -11,6 +13,9 @@ public class FileClassification
     private final String  fileName;
     private final String  pathName;
     private final String  fileExtension;
+    private final Date    creationTime;
+    private final Date    lastModifiedTime;
+    private final Date    lastAccessedTime;
     private final boolean canRead;
     private final boolean canWrite;
     private final boolean canExecute;
@@ -25,6 +30,9 @@ public class FileClassification
     public FileClassification(String  fileName,
                               String  pathName,
                               String  fileExtension,
+                              Date    creationTime,
+                              Date    lastModifiedTime,
+                              Date    lastAccessedTime,
                               boolean canRead,
                               boolean canWrite,
                               boolean canExecute,
@@ -38,6 +46,9 @@ public class FileClassification
         this.fileName                   = fileName;
         this.pathName                   = pathName;
         this.fileExtension              = fileExtension;
+        this.creationTime               = creationTime;
+        this.lastModifiedTime           = lastModifiedTime;
+        this.lastAccessedTime           = lastAccessedTime;
         this.canRead                    = canRead;
         this.canWrite                   = canWrite;
         this.canExecute                 = canExecute;
@@ -125,6 +136,39 @@ public class FileClassification
     public String getEncoding()
     {
         return encoding;
+    }
+
+
+    /**
+     * Return the time that the file was created.
+     *
+     * @return date/time
+     */
+    public Date getCreationTime()
+    {
+        return creationTime;
+    }
+
+
+    /**
+     * Return the last time the file was modified.
+     *
+     * @return date/time
+     */
+    public Date getLastModifiedTime()
+    {
+        return lastModifiedTime;
+    }
+
+
+    /**
+     * Return the last time the file was accessed.
+     *
+     * @return date/time
+     */
+    public Date getLastAccessedTime()
+    {
+        return lastAccessedTime;
     }
 
 

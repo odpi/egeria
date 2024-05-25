@@ -20,11 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = AppointmentRequestBody.class, name = "AppointmentRequestBody"),
         })
-public abstract class GovernanceProgramOMASAPIRequestBody implements java.io.Serializable
+public abstract class GovernanceProgramOMASAPIRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
-
     /**
      * Default constructor
      */

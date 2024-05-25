@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serial;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -27,7 +25,6 @@ public enum IntegrationGroupStatus
     DISABLED    (4, "Disabled", "The integration group has been disabled. It is waiting to be enabled before " +
                                                                    "it can service any more governance requests.");
 
-    private static final long serialVersionUID = 1L;
 
     private final int    ordinal;
     private final String statusName;

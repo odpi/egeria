@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.communityprofile.events;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -12,7 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * CommunityProfileEventHeader provides a common base for all events from the access service.
- * It implements Serializable and a version Id.
+ * It implements a version Id.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -24,11 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes({
                       @JsonSubTypes.Type(value = CommunityProfileOutboundEvent.class, name = "CommunityProfileOutboundEvent")
 })
-public abstract class CommunityProfileEventHeader implements Serializable
+public abstract class CommunityProfileEventHeader
 {
-    private static final long serialVersionUID = 1L;
-
-
     private long eventVersionId = 1L;
 
 

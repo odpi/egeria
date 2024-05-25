@@ -7,8 +7,6 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
  */
 public class MockSchemaElement extends SchemaElement
 {
-    private static final long     serialVersionUID = 1L;
-
     /**
      * Default constructor
      */

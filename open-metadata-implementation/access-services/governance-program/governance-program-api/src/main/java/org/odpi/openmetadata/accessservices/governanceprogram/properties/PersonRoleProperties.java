@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.governanceprogram.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,10 +26,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = GovernanceRoleProperties.class, name = "GovernanceRoleProperties")
         })
-public class PersonRoleProperties implements Serializable
+public class PersonRoleProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String               qualifiedName = null; /* qualifiedName */
     private String               roleId        = null; /* identifier */
     private String               scope         = null; /* scope */

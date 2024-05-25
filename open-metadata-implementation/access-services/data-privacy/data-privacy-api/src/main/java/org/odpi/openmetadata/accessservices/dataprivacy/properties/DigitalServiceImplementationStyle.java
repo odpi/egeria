@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -61,7 +59,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum DigitalServiceImplementationStyle implements Serializable
+public enum DigitalServiceImplementationStyle
 {
     UNCLASSIFIED       (0,  "Unclassified",       "The digital service implementation style is undefined."),
     API                (1,  "API",                "The digital service provides one or more APIs."),
@@ -74,8 +72,6 @@ public enum DigitalServiceImplementationStyle implements Serializable
     DATA_SINK          (7,  "Data Sink",          "The digital service is receiving and accumulating data from other digital services."),
     CLIENT_SERVER      (8,  "Client-Server",      "The digital service provides a thick client tightly coupled with a backend server."),
     OTHER              (99, "Other",              "The digital service's implementation style is locally defined.");
-
-    private static final long serialVersionUID = 1L;
 
     private final int            ordinal;
     private final String         name;

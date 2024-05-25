@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -91,9 +90,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class Connection extends Referenceable
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     /*
      * Attributes of a connector
      */

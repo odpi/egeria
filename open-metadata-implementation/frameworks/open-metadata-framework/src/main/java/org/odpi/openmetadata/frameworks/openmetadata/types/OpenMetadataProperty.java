@@ -527,6 +527,16 @@ public enum OpenMetadataProperty
     INFERRED_SCALE("inferredScale", "int", "Inferred scale applied to the data based on the data values.", null, "bd28ec07-01bd-4db4-9377-33b15097ded4"),
 
     /**
+     * Time at which the profiling started collecting data.
+     */
+    PROFILE_START_DATE("profileStartDate", "date", "Time at which the profiling started collecting data.", null, "6bee91ad-4eae-4292-ab28-ff1e5404e74d"),
+
+    /**
+     * Time at which the profiling stopped collecting data.
+     */
+    PROFILE_END_DATE("profileEndDate", "date", "Time at which the profiling stopped collecting data.", null, "9f31776f-f567-40aa-92cd-b990131dbdb8"),
+
+    /**
      * Additional profile properties discovered during the analysis.
      */
     PROFILE_PROPERTIES("profileProperties", "map<string, string>", "Additional profile properties discovered during the analysis.", null, "53f5e89d-6730-4ae5-bfbf-62d4512eff58"),
@@ -540,6 +550,11 @@ public enum OpenMetadataProperty
      * Additional counts discovered during the analysis.
      */
     PROFILE_COUNTS("profileCounts", "map<string, long>", "Additional counts discovered during the analysis.", null, "6550a7b0-4ab2-4188-b32f-c1576f4bcedc"),
+
+    /**
+     * Additional large counts discovered during the analysis.
+     */
+    PROFILE_DOUBLES("profileDoubles", "map<string, double>", "Additional large counts discovered during the analysis.", null, "e77933c9-64c6-476f-bd0f-e905838fb7fa"),
 
     /**
      * List of individual values in the data.

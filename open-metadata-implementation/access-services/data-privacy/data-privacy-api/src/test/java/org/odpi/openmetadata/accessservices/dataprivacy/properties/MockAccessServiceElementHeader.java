@@ -8,8 +8,6 @@ package org.odpi.openmetadata.accessservices.dataprivacy.properties;
  */
 public class MockAccessServiceElementHeader extends DataPrivacyElementHeader
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Default constructor
      */

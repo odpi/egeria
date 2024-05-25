@@ -21,9 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SchemaAnalysisAnnotation extends Annotation
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String schemaName           = null;
     private String schemaTypeName       = null;
 

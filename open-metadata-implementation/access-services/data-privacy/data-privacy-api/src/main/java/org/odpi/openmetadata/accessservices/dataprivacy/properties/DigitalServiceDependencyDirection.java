@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -29,13 +28,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum DigitalServiceDependencyDirection implements Serializable
+public enum DigitalServiceDependencyDirection
 {
     DEPENDENT_SERVICES      (0,  "Dependent",        "The digital services that call this digital service."),
     DEPENDED_UPON_SERVICES  (1,  "Depended Upon",    "The digital services that this digital service calls."),
     BOTH_DIRECTIONS         (2,  "Both Directions",  "Both the dependent and depended on digital services.");
 
-    private static final long serialVersionUID = 1L;
 
     private final int            ordinal;
     private final String         name;

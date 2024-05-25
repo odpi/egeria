@@ -22,8 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class LatestChange extends ElementClassificationHeader
 {
-    private static final long     serialVersionUID = 1L;
-
     private LatestChangeTarget latestChangeTarget = null;
     private LatestChangeAction latestChangeAction = null;
     private String             classificationName = null;

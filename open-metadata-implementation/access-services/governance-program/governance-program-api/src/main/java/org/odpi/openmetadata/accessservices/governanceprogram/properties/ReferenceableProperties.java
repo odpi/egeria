@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.governanceprogram.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,10 +34,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = GovernanceZoneProperties.class, name = "GovernanceZoneProperties"),
                 @JsonSubTypes.Type(value = SubjectAreaProperties.class, name = "SubjectAreaProperties")
         })
-public abstract class ReferenceableProperties implements Serializable
+public abstract class ReferenceableProperties
 {
-    private static final long    serialVersionUID = 1L;
-
     private String               qualifiedName        = null;
     private Map<String, String>  additionalProperties = null;
 
