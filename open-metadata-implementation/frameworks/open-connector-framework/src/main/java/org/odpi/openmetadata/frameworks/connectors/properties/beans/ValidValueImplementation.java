@@ -29,8 +29,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class ValidValueImplementation extends PropertyBase
 {
-    private static final long         serialVersionUID = 1L;
-
     private String              symbolicName            = null;
     private String              implementationValue     = null;
     private Map<String, String> additionalValues        = null;

@@ -7167,6 +7167,48 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract the profileStartDate property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from annotation entities
+     * @return map of name to long pairs
+     */
+    protected Date removeProfileStartDate(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeProfileStartDate";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                       OpenMetadataProperty.PROFILE_START_DATE.name,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+    /**
+     * Extract the profileEndDate property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from annotation entities
+     * @return map of name to long pairs
+     */
+    protected Date removeProfileEndDate(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeProfileEndDate";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateProperty(serviceName,
+                                                       OpenMetadataProperty.PROFILE_END_DATE.name,
+                                                       instanceProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+    /**
      * Extract the profileProperties property from the supplied instance properties.
      *
      * @param instanceProperties properties from annotation entities
@@ -7226,6 +7268,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                                               OpenMetadataProperty.PROFILE_COUNTS.name,
                                                               instanceProperties,
                                                               methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the profileCounts property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from annotation entities
+     * @return map of name to long pairs
+     */
+    protected Map<String, Double> removeProfileDoubles(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeProfileDoubles";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDoubleMapFromProperty(serviceName,
+                                                                OpenMetadataProperty.PROFILE_DOUBLES.name,
+                                                                instanceProperties,
+                                                                methodName);
         }
 
         return null;

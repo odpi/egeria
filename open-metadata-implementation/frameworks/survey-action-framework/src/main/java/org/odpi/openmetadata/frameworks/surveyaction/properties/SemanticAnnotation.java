@@ -22,9 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public class SemanticAnnotation extends DataFieldAnnotation
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String informalTerm = null;
     private String informalTopic = null;
 

@@ -56,9 +56,12 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
     private int                  inferredLength    = 0;
     private int                  inferredPrecision = 0;
     private int                  inferredScale     = 0;
+    private Date                 profileStartDate  = null;
+    private Date                 profileEndDate    = null;
     private Map<String, String>  profileProperties = null;
     private Map<String, Boolean> profileFlags      = null;
     private Map<String, Long>    profileCounts     = null;
+    private Map<String, Double>  profileDoubles    = null;
     private List<String>         valueList         = null;
     private Map<String, Integer> valueCount        = null;
     private String               valueRangeFrom    = null;
@@ -209,9 +212,12 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
      * @param inferredLength length of the data field that has been deduced from the data stored
      * @param inferredPrecision precision of the data field that has been deduced from the data stored
      * @param inferredScale inferred scale used in other properties
+     * @param profileStartDate profiling start time
+     * @param profileEndDate profiling stop time
      * @param profileProperties the map of properties that make up the profile
      * @param profileFlags a set of boolean flags describing different aspects of the data
      * @param profileCounts the map of different profiling counts that have been calculated
+     * @param profileDoubles the map of different large profiling counts that have been calculated
      * @param valueList the list of values found in the data field
      * @param valueCount  a map of values to value count for the data field
      * @param valueRangeFrom the lowest value of the data stored in this data field
@@ -224,9 +230,12 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
                                              int                  inferredLength,
                                              int                  inferredPrecision,
                                              int                  inferredScale,
+                                             Date                 profileStartDate,
+                                             Date                 profileEndDate,
                                              Map<String, String>  profileProperties,
                                              Map<String, Boolean> profileFlags,
                                              Map<String, Long>    profileCounts,
+                                             Map<String, Double>  profileDoubles,
                                              List<String>         valueList,
                                              Map<String, Integer> valueCount,
                                              String               valueRangeFrom,
@@ -239,9 +248,12 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
         this.inferredLength    = inferredLength;
         this.inferredPrecision = inferredPrecision;
         this.inferredScale     = inferredScale;
+        this.profileStartDate  = profileStartDate;
+        this.profileEndDate    = profileEndDate;
         this.profileProperties = profileProperties;
         this.profileFlags      = profileFlags;
         this.profileCounts     = profileCounts;
+        this.profileDoubles    = profileDoubles;
         this.valueList         = valueList;
         this.valueCount        = valueCount;
         this.valueRangeFrom    = valueRangeFrom;
@@ -567,6 +579,18 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
                                                                inferredScale,
                                                                methodName);
 
+        properties = repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                properties,
+                                                                OpenMetadataProperty.PROFILE_START_DATE.name,
+                                                                profileStartDate,
+                                                                methodName);
+
+        properties = repositoryHelper.addDatePropertyToInstance(serviceName,
+                                                                properties,
+                                                                OpenMetadataProperty.PROFILE_END_DATE.name,
+                                                                profileEndDate,
+                                                                methodName);
+
         properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                      properties,
                                                                      OpenMetadataProperty.PROFILE_PROPERTIES.name,
@@ -584,6 +608,12 @@ public class AnnotationBuilder extends OpenMetadataAPIGenericBuilder
                                                                    OpenMetadataProperty.PROFILE_COUNTS.name,
                                                                    profileCounts,
                                                                    methodName);
+
+        properties = repositoryHelper.addDoubleMapPropertyToInstance(serviceName,
+                                                                     properties,
+                                                                     OpenMetadataProperty.PROFILE_DOUBLES.name,
+                                                                     profileDoubles,
+                                                                     methodName);
 
         properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                        properties,

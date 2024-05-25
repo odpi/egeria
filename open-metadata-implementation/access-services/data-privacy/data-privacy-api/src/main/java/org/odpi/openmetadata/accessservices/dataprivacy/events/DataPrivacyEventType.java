@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -17,15 +15,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum DataPrivacyEventType implements Serializable
+public enum DataPrivacyEventType
 {
     UNKNOWN_DATA_PRIVACY_EVENT       (0,  "UnknownEvent",           "An event that is not recognized by the local server."),
     NEW_DIGITAL_SERVICE_EVENT        (1,  "NewDigitalService",      "A new digital service has been defined."),
     UPDATED_DIGITAL_SERVICE_EVENT    (2,  "UpdatedDigitalService",  "An existing digital service has been updated."),
     DELETED_DIGITAL_SERVICE_EVENT    (3,  "DeletedDigitalService",  "An existing digital service has been deleted.");
 
-
-    private static final long     serialVersionUID = 1L;
 
     private final int      eventTypeCode;
     private final String   eventTypeName;

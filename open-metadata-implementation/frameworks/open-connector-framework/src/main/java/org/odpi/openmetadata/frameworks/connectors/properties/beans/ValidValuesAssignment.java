@@ -28,8 +28,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class ValidValuesAssignment extends PropertyBase
 {
-    private static final long         serialVersionUID = 1L;
-
     private boolean strictRequirement  = false;
 
     /**

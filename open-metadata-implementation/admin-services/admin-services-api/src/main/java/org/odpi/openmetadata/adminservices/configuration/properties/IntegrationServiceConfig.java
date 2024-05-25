@@ -27,9 +27,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class IntegrationServiceConfig extends OMAGServerClientConfig
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private int                              integrationServiceId                  = 0;
     private ComponentDevelopmentStatus       integrationServiceDevelopmentStatus   = null;
     private String                           integrationServiceContextManagerClass = null;

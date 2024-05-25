@@ -6,7 +6,6 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ExternalReference;
 
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,9 +15,6 @@ import java.util.List;
  */
 public class MockExternalReferences extends ExternalReferences
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     int totalElementCount = 0;
 
     /**

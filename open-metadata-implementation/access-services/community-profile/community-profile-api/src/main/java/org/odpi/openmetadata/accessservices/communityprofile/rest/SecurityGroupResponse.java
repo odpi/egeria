@@ -24,8 +24,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SecurityGroupResponse extends CommunityProfileOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private SecurityGroupElement element = null;
 
 

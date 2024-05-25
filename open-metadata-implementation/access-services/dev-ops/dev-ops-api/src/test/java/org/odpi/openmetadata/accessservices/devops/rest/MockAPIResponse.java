@@ -7,8 +7,6 @@ package org.odpi.openmetadata.accessservices.devops.rest;
  */
 public class MockAPIResponse extends DevOpsOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Default constructor
      */

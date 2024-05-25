@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -17,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum CollectionMemberStatus implements Serializable
+public enum CollectionMemberStatus
 {
     /**
      * The status of the member is not known or not specified. This is the default value.
@@ -58,8 +56,6 @@ public enum CollectionMemberStatus implements Serializable
      * The membership has a different status not covered by the open metadata types.
      */
     OTHER       (99, 99, "Other",      "The membership has a different status not covered by the open metadata types.");
-
-    private static final long serialVersionUID = 1L;
 
     private static final String ENUM_TYPE_GUID  = "a3bdb2ac-c28e-4e5a-8ab7-76aa01038832";
     private static final String ENUM_TYPE_NAME  = "MembershipStatus";

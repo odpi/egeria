@@ -6,7 +6,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase;
 
-import java.io.Serial;
 import java.util.List;
 
 
@@ -15,9 +14,6 @@ import java.util.List;
  */
 public abstract class PropertyIteratorBase extends PropertyBase
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     protected PagingIterator pagingIterator = null;
 
 

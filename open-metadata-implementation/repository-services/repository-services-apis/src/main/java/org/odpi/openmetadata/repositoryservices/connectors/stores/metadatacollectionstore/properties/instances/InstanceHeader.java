@@ -5,6 +5,7 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.io.Serial;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -27,7 +28,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public abstract class InstanceHeader extends InstanceAuditHeader
 {
-    private static final long    serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /*
      * Entities and relationships have unique identifiers.

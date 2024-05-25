@@ -95,6 +95,8 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
+            List<String> validDatabases = new ArrayList<>();
+
             while (resultSet.next())
             {
                 /*
@@ -103,21 +105,16 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
                 if ((! resultSet.getBoolean("datistemplate")) &&
                         (resultSet.getBoolean("datallowconn")))
                 {
-                    long oid = resultSet.getLong("oid");
                     String databaseName = resultSet.getString("datname");
 
-                    DatabaseStats databaseStats = new DatabaseStats();
-
-                    databaseStats.oid = oid;
-
-                    databases.put(databaseName, databaseStats);
+                    validDatabases.add(databaseName);
                 }
             }
 
             resultSet.close();
             preparedStatement.close();
 
-            if (databases.isEmpty())
+            if (validDatabases.isEmpty())
             {
                 auditLog.logMessage(methodName, PostgresAuditCode.NO_DATABASES.getMessageDefinition(surveyActionServiceName,
                                                                                                     assetStore.getAssetProperties().getQualifiedName(),
@@ -130,28 +127,34 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
 
                 resultSet = preparedStatement.executeQuery();
 
+                Map<String, Long>   databaseTuplesFetched  = new HashMap<>();
+                Map<String, Long>   databaseTuplesInserted = new HashMap<>();
+                Map<String, Long>   databaseTuplesUpdated  = new HashMap<>();
+                Map<String, Long>   databaseTuplesDeleted  = new HashMap<>();
+                Map<String, Double> databaseSessionTime    = new HashMap<>();
+                Map<String, Double> databaseActiveTime     = new HashMap<>();
+                Map<String, Date>   databaseStatsReset     = new HashMap<>();
+
                 while (resultSet.next())
                 {
                     String databaseName = resultSet.getString("datname");
 
-                    DatabaseStats databaseStats = databases.get(databaseName);
-
-                    if (databaseStats != null)
+                    if (validDatabases.contains(databaseName))
                     {
-                        databaseStats.tuplesFetched = resultSet.getLong("tup_fetched");
-                        databaseStats.tuplesInserted = resultSet.getLong("tup_inserted");
-                        databaseStats.tuplesUpdated = resultSet.getLong("tup_updated");
-                        databaseStats.tuplesDeleted = resultSet.getLong("tup_deleted");
-                        databaseStats.sessionTime = resultSet.getDouble("session_time");
-                        databaseStats.activeTime = resultSet.getDouble("active_time");
-                        databaseStats.statsReset = resultSet.getDate("stats_reset");
-
-                        databases.put(databaseName, databaseStats);
+                        databaseTuplesFetched.put(databaseName, resultSet.getLong("tup_fetched"));
+                        databaseTuplesInserted.put(databaseName, resultSet.getLong("tup_inserted"));
+                        databaseTuplesUpdated.put(databaseName, resultSet.getLong("tup_updated"));
+                        databaseTuplesDeleted.put(databaseName, resultSet.getLong("tup_deleted"));
+                        databaseSessionTime.put(databaseName, resultSet.getDouble("session_time"));
+                        databaseActiveTime.put(databaseName, resultSet.getDouble("active_time"));
+                        databaseStatsReset.put(databaseName, resultSet.getDate("stats_reset"));
                     }
                 }
 
                 resultSet.close();
                 preparedStatement.close();
+
+                Map<String, Long> databaseSizes = new HashMap<>();
 
                 for (String databaseName : databases.keySet())
                 {
@@ -164,11 +167,7 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
 
                         if (resultSet.next())
                         {
-                            DatabaseStats databaseStats = databases.get(databaseName);
-
-                            databaseStats.size = resultSet.getLong("pg_database_size");
-
-                            databases.put(databaseName, databaseStats);
+                            databaseSizes.put(databaseName, resultSet.getLong("pg_database_size"));
                         }
                     }
                     catch (Exception noSize)
@@ -186,9 +185,10 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
                 annotation.setSummary(PostgresAnnotationType.DATABASE_SIZES.getSummary());
                 annotation.setExplanation(PostgresAnnotationType.DATABASE_SIZES.getExplanation());
 
-                //annotation.setProfileCounts(profileCounts);
+                annotation.setProfileCounts(databaseSizes);
 
                 annotationStore.addAnnotation(annotation, surveyContext.getAssetGUID());
+
             }
         }
         catch (ConnectorCheckedException error)

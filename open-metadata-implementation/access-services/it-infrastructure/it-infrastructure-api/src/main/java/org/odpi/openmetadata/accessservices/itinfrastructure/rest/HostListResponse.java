@@ -25,8 +25,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class HostListResponse extends ITInfrastructureOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private List<HostElement> elementList = null;
 
 

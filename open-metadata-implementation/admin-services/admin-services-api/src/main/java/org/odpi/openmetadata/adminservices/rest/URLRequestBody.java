@@ -18,10 +18,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * URLRequestBody provides a container for transporting a URL string in a request body.
  */
-public class URLRequestBody implements Serializable
+public class URLRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
     private String urlRoot = null;
 
 

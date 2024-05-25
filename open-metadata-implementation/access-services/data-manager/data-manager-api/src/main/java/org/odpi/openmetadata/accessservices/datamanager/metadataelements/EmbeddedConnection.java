@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -23,10 +22,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementStub;
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EmbeddedConnection implements Serializable
+public class EmbeddedConnection
 {
-    private static final long     serialVersionUID = 1L;
-
     /*
      * Attributes of an embedded connection
      */

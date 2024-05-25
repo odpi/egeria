@@ -37,8 +37,6 @@ public enum ClassificationOrigin
      */
     PROPAGATED     (1, "Propagated", "The classification has propagated along a relationship to this entity");
 
-    private static final long serialVersionUID = 1L;
-
     private final int            ordinal;
     private final String         name;
     private final String         description;

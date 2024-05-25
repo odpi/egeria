@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetowner.properties.NoteProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
-import java.io.Serial;
 import java.util.Date;
 import java.util.Objects;
 

@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -17,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum OpenMetadataTypeDefCategory implements Serializable
+public enum OpenMetadataTypeDefCategory
 {
     /**
      * Unknown - Uninitialized OpenMetadataTypeDef object.
@@ -38,8 +36,6 @@ public enum OpenMetadataTypeDefCategory implements Serializable
      * OpenMetadataRelationshipDef - A link between two entities.
      */
     RELATIONSHIP_DEF   (8, "OpenMetadataRelationshipDef",   "A link between two entities.");
-
-    private static final long serialVersionUID = 1L;
 
     private final int            typeCode;
     private final String         typeName;

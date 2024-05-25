@@ -4,12 +4,10 @@ package org.odpi.openmetadata.adminservices.configuration.registration;
 
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 
-import java.io.Serializable;
-
 /**
  * CommonServicesDescription provides a list of fixed services that support the platform.
  */
-public enum CommonServicesDescription implements Serializable
+public enum CommonServicesDescription
 {
     /**
      * Manages the synchronization, retrieval and maintenance of metadata stored in open metadata repositories.
@@ -131,8 +129,6 @@ public enum CommonServicesDescription implements Serializable
 
     ;
 
-
-    private static final long     serialVersionUID    = 1L;
 
     private final int                        serviceCode;
     private final ComponentDevelopmentStatus serviceDevelopmentStatus;

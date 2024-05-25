@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceStatusIdentifierSetResponse extends GovernanceProgramOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private GovernanceStatusIdentifierSetElement element = null;
 
 

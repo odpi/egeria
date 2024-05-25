@@ -24,8 +24,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OMAGServerConfigsResponse extends AdminServicesAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private Set<OMAGServerConfig> serverConfigs = null;
 
 

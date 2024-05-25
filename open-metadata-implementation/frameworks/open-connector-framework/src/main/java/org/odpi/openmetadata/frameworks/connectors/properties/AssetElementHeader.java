@@ -20,8 +20,6 @@ import java.util.Objects;
  */
 public abstract class AssetElementHeader extends AssetPropertyElementBase
 {
-    private static final long     serialVersionUID = 1L;
-
     private ElementBase elementBaseBean = null;
 
 

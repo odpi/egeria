@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,11 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class IntegrationGroupSummary implements Serializable
+public class IntegrationGroupSummary
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String                           integrationGroupName        = null;
     private String                           integrationGroupGUID        = null;
     private String                           integrationGroupDescription = null;

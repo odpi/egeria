@@ -7061,6 +7061,51 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
+     * Extract the profileStartDate property from the supplied element properties.
+     *
+     * @param elementProperties properties from annotation entities
+     * @return map of name value pairs
+     */
+    protected Date removeProfileStartDate(ElementProperties elementProperties)
+    {
+        final String methodName = "removeProfileStartDate";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(serviceName,
+                                                     OpenMetadataProperty.PROFILE_START_DATE.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the profileEndDate property from the supplied element properties.
+     *
+     * @param elementProperties properties from annotation entities
+     * @return map of name value pairs
+     */
+    protected Date removeProfileEndDate(ElementProperties elementProperties)
+    {
+        final String methodName = "removeProfileEndDate";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(serviceName,
+                                                     OpenMetadataProperty.PROFILE_END_DATE.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
      * Extract the profileProperties property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
@@ -7120,6 +7165,28 @@ public abstract class OpenMetadataConverterBase<B>
                                                             OpenMetadataProperty.PROFILE_COUNTS.name,
                                                             elementProperties,
                                                             methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the profileCounts property from the supplied element properties.
+     *
+     * @param elementProperties properties from annotation entities
+     * @return map of name to long pairs
+     */
+    protected Map<String, Double> removeProfileDoubles(ElementProperties elementProperties)
+    {
+        final String methodName = "removeProfileDoubles";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDoubleMapFromProperty(serviceName,
+                                                              OpenMetadataProperty.PROFILE_DOUBLES.name,
+                                                              elementProperties,
+                                                              methodName);
         }
 
         return null;

@@ -24,9 +24,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RequestForActionAnnotation extends DataFieldAnnotation
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String              surveyActivity  = null;
     private String              actionRequested = null;
     private Map<String, String> actionProperties  = null;

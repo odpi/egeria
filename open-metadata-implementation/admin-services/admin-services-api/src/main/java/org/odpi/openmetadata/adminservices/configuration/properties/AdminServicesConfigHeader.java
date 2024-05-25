@@ -4,9 +4,6 @@ package org.odpi.openmetadata.adminservices.configuration.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -37,12 +34,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = ResourceEndpointConfig.class, name = "ResourceEndpointConfig"),
         @JsonSubTypes.Type(value = DataEngineProxyConfig.class, name = "DataEngineProxyConfig")
 })
-public class AdminServicesConfigHeader implements Serializable
+public class AdminServicesConfigHeader
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-
     /**
      * Default Constructor
      */

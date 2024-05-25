@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,11 +13,7 @@ import java.util.List;
  */
 public class MockNoteLogs extends NoteLogs
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     int totalElementCount = 0;
-
 
     /**
      * Typical Constructor creates an iterator with the supplied list of elements.

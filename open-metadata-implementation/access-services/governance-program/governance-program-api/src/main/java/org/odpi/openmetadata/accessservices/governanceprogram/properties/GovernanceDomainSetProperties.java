@@ -12,8 +12,6 @@ public class GovernanceDomainSetProperties extends ReferenceableProperties
     private String displayName      = null;
     private String description      = null;
 
-    private static final long     serialVersionUID = 1L;
-
     /**
      * Default constructor
      */

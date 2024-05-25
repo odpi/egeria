@@ -22,11 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceEngineElement implements Serializable
+public class GovernanceEngineElement
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private ElementHeader              elementHeader = null;
     private GovernanceEngineProperties properties    = null;
 

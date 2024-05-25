@@ -7,8 +7,6 @@ package org.odpi.openmetadata.accessservices.communityprofile.rest;
  */
 public class MockAPIResponse extends CommunityProfileOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Default constructor
      */

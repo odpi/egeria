@@ -21,8 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AssetElementOrigin extends AssetPropertyElementBase
 {
-    private static final long     serialVersionUID = 1L;
-
     private final ElementOrigin elementBean;
 
 

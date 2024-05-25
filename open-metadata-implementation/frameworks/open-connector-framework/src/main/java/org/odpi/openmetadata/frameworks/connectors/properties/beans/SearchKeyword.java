@@ -22,8 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SearchKeyword extends ElementBase
 {
-    private static final long     serialVersionUID = 1L;
-    
     protected String  name         = null;
     protected String  description  = null;
 

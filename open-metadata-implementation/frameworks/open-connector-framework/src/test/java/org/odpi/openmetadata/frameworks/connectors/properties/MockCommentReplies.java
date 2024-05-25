@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +13,6 @@ import java.util.List;
  */
 public class MockCommentReplies extends CommentReplies
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     int totalElementCount = 0;
 
     /**

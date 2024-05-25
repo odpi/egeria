@@ -20,8 +20,6 @@ import java.util.Objects;
  */
 public class CommentConversation extends Comment
 {
-    private static final long     serialVersionUID = 1L;
-
     protected CommentReplies commentReplies = null;
 
     /**

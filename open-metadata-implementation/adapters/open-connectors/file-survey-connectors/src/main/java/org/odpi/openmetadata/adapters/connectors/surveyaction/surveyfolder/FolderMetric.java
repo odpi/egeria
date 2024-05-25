@@ -11,12 +11,45 @@ import java.util.List;
  */
 public enum FolderMetric
 {
+    /**
+     * Number of files found in the directory (and all subdirectories).
+     */
     FILE_COUNT ("Number of Files", "Number of files found in the directory (and all subdirectories)."),
+
+    /**
+     * Number of subdirectories found under the surveyed directory.
+     */
     SUB_DIRECTORY_COUNT ("Number of Subdirectories (folders)", "Number of subdirectories found under the surveyed directory."),
+
+    /**
+     * Number of files and directories found under the surveyed directory.
+     */
     READABLE_FILE_COUNT ("Readable files/directories", "Number of files and directories found under the surveyed directory."),
+
+    /**
+     * Number of files and directories found under the surveyed directory that can be written to.
+     */
     WRITEABLE_FILE_COUNT ("Writable files/directories", "Number of files and directories found under the surveyed directory that can be written to."),
+
+    /**
+     * Number of files and directories found under the surveyed that can be executed.
+     */
     EXECUTABLE_FILE_COUNT ("Executable files/directories", "Number of files and directories found under the surveyed that can be executed."),
 
+    /**
+     * The last time that a file was created in the surveyed directory (or any subdirectory).
+     */
+    LAST_FILE_CREATION_TIME ("Last file creation time", "The last time that a file was created in the surveyed directory (or any subdirectory)."),
+
+    /**
+     * The last time that a file was created in the surveyed directory (or any subdirectory).
+     */
+    LAST_FILE_MODIFIED_TIME ("Last file modification time", "The last time that a file was updated in the surveyed directory (or any subdirectory)."),
+
+    /**
+     * The last time that a file was accessed in the surveyed directory (or any subdirectory).
+     */
+    LAST_FILE_ACCESSED_TIME ("Last file access time", "The last time that a file was accessed in the surveyed directory (or any subdirectory)."),
     ;
 
     public final String name;

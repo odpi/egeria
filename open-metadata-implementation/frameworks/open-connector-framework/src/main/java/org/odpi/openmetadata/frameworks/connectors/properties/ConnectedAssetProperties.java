@@ -29,8 +29,6 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class ConnectedAssetProperties extends PropertyBase
 {
-    private static final long     serialVersionUID = 1L;
-
     /*
      * AssetUniverse extends AssetDetails which extends AssetSummary.  The interaction with the metadata repository
      * pulls the asset universe in one single network interaction and the caller can then explore the metadata

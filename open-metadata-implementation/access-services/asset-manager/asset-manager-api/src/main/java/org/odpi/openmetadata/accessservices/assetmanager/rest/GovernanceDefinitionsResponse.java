@@ -25,8 +25,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceDefinitionsResponse extends AssetManagerOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private List<GovernanceDefinitionElement> elements = null;
 
 

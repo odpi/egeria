@@ -56,9 +56,15 @@ public enum SurveyFolderAnnotationType
 
     MISSING_REF_DATA("Missing File Reference Data",
                        OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.typeName,
-                       "Report on files that could not be classified using the file reference data.",
-                       "The survey process uses reference data to classify the purpose of files based on their file name.  This annotation captures all of the file names that could not be matched to the reference data. If any of these reveal files that are important to your organization then the reference data should be enhanced to include these files.",
+                       "List of files that could not be classified using the file reference data.",
+                       "The survey service uses reference data to classify the purpose of files based on their file name.  This annotation captures all of the file names that could not be matched to the reference data. If any of these reveal files that are important to your organization then the reference data should be enhanced to include these files.",
                        null),
+
+    INACCESSIBLE_FILES("Inaccessible files",
+                     OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.typeName,
+                     "List of files that the survey service was unable to retrieve the basic attributes for.",
+                     "The survey service retrieves the basic attributes of a file as part of its profiling effort.  A file I/O error uses reference data to classify the purpose of files based on their file name.  This annotation captures all of the file names that could not be matched to the reference data. If any of these reveal files that are important to your organization then the reference data should be enhanced to include these files.",
+                     null),
 
     ;
 

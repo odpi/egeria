@@ -24,9 +24,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class EngineConfig extends AdminServicesConfigHeader
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String engineId            = UUID.randomUUID().toString();
     private String engineQualifiedName = null;
     private String engineUserId        = null;

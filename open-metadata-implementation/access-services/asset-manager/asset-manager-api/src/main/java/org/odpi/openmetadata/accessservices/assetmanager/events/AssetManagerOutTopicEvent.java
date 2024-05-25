@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.assetmanager.events;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
-import java.io.Serial;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
@@ -22,11 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 
-public class AssetManagerOutTopicEvent implements java.io.Serializable
+public class AssetManagerOutTopicEvent
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private long                  eventVersionId     = 1L;
     private AssetManagerEventType eventType          = null;
     private Date                  eventTime          = null;

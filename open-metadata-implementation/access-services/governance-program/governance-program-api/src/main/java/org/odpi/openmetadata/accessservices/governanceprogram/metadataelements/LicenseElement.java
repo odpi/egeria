@@ -10,7 +10,6 @@ import org.odpi.openmetadata.accessservices.governanceprogram.properties.License
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -23,10 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class LicenseElement implements Serializable
+public class LicenseElement
 {
-    private static final long     serialVersionUID = 1L;
-
     private ElementHeader          licenseHeader         = null;
     private RelationshipProperties licenseProperties     = null;
     private ElementHeader          licenseTypeHeader     = null;

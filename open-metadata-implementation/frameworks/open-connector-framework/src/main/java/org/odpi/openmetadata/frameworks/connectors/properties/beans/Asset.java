@@ -64,8 +64,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Asset extends GovernedReferenceable
 {
-    private static final long     serialVersionUID = 1L;
-
     protected String              resourceName          = null;
     protected String              resourceDescription   = null;
     protected String              versionIdentifier     = null;

@@ -149,6 +149,7 @@ public class OpenMetadataTypesArchive1_2
         this.archiveBuilder.addCollectionDef(getMapStringBooleanCollectionDef());
         this.archiveBuilder.addCollectionDef(getMapStringIntCollectionDef());
         this.archiveBuilder.addCollectionDef(getMapStringLongCollectionDef());
+        this.archiveBuilder.addCollectionDef(getMapStringDoubleCollectionDef());
         this.archiveBuilder.addCollectionDef(getMapStringObjectCollectionDef());
         this.archiveBuilder.addCollectionDef(getArrayStringCollectionDef());
         this.archiveBuilder.addCollectionDef(getArrayIntCollectionDef());
@@ -229,6 +230,25 @@ public class OpenMetadataTypesArchive1_2
                                                  descriptionGUID,
                                                  PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING,
                                                  PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
+    }
+
+
+    /**
+     * Defines the {@code map<string,double>} type.
+     *
+     * @return CollectionDef for this type
+     */
+    private CollectionDef getMapStringDoubleCollectionDef()
+    {
+        final String guid            = "17211869-ed39-4ba9-bead-ffd967df65a8";
+        final String description     = "A map from String to double.";
+        final String descriptionGUID = null;
+
+        return archiveHelper.getMapCollectionDef(guid,
+                                                 description,
+                                                 descriptionGUID,
+                                                 PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING,
+                                                 PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE);
     }
 
 
@@ -22904,6 +22924,15 @@ public class OpenMetadataTypesArchive1_2
         final String attribute14Name            = OpenMetadataProperty.AVERAGE_VALUE.name;
         final String attribute14Description     = OpenMetadataProperty.AVERAGE_VALUE.description;
         final String attribute14DescriptionGUID = OpenMetadataProperty.AVERAGE_VALUE.descriptionGUID;
+        final String attribute15Name            = OpenMetadataProperty.PROFILE_DOUBLES.name;
+        final String attribute15Description     = OpenMetadataProperty.PROFILE_DOUBLES.description;
+        final String attribute15DescriptionGUID = OpenMetadataProperty.PROFILE_DOUBLES.descriptionGUID;
+        final String attribute16Name            = OpenMetadataProperty.PROFILE_START_DATE.name;
+        final String attribute16Description     = OpenMetadataProperty.PROFILE_START_DATE.description;
+        final String attribute16DescriptionGUID = OpenMetadataProperty.PROFILE_START_DATE.descriptionGUID;
+        final String attribute17Name            = OpenMetadataProperty.PROFILE_END_DATE.name;
+        final String attribute17Description     = OpenMetadataProperty.PROFILE_END_DATE.description;
+        final String attribute17DescriptionGUID = OpenMetadataProperty.PROFILE_END_DATE.descriptionGUID;
 
         property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
                                                         attribute1Description,
@@ -22960,6 +22989,18 @@ public class OpenMetadataTypesArchive1_2
         property = archiveHelper.getStringTypeDefAttribute(attribute14Name,
                                                            attribute14Description,
                                                            attribute14DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getMapStringDoubleTypeDefAttribute(attribute15Name,
+                                                                    attribute15Description,
+                                                                    attribute15DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getDateTypeDefAttribute(attribute16Name,
+                                                         attribute16Description,
+                                                         attribute16DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getDateTypeDefAttribute(attribute17Name,
+                                                         attribute17Description,
+                                                         attribute17DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);

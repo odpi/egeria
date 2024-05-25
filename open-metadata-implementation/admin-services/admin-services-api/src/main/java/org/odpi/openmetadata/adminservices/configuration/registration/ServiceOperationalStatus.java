@@ -3,12 +3,10 @@
 package org.odpi.openmetadata.adminservices.configuration.registration;
 
 
-import java.io.Serializable;
-
 /**
  * ServiceOperationalStatus sets up whether an open metadata service is enabled or not.
  */
-public enum ServiceOperationalStatus implements Serializable
+public enum ServiceOperationalStatus
 {
     /**
      * Code for this service is not available/applicable.
@@ -24,8 +22,6 @@ public enum ServiceOperationalStatus implements Serializable
      * The service has been disabled.
      */
     DISABLED         (2, "Disabled",        "The service has been disabled.");
-
-    private static final long serialVersionUID = 1L;
 
     private final int    typeCode;
     private final String typeName;

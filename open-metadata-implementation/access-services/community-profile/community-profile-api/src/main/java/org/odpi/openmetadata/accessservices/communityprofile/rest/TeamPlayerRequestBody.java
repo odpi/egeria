@@ -19,8 +19,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TeamPlayerRequestBody extends ExternalSourceRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
     private boolean leadershipRole = false;
     private String  position = null;
 

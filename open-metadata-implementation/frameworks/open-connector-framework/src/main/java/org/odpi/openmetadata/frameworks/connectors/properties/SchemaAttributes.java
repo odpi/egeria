@@ -18,8 +18,6 @@ import java.util.Iterator;
  */
 public abstract class SchemaAttributes extends PropertyIteratorBase implements Iterator<SchemaAttribute>
 {
-    private static final long     serialVersionUID = 1L;
-
     /**
      * Typical Constructor creates an iterator with the supplied list of elements.
      *

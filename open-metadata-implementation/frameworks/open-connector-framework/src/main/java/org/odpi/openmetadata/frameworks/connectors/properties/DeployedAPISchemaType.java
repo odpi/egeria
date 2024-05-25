@@ -13,8 +13,6 @@ import java.util.Objects;
  */
 public  class DeployedAPISchemaType extends APISchemaType
 {
-    private static final long     serialVersionUID = 1L;
-
     protected APIOperations apiOperations = null;
 
 

@@ -29,8 +29,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public abstract class SecurityManagerOMASAPIResponse extends FFDCResponseBase
 {
-    private static final long    serialVersionUID = 1L;
-
     /**
      * Default constructor
      */

@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class UpdateGovernanceEngineRequestBody extends NewGovernanceEngineRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
     private   String              typeDescription      = null;
     private   String              version              = null;
     private   String              patchLevel           = null;

@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SchemaAttributeRelationship extends PropertyBase
 {
-    private static final long     serialVersionUID = 1L;
-
     private String              linkType            = null;
     private String              linkedAttributeGUID = null;
     private String              linkedAttributeName = null;

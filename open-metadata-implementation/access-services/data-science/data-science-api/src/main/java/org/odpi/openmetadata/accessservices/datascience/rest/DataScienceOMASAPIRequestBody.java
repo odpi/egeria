@@ -20,11 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
         })
-public abstract class DataScienceOMASAPIRequestBody implements java.io.Serializable
+public abstract class DataScienceOMASAPIRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
-
     /**
      * Default constructor
      */

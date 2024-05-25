@@ -10,8 +10,6 @@ import java.util.Objects;
  */
 public class GovernanceZoneProperties extends ReferenceableProperties
 {
-    private static final long     serialVersionUID = 1L;
-
     private String zoneName         = null;
     private String displayName      = null;
     private String description      = null;

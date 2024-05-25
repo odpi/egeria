@@ -24,9 +24,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RepositoryPerformanceWorkbenchConfig extends AdminServicesConfigHeader
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private String   tutRepositoryServerName = null;
     private int      instancesPerType = 50;
     private int      maxSearchResults = 10;

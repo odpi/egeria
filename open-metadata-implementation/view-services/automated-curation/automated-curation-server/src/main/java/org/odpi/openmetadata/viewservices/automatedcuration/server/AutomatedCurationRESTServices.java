@@ -96,34 +96,39 @@ public class AutomatedCurationRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             ValidValuesAssetOwner handler = instanceHandler.getValidValuesAssetOwner(userId, serverName, methodName);
 
+            Date effectiveTime = new Date();
+
             if (requestBody != null)
             {
-                if ((requestBody.getFilter() != null) && (! requestBody.getFilter().isBlank()))
+                effectiveTime = requestBody.getEffectiveTime();
+            }
+
+            List<ValidValueElement> validValues = handler.findValidValues(userId,
+                                                                          "Egeria:ValidMetadataValue:.*:deployedImplementationType-.*",
+                                                                          startFrom,
+                                                                          pageSize,
+                                                                          effectiveTime);
+
+            if ((requestBody != null) && (requestBody.getFilter() != null) && (! requestBody.getFilter().isBlank()) && (validValues != null))
+            {
+                List<ValidValueElement> filteredValidValues = new ArrayList<>();
+                String searchString = instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase);
+
+                for (ValidValueElement validValue : validValues)
                 {
-                    List<ValidValueElement> validValues = handler.findValidValues(userId,
-                                                                                  "Egeria:ValidMetadataValue.*deployedImplementationType.*" + requestBody.getFilter() + ".*",
-                                                                                  startFrom,
-                                                                                  pageSize,
-                                                                                  requestBody.getEffectiveTime());
-                    response.setElements(this.getTechnologySummaries(validValues));
+                    if ((validValue != null) && (validValue.getValidValueProperties() != null) && (validValue.getValidValueProperties().getPreferredValue() != null))
+                    {
+                        if (validValue.getValidValueProperties().getPreferredValue().matches(searchString))
+                        {
+                            filteredValidValues.add(validValue);
+                        }
+                    }
                 }
-                else
-                {
-                    List<ValidValueElement> validValues = handler.findValidValues(userId,
-                                                                                  "Egeria:ValidMetadataValue.*deployedImplementationType-(.*)",
-                                                                                  startFrom,
-                                                                                  pageSize,
-                                                                                  requestBody.getEffectiveTime());
-                    response.setElements(this.getTechnologySummaries(validValues));
-                }
+
+                response.setElements(this.getTechnologySummaries(filteredValidValues));
             }
             else
             {
-                List<ValidValueElement> validValues = handler.findValidValues(userId,
-                                                                              "Egeria:ValidMetadataValue.*deployedImplementationType-(.*)",
-                                                                              startFrom,
-                                                                              pageSize,
-                                                                              new Date());
                 response.setElements(this.getTechnologySummaries(validValues));
             }
         }
@@ -219,7 +224,7 @@ public class AutomatedCurationRESTServices extends TokenController
                 if (requestBody != null)
                 {
                     List<ValidValueElement> validValues = handler.findValidValues(userId,
-                                                                                  "Egeria:ValidMetadataValue:" + typeName + ":deployedImplementationType-(.*)",
+                                                                                  "Egeria:ValidMetadataValue:" + typeName + ":deployedImplementationType-.*",
                                                                                   startFrom,
                                                                                   pageSize,
                                                                                   requestBody.getEffectiveTime());
@@ -228,7 +233,7 @@ public class AutomatedCurationRESTServices extends TokenController
                 else
                 {
                     List<ValidValueElement> validValues = handler.findValidValues(userId,
-                                                                                  "Egeria:ValidMetadataValue:" + typeName + ":deployedImplementationType-(.*)",
+                                                                                  "Egeria:ValidMetadataValue:" + typeName + ":deployedImplementationType-.*",
                                                                                   startFrom,
                                                                                   pageSize,
                                                                                   new Date());
@@ -289,7 +294,7 @@ public class AutomatedCurationRESTServices extends TokenController
                     OpenMetadataStoreClient  openHandler        = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
                     List<ValidValueElement> validValues = validValuesHandler.findValidValues(userId,
-                                                                                             "Egeria:ValidMetadataValue:.*:deployedImplementationType-.*" + requestBody.getFilter() + ".*",
+                                                                                             "Egeria:ValidMetadataValue:.*:deployedImplementationType-.*",
                                                                                              0,
                                                                                              0,
                                                                                              requestBody.getEffectiveTime());
@@ -300,7 +305,9 @@ public class AutomatedCurationRESTServices extends TokenController
 
                         for (ValidValueElement validValueElement : validValues)
                         {
-                            if (validValueElement != null)
+                            if ((validValueElement != null) &&
+                                    (validValueElement.getValidValueProperties() != null) &&
+                                    (requestBody.getFilter().equals(validValueElement.getValidValueProperties().getPreferredValue())))
                             {
                                 report.setTechnologyTypeGUID(validValueElement.getElementHeader().getGUID());
                                 report.setQualifiedName(validValueElement.getValidValueProperties().getQualifiedName());
@@ -439,6 +446,8 @@ public class AutomatedCurationRESTServices extends TokenController
                                                                                                                                                  0, 0);
 
                                 report.setExternalReferences(externalReferenceElements);
+
+                                break;
                             }
                         }
 

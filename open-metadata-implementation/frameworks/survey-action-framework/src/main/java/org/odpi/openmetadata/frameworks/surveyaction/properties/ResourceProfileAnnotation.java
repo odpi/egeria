@@ -18,18 +18,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ResourceProfileAnnotation extends DataFieldAnnotation
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private int                  length            = 0;
     private String               inferredDataType  = null;
     private String               inferredFormat    = null;
     private int                  inferredLength    = 0;
     private int                  inferredPrecision = 0;
     private int                  inferredScale     = 0;
+    private Date                 profileStartDate  = null;
+    private Date                 profileEndDate    = null;
     private Map<String, String>  profileProperties = null;
     private Map<String, Boolean> profileFlags      = null;
     private Map<String, Long>    profileCounts     = null;
+    private Map<String, Double>  profileDoubles    = null;
     private List<String>         valueList         = null;
     private Map<String, Integer> valueCount        = null;
     private String               valueRangeFrom    = null;
@@ -62,9 +62,12 @@ public class ResourceProfileAnnotation extends DataFieldAnnotation
             inferredLength = template.getInferredLength();
             inferredPrecision = template.getInferredPrecision();
             inferredScale = template.getInferredScale();
+            profileStartDate = template.getProfileStartDate();
+            profileEndDate = template.getProfileEndDate();
             profileProperties = template.getProfileProperties();
             profileFlags = template.getProfileFlags();
             profileCounts = template.getProfileCounts();
+            profileDoubles = template.getProfileDoubles();
             valueList = template.getValueList();
             valueCount = template.getValueCount();
             valueRangeFrom = template.getValueRangeFrom();
@@ -207,6 +210,49 @@ public class ResourceProfileAnnotation extends DataFieldAnnotation
 
 
     /**
+     * Return the time that the profiler started gathering data.
+     *
+     * @return date
+     */
+    public Date getProfileStartDate()
+    {
+        return profileStartDate;
+    }
+
+
+    /**
+     * Set Up the time that the profiler started gathering data.
+     *
+     * @param profileStartDate date
+     */
+    public void setProfileStartDate(Date profileStartDate)
+    {
+        this.profileStartDate = profileStartDate;
+    }
+
+
+    /**
+     * Return the time that the profiler stopped gathering data.
+     *
+     * @return date
+     */
+    public Date getProfileEndDate()
+    {
+        return profileEndDate;
+    }
+
+
+    /**
+     * Set up the time that the profiler stopped gathering data.
+     *
+     * @param profileEndDate date
+     */
+    public void setProfileEndDate(Date profileEndDate)
+    {
+        this.profileEndDate = profileEndDate;
+    }
+
+    /**
      * Return the map of properties that make up the profile.
      *
      * @return property map
@@ -296,6 +342,37 @@ public class ResourceProfileAnnotation extends DataFieldAnnotation
     public void setProfileCounts(Map<String, Long> profileCounts)
     {
         this.profileCounts = profileCounts;
+    }
+
+
+    /**
+     * Return the map of different large profiling counts that have been calculated.
+     *
+     * @return map of count name to count value
+     */
+    public Map<String, Double> getProfileDoubles()
+    {
+        if (profileDoubles == null)
+        {
+            return null;
+        }
+        else if (profileDoubles.isEmpty())
+        {
+            return null;
+        }
+
+        return new HashMap<>(profileDoubles);
+    }
+
+
+    /**
+     * Set up the map of different large profiling counts that have been calculated.
+     *
+     * @param profileDoubles map of count name to count value
+     */
+    public void setProfileDoubles(Map<String, Double> profileDoubles)
+    {
+        this.profileDoubles = profileDoubles;
     }
 
 
@@ -442,9 +519,12 @@ public class ResourceProfileAnnotation extends DataFieldAnnotation
                 ", inferredLength=" + inferredLength +
                 ", inferredPrecision=" + inferredPrecision +
                 ", inferredScale=" + inferredScale +
+                ", profileStartDate=" + profileStartDate +
+                ", profileEndDate=" + profileEndDate +
                 ", profileProperties=" + profileProperties +
                 ", profileFlags=" + profileFlags +
                 ", profileCounts=" + profileCounts +
+                ", profileDoubles=" + profileDoubles +
                 ", valueList=" + valueList +
                 ", valueCount=" + valueCount +
                 ", valueRangeFrom='" + valueRangeFrom + '\'' +
@@ -452,6 +532,7 @@ public class ResourceProfileAnnotation extends DataFieldAnnotation
                 ", averageValue='" + averageValue + '\'' +
                 "} " + super.toString();
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -481,9 +562,12 @@ public class ResourceProfileAnnotation extends DataFieldAnnotation
                 inferredScale == that.inferredScale &&
                 Objects.equals(inferredDataType, that.inferredDataType) &&
                 Objects.equals(inferredFormat, that.inferredFormat) &&
+                Objects.equals(profileStartDate, that.profileStartDate) &&
+                Objects.equals(profileEndDate, that.profileEndDate) &&
                 Objects.equals(profileProperties, that.profileProperties) &&
                 Objects.equals(profileFlags, that.profileFlags) &&
                 Objects.equals(profileCounts, that.profileCounts) &&
+                Objects.equals(profileDoubles, that.profileDoubles) &&
                 Objects.equals(valueList, that.valueList) &&
                 Objects.equals(valueCount, that.valueCount) &&
                 Objects.equals(valueRangeFrom, that.valueRangeFrom) &&
@@ -501,6 +585,7 @@ public class ResourceProfileAnnotation extends DataFieldAnnotation
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), length, inferredDataType, inferredFormat, inferredLength, inferredPrecision, inferredScale,
+                            profileStartDate, profileEndDate, profileDoubles,
                             profileProperties, profileFlags, profileCounts, valueList, valueCount, valueRangeFrom, valueRangeTo, averageValue);
     }
 }

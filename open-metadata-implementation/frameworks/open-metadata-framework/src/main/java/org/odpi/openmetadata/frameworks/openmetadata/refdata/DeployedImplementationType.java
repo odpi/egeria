@@ -36,10 +36,33 @@ public enum DeployedImplementationType
          OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS),
 
     /**
+     * A file containing program logic.
+     */
+    PROGRAM_FILE("Program File",
+                 DeployedImplementationType.FILE,
+                 OpenMetadataType.DATA_FILE.typeName,
+                 null,
+                 "A file containing program logic.",
+                 OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS),
+
+
+    /**
+     * A file containing program logic.
+     */
+    DATA_FILE("Data File",
+                 DeployedImplementationType.FILE,
+                 OpenMetadataType.DATA_FILE.typeName,
+                 null,
+                 "A file containing data.  This may be structured data, text or some form or media file.",
+                 OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS),
+
+
+
+    /**
      * CSV Data File.
      */
     CSV_FILE("CSV Data File",
-              DeployedImplementationType.FILE,
+              DeployedImplementationType.DATA_FILE,
               OpenMetadataType.CSV_FILE.typeName,
              null,
              OpenMetadataType.CSV_FILE.description,
@@ -49,7 +72,7 @@ public enum DeployedImplementationType
      * Avro Data File
      */
     AVRO_FILE("Avro Data File",
-             DeployedImplementationType.FILE,
+             DeployedImplementationType.DATA_FILE,
              OpenMetadataType.AVRO_FILE.typeName,
              null,
               OpenMetadataType.AVRO_FILE.description,
@@ -59,7 +82,7 @@ public enum DeployedImplementationType
      * JSON Data File
      */
     JSON_FILE("JSON Data File",
-              DeployedImplementationType.FILE,
+              DeployedImplementationType.DATA_FILE,
               OpenMetadataType.JSON_FILE.typeName,
               null,
               OpenMetadataType.JSON_FILE.description,
@@ -70,7 +93,7 @@ public enum DeployedImplementationType
      * Parquet Data File
      */
     PARQUET_FILE("Parquet Data File",
-                  DeployedImplementationType.FILE,
+                  DeployedImplementationType.DATA_FILE,
                   OpenMetadataType.PARQUET_FILE.typeName,
               null,
               OpenMetadataType.PARQUET_FILE.description,
@@ -81,7 +104,7 @@ public enum DeployedImplementationType
      * Spreadsheet Data File
      */
     SPREADSHEET_FILE("Spreadsheet Data File",
-                     DeployedImplementationType.FILE,
+                     DeployedImplementationType.DATA_FILE,
                      OpenMetadataType.SPREADSHEET_FILE.typeName,
                      null,
                      OpenMetadataType.SPREADSHEET_FILE.description,
@@ -92,7 +115,7 @@ public enum DeployedImplementationType
      * XML Data File
      */
     XML_FILE("XML Data File",
-             DeployedImplementationType.FILE,
+             DeployedImplementationType.DATA_FILE,
              OpenMetadataType.XML_FILE.typeName,
              null,
              OpenMetadataType.XML_FILE.description,
@@ -103,7 +126,7 @@ public enum DeployedImplementationType
      * Document File
      */
     DOCUMENT("Document File",
-             DeployedImplementationType.FILE,
+             DeployedImplementationType.DATA_FILE,
              OpenMetadataType.DOCUMENT.typeName,
              null,
              OpenMetadataType.DOCUMENT.description,
@@ -114,7 +137,7 @@ public enum DeployedImplementationType
      * Audio Data File
      */
     AUDIO_DATA_FILE("Audio Data File",
-                    DeployedImplementationType.FILE,
+                    DeployedImplementationType.DATA_FILE,
                     OpenMetadataType.AUDIO_FILE.typeName,
                     null,
                     OpenMetadataType.AUDIO_FILE.description,
@@ -125,7 +148,7 @@ public enum DeployedImplementationType
      * Video Data File
      */
     VIDEO_DATA_FILE("Video Data File",
-                    DeployedImplementationType.FILE,
+                    DeployedImplementationType.DATA_FILE,
                     OpenMetadataType.VIDEO_FILE.typeName,
                     null,
                     OpenMetadataType.VIDEO_FILE.description,
@@ -136,7 +159,7 @@ public enum DeployedImplementationType
      * 3D Image Data File
      */
     THREE_D_IMAGE_DATA_FILE("3D Image Data File",
-                    DeployedImplementationType.FILE,
+                    DeployedImplementationType.DATA_FILE,
                     OpenMetadataType.THREE_D_IMAGE_FILE.typeName,
                     null,
                     OpenMetadataType.THREE_D_IMAGE_FILE.description,
@@ -146,7 +169,7 @@ public enum DeployedImplementationType
      * Raster Data File
      */
     RASTER_DATA_FILE("Raster Data File",
-                    DeployedImplementationType.FILE,
+                    DeployedImplementationType.DATA_FILE,
                     OpenMetadataType.RASTER_FILE.typeName,
                     null,
                     OpenMetadataType.RASTER_FILE.description,
@@ -156,21 +179,11 @@ public enum DeployedImplementationType
      * Vector Data File
      */
     VECTOR_DATA_FILE("Vector Data File",
-                    DeployedImplementationType.FILE,
+                    DeployedImplementationType.DATA_FILE,
                     OpenMetadataType.VECTOR_FILE.typeName,
                     null,
                     OpenMetadataType.VECTOR_FILE.description,
                     OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES),
-
-    /**
-     * A file containing program logic.
-     */
-    PROGRAM_FILE("Program File",
-                 DeployedImplementationType.FILE,
-                 OpenMetadataType.DATA_FILE.typeName,
-                 null,
-                 "A file containing program logic.",
-                 OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS),
 
 
     /**
@@ -241,7 +254,7 @@ public enum DeployedImplementationType
      * Log File
      */
     LOG_FILE("Log File",
-             DeployedImplementationType.FILE,
+             DeployedImplementationType.DATA_FILE,
              OpenMetadataType.LOG_FILE.typeName,
              null,
              OpenMetadataType.LOG_FILE.description,
@@ -252,7 +265,7 @@ public enum DeployedImplementationType
      * Archive File
      */
     ARCHIVE_FILE("Archive File",
-                 DeployedImplementationType.FILE,
+                 DeployedImplementationType.DATA_FILE,
                  OpenMetadataType.ARCHIVE_FILE.typeName,
                  null,
                  OpenMetadataType.ARCHIVE_FILE.description,
@@ -263,7 +276,7 @@ public enum DeployedImplementationType
      * Keystore File
      */
     KEYSTORE_FILE("Keystore File",
-                 DeployedImplementationType.FILE,
+                 DeployedImplementationType.DATA_FILE,
                  OpenMetadataType.KEYSTORE_FILE.typeName,
                  null,
                   OpenMetadataType.KEYSTORE_FILE.description,

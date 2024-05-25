@@ -1,13 +1,16 @@
-
+# Egeria-validate-connectors
+# This collection lists the different calls for validating whether a connector is firstly loaded into the platform,
+# and secondly is supported by a specific service.
 
 @baseURL=https://localhost:9443
 @integrationDaemon=integration-daemon
 @engineHost=engine-host
 @userId=garygeeke
+@javaClassName=add name of connector provider class (include full package name but not '.class')
 
 ###
 # @name Get Connector Type (for any connector)
-GET {{baseURL}}/open-metadata/platform-services/users/{{userId}}/server-platform/connector-types/org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationProvider
+GET {{baseURL}}/open-metadata/platform-services/users/{{userId}}/server-platform/connector-types/{{javaClassName}}
 
 
 ###

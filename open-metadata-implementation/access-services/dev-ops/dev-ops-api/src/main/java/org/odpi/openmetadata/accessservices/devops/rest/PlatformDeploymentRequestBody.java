@@ -21,8 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PlatformDeploymentRequestBody extends MetadataSourceRequestBody
 {
-    private static final long    serialVersionUID = 1L;
-
     private PlatformDeploymentProperties properties = null;
 
     /**

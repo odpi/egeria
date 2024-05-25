@@ -25,8 +25,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FormsResponse extends DataManagerOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private List<FormElement> elementList = null;
 
 

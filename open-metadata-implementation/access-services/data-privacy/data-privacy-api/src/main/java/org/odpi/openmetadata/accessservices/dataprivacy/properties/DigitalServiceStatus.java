@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -51,7 +49,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum DigitalServiceStatus implements Serializable
+public enum DigitalServiceStatus
 {
     DRAFT                   (0,  "Draft",                   "The digital service definition is a draft."),
     PROPOSED                (1,  "Proposed",                "The digital service definition is in planning, feasibility study and business review."),
@@ -61,8 +59,6 @@ public enum DigitalServiceStatus implements Serializable
     ACTIVE                  (5,  "Active",                  "The digital service definition is approved and in use."),
     DEPRECATED              (6,  "Deprecated",              "The digital service definition is no longer active."),
     OTHER                   (99, "Other",                   "The digital service definition in a locally defined state.");
-
-    private static final long serialVersionUID = 1L;
 
     private final int            ordinal;
     private final String         name;

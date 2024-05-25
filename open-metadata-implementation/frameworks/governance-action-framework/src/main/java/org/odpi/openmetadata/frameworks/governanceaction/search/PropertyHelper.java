@@ -864,6 +864,60 @@ public class PropertyHelper
 
 
     /**
+     * Add the supplied map property to an element properties object.  The supplied map is stored as a single
+     * property in the instances properties.   If the element properties object
+     * supplied is null, a new element properties object is created.
+     *
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @return resulting element properties object
+     */
+    public ElementProperties addDoubleMapProperty(ElementProperties   properties,
+                                                  String              propertyName,
+                                                  Map<String, Double> mapValues)
+    {
+        if (mapValues != null)
+        {
+            if (! mapValues.isEmpty())
+            {
+                ElementProperties  resultingProperties;
+
+                if (properties == null)
+                {
+                    resultingProperties = new ElementProperties();
+                }
+                else
+                {
+                    resultingProperties = properties;
+                }
+
+                /*
+                 * The values of a map property are stored as an embedded ElementProperties object.
+                 */
+                ElementProperties  mapElementProperties  = this.addDoublePropertyMap(null, mapValues);
+
+                /*
+                 * If there was content in the map then the resulting ElementProperties are added as
+                 * a property to the resulting properties.
+                 */
+                if (mapElementProperties != null)
+                {
+                    MapTypePropertyValue mapTypePropertyValue = new MapTypePropertyValue();
+                    mapTypePropertyValue.setMapValues(mapElementProperties);
+                    mapTypePropertyValue.setTypeName("map<string,double>");
+                    resultingProperties.setProperty(propertyName, mapTypePropertyValue);
+
+                    return resultingProperties;
+                }
+            }
+        }
+
+        return properties;
+    }
+
+
+    /**
      * Add the supplied property map to an element properties object.  Each of the entries in the map is added
      * as a separate property in element properties.  If the element properties object
      * supplied is null, a new element properties object is created.
@@ -1011,6 +1065,54 @@ public class PropertyHelper
         return properties;
     }
 
+
+    /**
+     * Add the supplied property map to an element properties object.  Each of the entries in the map is added
+     * as a separate property in element properties.  If the element properties object
+     * supplied is null, a new element properties object is created.
+     *
+     * @param properties properties object to add property to, may be null.
+     * @param mapValues contents of the map
+     * @return resulting element properties object
+     */
+    public ElementProperties addDoublePropertyMap(ElementProperties   properties,
+                                                  Map<String, Double> mapValues)
+    {
+        if ((mapValues != null) && (! mapValues.isEmpty()))
+        {
+            ElementProperties  resultingProperties;
+
+            if (properties == null)
+            {
+                resultingProperties = new ElementProperties();
+            }
+            else
+            {
+                resultingProperties = properties;
+            }
+
+            int propertyCount = 0;
+
+            for (String mapPropertyName : mapValues.keySet())
+            {
+                Double mapPropertyValue = mapValues.get(mapPropertyName);
+
+                PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
+                primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DOUBLE);
+                primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue);
+                primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DOUBLE.getName());
+                resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
+                propertyCount++;
+            }
+
+            if (propertyCount > 0)
+            {
+                return resultingProperties;
+            }
+        }
+
+        return properties;
+    }
 
 
     /**
@@ -1367,6 +1469,38 @@ public class PropertyHelper
     }
 
 
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, Double> removeDoubleMapFromProperty(String             sourceName,
+                                                           String             propertyName,
+                                                           ElementProperties  properties,
+                                                           String             methodName)
+    {
+        Map<String, Double>  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getDoubleMapFromProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+            }
+        }
+
+        return retrievedProperty;
+    }
+
+
 
     /**
      * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
@@ -1566,6 +1700,46 @@ public class PropertyHelper
             if (! longMap.isEmpty())
             {
                 return longMap;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, Double> getDoubleMapFromProperty(String             sourceName,
+                                                        String             propertyName,
+                                                        ElementProperties properties,
+                                                        String             methodName)
+    {
+        Map<String, Object>   mapFromProperty = this.getMapFromProperty(sourceName, propertyName, properties, methodName);
+
+        if (mapFromProperty != null)
+        {
+            Map<String, Double>  doubleMap = new HashMap<>();
+
+            for (String mapPropertyName : mapFromProperty.keySet())
+            {
+                Object actualPropertyValue = mapFromProperty.get(mapPropertyName);
+
+                if (actualPropertyValue != null)
+                {
+                    doubleMap.put(mapPropertyName, Double.parseDouble(actualPropertyValue.toString()));
+                }
+            }
+
+            if (! doubleMap.isEmpty())
+            {
+                return doubleMap;
             }
         }
 

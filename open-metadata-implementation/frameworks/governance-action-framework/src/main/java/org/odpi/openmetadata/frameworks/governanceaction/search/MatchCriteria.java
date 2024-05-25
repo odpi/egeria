@@ -38,8 +38,6 @@ public enum MatchCriteria
      */
     NONE (2, "None", "Return instances where none of the supplied properties match.");
 
-    private static final long serialVersionUID = 1L;
-
     private final int     ordinal;
     private final String  name;
     private final String  description;

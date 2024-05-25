@@ -29,8 +29,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class WatchdogClassificationEvent extends WatchdogMetadataElementEvent
 {
-    private static final long      serialVersionUID = 1L;
-
     private AttachedClassification changedClassification  = null;
     private AttachedClassification previousClassification = null;
 

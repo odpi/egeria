@@ -901,9 +901,12 @@ public class AnnotationStore
                                                         resourceProfileAnnotation.getInferredLength(),
                                                         resourceProfileAnnotation.getInferredPrecision(),
                                                         resourceProfileAnnotation.getInferredScale(),
+                                                        resourceProfileAnnotation.getProfileStartDate(),
+                                                        resourceProfileAnnotation.getProfileEndDate(),
                                                         resourceProfileAnnotation.getProfileProperties(),
                                                         resourceProfileAnnotation.getProfileFlags(),
                                                         resourceProfileAnnotation.getProfileCounts(),
+                                                        resourceProfileAnnotation.getProfileDoubles(),
                                                         resourceProfileAnnotation.getValueList(),
                                                         resourceProfileAnnotation.getValueCount(),
                                                         resourceProfileAnnotation.getValueRangeFrom(),
@@ -1117,9 +1120,12 @@ public class AnnotationStore
         private int                  inferredLength    = 0;
         private int                  inferredPrecision = 0;
         private int                  inferredScale     = 0;
+        private Date                 profileStartDate  = null;
+        private Date                 profileEndDate    = null;
         private Map<String, String>  profileProperties = null;
         private Map<String, Boolean> profileFlags      = null;
         private Map<String, Long>    profileCounts     = null;
+        private Map<String, Double>  profileDoubles    = null;
         private List<String>         valueList         = null;
         private Map<String, Integer> valueCount        = null;
         private String               valueRangeFrom    = null;
@@ -1311,9 +1317,12 @@ public class AnnotationStore
          * @param inferredLength length of the data field that has been deduced from the data stored
          * @param inferredPrecision precision of the data field that has been deduced from the data stored
          * @param inferredScale inferred scale used in other properties
+         * @param profileStartDate start of profile data capture
+         * @param profileEndDate end of profile data capture
          * @param profileProperties the map of properties that make up the profile
          * @param profileFlags a set of boolean flags describing different aspects of the data
          * @param profileCounts the map of different profiling counts that have been calculated
+         * @param profileDoubles the map of different large profiling counts that have been calculated
          * @param valueList the list of values found in the data field
          * @param valueCount  a map of values to value count for the data field
          * @param valueRangeFrom the lowest value of the data stored in this data field
@@ -1327,9 +1336,12 @@ public class AnnotationStore
                                              int                  inferredLength,
                                              int                  inferredPrecision,
                                              int                  inferredScale,
+                                             Date                 profileStartDate,
+                                             Date                 profileEndDate,
                                              Map<String, String>  profileProperties,
                                              Map<String, Boolean> profileFlags,
                                              Map<String, Long>    profileCounts,
+                                             Map<String, Double>  profileDoubles,
                                              List<String>         valueList,
                                              Map<String, Integer> valueCount,
                                              String               valueRangeFrom,
@@ -1346,9 +1358,12 @@ public class AnnotationStore
             this.inferredLength     = inferredLength;
             this.inferredPrecision  = inferredPrecision;
             this.inferredScale      = inferredScale;
+            this.profileStartDate   = profileStartDate;
+            this.profileEndDate     = profileEndDate;
             this.profileProperties  = profileProperties;
             this.profileFlags       = profileFlags;
             this.profileCounts      = profileCounts;
+            this.profileDoubles     = profileDoubles;
             this.valueList          = valueList;
             this.valueCount         = valueCount;
             this.valueRangeFrom     = valueRangeFrom;
@@ -1685,6 +1700,14 @@ public class AnnotationStore
                                                        OpenMetadataProperty.INFERRED_SCALE.name,
                                                        inferredScale);
 
+            properties = propertyHelper.addDateProperty(properties,
+                                                        OpenMetadataProperty.PROFILE_START_DATE.name,
+                                                        profileStartDate);
+
+            properties = propertyHelper.addDateProperty(properties,
+                                                        OpenMetadataProperty.PROFILE_END_DATE.name,
+                                                        profileEndDate);
+
             properties = propertyHelper.addStringMapProperty(properties,
                                                              OpenMetadataProperty.PROFILE_PROPERTIES.name,
                                                              profileProperties);
@@ -1696,6 +1719,10 @@ public class AnnotationStore
             properties = propertyHelper.addLongMapProperty(properties,
                                                            OpenMetadataProperty.PROFILE_COUNTS.name,
                                                            profileCounts);
+
+            properties = propertyHelper.addDoubleMapProperty(properties,
+                                                             OpenMetadataProperty.PROFILE_DOUBLES.name,
+                                                             profileDoubles);
 
             properties = propertyHelper.addStringArrayProperty(properties,
                                                                OpenMetadataProperty.VALUE_LIST.name,
@@ -2101,9 +2128,12 @@ public class AnnotationStore
                 annotation.setInferredLength(this.removeInferredLength(remainingProperties));
                 annotation.setInferredPrecision(this.removeInferredPrecision(remainingProperties));
                 annotation.setInferredScale(this.removeInferredScale(remainingProperties));
+                annotation.setProfileStartDate(this.removeProfileStartDate(remainingProperties));
+                annotation.setProfileEndDate(this.removeProfileEndDate(remainingProperties));
                 annotation.setProfileProperties(this.removeProfileProperties(remainingProperties));
                 annotation.setProfileFlags(this.removeProfileFlags(remainingProperties));
                 annotation.setProfileCounts(this.removeProfileCounts(remainingProperties));
+                annotation.setProfileDoubles(this.removeProfileDoubles(remainingProperties));
                 annotation.setValueList(this.removeValueList(remainingProperties));
                 annotation.setValueCount(this.removeValueCount(remainingProperties));
                 annotation.setValueRangeFrom(this.removeValueRangeFrom(remainingProperties));

@@ -21,8 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Location extends Referenceable
 {
-    private static final long     serialVersionUID = 1L;
-
     /*
      * Properties that make up the location of the asset.
      */

@@ -22,9 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public class ClassificationAnnotation extends DataFieldAnnotation
 {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     private Map<String, String> candidateClassifications = null;
 
     /**

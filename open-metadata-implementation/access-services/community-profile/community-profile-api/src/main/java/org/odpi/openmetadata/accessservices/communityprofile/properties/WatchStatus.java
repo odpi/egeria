@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -23,13 +21,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum WatchStatus implements Serializable
+public enum WatchStatus
 {
     NOT_WATCHED     (0,  "Not Watched", "Notifications should not be sent to the actor."),
     WATCHED         (1,  "Watched",     "Notifications should be sent to the actor."),
     USE_DEFAULT     (99, "Use Default", "Use the default setting for the collection to determine whether to send notifications.");
-
-    private static final long serialVersionUID = 1L;
 
     private final int            ordinal;
     private final String         name;
