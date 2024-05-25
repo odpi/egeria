@@ -79,7 +79,7 @@ ext {
     ossVersion = '4.16.0'
     // TODO: Held as data engine breaks
     mockitoVersion = '4.11.0'
-    plexusVersion = '4.0.0'
+    plexusVersion = '4.0.1'
     postgresVersion = '42.7.2'
     nettyVersion = '4.1.107.Final'
     prometheusVersion = '1.12.4'
