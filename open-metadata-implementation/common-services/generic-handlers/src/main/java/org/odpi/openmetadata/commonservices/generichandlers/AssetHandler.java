@@ -2990,7 +2990,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
-        specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
 
         return this.getBeansByValue(userId,
                                     name,

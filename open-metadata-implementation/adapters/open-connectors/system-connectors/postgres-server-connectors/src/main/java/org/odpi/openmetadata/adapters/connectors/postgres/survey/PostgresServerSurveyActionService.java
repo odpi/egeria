@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceProfileAnnotation;
 
 import javax.sql.DataSource;
@@ -84,8 +85,6 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
 
             annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
 
-            Map<String, DatabaseStats> databases = new HashMap<>();
-
             DataSource jdbcDataSource = assetConnector.getDataSource();
             Connection jdbcConnection = jdbcDataSource.getConnection();
 
@@ -122,73 +121,22 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
             }
             else
             {
-                String pg_stat_user_tablesSQLCommand = "SELECT datname, tup_fetched, tup_inserted, tup_updated, tup_deleted, session_time, active_time, stats_reset FROM pg_catalog.pg_stat_database;";
-                preparedStatement = jdbcConnection.prepareStatement(pg_stat_user_tablesSQLCommand);
+                PostgresDatabaseStatsExtractor statsExtractor = new PostgresDatabaseStatsExtractor(validDatabases,
+                                                                                                   jdbcConnection,
+                                                                                                   this);
 
-                resultSet = preparedStatement.executeQuery();
+                List<Annotation> databaseStatistics = statsExtractor.getStatistics();
 
-                Map<String, Long>   databaseTuplesFetched  = new HashMap<>();
-                Map<String, Long>   databaseTuplesInserted = new HashMap<>();
-                Map<String, Long>   databaseTuplesUpdated  = new HashMap<>();
-                Map<String, Long>   databaseTuplesDeleted  = new HashMap<>();
-                Map<String, Double> databaseSessionTime    = new HashMap<>();
-                Map<String, Double> databaseActiveTime     = new HashMap<>();
-                Map<String, Date>   databaseStatsReset     = new HashMap<>();
-
-                while (resultSet.next())
+                if (databaseStatistics != null)
                 {
-                    String databaseName = resultSet.getString("datname");
-
-                    if (validDatabases.contains(databaseName))
+                    for (Annotation annotation : databaseStatistics)
                     {
-                        databaseTuplesFetched.put(databaseName, resultSet.getLong("tup_fetched"));
-                        databaseTuplesInserted.put(databaseName, resultSet.getLong("tup_inserted"));
-                        databaseTuplesUpdated.put(databaseName, resultSet.getLong("tup_updated"));
-                        databaseTuplesDeleted.put(databaseName, resultSet.getLong("tup_deleted"));
-                        databaseSessionTime.put(databaseName, resultSet.getDouble("session_time"));
-                        databaseActiveTime.put(databaseName, resultSet.getDouble("active_time"));
-                        databaseStatsReset.put(databaseName, resultSet.getDate("stats_reset"));
-                    }
-                }
-
-                resultSet.close();
-                preparedStatement.close();
-
-                Map<String, Long> databaseSizes = new HashMap<>();
-
-                for (String databaseName : databases.keySet())
-                {
-                    final String sqlCommand2 = "SELECT pg_database_size(" + databases.get(databaseName) + ");";
-
-                    preparedStatement = jdbcConnection.prepareStatement(sqlCommand2);
-                    try
-                    {
-                        resultSet = preparedStatement.executeQuery();
-
-                        if (resultSet.next())
+                        if (super.isActive())
                         {
-                            databaseSizes.put(databaseName, resultSet.getLong("pg_database_size"));
+                            annotationStore.addAnnotation(annotation, surveyContext.getAssetGUID());
                         }
                     }
-                    catch (Exception noSize)
-                    {
-                        // Nothing to do
-                    }
-
-                    resultSet.close();
-                    preparedStatement.close();
                 }
-
-                ResourceProfileAnnotation annotation = new ResourceProfileAnnotation();
-
-                annotation.setAnnotationType(PostgresAnnotationType.DATABASE_SIZES.getName());
-                annotation.setSummary(PostgresAnnotationType.DATABASE_SIZES.getSummary());
-                annotation.setExplanation(PostgresAnnotationType.DATABASE_SIZES.getExplanation());
-
-                annotation.setProfileCounts(databaseSizes);
-
-                annotationStore.addAnnotation(annotation, surveyContext.getAssetGUID());
-
             }
         }
         catch (ConnectorCheckedException error)
@@ -216,22 +164,5 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
         }
 
         super.disconnect();
-    }
-
-
-    /**
-     * DatabaseStats captures information about a particular database.
-     */
-    static class DatabaseStats
-    {
-        long   oid            = 0L;
-        long   size           = 0L;
-        long   tuplesFetched  = 0L;
-        long   tuplesInserted = 0L;
-        long   tuplesUpdated  = 0L;
-        long   tuplesDeleted  = 0L;
-        double sessionTime    = 0;
-        double activeTime     = 0;
-        Date   statsReset     = null;
     }
 }

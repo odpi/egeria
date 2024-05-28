@@ -139,7 +139,8 @@ public class FileClassifier
                                       fileReferenceDataCache.fileType,
                                       fileReferenceDataCache.deployedImplementationType,
                                       fileReferenceDataCache.encoding,
-                                      fileReferenceDataCache.assetTypeName);
+                                      fileReferenceDataCache.assetTypeName,
+                                      attr.size());
     }
 
 

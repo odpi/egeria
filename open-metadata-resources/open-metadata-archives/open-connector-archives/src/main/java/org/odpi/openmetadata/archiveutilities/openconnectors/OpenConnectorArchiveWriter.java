@@ -39,6 +39,7 @@ import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConne
 import org.odpi.openmetadata.adapters.connectors.secretsstore.envar.EnvVarSecretsStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv.CSVSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile.FileSurveyServiceProvider;
+import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder.FolderSurveyServiceProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.adminservices.configuration.registration.*;
@@ -1576,7 +1577,7 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
 
     /**
      * Create a template got a type of asset and link it to the associated deployed implementation type.
-     * The template consists of a asset linked to a connection, that is in turn linked
+     * The template consists of an asset linked to a connection, that is in turn linked
      * to the supplied connector type and an endpoint,
      *
      * @param deployedImplementationType deployed implementation type for the technology
@@ -3281,14 +3282,49 @@ public class OpenConnectorArchiveWriter extends OMRSArchiveWriter
                                       String                      governanceEngineName,
                                       GovernanceActionDescription governanceActionDescription)
     {
-        final String governanceRequestType = "survey-folder";
+        final String topLevelOnlyRequestType       = "survey-folder";
+        final String topLevelAndFileRequestType    = "survey-folder-and-files";
+        final String allFoldersRequestType         = "survey-all-folders";
+        final String allFoldersAndFilesRequestType = "survey-all-folders-and-files";
 
         this.addRequestType(governanceEngineGUID,
                             governanceEngineName,
                             OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
-                            governanceRequestType,
+                            topLevelOnlyRequestType,
                             null,
                             null,
+                            governanceActionDescription);
+
+        final Map<String, String> requestParameters = new HashMap<>();
+
+        requestParameters.put(FolderRequestParameter.ANALYSIS_LEVEL.getName(), "TOP_LEVEL_AND_FILES");
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
+                            topLevelAndFileRequestType,
+                            null,
+                            requestParameters,
+                            governanceActionDescription);
+
+        requestParameters.put(FolderRequestParameter.ANALYSIS_LEVEL.getName(), "ALL_FOLDERS");
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
+                            allFoldersRequestType,
+                            null,
+                            requestParameters,
+                            governanceActionDescription);
+
+        requestParameters.put(FolderRequestParameter.ANALYSIS_LEVEL.getName(), "ALL_FOLDERS_AND_FILES");
+
+        this.addRequestType(governanceEngineGUID,
+                            governanceEngineName,
+                            OpenMetadataType.SURVEY_ACTION_ENGINE.typeName,
+                            allFoldersAndFilesRequestType,
+                            null,
+                            requestParameters,
                             governanceActionDescription);
     }
 

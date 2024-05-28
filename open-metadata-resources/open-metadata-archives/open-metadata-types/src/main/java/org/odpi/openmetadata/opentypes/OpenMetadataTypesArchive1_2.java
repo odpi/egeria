@@ -150,6 +150,7 @@ public class OpenMetadataTypesArchive1_2
         this.archiveBuilder.addCollectionDef(getMapStringIntCollectionDef());
         this.archiveBuilder.addCollectionDef(getMapStringLongCollectionDef());
         this.archiveBuilder.addCollectionDef(getMapStringDoubleCollectionDef());
+        this.archiveBuilder.addCollectionDef(getMapStringDateCollectionDef());
         this.archiveBuilder.addCollectionDef(getMapStringObjectCollectionDef());
         this.archiveBuilder.addCollectionDef(getArrayStringCollectionDef());
         this.archiveBuilder.addCollectionDef(getArrayIntCollectionDef());
@@ -165,8 +166,8 @@ public class OpenMetadataTypesArchive1_2
     private CollectionDef getMapStringStringCollectionDef()
     {
         final String guid            = "005c7c14-ac84-4136-beed-959401b041f8";
-        final String description     = "A map from String to String.";
-        final String descriptionGUID = null;
+        final String description     = "A map from string to string.";
+        final String descriptionGUID = "f285d0ca-50ab-4564-b129-c7e3ba4e8545";
 
         return archiveHelper.getMapCollectionDef(guid,
                                                  description,
@@ -184,8 +185,8 @@ public class OpenMetadataTypesArchive1_2
     private CollectionDef getMapStringBooleanCollectionDef()
     {
         final String guid            = "8fa603dd-c2c5-43fc-8ff4-92141f2414ab";
-        final String description     = "A map from String to Boolean.";
-        final String descriptionGUID = null;
+        final String description     = "A map from string to Boolean.";
+        final String descriptionGUID = "72d76e44-350c-4ff3-baae-54b837f723c7";
 
         return archiveHelper.getMapCollectionDef(guid,
                                                  description,
@@ -203,8 +204,8 @@ public class OpenMetadataTypesArchive1_2
     private CollectionDef getMapStringIntCollectionDef()
     {
         final String guid            = "8fa603dd-c2c5-43fc-8ff4-92141f2414ac";
-        final String description     = "A map from String to int.";
-        final String descriptionGUID = null;
+        final String description     = "A map from string to int.";
+        final String descriptionGUID = "47373fd6-be40-439b-97ca-881878eed1f4";
 
         return archiveHelper.getMapCollectionDef(guid,
                                                  description,
@@ -222,8 +223,8 @@ public class OpenMetadataTypesArchive1_2
     private CollectionDef getMapStringLongCollectionDef()
     {
         final String guid            = "8fa603dd-c2c5-43fc-8ff4-92141f2414ae";
-        final String description     = "A map from String to long.";
-        final String descriptionGUID = null;
+        final String description     = "A map from string to long.";
+        final String descriptionGUID = "039b3466-e28b-4c73-8181-d9a57749c706";
 
         return archiveHelper.getMapCollectionDef(guid,
                                                  description,
@@ -238,11 +239,30 @@ public class OpenMetadataTypesArchive1_2
      *
      * @return CollectionDef for this type
      */
+    private CollectionDef getMapStringDateCollectionDef()
+    {
+        final String guid            = "ee293c68-e34d-4885-a512-f927d35a5893";
+        final String description     = "A map from string to date.";
+        final String descriptionGUID = "978b8ad1-c7c8-4892-bd83-98c9f07e8028";
+
+        return archiveHelper.getMapCollectionDef(guid,
+                                                 description,
+                                                 descriptionGUID,
+                                                 PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING,
+                                                 PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+    }
+
+
+    /**
+     * Defines the {@code map<string,double>} type.
+     *
+     * @return CollectionDef for this type
+     */
     private CollectionDef getMapStringDoubleCollectionDef()
     {
         final String guid            = "17211869-ed39-4ba9-bead-ffd967df65a8";
-        final String description     = "A map from String to double.";
-        final String descriptionGUID = null;
+        final String description     = "A map from string to double.";
+        final String descriptionGUID = "ee2cf3d5-3ff8-4d6a-82ed-35c0123dcc89";
 
         return archiveHelper.getMapCollectionDef(guid,
                                                  description,
@@ -250,7 +270,6 @@ public class OpenMetadataTypesArchive1_2
                                                  PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING,
                                                  PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE);
     }
-
 
     /**
      * Defines the {@code map<string,object>} type.
@@ -260,8 +279,8 @@ public class OpenMetadataTypesArchive1_2
     private CollectionDef getMapStringObjectCollectionDef()
     {
         final String guid            = "8fa603dd-c2c5-43fc-8ff4-92141f2414ad";
-        final String description     = "A map from String to Object.";
-        final String descriptionGUID = null;
+        final String description     = "A map from string to object.";
+        final String descriptionGUID = "6dd2944b-9107-41c6-a10b-6a938fd6f2f5";
 
         return archiveHelper.getMapCollectionDef(guid,
                                                  description,
@@ -279,8 +298,8 @@ public class OpenMetadataTypesArchive1_2
     private CollectionDef getArrayStringCollectionDef()
     {
         final String guid            = "0428b5d3-f824-459c-b7f5-f8151de59707";
-        final String description     = "An array of Strings.";
-        final String descriptionGUID = null;
+        final String description     = "An array of strings.";
+        final String descriptionGUID = "4a384611-d8c1-4909-a6f8-1385ffe210e2";
 
         return archiveHelper.getArrayCollectionDef(guid,
                                                    description,
@@ -298,7 +317,7 @@ public class OpenMetadataTypesArchive1_2
     {
         final String guid            = "0103fe10-98b0-4910-8ee0-21d529f7ff6d";
         final String description     = "An array of integers.";
-        final String descriptionGUID = null;
+        final String descriptionGUID = "ac772d8b-278e-4017-a7e8-1988c74c091e";
 
         return archiveHelper.getArrayCollectionDef(guid,
                                                    description,
@@ -22933,6 +22952,12 @@ public class OpenMetadataTypesArchive1_2
         final String attribute17Name            = OpenMetadataProperty.PROFILE_END_DATE.name;
         final String attribute17Description     = OpenMetadataProperty.PROFILE_END_DATE.description;
         final String attribute17DescriptionGUID = OpenMetadataProperty.PROFILE_END_DATE.descriptionGUID;
+        final String attribute18Name            = OpenMetadataProperty.PROFILE_DATES.name;
+        final String attribute18Description     = OpenMetadataProperty.PROFILE_DATES.description;
+        final String attribute18DescriptionGUID = OpenMetadataProperty.PROFILE_DATES.descriptionGUID;
+        final String attribute19Name            = OpenMetadataProperty.PROFILE_PROPERTY_NAMES.name;
+        final String attribute19Description     = OpenMetadataProperty.PROFILE_PROPERTY_NAMES.description;
+        final String attribute19DescriptionGUID = OpenMetadataProperty.PROFILE_PROPERTY_NAMES.descriptionGUID;
 
         property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
                                                         attribute1Description,
@@ -23001,6 +23026,14 @@ public class OpenMetadataTypesArchive1_2
         property = archiveHelper.getDateTypeDefAttribute(attribute17Name,
                                                          attribute17Description,
                                                          attribute17DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getMapStringDateTypeDefAttribute(attribute18Name,
+                                                                  attribute18Description,
+                                                                  attribute18DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute19Name,
+                                                                attribute19Description,
+                                                                attribute19DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
