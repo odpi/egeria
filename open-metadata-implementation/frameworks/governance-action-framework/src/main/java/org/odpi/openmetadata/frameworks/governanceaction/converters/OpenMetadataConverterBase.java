@@ -7061,10 +7061,32 @@ public abstract class OpenMetadataConverterBase<B>
 
 
     /**
+     * Extract the profilePropertyNames property from the supplied element properties.
+     *
+     * @param elementProperties properties from annotation entities
+     * @return list of names
+     */
+    protected List<String> removeProfilePropertyNames(ElementProperties elementProperties)
+    {
+        final String methodName = "removeProfilePropertyNames";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringArrayProperty(serviceName,
+                                                            OpenMetadataProperty.PROFILE_PROPERTY_NAMES.name,
+                                                            elementProperties,
+                                                            methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract the profileStartDate property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
-     * @return map of name value pairs
+     * @return date
      */
     protected Date removeProfileStartDate(ElementProperties elementProperties)
     {
@@ -7086,7 +7108,7 @@ public abstract class OpenMetadataConverterBase<B>
      * Extract the profileEndDate property from the supplied element properties.
      *
      * @param elementProperties properties from annotation entities
-     * @return map of name value pairs
+     * @return date
      */
     protected Date removeProfileEndDate(ElementProperties elementProperties)
     {
@@ -7143,6 +7165,28 @@ public abstract class OpenMetadataConverterBase<B>
                                                                OpenMetadataProperty.PROFILE_FLAGS.name,
                                                                elementProperties,
                                                                methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the profileDates property from the supplied element properties.
+     *
+     * @param elementProperties properties from annotation entities
+     * @return map of name to boolean pairs
+     */
+    protected Map<String, Date> removeProfileDates(ElementProperties elementProperties)
+    {
+        final String methodName = "removeProfileDates";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateMapFromProperty(serviceName,
+                                                            OpenMetadataProperty.PROFILE_DATES.name,
+                                                            elementProperties,
+                                                            methodName);
         }
 
         return null;

@@ -14,12 +14,14 @@ import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
 import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourcePhysicalStatusAnnotation;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,7 +94,17 @@ public class PostgresDatabaseSurveyActionService extends SurveyActionServiceConn
             DataSource jdbcDataSource = assetConnector.getDataSource();
             Connection jdbcConnection = jdbcDataSource.getConnection();
 
+            String databaseName = assetConnector.getDatabaseName();
+            List<String> validDatabases = new ArrayList<>();
+            validDatabases.add(databaseName);
+
             annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
+
+            PostgresDatabaseStatsExtractor databaseStatsExtractor = new PostgresDatabaseStatsExtractor(validDatabases, jdbcConnection, this);
+
+            List<Annotation> annotations = databaseStatsExtractor.getStatistics();
+
+
 
             final String pg_statsSQLCommand = "SELECT schemaname, tablename, attname, avg_width, most_common_vals, most_common_elems from pg_stats;";
 
@@ -114,21 +126,6 @@ public class PostgresDatabaseSurveyActionService extends SurveyActionServiceConn
             resultSet = preparedStatement.executeQuery();
 
             annotationStore.setAnalysisStep(AnalysisStep.MEASURE_RESOURCE.getName());
-
-            ResourcePhysicalStatusAnnotation measurementAnnotation = new ResourcePhysicalStatusAnnotation();
-
-            measurementAnnotation.setAnnotationType(PostgresAnnotationType.DATABASE_SIZES.getName());
-            measurementAnnotation.setSummary(PostgresAnnotationType.DATABASE_SIZES.getSummary());
-            measurementAnnotation.setExplanation(PostgresAnnotationType.DATABASE_SIZES.getExplanation());
-
-
-            Map<String, String> dataSourceProperties = new HashMap<>();
-
-
-
-            measurementAnnotation.setResourceProperties(dataSourceProperties);
-
-            annotationStore.addAnnotation(measurementAnnotation, surveyContext.getAssetGUID());
         }
         catch (ConnectorCheckedException error)
         {

@@ -7170,7 +7170,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * Extract the profileStartDate property from the supplied instance properties.
      *
      * @param instanceProperties properties from annotation entities
-     * @return map of name to long pairs
+     * @return date
      */
     protected Date removeProfileStartDate(InstanceProperties instanceProperties)
     {
@@ -7187,11 +7187,12 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         return null;
     }
 
+
     /**
      * Extract the profileEndDate property from the supplied instance properties.
      *
      * @param instanceProperties properties from annotation entities
-     * @return map of name to long pairs
+     * @return date
      */
     protected Date removeProfileEndDate(InstanceProperties instanceProperties)
     {
@@ -7231,6 +7232,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
 
     /**
+     * Extract the profilePropertyNames property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from annotation entities
+     * @return list of names
+     */
+    protected List<String> removeProfilePropertyNames(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeProfilePropertyNames";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringArrayProperty(serviceName,
+                                                              OpenMetadataProperty.PROFILE_PROPERTY_NAMES.name,
+                                                              instanceProperties,
+                                                              methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract the profileFlags property from the supplied instance properties.
      *
      * @param instanceProperties properties from annotation entities
@@ -7246,6 +7269,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                                                  OpenMetadataProperty.PROFILE_FLAGS.name,
                                                                  instanceProperties,
                                                                  methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the profileDates property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from annotation entities
+     * @return map of name to boolean pairs
+     */
+    protected Map<String, Date> removeProfileDates(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeProfileDates";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeDateMapFromProperty(serviceName,
+                                                              OpenMetadataProperty.PROFILE_DATES.name,
+                                                              instanceProperties,
+                                                              methodName);
         }
 
         return null;

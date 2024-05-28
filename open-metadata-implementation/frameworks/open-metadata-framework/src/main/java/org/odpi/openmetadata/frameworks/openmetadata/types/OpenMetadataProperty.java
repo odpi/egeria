@@ -529,6 +529,11 @@ public enum OpenMetadataProperty
     /**
      * Time at which the profiling started collecting data.
      */
+    PROFILE_PROPERTY_NAMES("profilePropertyNames", "array<string>", "List of property names used in this annotation.", "[profileEndDate, profileCounts]", "210e2977-6803-4fce-93e8-15547168d459"),
+
+    /**
+     * Time at which the profiling started collecting data.
+     */
     PROFILE_START_DATE("profileStartDate", "date", "Time at which the profiling started collecting data.", null, "6bee91ad-4eae-4292-ab28-ff1e5404e74d"),
 
     /**
@@ -545,6 +550,11 @@ public enum OpenMetadataProperty
      * Additional flags (booleans) discovered during the analysis.
      */
     PROFILE_FLAGS("profileFlags", "map<string, boolean>", "Additional flags (booleans) discovered during the analysis.", null, "b7b28f24-5464-4cab-8c6b-10bc11ed6118"),
+
+    /**
+     * Relevant dates discovered during the analysis.
+     */
+    PROFILE_DATES("profileDates", "map<string, date>", "Relevant dates discovered during the analysis.", null, "7d700cc5-b56c-4aeb-8416-7cf8d17d16c2"),
 
     /**
      * Additional counts discovered during the analysis.

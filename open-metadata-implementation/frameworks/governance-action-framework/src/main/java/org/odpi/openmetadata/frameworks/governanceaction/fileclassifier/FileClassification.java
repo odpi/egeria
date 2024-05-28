@@ -25,6 +25,7 @@ public class FileClassification
     private final String  deployedImplementationType;
     private final String  encoding;
     private final String  assetTypeName;
+    private final long    fileSize;
 
 
     public FileClassification(String  fileName,
@@ -41,7 +42,8 @@ public class FileClassification
                               String  fileType,
                               String  deployedImplementationType,
                               String  encoding,
-                              String  assetTypeName)
+                              String  assetTypeName,
+                              long    fileSize)
     {
         this.fileName                   = fileName;
         this.pathName                   = pathName;
@@ -58,6 +60,7 @@ public class FileClassification
         this.deployedImplementationType = deployedImplementationType;
         this.encoding                   = encoding;
         this.assetTypeName              = assetTypeName;
+        this.fileSize                   = fileSize;
     }
 
 
@@ -224,5 +227,16 @@ public class FileClassification
     public boolean isSymLink()
     {
         return isSymLink;
+    }
+
+
+    /**
+     * Return the size of the file in bytes.
+     *
+     * @return long
+     */
+    public long getFileSize()
+    {
+        return fileSize;
     }
 }
