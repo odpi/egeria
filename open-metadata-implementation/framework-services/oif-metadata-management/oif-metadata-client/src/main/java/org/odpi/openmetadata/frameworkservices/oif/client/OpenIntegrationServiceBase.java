@@ -381,11 +381,10 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
 
 
     /**
-     * Create a new integration report for an element (identified by anchorGUID).
+     * Create a new integration report for an element (identified by elementGUID).
      *
      * @param userId calling user
-     * @param anchorGUID element to attach the integration report to
-     * @param anchorTypeName type of element element to attach the integration report to
+     * @param elementGUID element to attach the integration report to
      * @param properties properties of the report
      *
      * @throws InvalidParameterException one of the parameters is null or invalid,
@@ -394,32 +393,28 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
      */
     @Override
     public void publishIntegrationReport(String                      userId,
-                                         String                      anchorGUID,
-                                         String                      anchorTypeName,
+                                         String                      elementGUID,
                                          IntegrationReportProperties properties) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
         final String methodName              = "publishIntegrationReport";
-        final String guidParameterName       = "anchorGUID";
-        final String typeNameParameterName   = "anchorTypeName";
-        final String propertiesParameterName = "properties";
+        final String guidParameterName       = "elementGUID";
+            final String propertiesParameterName = "properties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(anchorGUID, guidParameterName, methodName);
-        invalidParameterHandler.validateName(anchorTypeName, typeNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
         invalidParameterHandler.validateObject(properties, propertiesParameterName, methodName);
 
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/framework-services/{1}/open-integration/users/{2}" +
-                "/integration-reports/{3}/{4}/new";
+                "/elements/{3}/integration-reports";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         properties,
                                         serverName,
                                         userId,
-                                        anchorGUID,
-                                        anchorTypeName);
+                                        elementGUID);
     }
 
 

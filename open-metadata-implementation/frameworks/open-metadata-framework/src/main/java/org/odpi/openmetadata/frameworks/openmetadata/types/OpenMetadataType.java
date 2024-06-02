@@ -225,6 +225,89 @@ public enum OpenMetadataType
                       "Hardware and base software that supports an IT system."),
 
     /**
+     * Named IT infrastructure system that supports multiple software platforms and servers.
+     */
+    HOST("1abd16db-5b8a-4fd9-aee5-205db3febe99",
+         "Host",
+         OpenMetadataWikiPages.MODEL_0035_HOSTS,
+         "2f97b8f6-a136-4e30-8fc2-4fc129a4f272",
+         "Named IT infrastructure system that supports multiple software platforms and servers."),
+
+    /**
+     * A group of hosts operating together to provide a scalable platform.
+     */
+    HOST_CLUSTER("9794f42f-4c9f-4fe6-be84-261f0a7de890",
+                 "HostCluster",
+                 OpenMetadataWikiPages.MODEL_0035_HOSTS,
+                 "cfa602ae-5109-4ae0-8e8c-d066f8f3fe2d",
+                 "A group of hosts operating together to provide a scalable platform."),
+
+    /**
+     * Identifies a host as a member of a host cluster.
+     */
+    HOST_CLUSTER_MEMBER_RELATIONSHIP("1a1c3933-a583-4b0c-9e42-c3691296a8e0",
+                 "HostClusterMember",
+                 OpenMetadataWikiPages.MODEL_0035_HOSTS,
+                 "0381865a-4230-4689-ba10-7f8d511bc3b0",
+                 "Identifies a host as a member of a host cluster."),
+
+    /**
+     * A computer that is hosting software directly on its operating system.
+     */
+    BARE_METAL_COMPUTER("8ef355d4-5cd7-4038-8337-62671b088920",
+                        "BareMetalComputer",
+                        OpenMetadataWikiPages.MODEL_0035_HOSTS,
+                        "05e43e67-63c6-4133-af07-a19f5c5b33d6",
+                        "A computer that is hosting software directly on its operating system."),
+
+    /**
+     * A virtual machine that uses a hypervisor to virtualize hardware.
+     */
+    VIRTUAL_MACHINE("28452091-6b27-4f40-8e31-47ce34f58387",
+                    "VirtualMachine",
+                    OpenMetadataWikiPages.MODEL_0035_HOSTS,
+                    "d8eef565-11b0-4e0c-8700-c80641405b8d",
+                    "A virtual machine that uses a hypervisor to virtualize hardware."),
+
+
+    /**
+     * Container-based virtual host that mimics a cut-down operating system.
+     */
+    VIRTUAL_CONTAINER("e2393236-100f-4ac0-a5e6-ce4e96c521e7",
+                    "VirtualContainer",
+                    OpenMetadataWikiPages.MODEL_0035_HOSTS,
+                    "af2ae526-9f7b-4244-9bfc-819b7a902cb6",
+                    "Container-based virtual host that mimics a cut-down operating system."),
+
+
+    /**
+     * A virtual container using the docker platform.
+     */
+    DOCKER_CONTAINER("9882b8aa-eba3-4a30-94c6-43117efd11cc",
+                     "DockerContainer",
+                     OpenMetadataWikiPages.MODEL_0035_HOSTS,
+                     "85e33f77-f595-4e68-8d1f-baf16ecd230b",
+                     "A virtual container using the docker platform."),
+
+    /**
+     * A cluster of nodes for big data workloads.
+     */
+    HADOOP_CLUSTER("abc27cf7-e526-4d1b-9c25-7dd60a7993e4",
+                   "HadoopCluster",
+                   OpenMetadataWikiPages.MODEL_0035_HOSTS,
+                   "2851a6e4-a0a1-471d-8c73-1b666244789d",
+                   "A cluster of nodes for big data workloads."),
+
+    /**
+     * A host cluster managing containerized applications.
+     */
+    KUBERNETES_CLUSTER("101f1c93-7f5d-44e2-9ea4-5cf21726ba5c",
+                       "KubernetesCluster",
+                       OpenMetadataWikiPages.MODEL_0035_HOSTS,
+                       "3c0401e0-846c-4d6a-adb4-cba2d83a0390",
+                       "A host cluster managing containerized applications."),
+
+    /**
      * Characteristics of the operating system in use within a host.
      */
     OPERATING_PLATFORM("bd96a997-8d78-42f6-adf7-8239bc98501c",
@@ -2011,42 +2094,6 @@ public enum OpenMetadataType
      */
     public static final String ADJACENT_LOCATION_TYPE_NAME = "AdjacentLocation";
 
-
-    /**
-     * 1abd16db-5b8a-4fd9-aee5-205db3febe99
-     */
-    public static final String HOST_TYPE_GUID = "1abd16db-5b8a-4fd9-aee5-205db3febe99";
-
-    /**
-     * Host - inherits from ITInfrastructure
-     */
-    public static final String HOST_TYPE_NAME = "Host";
-
-
-
-    /**
-     * 9794f42f-4c9f-4fe6-be84-261f0a7de890
-     */
-    public static final String HOST_CLUSTER_TYPE_GUID = "9794f42f-4c9f-4fe6-be84-261f0a7de890";
-
-    /**
-     * HostCluster - inherits from Host
-     */
-    public static final String HOST_CLUSTER_TYPE_NAME = "HostCluster";
-
-
-
-    /**
-     * e2393236-100f-4ac0-a5e6-ce4e96c521e7
-     */
-    public static final String VIRTUAL_CONTAINER_TYPE_GUID = "e2393236-100f-4ac0-a5e6-ce4e96c521e7";
-
-    /**
-     * VirtualContainer
-     */
-    public static final String VIRTUAL_CONTAINER_TYPE_NAME = "VirtualContainer";
-
-
     /**
      * operatingSystem
      */
@@ -2066,46 +2113,6 @@ public enum OpenMetadataType
      * HostOperatingPlatform - End1 = Host; End2 = OperatingPlatform
      */
     public static final String HOST_OPERATING_PLATFORM_TYPE_NAME = "HostOperatingPlatform";
-
-    /**
-     * e5bd6acf-932c-4d9c-85ff-941a8e4451db
-     */
-    public static final String OPERATING_PLATFORM_MANIFEST_TYPE_GUID = "e5bd6acf-932c-4d9c-85ff-941a8e4451db";  /* from Area 0 */
-
-    /**
-     * OperatingPlatformManifest - End1 = OperatingPlatform; End2 = Collection
-     */
-    public static final String OPERATING_PLATFORM_MANIFEST_TYPE_NAME = "OperatingPlatformManifest";
-
-    /**
-     * e328ae6e-0b16-4490-9883-c953b4258841
-     */
-    public static final String SOFTWARE_PACKAGE_MANIFEST_TYPE_GUID = "e328ae6e-0b16-4490-9883-c953b4258841";
-
-    /**
-     * SoftwarePackageManifest - Classification attached to Collection
-     */
-    public static final String SOFTWARE_PACKAGE_MANIFEST_TYPE_NAME = "SoftwarePackageManifest";
-
-    /**
-     * 1a1c3933-a583-4b0c-9e42-c3691296a8e0
-     */
-    public static final String HOST_CLUSTER_MEMBER_TYPE_GUID = "1a1c3933-a583-4b0c-9e42-c3691296a8e0";  /* from Area 0 */
-
-    /**
-     * HostClusterMember - End1 = HostCluster; End2 = Host (Member)
-     */
-    public static final String HOST_CLUSTER_MEMBER_TYPE_NAME = "HostClusterMember";
-
-    /**
-     * 4b981d89-e356-4d9b-8f17-b3a8d5a86676
-     */
-    public static final String DEPLOYED_VIRTUAL_CONTAINER_TYPE_GUID = "4b981d89-e356-4d9b-8f17-b3a8d5a86676";  /* from Area 0 */
-
-    /**
-     * DeployedVirtualContainer - End1 = Host; End2 = VirtualContainer (running on host)
-     */
-    public static final String DEPLOYED_VIRTUAL_CONTAINER_TYPE_NAME = "DeployedVirtualContainer";
 
     /**
      * 2b8bfab4-8023-4611-9833-82a0dc95f187
@@ -2235,56 +2242,6 @@ public enum OpenMetadataType
      * SoftwareService - inherits from SoftwareServerCapability
      */
     public static final String SOFTWARE_SERVICE_TYPE_NAME = "SoftwareService";
-
-    /**
-     * 5b7f340e-7dc9-45c0-a636-c20605147c94
-     */
-    public static final String APPLICATION_SERVICE_TYPE_GUID = "5b7f340e-7dc9-45c0-a636-c20605147c94";
-
-    /**
-     * ApplicationService - inherits from SoftwareService
-     */
-    public static final String APPLICATION_SERVICE_TYPE_NAME = "ApplicationService";
-
-    /**
-     * 92f7fe27-cd2f-441c-a084-156821aa5bca8
-     */
-    public static final String METADATA_INTEGRATION_SERVICE_TYPE_GUID = "92f7fe27-cd2f-441c-a084-156821aa5bca8";
-
-    /**
-     * MetadataIntegrationService - inherits from SoftwareService
-     */
-    public static final String METADATA_INTEGRATION_SERVICE_TYPE_NAME = "MetadataIntegrationService";
-
-    /**
-     * 0bc3a16a-e8ed-4ad0-a302-0773365fdef0
-     */
-    public static final String METADATA_ACCESS_SERVICE_TYPE_GUID = "0bc3a16a-e8ed-4ad0-a302-0773365fdef0";
-
-    /**
-     * MetadataAccessService - inherits from SoftwareService
-     */
-    public static final String METADATA_ACCESS_SERVICE_TYPE_NAME = "MetadataAccessService";
-
-    /**
-     * 90880f0b-c7a3-4d1d-93cc-0b877f27cd33
-     */
-    public static final String ENGINE_HOSTING_SERVICE_TYPE_GUID = "90880f0b-c7a3-4d1d-93cc-0b877f27cd33";
-
-    /**
-     * EngineHostingService - inherits from SoftwareService
-     */
-    public static final String ENGINE_HOSTING_SERVICE_TYPE_NAME = "EngineHostingService";
-
-    /**
-     * 1f83fc7c-75bb-491d-980d-ff9a6f80ae02
-     */
-    public static final String USER_VIEW_SERVICE_TYPE_GUID = "1f83fc7c-75bb-491d-980d-ff9a6f80ae02";
-
-    /**
-     * UserViewService - inherits from SoftwareService
-     */
-    public static final String USER_VIEW_SERVICE_TYPE_NAME = "UserViewService";
 
     /**
      * e0430f59-f021-411a-9d81-883e1ff3f6f6
@@ -2515,13 +2472,6 @@ public enum OpenMetadataType
 
     public static final String START_TIME_PROPERTY_NAME   = "startTime";                          /* from Area 1 */
     public static final String END_TIME_PROPERTY_NAME     = "endTime";                          /* from Area 1 */
-    public static final String OBJECTIVE_PROPERTY_NAME    = "objective";                          /* from Area 1 */
-    public static final String MINUTES_PROPERTY_NAME      = "minutes";                          /* from Area 1 */
-    public static final String MEETING_TYPE_PROPERTY_NAME = "meetingType";                          /* from Area 1 */
-
-    public static final String MEETINGS_RELATIONSHIP_TYPE_GUID = "a05f918e-e7e2-419d-8016-5b37406df63a";
-    public static final String MEETINGS_RELATIONSHIP_TYPE_NAME = "Meetings";   /* from Area 1 */
-    /* End1 = Meeting; End 2 = Referenceable */
 
     /**
      * 93dbc58d-c826-4bc2-b36f-195148d46f86
@@ -2693,25 +2643,6 @@ public enum OpenMetadataType
     public static final String NOTE_LOG_ENTRIES_RELATIONSHIP_TYPE_NAME = "AttachedNoteLogEntry";
     /* End1 = NoteLog; End 2 = NoteEntry */
 
-
-    /*
-    Added warning suppression for SonarCloud since the below constants contain the pattern
-         ..AUTH..="GUID"
-         which looks exactly like
-         myAuth = SECURITY_SECRET
-         which is reported as a security risk.
-    */
-    @SuppressWarnings("java:S6418")
-    public static final String NOTE_LOG_AUTHOR_RELATIONSHIP_TYPE_GUID = "8f798c0c-6769-4a2d-b489-12714d89e0a4";
-
-    public static final String NOTE_LOG_AUTHOR_RELATIONSHIP_TYPE_NAME = "NoteLogAuthorship";
-    /* End1 = NoteLogAuthor; End 2 = NoteLog */
-
-    @SuppressWarnings("java:S6418")
-    public static final String NOTE_LOG_AUTHOR_TYPE_GUID = "3a84d94c-ac6f-4be1-a72a-07dbec7b1fe3";
-    public static final String NOTE_LOG_AUTHOR_TYPE_NAME = "NoteLogAuthor";              /* from Area 1 */
-    /* PersonRole */
-
     public static final String NOTE_TYPE_GUID = "2a84d94c-ac6f-4be1-a72a-07dcec7b1fe3";
     public static final String NOTE_TYPE_NAME = "NoteEntry";              /* from Area 1 */
     /* Referenceable */
@@ -2861,7 +2792,7 @@ public enum OpenMetadataType
     public static final String CONNECTOR_TYPE_DIRECTORY_TYPE_GUID = "9678ef11-ed7e-404b-a041-736df7514339";
 
     /**
-     * ConnectorTypeDirectory - aatached to Collection
+     * ConnectorTypeDirectory - attached to Collection
      */
     public static final String CONNECTOR_TYPE_DIRECTORY_TYPE_NAME = "ConnectorTypeDirectory";
 

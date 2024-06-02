@@ -52,17 +52,12 @@ public class TestAssetSummary
 
         testObject.setType(type);
         testObject.setGUID("TestGUID");
-        testObject.setURL("TestURL");
         testObject.setClassifications(classifications);
 
         testObject.setQualifiedName("TestQualifiedName");
         testObject.setResourceName("TestResourceName");
-        testObject.setOwner("TestOwner");
-        testObject.setOwnerType(AssetOwnerType.PROFILE_ID);
-        testObject.setConnectionDescription("TestShortDescription");
         testObject.setResourceDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
-        testObject.setZoneMembership(zoneMembership);
 
         return new AssetSummary(testObject);
     }
@@ -79,13 +74,10 @@ public class TestAssetSummary
 
         testObject.setType(type);
         testObject.setGUID("TestDifferentGUID");
-        testObject.setURL("TestURL");
         testObject.setClassifications(classifications);
 
         testObject.setQualifiedName("TestQualifiedName");
         testObject.setResourceName("TestResourceName");
-        testObject.setOwner("TestOwner");
-        testObject.setConnectionDescription("TestShortDescription");
         testObject.setResourceDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
 
@@ -104,14 +96,10 @@ public class TestAssetSummary
 
         testObject.setType(type);
         testObject.setGUID("TestGUID");
-        testObject.setURL("TestURL");
         testObject.setClassifications(classifications);
 
         testObject.setQualifiedName("TestDifferentQualifiedName");
         testObject.setResourceName("TestResourceName");
-        testObject.setOwner("TestOwner");
-        testObject.setOwnerType(AssetOwnerType.PROFILE_ID);
-        testObject.setConnectionDescription("TestShortDescription");
         testObject.setResourceDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
 
@@ -128,15 +116,11 @@ public class TestAssetSummary
     {
         assertTrue(resultObject.getType().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
-        assertTrue(resultObject.getURL().equals("TestURL"));
         assertTrue(resultObject.getClassifications() != null);
 
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
         assertTrue(resultObject.getResourceName().equals("TestResourceName"));
         assertTrue(resultObject.getResourceDescription().equals("TestDescription"));
-        assertTrue(resultObject.getConnectionDescription().equals("TestShortDescription"));
-        assertTrue(resultObject.getOwner().equals("TestOwner"));
-        assertTrue(resultObject.getZoneMembership() != null);
         assertTrue(resultObject.getExtendedProperties() == null);
         assertTrue(resultObject.getAdditionalProperties() == null);
     }
@@ -151,14 +135,11 @@ public class TestAssetSummary
     {
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
-        assertTrue(nullObject.getURL() == null);
         assertTrue(nullObject.getClassifications() == null);
 
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getResourceName() == null);
         assertTrue(nullObject.getResourceDescription() == null);
-        assertTrue(nullObject.getConnectionDescription() == null);
-        assertTrue(nullObject.getOwner() == null);
         assertTrue(nullObject.getExtendedProperties() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
     }

@@ -136,8 +136,7 @@ public class GovernedReferenceable extends Referenceable
     public String toString()
     {
         return "GovernedReferenceable{" +
-                       "URL='" + getURL() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
+                       "extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
                        ", origin=" + getOrigin() +

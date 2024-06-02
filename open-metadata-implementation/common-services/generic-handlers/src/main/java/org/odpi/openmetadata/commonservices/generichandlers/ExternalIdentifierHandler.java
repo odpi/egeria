@@ -122,6 +122,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param scopeGUIDParameterName parameter supplying scopeGUID
      * @param scopeQualifiedName qualified name from the entity that
      * @param scopeTypeName specific type name of the software capability that represents the third party metadata source
+     * @param scopeDomainName specific domain name of the software capability that represents the third party metadata source
      * @param permittedSynchronization direction of synchronization
      * @param synchronizationDescription optional description of the synchronization in progress (augments the description in the
      *                                   permitted synchronization enum)
@@ -156,6 +157,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                         String              scopeGUIDParameterName,
                                         String              scopeQualifiedName,
                                         String              scopeTypeName,
+                                        String              scopeDomainName,
                                         int                 permittedSynchronization,
                                         String              synchronizationDescription,
                                         Date                effectiveFrom,
@@ -200,6 +202,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                       scopeGUID,
                                                       scopeGUIDParameterName,
                                                       scopeTypeName,
+                                                      scopeDomainName,
                                                       permittedSynchronization,
                                                       synchronizationDescription,
                                                       effectiveFrom,
@@ -831,6 +834,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param scopeGUID unique identifier of the software capability that represents the third metadata source
      * @param scopeGUIDParameterName parameter supplying scopeGUID
      * @param scopeTypeName specific type name of the software capability that represents the third party metadata source
+     * @param scopeDomainName specific type name of the software capability that represents the third party metadata source
      * @param permittedSynchronization direction of synchronization
      * @param synchronizationDescription optional description of the synchronization in progress (augments the description in the
      *                                   permitted synchronization enum)
@@ -858,6 +862,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                             String  scopeGUID,
                                             String  scopeGUIDParameterName,
                                             String  scopeTypeName,
+                                            String  scopeDomainName,
                                             int     permittedSynchronization,
                                             String  synchronizationDescription,
                                             Date    effectiveFrom,
@@ -883,7 +888,11 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                                                           serviceName,
                                                                           serverName);
 
-        builder.setAnchors(userId, scopeGUID, scopeTypeName, methodName);
+        builder.setAnchors(userId,
+                           scopeGUID,
+                           scopeTypeName,
+                           scopeDomainName,
+                           methodName);
 
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
 

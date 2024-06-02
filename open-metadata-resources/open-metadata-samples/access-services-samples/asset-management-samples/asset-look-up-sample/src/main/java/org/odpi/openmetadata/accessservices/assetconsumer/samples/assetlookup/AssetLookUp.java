@@ -375,28 +375,6 @@ public class AssetLookUp
                 System.out.println("   description: " + assetUniverse.getResourceDescription());
 
                 /*
-                 * The ownership determines who is responsible for the digital resource and its metadata.
-                 */
-                String owner = assetUniverse.getOwner();
-                if (owner != null)
-                {
-                    System.out.println("   owner: " + owner + " (propertyName: " + assetUniverse.getOwnerPropertyName() + " from " + assetUniverse.getOwnerTypeName() + ")");
-                }
-
-                /*
-                 * The zone membership controls visibility to the asset
-                 */
-                List<String>       zoneMembership = assetUniverse.getZoneMembership();
-                if (zoneMembership == null)
-                {
-                    System.out.println("   zone membership: all zones" + assetUniverse.getResourceName());
-                }
-                else
-                {
-                    System.out.println("   zone membership: " + zoneMembership);
-                }
-
-                /*
                  * The meanings show the glossary terms that are attached via a semantic assignment relationship.
                  */
                 List<Meaning> meanings = assetUniverse.getMeanings();
@@ -410,23 +388,6 @@ public class AssetLookUp
                         if (meaning != null)
                         {
                             System.out.println("      * " + meaning.getName() + " - " + meaning.getDescription());
-                        }
-                    }
-                }
-
-                /*
-                 * The origins show where the digital resource came from, from different perspectives.
-                 */
-                Map<String, String> origins = assetUniverse.getAssetOrigin();
-                if (origins != null)
-                {
-                    System.out.println("   digital resource origins: ");
-
-                    for (String originName : origins.keySet())
-                    {
-                        if (originName != null)
-                        {
-                            System.out.println("      * " + originName + " - " + origins.get(originName));
                         }
                     }
                 }

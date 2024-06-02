@@ -368,6 +368,50 @@ public enum DeployedImplementationType
                               "https://www.postgresql.org/"),
 
     /**
+     * A computer (hardware) with operating system for running software.
+     */
+    BARE_METAL_COMPUTER("Bare Metal Computer",
+                        null,
+                        OpenMetadataType.BARE_METAL_COMPUTER.typeName,
+                        null,
+                        "A computer (hardware) with operating system for running software.",
+                        OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+
+    /**
+     * A portable computer with screen, keyboard and battery power.
+     */
+    LAPTOP_COMPUTER("Laptop Computer",
+                        DeployedImplementationType.BARE_METAL_COMPUTER,
+                        OpenMetadataType.BARE_METAL_COMPUTER.typeName,
+                        null,
+                        "A portable computer with screen, keyboard and battery power.",
+                        OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+
+    /**
+     * A professional laptop supplied by Apple that runs the macOS operating system.
+     */
+    MACBOOK_PRO("Apple MacBook Pro",
+                DeployedImplementationType.LAPTOP_COMPUTER,
+                OpenMetadataType.BARE_METAL_COMPUTER.typeName,
+                null,
+                "A professional laptop supplied by Apple that runs the macOS operating system.",
+                OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+
+    /**
+     * A small hardware server enclosed in a protective case that can sit under a desk.
+     */
+    SMALL_FORM_FACTOR_COMPUTER("Small Form Factor (SFF) Computer",
+                               DeployedImplementationType.BARE_METAL_COMPUTER,
+                               OpenMetadataType.BARE_METAL_COMPUTER.typeName,
+                               null,
+                               "A small hardware server enclosed in a protective case that can sit under a desk.",
+                               OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+
+    /**
      * A callable software server.
      */
     SOFTWARE_SERVER("Software Server",
@@ -452,6 +496,17 @@ public enum DeployedImplementationType
 
 
     /**
+     * A UNIX capability that manages hierarchically organized files on persistent storage.
+     */
+    UNIX_FILE_SYSTEM("UNIX File System",
+                     DeployedImplementationType.SOFTWARE_CAPABILITY,
+                     OpenMetadataType.DATA_MANAGER.typeName,
+                     OpenMetadataType.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME,
+                     "A Unix capability that manages hierarchically organized files on persistent storage.",
+                     OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS),
+
+
+    /**
      * A catalog of metadata that describes assets such as deployed systems, data sources and processes.
      */
     ASSET_CATALOG("Asset Metadata Catalog",
@@ -522,7 +577,7 @@ public enum DeployedImplementationType
                          DeployedImplementationType.SOFTWARE_SERVER,
                          OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName,
                          null,
-                         "An Open Metadata and Governance (OMAG) platform for running one to many OMAG Servers.",
+                         "An Open Metadata and Governance (OMAG) runtime for running one to many OMAG Servers.",
                          "https://egeria-project.org/concepts/omag-server-platform/"),
 
     /**
@@ -530,7 +585,7 @@ public enum DeployedImplementationType
      */
     OMAG_SERVER_RUNTIME("OMAG Server Runtime",
                         DeployedImplementationType.SOFTWARE_SERVER,
-                        OpenMetadataType.SOFTWARE_SERVER.typeName,
+                        OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName,
                         null,
                         "An Open Metadata and Governance (OMAG) runtime for running a single OMAG Server.",
                         "https://egeria-project.org/concepts/omag-server-runtime/"),

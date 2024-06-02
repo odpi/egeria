@@ -55,6 +55,7 @@ public class AssetCatalogResource
     }
 
 
+
     /**
      * Return a list of assets matching the search criteria without the full context
      *
@@ -82,7 +83,7 @@ public class AssetCatalogResource
                                                         defaultValue = "PROPERTY_ASCENDING") SequencingOrder sequencingOrder,
                                           @RequestParam(defaultValue="false")  boolean caseSensitive,
                                           @RequestParam(defaultValue="false") boolean exactMatch,
-                                          @RequestParam(name = "sequencingProperty", defaultValue="0")      Integer startFrom,
+                                          @RequestParam(name = "from", defaultValue="0") Integer startFrom,
                                           @RequestParam(defaultValue="10") Integer pageSize)
     {
         return restAPI.searchAssets(serverName,

@@ -1,0 +1,443 @@
+# Egeria-action-author-view-service
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
+# =====================================================================================================================
+# A Governance Action Type describes a call to a specific request-type of a Governance Engine.  This results
+# in an Engine Action that calls the Governance Service running in an engine host.
+
+###
+# This is the unique identifier of the governance action type that is returned on the create request
+@governanceActionTypeGUID=xyz
+
+###
+# @name createGovernanceActionType
+# Create a new metadata element to represent a governance action type.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-types
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class"                : "GovernanceActionTypeProperties",
+    "qualifiedName"        : "GovernanceActionType: .....",
+    "domainIdentifier"     : 0,
+    "displayName"          : "",
+    "description"          : "",
+    "supportedGuards"      : [ "", "" ],
+    "governanceEngineGUID" : "",
+    "requestType"          : "",
+    "requestParameters" : {
+        "propertyName1"      : "propertyValue",
+        "propertyName2"      : "propertyValue"
+    },
+    "waitTime"             : 0,
+    "additionalProperties" : {
+        "propertyName1"      : "propertyValue",
+        "propertyName2"      : "propertyValue"
+    }
+}
+
+
+###
+# @name updateGovernanceActionType
+# Update the metadata element representing a governance action type.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-types/{{governanceActionTypeGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "UpdateGovernanceActionTypeRequestBody",
+   "mergeUpdate" : true,
+   "properties" : {
+       "class" : "GovernanceActionTypeProperties",
+       "qualifiedName" : "GovernanceActionType: .....",
+       "domainIdentifier" : 0,
+       "displayName" : "",
+       "description" : "",
+       "supportedGuards" : [ "", "" ],
+       "governanceEngineGUID" : "",
+       "requestType" : "",
+       "requestParameters" : {
+         "propertyName1" : "propertyValue",
+         "propertyName2" : "propertyValue"
+       },
+       "waitTime" : 0,
+       "additionalProperties" : {
+         "propertyName1" : "propertyValue",
+         "propertyName2" : "propertyValue"
+       }
+   }
+}
+
+
+###
+# @name removeGovernanceActionType
+# Remove the metadata element representing a governance action type.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-types/{{governanceActionTypeGUID}}/remove
+Authorization: Bearer {{token}}
+
+
+###
+# @name findGovernanceActionTypes
+# Retrieve the list of governance action type metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-types/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "filter" : "add string here"
+}
+
+
+###
+# @name getGovernanceActionTypesByName
+# Retrieve the list of governance action type metadata elements with a matching qualified or display name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-types/by-name?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "filter" : "add string here"
+}
+
+
+###
+# @name getGovernanceActionTypeByGUID
+# Retrieve the governance action type metadata element with the supplied unique identifier.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-types/{{governanceActionTypeGUID}}
+Authorization: Bearer {{token}}
+
+
+###
+# =====================================================================================================================
+# A governance action process describes a well-defined series of steps that gets something done.
+# The steps are defined using GovernanceActionProcessSteps.
+
+# This is the unique identifier of the governance action process
+@processGUID = guid
+
+
+###
+# @name createGovernanceActionProcess
+# Create a new metadata element to represent a governance action process.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-processes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "NewGovernanceActionProcessRequestBody",
+    "processStatus" : "ACTIVE",
+    "properties" : {
+        "class" : "GovernanceActionProcessProperties",
+        "qualifiedName" : "GovernanceActionProcess: ...",
+        "domainIdentifier" : 0,
+        "displayName" : "",
+        "description" : "",
+        "versionIdentifier" : "1.0",
+        "formula": "",
+        "formulaType": "",
+        "additionalProperties" : {
+             "propertyName1" : "propertyValue",
+             "propertyName2" : "propertyValue"
+        }
+    }
+}
+
+
+###
+# @name updateGovernanceActionProcess
+# Update the metadata element representing a governance action process.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-processes/{{processGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "UpdateGovernanceActionProcessRequestBody",
+    "mergeUpdate": true,
+    "processStatus" : "ACTIVE",
+    "properties" : {
+        "class" : "GovernanceActionProcessProperties",
+        "qualifiedName" : "GovernanceActionProcess: ...",
+        "domainIdentifier" : 0,
+        "displayName" : "",
+        "description" : "",
+        "versionIdentifier" : "1.0",
+        "waitTime" : 0,
+        "formula": "",
+        "formulaType": "",
+        "additionalProperties" : {
+            "propertyName1" : "propertyValue",
+            "propertyName2" : "propertyValue"
+        }
+    }
+}
+
+
+###
+# @name publishGovernanceActionProcess
+# Update the zones for the governance action process (asset) so that it becomes visible to consumers.
+# (The zones are set to the list of zones in the publishedZones option configured for each
+# instance of an Open Metadata Access Service (OMAS)).
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-processes/{{processGUID}}/publish
+Authorization: Bearer {{token}}
+
+
+###
+# @name withdrawGovernanceActionProcess
+# Update the zones for the asset so that it is no longer visible to consumers.
+# (The zones are set to the list of zones in the defaultZones option configured for each
+# instance of an Open Metadata AccessService (OMAS).  This is also the setting for the zones when the process is first created.)
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-processes/{{processGUID}}/withdraw
+Authorization: Bearer {{token}}
+
+
+###
+# @name removeGovernanceActionProcess
+# Remove the metadata element representing a governance action process.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-processes/{{processGUID}}/remove
+Authorization: Bearer {{token}}
+
+
+###
+# @name findGovernanceActionProcesses
+# Retrieve the list of governance action process metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-processes/by-search-string?
+    startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "add string here"
+}
+
+
+###
+# @name getGovernanceActionProcessesByName
+# Retrieve the list of governance action process metadata elements with a matching qualified or display name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-processes/by-name?
+    startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "add string here"
+}
+
+
+###
+# @name getGovernanceActionProcessByGUID
+# Retrieve the governance action process metadata element with the supplied unique identifier.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-processes/{{processGUID}}
+Authorization: Bearer {{token}}
+
+
+###
+# @name getGovernanceActionProcessGraph
+# Retrieve the governance action process metadata element with the supplied unique identifier
+# along with the flow definition describing its implementation.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-processes/{{processGUID}}/graph
+Authorization: Bearer {{token}}
+
+
+###
+# =====================================================================================================================
+# A governance action process step describes a step in a governance action process
+#
+
+@processStepGUID=guid
+@nextProcessStepGUID=guid
+@relationshipGUID=guid
+
+
+###
+# @name createGovernanceActionProcessStep
+# Create a new metadata element to represent a governance action process step.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-process-steps
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "GovernanceActionProcessStepProperties",
+    "qualifiedName" : "GovernanceActionProcessStep: .....",
+    "domainIdentifier" : 0,
+    "displayName" : "",
+    "description" : "",
+    "producedGuards" : [ "", "" ],
+    "governanceEngineGUID" : "",
+    "requestType" : "",
+    "requestParameters" : {
+      "propertyName1" : "propertyValue",
+      "propertyName2" : "propertyValue"
+    },
+    "waitTime" : 0,
+    "additionalProperties" : {
+      "propertyName1" : "propertyValue",
+      "propertyName2" : "propertyValue"
+    },
+    "ignoreMultipleTriggers": false
+}
+
+
+###
+# @name updateGovernanceActionProcessStep
+# Update the metadata element representing a governance action process step.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-process-steps/{{processStepGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "UpdateGovernanceActionProcessStepRequestBody",
+    "mergeUpdate": true,
+    "properties": {
+        "class" : "GovernanceActionProcessStepProperties",
+        "qualifiedName" : "GovernanceActionProcessStep: .....",
+        "domainIdentifier" : 0,
+        "displayName" : "",
+        "description" : "",
+        "producedGuards" : [ "", "" ],
+        "governanceEngineGUID" : "",
+        "requestType" : "",
+        "requestParameters" : {
+            "propertyName1" : "propertyValue",
+            "propertyName2" : "propertyValue"
+        },
+        "waitTime" : 0,
+        "additionalProperties" : {
+            "propertyName1" : "propertyValue",
+            "propertyName2" : "propertyValue"
+        },
+        "ignoreMultipleTriggers": false
+      }
+}
+
+
+###
+# @name removeGovernanceActionProcessStep
+# Remove the metadata element representing a governance action process step.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-process-steps/{{processStepGUID}}/remove
+Authorization: Bearer {{token}}
+
+
+###
+# @name findGovernanceActionProcessSteps
+# Retrieve the list of governance action process step metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-process-steps/by-search-string?
+    startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "add string here"
+}
+
+
+###
+# @name getGovernanceActionProcessStepsByName
+# Retrieve the list of governance action process step metadata elements with a matching qualified or display name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-process-steps/by-name?
+    startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "add string here"
+}
+
+
+###
+# @name getGovernanceActionProcessStepByGUID
+# Retrieve the governance action process step metadata element with the supplied unique identifier.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-process-steps/{{processStepGUID}}
+Authorization: Bearer {{token}}
+
+
+###
+# @name setupFirstActionProcessStep
+# Set up a link between a governance action process and a governance action process step.  This defines the first
+# step in the process.  The request body is optional.  It contains the name of the guard to pass to the first step
+# in the process.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-processes/{{processGUID}}/first-process-step/{{processStepGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "add name of guard"
+}
+
+###
+# @name getFirstActionProcessStep
+# Return the governance action process step that is the first step in a governance action process.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-processes/{processGUID}/first-process-step
+Authorization: Bearer {{token}}
+
+
+###
+# @name removeFirstActionProcessStep
+# Remove the link between a governance process and that governance action process step that defines its first step.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-processes/{{processGUID}}/first-process-step/remove
+
+
+###
+# @name setupNextActionProcessStep
+# Add one of the links between two governance action process steps to show that one follows on from the other when a
+# governance action process is executing.  The guard identifies one of the possible guards that triggers the action.
+# If mandatoryGuard=true then
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-process-steps/{{processStepGUID}}/next-process-steps/{{nextProcessStepGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NextGovernanceActionProcessStepRequestBody",
+  "guard" : "Add name of guard that could trigger the next step",
+  "mandatoryGuard" : false
+}
+
+
+###
+# @name updateNextActionProcessStep
+# Update the properties of the link between two governance action process steps that shows that one follows on from the other when a governance
+# action process is executing.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-process-steps/next-process-steps/{{relationshipGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NextGovernanceActionProcessStepRequestBody",
+  "guard" : "Add name of guard that could trigger the next step",
+  "mandatoryGuard" : false
+}
+
+
+###
+# @name getNextProcessSteps
+# Return the list of next process steps defined for the governance action process.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-process-steps/{{processStepGUID}}/next-process-steps?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+
+
+
+###
+# @name removeNextActionProcessStep
+# Remove a follow-on step from a governance action process.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/action-author/governance-action-process-steps/next-process-step/{{relationshipGUID}}/remove
+Authorization: Bearer {{token}}
+
+###

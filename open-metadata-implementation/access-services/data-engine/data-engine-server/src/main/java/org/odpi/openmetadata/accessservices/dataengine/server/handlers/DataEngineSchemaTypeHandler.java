@@ -113,7 +113,11 @@ public class DataEngineSchemaTypeHandler {
 
             if (anchorEntity != null)
             {
-                schemaTypeBuilder.setAnchors(userId, anchorEntity.getGUID(), anchorEntity.getType().getTypeDefName(), methodName);
+                schemaTypeBuilder.setAnchors(userId,
+                                             anchorEntity.getGUID(),
+                                             anchorEntity.getType().getTypeDefName(),
+                                             schemaTypeHandler.getDomainName(anchorEntity),
+                                             methodName);
             }
         }
 

@@ -125,8 +125,7 @@ public abstract class RelatedAssetProperties extends RelatedAsset
     public String toString()
     {
         return "RelatedAssetProperties{" +
-                       "URL='" + getURL() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
+                       "extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
                        ", origin=" + getOrigin() +

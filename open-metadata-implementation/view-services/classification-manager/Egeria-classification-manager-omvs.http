@@ -1,0 +1,561 @@
+# Egeria-classification-manager-omvs
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
+
+@elementGUID=add guid here
+
+###
+# =====================================================================================================================
+# A note log maintains an ordered list of notes.  It can be used to support release note, blogs and similar
+# broadcast information.  Notelogs are typically maintained by the owners/stewards of an element.
+#
+
+###
+# @name createNoteLog
+# Create a new metadata element to represent a note log and attach it to an element (if supplied).
+# Any supplied element becomes the note log's anchor, causing the note log to be deleted if/when the element is deleted.
+# Optional request parameters:
+#  *  isPublic - is this element visible to other people.
+#  *  forLineage - return elements marked with the Memento classification?
+#  *  forDuplicateProcessing - do not merge elements marked as duplicates?
+#
+# Note Logs: https://egeria-project.org/concepts/note-log/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/note-logs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ 
+   "class" : "ReferenceableUpdateRequestBody",
+   "effectiveTime" : "{{$isoTimestamp}}",
+   "elementProperties" : {
+       "class" : "NoteLogProperties",
+       "qualifiedName" : "Add value here",
+       "displayName" : "Add value here",
+       "description" : "Add value here",
+       "additionalProperties" : {
+            "PropertyName1" : "propertyValue",
+            "PropertyName2" : "propertyValue"
+       }
+   }
+}
+
+###
+
+@noteLogGUID=add guid here
+
+###
+# @name updateNoteLog
+# Update the metadata element representing a note log.
+# Optional request parameters:
+#    *  isMergeUpdate - should the new properties be merged with existing properties (true) or completely replace them (false)?
+#    *  isPublic - is this element visible to other people.
+#    *  forLineage - return elements marked with the Memento classification?
+#    *  forDuplicateProcessing - do not merge elements marked as duplicates?
+#
+# Note Logs: https://egeria-project.org/concepts/note-log/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/note-logs/{{noteLogGUID}}/update?isMergeUpdate=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "ReferenceableUpdateRequestBody",
+   "effectiveTime" : "{{$isoTimestamp}}",
+   "elementProperties" : {
+       "class" : "NoteLogProperties",
+       "qualifiedName" : "Add value here",
+       "displayName" : "Add value here",
+       "description" : "Add value here",
+       "additionalProperties" : {
+            "PropertyName1" : "propertyValue",
+            "PropertyName2" : "propertyValue"
+       }
+   }
+}
+
+
+###
+# @name removeNoteLog
+# Remove the metadata element representing a note log.
+#
+# Note Logs: https://egeria-project.org/concepts/note-log/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/note-logs/{{noteLogGUID}}/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ 
+   "class" : "ReferenceableUpdateRequestBody",
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# ===============================================================================
+# A note log typically contains many notes, linked with relationships.
+#
+
+###
+# @name createNote
+# Create a new metadata element to represent a note within a note log.
+#
+# Note Logs: https://egeria-project.org/concepts/note-log/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/note-logs/{{noteLogGUID}}/notes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "ReferenceableUpdateRequestBody",
+   "effectiveTime" : "{{$isoTimestamp}}",
+   "elementProperties" : {
+       "class" : "NoteProperties",
+       "qualifiedName" : "Add value here",
+       "title" : "Add value here",
+       "text" : "Add value here",
+       "additionalProperties" : {
+            "PropertyName1" : "propertyValue",
+            "PropertyName2" : "propertyValue"
+       }
+   }
+}
+
+###
+# @name updateNote
+# Update the properties of the metadata element representing a note.
+#
+# Note Logs: https://egeria-project.org/concepts/note-log/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/note-logs/notes/{noteGUID}/update?isMergeUpdate=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "ReferenceableUpdateRequestBody",
+   "effectiveTime" : "{{$isoTimestamp}}",
+   "elementProperties" : {
+       "class" : "NoteProperties",
+       "qualifiedName" : "Add value here",
+       "title" : "Add value here",
+       "text" : "Add value here",
+       "additionalProperties" : {
+            "PropertyName1" : "propertyValue",
+            "PropertyName2" : "propertyValue"
+       }
+   }
+}
+
+
+###
+# @name removeNote
+# Remove the metadata element representing a note.
+#
+# Note Logs: https://egeria-project.org/concepts/note-log/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/note-logs/notes/{noteGUID}/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "ReferenceableUpdateRequestBody",
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+# =====================================================================================================================
+# Rest of these methods are for assigning relationships and classifications that help govern both metadata
+# and its associated resources.
+#
+
+###
+# @name setConfidenceClassification
+# Classify/reclassify the element (typically an asset) to indicate the level of confidence that the organization
+# has that the data is complete, accurate and up-to-date.  The level of confidence is expressed by the
+# levelIdentifier property.
+#
+# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governance-Action-Classifications/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/confidence
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "ClassificationRequestBody",
+   "effectiveTime" : "{{$isoTimestamp}}",
+   "properties" : {
+       "class" : "GovernanceClassificationProperties",
+       "levelIdentifier" : 0,
+       "status" : 0,
+       "confidence" : 0,
+       "steward" : "Add value here",
+       "stewardTypeName" : "Add value here",
+       "stewardPropertyName" : "Add value here",
+       "source" : "Add value here",
+       "notes" : "Add value here"
+   }
+}
+
+
+###
+# @name clearConfidenceClassification
+# Remove the confidence classification from the element.  This normally occurs when the organization has lost track of the level of
+# confidence to assign to the element.
+#
+# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governance-Action-Classifications/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/confidence/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "EffectiveTimeRequestBody",
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+# @name setCriticalityClassification
+# Classify/reclassify the element (typically an asset) to indicate how critical the element (or associated resource)
+# is to the organization.  The level of criticality is expressed by the levelIdentifier property.
+#
+# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governance-Action-Classifications/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/criticality
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "ClassificationRequestBody",
+   "effectiveTime" : "{{$isoTimestamp}}",
+   "properties" : {
+       "class" : "GovernanceClassificationProperties",
+       "levelIdentifier" : 0,
+       "status" : 0,
+       "confidence" : 0,
+       "steward" : "Add value here",
+       "stewardTypeName" : "Add value here",
+       "stewardPropertyName" : "Add value here",
+       "source" : "Add value here",
+       "notes" : "Add value here"
+   }
+}
+
+###
+# @name clearCriticalityClassification
+# Remove the criticality classification from the element.  This normally occurs when the organization has lost track of the level of
+# criticality to assign to the element.
+#
+# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governance-Action-Classifications/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/criticality/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "EffectiveTimeRequestBody",
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name setConfidentialityClassification
+# Classify/reclassify the element (typically a data field, schema attribute or glossary term) to indicate the level of confidentiality
+# that any data associated with the element should be given.  If the classification is attached to a glossary term, the level
+# of confidentiality is a suggestion for any element linked to the glossary term via the SemanticAssignment classification.
+# The level of confidence is expressed by the levelIdentifier property.
+#
+# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governance-Action-Classifications/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/confidentiality
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "ClassificationRequestBody",
+   "effectiveTime" : "{{$isoTimestamp}}",
+   "properties" : {
+       "class" : "GovernanceClassificationProperties",
+       "levelIdentifier" : 0,
+       "status" : 0,
+       "confidence" : 0,
+       "steward" : "Add value here",
+       "stewardTypeName" : "Add value here",
+       "stewardPropertyName" : "Add value here",
+       "source" : "Add value here",
+       "notes" : "Add value here"
+   }
+}
+
+
+###
+# @name clearConfidentialityClassification
+# Remove the confidence classification from the element.  This normally occurs when the organization has lost track of the level of
+# confidentiality to assign to the element.
+#
+# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governance-Action-Classifications/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/confidentiality/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "EffectiveTimeRequestBody",
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+# @name setRetentionClassification
+# Classify/reclassify the element (typically an asset) to indicate how long the element (or associated resource)
+# is to be retained by the organization.  The policy to apply to the element/resource is captured by the retentionBasis
+# property.  The dates after which the element/resource is archived and then deleted are specified in the archiveAfter and deleteAfter
+# properties respectively.
+#
+# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governance-Action-Classifications/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/retention
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "ClassificationRequestBody",
+   "effectiveTime" : "{{$isoTimestamp}}",
+   "properties" : {
+       "class" : "RetentionClassificationProperties",
+       "retentionBasis" : 0,
+       "status" : 0,
+       "confidence" : 0,
+       "associatedGUID" : "Add value here",
+       "archiveAfter" : "{{$isoTimestamp}}",
+       "deleteAfter" : "{{$isoTimestamp}}",
+       "steward" : "Add value here",
+       "stewardTypeName" : "Add value here",
+       "stewardPropertyName" : "Add value here",
+       "source" : "Add value here",
+       "notes" : "Add value here"
+   }
+}
+
+###
+# @name clearRetentionClassification
+# Remove the retention classification from the element.  This normally occurs when the organization has lost track of, or no longer needs to
+# track the retention period to assign to the element.
+#
+# Governance Action Classifications: https://egeria-project.org/types/4/0422-Governance-Action-Classifications/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/retention/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "EffectiveTimeRequestBody",
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name addSecurityTags
+# Add or replace the security tags for an element.
+#
+# Security Tags: https://egeria-project.org/types/4/0423-Security-Definitions/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/security-tags
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "ClassificationRequestBody",
+   "effectiveTime" : "{{$isoTimestamp}}",
+   "properties" : {
+       "class" : "SecurityTagsProperties",
+       "securityLabels" : [ "Label1", "Label2" ],
+       "securityProperties" : {
+           "propertyName1" : "add property value here",
+           "propertyName2" : "add property value here"
+       },
+       "accessGroups" : {
+           "groupName1" : [ "operation1", "operation2" ],
+           "groupName2" : [ "operation1", "operation3" ]
+       }
+   }
+}
+
+
+###
+# @name clearSecurityTags
+# Remove the security tags classification from an element.
+#
+# Security Tags: https://egeria-project.org/types/4/0423-Security-Definitions/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/security-tags/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "ClassificationRequestBody",
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+# @name addOwnership
+# Add or replace the ownership classification for an element.
+#
+# Ownership: https://egeria-project.org/types/4/0445-Governance-Roles/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/ownership
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "ClassificationRequestBody",
+   "effectiveTime" : "{{$isoTimestamp}}",
+   "properties" : {
+       "class" : "OwnerProperties",
+       "owner" : "Add value here",
+       "ownerTypeName" : "Add value here",
+       "ownerPropertyName" : "Add value here"
+   }
+}
+
+
+###
+# @name clearOwnership
+# Remove the ownership classification from an element.
+#
+# Ownership: https://egeria-project.org/types/4/0445-Governance-Roles/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/ownership/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "ClassificationRequestBody",
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+# @name addElementToSubjectArea
+# Classify the element to assert that the definitions it represents are part of a subject area definition.
+#
+# Subject Areas: https://egeria-project.org/types/4/0425-Subject-Areas/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/subject-area-member
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "ClassificationRequestBody",
+   "effectiveTime" : "{{$isoTimestamp}}",
+   "properties" : {
+       "class" : "SubjectAreaMemberProperties",
+       "subjectAreaName" : "Add value here"
+   }
+}
+
+
+###
+# @name removeElementFromSubjectArea
+# Remove the subject area designation from the identified element.
+#
+# Subject Areas: https://egeria-project.org/types/4/0425-Subject-Areas/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/subject-area-member/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ClassificationRequestBody",
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+
+@glossaryTermGUID=add guid here
+
+###
+# @name setupSemanticAssignment
+# Create a semantic assignment relationship between a glossary term and an element (normally a schema attribute, data field or asset).
+# This relationship indicates that the data associated with the element meaning matches the description in the glossary term.
+#
+# Semantic Assignments: https://egeria-project.org/types/3/0370-Semantic-Assignment/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/semantic-assignment/terms/{{glossaryTermGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "RelationshipRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "relationshipProperties" : {
+    "class": "SemanticAssignmentProperties",
+    "expression" : "add value here",
+    "description" : "add value here",
+    "status" : "VALIDATED",
+    "confidence" : 100,
+    "createdBy" : "add value here",
+    "steward" : "add value here",
+    "source" : "add value here"
+  }
+}
+
+
+###
+# @name clearSemanticAssignment
+# Remove a semantic assignment relationship between an element and its glossary term.
+#
+# Semantic Assignments: https://egeria-project.org/types/3/0370-Semantic-Assignment/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/semantic-assignment/terms/{{glossaryTermGUID}}/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "EffectiveTimeQueryRequestBody",
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+
+@definitionGUID=add guid here
+
+###
+# @name addGovernanceDefinitionToElement
+# Link a governance definition to an element using the GovernedBy relationship.
+#
+# Governance Definitions: https://egeria-project.org/types/4/0401-Governance-Definitions/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governed-by/definition/{{definitionGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "RelationshipRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name removeGovernanceDefinitionFromElement
+# Remove the GovernedBy relationship between a governance definition and an element.
+#
+# Governance Definition: https://egeria-project.org/types/4/0401-Governance-Definitions/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governed-by/definition/{definitionGUID}/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "EffectiveTimeQueryRequestBody",
+    "effectiveTime" : "{{$isoTimestamp}}"
+}

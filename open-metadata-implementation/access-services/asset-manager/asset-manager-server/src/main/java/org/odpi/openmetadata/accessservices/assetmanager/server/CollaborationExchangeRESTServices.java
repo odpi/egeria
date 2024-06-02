@@ -2072,7 +2072,7 @@ public class CollaborationExchangeRESTServices
                                    boolean                        forDuplicateProcessing,
                                    ReferenceableUpdateRequestBody requestBody)
     {
-        final String methodName                  = "createNote";
+        final String methodName = "createNote";
 
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -2145,7 +2145,7 @@ public class CollaborationExchangeRESTServices
                                    boolean                        forDuplicateProcessing,
                                    ReferenceableUpdateRequestBody requestBody)
     {
-        final String methodName              = "updateNote";
+        final String methodName = "updateNote";
 
         RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
 

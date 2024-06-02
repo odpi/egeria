@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementContr
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFErrorCode;
 import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GAFRuntimeException;
 import org.odpi.openmetadata.frameworks.governanceaction.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -97,6 +98,37 @@ public class PropertyHelper
         }
 
         return false;
+    }
+
+
+    /**
+     * Extract the domain name from an element's header.
+     *
+     * @param elementControlHeader header of an open metadata element
+     * @return string type name
+     */
+    public String getDomainName(ElementControlHeader elementControlHeader)
+    {
+        String domainName = elementControlHeader.getType().getTypeName();
+
+        if (elementControlHeader.getType().getSuperTypeNames() != null)
+        {
+            /*
+             * The super types are listed in increasing levels of abstraction.
+             * Eg [DataSet, Asset, Referenceable, OpenMetadataRoot].
+             * In this example, the domain is Asset (one below Referenceable).
+             */
+            for (String superTypeName : elementControlHeader.getType().getSuperTypeNames())
+            {
+                if ((! superTypeName.equals(OpenMetadataType.OPEN_METADATA_ROOT.typeName)) &&
+                    (! superTypeName.equals(OpenMetadataType.REFERENCEABLE.typeName)))
+                {
+                    domainName = superTypeName;
+                }
+            }
+        }
+
+        return domainName;
     }
 
 

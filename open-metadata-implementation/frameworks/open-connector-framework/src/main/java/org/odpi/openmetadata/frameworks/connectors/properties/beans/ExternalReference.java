@@ -209,8 +209,7 @@ public class ExternalReference extends Referenceable
     public String toString()
     {
         return "ExternalReference{" +
-                       "URL='" + getURL() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
+                       "extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
                        ", origin=" + getOrigin() +

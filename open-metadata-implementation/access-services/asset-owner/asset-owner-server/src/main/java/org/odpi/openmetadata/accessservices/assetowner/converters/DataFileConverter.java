@@ -83,38 +83,12 @@ public class DataFileConverter<B> extends AssetOwnerOMASConverter<B>
                     fileProperties.setCreateTime(this.removeStoreCreateTime(instanceProperties));
                     fileProperties.setModifiedTime(this.removeStoreUpdateTime(instanceProperties));
 
-                    /* Note this value should be in the classification */
-                    fileProperties.setOwner(this.removeOwner(instanceProperties));
-                    /* Note this value should be in the classification */
-                    fileProperties.setOwnerType(this.removeOwnerTypeFromProperties(instanceProperties));
-                    /* Note this value should be in the classification */
-                    fileProperties.setZoneMembership(this.removeZoneMembership(instanceProperties));
-
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
                     fileProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
                     fileProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
-
-                    /*
-                     * The values in the classifications override the values in the main properties of the Asset's entity.
-                     * Having these properties in the main entity is deprecated.
-                     */
-                    instanceProperties = super.getClassificationProperties(OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME, entity);
-
-                    fileProperties.setZoneMembership(this.getZoneMembership(instanceProperties));
-
-                    instanceProperties = super.getClassificationProperties(OpenMetadataType.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
-
-                    fileProperties.setOwner(this.getOwner(instanceProperties));
-                    fileProperties.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
-
-                    instanceProperties = super.getClassificationProperties(OpenMetadataType.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
-
-                    fileProperties.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
-                    fileProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
-                    fileProperties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
 
                     instanceProperties = super.getClassificationProperties(OpenMetadataType.DATA_STORE_ENCODING_CLASSIFICATION.typeName, entity);
 

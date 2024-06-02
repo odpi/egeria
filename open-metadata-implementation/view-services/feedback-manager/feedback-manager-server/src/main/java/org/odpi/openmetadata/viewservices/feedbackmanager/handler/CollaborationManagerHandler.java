@@ -318,8 +318,8 @@ public class CollaborationManagerHandler
                               Date    effectiveTime,
                               boolean forLineage,
                               boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
     {
         return null;
     }
@@ -341,14 +341,14 @@ public class CollaborationManagerHandler
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public List<Comment>  getAttachedComments(String  userId,
-                                                     String  elementGUID,
-                                                     int     startFrom,
-                                                     int     pageSize,
-                                                     Date    effectiveTime,
-                                                     boolean forLineage,
-                                                     boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                            PropertyServerException,
-                                                                                            UserNotAuthorizedException
+                                              String  elementGUID,
+                                              int     startFrom,
+                                              int     pageSize,
+                                              Date    effectiveTime,
+                                              boolean forLineage,
+                                              boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
     {
         return null;
     }
@@ -372,14 +372,14 @@ public class CollaborationManagerHandler
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<Comment> findComments(String  userId,
-                                             String  searchString,
-                                             int     startFrom,
-                                             int     pageSize,
-                                             Date    effectiveTime,
-                                             boolean forLineage,
-                                             boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+                                      String  searchString,
+                                      int     startFrom,
+                                      int     pageSize,
+                                      Date    effectiveTime,
+                                      boolean forLineage,
+                                      boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         return null;
     }
@@ -460,9 +460,9 @@ public class CollaborationManagerHandler
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public InformalTag getTag(String userId,
-                                     String tagGUID) throws InvalidParameterException,
-                                                            PropertyServerException,
-                                                            UserNotAuthorizedException
+                              String tagGUID) throws InvalidParameterException,
+                                                     PropertyServerException,
+                                                     UserNotAuthorizedException
     {
         return null;
     }
@@ -485,8 +485,8 @@ public class CollaborationManagerHandler
                                            String tag,
                                            int    startFrom,
                                            int    pageSize) throws InvalidParameterException,
-                                                                          PropertyServerException,
-                                                                          UserNotAuthorizedException
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
     {
         return null;
     }
@@ -506,11 +506,11 @@ public class CollaborationManagerHandler
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<InformalTag> getMyTagsByName(String userId,
-                                                    String tag,
-                                                    int    startFrom,
-                                                    int    pageSize) throws InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException
+                                             String tag,
+                                             int    startFrom,
+                                             int    pageSize) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
     {
         return null;
     }
@@ -530,11 +530,11 @@ public class CollaborationManagerHandler
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<InformalTag> findTags(String userId,
-                                             String tag,
-                                             int    startFrom,
-                                             int    pageSize) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
+                                      String tag,
+                                      int    startFrom,
+                                      int    pageSize) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException
     {
         return null;
     }
@@ -554,11 +554,11 @@ public class CollaborationManagerHandler
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<InformalTag> findMyTags(String userId,
-                                               String tag,
-                                               int    startFrom,
-                                               int    pageSize) throws InvalidParameterException,
-                                                                       PropertyServerException,
-                                                                       UserNotAuthorizedException
+                                        String tag,
+                                        int    startFrom,
+                                        int    pageSize) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
     {
         return null;
     }
@@ -625,8 +625,8 @@ public class CollaborationManagerHandler
                                                              String tagGUID,
                                                              int    startFrom,
                                                              int    pageSize) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException
+                                                                                     PropertyServerException,
+                                                                                     UserNotAuthorizedException
     {
         return null;
     }
@@ -748,8 +748,8 @@ public class CollaborationManagerHandler
                                         Date    effectiveTime,
                                         boolean forLineage,
                                         boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         return null;
     }
@@ -774,14 +774,14 @@ public class CollaborationManagerHandler
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<NoteLog>   getNoteLogsByName(String  userId,
-                                                    String  name,
-                                                    int     startFrom,
-                                                    int     pageSize,
-                                                    Date    effectiveTime,
-                                                    boolean forLineage,
-                                                    boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+                                             String  name,
+                                             int     startFrom,
+                                             int     pageSize,
+                                             Date    effectiveTime,
+                                             boolean forLineage,
+                                             boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         return null;
     }
@@ -805,18 +805,17 @@ public class CollaborationManagerHandler
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<NoteLog>   getNoteLogsForElement(String  userId,
-                                                        String  elementGUID,
-                                                        int     startFrom,
-                                                        int     pageSize,
-                                                        Date    effectiveTime,
-                                                        boolean forLineage,
-                                                        boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+                                                 String  elementGUID,
+                                                 int     startFrom,
+                                                 int     pageSize,
+                                                 Date    effectiveTime,
+                                                 boolean forLineage,
+                                                 boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         return  null;
     }
-
 
 
     /**
@@ -835,12 +834,12 @@ public class CollaborationManagerHandler
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public NoteLog getNoteLogByGUID(String  userId,
-                                           String  noteLogGUID,
-                                           Date    effectiveTime,
-                                           boolean forLineage,
-                                           boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+                                    String  noteLogGUID,
+                                    Date    effectiveTime,
+                                    boolean forLineage,
+                                    boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
     {
         return null;
     }
@@ -953,8 +952,8 @@ public class CollaborationManagerHandler
                                   Date    effectiveTime,
                                   boolean forLineage,
                                   boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         return null;
     }
@@ -978,14 +977,14 @@ public class CollaborationManagerHandler
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<Note>    getNotesForNoteLog(String  userId,
-                                                   String  noteLogGUID,
-                                                   int     startFrom,
-                                                   int     pageSize,
-                                                   Date    effectiveTime,
-                                                   boolean forLineage,
-                                                   boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
+                                            String  noteLogGUID,
+                                            int     startFrom,
+                                            int     pageSize,
+                                            Date    effectiveTime,
+                                            boolean forLineage,
+                                            boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         return null;
     }
@@ -1007,12 +1006,12 @@ public class CollaborationManagerHandler
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public Note getNoteByGUID(String  userId,
-                                     String  noteGUID,
-                                     Date    effectiveTime,
-                                     boolean forLineage,
-                                     boolean forDuplicateProcessing) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+                              String  noteGUID,
+                              Date    effectiveTime,
+                              boolean forLineage,
+                              boolean forDuplicateProcessing) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         return null;
     }

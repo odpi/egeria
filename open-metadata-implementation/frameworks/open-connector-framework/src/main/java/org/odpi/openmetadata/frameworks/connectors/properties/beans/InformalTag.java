@@ -16,13 +16,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * InformalTag stores information about a tag connected to an asset.
  * InformalTags provide informal classifications to assets
  * and can be added at any time.
- *
  * InformalTags have the userId of the person who added the tag, the name of the tag and its description.
- *
  * The content of the tag is a personal judgement (which is why the user's id is in the tag)
  * and there is no formal review of the tags.  However, they can be used as a basis for crowd-sourcing
  * Glossary terms.
- *
  * Private InformalTags are only returned to the user that created them.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -188,8 +185,7 @@ public class InformalTag extends ElementBase
     public String toString()
     {
         return "InformalTag{" +
-                       "URL='" + getURL() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
+                       "extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
                        ", origin=" + getOrigin() +

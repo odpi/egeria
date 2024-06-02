@@ -70,6 +70,11 @@ public enum OpenMetadataProperty
     ANCHOR_TYPE_NAME("anchorTypeName", "string", "Unique name of the type of the anchor.", "Asset", "605c9dd5-fa79-4457-b299-9169c5567f97"),
 
     /**
+     * Unique name of the domain of the anchor.  This is an Open Metadata Type Name that either directly inherits from OpenMetadataRoot or Referenceable.
+     */
+    ANCHOR_DOMAIN_NAME("anchorDomainName", "string", "Unique name of the domain of the anchor.  This is an Open Metadata Type Name that either directly inherits from OpenMetadataRoot or Referenceable.", "Asset", "00ba532f-792f-4b78-8940-b5a9fd72f854"),
+
+    /**
      * Unique identifier for the entity.
      */
     QUALIFIED_NAME("qualifiedName", "string", "Unique identifier for the entity.", "SoftwareServer:MyAsset:MyAssetName", "e31e5b9b-0f96-42a9-8e67-0e3fc66ad305"),
