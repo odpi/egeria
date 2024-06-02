@@ -1399,7 +1399,11 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
             if (anchorEntity != null)
             {
-                builder.setAnchors(userId, anchorEntity.getGUID(), anchorEntity.getType().getTypeDefName(), methodName);
+                builder.setAnchors(userId,
+                                   anchorEntity.getGUID(),
+                                   anchorEntity.getType().getTypeDefName(),
+                                   this.getDomainName(anchorEntity),
+                                   methodName);
             }
         }
 
@@ -1439,14 +1443,15 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         }
 
         String metadataElementGUID = this.createBeanInRepository(userId,
-                                                              externalSourceGUID,
-                                                              externalSourceName,
-                                                              metadataElementTypeGUID,
-                                                              metadataElementTypeName,
-                                                              builder,
-                                                              isOwnAnchor,
-                                                              effectiveTime,
-                                                              methodName);
+                                                                 externalSourceGUID,
+                                                                 externalSourceName,
+                                                                 metadataElementTypeGUID,
+                                                                 metadataElementTypeName,
+                                                                 this.getDomainName(metadataElementTypeName),
+                                                                 builder,
+                                                                 isOwnAnchor,
+                                                                 effectiveTime,
+                                                                 methodName);
 
         if (metadataElementGUID != null)
         {
@@ -1623,7 +1628,11 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                 /*
                  * The anchorGUID is valid.
                  */
-                builder.setAnchors(userId, anchorEntity.getGUID(), anchorEntity.getType().getTypeDefName(), methodName);
+                builder.setAnchors(userId,
+                                   anchorEntity.getGUID(),
+                                   anchorEntity.getType().getTypeDefName(),
+                                   this.getDomainName(anchorEntity),
+                                   methodName);
             }
         }
         else if (isOwnAnchor)
@@ -1631,7 +1640,11 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
             /*
              * Set the anchorGUID
              */
-            builder.setAnchors(userId, null, metadataElementTypeName, methodName);
+            builder.setAnchors(userId,
+                               null,
+                               metadataElementTypeName,
+                               this.getDomainName(metadataElementTypeName),
+                               methodName);
         }
 
         /*

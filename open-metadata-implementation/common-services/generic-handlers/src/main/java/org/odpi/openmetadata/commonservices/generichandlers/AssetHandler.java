@@ -659,7 +659,11 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                    effectiveTime,
                                                                    methodName);
 
-        builder.setAnchors(userId, null, templateEntity.getType().getTypeDefName(), methodName);
+        builder.setAnchors(userId,
+                           null,
+                           templateEntity.getType().getTypeDefName(),
+                           OpenMetadataType.ASSET.typeName,
+                           methodName);
 
         String assetGUID = this.createBeanFromTemplate(userId,
                                                        externalSourceGUID,
@@ -860,6 +864,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            typeGUID,
                                            typeName,
+                                           OpenMetadataType.ASSET.typeName,
                                            builder,
                                            true,
                                            effectiveTime,
@@ -949,6 +954,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            assetTypeId,
                                            assetTypeName,
+                                           OpenMetadataType.ASSET.typeName,
                                            builder,
                                            true,
                                            effectiveTime,

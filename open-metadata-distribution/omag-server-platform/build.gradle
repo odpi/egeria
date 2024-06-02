@@ -71,7 +71,6 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:governance-server:governance-server-client')
     implementation project(':open-metadata-implementation:access-services:governance-program:governance-program-client')
     implementation project(':open-metadata-implementation:access-services:project-management:project-management-client')
-    implementation project(':open-metadata-implementation:access-services:security-officer:security-officer-client')
     implementation project(':open-metadata-implementation:access-services:security-manager:security-manager-client')
     implementation project(':open-metadata-implementation:access-services:software-developer:software-developer-client')
     implementation project(':open-metadata-implementation:access-services:subject-area:subject-area-client')
@@ -368,13 +367,15 @@ distributions {
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/project-manager" }
                         { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/classification-manager" }
+                        { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/feedback-manager" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/glossary-browser" }
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/glossary-workflow" }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/glossary-manager" }
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/governance-author" }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/action-author" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/user-security/user-authn" }
                         { include 'Egeria*.http' }

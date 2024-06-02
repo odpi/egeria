@@ -604,13 +604,14 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
         }
 
         String anchorTypeName = null;
+        String anchorDomainName = OpenMetadataType.CONNECTION_TYPE_NAME;
 
         if (anchorGUID != null)
         {
             EntityDetail anchorEntity = this.getEntityFromRepository(userId,
                                                                      anchorGUID,
                                                                      anchorGUIDParameterName,
-                                                                     OpenMetadataType.REFERENCEABLE.typeName,
+                                                                     OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                                                      null,
                                                                      null,
                                                                      forLineage,
@@ -621,6 +622,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
             if (anchorEntity != null)
             {
                 anchorTypeName = anchorEntity.getType().getTypeDefName();
+                anchorDomainName = super.getDomainName(anchorEntity);
             }
         }
 
@@ -628,7 +630,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
 
         if ((connectionQualifiedName == null) && (parentQualifiedName != null))
         {
-            connectionQualifiedName = parentQualifiedName + "-" +connectionTypeName;
+            connectionQualifiedName = parentQualifiedName + "-" + connectionTypeName;
         }
 
         ConnectionBuilder connectionBuilder = new ConnectionBuilder(connectionQualifiedName,
@@ -649,7 +651,11 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
 
         if (anchorGUID != null)
         {
-            connectionBuilder.setAnchors(userId, anchorGUID, anchorTypeName, methodName);
+            connectionBuilder.setAnchors(userId,
+                                         anchorGUID,
+                                         anchorTypeName,
+                                         anchorDomainName,
+                                         methodName);
         }
 
         String connectionGUID = this.createBeanInRepository(userId,
@@ -657,7 +663,9 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                             externalSourceName,
                                                             connectionTypeGUID,
                                                             connectionTypeName,
+                                                            anchorDomainName,
                                                             connectionBuilder,
+                                                            (anchorGUID == null),
                                                             effectiveTime,
                                                             methodName);
 
@@ -1177,6 +1185,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                           serverName);
 
         builder.setEffectivityDates(effectiveFrom, effectiveTo);
+        String domainName = OpenMetadataType.CONNECTION_TYPE_NAME;
 
         if (assetGUID != null)
         {
@@ -1190,7 +1199,12 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                           methodName);
             if (assetEntity != null)
             {
-                builder.setAnchors(userId, assetGUID, assetEntity.getType().getTypeDefName(), methodName);
+                domainName = OpenMetadataType.ASSET.typeName;
+                builder.setAnchors(userId,
+                                   assetGUID,
+                                   assetEntity.getType().getTypeDefName(),
+                                   domainName,
+                                   methodName);
             }
         }
 
@@ -1199,7 +1213,9 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                             externalSourceName,
                                                             connectionTypeId,
                                                             connectionTypeName,
+                                                            domainName,
                                                             builder,
+                                                            (assetGUID == null),
                                                             effectiveTime,
                                                             methodName);
 
@@ -1916,6 +1932,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                           OpenMetadataType.CONNECTION_TYPE_NAME,
                                           assetGUID,
                                           assetEntity.getType().getTypeDefName(),
+                                          OpenMetadataType.ASSET.typeName,
                                           forLineage,
                                           forDuplicateProcessing,
                                           effectiveTime,

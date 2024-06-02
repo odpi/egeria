@@ -136,7 +136,7 @@ public class IntegrationReportWriter
                     elementList = getAllAnchoredElements(anchorGUID, deletedElements);
                     report.setDeletedElements(elementList);
 
-                    openIntegrationClient.publishIntegrationReport(userId, anchorGUID, anchorTypeMap.get(anchorGUID), report);
+                    openIntegrationClient.publishIntegrationReport(userId, anchorGUID, report);
                 }
             }
         }

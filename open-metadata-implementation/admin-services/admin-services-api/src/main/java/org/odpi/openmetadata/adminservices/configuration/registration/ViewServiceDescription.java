@@ -85,14 +85,14 @@ public enum ViewServiceDescription
     /**
      * Create glossary terms and organize them into categories as part of a controlled workflow process. It supports the editing glossary and multiple states.
      */
-    GLOSSARY_WORKFLOW(806,
-                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
-                      "Glossary Workflow",
-                      "Glossary Workflow OMVS",
-                      "glossary-workflow",
-                      "Create glossary terms and organize them into categories as part of a controlled workflow process. It supports the editing glossary and multiple states.",
-                      "https://egeria-project.org/services/omvs/glossary-workflow/overview/",
-                      AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName()),
+    GLOSSARY_MANAGER(806,
+                     ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                     "Glossary Manager",
+                     "Glossary Manager OMVS",
+                     "glossary-manager",
+                     "Create glossary terms and organize them into categories as part of a controlled workflow process. It supports the editing glossary and multiple states.",
+                     "https://egeria-project.org/services/omvs/glossary-manager/overview/",
+                     AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName()),
 
     /**
      * Manage information about the logged on user as well as their preferences.
@@ -143,28 +143,28 @@ public enum ViewServiceDescription
                          AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceFullName()),
 
     /**
-     * Work with comments, informal tags, ratings/reviews and likes.
+     * Work with notelogs, comments, informal tags, ratings/reviews and likes.
      */
     FEEDBACK_MANAGER  (811,
                          ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
                          "Feedback Manager",
                          "Feedback Manager OMVS",
                          "feedback-manager",
-                         "Work with comments, informal tags, ratings/reviews and likes.",
+                         "Work with note logs, comments, informal tags, ratings/reviews and likes.",
                          "https://egeria-project.org/services/omvs/feedback-manager/overview/",
-                         CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName()),
+                         CommonServicesDescription.GAF_METADATA_MANAGEMENT.getServiceName()),
 
     /**
      * Maintain definitions of governance actions such as governance action processes and governance action types.
      */
-    GOVERNANCE_AUTHOR(812,
-                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
-                      "Governance Author",
-                      "Governance Author OMVS",
-                      "governance-author",
-                      "Maintain definitions of governance actions such as governance action processes and governance action types.",
-                      "https://egeria-project.org/services/omvs/governance-author/overview/",
-                      AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS.getAccessServiceFullName()),
+    ACTION_AUTHOR(812,
+                  ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                  "Action Author",
+                  "Action Author OMVS",
+                  "action-author",
+                  "Maintain definitions of governance actions such as governance action processes and governance action types.",
+                  "https://egeria-project.org/services/omvs/action-author/overview/",
+                  AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS.getAccessServiceFullName()),
 
     /**
      * Set up and manage projects.
@@ -226,6 +226,18 @@ public enum ViewServiceDescription
                      "Maintain and query valid values for metadata.",
                      "https://egeria-project.org/services/omvs/valid-metadata/overview/",
                      AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS.getAccessServiceFullName()),
+
+    /**
+     * Maintain classifications and relationships used to organize open metadata elements.
+     */
+    CLASSIFICATION_MANAGER (818,
+                            ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                            "Classification Manager",
+                            "Classification Manager OMVS",
+                            "classification-manager",
+                            "Maintain classifications and relationships used to organize open metadata elements.",
+                            "https://egeria-project.org/services/omvs/valid-metadata/overview/",
+                            AccessServiceDescription.ASSET_MANAGER_OMAS.getAccessServiceFullName()),
     ;
 
 

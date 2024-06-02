@@ -566,11 +566,6 @@ public class CreateAssetTest
                 }
             }
 
-            if (retrievedAsset.getOtherOriginValues() == null)
-            {
-                throw new FVTUnexpectedCondition(testCaseName, activityName + "(null origin values from Retrieve)");
-            }
-
             List<AssetElement> assetList = client.getAssetsByName(userId, qualifiedName, 0, maxPageSize);
 
             if (assetList == null)

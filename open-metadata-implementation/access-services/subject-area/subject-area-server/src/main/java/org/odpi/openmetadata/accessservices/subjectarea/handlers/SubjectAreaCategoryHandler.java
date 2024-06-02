@@ -115,7 +115,11 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                                                                               genericHandler.getServerName());
 
                 builder.setEffectivityDates(effectiveFrom, effectiveTo);
-                builder.setAnchors(userId, glossaryGuid, OpenMetadataType.GLOSSARY_TYPE_NAME, methodName);
+                builder.setAnchors(userId,
+                                   glossaryGuid,
+                                   OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                   OpenMetadataType.GLOSSARY_TYPE_NAME,
+                                   methodName);
 
                 createdCategoryGuid = genericHandler.createBeanInRepository(userId,
                                                                             null,

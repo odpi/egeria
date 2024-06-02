@@ -2002,18 +2002,12 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getHostEntity()
     {
-        final String guid            = "1abd16db-5b8a-4fd9-aee5-205db3febe99";
-        final String name            = "Host";
-        final String description     = "Named IT infrastructure system that supports multiple software platforms and servers.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.HOST.typeGUID,
+                                                 OpenMetadataType.HOST.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.IT_INFRASTRUCTURE.typeName),
+                                                 OpenMetadataType.HOST.description,
+                                                 OpenMetadataType.HOST.descriptionGUID,
+                                                 OpenMetadataType.HOST.wikiURL);
     }
 
 
@@ -2199,60 +2193,42 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getHostClusterEntity()
     {
-        final String guid            = "9794f42f-4c9f-4fe6-be84-261f0a7de890";
-        final String name            = "HostCluster";
-        final String description     = "A group of hosts operating together to provide a scalable platform.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "Host";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.HOST_CLUSTER.typeGUID,
+                                                 OpenMetadataType.HOST_CLUSTER.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.HOST.typeName),
+                                                 OpenMetadataType.HOST_CLUSTER.description,
+                                                 OpenMetadataType.HOST_CLUSTER.descriptionGUID,
+                                                 OpenMetadataType.HOST_CLUSTER.wikiURL);
     }
 
 
     private EntityDef getVirtualContainerEntity()
     {
-        final String guid            = "e2393236-100f-4ac0-a5e6-ce4e96c521e7";
-        final String name            = "VirtualContainer";
-        final String description     = "Container-based virtual host.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "Host";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.VIRTUAL_CONTAINER.typeGUID,
+                                                 OpenMetadataType.VIRTUAL_CONTAINER.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.HOST.typeName),
+                                                 OpenMetadataType.VIRTUAL_CONTAINER.description,
+                                                 OpenMetadataType.VIRTUAL_CONTAINER.descriptionGUID,
+                                                 OpenMetadataType.VIRTUAL_CONTAINER.wikiURL);
     }
 
 
     private RelationshipDef getHostClusterMemberRelationship()
     {
-        final String guid            = "1a1c3933-a583-4b0c-9e42-c3691296a8e0";
-        final String name            = "HostClusterMember";
-        final String description     = "Identifies a host as a member of a host cluster.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.HOST_CLUSTER_MEMBER_RELATIONSHIP.typeGUID,
+                                                                                OpenMetadataType.HOST_CLUSTER_MEMBER_RELATIONSHIP.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.HOST_CLUSTER_MEMBER_RELATIONSHIP.description,
+                                                                                OpenMetadataType.HOST_CLUSTER_MEMBER_RELATIONSHIP.descriptionGUID,
+                                                                                OpenMetadataType.HOST_CLUSTER_MEMBER_RELATIONSHIP.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "HostCluster";
+        final String                     end1EntityType               = OpenMetadataType.HOST_CLUSTER.typeName;
         final String                     end1AttributeName            = "hostCluster";
         final String                     end1AttributeDescription     = "Cluster managing this host.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -2269,7 +2245,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Host";
+        final String                     end2EntityType               = OpenMetadataType.HOST.typeName;
         final String                     end2AttributeName            = "managedHosts";
         final String                     end2AttributeDescription     = "Member of the host cluster.";
         final String                     end2AttributeDescriptionGUID = null;

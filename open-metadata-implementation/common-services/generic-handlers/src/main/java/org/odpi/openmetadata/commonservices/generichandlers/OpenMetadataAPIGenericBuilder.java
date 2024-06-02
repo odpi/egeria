@@ -312,12 +312,14 @@ public class OpenMetadataAPIGenericBuilder
      * @param userId calling user
      * @param anchorGUID unique identifier of the anchor entity that this entity is linked to directly or indirectly
      * @param anchorTypeName unique identifier of the anchor entity's type
+     * @param anchorDomainName unique identifier of the anchor entity's domain
      * @param methodName calling method
      * @throws PropertyServerException a null anchors GUID has been supplied
      */
     public void setAnchors(String userId,
                            String anchorGUID,
                            String anchorTypeName,
+                           String anchorDomainName,
                            String methodName) throws PropertyServerException
     {
         final String localMethodName = "setAnchors";
@@ -345,7 +347,7 @@ public class OpenMetadataAPIGenericBuilder
                                                                                   typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
-                                                                                  getAnchorsProperties(anchorGUID, anchorTypeName, methodName));
+                                                                                  getAnchorsProperties(anchorGUID, anchorTypeName, anchorDomainName, methodName));
             newClassifications.put(classification.getName(), classification);
         }
         catch (Exception error)
@@ -360,11 +362,13 @@ public class OpenMetadataAPIGenericBuilder
      *
      * @param anchorGUID unique identifier of the anchor entity that this entity is linked to directly or indirectly
      * @param anchorTypeName unique identifier of the anchor entity's type
+     * @param anchorDomainName unique identifier of the anchor entity's domain
      * @param methodName name of the calling method
      * @return InstanceProperties object
      */
     InstanceProperties getAnchorsProperties(String anchorGUID,
                                             String anchorTypeName,
+                                            String anchorDomainName,
                                             String methodName)
     {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
@@ -377,6 +381,12 @@ public class OpenMetadataAPIGenericBuilder
                                                                   properties,
                                                                   OpenMetadataProperty.ANCHOR_TYPE_NAME.name,
                                                                   anchorTypeName,
+                                                                  methodName);
+
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataProperty.ANCHOR_DOMAIN_NAME.name,
+                                                                  anchorDomainName,
                                                                   methodName);
 
         return properties;

@@ -59,6 +59,7 @@ public class FileStatsExtractor
         measurementAnnotation.setAnnotationType(SurveyFileAnnotationType.MEASUREMENTS.getName());
         measurementAnnotation.setSummary(SurveyFileAnnotationType.MEASUREMENTS.getSummary());
         measurementAnnotation.setExplanation(SurveyFileAnnotationType.MEASUREMENTS.getExplanation());
+        measurementAnnotation.setAnalysisStep(SurveyFileAnnotationType.MEASUREMENTS.getAnalysisStep());
         measurementAnnotation.setCreateTime(fileClassification.getCreationTime());
         measurementAnnotation.setModifiedTime(fileClassification.getLastModifiedTime());
         measurementAnnotation.setLastAccessedTime(fileClassification.getLastAccessedTime());

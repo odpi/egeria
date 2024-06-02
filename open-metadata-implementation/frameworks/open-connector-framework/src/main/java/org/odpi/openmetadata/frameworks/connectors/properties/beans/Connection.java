@@ -442,7 +442,6 @@ public class Connection extends Referenceable
                        ", configurationProperties=" + configurationProperties +
                        ", securedProperties=" + securedProperties +
                        ", assetSummary='" + assetSummary + '\'' +
-                       ", URL='" + getURL() + '\'' +
                        ", extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +

@@ -114,8 +114,7 @@ public class RelatedMediaReference extends ExternalReference
     public String toString()
     {
         return "RelatedMediaReference{" +
-                       "URL='" + getURL() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
+                       "extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
                        ", origin=" + getOrigin() +

@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
-import org.odpi.openmetadata.frameworks.openmetadata.enums.AssetOwnerType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DataItemSortOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -69,7 +68,6 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
 
             elementBase.setGUID(entity.getGUID());
             elementBase.setType(this.getElementType(entity));
-            elementBase.setURL(entity.getInstanceURL());
             elementBase.setClassifications(this.getEntityClassifications(entity));
 
             ElementOrigin elementOrigin = new ElementOrigin();
@@ -111,7 +109,6 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
         {
             elementBase.setGUID(instanceHeader.getGUID());
             elementBase.setType(this.getElementType(instanceHeader));
-            elementBase.setURL(instanceHeader.getInstanceURL());
             elementBase.setClassifications(this.getElementClassifications(classifications));
 
             ElementOrigin elementOrigin = new ElementOrigin();
@@ -226,77 +223,6 @@ public abstract class OCFConverter<B> extends OpenMetadataAPIGenericConverter<B>
 
         return DataItemSortOrder.UNSORTED;
     }
-
-
-    /**
-     * Retrieve and delete the AssetOwnerType enum property from the instance properties of an entity
-     *
-     * @param properties  entity properties
-     * @return AssetOwnerType  enum value
-     */
-    protected AssetOwnerType removeOwnerTypeFromProperties(InstanceProperties   properties)
-    {
-        AssetOwnerType ownerType = this.getOwnerTypeFromProperties(properties);
-
-        if (properties != null)
-        {
-            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
-
-            if (instancePropertiesMap != null)
-            {
-                instancePropertiesMap.remove(OpenMetadataType.OWNER_TYPE_PROPERTY_NAME);
-            }
-
-            properties.setInstanceProperties(instancePropertiesMap);
-        }
-
-        return ownerType;
-    }
-
-
-    /**
-     * Retrieve the AssetOwnerType enum property from the instance properties of a classification
-     *
-     * @param properties  entity properties
-     * @return AssetOwnerType  enum value
-     */
-    protected AssetOwnerType getOwnerTypeFromProperties(InstanceProperties   properties)
-    {
-        AssetOwnerType ownerType = null;
-
-        if (properties != null)
-        {
-            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
-
-            if (instancePropertiesMap != null)
-            {
-                InstancePropertyValue instancePropertyValue = instancePropertiesMap.get(OpenMetadataType.OWNER_TYPE_PROPERTY_NAME);
-
-                if (instancePropertyValue instanceof EnumPropertyValue)
-                {
-                    EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
-
-                    switch (enumPropertyValue.getOrdinal())
-                    {
-                        case 0:
-                            ownerType = AssetOwnerType.USER_ID;
-                            break;
-
-                        case 1:
-                            ownerType = AssetOwnerType.PROFILE_ID;
-                            break;
-
-                        case 99:
-                            ownerType = AssetOwnerType.OTHER;
-                            break;
-                    }
-                }
-            }
-        }
-
-        return ownerType;
-    }
-
 
 
     /**

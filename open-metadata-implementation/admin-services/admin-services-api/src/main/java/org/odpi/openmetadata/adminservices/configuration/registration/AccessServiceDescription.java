@@ -301,14 +301,14 @@ public enum AccessServiceDescription implements Serializable
      * Set up rules and security tags to protect data.
      */
     SECURITY_OFFICER_OMAS            (223,
-                                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                                      ComponentDevelopmentStatus.DEPRECATED,
                                       "Security Officer",
                                       "Security Officer OMAS",
                                       "security-officer",
                                       "Set up rules and security tags to protect data.",
                                       "https://egeria-project.org/services/omas/security-officer/overview/",
                                       ServiceOperationalStatus.NOT_IMPLEMENTED,
-                                      ServiceOperationalStatus.ENABLED),
+                                      ServiceOperationalStatus.NOT_IMPLEMENTED),
 
     /**
      * Interact with software development tools.

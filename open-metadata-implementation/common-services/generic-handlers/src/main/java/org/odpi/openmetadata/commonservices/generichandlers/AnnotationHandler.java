@@ -618,7 +618,11 @@ public class AnnotationHandler<B> extends ReferenceableHandler<B>
 
         if ((anchorEntity != null) && (anchorEntity.getGUID() != null))
         {
-            builder.setAnchors(userId, anchorEntity.getGUID(), anchorEntity.getType().getTypeDefName(), methodName);
+            builder.setAnchors(userId,
+                               anchorEntity.getGUID(),
+                               anchorEntity.getType().getTypeDefName(),
+                               this.getDomainName(anchorEntity),
+                               methodName);
         }
 
         String annotationReviewGUID = this.createBeanInRepository(userId,

@@ -512,6 +512,8 @@ public class AutomatedCurationRESTServices extends TokenController
                 OpenMetadataStoreClient openHandler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
                 response.setGUID(openHandler.createMetadataElementFromTemplate(userId,
+                                                                               requestBody.getExternalSourceGUID(),
+                                                                               requestBody.getExternalSourceName(),
                                                                                requestBody.getTypeName(),
                                                                                requestBody.getAnchorGUID(),
                                                                                requestBody.getIsOwnAnchor(),

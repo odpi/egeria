@@ -15,9 +15,9 @@ needed to run them successfully.
 * **asset-reader-csv-sample** illustrates the use of the [Asset Consumer OMAS](https://egeria-project.org/services/omas/asset-consumer/overview/) APIs to create connectors to CSV files.
 * **asset-set-up-sample** illustrates the use of a variety of [OMASs](https://egeria-project.org/services/omas/) APIs to catalog files.
 * **config-metadata-server-sample** illustrates the use of the [Administration Services](https://egeria-project.org/services/admin-services/overview) APIs to create a configuration document for a Metadata Access Store.
-* **glossary-workflow-samples** show different styles of managing changes to glossary terms.
+* **glossary-manager-samples** show different styles of managing changes to glossary terms.
 They are illustrated through the [Asset Manager OMAS glossary management API](https://odpi.github.io/egeria/org/odpi/openmetadata/accessservices/assetmanager/api/management/GlossaryManagementInterface.html).
-This interface is used by [Glossary Workflow OMVS](https://egeria-project.org/services/omvs/glossary-workflow/overview) to provide the backend services for UI that provide complex management interfaces.
+This interface is used by [Glossary Manager OMVS](https://egeria-project.org/services/omvs/glossary-manager/overview) to provide the backend services for UI that provide complex management interfaces.
 * **governance-leadership-sample** shows the appointment of different types of governance officers over time.  It uses the APIs from [Governance Program OMAS](https://egeria-project.org/services/omas/governance-program/overview/).
 * **governance-subject-area-sample** shows the creation of Coco Pharmaceuticals' subject area definitions.  It uses the APIs from [Governance Program OMAS](https://egeria-project.org/services/omas/governance-program/overview/).
 * **governance-zone-create-sample** shows the creation of Coco Pharmaceuticals' governance zone definitions.  It uses the APIs from [Governance Program OMAS](https://egeria-project.org/services/omas/governance-program/overview/).
