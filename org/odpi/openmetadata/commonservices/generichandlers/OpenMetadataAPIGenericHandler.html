@@ -171,12 +171,13 @@ loadScripts(document, 'script');</script>
 <div class="block">Validate the anchor guid and add its type and identifier to the builder.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addAnchorsClassification(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">addAnchorsClassification</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addAnchorsClassification(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">addAnchorsClassification</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;beanGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;beanGUIDParameterName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;beanGUIDTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorDomainName,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -231,11 +232,12 @@ loadScripts(document, 'script');</script>
 <div class="block">Count up the number of elements of a certain type that are attached to a specific entity.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createBeanInRepository(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericBuilder,boolean,java.util.Date,java.lang.String)" class="member-name-link">createBeanInRepository</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createBeanInRepository(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericBuilder,boolean,java.util.Date,java.lang.String)" class="member-name-link">createBeanInRepository</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityDomainName,
  <a href="OpenMetadataAPIGenericBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">OpenMetadataAPIGenericBuilder</a>&nbsp;propertyBuilder,
  boolean&nbsp;isOwnAnchor,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -1226,6 +1228,16 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of beans of the requested type that match the supplied value.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDomainName(java.lang.String)" class="member-name-link">getDomainName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the domain name of an type.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDomainName(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary)" class="member-name-link">getDomainName</a><wbr>(<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;instance)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the domain name of an entity.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntitiesByIntValue(java.lang.String,int,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.lang.String,int,int,java.util.Date,java.lang.String)" class="member-name-link">getEntitiesByIntValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  int&nbsp;value,
@@ -1590,10 +1602,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Creates a relationship between two elements and updates the LatestChange in each one's anchor entity (if they have one).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#maintainSupplementaryProperties(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">maintainSupplementaryProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#maintainSupplementaryProperties(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,java.util.Date,java.lang.String)" class="member-name-link">maintainSupplementaryProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUIDParameterName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementDomainName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementQualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;summary,
@@ -3160,7 +3173,7 @@ loadScripts(document, 'script');</script>
 <dd><code>forLineage</code> - the request is to support lineage retrieval this means entities with the Memento classification can be returned</dd>
 <dd><code>forDuplicateProcessing</code> - the request is for duplicate processing and so must not deduplicate</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
-<dd><code>serviceSuppliedSupportedZones</code> - suported zones for this call</dd>
+<dd><code>serviceSuppliedSupportedZones</code> - supported zones for this call</dd>
 <dd><code>builder</code> - builder to receive the anchor (if appropriate).</dd>
 <dd><code>methodName</code> - calling method</dd>
 <dt>Throws:</dt>
@@ -3171,7 +3184,33 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addAnchorsClassification(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)">
+<section class="detail" id="getDomainName(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary)">
+<h3>getDomainName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDomainName</span><wbr><span class="parameters">(<a href="../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntitySummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntitySummary</a>&nbsp;instance)</span></div>
+<div class="block">Return the domain name of an entity.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>instance</code> - entity</dd>
+<dt>Returns:</dt>
+<dd>domain name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getDomainName(java.lang.String)">
+<h3>getDomainName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDomainName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</span></div>
+<div class="block">Return the domain name of an type.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>typeName</code> - type to check</dd>
+<dt>Returns:</dt>
+<dd>domain name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="addAnchorsClassification(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>addAnchorsClassification</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addAnchorsClassification</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;beanGUID,
@@ -3179,6 +3218,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;beanGUIDTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;anchorDomainName,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -3195,6 +3235,7 @@ loadScripts(document, 'script');</script>
 <dd><code>beanGUIDTypeName</code> - type of bean</dd>
 <dd><code>anchorGUID</code> - unique identifier of the anchor</dd>
 <dd><code>anchorTypeName</code> - unique name of the type of the anchor</dd>
+<dd><code>anchorDomainName</code> - unique name of the type of the anchor</dd>
 <dd><code>forLineage</code> - the request is to support lineage retrieval this means entities with the Memento classification can be returned</dd>
 <dd><code>forDuplicateProcessing</code> - the request is for duplicate processing and so must not deduplicate</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for (null for any time, new Date() for now)</dd>
@@ -3207,12 +3248,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="maintainSupplementaryProperties(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,java.util.Date,java.lang.String)">
+<section class="detail" id="maintainSupplementaryProperties(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,boolean,boolean,java.util.Date,java.lang.String)">
 <h3>maintainSupplementaryProperties</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">maintainSupplementaryProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUIDParameterName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementDomainName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementQualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;summary,
@@ -3236,6 +3278,7 @@ loadScripts(document, 'script');</script>
 <dd><code>elementGUID</code> - element for the</dd>
 <dd><code>elementGUIDParameterName</code> - name of guid parameter</dd>
 <dd><code>elementTypeName</code> - type of element</dd>
+<dd><code>elementDomainName</code> - domain of element</dd>
 <dd><code>elementQualifiedName</code> - qualified name of the linked element</dd>
 <dd><code>displayName</code> - display name for the term</dd>
 <dd><code>summary</code> - short description</dd>
@@ -4032,13 +4075,14 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createBeanInRepository(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericBuilder,boolean,java.util.Date,java.lang.String)">
+<section class="detail" id="createBeanInRepository(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericBuilder,boolean,java.util.Date,java.lang.String)">
 <h3>createBeanInRepository</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createBeanInRepository</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityTypeGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entityDomainName,
  <a href="OpenMetadataAPIGenericBuilder.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">OpenMetadataAPIGenericBuilder</a>&nbsp;propertyBuilder,
  boolean&nbsp;isOwnAnchor,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;effectiveTime,
@@ -4054,6 +4098,7 @@ loadScripts(document, 'script');</script>
 <dd><code>externalSourceName</code> - name of the software capability entity that represented the external source</dd>
 <dd><code>entityTypeGUID</code> - unique identifier of the type of entity to create</dd>
 <dd><code>entityTypeName</code> - unique name of the type of entity to create</dd>
+<dd><code>entityDomainName</code> - unique name of the type of entity's domain</dd>
 <dd><code>propertyBuilder</code> - builder pre-populated with the properties and classifications of the new entity</dd>
 <dd><code>isOwnAnchor</code> - flag to indicate if the new entity should be anchored to itself</dd>
 <dd><code>effectiveTime</code> - the time that the retrieved elements must be effective for</dd>

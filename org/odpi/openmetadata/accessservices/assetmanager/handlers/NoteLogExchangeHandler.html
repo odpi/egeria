@@ -147,7 +147,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createNote(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.NoteProperties,java.util.Date,boolean,boolean,java.lang.String)" class="member-name-link">createNote</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;noteLogGUID,
  <a href="../properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  boolean&nbsp;assetManagerIsHome,
  <a href="../properties/NoteProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">NoteProperties</a>&nbsp;noteProperties,
@@ -676,7 +676,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="createNote(java.lang.String,java.lang.String,org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties,boolean,org.odpi.openmetadata.accessservices.assetmanager.properties.NoteProperties,java.util.Date,boolean,boolean,java.lang.String)">
 <h3>createNote</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">createNote</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;noteLogGUID,
  <a href="../properties/MetadataCorrelationProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">MetadataCorrelationProperties</a>&nbsp;correlationProperties,
  boolean&nbsp;assetManagerIsHome,
  <a href="../properties/NoteProperties.html" title="class in org.odpi.openmetadata.accessservices.assetmanager.properties">NoteProperties</a>&nbsp;noteProperties,
@@ -691,7 +691,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>elementGUID</code> - unique identifier of the element where the note is located</dd>
+<dd><code>noteLogGUID</code> - unique identifier of the element where the note is located</dd>
 <dd><code>correlationProperties</code> - properties to help with the mapping of the elements in the external asset manager and open metadata</dd>
 <dd><code>assetManagerIsHome</code> - ensure that only the asset manager can update this element</dd>
 <dd><code>noteProperties</code> - properties for the note</dd>

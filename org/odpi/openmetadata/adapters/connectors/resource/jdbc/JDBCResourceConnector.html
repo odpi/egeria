@@ -147,41 +147,46 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the component description that is used by this connector in the audit log.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html" title="class or interface in javax.sql" class="external-link">DataSource</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataSource()" class="member-name-link">getDataSource</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDatabaseName()" class="member-name-link">getDatabaseName</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the name of the database.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/javax/sql/DataSource.html" title="class or interface in javax.sql" class="external-link">DataSource</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDataSource()" class="member-name-link">getDataSource</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the DataSource implementation for this database.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLatestRow(java.sql.Connection,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">getLatestRow</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link">Connection</a>&nbsp;jdbcConnection,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLatestRow(java.sql.Connection,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">getLatestRow</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link">Connection</a>&nbsp;jdbcConnection,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifierColumnName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifierColumnValue,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;timestampColumnName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;columnNameTypeMap)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the row with the requested identifier and with the latest timestamp.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initializeEmbeddedConnectors(java.util.List)" class="member-name-link">initializeEmbeddedConnectors</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&gt;&nbsp;embeddedConnectors)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initializeEmbeddedConnectors(java.util.List)" class="member-name-link">initializeEmbeddedConnectors</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&gt;&nbsp;embeddedConnectors)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the list of connectors that this virtual connector will use to support its interface.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#insertRowIntoTable(java.sql.Connection,java.lang.String,java.util.Map)" class="member-name-link">insertRowIntoTable</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link">Connection</a>&nbsp;jdbcConnection,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#insertRowIntoTable(java.sql.Connection,java.lang.String,java.util.Map)" class="member-name-link">insertRowIntoTable</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.sql/java/sql/Connection.html" title="class or interface in java.sql" class="external-link">Connection</a>&nbsp;jdbcConnection,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;&nbsp;columnNameValueMap)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Prepare an INSERT SQL statement with all the columns for the new row filled out.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">setAuditLog</a><wbr>(<a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">setAuditLog</a><wbr>(<a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Receive an audit log object that can be used to record audit log messages.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Indicates that the connector is completely configured and can begin processing.</div>
 </div>
 </div>
@@ -275,6 +280,17 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dd><code><a href="../../../../frameworks/connectors/ConnectorBase.html#start()">start</a></code>&nbsp;in class&nbsp;<code><a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></code></dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the connector.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getDatabaseName()">
+<h3>getDatabaseName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDatabaseName</span>()</div>
+<div class="block">Return the name of the database.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string name</dd>
 </dl>
 </section>
 </li>

@@ -113,14 +113,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="#DATABASE_SCHEMA_TABLE_SIZES" class="member-name-link">DATABASE_SCHEMA_TABLE_SIZES</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#DATABASE_SIZES" class="member-name-link">DATABASE_SIZES</a></code></div>
+<div class="col-first even-row-color"><code><a href="#DATABASE_TABLE_SIZES" class="member-name-link">DATABASE_TABLE_SIZES</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#DATABASE_TABLE_SIZES" class="member-name-link">DATABASE_TABLE_SIZES</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#SCHEMA_METRICS" class="member-name-link">SCHEMA_METRICS</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="#SCHEMA_METRICS" class="member-name-link">SCHEMA_METRICS</a></code></div>
+<div class="col-first even-row-color"><code><a href="#TABLE_METRICS" class="member-name-link">TABLE_METRICS</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="#TABLE_METRICS" class="member-name-link">TABLE_METRICS</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -136,7 +134,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#explanation" class="member-name-link">explanation</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PostgresMetric.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.survey">PostgresMetric</a>&gt;</code></div>
+<div class="col-first odd-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/surveyaction/measurements/SurveyMetric.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.measurements">SurveyMetric</a>&gt;</code></div>
 <div class="col-second odd-row-color"><code><a href="#metrics" class="member-name-link">metrics</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
@@ -145,9 +143,12 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#openMetadataTypeName" class="member-name-link">openMetadataTypeName</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#summary" class="member-name-link">summary</a></code></div>
+<div class="col-first even-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#profilePropertyNames" class="member-name-link">profilePropertyNames</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#summary" class="member-name-link">summary</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -199,24 +200,29 @@ loadScripts(document, 'script');</script>
 <div class="block">Return the defined annotation types for the PostgreSQL Server
  survey action service as a list of annotation type types.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSummary()" class="member-name-link">getSummary</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProfilePropertyNames()" class="member-name-link">getProfilePropertyNames</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the short description of the annotation type.</div>
+<div class="block">Return the list of property names that make up this profile entry</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSummary()" class="member-name-link">getSummary</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the short description of the annotation type.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Output of this enum class and main value.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="PostgresAnnotationType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.survey">PostgresAnnotationType</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="PostgresAnnotationType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.survey">PostgresAnnotationType</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="PostgresAnnotationType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.survey">PostgresAnnotationType</a>[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="PostgresAnnotationType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.survey">PostgresAnnotationType</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
@@ -240,12 +246,6 @@ the order they are declared.</div>
 <section class="constant-details" id="enum-constant-detail">
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="DATABASE_SIZES">
-<h3>DATABASE_SIZES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresAnnotationType.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.survey">PostgresAnnotationType</a></span>&nbsp;<span class="element-name">DATABASE_SIZES</span></div>
-</section>
-</li>
 <li>
 <section class="detail" id="DATABASE_TABLE_SIZES">
 <h3>DATABASE_TABLE_SIZES</h3>
@@ -321,9 +321,15 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="profilePropertyNames">
+<h3>profilePropertyNames</h3>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">profilePropertyNames</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="metrics">
 <h3>metrics</h3>
-<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="PostgresMetric.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.survey">PostgresMetric</a>&gt;</span>&nbsp;<span class="element-name">metrics</span></div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/surveyaction/measurements/SurveyMetric.html" title="interface in org.odpi.openmetadata.frameworks.surveyaction.measurements">SurveyMetric</a>&gt;</span>&nbsp;<span class="element-name">metrics</span></div>
 </section>
 </li>
 </ul>
@@ -440,6 +446,17 @@ not permitted.)</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>text</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getProfilePropertyNames()">
+<h3>getProfilePropertyNames</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getProfilePropertyNames</span>()</div>
+<div class="block">Return the list of property names that make up this profile entry</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of property names</dd>
 </dl>
 </section>
 </li>

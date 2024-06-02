@@ -89,7 +89,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../AssetSummary.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetSummary</a></code>, <code><a href="RelatedAsset.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">RelatedAsset</a></code></dd>
+<dd><code><a href="../../../../accessservices/assetconsumer/properties/AssetGraph.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">AssetGraph</a></code>, <code><a href="../../../../accessservices/assetconsumer/properties/AssetSearchMatches.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">AssetSearchMatches</a></code>, <code><a href="../AssetSummary.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties">AssetSummary</a></code>, <code><a href="RelatedAsset.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">RelatedAsset</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">Asset</span>
@@ -115,26 +115,6 @@ loadScripts(document, 'script');</script>
      (Sourced from attribute abbreviation within GlossaryTerm - model 0330)</li>
      <li>usage - A description of how the resource is used by the business.
      (Sourced from attribute usage within GlossaryTerm - model 0330)</li>
-     <li>connectionDescription - short description about the asset.
-     (Sourced from assetSummary within ConnectionsToAsset relationship - model 0205)</li>
-     <li>description - full description of the asset.
-     (Sourced from attribute description within Asset - model 0010)</li>
-     <li>owner - name of the person or organization that owns the asset.
-     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
-     <li>ownerTypeName - name of the element type identifying the person or organization that owns the asset.
-     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
-     <li>ownerPropertyName - name of the property identifying person or organization that owns the asset.
-     (Sourced from classification AssetOwnership or Ownership attached to Asset - model 0445)</li>
-     <li>ownerType - type of the person or organization that owns the asset.
-     (Sourced from classification AssetOwnership attached to Asset - model 0445)</li>
-     <li>zoneMembership - name of the person or organization that owns the asset.
-     (Sourced from classification AssetZoneMemberShip attached to Asset - model 0424)</li>
-     <li>assetOrigin - origin identifiers describing the source of the asset.
-     (Sourced from classification AssetOrigin attached to Asset - model 0440)</li>
-     <li>latestChange - description of last update to the asset.
-     (Sourced from classification LatestChange attached to Asset - model 0010)</li>
-     <li>isReferenceData - flag to show if asset contains reference data.
-     (Sourced from classification ReferenceData within Asset - model 0524)</li>
      <li>classifications - list of all classifications assigned to the asset</li>
      <li>extendedProperties - list of properties assigned to the asset from the Asset subclasses</li>
      <li>additionalProperties - list of properties assigned to the asset as additional properties</li>
@@ -155,12 +135,6 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color"><code><a href="#abbreviation" class="member-name-link">abbreviation</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#connectionDescription" class="member-name-link">connectionDescription</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#description" class="member-name-link">description</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#displayDescription" class="member-name-link">displayDescription</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
@@ -169,41 +143,17 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#displaySummary" class="member-name-link">displaySummary</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#isReferenceData" class="member-name-link">isReferenceData</a></code></div>
+<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#resourceDescription" class="member-name-link">resourceDescription</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#name" class="member-name-link">name</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#resourceName" class="member-name-link">resourceName</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#origin" class="member-name-link">origin</a></code></div>
+<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#usage" class="member-name-link">usage</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#owner" class="member-name-link">owner</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#ownerPropertyName" class="member-name-link">ownerPropertyName</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="../../../openmetadata/enums/AssetOwnerType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">AssetOwnerType</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#ownerType" class="member-name-link">ownerType</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#ownerTypeName" class="member-name-link">ownerTypeName</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#resourceDescription" class="member-name-link">resourceDescription</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#resourceName" class="member-name-link">resourceName</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#usage" class="member-name-link">usage</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#versionIdentifier" class="member-name-link">versionIdentifier</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#zoneMembership" class="member-name-link">zoneMembership</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#versionIdentifier" class="member-name-link">versionIdentifier</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
@@ -214,7 +164,7 @@ loadScripts(document, 'script');</script>
 <code><a href="Referenceable.html#additionalProperties">additionalProperties</a>, <a href="Referenceable.html#qualifiedName">qualifiedName</a></code></div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.<a href="ElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementBase</a></h3>
-<code><a href="ElementBase.html#extendedProperties">extendedProperties</a>, <a href="ElementBase.html#url">url</a></code></div>
+<code><a href="ElementBase.html#extendedProperties">extendedProperties</a></code></div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.<a href="PropertyBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">PropertyBase</a></h3>
 <code><a href="PropertyBase.html#CURRENT_AUDIT_HEADER_VERSION">CURRENT_AUDIT_HEADER_VERSION</a></code></div>
@@ -244,7 +194,7 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button><button id="method-summary-table-tab6" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab6', 3)" class="table-tab">Deprecated Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel">
 <div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
 <div class="table-header col-first">Modifier and Type</div>
@@ -260,65 +210,25 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the abbreviation or acronym associated with the resources display name.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetOrigin()" class="member-name-link">getAssetOrigin</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDisplayDescription()" class="member-name-link">getDisplayDescription</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the properties that characterize where this asset is from.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectionDescription()" class="member-name-link">getConnectionDescription</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the short description of the asset from relationship with Connection.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6">
-<div class="block"><span class="deprecated-label">Deprecated.</span></div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDisplayDescription()" class="member-name-link">getDisplayDescription</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the full business description.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDisplayName()" class="member-name-link">getDisplayName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDisplayName()" class="member-name-link">getDisplayName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the stored display name property for the asset.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDisplaySummary()" class="member-name-link">getDisplaySummary</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDisplaySummary()" class="member-name-link">getDisplaySummary</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the short display description for tables and summaries.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6">
-<div class="block"><span class="deprecated-label">Deprecated.</span></div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOwner()" class="member-name-link">getOwner</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the name of the owner for this asset.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOwnerPropertyName()" class="member-name-link">getOwnerPropertyName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the property name used to identify the owner for this asset.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../openmetadata/enums/AssetOwnerType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">AssetOwnerType</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOwnerType()" class="member-name-link">getOwnerType</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the type of owner stored in the owner property.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOwnerTypeName()" class="member-name-link">getOwnerTypeName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the name of the type used to identify of the owner for this asset.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getResourceDescription()" class="member-name-link">getResourceDescription</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the stored description property for the asset.</div>
+<div class="block">Return the description associated with the resource.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getResourceName()" class="member-name-link">getResourceName</a>()</code></div>
@@ -335,20 +245,10 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the version identifier of the resource.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getZoneMembership()" class="member-name-link">getZoneMembership</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the names of the zones that this asset is a member of.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return hash code based on properties.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isReferenceData()" class="member-name-link">isReferenceData</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a boolean to see if the asset has been marked as reference data.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAbbreviation(java.lang.String)" class="member-name-link">setAbbreviation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;abbreviation)</code></div>
@@ -356,89 +256,39 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the abbreviation or acronym associated with the resources display name.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAssetOrigin(java.util.Map)" class="member-name-link">setAssetOrigin</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;origin)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDisplayDescription(java.lang.String)" class="member-name-link">setDisplayDescription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayDescription)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the properties that characterize where this asset is from.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setConnectionDescription(java.lang.String)" class="member-name-link">setConnectionDescription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionDescription)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the short description of the asset from relationship with Connection.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6"><code><a href="#setDescription(java.lang.String)" class="member-name-link">setDescription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6">
-<div class="block"><span class="deprecated-label">Deprecated.</span></div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDisplayDescription(java.lang.String)" class="member-name-link">setDisplayDescription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayDescription)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the full business description.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDisplayName(java.lang.String)" class="member-name-link">setDisplayName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDisplayName(java.lang.String)" class="member-name-link">setDisplayName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the stored display name property for the asset.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDisplaySummary(java.lang.String)" class="member-name-link">setDisplaySummary</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displaySummary)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDisplaySummary(java.lang.String)" class="member-name-link">setDisplaySummary</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displaySummary)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the short display description for tables and summaries.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6"><code><a href="#setName(java.lang.String)" class="member-name-link">setName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4 method-summary-table-tab6">
-<div class="block"><span class="deprecated-label">Deprecated.</span></div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOwner(java.lang.String)" class="member-name-link">setOwner</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;owner)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setResourceDescription(java.lang.String)" class="member-name-link">setResourceDescription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;resourceDescription)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the name of the owner for this asset.</div>
+<div class="block">Set up the description associated with the resource.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOwnerPropertyName(java.lang.String)" class="member-name-link">setOwnerPropertyName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;ownerPropertyName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setResourceName(java.lang.String)" class="member-name-link">setResourceName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the property name used to identify the owner for this asset.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOwnerType(org.odpi.openmetadata.frameworks.openmetadata.enums.AssetOwnerType)" class="member-name-link">setOwnerType</a><wbr>(<a href="../../../openmetadata/enums/AssetOwnerType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">AssetOwnerType</a>&nbsp;ownerType)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the owner type for this asset.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOwnerTypeName(java.lang.String)" class="member-name-link">setOwnerTypeName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;ownerTypeName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the name of the type used to identify the owner for this asset.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setReferenceData(boolean)" class="member-name-link">setReferenceData</a><wbr>(boolean&nbsp;referenceData)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the boolean to see if the asset has been marked as reference data.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setResourceDescription(java.lang.String)" class="member-name-link">setResourceDescription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the stored description property associated with the asset.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setResourceName(java.lang.String)" class="member-name-link">setResourceName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the name of the resource that this asset represents.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUsage(java.lang.String)" class="member-name-link">setUsage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;usage)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUsage(java.lang.String)" class="member-name-link">setUsage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;usage)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the usage information for the resource.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setVersionIdentifier(java.lang.String)" class="member-name-link">setVersionIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;versionIdentifier)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the version identifier of the resource.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setZoneMembership(java.util.List)" class="member-name-link">setZoneMembership</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;zoneMembership)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setVersionIdentifier(java.lang.String)" class="member-name-link">setVersionIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;versionIdentifier)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the names of the zones that this asset is a member of.</div>
+<div class="block">Set up the version identifier of the resource.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -456,7 +306,7 @@ loadScripts(document, 'script');</script>
 <code><a href="Referenceable.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="Referenceable.html#getQualifiedName()">getQualifiedName</a>, <a href="Referenceable.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="Referenceable.html#setQualifiedName(java.lang.String)">setQualifiedName</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.<a href="ElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementBase</a></h3>
-<code><a href="ElementBase.html#getExtendedProperties()">getExtendedProperties</a>, <a href="ElementBase.html#getURL()">getURL</a>, <a href="ElementBase.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="ElementBase.html#setURL(java.lang.String)">setURL</a></code></div>
+<code><a href="ElementBase.html#getExtendedProperties()">getExtendedProperties</a>, <a href="ElementBase.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.<a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementHeader</a></h3>
 <code><a href="ElementHeader.html#getClassifications()">getClassifications</a>, <a href="ElementHeader.html#getGUID()">getGUID</a>, <a href="ElementHeader.html#setClassifications(java.util.List)">setClassifications</a>, <a href="ElementHeader.html#setGUID(java.lang.String)">setGUID</a></code></div>
@@ -528,66 +378,6 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">usage</span></div>
 </section>
 </li>
-<li>
-<section class="detail" id="connectionDescription">
-<h3>connectionDescription</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">connectionDescription</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="owner">
-<h3>owner</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">owner</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ownerTypeName">
-<h3>ownerTypeName</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">ownerTypeName</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ownerPropertyName">
-<h3>ownerPropertyName</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">ownerPropertyName</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="ownerType">
-<h3>ownerType</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../openmetadata/enums/AssetOwnerType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">AssetOwnerType</a></span>&nbsp;<span class="element-name">ownerType</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="zoneMembership">
-<h3>zoneMembership</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">zoneMembership</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="origin">
-<h3>origin</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">origin</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="isReferenceData">
-<h3>isReferenceData</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isReferenceData</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="name">
-<h3>name</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">name</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="description">
-<h3>description</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">description</span></div>
-</section>
-</li>
 </ul>
 </section>
 </li>
@@ -641,6 +431,28 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>name</code> - string resource name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getResourceDescription()">
+<h3>getResourceDescription</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getResourceDescription</span>()</div>
+<div class="block">Return the description associated with the resource.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>text</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setResourceDescription(java.lang.String)">
+<h3>setResourceDescription</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setResourceDescription</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;resourceDescription)</span></div>
+<div class="block">Set up the description associated with the resource.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>resourceDescription</code> - text</dd>
 </dl>
 </section>
 </li>
@@ -774,258 +586,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>usage</code> - string description</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getConnectionDescription()">
-<h3>getConnectionDescription</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getConnectionDescription</span>()</div>
-<div class="block">Returns the short description of the asset from relationship with Connection.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>shortDescription String</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setConnectionDescription(java.lang.String)">
-<h3>setConnectionDescription</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setConnectionDescription</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectionDescription)</span></div>
-<div class="block">Set up the short description of the asset from relationship with Connection.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>connectionDescription</code> - String text</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getResourceDescription()">
-<h3>getResourceDescription</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getResourceDescription</span>()</div>
-<div class="block">Returns the stored description property for the asset.
- If no description is provided then null is returned.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>description String text</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setResourceDescription(java.lang.String)">
-<h3>setResourceDescription</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setResourceDescription</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description)</span></div>
-<div class="block">Set up the stored description property associated with the asset.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>description</code> - String text</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getOwner()">
-<h3>getOwner</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getOwner</span>()</div>
-<div class="block">Returns the name of the owner for this asset.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>owner String</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setOwner(java.lang.String)">
-<h3>setOwner</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setOwner</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;owner)</span></div>
-<div class="block">Set up the name of the owner for this asset.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>owner</code> - String name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getOwnerTypeName()">
-<h3>getOwnerTypeName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getOwnerTypeName</span>()</div>
-<div class="block">Returns the name of the type used to identify of the owner for this asset.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>owner String</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setOwnerTypeName(java.lang.String)">
-<h3>setOwnerTypeName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setOwnerTypeName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;ownerTypeName)</span></div>
-<div class="block">Set up the name of the type used to identify the owner for this asset.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>ownerTypeName</code> - String name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getOwnerPropertyName()">
-<h3>getOwnerPropertyName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getOwnerPropertyName</span>()</div>
-<div class="block">Returns the property name used to identify the owner for this asset.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>owner String</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setOwnerPropertyName(java.lang.String)">
-<h3>setOwnerPropertyName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setOwnerPropertyName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;ownerPropertyName)</span></div>
-<div class="block">Set up the property name used to identify the owner for this asset.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>ownerPropertyName</code> - String name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getOwnerType()">
-<h3>getOwnerType</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../openmetadata/enums/AssetOwnerType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">AssetOwnerType</a></span>&nbsp;<span class="element-name">getOwnerType</span>()</div>
-<div class="block">Return the type of owner stored in the owner property.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>AssetOwnerType enum</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setOwnerType(org.odpi.openmetadata.frameworks.openmetadata.enums.AssetOwnerType)">
-<h3>setOwnerType</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setOwnerType</span><wbr><span class="parameters">(<a href="../../../openmetadata/enums/AssetOwnerType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">AssetOwnerType</a>&nbsp;ownerType)</span></div>
-<div class="block">Set up the owner type for this asset.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>ownerType</code> - AssetOwnerType enum</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getZoneMembership()">
-<h3>getZoneMembership</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getZoneMembership</span>()</div>
-<div class="block">Return the names of the zones that this asset is a member of.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>list of zone names</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setZoneMembership(java.util.List)">
-<h3>setZoneMembership</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setZoneMembership</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;zoneMembership)</span></div>
-<div class="block">Set up the names of the zones that this asset is a member of.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>zoneMembership</code> - list of zone names</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getAssetOrigin()">
-<h3>getAssetOrigin</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getAssetOrigin</span>()</div>
-<div class="block">Return the properties that characterize where this asset is from.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>map of name value pairs, all strings</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setAssetOrigin(java.util.Map)">
-<h3>setAssetOrigin</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAssetOrigin</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;origin)</span></div>
-<div class="block">Set up the properties that characterize where this asset is from.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>origin</code> - map of name value pairs, all strings</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="isReferenceData()">
-<h3>isReferenceData</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isReferenceData</span>()</div>
-<div class="block">Return a boolean to see if the asset has been marked as reference data.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>true if the asset contains reference data</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setReferenceData(boolean)">
-<h3>setReferenceData</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setReferenceData</span><wbr><span class="parameters">(boolean&nbsp;referenceData)</span></div>
-<div class="block">Set up the boolean to see if the asset has been marked as reference data.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>referenceData</code> - true if the asset contains reference data</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getName()">
-<h3>getName</h3>
-<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getName</span>()</div>
-<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
-<div class="block">Return the name of the resource that this asset represents.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>string resource name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setName(java.lang.String)">
-<h3>setName</h3>
-<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span></div>
-<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
-<div class="block">Set up the name of the resource that this asset represents.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>name</code> - string resource name</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getDescription()">
-<h3>getDescription</h3>
-<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
-<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
-<div class="block">Returns the stored description property for the asset.
- If no description is provided then null is returned.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>description String text</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setDescription(java.lang.String)">
-<h3>setDescription</h3>
-<div class="member-signature"><span class="annotations"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Deprecated.html" title="class or interface in java.lang" class="external-link">@Deprecated</a>
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDescription</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description)</span></div>
-<div class="deprecation-block"><span class="deprecated-label">Deprecated.</span></div>
-<div class="block">Set up the stored description property associated with the asset.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>description</code> - String text</dd>
 </dl>
 </section>
 </li>
