@@ -5,45 +5,34 @@ package org.odpi.openmetadata.accessservices.assetconsumer.server;
 import org.odpi.openmetadata.accessservices.assetconsumer.elements.InformalTagElement;
 import org.odpi.openmetadata.accessservices.assetconsumer.elements.MeaningElement;
 import org.odpi.openmetadata.accessservices.assetconsumer.handlers.LoggingHandler;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.CommentRequestBody;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.FeedbackRequestBody;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermListResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.LogRecordRequestBody;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.RatingRequestBody;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.TagRequestBody;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.TagResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.TagUpdateRequestBody;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.TagsResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.AssetGraph;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.AssetSearchMatches;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.MetadataElement;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.MetadataRelationship;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.CommentHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.GlossaryTermHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.InformalTagHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.LikeHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIDummyBean;
-import org.odpi.openmetadata.commonservices.generichandlers.RatingHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.StarRating;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.AssetsResponse;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -139,7 +128,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<Asset> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -151,6 +140,408 @@ public class AssetConsumerRESTServices
                                                                handler.getSupportedZones(),
                                                                new Date(),
                                                                methodName));
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId the userId of the requesting user.
+     * @param assetGUID  unique name for the connection.
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return graph of elements or
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public AssetGraphResponse getAssetGraph(String   serverName,
+                                            String   userId,
+                                            String   assetGUID,
+                                            int      startFrom,
+                                            int      pageSize)
+    {
+        final String parameterName = "assetGUID";
+        final String methodName    = "getAssetGraph";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AssetGraphResponse response = new AssetGraphResponse();
+        AuditLog           auditLog = null;
+
+        try
+        {
+            AssetHandler<Asset>                        assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            ReferenceableHandler<MetadataElement>      metadataElementHandler      = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+            ReferenceableHandler<MetadataRelationship> metadataRelationshipHandler = instanceHandler.getMetadataRelationshipHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            Asset asset = assetHandler.getBeanFromRepository(userId,
+                                                             assetGUID,
+                                                             parameterName,
+                                                             OpenMetadataType.ASSET.typeName,
+                                                             methodName);
+
+            if (asset != null)
+            {
+                AssetGraph assetGraph = new AssetGraph(asset);
+
+                Map<String, Relationship> receivedRelationships = new HashMap<>();
+
+                List<Relationship>  relationships = metadataRelationshipHandler.getAllAttachmentLinks(userId,
+                                                                                                      asset.getGUID(),
+                                                                                                      parameterName,
+                                                                                                      OpenMetadataType.ASSET.typeName,
+                                                                                                      false,
+                                                                                                      false,
+                                                                                                      new Date(),
+                                                                                                      methodName);
+                if (relationships != null)
+                {
+                    for (Relationship relationship : relationships)
+                    {
+                        if (relationship != null)
+                        {
+                            receivedRelationships.put(relationship.getGUID(), relationship);
+                        }
+                    }
+                }
+
+                SearchClassifications         searchClassifications    = new SearchClassifications();
+                List<ClassificationCondition> classificationConditions = new ArrayList<>();
+                ClassificationCondition       classificationCondition  = new ClassificationCondition();
+                SearchProperties              searchProperties         = new SearchProperties();
+                List<PropertyCondition>       propertyConditions       = new ArrayList<>();
+                PropertyCondition             propertyCondition        = new PropertyCondition();
+                PrimitivePropertyValue        primitivePropertyValue   = new PrimitivePropertyValue();
+
+                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                primitivePropertyValue.setPrimitiveValue(asset.getGUID());
+                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+
+                propertyCondition.setProperty(OpenMetadataProperty.ANCHOR_GUID.name);
+                propertyCondition.setOperator(PropertyComparisonOperator.EQ);
+                propertyCondition.setValue(primitivePropertyValue);
+                propertyConditions.add(propertyCondition);
+                searchProperties.setMatchCriteria(MatchCriteria.ALL);
+                searchProperties.setConditions(propertyConditions);
+
+                classificationCondition.setName(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
+                classificationCondition.setMatchProperties(searchProperties);
+                classificationConditions.add(classificationCondition);
+                searchClassifications.setMatchCriteria(MatchCriteria.ALL);
+                searchClassifications.setConditions(classificationConditions);
+
+                List<MetadataElement> anchoredElements = metadataElementHandler.findBeans(userId,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                searchClassifications,
+                                                                                null,
+                                                                                null,
+                                                                                null,
+                                                                                false,
+                                                                                false,
+                                                                                startFrom,
+                                                                                pageSize,
+                                                                                assetHandler.getSupportedZones(),
+                                                                                new Date(),
+                                                                                methodName);
+
+                assetGraph.setAnchoredElements(anchoredElements);
+
+                if (anchoredElements != null)
+                {
+                    final String anchoredElementParameterName = "anchoredElement.getGUID";
+
+                    for (MetadataElement metadataElement : anchoredElements)
+                    {
+                        if (metadataElement != null)
+                        {
+                            relationships = metadataRelationshipHandler.getAllAttachmentLinks(userId,
+                                                                                              metadataElement.getGUID(),
+                                                                                              anchoredElementParameterName,
+                                                                                              OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                                              false,
+                                                                                              false,
+                                                                                              new Date(),
+                                                                                              methodName);
+                            if (relationships != null)
+                            {
+                                for (Relationship relationship : relationships)
+                                {
+                                    if (relationship != null)
+                                    {
+                                        receivedRelationships.put(relationship.getGUID(), relationship);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (! receivedRelationships.isEmpty())
+                {
+                    OpenMetadataAPIGenericConverter<MetadataRelationship> converter = metadataRelationshipHandler.getConverter();
+
+                    List<MetadataRelationship> metadataRelationships = new ArrayList<>();
+
+                    for (Relationship relationship: receivedRelationships.values())
+                    {
+                        if (relationship != null)
+                        {
+                            MetadataRelationship metadataRelationship = converter.getNewRelationshipBean(MetadataRelationship.class,
+                                                                                                         relationship,
+                                                                                                         methodName);
+
+                            metadataRelationships.add(metadataRelationship);
+                        }
+                    }
+
+                    assetGraph.setRelationships(metadataRelationships);
+                }
+
+                response.setAssetGraph(assetGraph);
+            }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return a list of assets with the requested search string in their name, qualified name
+     * or description.  The search string is interpreted as a regular expression (RegEx).
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId calling user
+     * @param requestBody string to search for in text
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of results for assets that match the search string or
+     * InvalidParameterException the searchString is invalid or
+     * PropertyServerException there is a problem access in the property server or
+     * UserNotAuthorizedException the user does not have access to the properties
+     */
+    public AssetSearchMatchesListResponse findAssetsInDomain(String                  serverName,
+                                                             String                  userId,
+                                                             SearchStringRequestBody requestBody,
+                                                             int                     startFrom,
+                                                             int                     pageSize)
+    {
+        final String methodName = "findAssetsInDomain";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AssetSearchMatchesListResponse response = new AssetSearchMatchesListResponse();
+        AuditLog                       auditLog = null;
+
+        try
+        {
+            AssetHandler<Asset>                   assetHandler           = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            ReferenceableHandler<MetadataElement> metadataElementHandler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                SearchProperties        searchProperties             = new SearchProperties();
+                List<PropertyCondition> propertyConditions           = new ArrayList<>();
+                PropertyCondition       qualNamePropertyCondition    = new PropertyCondition();
+                PropertyCondition       namePropertyCondition        = new PropertyCondition();
+                PropertyCondition       displayNamePropertyCondition = new PropertyCondition();
+                PropertyCondition       descPropertyCondition        = new PropertyCondition();
+                PropertyCondition       depImplTypePropertyCondition = new PropertyCondition();
+                PrimitivePropertyValue  qualNamePropertyValue        = new PrimitivePropertyValue();
+                PrimitivePropertyValue  namePropertyValue            = new PrimitivePropertyValue();
+                PrimitivePropertyValue  displayNamePropertyValue     = new PrimitivePropertyValue();
+                PrimitivePropertyValue  descPropertyValue            = new PrimitivePropertyValue();
+                PrimitivePropertyValue  depImplTypePropertyValue     = new PrimitivePropertyValue();
+
+                qualNamePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                qualNamePropertyValue.setPrimitiveValue(requestBody.getSearchString());
+                qualNamePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                qualNamePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+                namePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                namePropertyValue.setPrimitiveValue(requestBody.getSearchString());
+                namePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                namePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+                displayNamePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                displayNamePropertyValue.setPrimitiveValue(requestBody.getSearchString());
+                displayNamePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                displayNamePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+                descPropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                descPropertyValue.setPrimitiveValue(requestBody.getSearchString());
+                descPropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                descPropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+                depImplTypePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                depImplTypePropertyValue.setPrimitiveValue(requestBody.getSearchString());
+                depImplTypePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                depImplTypePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+
+                qualNamePropertyCondition.setProperty(OpenMetadataProperty.QUALIFIED_NAME.name);
+                qualNamePropertyCondition.setOperator(PropertyComparisonOperator.LIKE);
+                qualNamePropertyCondition.setValue(qualNamePropertyValue);
+                propertyConditions.add(qualNamePropertyCondition);
+
+                namePropertyCondition.setProperty(OpenMetadataProperty.NAME.name);
+                namePropertyCondition.setOperator(PropertyComparisonOperator.LIKE);
+                namePropertyCondition.setValue(namePropertyValue);
+                propertyConditions.add(namePropertyCondition);
+
+                displayNamePropertyCondition.setProperty(OpenMetadataProperty.DISPLAY_NAME.name);
+                displayNamePropertyCondition.setOperator(PropertyComparisonOperator.LIKE);
+                displayNamePropertyCondition.setValue(displayNamePropertyValue);
+                propertyConditions.add(displayNamePropertyCondition);
+
+                descPropertyCondition.setProperty(OpenMetadataProperty.DESCRIPTION.name);
+                descPropertyCondition.setOperator(PropertyComparisonOperator.LIKE);
+                descPropertyCondition.setValue(descPropertyValue);
+                propertyConditions.add(descPropertyCondition);
+
+                depImplTypePropertyCondition.setProperty(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
+                depImplTypePropertyCondition.setOperator(PropertyComparisonOperator.LIKE);
+                depImplTypePropertyCondition.setValue(depImplTypePropertyValue);
+                propertyConditions.add(depImplTypePropertyCondition);
+
+                searchProperties.setMatchCriteria(MatchCriteria.ANY);
+                searchProperties.setConditions(propertyConditions);
+
+                SearchClassifications         searchClassifications            = new SearchClassifications();
+                List<ClassificationCondition> classificationConditions         = new ArrayList<>();
+                ClassificationCondition       classificationCondition          = new ClassificationCondition();
+                SearchProperties              classificationSearchProperties   = new SearchProperties();
+                List<PropertyCondition>       classificationPropertyConditions = new ArrayList<>();
+                PropertyCondition             classificationPropertyCondition  = new PropertyCondition();
+                PrimitivePropertyValue        classificationPropertyValue      = new PrimitivePropertyValue();
+
+                classificationPropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                classificationPropertyValue.setPrimitiveValue(OpenMetadataType.ASSET.typeName);
+                classificationPropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                classificationPropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+
+                classificationPropertyCondition.setProperty(OpenMetadataProperty.ANCHOR_DOMAIN_NAME.name);
+                classificationPropertyCondition.setOperator(PropertyComparisonOperator.EQ);
+                classificationPropertyCondition.setValue(classificationPropertyValue);
+                classificationPropertyConditions.add(classificationPropertyCondition);
+                classificationSearchProperties.setMatchCriteria(MatchCriteria.ALL);
+                classificationSearchProperties.setConditions(classificationPropertyConditions);
+
+                classificationCondition.setName(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
+                classificationCondition.setMatchProperties(classificationSearchProperties);
+                classificationConditions.add(classificationCondition);
+                searchClassifications.setMatchCriteria(MatchCriteria.ALL);
+                searchClassifications.setConditions(classificationConditions);
+
+                List<EntityDetail> anchoredEntities = metadataElementHandler.findEntities(userId,
+                                                                                          null,
+                                                                                          null,
+                                                                                          searchProperties,
+                                                                                          null,
+                                                                                          searchClassifications,
+                                                                                          null,
+                                                                                          null,
+                                                                                          null,
+                                                                                          false,
+                                                                                          false,
+                                                                                          startFrom,
+                                                                                          pageSize,
+                                                                                          assetHandler.getSupportedZones(),
+                                                                                          new Date(),
+                                                                                          methodName);
+
+                if (anchoredEntities != null)
+                {
+                    Map<String, Map<String, EntityDetail>> organizedEntities = new HashMap<>();
+
+                    for (EntityDetail entityDetail : anchoredEntities)
+                    {
+                        if (entityDetail != null)
+                        {
+                            OpenMetadataAPIGenericHandler.AnchorIdentifiers anchorIdentifiers = metadataElementHandler.getAnchorGUIDFromAnchorsClassification(entityDetail, methodName);
+
+                            String anchorGUID;
+                            if ((anchorIdentifiers == null) || (anchorIdentifiers.anchorGUID == null))
+                            {
+                                anchorGUID = entityDetail.getGUID();
+                            }
+                            else
+                            {
+                                anchorGUID = anchorIdentifiers.anchorGUID;
+                            }
+
+                            Map<String, EntityDetail>  assetEntityMap = organizedEntities.get(anchorGUID);
+
+                            if (assetEntityMap == null)
+                            {
+                                assetEntityMap = new HashMap<>();
+                            }
+
+                            assetEntityMap.put(entityDetail.getGUID(), entityDetail);
+                            organizedEntities.put(anchorGUID, assetEntityMap);
+                        }
+                    }
+
+                    List<AssetSearchMatches> assetSearchMatchesList = new ArrayList<>();
+
+                    final String parameterName = "assetGUID";
+                    OpenMetadataAPIGenericConverter<MetadataElement> converter = metadataElementHandler.getConverter();
+
+                    for (String assetGUID : organizedEntities.keySet())
+                    {
+                        Asset asset = assetHandler.getBeanFromRepository(userId,
+                                                                         assetGUID,
+                                                                         parameterName,
+                                                                         OpenMetadataType.ASSET.typeName,
+                                                                         methodName);
+
+                        if (asset != null)
+                        {
+                            AssetSearchMatches         assetSearchMatches = new AssetSearchMatches(asset);
+                            Map<String, EntityDetail>  assetEntityMap     = organizedEntities.get(assetGUID);
+                            List<MetadataElement>      anchoredElements   = new ArrayList<>();
+
+                            for (EntityDetail anchoredEntity : assetEntityMap.values())
+                            {
+                                MetadataElement metadataElement = converter.getNewBean(MetadataElement.class,
+                                                                                       anchoredEntity,
+                                                                                       methodName);
+
+                                anchoredElements.add(metadataElement);
+                            }
+
+                            assetSearchMatches.setMatchingElements(anchoredElements);
+                            assetSearchMatchesList.add(assetSearchMatches);
+                        }
+                    }
+
+                    response.setSearchMatches(assetSearchMatchesList);
+                }
+
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (Exception error)
         {
@@ -193,7 +584,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<Asset> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -254,7 +645,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<Asset> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -276,6 +667,78 @@ public class AssetConsumerRESTServices
             {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
+        }
+        catch (Exception error)
+        {
+            restExceptionHandler.captureExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return a list of assets that come from the requested metadata collection.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId calling user
+     * @param metadataCollectionId guid to search for
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param requestBody optional type name to restrict search by
+     *
+     * @return list of unique identifiers for Assets with the requested name or
+     * InvalidParameterException the name is invalid or
+     * PropertyServerException there is a problem access in the property server or
+     * UserNotAuthorizedException the user does not have access to the properties
+     */
+    public AssetsResponse getAssetsByMetadataCollectionId(String          serverName,
+                                                          String          userId,
+                                                          String          metadataCollectionId,
+                                                          int             startFrom,
+                                                          int             pageSize,
+                                                          NameRequestBody requestBody)
+    {
+        final String nameParameterName = "metadataCollectionId";
+        final String methodName        = "getAssetsByMetadataCollectionId";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AssetsResponse response = new AssetsResponse();
+        AuditLog       auditLog = null;
+
+        try
+        {
+            AssetHandler<Asset> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setAssets(handler.getAssetsByMetadataCollectionId(userId,
+                                                                           requestBody.getName(),
+                                                                           metadataCollectionId,
+                                                                           nameParameterName,
+                                                                           startFrom,
+                                                                           pageSize,
+                                                                           false,
+                                                                           false,
+                                                                           new Date(),
+                                                                           methodName));
+            }
+            else
+            {
+                response.setAssets(handler.getAssetsByMetadataCollectionId(userId,
+                                                                           null,
+                                                                           metadataCollectionId,
+                                                                           nameParameterName,
+                                                                           startFrom,
+                                                                           pageSize,
+                                                                           false,
+                                                                           false,
+                                                                           new Date(),
+                                                                           methodName));            }
         }
         catch (Exception error)
         {
@@ -1019,7 +1482,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<Asset> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1919,7 +2382,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler<OpenMetadataAPIDummyBean>   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<Asset>   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGUIDs(handler.getAssetGUIDsByTag(userId,

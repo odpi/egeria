@@ -3,17 +3,19 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.connectors.outtopic.AssetConsumerOutTopicClientProvider;
-import org.odpi.openmetadata.accessservices.assetconsumer.converters.InformalTagConverter;
-import org.odpi.openmetadata.accessservices.assetconsumer.converters.MeaningConverter;
+import org.odpi.openmetadata.accessservices.assetconsumer.converters.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.elements.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.handlers.LoggingHandler;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.MetadataElement;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.MetadataRelationship;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -27,7 +29,9 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
 {
     private final static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_CONSUMER_OMAS;
 
-    private final AssetHandler<OpenMetadataAPIDummyBean>         assetHandler;
+    private final AssetHandler<Asset>                            assetHandler;
+    private final ReferenceableHandler<MetadataElement>          metadataElementHandler;
+    private final ReferenceableHandler<MetadataRelationship>     metadataRelationshipHandler;
     private final CommentHandler<OpenMetadataAPIDummyBean>       commentHandler;
     private final ConnectionHandler<OpenMetadataAPIDummyBean>    connectionHandler;
     private final GlossaryTermHandler<MeaningElement>            glossaryTermHandler;
@@ -80,8 +84,8 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
             OpenMetadataAPIDummyBeanConverter<OpenMetadataAPIDummyBean> dummyConverter =
                     new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName);
 
-            this.assetHandler = new AssetHandler<>(dummyConverter,
-                                                   OpenMetadataAPIDummyBean.class,
+            this.assetHandler = new AssetHandler<>(new AssetConverter<>(repositoryHelper, serviceName, serverName),
+                                                   Asset.class,
                                                    serviceName,
                                                    serverName,
                                                    invalidParameterHandler,
@@ -94,6 +98,35 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
                                                    publishZones,
                                                    supportedTypesForSearch,
                                                    auditLog);
+
+
+            this.metadataElementHandler = new ReferenceableHandler<>(new MetadataElementConverter<>(repositoryHelper, serviceName, serverName),
+                                                                     MetadataElement.class,
+                                                                     serviceName,
+                                                                     serverName,
+                                                                     invalidParameterHandler,
+                                                                     repositoryHandler,
+                                                                     repositoryHelper,
+                                                                     localServerUserId,
+                                                                     securityVerifier,
+                                                                     supportedZones,
+                                                                     defaultZones,
+                                                                     publishZones,
+                                                                     auditLog);
+
+            this.metadataRelationshipHandler = new ReferenceableHandler<>(new MetadataRelationshipConverter<>(repositoryHelper, serviceName, serverName),
+                                                                          MetadataRelationship.class,
+                                                                          serviceName,
+                                                                          serverName,
+                                                                          invalidParameterHandler,
+                                                                          repositoryHandler,
+                                                                          repositoryHelper,
+                                                                          localServerUserId,
+                                                                          securityVerifier,
+                                                                          supportedZones,
+                                                                          defaultZones,
+                                                                          publishZones,
+                                                                          auditLog);
 
             this.commentHandler = new CommentHandler<>(dummyConverter,
                                                        OpenMetadataAPIDummyBean.class,
@@ -201,12 +234,12 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
 
 
     /**
-     * Return the handler for managing comment objects.
+     * Return the handler for managing asset objects.
      *
      * @return  handler object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public AssetHandler<OpenMetadataAPIDummyBean> getAssetHandler() throws PropertyServerException
+    public AssetHandler<Asset> getAssetHandler() throws PropertyServerException
     {
         final String methodName = "getAssetHandler";
 
@@ -214,6 +247,40 @@ public class AssetConsumerServicesInstance extends OMASServiceInstance
 
         return assetHandler;
     }
+
+
+    /**
+     * Return the handler for managing generic metadata element objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    public ReferenceableHandler<MetadataElement> getMetadataElementHandler() throws PropertyServerException
+    {
+        final String methodName = "getMetadataElementHandler";
+
+        validateActiveRepository(methodName);
+
+        return metadataElementHandler;
+    }
+
+
+
+    /**
+     * Return the handler for managing generic metadata element objects.
+     *
+     * @return  handler object
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    public ReferenceableHandler<MetadataRelationship> getMetadataRelationshipHandler() throws PropertyServerException
+    {
+        final String methodName = "getMetadataRelationshipHandler";
+
+        validateActiveRepository(methodName);
+
+        return metadataRelationshipHandler;
+    }
+
 
 
     /**

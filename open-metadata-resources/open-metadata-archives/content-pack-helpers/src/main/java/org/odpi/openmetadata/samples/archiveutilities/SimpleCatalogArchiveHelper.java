@@ -2449,7 +2449,7 @@ public class SimpleCatalogArchiveHelper
         return archiveHelper.getClassification(OpenMetadataType.ASSET_ZONES_CLASSIFICATION_NAME,
                                                archiveHelper.addStringArrayPropertyToInstance(archiveRootName,
                                                                                               null,
-                                                                                              OpenMetadataType.ZONE_MEMBERSHIP_PROPERTY_NAME,
+                                                                                              OpenMetadataProperty.ZONE_MEMBERSHIP.name,
                                                                                               zones,
                                                                                               methodName),
                                                InstanceStatus.ACTIVE);
@@ -3100,7 +3100,7 @@ public class SimpleCatalogArchiveHelper
 
             InstanceProperties properties = archiveHelper.addStringArrayPropertyToInstance(archiveRootName,
                                                                                            null,
-                                                                                           OpenMetadataType.ZONE_MEMBERSHIP_PROPERTY_NAME,
+                                                                                           OpenMetadataProperty.ZONE_MEMBERSHIP.name,
                                                                                            governanceZones,
                                                                                            methodName);
 

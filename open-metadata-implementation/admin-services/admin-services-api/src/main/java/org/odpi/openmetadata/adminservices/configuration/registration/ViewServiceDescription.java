@@ -14,7 +14,7 @@ public enum ViewServiceDescription
      * View Service for glossary authoring.
      */
     GLOSSARY_AUTHOR(800,
-                    ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                    ComponentDevelopmentStatus.DEPRECATED,
                     "Glossary Author",
                     "Glossary Author OMVS",
                     "glossary-author",
@@ -26,7 +26,7 @@ public enum ViewServiceDescription
      * Explore open metadata instances.
      */
     REPOSITORY_EXPLORER(801,
-                        ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                        ComponentDevelopmentStatus.DEPRECATED,
                         "Repository Explorer",
                         "Repository Explorer OMVS",
                         "rex",
@@ -38,7 +38,7 @@ public enum ViewServiceDescription
      * Explore the open metadata types in a repository or cohort.
      */
     TYPE_EXPLORER(802,
-                  ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                  ComponentDevelopmentStatus.DEPRECATED,
                   "Type Explorer",
                   "Type Explorer OMVS",
                   "tex",
@@ -50,7 +50,7 @@ public enum ViewServiceDescription
      * Explore and operate an open metadata ecosystem.
      */
     DINO(803,
-         ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+         ComponentDevelopmentStatus.DEPRECATED,
          "Dynamic Infrastructure and Operations",
          "Dynamic Infrastructure and Operations OMVS",
          "dino",
@@ -62,7 +62,7 @@ public enum ViewServiceDescription
      * Author server configuration.
      */
     SERVER_AUTHOR(804,
-                  ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                  ComponentDevelopmentStatus.DEPRECATED,
                   "Server Author",
                   "Server Author OMVS",
                   "server-author",
@@ -146,7 +146,7 @@ public enum ViewServiceDescription
      * Work with notelogs, comments, informal tags, ratings/reviews and likes.
      */
     FEEDBACK_MANAGER  (811,
-                         ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                         ComponentDevelopmentStatus.IN_DEVELOPMENT,
                          "Feedback Manager",
                          "Feedback Manager OMVS",
                          "feedback-manager",

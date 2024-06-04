@@ -158,7 +158,7 @@ public enum IntegrationServiceDescription
      * Search Integrator OMIS - Store metadata with a third party technology that is focused on search efficiency.
      */
     SEARCH_INTEGRATOR_OMIS(610,
-                           ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                           ComponentDevelopmentStatus.DEPRECATED,
                            "Search Integrator",
                            "Search Integrator OMIS",
                            "search-integrator",

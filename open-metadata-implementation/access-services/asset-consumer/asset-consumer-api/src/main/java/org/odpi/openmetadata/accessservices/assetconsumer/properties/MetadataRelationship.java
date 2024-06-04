@@ -32,6 +32,14 @@ public class MetadataRelationship extends ElementHeader
     private ElementStub         end2       = null;
 
     /**
+     * Default constructor
+     */
+    public MetadataRelationship()
+    {
+    }
+
+
+    /**
      * Copy/clone constructor
      *
      * @param template template to copy

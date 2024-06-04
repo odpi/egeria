@@ -19,6 +19,7 @@ Content-Type: application/json
 > {% client.global.set("token", response.body); %}
 
 ###
+# =====================================================================================================================
 # The technology types provide the reference data to guide the curator.  They are extracted from the valid
 # values for deployedImplementationType
 #

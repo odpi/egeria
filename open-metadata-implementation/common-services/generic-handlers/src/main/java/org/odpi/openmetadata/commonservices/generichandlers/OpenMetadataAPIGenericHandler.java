@@ -2875,7 +2875,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
      */
     public static class AnchorIdentifiers
     {
-        String anchorGUID       = null;
+        public String anchorGUID = null;
         String anchorTypeName   = null;
         String anchorDomainName = null;
     }
