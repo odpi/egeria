@@ -78,6 +78,9 @@ public class AssetCatalogResource
      *
      * @param serverName name of the server instances for this request
      * @param requestBody string to search for in text
+     * @param startsWith does the value start with the supplied string?
+     * @param endsWith does the value end with the supplied string?
+     * @param ignoreCase should the search ignore case?
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      *
@@ -86,21 +89,27 @@ public class AssetCatalogResource
      * PropertyServerException there is a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
-    @PostMapping(path = "/assets-in-domain/by-search-string")
+    @PostMapping(path = "/assets/in-domain/by-search-string")
 
     @Operation(summary="findAssetsInDomain",
             description="Locate string value in elements that are anchored to assets.  The search string is a regular expression (regEx).",
             externalDocs=@ExternalDocumentation(description="Assets",
                     url="https://egeria-project.org/concepts/asset/"))
 
-    public AssetSearchMatchesListResponse findAssetsInDomain(@PathVariable String                  serverName,
+    public AssetSearchMatchesListResponse findAssetsInDomain(@PathVariable String            serverName,
+                                                             @RequestParam (required = false, defaultValue = "false")
+                                                                           boolean           startsWith,
+                                                             @RequestParam (required = false, defaultValue = "false")
+                                                                           boolean           endsWith,
+                                                             @RequestParam (required = false, defaultValue = "false")
+                                                                           boolean           ignoreCase,
                                                              @RequestParam(required = false, defaultValue = "0")
-                                                             int                     startFrom,
+                                                                           int               startFrom,
                                                              @RequestParam(required = false, defaultValue = "0")
-                                                             int                     pageSize,
+                                                                           int               pageSize,
                                                              @RequestBody(required = false) FilterRequestBody requestBody)
     {
-        return restAPI.findAssetsInDomain(serverName, requestBody, startFrom, pageSize);
+        return restAPI.findAssetsInDomain(serverName, requestBody, startsWith, endsWith, ignoreCase, startFrom, pageSize);
     }
 
 

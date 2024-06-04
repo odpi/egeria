@@ -120,6 +120,9 @@ public class AssetCatalogRESTServices extends TokenController
      *
      * @param serverName name of the server instances for this request
      * @param requestBody string to search for in text
+     * @param startsWith does the value start with the supplied string?
+     * @param endsWith does the value end with the supplied string?
+     * @param ignoreCase should the search ignore case?
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      *
@@ -130,6 +133,9 @@ public class AssetCatalogRESTServices extends TokenController
      */
     public AssetSearchMatchesListResponse findAssetsInDomain(String            serverName,
                                                              FilterRequestBody requestBody,
+                                                             boolean           startsWith,
+                                                             boolean           endsWith,
+                                                             boolean           ignoreCase,
                                                              int               startFrom,
                                                              int               pageSize)
     {
@@ -152,7 +158,10 @@ public class AssetCatalogRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setSearchMatches(handler.findAssetsInDomain(userId, requestBody.getFilter(), startFrom, pageSize));
+                response.setSearchMatches(handler.findAssetsInDomain(userId,
+                                                                     instanceHandler.getSearchString(requestBody.getFilter(), startsWith, endsWith, ignoreCase),
+                                                                     startFrom,
+                                                                     pageSize));
             }
             else
             {

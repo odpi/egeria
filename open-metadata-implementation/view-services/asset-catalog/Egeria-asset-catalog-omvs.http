@@ -38,7 +38,7 @@ Content-Type: application/json
 # Locate string value in elements that are anchored to assets.  The search string may be a regEx.
 #
 # Asset: https://egeria-project.org/concepts/asset/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/in-domain/by-search-string?startFrom=0&pageSize=0
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/in-domain/by-search-string?startFrom=0&pageSize=0&startsWith=false&endWith=false&ignoreCase=true
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -57,6 +57,7 @@ Content-Type: application/json
 #
 # Asset: https://egeria-project.org/concepts/asset/
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/by-metadata-collection-id/{{metadataCollectionId}}?startFrom=0&pageSize=10
-
+Authorization: Bearer {{token}}
+Content-Type: application/json
 
 

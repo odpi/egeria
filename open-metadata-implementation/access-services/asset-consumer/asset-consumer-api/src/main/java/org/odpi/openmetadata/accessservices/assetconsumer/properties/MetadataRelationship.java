@@ -51,6 +51,8 @@ public class MetadataRelationship extends ElementHeader
         if (template != null)
         {
             properties = template.getProperties();
+            end1 = template.getEnd1();
+            end2 = template.getEnd2();
         }
     }
 
@@ -64,8 +66,6 @@ public class MetadataRelationship extends ElementHeader
     {
         super(template);
     }
-
-
 
 
     /**
