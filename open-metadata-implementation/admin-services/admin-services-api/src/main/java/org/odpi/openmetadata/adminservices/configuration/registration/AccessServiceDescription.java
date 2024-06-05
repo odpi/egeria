@@ -340,7 +340,7 @@ public enum AccessServiceDescription implements Serializable
      * Document knowledge about a subject area in a glossary.
      */
     SUBJECT_AREA_OMAS                (226,
-                                      ComponentDevelopmentStatus.TECHNICAL_PREVIEW,
+                                      ComponentDevelopmentStatus.DEPRECATED,
                                       "Subject Area",
                                       "Subject Area OMAS",
                                       "subject-area",

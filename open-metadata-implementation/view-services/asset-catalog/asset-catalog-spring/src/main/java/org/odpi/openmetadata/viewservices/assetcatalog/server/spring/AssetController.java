@@ -16,7 +16,7 @@ import org.odpi.openmetadata.viewservices.assetcatalog.rest.AssetCatalogResponse
 import org.odpi.openmetadata.viewservices.assetcatalog.rest.AssetCatalogSupportedTypes;
 import org.odpi.openmetadata.viewservices.assetcatalog.rest.AssetListResponse;
 import org.odpi.openmetadata.viewservices.assetcatalog.rest.AssetResponse;
-import org.odpi.openmetadata.viewservices.assetcatalog.server.AssetCatalogRESTServices;
+import org.odpi.openmetadata.viewservices.assetcatalog.server.AssetCatalogUIRESTServices;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +40,7 @@ public class AssetController
 {
     private final RESTExceptionHandler exceptionHandler = new RESTExceptionHandler();
 
-    private final AssetCatalogRESTServices restAPI = new AssetCatalogRESTServices();
+    private final AssetCatalogUIRESTServices restAPI = new AssetCatalogUIRESTServices();
 
     /**
      * Return a list of assets matching the search criteria without the full context

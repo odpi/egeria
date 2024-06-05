@@ -1093,6 +1093,15 @@ public enum OpenMetadataType
                                "Defines how critical the related data items are to the organization."),
 
     /**
+     * Who is responsible for making decisions on the management and governance of this element.
+     */
+    OWNERSHIP_CLASSIFICATION("8139a911-a4bd-432b-a9f4-f6d11c511abe",
+                             "Ownership",
+                             OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
+                             "a2825a97-ba55-4fd9-bc04-4d7adbd66f57",
+                             "Who is responsible for making decisions on the management and governance of this element."),
+
+    /**
      * A collection of related governance services of the same type.
      */
     GOVERNANCE_ENGINE("3fa23d4a-aceb-422f-9301-04ed474c6f74",
@@ -3694,30 +3703,6 @@ public enum OpenMetadataType
 
     public static final String ASSET_ZONES_CLASSIFICATION_GUID = "a1c17a86-9fd3-40ca-bb9b-fe83c6981deb";
     public static final String ASSET_ZONES_CLASSIFICATION_NAME = "AssetZoneMembership";
-
-    public static final String ZONE_MEMBERSHIP_PROPERTY_NAME = "zoneMembership";                       /* from Area 4 */
-
-    public static final String PROJECT_CHARTER_TYPE_GUID = "f96b5a32-42c1-4a74-8f77-70a81cec783d";
-    public static final String PROJECT_CHARTER_TYPE_NAME = "ProjectCharter";
-    /* Referenceable */
-
-    public static final String PROJECT_CHARTER_LINK_TYPE_GUID = "f081808d-545a-41cb-a9aa-c4f074a16c78";
-    public static final String PROJECT_CHARTER_LINK_TYPE_NAME = "ProjectCharterLink";
-    /* End1 = Project; End 2 = ProjectCharter */
-
-    public static final String PURPOSES_PROPERTY_NAME     = "purposes";                                /* from Area 4 */
-
-    public static final String ASSET_OWNERSHIP_CLASSIFICATION_GUID = "d531c566-03d2-470a-be69-6f52cabd5fb9";
-    public static final String ASSET_OWNERSHIP_CLASSIFICATION_NAME = "AssetOwnership";
-
-    public static final String OWNERSHIP_CLASSIFICATION_TYPE_GUID = "8139a911-a4bd-432b-a9f4-f6d11c511abe";
-    public static final String OWNERSHIP_CLASSIFICATION_TYPE_NAME = "Ownership";
-
-    public static final String OWNER_PROPERTY_NAME               = "owner";                                /* from Area 4 */
-    public static final String OWNER_TYPE_PROPERTY_NAME          = "ownerType"; /* deprecated */
-    public static final String OWNER_TYPE_NAME_PROPERTY_NAME     = "ownerTypeName";
-    public static final String OWNER_PROPERTY_NAME_PROPERTY_NAME = "ownerPropertyName";
-
 
     public static final String GOVERNANCE_METRIC_TYPE_GUID = "9ada8e7b-823c-40f7-adf8-f164aabda77e";
     public static final String GOVERNANCE_METRIC_TYPE_NAME = "GovernanceMetric";

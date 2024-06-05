@@ -1,0 +1,63 @@
+# Egeria-asset-catalog-omvs
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
+# =====================================================================================================================
+# Asset search requests
+
+@assetGUID=put guid here
+
+###
+# @name=getAssetGraph
+# Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+#
+# Asset: https://egeria-project.org/concepts/asset/
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/{{assetGUID}}/as-graph?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+# @name=findAssetsInDomain
+# Locate string value in elements that are anchored to assets.  The search string may be a regEx.
+#
+# Asset: https://egeria-project.org/concepts/asset/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/in-domain/by-search-string?startFrom=0&pageSize=0&startsWith=false&endWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Add search string here"
+}
+
+###
+# Core content pack = 09450b83-20ff-4a8b-a8fb-f9b527bbcba6
+
+@metadataCollectionId=09450b83-20ff-4a8b-a8fb-f9b527bbcba6
+
+###
+# @name=getAssetsByMetadataCollectionId
+# Return a list of assets that come from the requested metadata collection.
+#
+# Asset: https://egeria-project.org/concepts/asset/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/by-metadata-collection-id/{{metadataCollectionId}}?startFrom=0&pageSize=10
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+

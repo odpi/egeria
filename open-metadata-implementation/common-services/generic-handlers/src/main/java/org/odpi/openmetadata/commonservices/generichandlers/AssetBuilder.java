@@ -202,7 +202,7 @@ public class AssetBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                                            null,
-                                                                           OpenMetadataType.ZONE_MEMBERSHIP_PROPERTY_NAME,
+                                                                           OpenMetadataProperty.ZONE_MEMBERSHIP.name,
                                                                            zoneMembership,
                                                                            methodName);
         }

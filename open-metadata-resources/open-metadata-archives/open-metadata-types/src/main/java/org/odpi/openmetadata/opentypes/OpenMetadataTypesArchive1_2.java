@@ -472,17 +472,17 @@ public class OpenMetadataTypesArchive1_2
         final String attribute3Description     = OpenMetadataProperty.OWNER.description;
         final String attribute3DescriptionGUID = OpenMetadataProperty.OWNER.descriptionGUID;
         /* Moved to Ownership classification */
-        final String attribute4Name            = OpenMetadataProperty.OWNER_TYPE.name;
-        final String attribute4Description     = OpenMetadataProperty.OWNER_TYPE.description;
-        final String attribute4DescriptionGUID = OpenMetadataProperty.OWNER_TYPE.descriptionGUID;
+        final String attribute4Name            = "ownerType";
+        final String attribute4Description     = "Deprecated. Type of identifier used for owner property.";
+        final String attribute4DescriptionGUID = null;
         /* Moved to AssetZoneMembership classification */
         final String attribute5Name            = OpenMetadataProperty.ZONE_MEMBERSHIP.name;
         final String attribute5Description     = OpenMetadataProperty.ZONE_MEMBERSHIP.description;
         final String attribute5DescriptionGUID = OpenMetadataProperty.ZONE_MEMBERSHIP.descriptionGUID;
         /* Moved to LatestChange entity  */
-        final String attribute6Name            = OpenMetadataProperty.LATEST_CHANGE.name;
-        final String attribute6Description     = OpenMetadataProperty.LATEST_CHANGE.description;
-        final String attribute6DescriptionGUID = OpenMetadataProperty.LATEST_CHANGE.descriptionGUID;
+        final String attribute6Name            = "latestChange";
+        final String attribute6Description     = "Description of the last change to the asset's metadata.";
+        final String attribute6DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,

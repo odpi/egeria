@@ -32,6 +32,14 @@ public class MetadataRelationship extends ElementHeader
     private ElementStub         end2       = null;
 
     /**
+     * Default constructor
+     */
+    public MetadataRelationship()
+    {
+    }
+
+
+    /**
      * Copy/clone constructor
      *
      * @param template template to copy
@@ -43,6 +51,8 @@ public class MetadataRelationship extends ElementHeader
         if (template != null)
         {
             properties = template.getProperties();
+            end1 = template.getEnd1();
+            end2 = template.getEnd2();
         }
     }
 
@@ -56,8 +66,6 @@ public class MetadataRelationship extends ElementHeader
     {
         super(template);
     }
-
-
 
 
     /**

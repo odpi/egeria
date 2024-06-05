@@ -337,7 +337,7 @@ public class AssetLookUp
             if (assetUniverse != null)
             {
                 System.out.print("| " + assetUniverse.getGUID());
-                System.out.print(" | " + assetUniverse.getDisplayName());
+                System.out.print(" | " + assetUniverse.getResourceName());
                 System.out.print(" | " + assetUniverse.getResourceDescription());
                 System.out.print(" | " + assetUniverse.getQualifiedName());
                 System.out.println(" |");

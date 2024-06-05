@@ -437,9 +437,11 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
     @Override
-    public void disconnect() throws ConnectorCheckedException {
+    public void disconnect() throws ConnectorCheckedException
+    {
         final String actionDescription = "disconnect";
 
+        super.disconnect();
 
         if (consumer != null)
         {
@@ -490,8 +492,6 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                 }
             }
         }
-
-        super.disconnect();
 
         if (auditLog != null)
         {

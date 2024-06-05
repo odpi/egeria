@@ -15,6 +15,11 @@ public enum OpenMetadataProperty
     GUID("guid", "string", "Unique identifier of an open metadata entity or relationship.", "f1ad7bbe-1d9f-4149-b87c-205bbd174b55", "f1ad7bbe-1d9f-4149-b87c-205bbd174b55"),
 
     /**
+     * The unique identifier for the metadata collection that is the home for a metadata element.
+     */
+    METADATA_COLLECTION_ID("metadataCollectionId", "string", "The unique identifier for the metadata collection that is the home for a metadata element.", "151b9d80-8417-41c4-8f04-3ab90a387196", "01d7e832-ef18-4451-8e4c-4ba972292a8e"),
+
+    /**
      * Unique identifier of an open metadata entity, classification or relationship.
      */
     TYPE_NAME("typeName", "string", "Unique name of an open metadata entity,classification or relationship.", "Asset", "7c5a7e83-2709-4789-b014-d23082a659bd"),
@@ -110,31 +115,24 @@ public enum OpenMetadataProperty
     DEPLOYED_IMPLEMENTATION_TYPE("deployedImplementationType", "string", "Name of a particular type of technology.  It is more specific than the open metadata types and increases the precision in which technology is catalogued.  This helps human understanding and enables connectors and other actions to be targeted to the right technology.", "PostgreSQL Database Server", "2f71cd9f-c614-4531-a5ae-3bcb6a6a1918"),
 
     /**
-     * Name of a particular type of technology.  It is more specific than the open metadata types and increases the precision in which technology is catalogued.  This helps human understanding and enables connectors and other actions to be targeted to the right technology.
-     */
-    @Deprecated
-    TYPE("type", "string", "Deprecated property, use deployedImplementationType.", null, "2f71cd9f-c614-4531-a5ae-3bcb6a6a1918"),
-
-    /**
      * Identifier of the person or process who is accountable for the proper management of the element or related resource.
      */
     OWNER("owner", "string", "Identifier of the person or process who is accountable for the proper management of the element or related resource.", null, "8b3e49d6-987c-4f2f-b624-ba91e5d28b33"),
 
     /**
-     * Type of identifier used for owner property.
+     * Type of element that describes the owner.
      */
-    @Deprecated
-    OWNER_TYPE("ownerType", "AssetOwnerType", "Type of identifier used for owner property.", "USER_ID", "142b2bbf-0f2f-4c1e-b10e-850cd208b31c"),
+    OWNER_TYPE_NAME("ownerTypeName", "string", "Type of element that describes the owner.", "PersonRole", "c0acfbc6-4250-437b-9aa3-ce3d5a3bd490"),
+
+    /**
+     * Name of the property from the element used to identify the owner.
+     */
+    OWNER_PROPERTY_NAME("ownerPropertyName", "string", "Name of the property from the element used to identify the owner.", "qualifiedName", "9d1fdeb4-132a-4ec7-8312-dc9362e4f2f7"),
 
     /**
      * The list of governance zones that this asset belongs to.
      */
     ZONE_MEMBERSHIP("zoneMembership", "array<string>", "The list of governance zones that this asset belongs to.", null, "2af69520-6991-4097-aa94-543127b73066"),
-
-    /**
-     * Description of the last change to the asset's metadata.
-     */
-    LATEST_CHANGE("latestChange", "string", "Description of the last change to the asset's metadata.", null, "756cf128-12e5-456e-97d7-843e7efec11b"),
 
     /**
      * Formula that describes the behaviour of the element.  May include placeholders for queryIds

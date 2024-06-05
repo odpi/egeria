@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.opentypes;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
@@ -300,19 +301,13 @@ public class OpenMetadataTypesArchive2_10
      */
     private ClassificationDef addOwnershipClassification()
     {
-        final String guid            = "8139a911-a4bd-432b-a9f4-f6d11c511abe";
-        final String name            = "Ownership";
-        final String description     = "Who is responsible for making decisions on the management and governance of this element.";
-        final String descriptionGUID = null;
-
-        final String linkedToEntity = OpenMetadataType.REFERENCEABLE.typeName;
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
-                                                                                 name,
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeGUID,
+                                                                                 OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName,
                                                                                  null,
-                                                                                 description,
-                                                                                 descriptionGUID,
-                                                                                 this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                 OpenMetadataType.OWNERSHIP_CLASSIFICATION.description,
+                                                                                 OpenMetadataType.OWNERSHIP_CLASSIFICATION.descriptionGUID,
+                                                                                 OpenMetadataType.OWNERSHIP_CLASSIFICATION.wikiURL,
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  true);
 
         /*
@@ -321,15 +316,15 @@ public class OpenMetadataTypesArchive2_10
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "owner";
-        final String attribute1Description     = "Identifier of the owner.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "ownerTypeName";
-        final String attribute2Description     = "Type of element that describes the owner.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "ownerPropertyName";
-        final String attribute3Description     = "Name of the property from the element used to identify the owner.";
-        final String attribute3DescriptionGUID = null;
+        final String attribute1Name            = OpenMetadataProperty.OWNER.name;
+        final String attribute1Description     = OpenMetadataProperty.OWNER.description;
+        final String attribute1DescriptionGUID = OpenMetadataProperty.OWNER.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.OWNER_TYPE_NAME.name;
+        final String attribute2Description     = OpenMetadataProperty.OWNER_TYPE_NAME.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.OWNER_TYPE_NAME.descriptionGUID;
+        final String attribute3Name            = OpenMetadataProperty.OWNER_PROPERTY_NAME.name;
+        final String attribute3Description     = OpenMetadataProperty.OWNER_PROPERTY_NAME.description;
+        final String attribute3DescriptionGUID = OpenMetadataProperty.OWNER_PROPERTY_NAME.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,

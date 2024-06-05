@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.assetconsumer.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 import java.util.HashMap;
@@ -24,6 +25,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class MetadataElement extends ElementHeader
 {
     private Map<String, Object> properties = null;
+
+    /**
+     * Default constructor used by subclasses
+     */
+    public MetadataElement()
+    {
+    }
+
 
     /**
      * Copy/clone constructor
@@ -50,8 +59,6 @@ public class MetadataElement extends ElementHeader
     {
         super(template);
     }
-
-
 
 
     /**

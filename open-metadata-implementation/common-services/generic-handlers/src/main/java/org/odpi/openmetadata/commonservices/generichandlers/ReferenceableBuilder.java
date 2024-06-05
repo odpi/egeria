@@ -269,7 +269,7 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
                                                                                       null,
                                                                                       InstanceProvenanceType.LOCAL_COHORT,
                                                                                       userId,
-                                                                                      OpenMetadataType.OWNERSHIP_CLASSIFICATION_TYPE_NAME,
+                                                                                      OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName,
                                                                                       typeName,
                                                                                       ClassificationOrigin.ASSIGNED,
                                                                                       null,
@@ -281,7 +281,7 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
             }
             catch (TypeErrorException error)
             {
-                errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.OWNERSHIP_CLASSIFICATION_TYPE_NAME);
+                errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.OWNERSHIP_CLASSIFICATION.typeName);
             }
         }
     }
@@ -307,19 +307,19 @@ public class ReferenceableBuilder extends OpenMetadataAPIGenericBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
-                                                                      OpenMetadataType.OWNER_PROPERTY_NAME,
+                                                                      OpenMetadataProperty.OWNER.name,
                                                                       owner,
                                                                       methodName);
 
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      OpenMetadataType.OWNER_TYPE_NAME_PROPERTY_NAME,
+                                                                      OpenMetadataProperty.OWNER_TYPE_NAME.name,
                                                                       ownerTypeName,
                                                                       methodName);
 
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      OpenMetadataType.OWNER_PROPERTY_NAME_PROPERTY_NAME,
+                                                                      OpenMetadataProperty.OWNER_PROPERTY_NAME.name,
                                                                       ownerPropertyName,
                                                                       methodName);
         }

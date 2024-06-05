@@ -2427,7 +2427,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringArrayProperty(serviceName,
-                                                            OpenMetadataType.ZONE_MEMBERSHIP_PROPERTY_NAME,
+                                                            OpenMetadataProperty.ZONE_MEMBERSHIP.name,
                                                             elementProperties,
                                                             methodName);
         }
@@ -2492,7 +2492,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.getStringArrayProperty(serviceName,
-                                                         OpenMetadataType.ZONE_MEMBERSHIP_PROPERTY_NAME,
+                                                         OpenMetadataProperty.ZONE_MEMBERSHIP.name,
                                                          elementProperties,
                                                          methodName);
         }
@@ -2514,7 +2514,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.OWNER_PROPERTY_NAME,
+                                                       OpenMetadataProperty.OWNER.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -2536,98 +2536,9 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.getStringProperty(serviceName,
-                                                    OpenMetadataType.OWNER_PROPERTY_NAME,
+                                                    OpenMetadataProperty.OWNER.name,
                                                     elementProperties,
                                                     methodName);
-        }
-
-        return null;
-    }
-
-
-
-    /**
-     * Extract the ownerTypeName property from the supplied element properties.
-     *
-     * @param elementProperties properties from classification
-     * @return string text or null
-     */
-    protected String getOwnerTypeName(ElementProperties elementProperties)
-    {
-        final String methodName = "getOwnerTypeName";
-
-        if (elementProperties != null)
-        {
-            return propertyHelper.getStringProperty(serviceName,
-                                                    OpenMetadataType.OWNER_TYPE_NAME_PROPERTY_NAME,
-                                                    elementProperties,
-                                                    methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract the ownerPropertyName property from the supplied element properties.
-     *
-     * @param elementProperties properties from classification
-     * @return string text or null
-     */
-    protected String getOwnerPropertyName(ElementProperties elementProperties)
-    {
-        final String methodName = "getOwnerPropertyName";
-
-        if (elementProperties != null)
-        {
-            return propertyHelper.getStringProperty(serviceName,
-                                                    OpenMetadataType.OWNER_PROPERTY_NAME_PROPERTY_NAME,
-                                                    elementProperties,
-                                                    methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract the ownerType property from the supplied element properties.
-     *
-     * @param elementProperties properties from classification
-     * @return symbolic name
-     */
-    protected String getOwnerType(ElementProperties elementProperties)
-    {
-        final String methodName = "getOwnerType";
-
-        if (elementProperties != null)
-        {
-            return propertyHelper.getEnumPropertySymbolicName(serviceName,
-                                                              OpenMetadataType.OWNER_TYPE_PROPERTY_NAME,
-                                                              elementProperties,
-                                                              methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract the ownerType property from the supplied element properties.
-     *
-     * @param elementProperties properties from classification
-     * @return symbolic name
-     */
-    protected String removeOwnerType(ElementProperties elementProperties)
-    {
-        final String methodName = "removeOwnerType";
-
-        if (elementProperties != null)
-        {
-            return propertyHelper.removeEnumProperty(serviceName,
-                                                     OpenMetadataType.OWNER_TYPE_PROPERTY_NAME,
-                                                     elementProperties,
-                                                     methodName);
         }
 
         return null;
@@ -2648,7 +2559,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.OWNER_PROPERTY_NAME_PROPERTY_NAME,
+                                                       OpenMetadataProperty.OWNER_PROPERTY_NAME.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -2671,7 +2582,7 @@ public abstract class OpenMetadataConverterBase<B>
         if (elementProperties != null)
         {
             return propertyHelper.removeStringProperty(serviceName,
-                                                       OpenMetadataType.OWNER_TYPE_NAME_PROPERTY_NAME,
+                                                       OpenMetadataProperty.OWNER_TYPE_NAME.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -3112,60 +3023,6 @@ public abstract class OpenMetadataConverterBase<B>
     }
 
 
-    /**
-     * Extract and delete the database type property from the supplied element properties.
-     *
-     * @param elementProperties properties from element
-     * @return string name or null
-     */
-    @SuppressWarnings(value = "deprecation")
-    protected String removeDatabaseType(ElementProperties  elementProperties)
-    {
-        final String methodName = "removeDatabaseType";
-
-        if (elementProperties != null)
-        {
-            String type1 = propertyHelper.removeStringProperty(serviceName,
-                                                               OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                               elementProperties,
-                                                               methodName);
-            String type2 = propertyHelper.removeStringProperty(serviceName,
-                                                               OpenMetadataProperty.TYPE.name,
-                                                               elementProperties,
-                                                               methodName);
-            return type1 == null ? type2 : type1;
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract and delete the database version property from the supplied element properties.
-     *
-     * @param elementProperties properties from element
-     * @return string name or null
-     */
-    protected String removeDatabaseVersion(ElementProperties  elementProperties)
-    {
-        final String methodName = "removeDatabaseVersion";
-
-        if (elementProperties != null)
-        {
-            String version1 = propertyHelper.removeStringProperty(serviceName,
-                                                                  OpenMetadataType.DATABASE_VERSION_PROPERTY_NAME,
-                                                                  elementProperties,
-                                                                  methodName);
-            String version2 = propertyHelper.removeStringProperty(serviceName,
-                                                                  OpenMetadataType.DATABASE_VERSION_PROPERTY_NAME_DEP,
-                                                                  elementProperties,
-                                                                  methodName);
-            return version1 == null ? version2 : version1;
-        }
-
-        return null;
-    }
-
 
     /**
      * Extract and delete the database instance property from the supplied element properties.
@@ -3283,26 +3140,16 @@ public abstract class OpenMetadataConverterBase<B>
      * @param elementProperties properties from element
      * @return string text or null
      */
-    @SuppressWarnings(value = "deprecation")
     protected String removeDeployedImplementationType(ElementProperties  elementProperties)
     {
         final String methodName = "removeDeployedImplementationType";
 
         if (elementProperties != null)
         {
-            String type = propertyHelper.removeStringProperty(serviceName,
-                                                              OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                              elementProperties,
-                                                              methodName);
-            if (type == null)
-            {
-                type = propertyHelper.removeStringProperty(serviceName,
-                                                           OpenMetadataProperty.TYPE.name,
-                                                           elementProperties,
-                                                           methodName);
-            }
-
-            return type;
+            return propertyHelper.removeStringProperty(serviceName,
+                                                       OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                       elementProperties,
+                                                       methodName);
         }
 
         return null;
