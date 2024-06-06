@@ -98,7 +98,7 @@ ext {
     springldapVersion = '3.0.1'
     springsecurityVersion = '6.1.4'
     springsecurityJwtVersion = '1.1.1.RELEASE'
-    testngVersion = '7.9.0'
+    testngVersion = '7.10.2'
     swaggerVersion = '2.2.21'
     thriftVersion = '0.19.0'
     springwebVersion = '6.0.6'
