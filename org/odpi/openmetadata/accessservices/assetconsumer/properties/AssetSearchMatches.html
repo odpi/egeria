@@ -130,8 +130,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Default constructor</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset)" class="member-name-link">AssetSearchMatches</a><wbr>(<a href="../../../frameworks/connectors/properties/beans/Asset.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Asset</a>&nbsp;template)</code></div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.accessservices.assetconsumer.properties.AssetSearchMatches)" class="member-name-link">AssetSearchMatches</a><wbr>(<a href="AssetSearchMatches.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">AssetSearchMatches</a>&nbsp;template)</code></div>
 <div class="col-last odd-row-color">
+<div class="block">Copy/clone constructor.</div>
+</div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset)" class="member-name-link">AssetSearchMatches</a><wbr>(<a href="../../../frameworks/connectors/properties/beans/Asset.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Asset</a>&nbsp;template)</code></div>
+<div class="col-last even-row-color">
 <div class="block">Copy/clone constructor.</div>
 </div>
 </div>
@@ -148,18 +152,37 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementBase</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMatchingElements()" class="member-name-link">getMatchingElements</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return comparison result based on the content of the properties.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataElement.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">MetadataElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMatchingElements()" class="member-name-link">getMatchingElements</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of anchored elements that match the search criteria.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return hash code for this object</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMatchingElements(java.util.List)" class="member-name-link">setMatchingElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementBase</a>&gt;&nbsp;matchingElements)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMatchingElements(java.util.List)" class="member-name-link">setMatchingElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataElement.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">MetadataElement</a>&gt;&nbsp;matchingElements)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the list of anchored elements that match the search criteria.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">JSON-style toString</div>
+</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.<a href="../../../frameworks/connectors/properties/beans/Asset.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Asset</a></h3>
-<code><a href="../../../frameworks/connectors/properties/beans/Asset.html#equals(java.lang.Object)">equals</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#getAbbreviation()">getAbbreviation</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#getDisplayDescription()">getDisplayDescription</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#getDisplayName()">getDisplayName</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#getDisplaySummary()">getDisplaySummary</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#getResourceDescription()">getResourceDescription</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#getResourceName()">getResourceName</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#getUsage()">getUsage</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#getVersionIdentifier()">getVersionIdentifier</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#hashCode()">hashCode</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#setAbbreviation(java.lang.String)">setAbbreviation</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#setDisplayDescription(java.lang.String)">setDisplayDescription</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#setDisplaySummary(java.lang.String)">setDisplaySummary</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#setResourceDescription(java.lang.String)">setResourceDescription</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#setResourceName(java.lang.String)">setResourceName</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#setUsage(java.lang.String)">setUsage</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#setVersionIdentifier(java.lang.String)">setVersionIdentifier</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#toString()">toString</a></code></div>
+<code><a href="../../../frameworks/connectors/properties/beans/Asset.html#getAbbreviation()">getAbbreviation</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#getDisplayDescription()">getDisplayDescription</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#getDisplayName()">getDisplayName</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#getDisplaySummary()">getDisplaySummary</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#getResourceDescription()">getResourceDescription</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#getResourceName()">getResourceName</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#getUsage()">getUsage</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#getVersionIdentifier()">getVersionIdentifier</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#setAbbreviation(java.lang.String)">setAbbreviation</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#setDisplayDescription(java.lang.String)">setDisplayDescription</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#setDisplaySummary(java.lang.String)">setDisplaySummary</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#setResourceDescription(java.lang.String)">setResourceDescription</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#setResourceName(java.lang.String)">setResourceName</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#setUsage(java.lang.String)">setUsage</a>, <a href="../../../frameworks/connectors/properties/beans/Asset.html#setVersionIdentifier(java.lang.String)">setVersionIdentifier</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.properties.beans.GovernedReferenceable">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.properties.beans.<a href="../../../frameworks/connectors/properties/beans/GovernedReferenceable.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">GovernedReferenceable</a></h3>
 <code><a href="../../../frameworks/connectors/properties/beans/GovernedReferenceable.html#getMeanings()">getMeanings</a>, <a href="../../../frameworks/connectors/properties/beans/GovernedReferenceable.html#getSearchKeywords()">getSearchKeywords</a>, <a href="../../../frameworks/connectors/properties/beans/GovernedReferenceable.html#setMeanings(java.util.List)">setMeanings</a>, <a href="../../../frameworks/connectors/properties/beans/GovernedReferenceable.html#setSearchKeywords(java.util.List)">setSearchKeywords</a></code></div>
@@ -210,6 +233,17 @@ loadScripts(document, 'script');</script>
 </dl>
 </section>
 </li>
+<li>
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.accessservices.assetconsumer.properties.AssetSearchMatches)">
+<h3>AssetSearchMatches</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AssetSearchMatches</span><wbr><span class="parameters">(<a href="AssetSearchMatches.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">AssetSearchMatches</a>&nbsp;template)</span></div>
+<div class="block">Copy/clone constructor.  Note, this is a deep copy</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>template</code> - template values for asset summary</dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -221,16 +255,64 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getMatchingElements()">
 <h3>getMatchingElements</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementBase</a>&gt;</span>&nbsp;<span class="element-name">getMatchingElements</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataElement.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">MetadataElement</a>&gt;</span>&nbsp;<span class="element-name">getMatchingElements</span>()</div>
+<div class="block">Return the list of anchored elements that match the search criteria.</div>
 <dl class="notes">
 <dt>Returns:</dt>
+<dd>list</dd>
 </dl>
 </section>
 </li>
 <li>
 <section class="detail" id="setMatchingElements(java.util.List)">
 <h3>setMatchingElements</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMatchingElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/connectors/properties/beans/ElementBase.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">ElementBase</a>&gt;&nbsp;matchingElements)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMatchingElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataElement.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">MetadataElement</a>&gt;&nbsp;matchingElements)</span></div>
+<div class="block">Set up the list of anchored elements that match the search criteria.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>matchingElements</code> - list</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="toString()">
+<h3>toString</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
+<div class="block">JSON-style toString</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../../frameworks/connectors/properties/beans/Asset.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/connectors/properties/beans/Asset.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Asset</a></code></dd>
+<dt>Returns:</dt>
+<dd>return string containing the property names and values</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="equals(java.lang.Object)">
+<h3>equals</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equals</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</span></div>
+<div class="block">Return comparison result based on the content of the properties.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../../frameworks/connectors/properties/beans/Asset.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/connectors/properties/beans/Asset.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Asset</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>objectToCompare</code> - test object</dd>
+<dt>Returns:</dt>
+<dd>result of comparison</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="hashCode()">
+<h3>hashCode</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">hashCode</span>()</div>
+<div class="block">Return hash code for this object</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../../frameworks/connectors/properties/beans/Asset.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../../../frameworks/connectors/properties/beans/Asset.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Asset</a></code></dd>
+<dt>Returns:</dt>
+<dd>int hash code</dd>
+</dl>
 </section>
 </li>
 </ul>

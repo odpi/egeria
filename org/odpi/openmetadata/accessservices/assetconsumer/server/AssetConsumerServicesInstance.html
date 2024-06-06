@@ -136,10 +136,20 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/generichandlers/AssetHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AssetHandler</a>&lt;<a href="../../../commonservices/generichandlers/OpenMetadataAPIDummyBean.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">OpenMetadataAPIDummyBean</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/generichandlers/AssetHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AssetHandler</a>&lt;<a href="../../../frameworks/connectors/properties/beans/Asset.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Asset</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetHandler()" class="member-name-link">getAssetHandler</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the handler for managing comment objects.</div>
+<div class="block">Return the handler for managing asset objects.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/generichandlers/ReferenceableHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ReferenceableHandler</a>&lt;<a href="../properties/MetadataElement.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">MetadataElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementHandler()" class="member-name-link">getMetadataElementHandler</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the handler for managing generic metadata element objects.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/generichandlers/ReferenceableHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ReferenceableHandler</a>&lt;<a href="../properties/MetadataRelationship.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">MetadataRelationship</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataRelationshipHandler()" class="member-name-link">getMetadataRelationshipHandler</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the handler for managing generic metadata element objects.</div>
 </div>
 </div>
 </div>
@@ -206,9 +216,37 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getAssetHandler()">
 <h3>getAssetHandler</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/generichandlers/AssetHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AssetHandler</a>&lt;<a href="../../../commonservices/generichandlers/OpenMetadataAPIDummyBean.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">OpenMetadataAPIDummyBean</a>&gt;</span>&nbsp;<span class="element-name">getAssetHandler</span>()
-                                                       throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
-<div class="block">Return the handler for managing comment objects.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/generichandlers/AssetHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">AssetHandler</a>&lt;<a href="../../../frameworks/connectors/properties/beans/Asset.html" title="class in org.odpi.openmetadata.frameworks.connectors.properties.beans">Asset</a>&gt;</span>&nbsp;<span class="element-name">getAssetHandler</span>()
+                                    throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Return the handler for managing asset objects.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>handler object</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the instance has not been initialized successfully</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMetadataElementHandler()">
+<h3>getMetadataElementHandler</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/generichandlers/ReferenceableHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ReferenceableHandler</a>&lt;<a href="../properties/MetadataElement.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">MetadataElement</a>&gt;</span>&nbsp;<span class="element-name">getMetadataElementHandler</span>()
+                                                                throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Return the handler for managing generic metadata element objects.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>handler object</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></code> - the instance has not been initialized successfully</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMetadataRelationshipHandler()">
+<h3>getMetadataRelationshipHandler</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/generichandlers/ReferenceableHandler.html" title="class in org.odpi.openmetadata.commonservices.generichandlers">ReferenceableHandler</a>&lt;<a href="../properties/MetadataRelationship.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.properties">MetadataRelationship</a>&gt;</span>&nbsp;<span class="element-name">getMetadataRelationshipHandler</span>()
+                                                                          throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">PropertyServerException</a></span></div>
+<div class="block">Return the handler for managing generic metadata element objects.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>handler object</dd>

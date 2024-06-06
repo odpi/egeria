@@ -80,7 +80,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">AssetCatalogRESTServices</span>
 <span class="extends-implements">extends <a href="../../../tokencontroller/TokenController.html" title="class in org.odpi.openmetadata.tokencontroller">TokenController</a></span></div>
-<div class="block">The AssetCatalogRESTServices provides the implementation of the Asset Catalog Open Metadata View Service (OMVS).
+<div class="block">The AssetCatalogUIRESTServices provides the implementation of the Asset Catalog Open Metadata View Service (OMVS).
  This interface provides view interfaces for glossary UIs.</div>
 </section>
 <section class="summary">
@@ -111,78 +111,107 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/AssetCatalogResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetCatalogResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAsset(java.lang.String,java.lang.String)" class="member-name-link">getAsset</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetconsumer/rest/AssetSearchMatchesListResponse.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">AssetSearchMatchesListResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findAssetsInDomain(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody,boolean,boolean,boolean,int,int)" class="member-name-link">findAssetsInDomain</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody,
+ boolean&nbsp;startsWith,
+ boolean&nbsp;endsWith,
+ boolean&nbsp;ignoreCase,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return a list of assets with the requested search string in their name, qualified name
+ or description.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/AssetCatalogResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetCatalogResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAsset(java.lang.String,java.lang.String)" class="member-name-link">getAsset</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Fetch asset's header, classification and properties.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/AssetResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetContext(java.lang.String,java.lang.String)" class="member-name-link">getAssetContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/AssetResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetContext(java.lang.String,java.lang.String)" class="member-name-link">getAssetContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the full context of an asset/glossary term based on its identifier.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/LineageResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementHierarchy(java.lang.String,org.odpi.openmetadata.viewservices.assetcatalog.rest.ElementHierarchyRequest)" class="member-name-link">getElementHierarchy</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../rest/ElementHierarchyRequest.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">ElementHierarchyRequest</a>&nbsp;elementHierarchyRequest)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../accessservices/assetconsumer/rest/AssetGraphResponse.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">AssetGraphResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetGraph(java.lang.String,java.lang.String,int,int)" class="member-name-link">getAssetGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworkservices/ocf/metadatamanagement/rest/AssetsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest">AssetsResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetsByMetadataCollectionId(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getAssetsByMetadataCollectionId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionId,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns a subgraph representing the hierarchy of a certain node, based on the request.</div>
+<div class="block">Return a list of assets that come from the requested metadata collection.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/LineageResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEndToEndLineage(java.lang.String,java.lang.String,boolean)" class="member-name-link">getEndToEndLineage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementHierarchy(java.lang.String,org.odpi.openmetadata.viewservices.assetcatalog.rest.ElementHierarchyRequest)" class="member-name-link">getElementHierarchy</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../rest/ElementHierarchyRequest.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">ElementHierarchyRequest</a>&nbsp;elementHierarchyRequest)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns a subgraph representing the hierarchy of a certain node, based on the request.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/LineageResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEndToEndLineage(java.lang.String,java.lang.String,boolean)" class="member-name-link">getEndToEndLineage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
  boolean&nbsp;includeProcesses)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the graph of nodes that describe the end-to-end lineage for the starting element.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/LineageVertexResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageVertexResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLineageVertex(java.lang.String,java.lang.String)" class="member-name-link">getLineageVertex</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/LineageVertexResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageVertexResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLineageVertex(java.lang.String,java.lang.String)" class="member-name-link">getLineageVertex</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieves the details of a specific node in the lineage graph.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/LineageNodeNamesResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageNodeNamesResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNodes(java.lang.String,java.lang.String,java.lang.String,int)" class="member-name-link">getNodes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/LineageNodeNamesResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageNodeNamesResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNodes(java.lang.String,java.lang.String,java.lang.String,int)" class="member-name-link">getNodes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchValue,
  int&nbsp;limit)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Gets nodes names of certain type with display name containing a certain value.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/LineageResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSemanticLineage(java.lang.String,java.lang.String,boolean)" class="member-name-link">getSemanticLineage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/LineageResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSemanticLineage(java.lang.String,java.lang.String,boolean)" class="member-name-link">getSemanticLineage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
  boolean&nbsp;includeProcesses)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve details of the asset related elements linked to a glossary term via the semantic assignment relationship.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/AssetCatalogSupportedTypes.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetCatalogSupportedTypes</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSupportedTypes(java.lang.String)" class="member-name-link">getSupportedTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/AssetCatalogSupportedTypes.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetCatalogSupportedTypes</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSupportedTypes(java.lang.String)" class="member-name-link">getSupportedTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the list with supported types for search, including the subtypes supported.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/LineageTypesResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageTypesResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypes(java.lang.String)" class="member-name-link">getTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/LineageTypesResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageTypesResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypes(java.lang.String)" class="member-name-link">getTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Gets available entities types from lineage repository.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/LineageResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUltimateDestination(java.lang.String,java.lang.String,boolean)" class="member-name-link">getUltimateDestination</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
+ boolean&nbsp;includeProcesses)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the nodes and relationships that describe the know ultimate destinations of the starting element.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/LineageResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUltimateDestination(java.lang.String,java.lang.String,boolean)" class="member-name-link">getUltimateDestination</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUltimateSource(java.lang.String,java.lang.String,boolean)" class="member-name-link">getUltimateSource</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
  boolean&nbsp;includeProcesses)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the nodes and relationships that describe the know ultimate destinations of the starting element.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/LineageResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUltimateSource(java.lang.String,java.lang.String,boolean)" class="member-name-link">getUltimateSource</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
- boolean&nbsp;includeProcesses)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the nodes and relationships that describe the know ultimate sources of the starting element.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/AssetListResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#searchAssets(java.lang.String,java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder,boolean,boolean,java.lang.Integer,java.lang.Integer)" class="member-name-link">searchAssets</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/AssetListResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetListResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#searchAssets(java.lang.String,java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder,boolean,boolean,java.lang.Integer,java.lang.Integer)" class="member-name-link">searchAssets</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchCriteria,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;typeNames,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sequencingProperty,
@@ -191,27 +220,27 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;exactMatch,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&nbsp;startFrom,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&nbsp;pageSize)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a list of assets matching the search criteria without the full context</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/AssetListResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#searchAssetsByTypeGUID(java.lang.String,java.lang.String)" class="member-name-link">searchAssetsByTypeGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/AssetListResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetListResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#searchAssetsByTypeGUID(java.lang.String,java.lang.String)" class="member-name-link">searchAssetsByTypeGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a list of assets matching the type GUID without the full context
  The list includes also subtypes</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/AssetListResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#searchAssetsByTypeName(java.lang.String,java.lang.String)" class="member-name-link">searchAssetsByTypeName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/AssetListResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetListResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#searchAssetsByTypeName(java.lang.String,java.lang.String)" class="member-name-link">searchAssetsByTypeName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a list of assets matching the type name without the full context
  The list includes also subtypes</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/LineageSearchResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageSearchResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#searchForVertices(java.lang.String,org.odpi.openmetadata.viewservices.assetcatalog.rest.LineageSearchRequest)" class="member-name-link">searchForVertices</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/LineageSearchResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageSearchResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#searchForVertices(java.lang.String,org.odpi.openmetadata.viewservices.assetcatalog.rest.LineageSearchRequest)" class="member-name-link">searchForVertices</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="../rest/LineageSearchRequest.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageSearchRequest</a>&nbsp;searchRequest)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the list of vertices that the user will initially see when querying lineage.</div>
 </div>
 </div>
@@ -249,6 +278,81 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="getAssetGraph(java.lang.String,java.lang.String,int,int)">
+<h3>getAssetGraph</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/assetconsumer/rest/AssetGraphResponse.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">AssetGraphResponse</a></span>&nbsp;<span class="element-name">getAssetGraph</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize)</span></div>
+<div class="block">Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server instances for this request</dd>
+<dd><code>assetGUID</code> - unique name for the connection.</dd>
+<dd><code>startFrom</code> - starting element (used in paging through large result sets)</dd>
+<dd><code>pageSize</code> - maximum number of results to return</dd>
+<dt>Returns:</dt>
+<dd>graph of elements or
+ InvalidParameterException - one of the parameters is null or invalid or
+ PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+ UserNotAuthorizedException - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="findAssetsInDomain(java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody,boolean,boolean,boolean,int,int)">
+<h3>findAssetsInDomain</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../accessservices/assetconsumer/rest/AssetSearchMatchesListResponse.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">AssetSearchMatchesListResponse</a></span>&nbsp;<span class="element-name">findAssetsInDomain</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody,
+ boolean&nbsp;startsWith,
+ boolean&nbsp;endsWith,
+ boolean&nbsp;ignoreCase,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize)</span></div>
+<div class="block">Return a list of assets with the requested search string in their name, qualified name
+ or description.  The search string is interpreted as a regular expression (RegEx).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server instances for this request</dd>
+<dd><code>requestBody</code> - string to search for in text</dd>
+<dd><code>startsWith</code> - does the value start with the supplied string?</dd>
+<dd><code>endsWith</code> - does the value end with the supplied string?</dd>
+<dd><code>ignoreCase</code> - should the search ignore case?</dd>
+<dd><code>startFrom</code> - starting element (used in paging through large result sets)</dd>
+<dd><code>pageSize</code> - maximum number of results to return</dd>
+<dt>Returns:</dt>
+<dd>list of results for assets that match the search string or
+ InvalidParameterException the searchString is invalid or
+ PropertyServerException there is a problem access in the property server or
+ UserNotAuthorizedException the user does not have access to the properties</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getAssetsByMetadataCollectionId(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
+<h3>getAssetsByMetadataCollectionId</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworkservices/ocf/metadatamanagement/rest/AssetsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest">AssetsResponse</a></span>&nbsp;<span class="element-name">getAssetsByMetadataCollectionId</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionId,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Return a list of assets that come from the requested metadata collection.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server instances for this request</dd>
+<dd><code>metadataCollectionId</code> - guid to search for</dd>
+<dd><code>startFrom</code> - starting element (used in paging through large result sets)</dd>
+<dd><code>pageSize</code> - maximum number of results to return</dd>
+<dd><code>requestBody</code> - optional type name to restrict search by</dd>
+<dt>Returns:</dt>
+<dd>list of unique identifiers for Assets with the requested name or
+ InvalidParameterException the name is invalid or
+ PropertyServerException there is a problem access in the property server or
+ UserNotAuthorizedException the user does not have access to the properties</dd>
+</dl>
+</section>
+</li>
 <li>
 <section class="detail" id="getSupportedTypes(java.lang.String)">
 <h3>getSupportedTypes</h3>

@@ -80,9 +80,7 @@ loadScripts(document, 'script');</script>
 @RequestMapping("/servers/{serverName}/api/open-metadata/asset-catalog")
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">AssetCatalogResource</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">The AssetCatalogResource provides the Spring API endpoints of the Asset Catalog Open Metadata View Service (OMVS).
- This interface provides the interfaces for Egeria UIs.  The set with "old" in their URL are from the Egeria UI Application.
- They are deprecated because they do not conform the Egeria's error handling standards.</div>
+<div class="block">The AssetCatalogResource provides some of the Spring API endpoints of the Asset Catalog Open Metadata View Service (OMVS).</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -112,107 +110,33 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/LineageResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#elementHierarchy(java.lang.String,org.odpi.openmetadata.viewservices.assetcatalog.rest.ElementHierarchyRequest)" class="member-name-link">elementHierarchy</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../rest/ElementHierarchyRequest.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">ElementHierarchyRequest</a>&nbsp;elementHierarchyRequest)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../accessservices/assetconsumer/rest/AssetSearchMatchesListResponse.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">AssetSearchMatchesListResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findAssetsInDomain(java.lang.String,boolean,boolean,boolean,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">findAssetsInDomain</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ boolean&nbsp;startsWith,
+ boolean&nbsp;endsWith,
+ boolean&nbsp;ignoreCase,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns a subgraph representing the hierarchy of a certain node, based on the request.</div>
+<div class="block">Locate string value in elements that are anchored to assets.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/AssetCatalogResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetCatalogResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAsset(java.lang.String,java.lang.String)" class="member-name-link">getAsset</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../accessservices/assetconsumer/rest/AssetGraphResponse.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">AssetGraphResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetGraph(java.lang.String,java.lang.String,int,int)" class="member-name-link">getAssetGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Fetch asset's header, classification and properties.</div>
+<div class="block">Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/AssetResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetContext(java.lang.String,java.lang.String)" class="member-name-link">getAssetContext</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../frameworkservices/ocf/metadatamanagement/rest/AssetsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest">AssetsResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetsByMetadataCollectionId(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getAssetsByMetadataCollectionId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionId,
+ int&nbsp;startFrom,
+ int&nbsp;pageSize,
+ <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the full context of an asset/glossary term based on its identifier.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/LineageResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEndToEndLineage(java.lang.String,java.lang.String,boolean)" class="member-name-link">getEndToEndLineage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
- boolean&nbsp;includeProcesses)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the graph of nodes that describe the end-to-end lineage for the starting element.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/LineageVertexResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageVertexResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLineageVertex(java.lang.String,java.lang.String)" class="member-name-link">getLineageVertex</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieves the details of a specific node in the lineage graph.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/LineageNodeNamesResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageNodeNamesResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNodes(java.lang.String,java.lang.String,java.lang.String,int)" class="member-name-link">getNodes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchValue,
- int&nbsp;limit)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Gets nodes names of certain type with display name containing a certain value.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/LineageResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSemanticLineage(java.lang.String,java.lang.String,boolean)" class="member-name-link">getSemanticLineage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
- boolean&nbsp;includeProcesses)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve details of the asset related elements linked to a glossary term via the semantic assignment relationship.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/AssetCatalogSupportedTypes.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetCatalogSupportedTypes</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSupportedTypes(java.lang.String)" class="member-name-link">getSupportedTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the list with supported types for search, including the subtypes supported</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/LineageTypesResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageTypesResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypes(java.lang.String)" class="member-name-link">getTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Gets available entities types from lineage repository.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/LineageResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUltimateDestination(java.lang.String,java.lang.String,boolean)" class="member-name-link">getUltimateDestination</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
- boolean&nbsp;includeProcesses)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the nodes and relationships that describe the know ultimate destinations of the starting element.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/LineageResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUltimateSource(java.lang.String,java.lang.String,boolean)" class="member-name-link">getUltimateSource</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
- boolean&nbsp;includeProcesses)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the nodes and relationships that describe the know ultimate sources of the starting element.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/AssetListResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#searchAssets(java.lang.String,java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder,boolean,boolean,java.lang.Integer,java.lang.Integer)" class="member-name-link">searchAssets</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchCriteria,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;types,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sequencingProperty,
- <a href="../../../../frameworks/governanceaction/search/SequencingOrder.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">SequencingOrder</a>&nbsp;sequencingOrder,
- boolean&nbsp;caseSensitive,
- boolean&nbsp;exactMatch,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&nbsp;startFrom,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&nbsp;pageSize)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a list of assets matching the search criteria without the full context</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/AssetListResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetListResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#searchAssetsByTypeGUID(java.lang.String,java.lang.String)" class="member-name-link">searchAssetsByTypeGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a list of assets matching the type GUID without the full context.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/AssetListResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetListResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#searchAssetsByTypeName(java.lang.String,java.lang.String)" class="member-name-link">searchAssetsByTypeName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a list of assets matching the type name without the full context
- The list includes also subtypes</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../rest/LineageSearchResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageSearchResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#searchForVertices(java.lang.String,org.odpi.openmetadata.viewservices.assetcatalog.rest.LineageSearchRequest)" class="member-name-link">searchForVertices</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- <a href="../../rest/LineageSearchRequest.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageSearchRequest</a>&nbsp;searchRequest)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the list of vertices that the user will initially see when querying lineage.</div>
+<div class="block">Return a list of assets that come from the requested metadata collection.</div>
 </div>
 </div>
 </div>
@@ -247,355 +171,97 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="searchAssets(java.lang.String,java.lang.String,java.util.List,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.search.SequencingOrder,boolean,boolean,java.lang.Integer,java.lang.Integer)">
-<h3>searchAssets</h3>
-<div class="member-signature"><span class="annotations">@GetMapping(path="/assets/search")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/AssetListResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetListResponse</a></span>&nbsp;<span class="element-name">searchAssets</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestParam("q")
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchCriteria,
- @RequestParam("types")
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;types,
- @RequestParam(name="sequencingProperty",defaultValue="displayName")
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sequencingProperty,
- @RequestParam(name="sequencingOrder",defaultValue="PROPERTY_ASCENDING")
- <a href="../../../../frameworks/governanceaction/search/SequencingOrder.html" title="enum class in org.odpi.openmetadata.frameworks.governanceaction.search">SequencingOrder</a>&nbsp;sequencingOrder,
- @RequestParam(defaultValue="false")
- boolean&nbsp;caseSensitive,
- @RequestParam(defaultValue="false")
- boolean&nbsp;exactMatch,
- @RequestParam(name="from",defaultValue="0")
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&nbsp;startFrom,
- @RequestParam(defaultValue="10")
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&nbsp;pageSize)</span></div>
-<div class="block">Return a list of assets matching the search criteria without the full context</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server to route the request to</dd>
-<dd><code>searchCriteria</code> - the query parameter with the search phrase</dd>
-<dd><code>types</code> - OM types list to search for</dd>
-<dd><code>sequencingProperty</code> - name of the property based on which to sort the result</dd>
-<dd><code>sequencingOrder</code> - PROPERTY_ASCENDING or PROPERTY_DESCENDING</dd>
-<dd><code>caseSensitive</code> - set case sensitive flag</dd>
-<dd><code>exactMatch</code> - set exact match flag</dd>
-<dd><code>startFrom</code> - the offset for the results</dd>
-<dd><code>pageSize</code> - the number of results per page</dd>
-<dt>Returns:</dt>
-<dd>list of assets or
-  PropertyServerException if a configuration on the backend
-  UserNotAuthorizedException security access problem
-  InvalidParameterException if parameter validation fails</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="searchAssetsByTypeName(java.lang.String,java.lang.String)">
-<h3>searchAssetsByTypeName</h3>
-<div class="member-signature"><span class="annotations">@GetMapping(path="/assets/search-by-type-name/{typeName}")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/AssetListResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetListResponse</a></span>&nbsp;<span class="element-name">searchAssetsByTypeName</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable("typeName")
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</span></div>
-<div class="block">Return a list of assets matching the type name without the full context
- The list includes also subtypes</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server to route the request to</dd>
-<dd><code>typeName</code> - the assets type name to search for</dd>
-<dt>Returns:</dt>
-<dd>list of assets by type name or
-  PropertyServerException if a configuration on the backend
-  UserNotAuthorizedException security access problem
-  InvalidParameterException if parameter validation fails</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="searchAssetsByTypeGUID(java.lang.String,java.lang.String)">
-<h3>searchAssetsByTypeGUID</h3>
-<div class="member-signature"><span class="annotations">@GetMapping(path="/assets/search-by-type-guid/{typeGUID}")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/AssetListResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetListResponse</a></span>&nbsp;<span class="element-name">searchAssetsByTypeGUID</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable("typeGUID")
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeGUID)</span></div>
-<div class="block">Return a list of assets matching the type GUID without the full context.
- The list includes also subtypes</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server to route the request to</dd>
-<dd><code>typeGUID</code> - the assets type GUID to search for</dd>
-<dt>Returns:</dt>
-<dd>list of assets by type GUID or
-  PropertyServerException if a configuration on the backend
-  UserNotAuthorizedException security access problem
-  InvalidParameterException if parameter validation fails</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getSupportedTypes(java.lang.String)">
-<h3>getSupportedTypes</h3>
-<div class="member-signature"><span class="annotations">@GetMapping(path="/assets/types")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/AssetCatalogSupportedTypes.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetCatalogSupportedTypes</a></span>&nbsp;<span class="element-name">getSupportedTypes</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
-<div class="block">Returns the list with supported types for search, including the subtypes supported</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server to route the request to</dd>
-<dt>Returns:</dt>
-<dd>the supported types from Asset Consumer OMAS or
-  PropertyServerException if a configuration on the backend
-  InvalidParameterException if parameter validation fails
-  UserNotAuthorizedException security access problem</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getAsset(java.lang.String,java.lang.String)">
-<h3>getAsset</h3>
-<div class="member-signature"><span class="annotations">@GetMapping("/assets/{guid}")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/AssetCatalogResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetCatalogResponse</a></span>&nbsp;<span class="element-name">getAsset</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable("guid")
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</span></div>
-<div class="block">Fetch asset's header, classification and properties.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server to route the request to</dd>
-<dd><code>guid</code> - of the Entity to be retrieved</dd>
-<dt>Returns:</dt>
-<dd>the asset details or
-  PropertyServerException if a configuration on the backend
-  UserNotAuthorizedException security access problem
-  InvalidParameterException if parameter validation fails</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getAssetContext(java.lang.String,java.lang.String)">
-<h3>getAssetContext</h3>
-<div class="member-signature"><span class="annotations">@GetMapping("/assets/{guid}/context")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/AssetResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">AssetResponse</a></span>&nbsp;<span class="element-name">getAssetContext</span><wbr><span class="parameters">(@PathVariable
+<section class="detail" id="getAssetGraph(java.lang.String,java.lang.String,int,int)">
+<h3>getAssetGraph</h3>
+<div class="member-signature"><span class="annotations">@GetMapping(path="/assets/{assetGUID}/as-graph")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../accessservices/assetconsumer/rest/AssetGraphResponse.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">AssetGraphResponse</a></span>&nbsp;<span class="element-name">getAssetGraph</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</span></div>
-<div class="block">Return the full context of an asset/glossary term based on its identifier.
- The response contains the list of the connections assigned to the asset.</div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;startFrom,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;pageSize)</span></div>
+<div class="block">Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server to route the request to</dd>
-<dd><code>guid</code> - of the Entity to be retrieved</dd>
+<dd><code>serverName</code> - name of the server instances for this request.</dd>
+<dd><code>assetGUID</code> - uniqueId for the connection.</dd>
+<dd><code>startFrom</code> - starting element (used in paging through large result sets)</dd>
+<dd><code>pageSize</code> - maximum number of results to return</dd>
 <dt>Returns:</dt>
-<dd>the entity context or
- PropertyServerException if a configuration on the backend
- UserNotAuthorizedException security access problem
- InvalidParameterException if parameter validation fails</dd>
+<dd>graph of elements or
+ InvalidParameterException one of the parameters is null or invalid or
+ PropertyServerException there is a problem retrieving the connected asset properties from the property server or
+ UnrecognizedConnectionGUIDException the supplied GUID is not recognized by the property server or
+ NoConnectedAssetException there is no asset associated with this connection or
+ UserNotAuthorizedException the requesting user is not authorized to issue this request.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getUltimateSource(java.lang.String,java.lang.String,boolean)">
-<h3>getUltimateSource</h3>
-<div class="member-signature"><span class="annotations">@GetMapping("/lineage/entities/{guid}/ultimate-source")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/LineageResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageResponse</a></span>&nbsp;<span class="element-name">getUltimateSource</span><wbr><span class="parameters">(@PathVariable
+<section class="detail" id="findAssetsInDomain(java.lang.String,boolean,boolean,boolean,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
+<h3>findAssetsInDomain</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/assets/in-domain/by-search-string")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../accessservices/assetconsumer/rest/AssetSearchMatchesListResponse.html" title="class in org.odpi.openmetadata.accessservices.assetconsumer.rest">AssetSearchMatchesListResponse</a></span>&nbsp;<span class="element-name">findAssetsInDomain</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable("guid")
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
- @RequestParam
- boolean&nbsp;includeProcesses)</span></div>
-<div class="block">Return the nodes and relationships that describe the know ultimate sources of the starting element.</div>
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;startsWith,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;endsWith,
+ @RequestParam(required=false,defaultValue="false")
+ boolean&nbsp;ignoreCase,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;startFrom,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;pageSize,
+ @RequestBody(required=false)
+ <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Locate string value in elements that are anchored to assets.  The search string may be a regEx.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server to route the request to</dd>
-<dd><code>guid</code> - unique identifier of the starting element</dd>
-<dd><code>includeProcesses</code> - if true Process nodes will be included</dd>
+<dd><code>serverName</code> - name of the server instances for this request</dd>
+<dd><code>requestBody</code> - string to search for in text</dd>
+<dd><code>startsWith</code> - does the value start with the supplied string?</dd>
+<dd><code>endsWith</code> - does the value end with the supplied string?</dd>
+<dd><code>ignoreCase</code> - should the search ignore case?</dd>
+<dd><code>startFrom</code> - starting element (used in paging through large result sets)</dd>
+<dd><code>pageSize</code> - maximum number of results to return</dd>
 <dt>Returns:</dt>
-<dd>graph of nodes and edges describing the ultimate sources of the asset or
-  InvalidParameterException from the underlying service,
-  PropertyServerException from the underlying service or
-  UserNotAuthorizedException from the underlying service</dd>
+<dd>list of results for assets that match the search string or
+ InvalidParameterException the searchString is invalid or
+ PropertyServerException there is a problem access in the property server or
+ UserNotAuthorizedException the user does not have access to the properties</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getEndToEndLineage(java.lang.String,java.lang.String,boolean)">
-<h3>getEndToEndLineage</h3>
-<div class="member-signature"><span class="annotations">@GetMapping("/lineage/entities/{guid}/end-to-end")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/LineageResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageResponse</a></span>&nbsp;<span class="element-name">getEndToEndLineage</span><wbr><span class="parameters">(@PathVariable
+<section class="detail" id="getAssetsByMetadataCollectionId(java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
+<h3>getAssetsByMetadataCollectionId</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/assets/by-metadata-collection-id/{metadataCollectionId}")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/ocf/metadatamanagement/rest/AssetsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest">AssetsResponse</a></span>&nbsp;<span class="element-name">getAssetsByMetadataCollectionId</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable("guid")
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
- @RequestParam
- boolean&nbsp;includeProcesses)</span></div>
-<div class="block">Return the graph of nodes that describe the end-to-end lineage for the starting element.</div>
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionId,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;startFrom,
+ @RequestParam(required=false,defaultValue="0")
+ int&nbsp;pageSize,
+ @RequestBody(required=false)
+ <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Return a list of assets that come from the requested metadata collection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server to route the request to</dd>
-<dd><code>guid</code> - unique identifier of the starting element</dd>
-<dd><code>includeProcesses</code> - if true Process nodes will be included</dd>
+<dd><code>serverName</code> - name of the server instances for this request</dd>
+<dd><code>metadataCollectionId</code> - guid to search for</dd>
+<dd><code>startFrom</code> - starting element (used in paging through large result sets)</dd>
+<dd><code>pageSize</code> - maximum number of results to return</dd>
+<dd><code>requestBody</code> - optional type name to restrict search by</dd>
 <dt>Returns:</dt>
-<dd>graph of nodes and edges describing the end to end flow or
-  InvalidParameterException from the underlying service,
-  PropertyServerException from the underlying service or
-  UserNotAuthorizedException from the underlying service</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getUltimateDestination(java.lang.String,java.lang.String,boolean)">
-<h3>getUltimateDestination</h3>
-<div class="member-signature"><span class="annotations">@GetMapping("/lineage/entities/{guid}/ultimate-destination")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/LineageResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageResponse</a></span>&nbsp;<span class="element-name">getUltimateDestination</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable("guid")
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
- @RequestParam
- boolean&nbsp;includeProcesses)</span></div>
-<div class="block">Return the nodes and relationships that describe the know ultimate destinations of the starting element.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server to route the request to</dd>
-<dd><code>guid</code> - unique identifier of the starting element</dd>
-<dd><code>includeProcesses</code> - if true Process nodes will be included</dd>
-<dt>Returns:</dt>
-<dd>graph of nodes and edges describing the ultimate destination of the asset or
-  InvalidParameterException from the underlying service,
-  PropertyServerException from the underlying service or
-  UserNotAuthorizedException from the underlying service</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getSemanticLineage(java.lang.String,java.lang.String,boolean)">
-<h3>getSemanticLineage</h3>
-<div class="member-signature"><span class="annotations">@GetMapping("/lineage/entities/{guid}/semantic-lineage")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/LineageResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageResponse</a></span>&nbsp;<span class="element-name">getSemanticLineage</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable("guid")
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
- @RequestParam
- boolean&nbsp;includeProcesses)</span></div>
-<div class="block">Retrieve details of the asset related elements linked to a glossary term via the semantic assignment relationship.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server to route the request to</dd>
-<dd><code>guid</code> - unique identifier of the starting glossary term element</dd>
-<dd><code>includeProcesses</code> - if true Process nodes will be included</dd>
-<dt>Returns:</dt>
-<dd>graph of nodes and edges describing the assets linked to the glossary term or
-  InvalidParameterException from the underlying service,
-  PropertyServerException from the underlying service or
-  UserNotAuthorizedException from the underlying service</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getLineageVertex(java.lang.String,java.lang.String)">
-<h3>getLineageVertex</h3>
-<div class="member-signature"><span class="annotations">@GetMapping("/lineage/entities/{guid}/details")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/LineageVertexResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageVertexResponse</a></span>&nbsp;<span class="element-name">getLineageVertex</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @PathVariable("guid")
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</span></div>
-<div class="block">Retrieves the details of a specific node in the lineage graph.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server to route the request to</dd>
-<dd><code>guid</code> - of the Entity to be retrieved</dd>
-<dt>Returns:</dt>
-<dd>the entity details or
-  InvalidParameterException from the underlying service,
-  PropertyServerException from the underlying service or
-  UserNotAuthorizedException from the underlying service</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getTypes(java.lang.String)">
-<h3>getTypes</h3>
-<div class="member-signature"><span class="annotations">@GetMapping("/lineage/types")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/LineageTypesResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageTypesResponse</a></span>&nbsp;<span class="element-name">getTypes</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
-<div class="block">Gets available entities types from lineage repository.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server to route the request to</dd>
-<dt>Returns:</dt>
-<dd>the available entities types or
-  InvalidParameterException from the underlying service,
-  PropertyServerException from the underlying service or
-  UserNotAuthorizedException from the underlying service</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getNodes(java.lang.String,java.lang.String,java.lang.String,int)">
-<h3>getNodes</h3>
-<div class="member-signature"><span class="annotations">@GetMapping("/lineage/nodes")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/LineageNodeNamesResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageNodeNamesResponse</a></span>&nbsp;<span class="element-name">getNodes</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestParam("type")
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type,
- @RequestParam("name")
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchValue,
- @RequestParam("limit")
- int&nbsp;limit)</span></div>
-<div class="block">Gets nodes names of certain type with display name containing a certain value.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server to route the request to</dd>
-<dd><code>type</code> - the type of the nodes name to search for</dd>
-<dd><code>searchValue</code> - the string to be contained in the qualified name of the node - case-insensitive</dd>
-<dd><code>limit</code> - the maximum number of node names to retrieve</dd>
-<dt>Returns:</dt>
-<dd>the list of node names or
-  InvalidParameterException from the underlying service,
-  PropertyServerException from the underlying service or
-  UserNotAuthorizedException from the underlying service</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="searchForVertices(java.lang.String,org.odpi.openmetadata.viewservices.assetcatalog.rest.LineageSearchRequest)">
-<h3>searchForVertices</h3>
-<div class="member-signature"><span class="annotations">@PostMapping("/lineage/nodes/search")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/LineageSearchResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageSearchResponse</a></span>&nbsp;<span class="element-name">searchForVertices</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestBody
- <a href="../../rest/LineageSearchRequest.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageSearchRequest</a>&nbsp;searchRequest)</span></div>
-<div class="block">Returns the list of vertices that the user will initially see when querying lineage. In the future, this method will be
- extended to condense large paths to prevent cluttering of the users screen. The user will be able to extend
- the condensed path by querying a different method.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server to route the request to</dd>
-<dd><code>searchRequest</code> - filtering details for the search</dd>
-<dt>Returns:</dt>
-<dd>list of graph nodes or
-  InvalidParameterException from the underlying service,
-  PropertyServerException from the underlying service or
-  UserNotAuthorizedException from the underlying service</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="elementHierarchy(java.lang.String,org.odpi.openmetadata.viewservices.assetcatalog.rest.ElementHierarchyRequest)">
-<h3>elementHierarchy</h3>
-<div class="member-signature"><span class="annotations">@PostMapping("/lineage/elements/hierarchy")
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../rest/LineageResponse.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">LineageResponse</a></span>&nbsp;<span class="element-name">elementHierarchy</span><wbr><span class="parameters">(@PathVariable
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestBody
- <a href="../../rest/ElementHierarchyRequest.html" title="class in org.odpi.openmetadata.viewservices.assetcatalog.rest">ElementHierarchyRequest</a>&nbsp;elementHierarchyRequest)</span></div>
-<div class="block">Returns a subgraph representing the hierarchy of a certain node, based on the request.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>serverName</code> - name of the server to route the request to</dd>
-<dd><code>elementHierarchyRequest</code> - contains the guid of the queried node and the hierarchyType of the display name of the nodes</dd>
-<dt>Returns:</dt>
-<dd>a subgraph containing all relevant paths or
-  InvalidParameterException from the underlying service,
-  PropertyServerException from the underlying service or
-  UserNotAuthorizedException from the underlying service</dd>
+<dd>list of unique identifiers for Assets with the requested name or
+ InvalidParameterException the name is invalid or
+ PropertyServerException there is a problem access in the property server or
+ UserNotAuthorizedException the user does not have access to the properties</dd>
 </dl>
 </section>
 </li>
