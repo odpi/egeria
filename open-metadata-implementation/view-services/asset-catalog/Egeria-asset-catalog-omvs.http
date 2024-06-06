@@ -35,10 +35,10 @@ Content-Type: application/json
 
 ###
 # @name=findAssetsInDomain
-# Locate string value in elements that are anchored to assets.  The search string may be a regEx.
+# Locate string value in elements that are anchored to assets.
 #
 # Asset: https://egeria-project.org/concepts/asset/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/in-domain/by-search-string?startFrom=0&pageSize=0&startsWith=false&endWith=false&ignoreCase=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-catalog/assets/in-domain/by-search-string?startFrom=0&pageSize=10&startsWith=false&endWith=false&ignoreCase=true
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -48,6 +48,7 @@ Content-Type: application/json
 
 ###
 # Core content pack = 09450b83-20ff-4a8b-a8fb-f9b527bbcba6
+# Simple Catalog = 83e785b1-5bcc-4714-8f89-f6639ec55ca0
 
 @metadataCollectionId=09450b83-20ff-4a8b-a8fb-f9b527bbcba6
 

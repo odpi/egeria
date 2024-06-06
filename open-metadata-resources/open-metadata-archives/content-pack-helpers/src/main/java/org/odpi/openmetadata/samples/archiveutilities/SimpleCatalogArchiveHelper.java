@@ -3801,46 +3801,6 @@ public class SimpleCatalogArchiveHelper
     /**
      * Create a schema attribute with a TypeEmbeddedAttribute classification.
      *
-     * @param typeName name of schema attribute subtype to use - default is SchemaAttribute
-     * @param schemaTypeName name of schema type subtype to use - default is PrimitiveSchemaType
-     * @param qualifiedName unique name for the schema attribute
-     * @param displayName display name for the schema attribute
-     * @param description description about the schema attribute
-     * @param dataType data type for the schema attribute
-     * @param length length of the storage used by the schema attribute
-     * @param position position in the schema at this level
-     * @param additionalProperties any other properties.
-     *
-     * @return id for the schema attribute
-     */
-    public String addSchemaAttribute(String              typeName,
-                                     String              schemaTypeName,
-                                     String              qualifiedName,
-                                     String              displayName,
-                                     String              description,
-                                     String              dataType,
-                                     int                 length,
-                                     int                 position,
-                                     Map<String, String> additionalProperties)
-    {
-        return this.addSchemaAttribute(null,
-                                       null,
-                                       typeName,
-                                       schemaTypeName,
-                                       qualifiedName,
-                                       displayName,
-                                       description,
-                                       dataType,
-                                       length,
-                                       position,
-                                       null,
-                                       additionalProperties);
-    }
-
-
-    /**
-     * Create a schema attribute with a TypeEmbeddedAttribute classification.
-     *
      * @param assetGUID anchor GUID (optional)
      * @param assetTypeName anchorTypeName (needed if assetGUID is set)
      * @param typeName name of schema attribute subtype to use - default is SchemaAttribute

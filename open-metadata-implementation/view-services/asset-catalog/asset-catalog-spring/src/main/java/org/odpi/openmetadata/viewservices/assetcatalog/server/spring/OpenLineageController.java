@@ -30,7 +30,7 @@ import java.util.List;
 
 /**
  * This controller serves all requests for retrieving lineage details, both vertical and horizontal.  It originated in the Egeria UI application.
- * It is deprecated because it does not follow the exception handling rules for Egeria code.  The replacement services are in AssetCatalogUIResource.
+ * It is deprecated because it does not follow the exception handling rules for Egeria code.  The replacement services are in AssetCatalogResource.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/asset-catalog/old/lineage")

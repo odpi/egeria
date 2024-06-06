@@ -2980,6 +2980,14 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIRootHandler
             anchorIdentifiers.anchorTypeName = targetTypeName;
         }
 
+        if ((anchorIdentifiers != null) &&
+                (anchorIdentifiers.anchorGUID != null) &&
+                (anchorIdentifiers.anchorTypeName != null) &&
+                (anchorIdentifiers.anchorDomainName == null))
+        {
+            anchorIdentifiers.anchorDomainName = this.getDomainName(anchorIdentifiers.anchorTypeName);
+        }
+
         return anchorIdentifiers;
     }
 
