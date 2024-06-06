@@ -655,6 +655,25 @@ public enum OpenMetadataType
           "12780d85-66e8-45b3-9d0e-ef4bebbf1ed9",
           "An action assigned to an individual."),
 
+
+    /**
+     * Quantitative feedback related to an item.
+     */
+    RATING("7299d721-d17f-4562-8286-bcd451814478",
+           "Rating",
+           OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
+           "bd05b809-b094-431d-905d-dad65bbe6484",
+           "Quantitative feedback related to an item."),
+
+    /**
+     * Links a rating to an item.
+     */
+    ATTACHED_RATING_RELATIONSHIP("0aaad9e9-9cc5-4ad8-bc2e-c1099bab6344",
+                                 "AttachedRating",
+                                 OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
+                                 "87ea2c02-dae5-4d7d-8bc8-c4f2589026b0",
+                                 "Links a rating to an item."),
+
     /**
      * Descriptive feedback or discussion related to the attached element.
      */
@@ -663,6 +682,61 @@ public enum OpenMetadataType
             OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
             "af656cd2-a73c-421f-9429-4b6749cb6f09",
             "Descriptive feedback or discussion related to the attached element."),
+
+    /**
+     * Links a comment to an item, or another comment.
+     */
+    ATTACHED_COMMENT_RELATIONSHIP("0d90501b-bf29-4621-a207-0c8c953bdac9",
+                                  "AttachedComment",
+                                  OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
+                                  "7025c1a3-2026-422e-92f3-cf7d65832713",
+                                  "Links a comment to an item, or another comment."),
+
+    /**
+     * Identifies a comment as answering a question asked in another comment.
+     */
+    ACCEPTED_ANSWER_RELATIONSHIP("ecf1a3ca-adc5-4747-82cf-10ec590c5c69",
+                                 "AcceptedAnswer",
+                                 OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
+                                 "2f207a82-e7e2-4fd6-9a91-c6055f287f66",
+                                 "Identifies a comment as answering a question asked in another comment."),
+
+    /**
+     * Boolean type of rating expressing a favorable impression.
+     */
+    LIKE("deaa5ca0-47a0-483d-b943-d91c76744e01",
+         "Like",
+         OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
+         "b2bbaacb-c547-41b9-9bb2-e11d55bf74f7",
+         "Boolean type of rating expressing a favorable impression."),
+
+    /**
+     * Links a like to an item.
+     */
+    ATTACHED_LIKE_RELATIONSHIP("e2509715-a606-415d-a995-61d00503dad4",
+                               "AttachedLike",
+                               OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
+                               "727783d2-de50-44f9-b5bc-d21a23b1a203",
+                               "Links a like to an item."),
+
+    /**
+     * A descriptive tag for an item.
+     */
+    INFORMAL_TAG("ba846a7b-2955-40bf-952b-2793ceca090a",
+                 "InformalTag",
+                 OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
+                 "74bf2e98-b334-4cc8-b89f-a03239a7b574",
+                 "A descriptive tag for an item."),
+
+    /**
+     * Links an informal tag to an item.
+     */
+    ATTACHED_TAG_RELATIONSHIP("4b1641c4-3d1a-4213-86b2-d6968b6c65ab",
+                              "AttachedTag",
+                              OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
+                              "f5f7ed7d-bebe-454f-94aa-1029ff37ac6a",
+                              "Links an informal tag to an item."),
+
 
     /* ============================================================================================================================*/
     /* Area 2 - Assets                                                                                                             */

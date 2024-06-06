@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * The AssetCatalogUIResource provides some of the Spring API endpoints of the Asset Catalog Open Metadata View Service (OMVS).
- * This interface provides the interfaces for Egeria UIs.  The set with "old" in their URL are from the Egeria UI Application.
- * They are deprecated because they do not conform the Egeria's error handling standards.
+ * The AssetCatalogResource provides some of the Spring API endpoints of the Asset Catalog Open Metadata View Service (OMVS).
  */
 
 @RestController

@@ -171,7 +171,9 @@ public class SimpleAPICatalogArchiveBuilder
                                                                null);
 
 
-        String parameterGUID = archiveHelper.addSchemaAttribute(apiSchemaAttributeTypeName,
+        String parameterGUID = archiveHelper.addSchemaAttribute(assetGUID,
+                                                                apiAssetTypeName,
+                                                                apiSchemaAttributeTypeName,
                                                                 null,
                                                                 customerNoRequestQualifiedName,
                                                                 customerNoDisplayName,
@@ -179,6 +181,7 @@ public class SimpleAPICatalogArchiveBuilder
                                                                 customerNoDataType,
                                                                 customerNoLength,
                                                                 0,
+                                                                null,
                                                                 null);
 
         archiveHelper.addAttributeForSchemaType(requestGUID, parameterGUID);
@@ -191,7 +194,9 @@ public class SimpleAPICatalogArchiveBuilder
                                                                 true,
                                                                 null);
 
-        parameterGUID = archiveHelper.addSchemaAttribute(apiSchemaAttributeTypeName,
+        parameterGUID = archiveHelper.addSchemaAttribute(assetGUID,
+                                                         apiAssetTypeName,
+                                                         apiSchemaAttributeTypeName,
                                                          null,
                                                          customerNoResponseQualifiedName,
                                                          customerNoDisplayName,
@@ -199,11 +204,14 @@ public class SimpleAPICatalogArchiveBuilder
                                                          customerNoDataType,
                                                          customerNoLength,
                                                          0,
+                                                         null,
                                                          null);
 
         archiveHelper.addAttributeForSchemaType(responseGUID, parameterGUID);
 
-        parameterGUID = archiveHelper.addSchemaAttribute(apiSchemaAttributeTypeName,
+        parameterGUID = archiveHelper.addSchemaAttribute(assetGUID,
+                                                         apiAssetTypeName,
+                                                         apiSchemaAttributeTypeName,
                                                          null,
                                                          customerNameQualifiedName,
                                                          customerNameDisplayName,
@@ -211,11 +219,14 @@ public class SimpleAPICatalogArchiveBuilder
                                                          customerNameDataType,
                                                          customerNameLength,
                                                          1,
+                                                         null,
                                                          null);
 
         archiveHelper.addAttributeForSchemaType(responseGUID, parameterGUID);
 
-        parameterGUID = archiveHelper.addSchemaAttribute(apiSchemaAttributeTypeName,
+        parameterGUID = archiveHelper.addSchemaAttribute(assetGUID,
+                                                         apiAssetTypeName,
+                                                         apiSchemaAttributeTypeName,
                                                          null,
                                                          customerCardIdQualifiedName,
                                                          customerCardIdDisplayName,
@@ -223,6 +234,7 @@ public class SimpleAPICatalogArchiveBuilder
                                                          customerCardIdDataType,
                                                          customerCardIdLength,
                                                          2,
+                                                         null,
                                                          null);
 
         archiveHelper.addAttributeForSchemaType(responseGUID, parameterGUID);

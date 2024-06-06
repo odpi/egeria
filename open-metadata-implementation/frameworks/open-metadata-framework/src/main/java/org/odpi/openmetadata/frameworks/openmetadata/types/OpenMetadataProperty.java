@@ -150,6 +150,36 @@ public enum OpenMetadataProperty
     IS_PUBLIC("isPublic", "boolean",  "Is this element visible to all, or only the author?", "true", "e7a8eaa8-4358-4dd3-8d82-2ab3c118cfe4"),
 
     /**
+     * Rating level provided.
+     */
+    STARS("stars", "StarRating", "Rating level provided.", "***", "896fd016-fad1-43dc-87a9-3ee577d8d898"),
+
+    /**
+     * Additional comments associated with the rating.
+     */
+    REVIEW("review", "string", "Additional comments associated with the rating.", null, "ae1ef693-6264-44ee-8014-23a283ad3b0e"),
+
+    /**
+     * Feedback comments or additional information.
+     */
+    TEXT("text", "string", "Feedback comments or additional information.", null, "baef44c7-e345-46ef-b8f7-a4d7fbcf77d7"),
+
+    /**
+     * Type of comment.
+     */
+    TYPE("type", "CommentType", "Type of comment.", "Answer", "465c7ed7-74d4-4eb3-9e4c-9d47f06a0ebd"),
+
+    /**
+     * Descriptive name of the tag.
+     */
+    TAG_NAME("tagName", "string", "Descriptive name of the tag.", null, "c6054168-4236-4de1-9ece-ebcb5597dbf4"),
+
+    /**
+     * More detail on the meaning of the tag.
+     */
+    TAG_DESCRIPTION("tagDescription", "string", "More detail on the meaning of the tag.", null, "e8fc2fc9-afae-47cd-b5f0-f7c374fb6ea4"),
+
+    /**
      * Description of the technique used to create the sample.
      */
     SAMPLING_METHOD("samplingMethod", "string", "Description of the technique used to create the sample.", null, "1cb00437-adde-4b71-a655-f736f2c8989d"),

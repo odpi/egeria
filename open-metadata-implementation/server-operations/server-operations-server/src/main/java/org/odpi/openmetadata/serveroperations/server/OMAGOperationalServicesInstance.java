@@ -11,7 +11,6 @@ import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstanc
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
 import org.odpi.openmetadata.frameworkservices.oif.admin.OIFMetadataOperationalServices;
-import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineProxyOperationalServices;
 import org.odpi.openmetadata.governanceservers.enginehostservices.server.EngineHostOperationalServices;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonOperationalServices;
 import org.odpi.openmetadata.governanceservers.lineagewarehouse.admin.LineageWarehouseOperationalServices;
@@ -47,7 +46,6 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     private EngineHostOperationalServices        operationalEngineHost               = null;
     private IntegrationDaemonOperationalServices operationalIntegrationDaemon       = null;
     private LineageWarehouseOperationalServices  openLineageOperationalServices     = null;
-    private DataEngineProxyOperationalServices   operationalDataEngineProxyServices = null;
     private OMRSAuditLog                         auditLog                            = null;
 
 
@@ -411,27 +409,6 @@ public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
         return openLineageOperationalServices;
     }
 
-
-    /**
-     * Return the running instance of Data Engine proxy
-     *
-     * @return DataEngineProxyOperationalServices
-     */
-    DataEngineProxyOperationalServices getOperationalDataEngineProxyServices()
-    {
-        return operationalDataEngineProxyServices;
-    }
-
-
-    /**
-     * Set up the running instance of Data Engine proxy
-     *
-     * @param operationalDataEngineProxyServices DataEngineProxyOperationalServices
-     */
-    void setOperationalDataEngineProxyServices(DataEngineProxyOperationalServices operationalDataEngineProxyServices)
-    {
-        this.operationalDataEngineProxyServices = operationalDataEngineProxyServices;
-    }
 
 
     /**
