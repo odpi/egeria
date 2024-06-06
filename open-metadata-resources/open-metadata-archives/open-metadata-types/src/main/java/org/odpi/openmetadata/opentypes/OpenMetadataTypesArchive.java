@@ -213,10 +213,18 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = OpenMetadataProperty.ANCHOR_TYPE_NAME.name;
         final String attribute1Description     = OpenMetadataProperty.ANCHOR_TYPE_NAME.description;
         final String attribute1DescriptionGUID = OpenMetadataProperty.ANCHOR_TYPE_NAME.descriptionGUID;
+        final String attribute2Name            = OpenMetadataProperty.ANCHOR_DOMAIN_NAME.name;
+        final String attribute2Description     = OpenMetadataProperty.ANCHOR_DOMAIN_NAME.description;
+        final String attribute2DescriptionGUID = OpenMetadataProperty.ANCHOR_DOMAIN_NAME.descriptionGUID;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
+        properties.add(property);
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
         properties.add(property);
 
         typeDefPatch.setPropertyDefinitions(properties);

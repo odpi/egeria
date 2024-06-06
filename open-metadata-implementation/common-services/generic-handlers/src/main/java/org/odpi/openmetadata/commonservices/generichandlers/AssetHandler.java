@@ -659,7 +659,11 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                    effectiveTime,
                                                                    methodName);
 
-        builder.setAnchors(userId, null, templateEntity.getType().getTypeDefName(), methodName);
+        builder.setAnchors(userId,
+                           null,
+                           templateEntity.getType().getTypeDefName(),
+                           OpenMetadataType.ASSET.typeName,
+                           methodName);
 
         String assetGUID = this.createBeanFromTemplate(userId,
                                                        externalSourceGUID,
@@ -860,6 +864,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            typeGUID,
                                            typeName,
+                                           OpenMetadataType.ASSET.typeName,
                                            builder,
                                            true,
                                            effectiveTime,
@@ -949,6 +954,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            externalSourceName,
                                            assetTypeId,
                                            assetTypeName,
+                                           OpenMetadataType.ASSET.typeName,
                                            builder,
                                            true,
                                            effectiveTime,
@@ -2859,14 +2865,14 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                                                                      methodName);
 
                         assetZones = repositoryHelper.getStringArrayProperty(serviceName,
-                                                                             OpenMetadataType.ZONE_MEMBERSHIP_PROPERTY_NAME,
+                                                                             OpenMetadataProperty.ZONE_MEMBERSHIP.name,
                                                                              classification.getProperties(),
                                                                              methodName);
                     }
                     catch (ClassificationErrorException notPresent)
                     {
                         assetZones = repositoryHelper.getStringArrayProperty(serviceName,
-                                                                             OpenMetadataType.ZONE_MEMBERSHIP_PROPERTY_NAME,
+                                                                             OpenMetadataProperty.ZONE_MEMBERSHIP.name,
                                                                              entity.getProperties(),
                                                                              methodName);
                     }
@@ -3115,7 +3121,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
-        specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
 
         return this.getEntityGUIDsByValue(userId,
                                           name,
@@ -3240,7 +3246,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
-        specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
 
         return this.getBeansByValue(userId,
                                     name,
@@ -3266,7 +3272,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * Return a list of assets with the requested metadataCollectionId.
      *
      * @param userId calling user
-     * @param typeGUID unique identifier of the asset type to search for (null for generic Asset)
      * @param typeName unique name of the asset type to search for (null for generic Asset)
      * @param metadataCollectionId unique identifier of metadataCollection to search for
      * @param metadataCollectionIdParameterName parameter providing the metadata collection id
@@ -3283,36 +3288,34 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<B> getAssetsByMetadataCollectionId(String   userId,
-                                            String   typeGUID,
-                                            String   typeName,
-                                            String   metadataCollectionId,
-                                            String   metadataCollectionIdParameterName,
-                                            int      startFrom,
-                                            int      pageSize,
-                                            boolean  forLineage,
-                                            boolean  forDuplicateProcessing,
-                                            Date     effectiveTime,
-                                            String   methodName) throws InvalidParameterException,
-                                                                        PropertyServerException,
-                                                                        UserNotAuthorizedException
+    public List<B> getAssetsByMetadataCollectionId(String   userId,
+                                                   String   typeName,
+                                                   String   metadataCollectionId,
+                                                   String   metadataCollectionIdParameterName,
+                                                   int      startFrom,
+                                                   int      pageSize,
+                                                   boolean  forLineage,
+                                                   boolean  forDuplicateProcessing,
+                                                   Date     effectiveTime,
+                                                   String   methodName) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
     {
         List<String> specificMatchPropertyNames = new ArrayList<>();
 
-        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
-        specificMatchPropertyNames.add(OpenMetadataProperty.NAME.name);
-        specificMatchPropertyNames.add(OpenMetadataProperty.DESCRIPTION.name);
+        specificMatchPropertyNames.add(OpenMetadataProperty.METADATA_COLLECTION_ID.name);
 
         String resultTypeGUID = OpenMetadataType.ASSET.typeGUID;
         String resultTypeName = OpenMetadataType.ASSET.typeName;
 
-        if (typeGUID != null)
-        {
-            resultTypeGUID = typeGUID;
-        }
         if (typeName != null)
         {
             resultTypeName = typeName;
+            resultTypeGUID = invalidParameterHandler.validateTypeName(typeName,
+                                                                      OpenMetadataType.ASSET.typeName,
+                                                                      serviceName,
+                                                                      methodName,
+                                                                      repositoryHelper);
         }
 
         return this.getBeansByValue(userId,

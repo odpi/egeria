@@ -49,10 +49,10 @@ public class TemplateManagerResource
      *  UserNotAuthorizedException the governance action service is not able to access the element
      *  PropertyServerException there is a problem accessing the metadata store
      */
-    @PostMapping(path = "/metadata-elements/by-search-string")
+    @PostMapping(path = "/templates/by-search-string")
 
-    @Operation(summary="findMetadataElementsWithString",
-            description="Retrieve the metadata elements that contain the requested string.",
+    @Operation(summary="findTemplates",
+            description="Retrieve the metadata elements that contain the requested string in its template classification.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/services/gaf-metadata-management/"))
 

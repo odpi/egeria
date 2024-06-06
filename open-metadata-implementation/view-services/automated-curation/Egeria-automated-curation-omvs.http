@@ -5,7 +5,7 @@
 
 ###
 # =====================================================================================================================
-# Managed the authentication token.  Run this request to create/refresh the token.
+# Manage the authentication token.  Run this request to create/refresh the token.
 
 # @name Token (RequestBody)
 POST {{baseURL}}/api/token
@@ -19,6 +19,7 @@ Content-Type: application/json
 > {% client.global.set("token", response.body); %}
 
 ###
+# =====================================================================================================================
 # The technology types provide the reference data to guide the curator.  They are extracted from the valid
 # values for deployedImplementationType
 #

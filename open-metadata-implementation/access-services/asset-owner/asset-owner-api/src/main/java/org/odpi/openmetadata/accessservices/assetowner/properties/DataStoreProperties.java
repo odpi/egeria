@@ -258,14 +258,6 @@ public class DataStoreProperties extends AssetProperties
                        ", versionIdentifier='" + getVersionIdentifier() + '\'' +
                        ", displayName='" + getDisplayName() + '\'' +
                        ", description='" + getDescription() + '\'' +
-                       ", owner='" + getOwner() + '\'' +
-                       ", ownerTypeName='" + getOwnerTypeName() + '\'' +
-                       ", ownerPropertyName='" + getOwnerPropertyName() + '\'' +
-                       ", ownerType=" + getOwnerType() +
-                       ", zoneMembership=" + getZoneMembership() +
-                       ", originOrganizationGUID='" + getOriginOrganizationGUID() + '\'' +
-                       ", originBusinessCapabilityGUID='" + getOriginBusinessCapabilityGUID() + '\'' +
-                       ", otherOriginValues=" + getOtherOriginValues() +
                        ", pathName='" + pathName + '\'' +
                        ", createTime=" + createTime +
                        ", modifiedTime=" + modifiedTime +

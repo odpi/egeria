@@ -32,7 +32,7 @@ data-serving solution.  The asset manager is also called by the
 [Lineage Integrator OMIS](../integration-services/lineage-integrator) to capture design lineage
 from data engines and other processing services.
 It also supports the [Glossary Browser OMVS](../view-services/glossary-browser) and
-[Glossary Workflow OMVS](../view-services/glossary-workflow).
+[Glossary Manager OMVS](../view-services/glossary-manager).
 
 * **[asset-owner](asset-owner)** - manage metadata and feedback for owned assets.
 
@@ -134,13 +134,6 @@ These projects and campaigns may be for governance projects, or generic data use
 
   The Security Manager OMAS provides the services to exchange security tags with access control and data
 protection technology services.  It is called by the [Security Integrator OMIS](../integration-services/security-integrator).
-
-* **[security-officer](security-officer)** - set up rules to protect data.
-
-  The Security Officer OMAS provides the services to support the definition of roles and 
-rules for managing the protection of metadata and assets, plus work with the audit
-logs captured by the open metadata and governance tools.
-It is typically used by the security, compliance and auditing teams.
 
 * **[software-developer](software-developer)** - deliver useful metadata to software developers.
 

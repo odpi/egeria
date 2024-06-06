@@ -26,7 +26,7 @@ dependencies {
     implementation project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-client')
     implementation project(':open-metadata-test:open-metadata-fvt:fvt-utilities')
     compileOnly  project(':open-metadata-implementation:framework-services:ocf-metadata-management:ocf-metadata-api')
-    testImplementation project(':open-metadata-distribution:open-metadata-assemblies')
+    testImplementation project(':open-metadata-distribution:omag-server-platform')
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
@@ -46,7 +46,7 @@ java {
 // Local properties to use
 ext
 {
-    distdir="../../../../../../open-metadata-distribution/open-metadata-assemblies/build/unpacked/egeria-${project.version}-distribution.tar.gz"
+    distdir="../../../../../../open-metadata-distribution/omag-server-platform/build/unpacked/egeria-platform-${project.version}-distribution.tar.gz"
 }
 
 
@@ -55,17 +55,17 @@ sourceSets.test.java.srcDirs = []
 sourceSets.test.groovy.srcDirs = ["src/test/java", "src/test/script"]
 
 // Initially we launch as an app -- though there may be a better way of running this in the existing jvm
-task startPlatform(dependsOn: [':open-metadata-distribution:open-metadata-assemblies:unzip','cleanData','prepareDirs'], type: com.github.psxpaul.task.ExecFork) {
+task startPlatform(dependsOn: [':open-metadata-distribution:omag-server-platform:unzip','cleanData','prepareDirs'], type: com.github.psxpaul.task.ExecFork) {
     // Start some external service
     executable = System.properties.'java.home' + '/bin/java'
     workingDir = layout.buildDirectory.dir('run')
 
     args = [ "-Dserver.port=10443",
-             "-Dloader.path=${distdir}/platform/lib",
+             "-Dloader.path=${distdir}/assembly/platform/lib",
              "-Dspringdoc.api-docs.enabled=false",
              "-Dspring.config.location=../../../../../../test.application.properties",
              "-jar",
-             "${distdir}/platform/omag-server-platform-${project.version}.jar" ]
+             "${distdir}/assembly/platform/omag-server-platform-${project.version}.jar" ]
     // Setting the output directories to be the same for ALL FVTs acts as a synchronization mechanism
     // - alternatively we need to ensure the server port is unique per test
     standardOutput = layout.buildDirectory.file("chassis.log")

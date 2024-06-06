@@ -198,8 +198,7 @@ public class SoftwareCapability extends Referenceable
     public String toString()
     {
         return "SoftwareCapability{" +
-                       "URL='" + getURL() + '\'' +
-                       ", extendedProperties=" + getExtendedProperties() +
+                       "extendedProperties=" + getExtendedProperties() +
                        ", status=" + getStatus() +
                        ", type=" + getType() +
                        ", origin=" + getOrigin() +

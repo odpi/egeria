@@ -4288,7 +4288,11 @@ public class RelationalDataHandler<DATABASE,
                     databaseColumnHandler.getAnchorGUIDFromAnchorsClassification(databaseTableEntity, methodName);
             if (anchorIdentifiers != null)
             {
-                schemaAttributeBuilder.setAnchors(userId, anchorIdentifiers.anchorGUID, anchorIdentifiers.anchorTypeName, methodName);
+                schemaAttributeBuilder.setAnchors(userId,
+                                                  anchorIdentifiers.anchorGUID,
+                                                  anchorIdentifiers.anchorTypeName,
+                                                  anchorIdentifiers.anchorDomainName,
+                                                  methodName);
             }
 
             /*
@@ -4587,7 +4591,7 @@ public class RelationalDataHandler<DATABASE,
             /*
              * If the database table is set up with an anchor then this is propagated to the column
              */
-            OpenMetadataAPIGenericHandler.AnchorIdentifiers anchorGUID = databaseColumnHandler.getAnchorGUIDFromAnchorsClassification(databaseTableEntity, methodName);
+            anchorIdentifiers = databaseColumnHandler.getAnchorGUIDFromAnchorsClassification(databaseTableEntity, methodName);
 
             /*
              * The table may have its type stored as a classification, or as a linked schema type.  The column is linked to
@@ -4656,7 +4660,11 @@ public class RelationalDataHandler<DATABASE,
 
         if (anchorIdentifiers != null)
         {
-            builder.setAnchors(userId, anchorIdentifiers.anchorGUID, anchorIdentifiers.anchorTypeName, methodName);
+            builder.setAnchors(userId,
+                               anchorIdentifiers.anchorGUID,
+                               anchorIdentifiers.anchorTypeName,
+                               anchorIdentifiers.anchorDomainName,
+                               methodName);
         }
 
         /*

@@ -4,6 +4,9 @@
 @viewServer=view-server
 
 ###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
 # @name Token (RequestBody)
 POST {{baseURL}}/api/token
 Content-Type: application/json
@@ -16,4 +19,53 @@ Content-Type: application/json
 > {% client.global.set("token", response.body); %}
 
 
+###
+# @name findTemplates
+# Retrieve the metadata elements that contain the requested string in its Template classification.
+# Optional Request parameters
+#     *  elementTypeName optional type name for the template
+#     *  viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+#     *  accessServiceURLMarker optional access service URL marker used to identify which back end service to call (default digital-architecture)
+#     *  startFrom paging start point (default 0)
+#     *  pageSize maximum results that can be returned (default 0)
+#
+# Further Information: https://egeria-project.org/services/gaf-metadata-management/
 
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/template-manager/templates/by-search-string)
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class": "TemplateClassificationRequestBody",
+  "templateClassificationProperties": {
+    "class": "TemplateClassificationProperties",
+    "name" : "add value here",
+    "description" : "add value here",
+    "versionIdentifier" : "add value here",
+    "additionalProperties" : {
+      "propertyName2" : "propertyValue",
+      "propertyName1" : "propertyValue"
+    }
+  }
+}
+
+###
+{
+  "class": "TemplateClassificationRequestBody",
+  "templateClassificationProperties": {
+    "class": "TemplateClassificationProperties",
+    "name" : "add value here",
+    "description" : "add value here",
+    "versionIdentifier" : "add value here",
+    "additionalProperties" : {
+      "propertyName2" : "propertyValue",
+      "propertyName1" : "propertyValue"
+    }
+  },
+  "specification" : {
+    "specificationFieldName" : [ {
+      "propertyName1" : "propertyValue",
+      "propertyName2" : "propertyValue"
+    }]
+  }
+}

@@ -28,8 +28,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class ElementClassificationHeader extends ElementControlHeader
 {
-    private static final long    serialVersionUID = 1L;
-
     private ClassificationOrigin classificationOrigin          = ClassificationOrigin.ASSIGNED;
     private String               classificationOriginGUID      = null;
 

@@ -39,7 +39,6 @@ The Egeria core repository contains the core Egeria functionality, and is organi
     * **[it-infrastructure](open-metadata-implementation/access-services/it-infrastructure)** - manage metadata about deployed infrastructure.
     * **[project-management](open-metadata-implementation/access-services/project-management)** - manage definitions of projects for metadata management and governance.
     * **[security-manager](open-metadata-implementation/access-services/security-manager)** - synchronization of metadata with security services.
-    * **[security-officer](open-metadata-implementation/access-services/security-officer)** - set up rules to protect data.
     * **[software-developer](open-metadata-implementation/access-services/software-developer)** - deliver useful metadata to software developers.
     * **[stewardship-action](open-metadata-implementation/access-services/stewardship-action)** - manage metadata as part of a data steward's work to improve the data landscape.
     * **[subject-area](open-metadata-implementation/access-services/subject-area)** - develop a definition of a subject area including glossary terms, reference data and rules.

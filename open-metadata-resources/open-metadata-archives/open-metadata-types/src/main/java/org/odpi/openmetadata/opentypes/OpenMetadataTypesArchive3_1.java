@@ -330,92 +330,57 @@ public class OpenMetadataTypesArchive3_1
 
     private EntityDef addBareMetalComputerEntity()
     {
-        final String guid = "8ef355d4-5cd7-4038-8337-62671b088920";
-
-        final String name            = "BareMetalComputer";
-        final String description     = "A computer that is hosting software directly on its operating system.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "Host";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.BARE_METAL_COMPUTER.typeGUID,
+                                                 OpenMetadataType.BARE_METAL_COMPUTER.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.HOST.typeName),
+                                                 OpenMetadataType.BARE_METAL_COMPUTER.description,
+                                                 OpenMetadataType.BARE_METAL_COMPUTER.descriptionGUID,
+                                                 OpenMetadataType.BARE_METAL_COMPUTER.wikiURL);
     }
 
 
 
     private EntityDef addVirtualMachineEntity()
     {
-        final String guid = "28452091-6b27-4f40-8e31-47ce34f58387";
-
-        final String name            = "VirtualMachine";
-        final String description     = "A virtual machine that uses a hypervisor to virtualize hardware.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "Host";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.VIRTUAL_MACHINE.typeGUID,
+                                                 OpenMetadataType.VIRTUAL_MACHINE.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.HOST.typeName),
+                                                 OpenMetadataType.VIRTUAL_MACHINE.description,
+                                                 OpenMetadataType.VIRTUAL_MACHINE.descriptionGUID,
+                                                 OpenMetadataType.VIRTUAL_MACHINE.wikiURL);
     }
 
 
     private EntityDef addDockerContainerEntity()
     {
-        final String guid = "9882b8aa-eba3-4a30-94c6-43117efd11cc";
-
-        final String name            = "DockerContainer";
-        final String description     = "A virtual container using the docker platform.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "VirtualContainer";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DOCKER_CONTAINER.typeGUID,
+                                                 OpenMetadataType.DOCKER_CONTAINER.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.VIRTUAL_CONTAINER.typeName),
+                                                 OpenMetadataType.DOCKER_CONTAINER.description,
+                                                 OpenMetadataType.DOCKER_CONTAINER.descriptionGUID,
+                                                 OpenMetadataType.DOCKER_CONTAINER.wikiURL);
     }
 
 
     private EntityDef addHadoopClusterEntity()
     {
-        final String guid = "abc27cf7-e526-4d1b-9c25-7dd60a7993e4";
-
-        final String name            = "HadoopCluster";
-        final String description     = "A cluster of nodes for big data workloads.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "HostCluster";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.HADOOP_CLUSTER.typeGUID,
+                                                 OpenMetadataType.HADOOP_CLUSTER.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.HOST_CLUSTER.typeName),
+                                                 OpenMetadataType.HADOOP_CLUSTER.description,
+                                                 OpenMetadataType.HADOOP_CLUSTER.descriptionGUID,
+                                                 OpenMetadataType.HADOOP_CLUSTER.wikiURL);
     }
 
 
     private EntityDef addKubernetesClusterEntity()
     {
-        final String guid = "101f1c93-7f5d-44e2-9ea4-5cf21726ba5c";
-
-        final String name            = "KubernetesCluster";
-        final String description     = "A host cluster managing containerized applications.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "HostCluster";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.KUBERNETES_CLUSTER.typeGUID,
+                                                 OpenMetadataType.KUBERNETES_CLUSTER.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.HOST_CLUSTER.typeName),
+                                                 OpenMetadataType.KUBERNETES_CLUSTER.description,
+                                                 OpenMetadataType.KUBERNETES_CLUSTER.descriptionGUID,
+                                                 OpenMetadataType.KUBERNETES_CLUSTER.wikiURL);
     }
 
 

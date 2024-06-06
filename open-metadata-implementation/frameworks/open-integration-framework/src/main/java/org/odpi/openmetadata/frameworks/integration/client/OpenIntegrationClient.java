@@ -170,7 +170,6 @@ public abstract class OpenIntegrationClient
      *
      * @param userId calling user
      * @param anchorGUID element to attach the integration report to
-     * @param anchorTypeName typeName of the anchor for the integration report
      * @param properties properties of the report
      *
      * @throws InvalidParameterException one of the parameters is null or invalid,
@@ -179,7 +178,6 @@ public abstract class OpenIntegrationClient
      */
     public abstract void publishIntegrationReport(String                      userId,
                                                   String                      anchorGUID,
-                                                  String                      anchorTypeName,
                                                   IntegrationReportProperties properties) throws InvalidParameterException,
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException;

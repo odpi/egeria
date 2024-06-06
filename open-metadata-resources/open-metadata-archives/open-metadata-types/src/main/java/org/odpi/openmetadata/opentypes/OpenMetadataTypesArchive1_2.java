@@ -472,17 +472,17 @@ public class OpenMetadataTypesArchive1_2
         final String attribute3Description     = OpenMetadataProperty.OWNER.description;
         final String attribute3DescriptionGUID = OpenMetadataProperty.OWNER.descriptionGUID;
         /* Moved to Ownership classification */
-        final String attribute4Name            = OpenMetadataProperty.OWNER_TYPE.name;
-        final String attribute4Description     = OpenMetadataProperty.OWNER_TYPE.description;
-        final String attribute4DescriptionGUID = OpenMetadataProperty.OWNER_TYPE.descriptionGUID;
+        final String attribute4Name            = "ownerType";
+        final String attribute4Description     = "Deprecated. Type of identifier used for owner property.";
+        final String attribute4DescriptionGUID = null;
         /* Moved to AssetZoneMembership classification */
         final String attribute5Name            = OpenMetadataProperty.ZONE_MEMBERSHIP.name;
         final String attribute5Description     = OpenMetadataProperty.ZONE_MEMBERSHIP.description;
         final String attribute5DescriptionGUID = OpenMetadataProperty.ZONE_MEMBERSHIP.descriptionGUID;
         /* Moved to LatestChange entity  */
-        final String attribute6Name            = OpenMetadataProperty.LATEST_CHANGE.name;
-        final String attribute6Description     = OpenMetadataProperty.LATEST_CHANGE.description;
-        final String attribute6DescriptionGUID = OpenMetadataProperty.LATEST_CHANGE.descriptionGUID;
+        final String attribute6Name            = "latestChange";
+        final String attribute6Description     = "Description of the last change to the asset's metadata.";
+        final String attribute6DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -2002,18 +2002,12 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getHostEntity()
     {
-        final String guid            = "1abd16db-5b8a-4fd9-aee5-205db3febe99";
-        final String name            = "Host";
-        final String description     = "Named IT infrastructure system that supports multiple software platforms and servers.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = OpenMetadataType.IT_INFRASTRUCTURE.typeName;
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.HOST.typeGUID,
+                                                 OpenMetadataType.HOST.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.IT_INFRASTRUCTURE.typeName),
+                                                 OpenMetadataType.HOST.description,
+                                                 OpenMetadataType.HOST.descriptionGUID,
+                                                 OpenMetadataType.HOST.wikiURL);
     }
 
 
@@ -2199,60 +2193,42 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getHostClusterEntity()
     {
-        final String guid            = "9794f42f-4c9f-4fe6-be84-261f0a7de890";
-        final String name            = "HostCluster";
-        final String description     = "A group of hosts operating together to provide a scalable platform.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "Host";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.HOST_CLUSTER.typeGUID,
+                                                 OpenMetadataType.HOST_CLUSTER.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.HOST.typeName),
+                                                 OpenMetadataType.HOST_CLUSTER.description,
+                                                 OpenMetadataType.HOST_CLUSTER.descriptionGUID,
+                                                 OpenMetadataType.HOST_CLUSTER.wikiURL);
     }
 
 
     private EntityDef getVirtualContainerEntity()
     {
-        final String guid            = "e2393236-100f-4ac0-a5e6-ce4e96c521e7";
-        final String name            = "VirtualContainer";
-        final String description     = "Container-based virtual host.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "Host";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.VIRTUAL_CONTAINER.typeGUID,
+                                                 OpenMetadataType.VIRTUAL_CONTAINER.typeName,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.HOST.typeName),
+                                                 OpenMetadataType.VIRTUAL_CONTAINER.description,
+                                                 OpenMetadataType.VIRTUAL_CONTAINER.descriptionGUID,
+                                                 OpenMetadataType.VIRTUAL_CONTAINER.wikiURL);
     }
 
 
     private RelationshipDef getHostClusterMemberRelationship()
     {
-        final String guid            = "1a1c3933-a583-4b0c-9e42-c3691296a8e0";
-        final String name            = "HostClusterMember";
-        final String description     = "Identifies a host as a member of a host cluster.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.HOST_CLUSTER_MEMBER_RELATIONSHIP.typeGUID,
+                                                                                OpenMetadataType.HOST_CLUSTER_MEMBER_RELATIONSHIP.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.HOST_CLUSTER_MEMBER_RELATIONSHIP.description,
+                                                                                OpenMetadataType.HOST_CLUSTER_MEMBER_RELATIONSHIP.descriptionGUID,
+                                                                                OpenMetadataType.HOST_CLUSTER_MEMBER_RELATIONSHIP.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "HostCluster";
+        final String                     end1EntityType               = OpenMetadataType.HOST_CLUSTER.typeName;
         final String                     end1AttributeName            = "hostCluster";
         final String                     end1AttributeDescription     = "Cluster managing this host.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -2269,7 +2245,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Host";
+        final String                     end2EntityType               = OpenMetadataType.HOST.typeName;
         final String                     end2AttributeName            = "managedHosts";
         final String                     end2AttributeDescription     = "Member of the host cluster.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -6299,16 +6275,12 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getRatingEntity()
     {
-        final String guid            = "7299d721-d17f-4562-8286-bcd451814478";
-        final String name            = "Rating";
-        final String description     = "Quantitative feedback related to an item.";
-        final String descriptionGUID = null;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.RATING.typeGUID,
+                                                                OpenMetadataType.RATING.typeName,
                                                                 null,
-                                                                description,
-                                                                descriptionGUID);
+                                                                OpenMetadataType.RATING.description,
+                                                                OpenMetadataType.RATING.descriptionGUID,
+                                                                OpenMetadataType.RATING.wikiURL);
 
         /*
          * Build the attributes
@@ -6319,25 +6291,19 @@ public class OpenMetadataTypesArchive1_2
         final String attribute1Name            = "anchorGUID";
         final String attribute1Description     = "Optional identifier of the referenceable that this rating is connected to (either directly or indirectly).";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "stars";
-        final String attribute2Description     = "Rating level provided.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "review";
-        final String attribute3Description     = "Additional comments associated with the rating.";
-        final String attribute3DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         properties.add(property);
         property = archiveHelper.getEnumTypeDefAttribute("StarRating",
-                                                         attribute2Name,
-                                                         attribute2Description,
-                                                         attribute2DescriptionGUID);
+                                                         OpenMetadataProperty.STARS.name,
+                                                         OpenMetadataProperty.STARS.description,
+                                                         OpenMetadataProperty.STARS.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.REVIEW.name,
+                                                           OpenMetadataProperty.REVIEW.description,
+                                                           OpenMetadataProperty.REVIEW.descriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -6364,25 +6330,19 @@ public class OpenMetadataTypesArchive1_2
         final String attribute1Name            = "anchorGUID";
         final String attribute1Description     = "Optional identifier of the referenceable that this comment is connected to (either directly or indirectly).";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "text";
-        final String attribute2Description     = "Feedback comments or additional information.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "type";
-        final String attribute3Description     = "Type of comment.";
-        final String attribute3DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.TEXT.name,
+                                                           OpenMetadataProperty.TEXT.description,
+                                                           OpenMetadataProperty.TEXT.descriptionGUID);
         properties.add(property);
         property = archiveHelper.getEnumTypeDefAttribute("CommentType",
-                                                         attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
+                                                         OpenMetadataProperty.TYPE.name,
+                                                         OpenMetadataProperty.TYPE.description,
+                                                         OpenMetadataProperty.TYPE.descriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -6393,16 +6353,12 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getLikeEntity()
     {
-        final String guid            = "deaa5ca0-47a0-483d-b943-d91c76744e01";
-        final String name            = "Like";
-        final String description     = "Boolean type of rating expressing a favorable impression.";
-        final String descriptionGUID = null;
-
-        EntityDef entityDef =  archiveHelper.getDefaultEntityDef(guid,
-                                                                 name,
+        EntityDef entityDef =  archiveHelper.getDefaultEntityDef(OpenMetadataType.LIKE.typeGUID,
+                                                                 OpenMetadataType.LIKE.typeName,
                                                                  null,
-                                                                 description,
-                                                                 descriptionGUID);
+                                                                 OpenMetadataType.LIKE.description,
+                                                                 OpenMetadataType.LIKE.descriptionGUID,
+                                                                 OpenMetadataType.LIKE.wikiURL);
 
         /*
          * Build the attributes
@@ -6427,16 +6383,12 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getInformalTagEntity()
     {
-        final String guid            = "ba846a7b-2955-40bf-952b-2793ceca090a";
-        final String name            = "InformalTag";
-        final String description     = "An descriptive tag for an item.";
-        final String descriptionGUID = null;
-
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.INFORMAL_TAG.typeGUID,
+                                                                OpenMetadataType.INFORMAL_TAG.typeName,
                                                                 null,
-                                                                description,
-                                                                descriptionGUID);
+                                                                OpenMetadataType.INFORMAL_TAG.description,
+                                                                OpenMetadataType.INFORMAL_TAG.descriptionGUID,
+                                                                OpenMetadataType.INFORMAL_TAG.wikiURL);
 
         /*
          * Build the attributes
@@ -6444,27 +6396,17 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.IS_PUBLIC.name;
-        final String attribute1Description     = "Is the tag visible to more than the originator?";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "tagName";
-        final String attribute2Description     = "Descriptive name of the tag.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "tagDescription";
-        final String attribute3Description     = "More detail on the meaning of the tag.";
-        final String attribute3DescriptionGUID = null;
-
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
-                                                            attribute1Description,
-                                                            attribute1DescriptionGUID);
+        property = archiveHelper.getBooleanTypeDefAttribute(OpenMetadataProperty.IS_PUBLIC.name,
+                                                            OpenMetadataProperty.IS_PUBLIC.description,
+                                                            OpenMetadataProperty.IS_PUBLIC.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.TAG_NAME.name,
+                                                           OpenMetadataProperty.TAG_NAME.description,
+                                                           OpenMetadataProperty.TAG_NAME.descriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
-                                                           attribute3Description,
-                                                           attribute3DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(OpenMetadataProperty.TAG_DESCRIPTION.name,
+                                                           OpenMetadataProperty.TAG_DESCRIPTION.description,
+                                                           OpenMetadataProperty.TAG_DESCRIPTION.descriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -6475,19 +6417,13 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getAttachedRatingRelationship()
     {
-        final String guid            = "0aaad9e9-9cc5-4ad8-bc2e-c1099bab6344";
-        final String name            = "AttachedRating";
-        final String description     = "Links a rating to an item.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeGUID,
+                                                                                OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.description,
+                                                                                OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.descriptionGUID,
+                                                                                OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
@@ -6511,7 +6447,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Rating";
+        final String                     end2EntityType               = OpenMetadataType.RATING.typeName;
         final String                     end2AttributeName            = "starRatings";
         final String                     end2AttributeDescription     = "Accumulated ratings.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -6530,13 +6466,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.IS_PUBLIC.name;
-        final String attribute1Description     = "Is the attached rating visible to more than the originator?";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
-                                                            attribute1Description,
-                                                            attribute1DescriptionGUID);
+        property = archiveHelper.getBooleanTypeDefAttribute(OpenMetadataProperty.IS_PUBLIC.name,
+                                                            OpenMetadataProperty.IS_PUBLIC.description,
+                                                            OpenMetadataProperty.IS_PUBLIC.descriptionGUID);
         properties.add(property);
 
         relationshipDef.setPropertiesDefinition(properties);
@@ -6547,19 +6479,13 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getAttachedCommentRelationship()
     {
-        final String guid            = "0d90501b-bf29-4621-a207-0c8c953bdac9";
-        final String name            = "AttachedComment";
-        final String description     = "Links a comment to an item, or another comment.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeGUID,
+                                                                                OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.description,
+                                                                                OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.descriptionGUID,
+                                                                                OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
@@ -6583,7 +6509,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Comment";
+        final String                     end2EntityType               = OpenMetadataType.COMMENT.typeName;
         final String                     end2AttributeName            = "comments";
         final String                     end2AttributeDescription     = "Accumulated comments.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -6602,13 +6528,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.IS_PUBLIC.name;
-        final String attribute1Description     = "Is the attached comment visible to more than the originator?";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
-                                                            attribute1Description,
-                                                            attribute1DescriptionGUID);
+        property = archiveHelper.getBooleanTypeDefAttribute(OpenMetadataProperty.IS_PUBLIC.name,
+                                                            OpenMetadataProperty.IS_PUBLIC.description,
+                                                            OpenMetadataProperty.IS_PUBLIC.descriptionGUID);
         properties.add(property);
 
         relationshipDef.setPropertiesDefinition(properties);
@@ -6619,19 +6541,13 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getAttachedLikeRelationship()
     {
-        final String guid            = "e2509715-a606-415d-a995-61d00503dad4";
-        final String name            = "AttachedLike";
-        final String description     = "Links a like to an item.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeGUID,
+                                                                                OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.description,
+                                                                                OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.descriptionGUID,
+                                                                                OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
@@ -6655,7 +6571,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Like";
+        final String                     end2EntityType               = OpenMetadataType.LIKE.typeName;
         final String                     end2AttributeName            = "likes";
         final String                     end2AttributeDescription     = "Accumulated likes.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -6674,13 +6590,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.IS_PUBLIC.name;
-        final String attribute1Description     = "Is the attached like visible to more than the originator?";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
-                                                            attribute1Description,
-                                                            attribute1DescriptionGUID);
+        property = archiveHelper.getBooleanTypeDefAttribute(OpenMetadataProperty.IS_PUBLIC.name,
+                                                            OpenMetadataProperty.IS_PUBLIC.description,
+                                                            OpenMetadataProperty.IS_PUBLIC.descriptionGUID);
         properties.add(property);
 
         relationshipDef.setPropertiesDefinition(properties);
@@ -6691,26 +6603,20 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getAcceptedAnswerRelationship()
     {
-        final String guid            = "ecf1a3ca-adc5-4747-82cf-10ec590c5c69";
-        final String name            = "AcceptedAnswer";
-        final String description     = "Identifies a comment as answering a question asked in another comment.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeGUID,
+                                                                                OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.description,
+                                                                                OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.descriptionGUID,
+                                                                                OpenMetadataType.ACCEPTED_ANSWER_RELATIONSHIP.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "Comment";
+        final String                     end1EntityType               = OpenMetadataType.COMMENT.typeName;
         final String                     end1AttributeName            = "answeredQuestions";
         final String                     end1AttributeDescription     = "Questions that now has an accepted answer.";
         final String                     end1AttributeDescriptionGUID = null;
@@ -6727,7 +6633,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Comment";
+        final String                     end2EntityType               = OpenMetadataType.COMMENT.typeName;
         final String                     end2AttributeName            = "acceptedAnswers";
         final String                     end2AttributeDescription     = "Accumulated answers.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -6746,13 +6652,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.IS_PUBLIC.name;
-        final String attribute1Description     = "Is the attached answer visible to more than the originator?";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
-                                                            attribute1Description,
-                                                            attribute1DescriptionGUID);
+        property = archiveHelper.getBooleanTypeDefAttribute(OpenMetadataProperty.IS_PUBLIC.name,
+                                                            OpenMetadataProperty.IS_PUBLIC.description,
+                                                            OpenMetadataProperty.IS_PUBLIC.descriptionGUID);
         properties.add(property);
 
         relationshipDef.setPropertiesDefinition(properties);
@@ -6763,19 +6665,13 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getAttachedTagRelationship()
     {
-        final String guid            = "4b1641c4-3d1a-4213-86b2-d6968b6c65ab";
-        final String name            = "AttachedTag";
-        final String description     = "Links an informal tag to an item.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeGUID,
+                                                                                OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
                                                                                 null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
+                                                                                OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.description,
+                                                                                OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.descriptionGUID,
+                                                                                OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.wikiURL,
+                                                                                ClassificationPropagationRule.NONE);
 
         RelationshipEndDef relationshipEndDef;
 
@@ -6799,7 +6695,7 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "InformalTag";
+        final String                     end2EntityType               = OpenMetadataType.INFORMAL_TAG.typeName;
         final String                     end2AttributeName            = "tags";
         final String                     end2AttributeDescription     = "Accumulated tags.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -6818,13 +6714,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = OpenMetadataProperty.IS_PUBLIC.name;
-        final String attribute1Description     = "Is the attached tag visible to more than the originator?";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
-                                                            attribute1Description,
-                                                            attribute1DescriptionGUID);
+        property = archiveHelper.getBooleanTypeDefAttribute(OpenMetadataProperty.IS_PUBLIC.name,
+                                                            OpenMetadataProperty.IS_PUBLIC.description,
+                                                            OpenMetadataProperty.IS_PUBLIC.descriptionGUID);
         properties.add(property);
 
         relationshipDef.setPropertiesDefinition(properties);

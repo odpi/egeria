@@ -151,13 +151,6 @@ public class AssetCatalogOMRSTopicListener extends OMRSTopicListenerBase
                 Asset assetBean = assetConverter.getAssetBean();
                 AssetCatalogEvent assetCatalogEvent = new AssetCatalogEvent();
                 assetCatalogEvent.setAsset(assetBean);
-                if (assetBean == null || !this.inTheZone(assetBean.getZoneMembership())) {
-                    log.debug("Ignored instance event - Asset not in the supported zones!");
-                    auditLog.logMessage(
-                            "Ignored instance event - Asset not in the supported zones!!",
-                            AssetCatalogAuditCode.EVENT_NOT_PROCESSING.getMessageDefinition("Asset not in the supported zones!"));
-                    return;
-                }
                 publisher.publishEvent(assetCatalogEvent);
             }else if (  supportedTypesForSearch!=null
                     && supportedTypesForSearch.contains(entityDetail.getType().getTypeDefName()))

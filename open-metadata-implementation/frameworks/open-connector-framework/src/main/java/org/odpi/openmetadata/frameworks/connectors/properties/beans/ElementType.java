@@ -206,11 +206,10 @@ public class ElementType
         {
             return true;
         }
-        if (!(objectToCompare instanceof ElementType))
+        if (!(objectToCompare instanceof ElementType that))
         {
             return false;
         }
-        ElementType that = (ElementType) objectToCompare;
         return getTypeVersion() == that.getTypeVersion() &&
                 Objects.equals(getTypeId(), that.getTypeId()) &&
                 Objects.equals(getTypeName(), that.getTypeName()) &&

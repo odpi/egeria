@@ -622,7 +622,7 @@ public class FolderSurveyService extends SurveyActionServiceConnector
          * @param annotation output annotation
          * @param annotationType annotation type definition
          */
-        private void setUpAnnotation(Annotation annotation,
+        private void setUpAnnotation(Annotation                 annotation,
                                      SurveyFolderAnnotationType annotationType)
         {
             annotation.setAnnotationType(annotationType.getName());

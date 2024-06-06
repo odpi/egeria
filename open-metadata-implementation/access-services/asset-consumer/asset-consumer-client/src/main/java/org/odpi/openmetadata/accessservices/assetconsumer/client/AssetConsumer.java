@@ -10,16 +10,9 @@ import org.odpi.openmetadata.accessservices.assetconsumer.api.AssetConsumerTaggi
 import org.odpi.openmetadata.accessservices.assetconsumer.client.rest.AssetConsumerRESTClient;
 import org.odpi.openmetadata.accessservices.assetconsumer.elements.InformalTagElement;
 import org.odpi.openmetadata.accessservices.assetconsumer.elements.MeaningElement;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.CommentRequestBody;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.FeedbackRequestBody;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermListResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.LogRecordRequestBody;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.RatingRequestBody;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.TagRequestBody;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.TagResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.TagUpdateRequestBody;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.TagsResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.AssetGraph;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.AssetSearchMatches;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
@@ -33,6 +26,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CommentType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.StarRating;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.rest.AssetsResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -273,6 +267,130 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                                                           pageSize);
 
         return restResult.getGUIDs();
+    }
+
+
+    /**
+     * Return a list of assets with the requested name.  The name must match exactly.
+     *
+     * @param userId calling user
+     * @param metadataCollectionId unique identifier of the metadata collection to search for
+     * @param typeName optional type name to limit the search results
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of unique identifiers of assets with matching name.
+     *
+     * @throws InvalidParameterException the name is invalid
+     * @throws PropertyServerException there is a problem access in the property server
+     * @throws UserNotAuthorizedException the user does not have access to the properties
+     */
+    public List<Asset> getAssetsByMetadataCollectionId(String   userId,
+                                                       String   metadataCollectionId,
+                                                       String   typeName,
+                                                       int      startFrom,
+                                                       int      pageSize) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        final String methodName = "getAssetsByMetadataCollectionId";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-metadata-collection-id/{2}?startFrom={3}&pageSize={4}";
+
+        NameRequestBody requestBody = new NameRequestBody();
+
+        requestBody.setName(typeName);
+
+        AssetsResponse restResult = restClient.callOCFAssetsPostRESTCall(methodName,
+                                                                         urlTemplate,
+                                                                         requestBody,
+                                                                         serverName,
+                                                                         userId,
+                                                                         metadataCollectionId,
+                                                                         startFrom,
+                                                                         pageSize);
+
+        return restResult.getAssets();
+    }
+
+
+    /**
+     * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @return graph of elements
+     * @throws InvalidParameterException the name is invalid
+     * @throws PropertyServerException there is a problem access in the property server
+     * @throws UserNotAuthorizedException the user does not have access to the properties
+     */
+    public AssetGraph getAssetGraph(String userId,
+                                    String assetGUID,
+                                    int    startFrom,
+                                    int    pageSize) throws InvalidParameterException,
+                                                            PropertyServerException,
+                                                            UserNotAuthorizedException
+    {
+        final String   methodName = "getAssetGraph";
+        final String   guidParameter = "assetGUID";
+        final String   urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/as-graph?startFrom={3}&pageSize={4}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
+
+        AssetGraphResponse restResult = restClient.callAssetGraphGetRESTCall(methodName,
+                                                                             urlTemplate,
+                                                                             serverName,
+                                                                             userId,
+                                                                             assetGUID,
+                                                                             startFrom,
+                                                                             pageSize);
+
+        return restResult.getAssetGraph();
+    }
+
+
+    /**
+     * Locate string value in elements that are anchored to assets.  The search string may be a regEx.
+     *
+     * @param userId calling user
+     * @param searchString value to search for (maybe regEx)
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @return found elements organized by asset
+     * @throws InvalidParameterException the searchString is invalid
+     * @throws PropertyServerException there is a problem access in the property server
+     * @throws UserNotAuthorizedException the user does not have access to the properties
+     */
+    public List<AssetSearchMatches> findAssetsInDomain(String userId,
+                                                       String searchString,
+                                                       int    startFrom,
+                                                       int    pageSize) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+        final String methodName = "findAssetsInDomain";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets-in-domain/by-search-string?startFrom={2}&pageSize={3}";
+        final String nameParameter = "searchString";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, nameParameter, methodName);
+
+        SearchStringRequestBody requestBody = new SearchStringRequestBody();
+
+        requestBody.setSearchString(searchString);
+        requestBody.setSearchStringParameterName(nameParameter);
+
+        AssetSearchMatchesListResponse restResult = restClient.callAssetSearchMatchesListPostRESTCall(methodName,
+                                                                                                      urlTemplate,
+                                                                                                      requestBody,
+                                                                                                      serverName,
+                                                                                                      userId,
+                                                                                                      startFrom,
+                                                                                                      pageSize);
+
+        return restResult.getSearchMatches();
     }
 
 
